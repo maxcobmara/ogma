@@ -22,6 +22,7 @@ class College < ActiveRecord::Base
   has_many :documents
   has_many :examquestions
   has_many :exammarks
+  has_many :grades
   # staffs
   
   serialize :data, Hash

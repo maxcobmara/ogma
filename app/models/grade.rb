@@ -9,6 +9,7 @@ class Grade < ActiveRecord::Base
  # validates_presence_of :sent_date, :if => :sent_to_BPL?
   validate :formative_allowed, :total_weightage_allowed, :exam1marks_allowed #, :check_formative_valid,
   
+  belongs_to :college, :foreign_key => 'college_id'
   belongs_to :studentgrade, :class_name => 'Student', :foreign_key => 'student_id'  #Link to Model student
   belongs_to :subjectgrade, :class_name => 'Programme', :foreign_key => 'subject_id'  #Link to Model subject
 

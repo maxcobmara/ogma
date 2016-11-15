@@ -8,7 +8,7 @@
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_grade_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
+    %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), grade_list_exam_grades_path(params.merge(format: 'pdf'))
 
 .row
   .col-md-12
@@ -39,19 +39,20 @@
     %table.table-striped.table-hover.ogma
       %thead
         %tr
-          %th{:style=>"width:20px;"} &nbsp;
-          %th= sort_link(@search, :student_search, (t 'exam.grade.student_id'))
-          %th= sort_link(@search, :subject_id, (t 'exam.grade.subject_id'))
-          %th= sort_link(@search, :formative, (t 'exam.grade.total_formative'))
-          %th{:colspan=>"2"}=sort_link(@search, :sent_date, (t 'exam.grade.sent_date'))
-          %th=sort_link(@search, :eligible_for_exam, (t 'exam.grade.eligible_for_exam'))
-          %th=sort_link(@search, :carry_paper, (t 'exam.grade.carry_paper'))
-          %th=sort_link(@search, :examweight, (t 'exam.grade.examweight'))
-          %th=sort_link(@search, :exam1marks, (t 'exam.grade.exam1marks'))
-          %th=sort_link(@search, :summative, (t 'exam.grade.summative'))
-          %th=sort_link(@search, :resit, (t 'exam.grade.resit'))
-          %th=sort_link(@search, :finalscore, (t 'exam.grade.finalscore'))
-          %th=sort_link(@search, :grading_id, (t 'exam.grade.grading_id'))
+          %th{width: '3%'} &nbsp;
+          %th{width: '15%'}= sort_link(@search, :student_search, (t 'exam.grade.student_id'))
+          %th{width: '12%'}= sort_link(@search, :subject_id, (t 'exam.grade.subject_id'))
+          %th{width: '8%'}= sort_link(@search, :formative, (t 'exam.grade.total_formative'))
+          - if current_user.college.code=='kskbjb'
+            %th{:colspan=>"2"}=sort_link(@search, :sent_date, (t 'exam.grade.sent_date'))
+          %th{width: '7%'}=sort_link(@search, :eligible_for_exam, (t 'exam.grade.eligible_for_exam'))
+          %th{width: '7%'}=sort_link(@search, :carry_paper, (t 'exam.grade.carry_paper'))
+          %th{width: '7%'}=sort_link(@search, :examweight, (t 'exam.grade.examweight'))
+          %th{width: '8%'}=sort_link(@search, :exam1marks, (t 'exam.grade.exam1marks'))
+          %th{width: '8%'}=sort_link(@search, :summative, (t 'exam.grade.summative'))
+          %th{width: '7%'}=sort_link(@search, :resit, (t 'exam.grade.resit'))
+          %th{width: '5%'}=sort_link(@search, :finalscore, (t 'exam.grade.finalscore'))
+          %th{width: '3%'}=sort_link(@search, :grading_id, (t 'exam.grade.grading_id'))
       %tbody
         = render "search_bar"
         = form_tag edit_multiple_exam_grades_path, :method => :put , :id => "form1" do
@@ -61,7 +62,7 @@
               - if index == 0
                 %tr
                   %td.group{:colspan => "15"} 
-                    %span= (t 'exam.grade.subject_id')+' : '+Programme.find(grades_group).subject_list
+                    %span= (t 'exam.grade.programme')+" - "+(t 'exam.grade.subject_id')+' : '+Programme.find(grades_group).programme_subject
               %tr
                 %td{:style=>"text-align: center;"}
                   - permitted_to? :edit_multiple, :exam_grades do
@@ -69,10 +70,11 @@
                 %td= link_to grade.studentgrade.matrix_name, exam_grade_path(grade)
                 %td=h grade.subjectgrade.try(:subject_list)
                 %td=number_with_precision(grade.total_formative, precision: 2) 
-                %td
-                  - if grade.sent_to_BPL == true 
-                    &#10003;
-                %td=h grade.sent_date.try(:strftime, '%d %b %Y')
+                - if current_user.college.code=='kskbjb'
+                  %td
+                    - if grade.sent_to_BPL == true 
+                      &#10003;
+                  %td=h grade.sent_date.try(:strftime, '%d %b %Y')
                 %td
                   - if grade.eligible_for_exam == true
                     &#10003;

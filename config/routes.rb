@@ -484,6 +484,7 @@ Ogma::Application.routes.draw do
     end
     resources :grades do
       collection do
+        get :grade_list
         put 'edit_multiple'
         post 'update_multiple', to: "grades#update_multiple"
         put 'new_multiple'
