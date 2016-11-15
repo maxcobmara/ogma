@@ -177,8 +177,14 @@ class Examquestion_reportPdf < Prawn::Document
                       #END - answer=============================
 		      
 		      qtext+=qanswer
+		      
+		      unless question.questiontype=="SEQ"
+                        qtext+="<br>"
+                      end
+		      qtext+="<br><b>#{I18n.t('exam.examquestion.usage_frequency')}:</b> #{Examquestion.joins(:exams).where(id: question.id).count}"
 
                       body << ["#{counter+=1}", question.questiontype, qtext, question.marks, question.category,   question.render_difficulty, question.qstatus, question.creator_details, "#{question.conform_curriculum? ? '/' : 'X'}", "#{question.conform_specification? ? '/' : 'X'}", "#{question.conform_opportunity? ? '/' : 'X'}", "#{question.accuracy_construct? ? '/' : 'X'}", "#{question.accuracy_topic? ? '/' : 'X'}", "#{question.accuracy_component? ? '/' : 'X'}", "#{question.fit_difficulty? ? '/' : 'X'}", "#{question.fit_important? ? '/' : 'X'}", "#{question.fit_fairness? ? '/' : 'X'}"]
+
                   end
               end
           end #endof @groupbytopic.sort.each

@@ -421,6 +421,7 @@ class Examquestion < ActiveRecord::Base
                           #MCQ final ANSWER
                           if q.questiontype=="MCQ"
                               csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.answermcq')+" : "+q.answer.to_s]
+			      csv << []
                           end
                           #answer field for other than MCQ & SEQ 
                           if !(q.questiontype=="MCQ" || q.questiontype=="SEQ")
@@ -428,6 +429,9 @@ class Examquestion < ActiveRecord::Base
                               csv << []
                           end
                           ######ANSWER - end
+
+                          csv << ["\'\'", "\'\'", I18n.t( 'exam.examquestion.usage_frequency')+" : "+Examquestion.joins(:exams).where(id: q.id).count.to_s]
+                          csv << [] unless q.questiontype=="MCQ"
 
                           qbytype_count+=1
                       end #endof questionbytype

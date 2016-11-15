@@ -21,7 +21,7 @@
         %th{width: '10%'}= sort_link(@search, :subject_id, (t 'exam.examquestion.subject_id'))
         %th{width: '10%'}= sort_link(@search, :topic_id, (t 'exam.examquestion.topic_id'))
         %th{width: '10%'}= sort_link(@search, :questiontype, (t 'exam.examquestion.questiontype'))
-        %th{width: '40%'}= sort_link(@search, :question, (t 'exam.examquestion.question')+ (t 'exam.examquestion.answer'))
+        %th{width: '40%'}= sort_link(@search, :question, (t 'exam.examquestion.question')+" & "+(t 'exam.examquestion.answer') +" - "+ (t 'exam.examquestion.usage_frequency'))
         /%th{width: '20%'}= sort_link(@search, :answer, (t 'exam.examquestion.answer'))
         %th{width: '5%'}= sort_link(@search, :marks, (t 'exam.examquestion.marks'))
         %th{width: '5%'}= sort_link(@search, :category, (t 'exam.examquestion.category'))
@@ -125,7 +125,13 @@
                     - if !(question.questiontype=="MCQ" || question.questiontype=="SEQ")
                       =(t 'exam.examquestion.answer')+" : "
                       =h question.answer  
-                      
+                    
+                    - unless question.questiontype=="SEQ"
+                      %br
+                    %br
+                    %b=(t 'exam.examquestion.usage_frequency') +":"
+                    =Examquestion.joins(:exams).where(id: question.id).count
+                    
                   %td= question.marks
                   %td= question.category
                   %td= question.render_difficulty
