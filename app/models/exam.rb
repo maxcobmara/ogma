@@ -496,9 +496,56 @@ class Exam < ActiveRecord::Base
     end
     sesi
   end
-  
-  
-  ###########
+
+#   def self.csv(options={})
+#     CSV.generate(options) do |csv|
+#       csv << column_names
+#       all.each do |examquestion|
+#         csv << examquestion.attributes.values_at(*column_names)
+#       end
+#     end
+#   end
+
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+        csv << ["\'\'", "\'\'", I18n.t('exam.exams.list').upcase]  #title added ---> refer examanalysis.rb
+        csv << [] #blank row added
+        if all.first.college.code=='kskbjb'
+	  header_title=["No", "\'\'", I18n.t('exam.exams.name'),  I18n.t('exam.exams.year_semester'), I18n.t('exam.exams.course_id'),  I18n.t('exam.exams.subject_id'),  I18n.t('exam.exams.exam_on'),  I18n.t('exam.exams.time'),  I18n.t('exam.exams.created_by'),  I18n.t('exam.exams.duration'),  I18n.t('exam.exams.full_marks'), I18n.t('exam.exams.separate_combine')]
+	else
+	   header_title=["No", "\'\'", I18n.t('exam.exams.name'),  I18n.t('exam.exams.course_id'),  I18n.t('exam.exams.subject_id'),  I18n.t('exam.exams.exam_on'),  I18n.t('exam.exams.time'),  I18n.t('exam.exams.created_by'),  I18n.t('exam.exams.duration'),  I18n.t('exam.exams.full_marks')]
+	end
+        csv << header_title
+        counter = counter || 0
+        all.group_by{|x|x.subject.root_id}.each do |prog, exams|
+           for exam in exams
+	     a=[counter += 1, exam.complete_paper==false ? '*' : "\'\'", exam.render_examtype.first]
+             b=[exam.subject.try(:root).try(:programme_list), exam.subject.try(:subject_list), exam.exam_on.try(:strftime, '%d-%m-%Y'), exam.timing, exam.creator_details, exam.duration!=nil ? (exam.duration/60).to_i.to_s+' '+I18n.t('time.hours')+' '+(exam.duration%60).to_i.to_s+' '+I18n.t('time.minutes') : (((exam.endtime - exam.starttime)/60) / 60).to_i.to_s+' '+I18n.t('time.hours')+' '+ (((exam.endtime - exam.starttime)/60) % 60).to_i.to_s+' '+I18n.t('time.minutes'), exam.total_marks]
+
+	    if exam.college.code=='kskbjb'
+            semno= exam.subject.parent.code.to_i%2 == 0 ? '2' : '1'
+              if exam.sequ!=nil
+                sequ = exam.sequ.split(",")
+                if sequ!=nil && sequ.uniq.length == sequ.length && exam.separate_cover.include?(exam.subject.root.id)
+                  c=["S"]
+                end
+                if sequ!=nil && sequ.uniq.length == sequ.length && exam.combine_cover.include?(exam.subject.root.id)
+                  c=["C"]
+                end
+              end
+	      csv << a+[exam.subject_id? ? exam.syear+semno : '']+b+c
+	    else
+	      csv << a+b
+	    end
+	    if exam.klass_id == 1
+	      csv << ["\'\'", "\'\'", I18n.t('exam.exams.with_questions')]
+	    end
+          end
+        end #ENDOF all.group_by....
+        csv << []
+        csv << ["\'\'", "* ", I18n.t('exam.exams.remarks_bottom')]
+    end
+  end
 
 private
 

@@ -57,7 +57,7 @@ class Exam_listPdf < Prawn::Document
     body=[]
     @programme_exams.each do |programme, exams|
         for exam in exams
-          a=["#{counter += 1}", "#{exam.complete_paper==false ? '*' : ''}",  "#{exam.render_examtype.first}<br>#{I18n.t('exam.exams.with_questions') if exam.klass_id == 1} #{'*' if exam.complete_paper==false}"]
+          a=["#{counter += 1}", "#{exam.complete_paper==false ? '*' : ''}",  "#{exam.render_examtype.first}<br>#{I18n.t('exam.exams.with_questions') if exam.klass_id == 1}"]
           b=[exam.subject.try(:root).try(:programme_list), exam.subject.try(:subject_list), exam.exam_on.try(:strftime, '%d-%m-%Y'), exam.timing, exam.creator_details, "#{exam.duration!=nil ? (exam.duration/60).to_i.to_s+' '+I18n.t('time.hours')+' '+(exam.duration%60).to_i.to_s+' '+I18n.t('time.minutes') : (((exam.endtime - exam.starttime)/60) / 60).to_i.to_s+' '+I18n.t('time.hours')+' '+ (((exam.endtime - exam.starttime)/60) % 60).to_i.to_s+' '+I18n.t('time.minutes')}", exam.total_marks]
           if @college.code=="kskbjb" 
             semno= exam.subject.parent.code.to_i%2 == 0 ? '2' : '1'
