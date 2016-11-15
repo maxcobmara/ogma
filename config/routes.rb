@@ -465,11 +465,12 @@ Ogma::Application.routes.draw do
         get :exampaper
 	#get :question_selection
       end
-#       collection do
+       collection do
+         get :exam_list
 #         get 'exampaper', to: "exams#exampaper"
 #         get 'exampaper_separate', to: "exams#exampaper_separate"
 #         get 'exampaper_combine', to: "exams#exampaper_combine"
-#       end
+       end
     end
 
     resources :exammarks do
