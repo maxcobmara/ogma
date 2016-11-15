@@ -430,7 +430,7 @@ class Examquestion < ActiveRecord::Base
                           end
                           ######ANSWER - end
 
-                          csv << ["\'\'", "\'\'", I18n.t( 'exam.examquestion.usage_frequency')+" : "+Examquestion.joins(:exams).where(id: q.id).count.to_s]
+			  csv << ["\'\'", "\'\'", I18n.t( 'exam.examquestion.usage_frequency')+" : "+Exam.joins(:examquestions).where('examquestion_id=?', q.id).count.to_s]
                           csv << [] unless q.questiontype=="MCQ"
 
                           qbytype_count+=1

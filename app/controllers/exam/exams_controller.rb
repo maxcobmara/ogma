@@ -13,6 +13,8 @@ class Exam::ExamsController < ApplicationController
       if @exams 
         format.html # index.html.erb
         format.xml  { render :xml => @exams }
+        format.csv { send_data @programme_exams.to_csv }
+        format.xls { send_data @exams.to_csv(col_sep: "\t") }
       else
         format.html { redirect_to(dashboard_url, :notice =>t('positions_required')+(t 'exam.title')+" - "+(t 'exam.exams.title')) }
       end

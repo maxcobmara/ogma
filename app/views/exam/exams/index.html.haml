@@ -6,7 +6,7 @@
   %ul.nav.navbar-nav
     - permitted_to? :create, :exam_exams do
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_exam_path
-    %li= link_to (t 'actions.download_excel'), exam_exams_path(format: "xls"), class: 'bogus'
+    %li= link_to (t 'actions.download_excel'), exam_exams_path(params.merge(format: "xls"))
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: 'index_search_bar'
     %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  exam_list_exam_exams_path(params.merge(format: 'pdf' ))
