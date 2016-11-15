@@ -7,7 +7,7 @@
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_examresult_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), examresult_list_exam_examresults_path(params.merge(format: 'pdf'))
 
 = render 'shared/flashes'
 .row

@@ -16,7 +16,8 @@
       - nos=0
       - @ng=[]
       %tr
-        - for examresultline in @examresult.resultlines.sort_by{|x|x.status}
+      - for examresultline in @examresult.resultlines.sort_by{|x|x.status}
+        %tr  
           %td=nos+=1
           %td.left=h examresultline.student.student_with_rank
           %td.left=h examresultline.student.icno
