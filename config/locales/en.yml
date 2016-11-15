@@ -3468,6 +3468,7 @@ en:
     
     grade:
       title: Examination Grades
+      list: Examination Grades List
       new: New Examination Grade
       edit: Edit Examination Grade
       multiple_edit: Grades Multiple Edit

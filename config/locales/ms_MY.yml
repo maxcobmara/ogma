@@ -3391,6 +3391,7 @@ ms_MY:
       
     grade:
       title: Gred Peperiksaan
+      list: Senarai Gred Peperiksaan
       new: Gred Peperiksaan Baru
       edit: Sunting Gred Peperiksaan
       multiple_edit: Suntingan Pukal Gred Peperiksaan

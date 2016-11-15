@@ -1,124 +1,14 @@
 class Exam::GradesController < ApplicationController
-  filter_access_to :index, :new, :create, :new_multiple, :create_multiple, :edit_multiple, :update_multiple, :attribute_check => false
+  filter_access_to :index, :new, :create, :new_multiple, :create_multiple, :edit_multiple, :update_multiple, :grade_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_grade, only: [:show, :edit, :update, :destroy]
+  before_action :set_index_data, only: [:index, :grade_list]
   before_action :set_data_edit_update_new_create, only: [:edit, :update, :new, :create]
   before_action :set_new_multiple_create_multiple, only: [:new_multiple, :create_multiple]
 
   # GET /grades
   # GET /grades.xml
   def index
-    valid_exams = Exammark.get_valid_exams
-    @grade_list_exist_subject=[]
-    @existing_grade_subject_ids = Grade.all.pluck(:subject_id).uniq
-    @position_exist = @current_user.userable.positions
-    @common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
-    posbasics=['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']
-    roles=@current_user.roles.pluck(:authname)
-    ###
-    if @position_exist && @position_exist.count > 0 
-      @lecturer_programme = @current_user.userable.positions[0].unit
-      common_subject_a = Programme.where('course_type=?','Commonsubject')
-      unless @lecturer_programme.nil?
-        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0) if posbasics.include?(@lecturer_programme)==false
-      end
-      unless @programme.nil? || @programme.count == 0
-        programme_id = @programme.first.id
-        if current_user.college.code=="kskbjb"
-          @subjectlist_preselec_prog = Programme.find(programme_id).descendants.at_depth(2)  #.sort_by{|y|y.code}
-        else 
-          @subjectlist_preselec_prog = Programme.find(programme_id).descendants.where(course_type: 'Subject')
-        end
-        #subjects - only those with existing exampaper
-        @subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?) and name=?', valid_exams, 'F').map(&:subject_id))
-        #@subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?) and id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?) and name=?', valid_exams, 'F').map(&:subject_id), common_subject_a.map(&:id))
-        #subjects - ALL subject of current programme
-        #@subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), common_subject_a.map(&:id))
-      else
-        tasks_main = @current_user.userable.positions[0].tasks_main
-        if @common_subjects.include?(@lecturer_programme)
-          programme_id ='1'
-          @subjectlist_preselec_prog = common_subject_a
-        elsif posbasics.include?(@lecturer_programme) && tasks_main!=nil
-          ###
-          # NOTE - posbasic SUP has access to all posbasic programmes
-          #if @current_user.roles.pluck(:authname).include?("programme_manager")
-              #@subjectlist_preselec_prog = Programme.where(course_type: posbasics).first.descendants.at_depth(2)
-              post_prog=Programme.where(course_type: posbasics)
-              subject_ids=[]
-              post_prog.each do |postb|
-                postb.descendants.each{|des|subject_ids << des.id if des.course_type=="Subject" || des.course_type=="Commonsubject"}
-              end
-              @subjectlist_preselec_prog=Programme.where(id: subject_ids)
-              programme_id='2'
-              subjects_valid_exam= Exam.where(id: valid_exams).where(name: 'F').pluck(:subject_id)
-              @subjectlist_preselec_prog2_raw = Programme.where(id: @subjectlist_preselec_prog.map(&:id)).where(id: subjects_valid_exam)
-          #else
-          #    allposbasic_prog = Programme.where(course_type: posbasics).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
-          #    for basicprog in allposbasic_prog
-          #      lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
-          #    end
-          #    programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-          #    @subjectlist_preselec_prog = Programme.where(id: programme_id).first.descendants.at_depth(2)
-          #end
-          ###
-        elsif roles.include?("developer") || roles.include?("administration") || roles.include?("exam_grade_module_admin") || roles.include?("exam_grade_module_viewer") || roles.include?("exam_grade_module_user")
-          programme_id='0'
-          if current_user.college.code=="kskbjb"
-            @subjectlist_preselec_prog = Programme.at_depth(2) 
-          else
-            @subjectlist_preselec_prog = Programme.where(course_type: 'Subject')
-          end
-        else
-          leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
-          if leader_unit
-            @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0) 
-            programme_id = @programme.first.id
-            @subjectlist_preselec_prog = Programme.find(programme_id).descendants.at_depth(2) 
-            @subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?) and id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?) and name=?', valid_exams, 'F').map(&:subject_id), common_subject_a.map(&:id))
-          end
-        end
-
-        #subject no longer available for NEW multiple when ALL available Intakes already have at least ONE grade entry
-        @ssubject_grade_exist=[]
-        Grade.where(subject_id: @subjectlist_preselec_prog.map(&:id)).group_by(&:subject_id).each do |subjectid, grades|
-          progid=Programme.where(id: subjectid).first.root_id
-          exist_students=grades.map(&:student_id)
-          exist_intakes=Student.where(id: exist_students).pluck(:intake)
-          available_students=Student.where(course_id: progid).pluck(:id)
-          available_intakes=Student.where(id: available_students).pluck(:intake)
-          #when all intakes already hv at least ONE grade entry
-          if exist_intakes.count == available_intakes.count 
-            @ssubject_grade_exist << subjectid
-          end
-        end
-
-        #subjects - only those with existing exampaper & not even 1 grade exist
-        @subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?)', valid_exams).map(&:subject_id)).where.not(id: @ssubject_grade_exist)
-        #subjects - ALL subjects
-        #@subjectlist_preselec_prog2_raw = Programme.where('id IN (?)',@subjectlist_preselec_prog.map(&:id))
-      end
-      
-      #all subjects for NEW Multiple
-      @subjectlist_preselec_prog2 = []
-      @subjectlist_preselec_prog2_raw.each do |x|
-        @subjectlist_preselec_prog2 << [x.programme_subject, x.id]
-      end
-      
-      #existing subject of all grades for Search
-      @grade_list_exist_subject_raw= Programme.where('id IN(?) and id IN(?)', @existing_grade_subject_ids, @subjectlist_preselec_prog.pluck(:id)).order(id: :asc)
-      @grade_list_exist_subject = []
-      @grade_list_exist_subject_raw.each do |x|
-        @grade_list_exist_subject << [x.programme_subject, x.id]
-      end
-      
-      @search = Grade.search(params[:q])
-      @grades = @search.result.search2(programme_id)
-      @grades = @grades.page(params[:page]||1)
-      #@grades = Kaminari.paginate_array(@sdc).page(params[:page]||1) 
-      @grades_group = @grades.group_by{|x|x.subject_id}
-    end
-    ###
     respond_to do |format|
       if @grades && @grades_group
         format.html # index.html.erb
@@ -493,12 +383,139 @@ class Exam::GradesController < ApplicationController
       format.js 
      end
   end
+
+  def grade_list
+    respond_to do |format|
+      format.pdf do
+        pdf =Grade_listPdf.new(@grades_all, view_context, current_user.college)
+        send_data pdf.render, filename: "grade_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
   
   private
   
   # Use callbacks to share common setup or constraints between actions.
     def set_grade
       @grade = Grade.find(params[:id])
+    end
+    
+    def set_index_data
+      ############
+      valid_exams = Exammark.get_valid_exams
+      @grade_list_exist_subject=[]
+      @existing_grade_subject_ids = Grade.all.pluck(:subject_id).uniq
+      @position_exist = @current_user.userable.positions
+      @common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+      posbasics=['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']
+      roles=@current_user.roles.pluck(:authname)
+      ###
+      if @position_exist && @position_exist.count > 0 
+        @lecturer_programme = @current_user.userable.positions[0].unit
+        common_subject_a = Programme.where('course_type=?','Commonsubject')
+        unless @lecturer_programme.nil?
+          @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0) if posbasics.include?(@lecturer_programme)==false
+        end
+        unless @programme.nil? || @programme.count == 0
+          programme_id = @programme.first.id
+          if current_user.college.code=="kskbjb"
+            @subjectlist_preselec_prog = Programme.find(programme_id).descendants.at_depth(2)  #.sort_by{|y|y.code}
+          else 
+            @subjectlist_preselec_prog = Programme.find(programme_id).descendants.where(course_type: 'Subject')
+          end
+          #subjects - only those with existing exampaper
+          @subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?) and name=?', valid_exams, 'F').map(&:subject_id))
+          #@subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?) and id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?) and name=?', valid_exams, 'F').map(&:subject_id), common_subject_a.map(&:id))
+          #subjects - ALL subject of current programme
+          #@subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), common_subject_a.map(&:id))
+        else
+          tasks_main = @current_user.userable.positions[0].tasks_main
+          if @common_subjects.include?(@lecturer_programme)
+            programme_id ='1'
+            @subjectlist_preselec_prog = common_subject_a
+          elsif posbasics.include?(@lecturer_programme) && tasks_main!=nil
+            ###
+            # NOTE - posbasic SUP has access to all posbasic programmes
+            #if @current_user.roles.pluck(:authname).include?("programme_manager")
+                #@subjectlist_preselec_prog = Programme.where(course_type: posbasics).first.descendants.at_depth(2)
+                post_prog=Programme.where(course_type: posbasics)
+                subject_ids=[]
+                post_prog.each do |postb|
+                  postb.descendants.each{|des|subject_ids << des.id if des.course_type=="Subject" || des.course_type=="Commonsubject"}
+                end
+                @subjectlist_preselec_prog=Programme.where(id: subject_ids)
+                programme_id='2'
+                subjects_valid_exam= Exam.where(id: valid_exams).where(name: 'F').pluck(:subject_id)
+                @subjectlist_preselec_prog2_raw = Programme.where(id: @subjectlist_preselec_prog.map(&:id)).where(id: subjects_valid_exam)
+            #else
+            #    allposbasic_prog = Programme.where(course_type: posbasics).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+            #    for basicprog in allposbasic_prog
+            #      lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
+            #    end
+            #    programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+            #    @subjectlist_preselec_prog = Programme.where(id: programme_id).first.descendants.at_depth(2)
+            #end
+            ###
+          elsif roles.include?("developer") || roles.include?("administration") || roles.include?("exam_grade_module_admin") || roles.include?("exam_grade_module_viewer") ||  roles.include?("exam_grade_module_user")
+            programme_id='0'
+            if current_user.college.code=="kskbjb"
+              @subjectlist_preselec_prog = Programme.at_depth(2) 
+            else
+              @subjectlist_preselec_prog = Programme.where(course_type: 'Subject')
+            end
+          else
+            leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+            if leader_unit
+              @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0) 
+              programme_id = @programme.first.id
+              @subjectlist_preselec_prog = Programme.find(programme_id).descendants.at_depth(2) 
+              @subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?) and id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?) and name=?', valid_exams, 'F').map(&:subject_id), common_subject_a.map(&:id))
+            end
+          end
+
+          #subject no longer available for NEW multiple when ALL available Intakes already have at least ONE grade entry
+          @ssubject_grade_exist=[]
+          Grade.where(subject_id: @subjectlist_preselec_prog.map(&:id)).group_by(&:subject_id).each do |subjectid, grades|
+            progid=Programme.where(id: subjectid).first.root_id
+            exist_students=grades.map(&:student_id)
+            exist_intakes=Student.where(id: exist_students).pluck(:intake)
+            available_students=Student.where(course_id: progid).pluck(:id)
+            available_intakes=Student.where(id: available_students).pluck(:intake)
+            #when all intakes already hv at least ONE grade entry
+            if exist_intakes.count == available_intakes.count 
+              @ssubject_grade_exist << subjectid
+            end
+          end
+
+          #subjects - only those with existing exampaper & not even 1 grade exist
+          @subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?)',   valid_exams).map(&:subject_id)).where.not(id: @ssubject_grade_exist)
+          #subjects - ALL subjects
+          #@subjectlist_preselec_prog2_raw = Programme.where('id IN (?)',@subjectlist_preselec_prog.map(&:id))
+        end
+      
+        #all subjects for NEW Multiple
+        @subjectlist_preselec_prog2 = []
+        @subjectlist_preselec_prog2_raw.each do |x|
+          @subjectlist_preselec_prog2 << [x.programme_subject, x.id]
+        end
+      
+        #existing subject of all grades for Search
+        @grade_list_exist_subject_raw= Programme.where('id IN(?) and id IN(?)', @existing_grade_subject_ids, @subjectlist_preselec_prog.pluck(:id)).order(id: :asc)
+        @grade_list_exist_subject = []
+        @grade_list_exist_subject_raw.each do |x|
+          @grade_list_exist_subject << [x.programme_subject, x.id]
+        end
+      
+        @search = Grade.search(params[:q])
+        @grades_all = @search.result.search2(programme_id)
+        @grades = @grades_all.page(params[:page]||1)
+        #@grades = Kaminari.paginate_array(@sdc).page(params[:page]||1) 
+        @grades_group = @grades.group_by{|x|x.subject_id}
+      end
+      ###
+      ############
     end
     
     def set_data_edit_update_new_create
@@ -601,7 +618,7 @@ class Exam::GradesController < ApplicationController
     
     # Never trust parameters from the scary internet, only allow the white list through.
     def grade_params
-      params.require(:grade).permit(:student_id, :subject_id, :sent_to_BPL, :sent_date, :formative, :score, :eligible_for_exam, :carry_paper, :summative, :resit, :finalscore, :grading_id, :exam1name, :exam1desc, :exam1marks, :exam2name, :exam2desc, :exam2marks, :examweight, :summative_weightage, scores_attributes: [:id,:_destroy, :type_id, :description, :marks, :weightage, :score, :completion, :formative])
+      params.require(:grade).permit(:student_id, :subject_id, :sent_to_BPL, :sent_date, :formative, :score, :eligible_for_exam, :carry_paper, :summative, :resit, :finalscore, :grading_id, :exam1name, :exam1desc, :exam1marks, :exam2name, :exam2desc, :exam2marks, :examweight, :summative_weightage, :college_id, {:data => []}, scores_attributes: [:id,:_destroy, :type_id, :description, :marks, :weightage, :score, :completion, :formative])
     end
   
 end
