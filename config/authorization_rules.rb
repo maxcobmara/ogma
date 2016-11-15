@@ -756,7 +756,7 @@ authorization do
  
   #OK - 29Jan2016 - this role + programme mgr (exam parts) works fine as of latest Nov 2015-Jan 2016 accepted unless stated below..
   role :exam_administration do
-    has_permission_on [:exam_exams, :exam_exam_templates, :exam_exammarks, :exam_grades], :to => [:menu, :read, :index, :create]
+    has_permission_on [:exam_exams, :exam_exam_templates, :exam_exammarks, :exam_grades], :to => [:menu, :read, :index, :create, :exam_list]
     has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :create, :update, :destroy, :show2, :examination_slip, :show3, :examination_transcript, :results]   
     has_permission_on :exam_examanalyses, :to => [:menu, :read, :create]
     has_permission_on :exam_exam_templates, :to =>[:manage] do
@@ -1955,16 +1955,16 @@ authorization do
   
   #36-OK - 9Feb2016
   role :exampaper_module_admin do
-     has_permission_on :exam_exams, :to => [:manage, :exampaper, :question_selection]
+     has_permission_on :exam_exams, :to => [:manage, :exampaper, :question_selection, :exam_list]
   end
   role :exampaper_module_viewer do
-     has_permission_on :exam_exams, :to => [:menu, :read, :exampaper]
+     has_permission_on :exam_exams, :to => [:menu, :read, :exampaper, :exam_list]
   end
   role :exampaper_module_user do
-    has_permission_on :exam_exams, :to => [:menu, :read, :update, :exampaper]
+    has_permission_on :exam_exams, :to => [:menu, :read, :update, :exampaper, :exam_list]
   end
   role :exampaper_module_member do
-    has_permission_on :exam_exams, :to => [:menu, :read, :update, :exampaper] do
+    has_permission_on :exam_exams, :to => [:menu, :read, :update, :exampaper, :exam_list] do
       if_attribute :created_by => is_in {user.unit_members}
     end
   end
