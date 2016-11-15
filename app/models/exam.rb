@@ -261,6 +261,10 @@ class Exam < ActiveRecord::Base
     end
   end
   
+  def paper_list
+    "#{subject.root.code} #{exam_code_date_type}"
+  end
+  
   def subject_date
     "#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %b %y")}"
   end
@@ -276,9 +280,21 @@ class Exam < ActiveRecord::Base
     return  "2" if  (subject.parent.code == "2") || (subject.parent.code == "4") || (subject.parent.code == "6")
   end
   
+  def full_exam_name2
+    if college.code=='amsas'
+      "#{render_full_name} - #{subject.parent.code} #{subject.parent.programme_list}<br>#{subject.subject_list} - #{exam_on.strftime('%d-%m-%Y')}"
+    else
+      "#{render_full_name} - #{I18n.t('time.years').titleize} #{set_year}, #{subject.parent.course_type} #{set_semester}<br>#{subject.subject_list} -  #{exam_on.strftime('%d %B %Y')}"
+    end
+  end
+  
   def full_exam_name
-    "#{render_full_name}"+" - Tahun "+set_year.to_s+", "+"#{subject.parent.course_type}"+" "+set_semester.to_s+" - "+"#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %B %Y")}"
-     #  "#{name}"+" - Tahun "+set_year.to_s+", "+"#{subject.parent.course_type}"+" "+"#{subject.parent.code}"+" - "+"#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %B %Y")}"
+    if college.code=='amsas'
+      "#{render_full_name} - #{subject.parent.code} #{subject.parent.programme_list} - #{subject.subject_list} - #{exam_on.strftime("%d-%m-%Y")}"
+    else
+      "#{render_full_name} - #{I18n.t('time.years').titleize} #{set_year}, #{subject.parent.course_type} #{set_semester} - #{subject.subject_list} - #{exam_on.strftime("%d %B %Y")}"
+       #  "#{name}"+" - Tahun "+set_year.to_s+", "+"#{subject.parent.course_type}"+" "+"#{subject.parent.code}"+" - "+"#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %B %Y")}"
+    end
   end
   
   #--12June2013

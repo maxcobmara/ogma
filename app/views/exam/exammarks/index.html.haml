@@ -48,12 +48,12 @@
     %table.table-striped.table-hover.ogma
       %thead
         %tr
-          %th{:style=>"width:20px;"} &nbsp;
-          %th= sort_link(@search, :student_id, (t 'exam.exammark.student_id'))
-          %th= t 'exam.exammark.icno'
-          %th= sort_link(@search, :total_mcq, (t 'exam.exammark.marks'))
+          %th{width: '5%'} &nbsp;
+          %th{width: '35%'}= sort_link(@search, :student_id, (t 'exam.exammark.student_id'))
+          %th{width: '20%'}= t 'exam.exammark.icno'
+          %th{width: '20%'}= sort_link(@search, :total_mcq, (t 'exam.exammark.marks'))
           - if final_exist.count > 0
-            %th= (t 'exam.exammark.summative')
+            %th{width: '20%'}= (t 'exam.exammark.summative')
               
 
       %tbody

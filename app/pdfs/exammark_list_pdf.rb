@@ -1,7 +1,8 @@
 class Exammark_listPdf < Prawn::Document
-  def initialize(exammarks_group, view, college)
+  def initialize(exammarks_all, view, college)
     super({top_margin: 40, left_margin: 40, page_size: 'A4', page_layout: :portrait })
-    @exammarks_group = exammarks_group
+    @exammarks_all= exammarks_all
+    @exammarks_group=@exammarks_all.group_by{|x|x.exam_id}
     @view = view
     @college=college
     font "Helvetica"
@@ -57,7 +58,7 @@ class Exammark_listPdf < Prawn::Document
     @exammarks_group.sort.each do |exammarks_group, exammarks|
       exammarks.sort_by{|x|x.studentmark.name}.each_with_index do |exammark,index|
 	if index == 0
-         body << [{content: "#{I18n.t('exam.exammark.exam_id')} : #{Exam.find(exammarks_group).full_exam_name} #{I18n.t('exam.exams.with_questions') if exammark.exampaper.klass_id == 1}", colspan: 5}]
+         body << [{content: "#{I18n.t('exam.exammark.exam_id')} : #{Exam.find(exammarks_group).full_exam_name2} #{I18n.t('exam.exams.with_questions') if exammark.exampaper.klass_id == 1}", colspan: 5}]
 	end
 	if exammark.exampaper.name!="M" 
           if exammark.total_mcq
