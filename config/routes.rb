@@ -504,6 +504,7 @@ Ogma::Application.routes.draw do
         get :examination_slip
         get :examination_transcript
         get :results
+        get :examresult_list
       end
     end
     resources :examanalyses do

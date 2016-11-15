@@ -760,7 +760,7 @@ authorization do
     has_permission_on :exam_grades, :to =>  [:menu, :read, :index, :create, :grade_list]
     has_permission_on :exam_exams, :to => [:menu, :read, :index, :create, :exam_list]
     has_permission_on :exam_exammarks, :to => [:menu, :read, :index, :create, :exammark_list]
-    has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :create, :update, :destroy, :show2, :examination_slip, :show3, :examination_transcript, :results]   
+    has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :create, :update, :destroy, :show2, :examination_slip, :show3, :examination_transcript, :results, :examresult_list]   
     has_permission_on :exam_examanalyses, :to => [:menu, :read, :create]
     has_permission_on :exam_exam_templates, :to =>[:manage] do
       if_attribute :created_by => is {user.id}
@@ -808,7 +808,7 @@ authorization do
     has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation, :evaluation_report] do
       if_attribute :course_id => is_in {user.evaluations_of_programme}
     end
-    has_permission_on :exam_examresults, :to => [:menu, :read]#, :index2, :show2, :examination_slip, :show3, :examination_transcript]# :create, :update,  :destroy]   
+    has_permission_on :exam_examresults, :to => [:menu, :read, :examresult_list]#, :index2, :show2, :examination_slip, :show3, :examination_transcript]# :create, :update,  :destroy]   
     has_permission_on :exam_examanalyses, :to => [:menu, :read] do
       if_attribute :exam_id => is_in {user.by_programme_exams}  
     end
@@ -1881,16 +1881,16 @@ authorization do
   #32-OK
   #32-OK - 10Feb2016
   role :examresults_module_admin do
-     has_permission_on :exam_examresults, :to => [:manage, :index2, :show2, :show3, :results, :examination_slip, :examination_transcript]
+     has_permission_on :exam_examresults, :to => [:manage, :index2, :show2, :show3, :results, :examination_slip, :examination_transcript, :examresult_list]
   end
   role :examresults_module_viewer do
-     has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :show2, :show3, :results, :examination_slip, :examination_transcript]
+     has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :show2, :show3, :results, :examination_slip, :examination_transcript, :examresult_list]
   end
   role :examresults_module_user do
-    has_permission_on :exam_examresults, :to => [:menu, :read, :update, :index2, :show2, :show3, :results, :examination_slip, :examination_transcript]
+    has_permission_on :exam_examresults, :to => [:menu, :read, :update, :index2, :show2, :show3, :results, :examination_slip, :examination_transcript, :examresult_list]
   end
   role :examresults_module_member do
-    has_permission_on :exam_examresults, :to => [:manage, :index2, :show2, :show3, :results, :examination_slip, :examination_transcript] do
+    has_permission_on :exam_examresults, :to => [:manage, :index2, :show2, :show3, :results, :examination_slip, :examination_transcript, :examresult_list] do
       if_attribute :programme_id => is_in {Programme.where(name: Position.where(staff_id: user.userable.id).first.unit).pluck(:id)}
     end
   end

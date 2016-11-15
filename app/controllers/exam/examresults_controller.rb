@@ -1,9 +1,9 @@
 class Exam::ExamresultsController < ApplicationController
-  filter_access_to :index, :index2, :new, :create, :show2, :show3, :results, :examination_slip, :examination_transcript, :attribute_check => false
+  filter_access_to :index, :index2, :new, :create, :show2, :show3, :results, :examination_slip, :examination_transcript, :examresult_list,:attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   
   before_action :set_examresult, only: [:show, :edit, :update, :destroy]
-  before_action :set_index_index2_data, only: [:index, :index2]
+  before_action :set_index_index2_data, only: [:index, :index2, :examresult_list]
   before_action :set_new_create_data, only: [:new, :create]
   before_action :set_edit_update_data, only: [:edit, :update] 
   
@@ -165,6 +165,17 @@ class Exam::ExamresultsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(exam_examresults_url) }
       format.xml  { head :ok }
+    end
+  end
+  
+  def examresult_list
+    respond_to do |format|
+      format.pdf do
+        pdf = Examresult_listPdf.new(@examresults, view_context, current_user.college)
+        send_data pdf.render, filename: "examresult_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
     end
   end
   
