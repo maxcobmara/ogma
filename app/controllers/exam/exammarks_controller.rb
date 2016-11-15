@@ -247,7 +247,7 @@ class Exam::ExammarksController < ApplicationController
   def exammark_list
     respond_to do |format|
       format.pdf do
-        pdf = Exammark_listPdf.new(@exammarks_group, view_context, current_user.college)
+        pdf = Exammark_listPdf.new(@exammarks_all, view_context, current_user.college)
         send_data pdf.render, filename: "exammark_list-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
@@ -318,8 +318,8 @@ class Exam::ExammarksController < ApplicationController
         end
       
         @search = Exammark.search(params[:q])
-        @exammarks = @search.result.search2(programme_id)
-        @exammarks = @exammarks.page(params[:page]||1)
+        @exammarks_all = @search.result.search2(programme_id)
+        @exammarks = @exammarks_all.page(params[:page]||1)
         @exammarks_group = @exammarks.group_by{|x|x.exam_id}
       end
     

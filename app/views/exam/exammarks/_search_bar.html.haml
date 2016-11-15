@@ -4,11 +4,16 @@
     %td
       .col-md-6= f.text_field :keyword_search, class: 'form-control', placeholder: 'Student Name'
       .col-md-5
-        - subject_ids=Exam.where(id: @exams_list_exist_mark).pluck(:subject_id)
         - subjects=[]
-        - Programme.where(id: subject_ids).sort_by{|x|(x.code.strip[-4,4]).to_i}.each do |x|
-          - subjects << [x.subject_list, x.id]
-        = select_tag('q[exampaper_subject_id_eq]', options_for_select([[(t 'exam.grade.existing_subject'),'']]+subjects), class: 'selectpicker',"data-width"=>"250px")
+        - if current_user.college.code=='kskbjb'
+          - subject_ids=Exam.where(id: @exams_list_exist_mark).pluck(:subject_id)
+          - Programme.where(id: subject_ids).sort_by{|x|(x.code.strip[-4,4]).to_i}.each{|x| subjects << [x.subject_list, x.id]}
+        - else 
+          - papers=Exam.where(id: @exams_list_exist_mark)
+          - papers.sort_by{|x|x.subject.root_id}.each {|y| subjects << [y.paper_list, y.subject_id]}
+          
+        
+        = select_tag('q[exampaper_subject_id_eq]', options_for_select([[(t 'all_records'),'']]+subjects), class: 'selectpicker',"data-width"=>"auto")
     %td= f.text_field :studentmark_icno_cont, class: 'form-control'
     %td= f.text_field :totalmarks_search, :class=> "form-control"
     %td
