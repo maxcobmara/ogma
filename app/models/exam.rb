@@ -587,7 +587,7 @@ private
   end
   
   def must_start_before_end
-    if starttime > endtime
+    if (starttime && endtime) && (starttime > endtime)
       errors.add(:base, I18n.t('exam.exams.must_start_before_end'))
     end
   end

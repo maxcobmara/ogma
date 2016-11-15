@@ -8,6 +8,7 @@
   = form_for [:exam, @exammark], html: { class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
     = hidden_field_tag :redirect_location, exam_exammarks_path 
+    = f.hidden_field :college_id, value: current_user.college_id
     
     = render :partial => 'form', :locals => {:f => f}        
 

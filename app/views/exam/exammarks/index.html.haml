@@ -8,7 +8,7 @@
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_exammark_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
+    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  exammark_list_exam_exammarks_path(params.merge(format: 'pdf' ))
 
 .row
   .col-md-12

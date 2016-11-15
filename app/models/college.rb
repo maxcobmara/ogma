@@ -21,6 +21,7 @@ class College < ActiveRecord::Base
   has_many :student_attendances
   has_many :documents
   has_many :examquestions
+  has_many :exammarks
   # staffs
   
   serialize :data, Hash

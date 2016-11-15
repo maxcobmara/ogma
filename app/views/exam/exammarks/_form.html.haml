@@ -1,6 +1,8 @@
 - diploma=Programme.where(course_type: 'Diploma')
-- radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
-- carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
+- radiografi_recs=diploma.where('name ILIKE?', '%Radiografi%')
+- radiografi=radiografi_recs.first.id if radiografi_recs.count > 0
+- carakerja_recs=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%')
+- carakerja=carakerja_recs.first.id if carakerja_recs.count > 0
 
 - unless @exammark.new_record?
   =render 'retrieve_question_count'
@@ -54,9 +56,15 @@
               = f.label  t 'exam.exammark.student_id', for: :student_id
             .col-md-4
               - if @exammark.new_record? == true
-                = f.collection_select :student_id, @students_list, :id, :matrix_name, {:include_blank=>t('select'), :selected=>@exammark.student_id}, {class: 'selectpicker', "data-width"=>'400px'} 
+                - if current_user.college.code=='amsas'
+                  = f.collection_select :student_id, @students_list, :id, :student_with_rank, {:include_blank=>t('select'), :selected=>@exammark.student_id}, {class: 'selectpicker', "data-width"=>"auto"} 
+                - else
+                  = f.collection_select :student_id, @students_list, :id, :matrix_name, {:include_blank=>t('select'), :selected=>@exammark.student_id}, {class: 'selectpicker', "data-width"=>"auto"} 
               - else
-                = @exammark.studentmark.matrix_name
+                - if current_user.college.code=='amsas'
+                  = @exammark.studentmark.student_with_rank
+                - else
+                  = @exammark.studentmark.matrix_name
 
           - if @exammark.new_record? == false 
             .form-group

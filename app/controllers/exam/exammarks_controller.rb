@@ -1,78 +1,13 @@
 class Exam::ExammarksController < ApplicationController
-  filter_access_to :index, :new, :create, :new_multiple, :create_multiple, :edit_multiple, :update_multiple, :attribute_check => false
+  filter_access_to :index, :new, :create, :new_multiple, :create_multiple, :edit_multiple, :update_multiple,:exammark_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_exammark, only: [:show, :edit, :update, :destroy]
+  before_action :set_index_data, only: [:index, :exammark_list]
   before_action :set_students_exam_list, only: [:new, :create, :edit]
 
   # GET /exammarks
   # GET /exammarks.xml
   def index
-    valid_exams = Exammark.get_valid_exams
-    @valid_exammm = valid_exams.count
-    position_exist = @current_user.userable.positions
-    posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
-    roles=@current_user.roles.pluck(:authname)
-    if position_exist && position_exist.count > 0
-      lecturer_programme = @current_user.userable.positions[0].unit
-      unless lecturer_programme.nil?
-        programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)  if posbasiks.include?(lecturer_programme)==false
-      end
-      unless programme.nil? || programme.count==0
-        programme_id = programme.try(:first).try(:id)
-        subjects_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
-        @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subjects_ids, valid_exams).order(name: :asc, subject_id: :asc)
-      else
-        tasks_main = @current_user.userable.positions[0].tasks_main
-        common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
-        if common_subjects.include?(lecturer_programme) 
-          programme_id ='1'
-          subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
-          @exams_list_raw = Exam.where('id IN(?)', valid_exams).where(subject_id: subject_ids)#.order(name: :asc, subject_id: :asc)
-        elsif posbasiks.include?(lecturer_programme) && @current_user.roles.pluck(:authname).include?("exam_administration")#tasks_main!=nil
-          # NOTE - posbasic SUP has access to All postbasic programme 
-          #allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
-          #for basicprog in allposbasic_prog
-          #  lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
-          #end
-          #if @current_user.roles.pluck(:authname).include?("programme_manager")
-            programme_id='2'
-            programme_ids=Programme.where(course_type: posbasiks).pluck(:id)
-            subject_ids=[]
-            programme_ids.each do |progid|
-              Programme.where(id: progid).first.descendants.each do |descendant|
-                subject_ids << descendant.id if descendant.course_type=='Subject'
-              end
-            end
-          #else
-          #  programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-          #  subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
-          #end
-          @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams)#.order(name: :asc, subject_id: :asc)
-        elsif roles.include?("developer") || roles.include?("administration") || roles.include?("exammarks_module_admin") || roles.include?("exammarks_module_viewer") || roles.include?("exammarks_module_user")
-          programme_id='0'
-          @exams_list_raw = Exam.where('id IN(?)', valid_exams)#.order(name: :asc, subject_id: :asc)
-        else
-          leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
-          if leader_unit
-            programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
-            subjects_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
-            @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subjects_ids, valid_exams)#.order(name: :asc, subject_id: :asc)
-          end
-        end
-      end
-      @exams_list_exist_mark = Exam.joins(:exammarks).where('exam_id IN(?)', @exams_list_raw.pluck(:id)).uniq.pluck(:id)
-      if @exams_list_exist_mark==[]
-        @exams_list=Exam.where(id: @exams_list_raw).order(exam_on: :desc, name: :asc, subject_id: :asc)
-      elsif @exams_list_exist_mark.count > 0
-        @exams_list= Exam.where('id IN(?) and id NOT IN(?)', @exams_list_raw.pluck(:id), @exams_list_exist_mark).order(exam_on: :desc, name: :asc, subject_id: :asc)
-      end
-      
-      @search = Exammark.search(params[:q])
-      @exammarks = @search.result.search2(programme_id)
-      @exammarks = @exammarks.page(params[:page]||1)
-      @exammarks_group = @exammarks.group_by{|x|x.exam_id}
-    end
-    
     respond_to do |format|
       if @exammarks && @exammarks_group
         format.html # index.html.erb
@@ -309,7 +244,87 @@ class Exam::ExammarksController < ApplicationController
     end
   end
   
+  def exammark_list
+    respond_to do |format|
+      format.pdf do
+        pdf = Exammark_listPdf.new(@exammarks_group, view_context, current_user.college)
+        send_data pdf.render, filename: "exammark_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
   private
+    def set_index_data
+      valid_exams = Exammark.get_valid_exams
+      @valid_exammm = valid_exams.count
+      position_exist = @current_user.userable.positions
+      posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
+      roles=@current_user.roles.pluck(:authname)
+      if position_exist && position_exist.count > 0
+        lecturer_programme = @current_user.userable.positions[0].unit
+        unless lecturer_programme.nil?
+          programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)  if posbasiks.include?(lecturer_programme)==false
+        end
+        unless programme.nil? || programme.count==0
+          programme_id = programme.try(:first).try(:id)
+          subjects_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
+          @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subjects_ids, valid_exams).order(name: :asc, subject_id: :asc)
+        else
+          tasks_main = @current_user.userable.positions[0].tasks_main
+          common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+          if common_subjects.include?(lecturer_programme) 
+            programme_id ='1'
+            subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
+            @exams_list_raw = Exam.where('id IN(?)', valid_exams).where(subject_id: subject_ids)#.order(name: :asc, subject_id: :asc)
+          elsif posbasiks.include?(lecturer_programme) && @current_user.roles.pluck(:authname).include?("exam_administration")#tasks_main!=nil
+            # NOTE - posbasic SUP has access to All postbasic programme 
+            #allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+            #for basicprog in allposbasic_prog
+            #  lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
+            #end
+            #if @current_user.roles.pluck(:authname).include?("programme_manager")
+              programme_id='2'
+              programme_ids=Programme.where(course_type: posbasiks).pluck(:id)
+              subject_ids=[]
+              programme_ids.each do |progid|
+                Programme.where(id: progid).first.descendants.each do |descendant|
+                  subject_ids << descendant.id if descendant.course_type=='Subject'
+                end
+              end
+            #else
+            #  programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+            #  subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
+            #end
+            @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams)#.order(name: :asc, subject_id: :asc)
+          elsif roles.include?("developer") || roles.include?("administration") || roles.include?("exammarks_module_admin") || roles.include?("exammarks_module_viewer") || roles.include?("exammarks_module_user")
+          programme_id='0'
+            @exams_list_raw = Exam.where('id IN(?)', valid_exams)#.order(name: :asc, subject_id: :asc)
+          else
+            leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+            if leader_unit
+              programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
+              subjects_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
+              @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subjects_ids, valid_exams)#.order(name: :asc, subject_id: :asc)
+            end
+          end
+        end
+        @exams_list_exist_mark = Exam.joins(:exammarks).where('exam_id IN(?)', @exams_list_raw.pluck(:id)).uniq.pluck(:id)
+        if @exams_list_exist_mark==[]
+          @exams_list=Exam.where(id: @exams_list_raw).order(exam_on: :desc, name: :asc, subject_id: :asc)
+        elsif @exams_list_exist_mark.count > 0
+          @exams_list= Exam.where('id IN(?) and id NOT IN(?)', @exams_list_raw.pluck(:id), @exams_list_exist_mark).order(exam_on: :desc, name: :asc, subject_id: :asc)
+        end
+      
+        @search = Exammark.search(params[:q])
+        @exammarks = @search.result.search2(programme_id)
+        @exammarks = @exammarks.page(params[:page]||1)
+        @exammarks_group = @exammarks.group_by{|x|x.exam_id}
+      end
+    
+    end
+    
     # usage - new, edit & create - @students_list & @exams_list for collection_select
     def set_students_exam_list
       valid_exams = Exammark.get_valid_exams
@@ -375,7 +390,7 @@ class Exam::ExammarksController < ApplicationController
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def exammark_params
-      params.require(:exammark).permit(:student_id, :exam_id, :total_mcq, marks_attributes: [:id,:exammark_id, :student_mark])
+      params.require(:exammark).permit(:student_id, :exam_id, :total_mcq, :college_id, {:data => []}, marks_attributes: [:id,:exammark_id, :student_mark])
     end
     
 end
