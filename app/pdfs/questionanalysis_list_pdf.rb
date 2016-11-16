@@ -1,60 +1,64 @@
 class Questionanalysis_listPdf < Prawn::Document
   def initialize(examanalysis, view, college)
-    super({top_margin: 50, left_margin: 20, bottom_margin: 50, page_size: 'A4', page_layout: :landscape })
+    super({top_margin: 125, left_margin: 20, bottom_margin: 50, page_size: 'A4', page_layout: :landscape })
     @examanalysis = examanalysis
     @view = view
     @college=college
     font "Helvetica"
-    
-    ###
-     if college.code=="amsas"
-      bounding_box([30,520], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.80
-      end
-      bounding_box([680,520], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
-      end
-      bounding_box([140, 510], :width => 500, :height => 80) do |y2|
-        text "PPL APMM", :align => :center, :size => 10, :style => :bold
-	text "NO. DOKUMEN: BK-KKM-06-01",  :align => :center, :size => 10, :style => :bold
-	move_down 5
-	text "BORANG ANALISA KEPUTUSAN PEPERIKSAAN", :align => :center, :size => 10, :style => :bold
-      end
-      bounding_box([20, 430], :width => 200, :height => 30) do |y2|
-        text "KURSUS : ", :size => 9
-	move_down 5
-	text "KELAS :", :size => 9
-      end
-      
-      bounding_box([345, 430], :width => 200, :height => 30) do |y2|
-	text "PEPERIKSAAN : ",  :size => 9
-	move_down 5
-	text "TARIKH PEPERIKSAAN :",  :size => 9
-      end 
-    end
-    ###
-    
     record
     page_count.times do |i|
       go_to_page(i+1)
+      logo_header
       footer
     end
+    table_ending
+  end
+  
+  def logo_header
+    bounding_box([30,520], :width => 400, :height => 70) do |y2|
+      image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.70
+    end
+    bounding_box([700,520], :width => 400, :height => 70) do |y2|
+      image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.85
+    end
+    bounding_box([140, 510], :width => 500, :height => 60) do |y2|
+      text "PPL APMM", :align => :center, :size => 10, :style => :bold
+      text "NO. DOKUMEN: BK-KKM-06-01",  :align => :center, :size => 10, :style => :bold
+      move_down 5
+      text "BORANG ANALISA KEPUTUSAN PEPERIKSAAN", :align => :center, :size => 10, :style => :bold
+    end
+    bounding_box([20, 450], :width => 500, :height => 30) do |y2|
+      text "KURSUS : #{@examanalysis.exampaper.subject.root.programme_list.upcase} ", :size => 9
+      move_down 3
+      text "KELAS : #{@examanalysis.exampaper.subject.subject_list.upcase}", :size => 9
+    end  
+    bounding_box([345, 450], :width => 500, :height => 30) do |y2|
+      text "PEPERIKSAAN : #{@examanalysis.exampaper.render_full_name.upcase} ",  :size => 9
+      move_down 3
+      text "TARIKH PEPERIKSAAN : #{@examanalysis.exampaper.exam_on.strftime("%d-%m-%Y")}",  :size => 9
+    end 
   end
   
   def record
     a=[]
     0.upto(37).each do |cnt|
-      a << 15#12#11#10# 17
+      a << 15 #12#11#10# 17
     end
-    
+    student_ids=@examanalysis.exampaper.exammarks.pluck(:student_id)
+    last_row=Student.where(id: student_ids).count+3+1
+    mcq_count= @examanalysis.exampaper.examquestions.where(questiontype: 'MCQ').count
+    othertype_count=@examanalysis.exampaper.examquestions.where.not(questiontype: 'MCQ').count
     table(line_item_rows, :column_widths => [20, 60, 110]+a+[35], :cell_style => { :size => 7,  :inline_format => :true, :padding => [0,0,3,1]}, :header => 2) do
       row(0..2).align = :center
       row(0..2).font_style = :bold
       row(0..2).background_color = 'FFE34D'
-      row(94).borders=[]  # TODO plus 1)column name - align left, 2)marks fields (column) align- center, 3)total marks column - align right, 4)plus repeat HEADERS - logo - on all pages
+      row(3..last_row-2).columns(3+mcq_count+othertype_count..40).background_color='F1F1F1'
+      row(last_row-1).column(0).borders=[:left, :bottom]
+      row(last_row-1).column(1).borders=[:right, :bottom, :top]
+      row(last_row).borders=[]  
       column(0).align=:center
-      column(2..5).align =:center
-      self.width=795#737#778#786
+      column(3..41).align=:center
+      self.width=795 #737#778#786
     end
   end
   
@@ -114,23 +118,23 @@ class Questionanalysis_listPdf < Prawn::Document
 	end
       end
     end
-    bil=0
     exammarks=paper.exammarks
     students=Student.where(id: exammarks.pluck(:student_id))
     mcq_count= paper.examquestions.where(questiontype: 'MCQ').count
-    mcq_fullmarks=paper.examquestions.where(questiontype: 'MCQ').sum(:marks)
     ####
     
     fullmarks_arr=[]
+    remaining_columns=[]
+    
     listed_questions.each_with_index do |question, nos|
       fullmarks_arr << question.marks.to_i
     end
     bal_question=38-listed_questions.count
     0.upto(bal_question-1).each do |no|
       fullmarks_arr << "-"
+      remaining_columns << ""
     end
-    
-    
+
     counter=counter || 0
     
     header = [[{content: "NO SOALAN", colspan: 3},"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "JUMLAH MARKAH" ], [{content: "MARKAH PENUH", colspan: 3}]+fullmarks_arr+[paper.total_marks], ['SIRI', 'NO KP', 'NAMA', {content: "", colspan: 38}, ""]]
@@ -145,26 +149,35 @@ class Questionanalysis_listPdf < Prawn::Document
                 indv_marks=exammarks.where(student_id: student.id).first.marks[nos-(mcq_count)].student_mark
                 acc_marks+=indv_marks
 	    end
-
-	      if question.questiontype!='MCQ'
-		question_fields << indv_marks.to_i
-	      end
-
+	    if question.questiontype!='MCQ'
+                question_fields << indv_marks.to_i
+            end
 	end
 	total_scores=total_mcq+acc_marks
-        body << ["#{counter+=1}", student.icno, student.name]+question_fields+["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]+[total_scores]
+        body << ["#{counter+=1}", student.icno, student.name]+question_fields+remaining_columns+[total_scores]
     end
-    
+    body << ["", {content: "NAMA PEMERIKSA", colspan: 41}]
     #DO NOT remove this line
     body << ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
     
     header+body
   end
   
+  def table_ending
+    bounding_box([0, 5], :width => 795, :height => 70) do |y2|
+      data=[["#{I18n.t('instructor_appraisal.prepared').upcase}: BKKM","#{I18n.t('exam.evaluate_course.date_updated')} : #{@examanalysis.updated_at.try(:strftime, '%d-%m-%Y')} "]]
+      table(data, :column_widths => [500, 295], :cell_style => {:size=>9, :borders => [:left, :right, :top, :bottom], :padding => [0,5,0,5]}) do
+        column(0..1).font_style = :bold
+	column(0).borders=[:top, :bottom, :left]
+	column(1).borders=[:top, :right, :bottom]
+	column(1).align =:right
+	row(0).height=12
+      end
+    end
+  end
+  
   def footer
-    draw_text "#{page_number} / #{page_count}",  :size => 8, :at => [780,-5]
-    #draw_text "#{I18n.t('exam.examresult.passed2')}: #{I18n.t('exam.examresult.refer_passed2')}",  :size => 8, :at => [0,0]
-    #draw_text "#{I18n.t('exam.examresult.failed2')}: #{I18n.t('exam.examresult.refer_failed2')}",  :size => 8, :at => [0,-10]
+    draw_text "#{page_number} / #{page_count}",  :size => 8, :at => [780,-15]
   end
 
 end
