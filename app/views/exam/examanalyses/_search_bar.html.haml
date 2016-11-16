@@ -2,8 +2,8 @@
   %tr.search_row{style: "display: none;"}
     %td= f.text_field :keyword_search, class: 'form-control'
     %td
-      = f.text_field :exampaper_exam_on_gteq, class: 'form-control date_picker', size: 2, placeholder: (t 'from')
-      = f.text_field :exampaper_exam_on_lteq, class: 'form-control date_picker', size: 2, placeholder: (t 'to')
+      = f.text_field :exampaper_exam_on_gteq, class: 'form-control date_picker_reverse', size: 2, placeholder: (t 'from'), value: @search.exampaper_exam_on_gteq.try(:strftime, '%d-%m-%Y')
+      = f.text_field :exampaper_exam_on_lteq, class: 'form-control date_picker_reverse', size: 2, placeholder: (t 'to'), value: @search.exampaper_exam_on_lteq.try(:strftime, '%d-%m-%Y')
     %td
       .input-group
         /= select_tag('q[exampaper_name_eq]',options_for_select([[t('all_records'),'']]+DropDown::EXAMTYPE),class: 'selectpicker',"data-width"=>'200px')

@@ -1,28 +1,31 @@
 .col-md-10
+  %br
+  %br
   - permitted_to? :analysis_data, :exam_examanalyses do
+    %span{style: 'padding-left: 25px;'}
     = link_to t('actions.download_excel'), analysis_data_exam_examanalyses_path(exam_id: @examanalysis.exam_id , format: 'xls')
     = link_to (fa_icon "file-excel-o"), analysis_data_exam_examanalyses_path(exam_id: @examanalysis.exam_id , format: 'xls')
   
   - paper=@examanalysis.exampaper
       
-  %dl.dl-horizontal
-    %dt= t 'exam.exams.course_id'
-    %dd=h paper.subject_id? ? paper.subject.root.programme_list : "" 
+  /%dl.dl-horizontal
+  /  %dt= t 'exam.exams.course_id'
+  /  %dd=h paper.subject_id? ? paper.subject.root.programme_list : "" 
     
-    %dt= t 'exam.exams.subject_id'
-    %dd=h paper.subject_id? ? paper.subject.subject_list : ""
+  /  %dt= t 'exam.exams.subject_id'
+  /  %dd=h paper.subject_id? ? paper.subject.subject_list : ""
     
-    - intake=Exammark.set_intake_group(paper.exam_on.year, paper.exam_on.month, paper.subject.parent.code,@current_user).to_date
-    %dt=t 'exam.exammark.intake'
-    %dd=intake.try(:strftime, '%b %Y')
+  /  - intake=Exammark.set_intake_group(paper.exam_on.year, paper.exam_on.month, paper.subject.parent.code,@current_user).to_date
+  /  %dt=t 'exam.exammark.intake'
+  /  %dd=intake.try(:strftime, '%b %Y')
     
-    %dt= t 'exam.examanalysis.final_exam'
-    %dd
-      - if permitted_to? :read, :exam_exams
-        =link_to paper.exam_name_subject_date2, exam_exam_path(@examanalysis.exam_id)
-      - else
-        =paper.exam_name_subject_date2
-
+  /  %dt= t 'exam.examanalysis.final_exam'
+  /  %dd
+  /    - if permitted_to? :read, :exam_exams
+  /      =link_to paper.exam_name_subject_date2, exam_exam_path(@examanalysis.exam_id)
+  /    - else
+  /      =paper.exam_name_subject_date2
+ 
       
     
   %br
