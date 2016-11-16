@@ -785,7 +785,7 @@ authorization do
     has_permission_on :exam_evaluate_courses, :to =>[:index, :show, :courseevaluation] do
       if_attribute :staff_id => is {user.userable.id}
     end
-    has_permission_on :exam_examanalyses, :to => [:edit, :update, :delete, :analysis_data] do
+    has_permission_on :exam_examanalyses, :to => [:edit, :update, :delete, :analysis_data, :examanalysis_list, :questionanalysis_list] do
       if_attribute :exam_id => is_in {user.by_programme_exams}  
     end
   end
@@ -1936,18 +1936,18 @@ authorization do
   #35-OK
   #35 OK - 10Feb2016
   role :exam_analysis_module_admin do
-     has_permission_on :exam_examanalyses, :to => [:manage, :analysis_data]
+     has_permission_on :exam_examanalyses, :to => [:manage, :analysis_data, :examanalysis_list, :questionanalysis_list]
   end
   role :exam_analysis_module_viewer do
-     has_permission_on :exam_examanalyses, :to => [:menu, :read, :analysis_data]
+     has_permission_on :exam_examanalyses, :to => [:menu, :read, :analysis_data, :examanalysis_list, :questionanalysis_list]
   end
   role :exam_analysis_module_user do
-     has_permission_on :exam_examanalyses, :to => [:menu, :read, :update, :analysis_data]
+     has_permission_on :exam_examanalyses, :to => [:menu, :read, :update, :analysis_data, :examanalysis_list, :questionanalysis_list]
   end
   role :exam_analysis_module_member do
     #own (exam admin - creator)
     has_permission_on :exam_examanalyses, :to => [:menu, :read, :create]
-    has_permission_on :exam_examanalyses, :to => [:edit, :update, :delete, :analysis_data] do
+    has_permission_on :exam_examanalyses, :to => [:edit, :update, :delete, :analysis_data, :examanalysis_list, :questionanalysis_list] do
       if_attribute :exam_id => is_in {user.by_programme_exams}  
     end
     #own (programme mgr)
