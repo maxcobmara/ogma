@@ -3522,6 +3522,10 @@ ms_MY:
       total: Bilangan
       incomplete_grade: Gred Tidak Lengkap
       final_status: Status Keseluruhan
+      passed2: L
+      failed2: G
+      refer_passed2: Merujuk kepada jumlah pelatih yang LULUS
+      refer_failed2: Merujuk kepada jumlah pelatih yang GAGAL
     
     evaluate_course:
       title: "Penilaian Program (Pengajar)"
