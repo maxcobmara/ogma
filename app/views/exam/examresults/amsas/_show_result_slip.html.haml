@@ -55,4 +55,4 @@
         %td{colspan: 2} 
           %strong STATUS KESELURUHAN
         %td.centre{colspan: 2}
-          %strong=@resultline.render_status_contra.upcase
+          %strong=@resultline.render_status_contra.try(:upcase)

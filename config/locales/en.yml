@@ -3599,6 +3599,10 @@ en:
       total: Total
       incomplete_grade: Incomplete Grade
       final_status: Final Status
+      passed2: P
+      failed2: F
+      refer_passed2: Refers to total of students PASSED
+      refer_failed2: Refers to total of students FAILED
     
     evaluate_course:
       title: "Course Evaluation (Lecturer)"

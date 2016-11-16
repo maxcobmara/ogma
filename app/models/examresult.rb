@@ -83,17 +83,6 @@ class Examresult < ActiveRecord::Base
     (DropDown::SEMESTER.find_all{|disp, value| value == semester}).map {|disp, value| disp}[0]
   end
   
-  # define scope
-  def self.keyword_search(query)
-    programme_ids = Programme.where('name ILIKE(?)', "%#{query}%").where(course_type: ['Diploma', 'Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']).pluck(:id)
-    where(programme_id: programme_ids)
-  end
-  
-  # whitelist the scope
-  def self.ransackable_scopes(auth_object = nil)
-    [:keyword_search]
-  end
-  
   def retrieve_subject
     parent_sem=Programme.where(id: programme_id).first.descendants.at_depth(1)
     parent_sem.each{ |sem| @subject_ids = sem.children.map(&:id) if sem.code == semester.to_s }

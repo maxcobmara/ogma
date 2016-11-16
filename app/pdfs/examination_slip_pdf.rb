@@ -123,7 +123,7 @@ class Examination_slipPdf < Prawn::Document
       end
       data << ["#{count+=1}", "#{subject.code} - #{subject.name}", "#{finalscore}", "#{subject_status}"]
     end
-    header+data+[[{content: "#{I18n.t('exam.examresult.final_status').upcase}", colspan: 2}, {content: "#{@resultline.render_status_contra.upcase}", colspan:2}]]
+    header+data+[[{content: "#{I18n.t('exam.examresult.final_status').upcase}", colspan: 2}, {content: "#{@resultline.render_status_contra.try(:upcase)}", colspan:2}]]
   end
   
   def pen_peg_perubatan
