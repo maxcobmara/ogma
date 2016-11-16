@@ -8,7 +8,7 @@
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to ((t 'exam.examanalysis.details')),"#examanalysis_details", "data-toggle" => "tab"
-      %li=link_to "Other Format", "#other_format", "data-toggle" => "tab"
+      %li=link_to (t 'exam.examanalysis.other_format'), "#other_format", "data-toggle" => "tab"
       
     .tab-content{style:"padding-top:1em"}
       .col-md-10
@@ -46,6 +46,8 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_examanalyses_path, :class => 'btn btn-default'
+      - permitted_to? :questionanalysis_list, :exam_examanalyses do
+        = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), questionanalysis_list_exam_examanalyses_path(params.merge(format: "pdf")), class: "btn btn-default", "data-toggle" => "tooltip", title: "BK-KKM-06-01"
       - permitted_to? :edit, :exam_examanalyses do
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_exam_examanalysis_path(@examanalysis),  :class => 'btn btn-primary' 
       - permitted_to? :destroy, :exam_examanalyses do

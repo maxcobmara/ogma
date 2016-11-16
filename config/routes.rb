@@ -511,6 +511,7 @@ Ogma::Application.routes.draw do
       collection do
         get :analysis_data
         get :examanalysis_list
+        get :questionanalysis_list
       end
     end
     resources :evaluate_courses do

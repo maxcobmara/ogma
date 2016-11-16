@@ -3726,6 +3726,11 @@ en:
       percent_pass: "% Pass"
       formative: Formative
       analysis_created: "Examination Paper data was saved, click 'Update' to save grading details accordingly."
+      total_marks: Total Marks
+      full_marks: Full Marks
+      question_no: Question No
+      checked_by: Checked by
+      other_format: Analysis by Question
 
     exam_template:
       title: Exampaper Template

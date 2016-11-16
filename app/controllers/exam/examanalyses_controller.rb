@@ -1,8 +1,8 @@
 class Exam::ExamanalysesController < ApplicationController
-  filter_access_to :index, :new, :create, :analysis_data, :examanalysis_list, :attribute_check => false
+  filter_access_to :index, :new, :create, :analysis_data, :examanalysis_list, :questionanalysis_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   
-  before_action :set_examanalysis, only: [:show, :edit, :update, :destroy]
+  before_action :set_examanalysis, only: [:show, :edit, :update, :destroy, :questionanalysis_list]
   before_action :set_index_new_data, only: [:index, :new, :examanalysis_list]
   
   def index
@@ -91,6 +91,17 @@ class Exam::ExamanalysesController < ApplicationController
       format.pdf do
         pdf = Examanalysis_listPdf.new(@examanalyses, view_context, current_user.college)
         send_data pdf.render, filename: "examanalysis_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
+  def questionanalysis_list
+    respond_to do |format|
+      format.pdf do
+        pdf = Questionanalysis_listPdf.new(@examanalysis, view_context, current_user.college)
+        send_data pdf.render, filename: "questionanalysis_list-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
       end

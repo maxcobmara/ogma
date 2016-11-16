@@ -57,12 +57,12 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th.centre{colspan: 3}NO SOALAN
+        %th.centre{colspan: 3}=(t 'exam.examanalysis.question_no').upcase
         - listed_questions.each_with_index do |question, nos|
           %th.centre=nos+1
-        %th.centre JUMLAH MARKAH
+        %th.centre=(t 'exam.examanalysis.total_marks').upcase
       %tr
-        %th.centre{colspan: 3}MARKAH PENUH
+        %th.centre{colspan: 3}=(t 'exam.examanalysis.full_marks').upcase
         - listed_questions.each_with_index do |question, nos|
           /- if nos==0
           /  %td{colspan: mcq_count, width: "#{mcq_count*5}%", align: 'center'}=mcq_fullmarks if mcq_count >= 1
@@ -72,8 +72,8 @@
         %th.centre=paper.total_marks
       %tr
         %th.centre{width: '3%'} SIRI
-        %th.centre{width: '10%', style: 'align: center;'} NO. KP
-        %th.centre{width: '15%'} NAMA
+        %th.centre{width: '10%', style: 'align: center;'}=(t 'student.students.icno').upcase
+        %th.centre{width: '15%'}=(t 'student.students.name').upcase
         - listed_questions.each_with_index do |question, nos|
           %th{width: '5%', style: 'background-color: grey;'}
         %th{width: '5%', style: 'background-color: grey;'}

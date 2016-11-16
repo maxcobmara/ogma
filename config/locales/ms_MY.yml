@@ -3615,11 +3615,11 @@ ms_MY:
       principal_verification: Pengesahan Ketua Sekolah
 
     examanalysis:
-      title: Analisis Peperiksaan Mengikut Kertas Peperiksaan
-      title2: Analisis Peperiksaan
-      new: Analisis Baru Peperiksaan
-      edit: Sunting Analisis Peperiksaan
-      details: Butiran Analisis Peperiksaan
+      title: Analisa Peperiksaan Mengikut Kertas Peperiksaan
+      title2: Analisa Peperiksaan
+      new: Analisa Baru Peperiksaan
+      edit: Sunting Analisa Peperiksaan
+      details: Butiran Analisa Peperiksaan
       examtype: Jenis Peperiksaan
       programme_id: Program
       student: Pelajar
@@ -3629,13 +3629,13 @@ ms_MY:
       examtype: Jenis Peperiksaan
       total_students: Jumlah Pelajar
       no_question_paper: Tiada soalan bagi Kertas Peperiksaan
-      no_marks_available: Tiada markah untuk dianalisis
+      no_marks_available: Tiada markah untuk dianalisa
       select_subject: Sila pilih subjek
       question: S
       exam_on: Tarikh Peperiksaan
       final_score: Jumlah Akhir
       exam_must_exist: " mesti dipilih."
-      exam_must_uniq: " hanya boleh dianalisis sekali."
+      exam_must_uniq: " hanya boleh dianalisa sekali."
       final_exam: Peperiksaan Akhir
       marks: Markah
       count: Bilangan calon 
@@ -3649,6 +3649,11 @@ ms_MY:
       percent_pass: "% Lulus"
       formative: Formatif
       analysis_created: "Data Kertas Peperiksaan telah disimpan, klik butang 'Kemaskini' untuk menyimpan maklumat pengredan."
+      total_marks: Jumlah Markah
+      full_marks: Markah Penuh
+      question_no: No Soalan
+      checked_by: Nama Pemeriksa
+      other_format: Analisa mengikut Soalan
 
     exam_template:
       title: Template Kertas Peperiksaan
