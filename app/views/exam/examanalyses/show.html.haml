@@ -8,17 +8,46 @@
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to ((t 'exam.examanalysis.details')),"#examanalysis_details", "data-toggle" => "tab"
+      %li=link_to (t 'exam.examanalysis.other_format'), "#other_format", "data-toggle" => "tab"
       
     .tab-content{style:"padding-top:1em"}
+      .col-md-10
+        - paper=@examanalysis.exampaper
+      
+        %dl.dl-horizontal
+          %dt= t 'exam.exams.course_id'
+          %dd=h paper.subject_id? ? paper.subject.root.programme_list : "" 
+    
+          %dt= t 'exam.exams.subject_id'
+          %dd=h paper.subject_id? ? paper.subject.subject_list : ""
+    
+          - intake=Exammark.set_intake_group(paper.exam_on.year, paper.exam_on.month, paper.subject.parent.code,@current_user).to_date
+          %dt=t 'exam.exammark.intake'
+          %dd=intake.try(:strftime, '%b %Y')
+    
+          %dt= t 'exam.examanalysis.final_exam'
+          %dd
+            - if permitted_to? :read, :exam_exams
+              =link_to paper.exam_name_subject_date2, exam_exam_path(@examanalysis.exam_id)
+            - else
+              =paper.exam_name_subject_date2
+         
       #examanalysis_details.tab-pane.active
-      %br
-      /= render 'student_and_marks'
-      = render "exam/examanalyses/#{current_user.college.code}/student_and_marks"
+        %br
+        /= render 'student_and_marks'
+        = render "exam/examanalyses/#{current_user.college.code}/student_and_marks"
+      
+      - if current_user.college.code=='amsas'
+        #other_format.tab-pane
+          =render "exam/examanalyses/#{current_user.college.code}/other_format"
+        
 .row
   .col-md-4.col-md-offset-4
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_examanalyses_path, :class => 'btn btn-default'
+      - permitted_to? :questionanalysis_list, :exam_examanalyses do
+        = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), questionanalysis_list_exam_examanalyses_path(params.merge(format: "pdf")), class: "btn btn-default", "data-toggle" => "tooltip", title: "BK-KKM-06-01"
       - permitted_to? :edit, :exam_examanalyses do
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_exam_examanalysis_path(@examanalysis),  :class => 'btn btn-primary' 
       - permitted_to? :destroy, :exam_examanalyses do

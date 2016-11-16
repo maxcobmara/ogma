@@ -269,15 +269,33 @@ class ResultsPdf < Prawn::Document
   def result_table2
     aa=[25, 150, 70]
     bb=0
-    for subject in @subjects
-       bb+=40
-       aa << 40
+    subject_count=@subjects.count
+    if subject_count > 6
+      for subject in @subjects
+         bb+=30#40
+         aa << 30#40
+      end
+    else
+      for subject in @subjects
+         bb+=80
+         aa << 80
+      end
     end
     aa << 35
     bb+=35
-    table(line_item_rows2, :column_widths =>aa, :cell_style => { :size => 8,  :inline_format => :true}) do
+    table(line_item_rows2, :column_widths =>aa, :cell_style => { :size => 8,  :inline_format => :true, :padding => [5,0,5,2]}) do
       row(0).font_style = :bold
       row(0).background_color = 'FFE34D'
+      row(0).columns(0..2).valign=:center
+      row(0).columns(subject_count+3).valign=:center
+      if subject_count > 6
+        row(0).columns(3..subject_count+3-1).rotate = 90 #http://stackoverflow.com/questions/40139848/bottom-to-top-text-in-column-of-prawn-table
+        row(0).height=70
+      else
+        row(0).columns(3..subject_count+3-1).valign=:center
+        row(0).height=35
+      end
+      
       self.row_colors = ["FEFEFE", "FFFFFF"]
       self.width=(245+bb)
     end
@@ -299,7 +317,7 @@ class ResultsPdf < Prawn::Document
       for subject in @subjects
         grades=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id)
         if grades.count > 0
-          finalscore=@view.number_with_precision(grades.first.finalscore, precision: 2).to_s+" %"
+          finalscore=@view.pukka(grades.first.finalscore).to_s+" %"
         else
           finalscore=""
         end

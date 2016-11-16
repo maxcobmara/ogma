@@ -13,7 +13,11 @@ gem "ancestry", "~> 2.1.0"
 #gem 'ransack', github: 'activerecord-hackery/ransack'#, branch: 'rails-4.1'
 gem 'ransack', :path=>'vendor/ransack', branch: 'rails-4.1'
 gem "prawn", "~> 1.3.0"
-gem 'prawn-table', '~> 0.2.1'
+#gem 'prawn-table', '~> 0.2.1'
+
+#http://stackoverflow.com/questions/40139848/bottom-to-top-text-in-column-of-prawn-table     - 16Nov 2016 - for use in result.pdf - PDF-prawn - vertical text (bottom to top)
+gem 'prawn-table', :git => 'https://github.com/straydogstudio/prawn-table.git', ref: '759a27b6'
+
 gem "chartkick", "~> 1.3.2"
 gem 'country_select', '~> 2.1.0'
 gem 'mailboxer', '~> 0.13.0'

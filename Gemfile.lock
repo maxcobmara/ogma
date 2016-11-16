@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/straydogstudio/prawn-table.git
+  revision: 759a27b6fef2e682c035fc83f2182e53c3270279
+  ref: 759a27b6
+  specs:
+    prawn-table (0.2.1)
+
 PATH
   remote: vendor/ransack
   specs:
@@ -222,7 +229,6 @@ GEM
     prawn (1.3.0)
       pdf-core (~> 0.4.0)
       ttfunk (~> 1.4.0)
-    prawn-table (0.2.1)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -390,7 +396,7 @@ DEPENDENCIES
   paperclip (~> 4.2.0)
   pg (~> 0.17.1)
   prawn (~> 1.3.0)
-  prawn-table (~> 0.2.1)
+  prawn-table!
   quiet_assets (~> 1.0.2)
   rack-cache (~> 1.2)
   rails (= 4.1.9)

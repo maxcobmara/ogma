@@ -9,16 +9,16 @@
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_examanalysis_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
+    %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), examanalysis_list_exam_examanalyses_path(params.merge(format: 'pdf'))
 
 = render 'shared/flashes'
 .row
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th=sort_link(@search, :exampaper_subject_id, (t 'exam.examanalysis.subject_id'))
-        %th=sort_link(@search, :exampaper_exam_on, (t 'exam.examanalysis.exam_on'))
-        %th=t('exam.examanalysis.examtype')
+        %th{width: '20%'}=sort_link(@search, :exampaper_subject_id, (t 'exam.examanalysis.subject_id'))
+        %th{width: '10%'}=sort_link(@search, :exampaper_exam_on, (t 'exam.examanalysis.exam_on'))
+        %th{width: '10%'}=t('exam.examanalysis.examtype')
         - if current_user.college.code =="kskbjb"
           %th=t('exam.exam.examanalysis.grade')+" A"
           %th=t('exam.exam.examanalysis.grade')+" A-"
@@ -32,8 +32,8 @@
           %th=t('exam.examanalysis.grade')+" D"
           %th=t('exam.examanalysis.grade')+" E"
         - else
-          %th=t('exam.examresult.passed')
-          %th=t('exam.examresult.failed')
+          %th{width: '5%'}=t('exam.examresult.passed')
+          %th{width: '5%'}=t('exam.examresult.failed')
 
     %tbody
       = render "search_bar"

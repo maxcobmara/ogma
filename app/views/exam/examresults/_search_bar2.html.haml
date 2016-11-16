@@ -1,12 +1,17 @@
 = search_form_for [:resultline, @search2], url: index2_exam_examresults_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
     %td= f.text_field :student_name_cont, class: 'form-control', size: 2
-    %td= f.text_field :total_eq, class: 'form-control', size: 2
-    %td= f.text_field :pngs17_eq, class: 'form-control', size: 2
-    %td &nbsp;
+    - if current_user.college.code=='kskbjb'
+      %td= f.text_field :total_eq, class: 'form-control', size: 2
+      %td= f.text_field :pngs17_eq, class: 'form-control', size: 2
+      %td &nbsp;
     %td
       .input-group
-        = select_tag('q[status_eq]',options_for_select([[t('all_records'),'']]+DropDown::RESULT_STATUS),class: 'selectpicker',"data-width"=>'100px')
+        - if current_user.college.code=='kskbjb'
+          - status_selection=DropDown::RESULT_STATUS
+        - else
+          - status_selection=DropDown::RESULT_STATUS_CONTRA
+        = select_tag('q[status_eq]',options_for_select([[t('all_records'),'']]+status_selection),class: 'selectpicker',"data-width"=>'100px')
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw
