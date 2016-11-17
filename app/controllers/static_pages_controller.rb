@@ -3,7 +3,8 @@ class StaticPagesController < ApplicationController
 
   def home
    @bulletins = Bulletin.order(publishdt: :desc).limit(10)
-   @college=College.find_by_code!(request.subdomain(2))
+   #RE-activate when domain name is READY-17Nov2016 # @college=College.find_by_code!(request.subdomain(2))
+   @college=College.where(code: 'amsas').first #HIDE this line when domain name is READY-17Nov2016
   end
   
   def landing
