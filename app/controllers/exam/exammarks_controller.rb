@@ -102,12 +102,11 @@ class Exam::ExammarksController < ApplicationController
         grades=Grade.where(subject_id: @selected_exam.subject_id)
         grades.each{|g|failed_students << g.student_id if ["C-", "D+", "D", "E"].include?(g.render_grading[-2,2].strip)}
         intake_ids_failed = Student.where('course_id=?',@programme_id).where(id: failed_students).pluck(:intake_id).uniq 
-	@intakes_lt=Intake.where(id: intake_ids_failed).order(monthyear_intake: :desc).pluck(:monthyear_intake)
+	@intakes_lt=Intake.where(id: intake_ids_failed).order(monthyear_intake: :desc).map(&:intake_list)#pluck(:monthyear_intake)
       else
         #include Intake when student exist only
-        intake_ids=Student.where()
         #@intakes_lt=Intake.where(programme_id: @programme_id).order(monthyear_intake: :desc).pluck(:monthyear_intake)
-        @intakes_lt=Intake.joins(:students).where(programme_id: @programme_id).order(monthyear_intake: :desc).pluck(:monthyear_intake).uniq
+        @intakes_lt=Intake.joins(:students).where(programme_id: @programme_id).order(monthyear_intake: :desc).map(&:intake_list).uniq #pluck(:monthyear_intake).uniq
       end
 #       position_exist = @current_user.userable.positions
 #       if position_exist  
@@ -153,8 +152,9 @@ class Exam::ExammarksController < ApplicationController
     @examid = params[:exammarks]["0"][:exam_id]                                                       #required if render new_multiple
     @programme_id = params[:exammarks]["0"][:programme_id]                                  #required if render new_multiple
     @selected_exam = Exam.find(@examid)                                                                   #required if render new_multiple
-    @intakes_lt = Intake.where(id: Student.where('course_id=?',@programme_id).pluck(:intake_id).uniq).pluck(:monthyear_intake)    #required if render new_multiple
-                                               
+    #@intakes_lt = Intake.where(id: Student.where('course_id=?',@programme_id).pluck(:intake_id).uniq).pluck(:monthyear_intake)    #required if render new_multiple
+    @intakes_lt=Intake.joins(:students).where(programme_id: @programme_id).order(monthyear_intake: :desc).map(&:intake_list).uniq
+    #.pluck(:monthyear_intake).uniq                     
     @exammark = Exammark.new
     qcount = @exammark.get_questions_count(@examid)
     current_program = Programme.find(Exam.find(@examid).subject_id).root_id

@@ -98,7 +98,7 @@ class Exam::GradesController < ApplicationController
       existing_grade_intakes=Intake.where(id: exist_intake_ids).pluck(:monthyear_intake).sort
       #@intakes_lt=Student.where(course_id: programme_id).where.not(intake: existing_grade_intakes).pluck(:intake).uniq.sort
       nonexist_intake_ids=Student.where(course_id: programme_id).where.not(intake_id: exist_intake_ids).pluck(:intake_id).uniq
-      @intakes_lt=Intake.where(id: nonexist_intake_ids).pluck(:monthyear_intake).sort
+      @intakes_lt=Intake.where(id: nonexist_intake_ids).map(&:intake_list) #pluck(:monthyear_intake).sort
       @exist=existing_grade_intakes
     else
       flash[:notice] ='Select subject'
@@ -117,7 +117,7 @@ class Exam::GradesController < ApplicationController
     #existing_grade_intakes=Student.where(course_id: @programme_id).where(id: existing_grade_students).pluck(:intake).uniq
       #@intakes_lt=Student.where(course_id: @programme_id).where.not(intake: existing_grade_intakes).pluck(:intake).uniq.sort
     nonexist_intake_ids=Student.where(course_id: @programme_id).where.not(id: existing_grade_students).pluck(:intake_id).uniq
-    @intakes_lt=Intake.where(id: nonexist_intake_ids).order(monthyear_intake: :desc).pluck(:monthyear_intake)
+    @intakes_lt=Intake.where(id: nonexist_intake_ids).order(monthyear_intake: :desc).map(&:intake_list) #.pluck(:monthyear_intake)
     #@intakes_lt = Student.where('course_id=?',@programme_id).pluck(:intake).uniq    #required if render new_multiple
                                                
     @grade = Grade.new
