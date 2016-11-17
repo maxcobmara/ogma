@@ -8,6 +8,7 @@ class Programme < ActiveRecord::Base
   has_many :weeklytimetables
   has_many :intakes
   has_many :topic_for_weeklytimetable_details, :class_name => 'WeeklytimetableDetail', :foreign_key => 'topic'
+  has_many :examresults
   
   attr_accessor :programme_listng, :subject_listing, :topic_listing, :subject_listing2
   

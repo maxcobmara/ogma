@@ -93,42 +93,55 @@ class Exam::ExammarksController < ApplicationController
     unless @examid.nil?
       @exammarks = Array.new(1) { Exammark.new }
       @selected_exam = Exam.find(@examid)
+      @programme_id=@selected_exam.subject.root_id
       @iii=Exammark.set_intake_group(@selected_exam.exam_on.year,@selected_exam.exam_on.month,@selected_exam.subject.parent.code,@current_user).to_s
       common_subject = Programme.where('course_type=?','Commonsubject').map(&:id)
       valid_exams = Exammark.get_valid_exams
-      position_exist = @current_user.userable.positions
-      if position_exist  
-        @lecturer_programme = @current_user.userable.positions[0].unit
-        unless @lecturer_programme.nil?
-          programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)  if !(@lecturer_programme=="Pos Basik" || @lecturer_programme=="Diploma Lanjutan")
-        end
-        unless @programme.nil? || @programme.count == 0
-          @programme_id = @programme.id
-          @student_list = Student.where('course_id=?', @programme.id).order(name: :asc)
-          @dept_unit_prog = Programme.where(id: @programme_id).first.programme_list
-          # NOTE - limiting student intakes to MATCHING exampaper (exam date do matters!) - unremark below for testing purpose only
-          #@intakes_lt = @student_list.order(:intake).pluck(:intake).uniq
-          @intakes_lt=@student_list.where(intake: @iii).pluck(:intake).uniq
-        else
-          #for administrator, Posbasik, Diploma Lanjutan & Commonsubject lecturer : to assign programme, based on selected exampaper 
-          if @examid
-            @dept_unit = Programme.find(Exam.find(@examid).subject_id).root
-            @dept_unit_prog = @dept_unit.programme_list
-            # NOTE - for selected paper, somebody must fail, then only corresponding intake will appear
-            if @selected_exam.name=="R"
-              failed_students=[]
-              grades=Grade.where(subject_id: @selected_exam.subject_id)
-              grades.each{|g|failed_students << g.student_id if ["C-", "D+", "D", "E"].include?(g.render_grading[-2,2].strip)}
-              # NOTE - limiting student intakes to MATCHING exampaper (exam date do matters!) - unremark below for testing purpose only
-              @intakes_lt = Student.where('course_id=?',@dept_unit.id).where(id: failed_students).order(:intake).pluck(:intake).uniq #must be among the programme of exampaper coz even common subject...
-            else
-              # NOTE - limiting student intakes to MATCHING exampaper (exam date do matters!) - unremark below for testing purpose only
-              @intakes_lt = Student.where('course_id=?',@dept_unit.id).order(:intake).pluck(:intake).uniq #must be among the programme of exampaper coz even common subject...
-            end
-            @programme_id=@dept_unit.id
-          end
-        end
+      if @selected_exam.name=="R"
+        failed_students=[]
+        grades=Grade.where(subject_id: @selected_exam.subject_id)
+        grades.each{|g|failed_students << g.student_id if ["C-", "D+", "D", "E"].include?(g.render_grading[-2,2].strip)}
+        intake_ids_failed = Student.where('course_id=?',@programme_id).where(id: failed_students).pluck(:intake_id).uniq 
+	@intakes_lt=Intake.where(id: intake_ids_failed).order(monthyear_intake: :desc).pluck(:monthyear_intake)
+      else
+        #include Intake when student exist only
+        intake_ids=Student.where()
+        #@intakes_lt=Intake.where(programme_id: @programme_id).order(monthyear_intake: :desc).pluck(:monthyear_intake)
+        @intakes_lt=Intake.joins(:students).where(programme_id: @programme_id).order(monthyear_intake: :desc).pluck(:monthyear_intake).uniq
       end
+#       position_exist = @current_user.userable.positions
+#       if position_exist  
+#         @lecturer_programme = @current_user.userable.positions[0].unit
+#         unless @lecturer_programme.nil?
+#           programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)  if !(@lecturer_programme=="Pos Basik" || @lecturer_programme=="Diploma Lanjutan")
+#         end
+#         unless @programme.nil? || @programme.count == 0
+#           @programme_id = @programme.id
+#           @student_list = Student.where('course_id=?', @programme.id).order(name: :asc)
+#           @dept_unit_prog = Programme.where(id: @programme_id).first.programme_list
+#           # NOTE - limiting student intakes to MATCHING exampaper (exam date do matters!) - unremark below for testing purpose only
+#           #@intakes_lt = @student_list.order(:intake).pluck(:intake).uniq
+#           @intakes_lt=@student_list.where(intake: @iii).pluck(:intake).uniq
+#         else
+#           #for administrator, Posbasik, Diploma Lanjutan & Commonsubject lecturer : to assign programme, based on selected exampaper 
+#           if @examid
+#             @dept_unit = Programme.find(Exam.find(@examid).subject_id).root
+#             @dept_unit_prog = @dept_unit.programme_list
+#             # NOTE - for selected paper, somebody must fail, then only corresponding intake will appear
+#             if @selected_exam.name=="R"
+#               failed_students=[]
+#               grades=Grade.where(subject_id: @selected_exam.subject_id)
+#               grades.each{|g|failed_students << g.student_id if ["C-", "D+", "D", "E"].include?(g.render_grading[-2,2].strip)}
+#               # NOTE - limiting student intakes to MATCHING exampaper (exam date do matters!) - unremark below for testing purpose only
+#               @intakes_lt = Student.where('course_id=?',@dept_unit.id).where(id: failed_students).order(:intake).pluck(:intake).uniq #must be among the programme of exampaper coz even common subject...
+#             else
+#               # NOTE - limiting student intakes to MATCHING exampaper (exam date do matters!) - unremark below for testing purpose only
+#               @intakes_lt = Student.where('course_id=?',@dept_unit.id).order(:intake).pluck(:intake).uniq #must be among the programme of exampaper coz even common subject...
+#             end
+#             @programme_id=@dept_unit.id
+#           end
+#         end
+#       end
     else
       flash[:notice] = t 'exam.exammark.select_exam'
       redirect_to exam_exammarks_path
@@ -136,11 +149,11 @@ class Exam::ExammarksController < ApplicationController
   end
   
   def create_multiple
-    selected_intake = params[:exammarks]["0"][:intake_id]
+    selected_intake = params[:exammarks]["0"][:intake_id] #date format
     @examid = params[:exammarks]["0"][:exam_id]                                                       #required if render new_multiple
     @programme_id = params[:exammarks]["0"][:programme_id]                                  #required if render new_multiple
     @selected_exam = Exam.find(@examid)                                                                   #required if render new_multiple
-    @intakes_lt = Student.where('course_id=?',@programme_id).pluck(:intake).uniq    #required if render new_multiple
+    @intakes_lt = Intake.where(id: Student.where('course_id=?',@programme_id).pluck(:intake_id).uniq).pluck(:monthyear_intake)    #required if render new_multiple
                                                
     @exammark = Exammark.new
     qcount = @exammark.get_questions_count(@examid)
@@ -153,8 +166,17 @@ class Exam::ExammarksController < ApplicationController
     else
       # NOTE - 22Feb2016 - include Repeat Semester students (previous Intake) 
       #related files: 1) views/examresults/_form_results.html.haml, 2)model/examresult.rb 3)grades_controllers.rb 4)model/grade.rb - redundants allowed only for student with sstatus=='Repeat' (Repeat Semester)
-      previous_intake = Student.where(course_id: current_program.to_i).where('intake < ?', selected_intake).order(intake: :desc).first.try(:intake)
-      selected_student = Student.where(course_id: current_program.to_i).where('intake=? or (intake=? and sstatus=?)', selected_intake, previous_intake, 'Repeat')
+      # NOTE - TODO - kskb - all Student records must use 'intake_id'
+      #previous_intake = Student.where(course_id: current_program.to_i).where('intake < ?', selected_intake).order(intake: :desc).first.try(:intake)
+      previous_intakes=Intake.where(programme_id: current_program.to_i).where('monthyear_intake <?', selected_intake).order(monthyear_intake: :desc)
+      if previous_intakes.count > 0 
+	previous_intake=previous_intakes.first.id
+      else
+	previous_intake=[]
+      end
+      #selected_student = Student.where(course_id: current_program.to_i).where('intake=? or (intake=? and sstatus=?)', selected_intake, previous_intake, 'Repeat')
+      selected_intake_id=Intake.where(programme_id: current_program.to_i).where(monthyear_intake: selected_intake).first.id
+      selected_student = Student.where(course_id: current_program.to_i).where('intake_id=? or (intake_id=? and sstatus=?)', selected_intake_id, previous_intake, 'Repeat')
     end
     rec_count = selected_student.count
     @exammarks = Array.new(rec_count) { Exammark.new }                      

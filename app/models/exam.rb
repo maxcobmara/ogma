@@ -255,10 +255,14 @@ class Exam < ActiveRecord::Base
   
   def exam_code_date_type
     if klass_id == 0
-      "#{subject.code}"+" | "+"#{exam_on.strftime("%d %b %y")}"+" (#{name}-T)"
+      a="#{subject.code}"+" | "+"#{exam_on.strftime("%d %b %y")}"+" (#{name}-T)"
     else
-      "#{subject.code}"+" | "+"#{exam_on.strftime("%d %b %y")}"+" (#{name})"
+      a="#{subject.code}"+" | "+"#{exam_on.strftime("%d %b %y")}"+" (#{name})"
     end
+    if college.code=='amsas'
+      a="#{subject.root.programme_list} : "+a
+    end
+    a
   end
   
   def paper_list

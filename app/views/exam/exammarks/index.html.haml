@@ -27,16 +27,19 @@
     - diploma_subjects << descendant.id if descendant.course_type=='Subject'
 
 - permitted_to? :create, :exam_exammarks do
-  /= form_tag :action => 'new_multiple', class: "form-inline" do
-  = form_tag new_multiple_exam_exammarks_path, :method => :put , :id => "form2" do
-    .form-group
-      .col-md-3
-        .input-group
-          .input-group-addon
-            = t 'exam.exammark.exam_id'
-          = select_tag('examid', options_from_collection_for_select(@exams_list, :id, :exam_code_date_type), class: "form-control", width: "50px;") 
-      .col-md-2
-        = submit_tag t('exam.exammark.new_multiple'), :subject_id => nil, class: "btn btn-default"
+  - if @exams_list.count > 0
+    /= form_tag :action => 'new_multiple', class: "form-inline" do
+    = form_tag new_multiple_exam_exammarks_path, :method => :put , :id => "form2" do
+      .form-group
+        /.col-md-3
+        .col-md-5
+          .input-group
+            .input-group-addon
+              = t 'exam.exammark.exam_id'
+            /= select_tag('examid', options_from_collection_for_select(@exams_list, :id, :exam_code_date_type), class: "form-control", width: "50px;") 
+            = select_tag('examid', options_from_collection_for_select(@exams_list, :id, :exam_code_date_type), {class: "selectpicker", "data-width" => "auto"}) 
+        .col-md-2
+          = submit_tag t('exam.exammark.new_multiple'), :subject_id => nil, class: "btn btn-default"
 .row
   .col-md-12
     /.alert.alert-warning

@@ -22,7 +22,7 @@
       - iday=intake[8,2].to_i
       =Date.new(iyear, imonth, iday).try(:strftime, '%b %Y')
     - else
-      = @examresult.intake_id? ? @examresult.intake.monthyear_intake.try(:strftime, '%b %Y') : ""
+      = @examresult.intake_id? ? "Siri "+@examresult.intake.monthyear_intake.try(:strftime, '%m/%Y') : ""
     
   %dt &nbsp;
   %dd

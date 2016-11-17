@@ -255,6 +255,7 @@ en:
         description: Repeat for
       exammark:
         mark: "Marks : "
+        student_id: Student
       examresult:
         resultlines: Result
       resultlines:

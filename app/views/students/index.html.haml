@@ -51,10 +51,10 @@
 
     %tbody
     = render "index_search"
-    - @students.group_by{|t|t.intakestudent}.each do |intake, student_course|
+    - @students.group_by{|t|t.intakestudent.monthyear_intake}.each do |intake, student_course|
       %tr
         %td.group{:colspan => "10", :style => "background-color:#EFF1F1;"}
-          %span{:style => "color:#218AFB;font-weight:bold;"}=current_user.college.code=="amsas" ? "Siri "+intake.try(:monthyear_intake).try(:strftime, '%m/%Y') : intake.try(:strftime, '%m/%Y')
+          %span{:style => "color:#218AFB;font-weight:bold;"}=current_user.college.code=="amsas" ? "Siri "+intake.try(:strftime, '%m/%Y') : intake.try(:strftime, '%m/%Y')
       - student_course.group_by(&:course).each do |course, students|
         %tr
           %td.group{:colspan => "12", :style => "background-color:#E5E4E2;"}

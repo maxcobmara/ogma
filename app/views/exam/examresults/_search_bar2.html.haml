@@ -1,6 +1,8 @@
 = search_form_for [:resultline, @search2], url: index2_exam_examresults_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
-    %td= f.text_field :student_name_cont, class: 'form-control', size: 2
+    %td
+      .col-md-5= f.text_field :student_name_cont, class: 'form-control', size: 2, placeholder: (t 'exam.evaluate_course.student_id')
+      .col-md-5= f.text_field :examresult_programmestudent_name_or_examresult_programmestudent_course_type_or_examresult_programmestudent_level_cont, class: 'form-control', size: 2, placeholder: (t 'exam.examresult.programme_id')
     - if current_user.college.code=='kskbjb'
       %td= f.text_field :total_eq, class: 'form-control', size: 2
       %td= f.text_field :pngs17_eq, class: 'form-control', size: 2

@@ -93,8 +93,12 @@ class Exam::GradesController < ApplicationController
       @selected_exam = Exam.where(subject_id: @subjectid).where(name: 'F').order(exam_on: :desc).first
       existing_grade_students=Grade.where(subject_id: @subjectid).pluck(:student_id)
       programme_id=Programme.where(id: @subjectid).first.root_id
-      existing_grade_intakes=Student.where(course_id: programme_id).where(id: existing_grade_students).pluck(:intake).uniq
-      @intakes_lt=Student.where(course_id: programme_id).where.not(intake: existing_grade_intakes).pluck(:intake).uniq.sort
+      #existing_grade_intakes=Student.where(course_id: programme_id).where(id: existing_grade_students).pluck(:intake).uniq
+      exist_intake_ids=Student.where(course_id: programme_id).where(id: existing_grade_students).pluck(:intake_id).uniq
+      existing_grade_intakes=Intake.where(id: exist_intake_ids).pluck(:monthyear_intake).sort
+      #@intakes_lt=Student.where(course_id: programme_id).where.not(intake: existing_grade_intakes).pluck(:intake).uniq.sort
+      nonexist_intake_ids=Student.where(course_id: programme_id).where.not(intake_id: exist_intake_ids).pluck(:intake_id).uniq
+      @intakes_lt=Intake.where(id: nonexist_intake_ids).pluck(:monthyear_intake).sort
       @exist=existing_grade_intakes
     else
       flash[:notice] ='Select subject'
@@ -110,8 +114,10 @@ class Exam::GradesController < ApplicationController
     #@selected_exam = Exam.find(@examid)                                                                   #required if render new_multiple
     @programme_id=Programme.where(id: @subjectid).first.root_id
     existing_grade_students=Grade.where(subject_id: @subjectid).pluck(:student_id)
-    existing_grade_intakes=Student.where(course_id: @programme_id).where(id: existing_grade_students).pluck(:intake).uniq
-      @intakes_lt=Student.where(course_id: @programme_id).where.not(intake: existing_grade_intakes).pluck(:intake).uniq.sort
+    #existing_grade_intakes=Student.where(course_id: @programme_id).where(id: existing_grade_students).pluck(:intake).uniq
+      #@intakes_lt=Student.where(course_id: @programme_id).where.not(intake: existing_grade_intakes).pluck(:intake).uniq.sort
+    nonexist_intake_ids=Student.where(course_id: @programme_id).where.not(id: existing_grade_students).pluck(:intake_id).uniq
+    @intakes_lt=Intake.where(id: nonexist_intake_ids).order(monthyear_intake: :desc).pluck(:monthyear_intake)
     #@intakes_lt = Student.where('course_id=?',@programme_id).pluck(:intake).uniq    #required if render new_multiple
                                                
     @grade = Grade.new
@@ -123,8 +129,18 @@ class Exam::GradesController < ApplicationController
     #above - before include previous intake(repeat semester) students
     # NOTE - 22Feb2016 - include Repeat Semester students (previous Intake) 
     #related files: 1) views/examresults/_form_results.html.haml, 2)model/examresult.rb 3)exammarks_controllers.rb 4)model/grade.rb - redundants allowed only for student with sstatus=='Repeat' (Repeat Semester)
-    previous_intake = Student.where(course_id: @programme_id).where('intake < ?', selected_intake).order(intake: :desc).first.try(:intake)
-    selected_student = Student.where(course_id: @programme_id).where('intake=? or (intake=? and sstatus=?)', selected_intake, previous_intake, 'Repeat')
+    
+    # TODO - kskbjb - all student records must use 'intake_id' field - 17Nov2016
+    #previous_intake = Student.where(course_id: @programme_id).where('intake < ?', selected_intake).order(intake: :desc).first.try(:intake)
+    #selected_student = Student.where(course_id: @programme_id).where('intake=? or (intake=? and sstatus=?)', selected_intake, previous_intake, 'Repeat')
+    previous_intakes=Intake.where(programme_id: @programme_id).where('monthyear_intake <?', selected_intake).order(monthyear_intake: :desc)
+    if previous_intakes.count > 0 
+      previous_intake=previous_intakes.first.id
+    else
+      previous_intake=[]
+    end
+    selected_intake_id=Intake.where(programme_id: @programme_id).where(monthyear_intake: selected_intake).first.id
+    selected_student = Student.where(course_id: @programme_id).where('intake_id=? or (intake_id=? and sstatus=?)', selected_intake_id, previous_intake, 'Repeat')
     
     rec_count = selected_student.count
     @grades = Array.new(rec_count) { Grade.new }                      
