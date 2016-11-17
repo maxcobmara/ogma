@@ -113,7 +113,7 @@ class Examquestion < ActiveRecord::Base
   def question_creator(current_user)
     current_roles=current_user.roles.pluck(:authname)
     if current_roles.include?("developer") || current_roles.include?("administration") || current_roles.include?("examquestions_module")
-      if college.code=='kskbjb'
+      if current_user.college.code=='kskbjb'
         diploma=Programme.roots.where(course_type: "Diploma").pluck(:name)
         creator_units=diploma+["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
         creator_ids=Staff.joins(:positions).where('positions.unit IN(?)', creator_units).pluck(:id)

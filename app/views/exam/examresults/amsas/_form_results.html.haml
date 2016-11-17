@@ -42,7 +42,7 @@
               
               %td=finalscore==0 ? "" : number_with_precision(finalscore, precision: 2).to_s+" %"
             - if @examresult.resultlines.count > 0
-              %td= select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+DropDown::RESULT_STATUS_CONTRA, @examresult.resultlines[no].status) 
+              %td= select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+DropDown::RESULT_STATUS_CONTRA, @examresult.resultlines[no].status), {class: 'selectpicker', "data-width" => "auto"}
             - else
-              %td= select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+DropDown::RESULT_STATUS_CONTRA) 
+              %td= select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+DropDown::RESULT_STATUS_CONTRA), {class: 'selectpicker', "data-width" => "auto"}
             /= @subject_status

@@ -4,8 +4,9 @@
     %dt= t 'exam.exams.name' , :default => model_class.human_attribute_name(:name) + ":"
     %dd= h (DropDown::EXAMTYPE.find_all{|disp, value| value == @exam.name}).map {|disp, value| disp}[0] 
 
-    %dt= t 'exam.exams.year_semester'
-    %dd= h @exam.subject_id? ? (t 'exam.exams.year')+@year.to_s + (t 'exam.exams.semester')+@exam.subject.parent.code.to_s : "" 
+    - if @exam.college.code!='amsas'
+      %dt= t 'exam.exams.year_semester'
+      %dd= h @exam.subject_id? ? (t 'exam.exams.year')+@year.to_s + (t 'exam.exams.semester')+@exam.subject.parent.code.to_s : "" 
 
     - if @exam.name=='R'
       %dt=  t 'exam.exams.description', :default => model_class.human_attribute_name(:description) + ":"

@@ -237,6 +237,7 @@ ms_MY:
         description: Ulangan bagi
       exammark:
         mark: "Markah : "
+        student_id: Pelajar
       examresult:
         resultlines: Keputusan
       resultlines:
@@ -3672,7 +3673,7 @@ ms_MY:
       template_in_use: Template digunakan
       #marks_each: "MCQ - 1 markah/setiap satu, MEQ - 20 markah/setiap satu, SEQ - 10 markah/setiap satu"
       other_marks_define: "Masukkan 'Markah Penuh' bagi setiap jenis soalan yang digunakan, jika tiada nilai diberikan, markah/setiap soalan disetkan kepada 1 bagi MCQ, 20 bagi MEQ 10 bagi SEQ dan 1 bagi lain-lain jenis soalan."
-      weightage_define: "Masukkan 'Wajaran' bagi setiap jenis soalan bagi mengira markah akhir (setiap soalan) berdasarkan wajaran, jika tiada nilai diberikan, peratusan wajaran akan dikenakan ke atas jumlah keseluruhan markah yag diperolehi (bagi semua jenis soalan)."
+      weightage_define: "Masukkan 'Wajaran' bagi setiap jenis soalan bagi mengira markah akhir (setiap soalan) berdasarkan wajaran, jika tiada nilai diberikan, peratusan wajaran akan dikenakan ke atas jumlah keseluruhan markah yang diperolehi (bagi semua jenis soalan)."
       min_onetype_withcount: "Template memerlukan sekurang-kurangnya 1 jenis soalan beserta Bilangan Soalan"
     
   training:

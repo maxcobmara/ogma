@@ -38,6 +38,15 @@ class Intake < ActiveRecord::Base
     intakeid
   end
   
+  #usage - new multiple (exammarks & grades)
+  def intake_list
+    if college.code=='amsas'
+      ["Siri #{monthyear_intake.strftime('%m/%Y')}", monthyear_intake]
+    else
+      ["#{monthyear_intake.strftime('%b %Y')}", monthyear_intake]
+    end
+  end
+  
   private
   
   def valid_for_removal
