@@ -154,6 +154,7 @@ class Exam::GradesController < ApplicationController
       end
       grade.exam1marks=0
       grade.finalscore=0
+      grade.college_id=current_user.college_id
       #0.upto(qcount-1) do
       #  exammark.marks.build
       #end       

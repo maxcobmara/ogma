@@ -183,6 +183,7 @@ class Exam::ExammarksController < ApplicationController
     @exammarks.each_with_index do |exammark,ind|                                     
       exammark.student_id = selected_student[ind].id
       exammark.exam_id = @examid
+      exammark.college_id = current_user.college_id
       0.upto(qcount-1) do
         exammark.marks.build
       end       
