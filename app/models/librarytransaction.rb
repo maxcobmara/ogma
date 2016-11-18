@@ -7,7 +7,7 @@ class Librarytransaction < ActiveRecord::Base
   belongs_to :libextendby, :class_name => 'Staff', :foreign_key => 'libextended_by'
   belongs_to :libreturnby, :class_name => 'Staff', :foreign_key => 'libreturned_by'
 
-  before_save :set_fine_paid_value_exist, :set_default_finepaydate, :set_default_checkoutdate_returnduedate
+  before_save :set_fine_paid_value_exist, :set_default_finepaydate, :set_default_checkoutdate_returnduedate, :set_returneddate_for_single_return
   after_save :update_book_status
   before_destroy :update_book_status2
   
@@ -100,6 +100,12 @@ class Librarytransaction < ActiveRecord::Base
       else
         self.returnduedate=Date.today+14.days
       end
+    end
+  end
+  
+  def set_returneddate_for_single_return
+    if returned? && returneddate.blank?
+      self.returneddate=Date.today
     end
   end
   
