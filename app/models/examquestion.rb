@@ -274,7 +274,7 @@ class Examquestion < ActiveRecord::Base
     if creator.blank?
        "None Assigned"
      else
-       creator.name #mykad_with_staff_name
+       creator.staff_with_rank#name #mykad_with_staff_name
      end
   end
 
