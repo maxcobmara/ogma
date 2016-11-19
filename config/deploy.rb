@@ -52,6 +52,8 @@ set :rvm_custom_path, '/home/nurhashimah/.rvm/'  # only needed if not detected
 
 ### task :restart_app do ...on roles(... end.... end### - github.com/capistrano/capistrano
 
+set :whenever_roles, ->{ [:web, :app]}
+
 # set path to application
 shared_path = "/opt/app/ogma/current/shared"
 

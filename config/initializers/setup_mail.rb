@@ -9,8 +9,8 @@ ActionMailer::Base.smtp_settings = {
   :address              => "smtp.gmail.com",
   :port                 => 587,
   :domain               => "gmail.com",
-  :user_name => ENV["GMAIL_USERNAME"], 
-  :password => ENV["GMAIL_PASSWORD"],
+  :user_name => College.where(code: Page.find(1).college.code).first.library_email, #ENV["GMAIL_USERNAME"], 
+  :password => College.where(code: Page.find(1).college.code).first.library_pwd, #ENV["GMAIL_PASSWORD"],
   :authentication       => :plain,
   :enable_starttls_auto => true
 }
