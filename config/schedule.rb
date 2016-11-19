@@ -20,7 +20,7 @@
 # Learn more: http://github.com/javan/whenever
 set :environment, 'production' #'development' 
 
-every 1.day, at: "23:25PM" do #"5:00 AM" do
+every 1.day, at: "5:00 AM" do #"23:25PM" do 
   rake "library:all"
 end
 
