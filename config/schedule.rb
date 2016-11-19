@@ -18,9 +18,9 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
-set :environment, 'development' 
+set :environment, 'production' #'development' 
 
-every 1.day, at: "5:00 AM" do
+every 1.day, at: "22:45PM" do #"5:00 AM" do
   rake "library:all"
 end
 
