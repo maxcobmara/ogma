@@ -41,13 +41,10 @@
               %td{:rowspan=>"#{ptdos.count}", :align => :center}=h (ptschedule.start.try(:strftime, '%d-%m-%Y')).to_s+" " +t('to').downcase+"  "+(ptdo.ptschedule.enddate.try(:strftime, '%d-%m-%Y')).to_s
               %td{:rowspan=>"#{ptdos.count}", :align => :center}=duration_in_string=ptschedule.course.course_total_days
               %td{:rowspan=>"#{ptdos.count}"}=h ringgols(ptschedule.final_price)
-              %td{:rowspan=>"#{ptdos.count}", :align => :center}=h ptschedule.budget_ok? ? image_tag('tick.png') : image_tag('cross.png')
+              %td{:rowspan=>"#{ptdos.count}", :align => :center}=h ptschedule.budget_ok? ? fa_icon('check') : fa_icon('times')
               %td{:rowspan=>"#{ptdos.count}", :align => :center}
                 - participants_no=ptdos.count
-                - if participants_no >= ptschedule.min_participants
-                  = image_tag('tick.png')
-                - else
-                  = image_tag('cross.png') 
+                = participants_no >= ptschedule.min_participants ? fa_icon('check') : fa_icon('times')
                 %br
                 = participants_no.to_s+" / "+ptschedule.min_participants.to_s+" ("+ptschedule.max_participants.to_s+")"
               %td{:rowspan=>"#{ptdos.count}", :align => :center}=h ptschedule.render_payment

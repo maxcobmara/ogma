@@ -8,9 +8,8 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_training_ptcourse_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
-    
-    
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), ptcourse_list_staff_training_ptcourses_path(params.merge(format: 'pdf'))
+
 %table.table-striped.table-hover.ogma
   %thead
     %tr
@@ -20,6 +19,7 @@
       %th= t('staff.training.course.cost')
       %th= t('staff.training.course.description')
       %th= t('staff.training.course.approval')
+  
     - @ptcourses.each do |course|
       %tbody
         %tr

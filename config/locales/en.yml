@@ -1245,6 +1245,7 @@ en:
         level: Level
         domestic: Domestic
         overseas: Overseas
+        cost: Cost
       schedule:
         title_schedule: Training Schedule
         new: Schedule a Course

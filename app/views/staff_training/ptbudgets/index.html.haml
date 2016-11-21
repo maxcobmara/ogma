@@ -8,7 +8,7 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_training_ptbudget_path(:newtype =>"1")
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), ptbudget_list_staff_training_ptbudgets_path(params.merge(format: 'pdf'))
 
 %table.table-striped.table-hover.ogma
   %thead
@@ -35,6 +35,7 @@
               - main_budget_id=ptbudget.id 
               %tr
                 %td
+                  mmmm
                   = link_to (l(ptbudget.fiscalstart).to_s+" "+t('to')+" "+l(ptbudget.fiscal_end)), staff_training_ptbudget_path(ptbudget)
                   - if ptbudget.fiscal_end > Date.today && ptbudget.fiscal_end <= Date.today.end_of_year
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

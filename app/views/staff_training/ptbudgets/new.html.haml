@@ -9,6 +9,7 @@
 .row.fluid
   = form_for [:staff_training, @ptbudget], :html => { :class => 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
+    = f.hidden_field :college_id, value: current_user.college_id
     .col-md-offset-1
       = render :partial => 'form', :locals => {:f => f}
       .form-group

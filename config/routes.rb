@@ -103,8 +103,16 @@ Ogma::Application.routes.draw do
   match '/public/excel_format/staff_attendance_import.xls', to: 'staff/staff_attendances#download_excel_format', via: 'get', target: '_self'
 
   namespace :staff_training do
-    resources :ptbudgets
-    resources :ptcourses
+    resources :ptbudgets do
+      collection do
+        get :ptbudget_list
+      end
+    end
+    resources :ptcourses do
+      collection do
+        get :ptcourse_list
+      end
+    end
     resources :ptschedules do
       collection do
         get :participants_expenses
@@ -114,6 +122,7 @@ Ogma::Application.routes.draw do
       collection do
         get :show_total_days
         get :training_report
+        get :ptdo_list
       end
     end
   end

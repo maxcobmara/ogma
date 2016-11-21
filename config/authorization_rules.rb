@@ -140,10 +140,16 @@ authorization do
    
    has_permission_on :staff_training_ptschedules, :to => :menu
    has_permission_on :staff_training_ptdos, :to => :create                                                  # A staff can register for training session
-   has_permission_on :staff_training_ptdos, :to => [:read, :show_total_days, :training_report, :delete] do
-     if_attribute :staff_id => is {user.userable.id}                                                                 # but onle see his own registrations
+   has_permission_on :staff_training_ptdos, :to => [:read, :show_total_days, :training_report, :delete, :ptdo_list] do
+     if_attribute :staff_id => is {user.userable_id}                                                                 # but onle see his own registrations
    end
-  
+   has_permission_on :staff_training_ptdos, :to => :update, :join_by => :and do                # may logged report when approval completed & training is done
+     if_attribute :staff_id => is {user.userable_id}
+     if_attribute :dept_approve => is {true}
+     if_attribute :final_approve => is {true}
+     if_attribute :ptschedule_id => is_in {Ptschedule.where('start <=?', Date.today).pluck(:id)}
+   end
+ 
    #instructor Appraisal
    has_permission_on :staff_instructor_appraisals, :to => :menu
    has_permission_on :staff_instructor_appraisals, :to => :create
@@ -542,18 +548,21 @@ authorization do
     end
     has_permission_on [:staff_travel_claims_transport_groups, :staff_travel_claim_mileage_rates], :to => :manage
     has_permission_on [:staff_travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => :manage
-    has_permission_on :staff_training_ptbudgets, :to => :manage
+    has_permission_on :staff_training_ptbudgets, :to => [:manage, :ptbudget_list]
   end
 
   role :training_manager do
-    has_permission_on [:staff_training_ptbudgets, :staff_training_ptcourses, :staff_training_ptschedules], :to => :manage
-    has_permission_on :staff_training_ptdos, :to =>:approve
+    has_permission_on :staff_training_ptbudgets, :to => [:manage, :ptbudget_list]
+    has_permission_on :staff_training_ptcourses, :to => [:manage, :ptcourse_list]
+    has_permission_on :staff_training_ptschedules, :to => :manage
+    has_permission_on :staff_training_ptdos, :to =>[:approve, :ptdo_list]
   end
  
   role :training_administration do
-    has_permission_on [:staff_training_ptbudgets, :staff_training_ptcourses], :to => :manage
+    has_permission_on :staff_training_ptbudgets, :to => [:manage, :ptbudget_list]
+    has_permission_on :staff_training_ptcourses], :to => [:manage, :ptcourse_list]
     has_permission_on :staff_training_ptschedules, :to => [:manage, :participants_expenses]
-    has_permission_on :staff_training_ptdos, :to => :read 
+    has_permission_on :staff_training_ptdos, :to => [:read, :ptdo_list]
     has_permission_on :staff_training_ptdos, :to => :update do
       if_attribute :final_approve => is_not {true}
     end
@@ -812,7 +821,7 @@ authorization do
     has_permission_on :exam_examanalyses, :to => [:menu, :read] do
       if_attribute :exam_id => is_in {user.by_programme_exams}  
     end
-    has_permission_on :staff_training_ptdos, :to => :approve do
+    has_permission_on :staff_training_ptdos, :to => [:approve, :ptdo_list] do
       if_attribute :staff_id => is_in {user.unit_members}#is {69}#is_in {[69, 106]}  #
     end
     has_permission_on :staff_staff_attendances, :to => :approval do
@@ -948,7 +957,7 @@ authorization do
   end
   
   role :unit_leader do
-    has_permission_on :staff_training_ptdos, :to => :read do
+    has_permission_on :staff_training_ptdos, :to => [:read, :ptdo_list] do
       if_attribute :staff_id => is_in {user.unit_members}
     end
     has_permission_on :staff_training_ptdos, :to => :update, :join_by => :and do
@@ -966,7 +975,7 @@ authorization do
   
   role :administration_staff do
     #access for Timbalan Pengarah (Pengurusan) & Pengarah
-    has_permission_on :staff_training_ptdos, :to => :read, :join_by => :or do
+    has_permission_on :staff_training_ptdos, :to => [:read, :ptdo_list], :join_by => :or do
       if_attribute :staff_id => is_in {user.admin_subordinates}
       if_attribute :staff_id => is_in {user.director_subordinates}
     end
@@ -1282,13 +1291,13 @@ authorization do
   # NOTE - for access by 'Training Budget Module'/'Training Courses Module' (Admin/Viewer/User/Member), must activate at least 'Training Attendance Module'(Member/Viewer)
   # NOTE 'Training Budget Module' - Viewer & Member access are similar?, Member (disable) - as records has no ownership data
   role :training_budget_module_admin do
-     has_permission_on :staff_training_ptbudgets, :to => :manage
+     has_permission_on :staff_training_ptbudgets, :to => [:manage, :ptbudget_list]
   end
   role :training_budget_module_viewer do
-     has_permission_on :staff_training_ptbudgets, :to => :read
+     has_permission_on :staff_training_ptbudgets, :to => [:read, , :ptbudget_list]
   end
   role :training_budget_module_user do
-     has_permission_on :staff_training_ptbudgets, :to => [:read, :update]
+     has_permission_on :staff_training_ptbudgets, :to => [:read, :update, :ptbudget_list]
   end
 #   role :training_budget_module_member do
 #      has_permission_on :staff_training_ptbudgets, :to => :read
@@ -1299,13 +1308,13 @@ authorization do
   # NOTE 'Training Courses Module' - Viewer & Member access are similar?, Member (disable) - as records has no ownership data
   #10-OK, in show - link 'schedule a course' requires manage for ptschedules
   role :training_courses_module_admin do
-     has_permission_on :staff_training_ptcourses, :to =>:manage
+     has_permission_on :staff_training_ptcourses, :to =>[:manage, :ptcourse_list]
   end
   role :training_courses_module_viewer do
-     has_permission_on :staff_training_ptcourses, :to =>:read
+     has_permission_on :staff_training_ptcourses, :to =>[:read, :ptcourse_list]
   end
   role :training_courses_module_user do
-     has_permission_on :staff_training_ptcourses, :to =>[:read, :update]
+     has_permission_on :staff_training_ptcourses, :to =>[:read, :update, :ptcourse_list]
   end
 #   role :training_courses_module_member do
 #      has_permission_on :staff_training_ptcourses, :to =>[:read, :update]
@@ -1330,7 +1339,7 @@ authorization do
   #12 - 3/4 OK (Admin, Viewer & User)
   role :training_attendance_module_admin do
     #asal - tested OK - Admin : has_permission_on :staff_training_ptdos, :to => [:manage, :approve]
-    has_permission_on :staff_training_ptdos, :to => [:create, :read, :show_total_days, :training_report, :delete]
+    has_permission_on :staff_training_ptdos, :to => [:create, :read, :show_total_days, :training_report, :delete, :ptdo_list]
     has_permission_on :staff_training_ptdos, :to => :update, :join_by => :and do                        # act as Dept Approver
       if_attribute :unit_approve => is {true}
       if_attribute :dept_approve => is_not {true}
@@ -1345,11 +1354,11 @@ authorization do
     end
   end
   role :training_attendance_module_viewer do
-     has_permission_on :staff_training_ptdos, :to => [:read, :show_total_days, :training_report]
+     has_permission_on :staff_training_ptdos, :to => [:read, :show_total_days, :training_report, :ptdo_list]
   end
   role :training_attendance_module_user do
     #same as Admin, except for CREATE & DELETE
-    has_permission_on :staff_training_ptdos, :to => [:read, :show_total_days, :training_report]
+    has_permission_on :staff_training_ptdos, :to => [:read, :show_total_days, :training_report, :ptdo_list]
     has_permission_on :staff_training_ptdos, :to => :update, :join_by => :and do                        # act as Dept Approver
       if_attribute :unit_approve => is {true}
       if_attribute :dept_approve => is_not {true}
@@ -1366,7 +1375,7 @@ authorization do
    role :training_attendance_module_member do
     #own records 
     has_permission_on :staff_training_ptdos, :to => :create                                                         # A staff can register for training session
-    has_permission_on :staff_training_ptdos, :to => [:read, :show_total_days, :training_report, :delete] do
+    has_permission_on :staff_training_ptdos, :to => [:read, :show_total_days, :training_report, :delete, :ptdo_list] do
       if_attribute :staff_id => is {user.userable.id}                                                                        # but onle see his own registrations
     end
     # NOTE - 'Training Attendance Module' (Member) should come with Programme Manager role(Dept Approval-Academician section) in order to get Dept Approval (Academics) works,

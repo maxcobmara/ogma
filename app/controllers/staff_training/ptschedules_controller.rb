@@ -76,7 +76,7 @@ class StaffTraining::PtschedulesController < ApplicationController
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def ptschedule_params
-        params.require(:ptschedule).permit(:location, :max_participants, :min_participants, :ptcourse_id, :start, :final_price, :budget_ok, :payment, :remark)
+        params.require(:ptschedule).permit(:location, :max_participants, :min_participants, :ptcourse_id, :start, :final_price, :budget_ok, :payment, :remark, :college_id, {:data => []})
       end
   
   

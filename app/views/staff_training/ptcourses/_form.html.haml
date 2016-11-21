@@ -11,37 +11,64 @@
   
   .form-group.training_level
     %label.col-sm-2.control-label=f.label t 'staff.training.course.level', for: :level
-    .col-md-3
-      /Peringkat
-      %label.radio-inline
-        =f.radio_button :level, 1 
-      =t('staff.training.course.domestic')
-      %label.radio-inline
-        =f.radio_button :level, 2
-      =t('staff.training.course.overseas')
+    /.col-md-3
+    /  /Peringkat
+    /  %label.radio-inline
+    /    =f.radio_button :level, 1 
+    /  =t('staff.training.course.domestic')
+    /  %label.radio-inline
+    /    =f.radio_button :level, 2
+    /  =t('staff.training.course.overseas')
+    ///   
+    .col-md-8
+      .row
+        .col-md-1=f.radio_button :level, 1 
+        .col-md-2=t('staff.training.course.domestic')
+        .col-md-1=f.radio_button :level, 2
+        .col-md-2=t('staff.training.course.overseas')
+    ///
   .form-group
     %label.col-sm-2.control-label=f.label t 'staff.training.course.course_type', for: :classification 
     .col-md-8
       .training{:style=>"display: none;"}
         /Latihan
-        %label.radio-inline
-          = f.radio_button :course_type, 1 
-        =t('staff.training.course.course')
-        %label.radio-inline
-          = f.radio_button :course_type, 2 
-        =t('staff.training.course.seminar')
-        %label.radio-inline
-          = f.radio_button :course_type, 3
-        =t('staff.training.course.convention')
-        %label.radio-inline
-          = f.radio_button :course_type, 4 
-        =t('staff.training.course.workshop')
-        %label.radio-inline
-          = f.radio_button :course_type, 5 
-        =t('staff.training.course.forum')
-        %label.radio-inline
-          = f.radio_button :course_type, 6
-        =t('staff.training.course.symposium')
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 1 
+        /=t('staff.training.course.course')
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 2 
+        /=t('staff.training.course.seminar')
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 3
+        /=t('staff.training.course.convention')
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 4 
+        /=t('staff.training.course.workshop')
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 5 
+        /=t('staff.training.course.forum')
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 6
+        /=t('staff.training.course.symposium')
+        .row 
+          .col-md-1= f.radio_button :course_type, 1 
+          .col-md-1=t('staff.training.course.course')
+        .row
+          .col-md-1= f.radio_button :course_type, 2
+          .col-md-1=t('staff.training.course.seminar')
+        .row
+          .col-md-1= f.radio_button :course_type, 3
+          .col-md-1=t('staff.training.course.convention')
+        .row
+          .col-md-1= f.radio_button :course_type, 4
+          .col-md-1=t('staff.training.course.workshop')
+        .row
+          .col-md-1= f.radio_button :course_type, 5
+          .col-md-1=t('staff.training.course.forum')
+        .row
+          .col-md-1= f.radio_button :course_type, 6
+          .col-md-3=t('staff.training.course.symposium')
+          
       .confront{:style=>"display: none;"}
         /bersemuka
         %label.radio-inline

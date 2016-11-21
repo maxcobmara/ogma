@@ -9,7 +9,7 @@ class Borang_maklumat_staffPdf < Prawn::Document
     font "Times-Roman"
     text "#{college.name.upcase}", :align => :center, :size => 14, :style => :bold
     move_down 5
-    text "BORANG MAKLUMAT STAFF BAGI SISTEM ICMS", :align => :center, :size => 14, :style => :bold
+    text "BORANG MAKLUMAT STAF BAGI SISTEM ICMS", :align => :center, :size => 14, :style => :bold
     move_down 20
     table1
     table2
@@ -29,7 +29,7 @@ class Borang_maklumat_staffPdf < Prawn::Document
             ["4. No Fail Peribadi", ": #{@staff.fileno}"],
             ["5. Jawatan",": #{@staff.positions.name}"],
             ["6. Email", ": #{@staff.coemail}"],
-            ["7. Tarikh Lahir", ": #{@staff.cobirthdt}"],
+            ["7. Tarikh Lahir", ": #{@staff.cobirthdt.try(:strftime, '%d-%m-%Y')}"],
             ["8. No Surat Beranak", ": #{@staff.birthcertno}"],
             ["9. Umur",": #{@staff.age}"],
             ["10. Jenis Darah", ": #{(DropDown::BLOOD_TYPE.find_all{|disp, value| value == @staff.bloodtype}).map {|disp, value| disp}[0]}"],

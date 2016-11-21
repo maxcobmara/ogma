@@ -4,7 +4,7 @@ class Ptbudget < ActiveRecord::Base
   validates_uniqueness_of :fiscalstart
   
   def budget_start
-   Ptbudget.first.fiscalstart
+   Ptbudget.first.fiscalstart  rescue Date.today
   end
   
   def fiscal_end
@@ -53,7 +53,7 @@ class Ptbudget < ActiveRecord::Base
         count+=1
       end
     end
-    @last_main+1.year
+    budget_date = @last_main+1.year rescue Date.today #@last_main+1.year
   end 
   
 end

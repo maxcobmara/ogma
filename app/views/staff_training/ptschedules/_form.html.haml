@@ -7,7 +7,7 @@
   .form-group
     %label.col-sm-2.control-label= f.label t 'staff.training.schedule.start', for: :start
     .col-md-2
-      = f.text_field :start, class: 'form-control date_picker '
+      = f.text_field :start, class: 'form-control date_picker_reverse', value: @ptschedule.start.try(:strftime, '%d-%m-%Y')
 
   .form-group
     %label.col-sm-2.control-label= f.label t 'staff.training.schedule.participants', for: :min_participants

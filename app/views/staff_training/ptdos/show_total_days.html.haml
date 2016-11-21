@@ -28,21 +28,22 @@
         /%th= sort_link(@search, :ptcourse_id, t('staff.training.application_status.course_name'))
         /%th= sort_link(@search, :staff_id, t('staff.training.application_status.staff_name'))
         /%th{style: "width:20%;"}=t ('staff.training.application_status.status')
-        %th= sort_link(@search, :ptcourse_id, t('staff.training.application_status.course_name'))
-        %th= sort_link(@search, :ptschedule_id, t('staff.training.schedule.start'))
-        %th= t 'staff.training.application_status.location'
-        %th= t('staff.training.course.training_classification')+" - "+t('staff.training.course.course_type')
-        %th= t 'staff.training.course.level'
-        %th= t 'staff.training.course.duration'
-        %th= t 'staff.training.course.duration_type'
-        %th= t 'staff.training.application_status.total' 
+        %th{width: '25%'}= sort_link(@search, :ptcourse_id, t('staff.training.application_status.course_name'))
+        %th{width: '10%'}= sort_link(@search, :ptschedule_id, t('staff.training.schedule.start'))
+        %th{width: '10%'}= t 'staff.training.application_status.location'
+        %th{width: '24%'}= t('staff.training.course.training_classification')+" - "+t('staff.training.course.course_type')
+        %th{width: '7%'}= t 'staff.training.course.level'
+        %th{width: '7%'}= t 'staff.training.course.duration'
+        %th{width: '7%'}= t 'staff.training.course.duration_type'
+        %th{width: '10%'}= t 'staff.training.application_status.total' 
       
     %tbody
       = render "index_search2"
       - sum_days = 0
       - sum_bal_hours=0
       - @ptdos.sort_by{|x|[x.ptschedule.course.training_classification, x.ptschedule.course.course_type]}.each do |ptdo|
-        - @ptcourse = Ptcourse.find(ptdo.ptcourse_id)
+        - @ptcourse = ptdo.ptschedule.course
+        /- @ptcourse = Ptcourse.find(ptdo.ptcourse_id)
         /- @ptschedule = Ptschedule.find(ptdo.ptschedule_id)
         %tr
           %td= link_to ptdo.ptschedule.course.name, staff_training_ptdo_path(ptdo)
@@ -63,11 +64,11 @@
           - schedules_start.each do |start|
             - @schedules_year << start.year
           - if @schedules_year.uniq.count==1
-            %b=Mycpd.where('staff_id=? and cpd_year=?', @current_user.userable_id, Date.today.beginning_of_year).first.try(:cpd_value) 
+            %b=Mycpd.where('staff_id=? and cpd_year=?', current_user.userable_id, schedules_start.first.beginning_of_year).first.try(:cpd_value) 
           - else
             =t 'staff.training.mycpd.same_year'
       %tr
         %td{:colspan =>5, :align=>"right"}
           %b= t 'staff.training.application_status.total_day_attended'
         %td{:colspan=>3, :align=>"center"}
-          %b=Ptdo.staff_total_days(@ptdos.map(&:id))
+          %b=Ptdo.staff_total_days(@ptdos.pluck(:id))
