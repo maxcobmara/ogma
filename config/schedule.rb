@@ -19,11 +19,19 @@
 
 # Learn more: http://github.com/javan/whenever
 set :environment, 'production' #'development' 
+zone=Time.now.zone
+if zone=="MYT"
+  delivery_time="5:00 AM"
+  logclear_time='12am'
+else
+  delivery_time="9:00 PM" #UTC
+  logclear_time="4:00 AM"
+end
 
-every 1.day, at: "5:00 AM" do #"23:25PM" do 
+every 1.day, at: delivery_time do #"5:00 AM"
   rake "library:all"
 end
 
-every :saturday, :at => '12am' do
+every :saturday, :at => logclear_time do #'12am' do
   rake "log:clear"
 end
