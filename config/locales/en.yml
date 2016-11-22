@@ -1270,6 +1270,7 @@ en:
         remark: Remark
         budget_ok: Budget approval
         tick_to_approve: Tick to approve
+        applied_attended: "Applied / Attended"
       application_status:
         title: Application Status 
         title_apply: Apply for Training

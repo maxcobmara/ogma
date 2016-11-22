@@ -34,7 +34,11 @@
         =(t 'staff.training.schedule.min')
         = scheduled.min_participants
     .col-md-1
-      %td= link_to (t 'staff.training.application_status.title_apply'), new_staff_training_ptdo_path(:ptschedule_id => scheduled) 
+      %td
+        - if Ptdo.where(staff_id: current_user.userable_id).where(ptschedule_id: scheduled.id).count!=0
+          =t('staff.training.schedule.applied_attended')
+        - else
+          = link_to (t 'staff.training.application_status.title_apply'), new_staff_training_ptdo_path(:ptschedule_id => scheduled) 
     .col-md-1
       - permitted_to? :update, :staff_training_ptschedules do
         %td= link_to(t('staff.training.schedule.manage'), staff_training_ptschedule_path(scheduled))

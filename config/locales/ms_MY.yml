@@ -1240,6 +1240,7 @@ ms_MY:
         remark: Catatan
         budget_ok: Kelulusan Perbelanjaan
         tick_to_approve: Pilih kotak semak untuk luluskan
+        applied_attended: "Telah dipohon / dihadiri"
       application_status:
         title_apply: Permohonan Latihan
         title: Status Permohonan

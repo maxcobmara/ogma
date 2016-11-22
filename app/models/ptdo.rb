@@ -1,5 +1,5 @@
 class Ptdo < ActiveRecord::Base
-  before_save  :whoami, :auto_unit_approval_for_academician
+  before_save  :whoami, :auto_unit_approval_for_academician, :auto_unit_dept_approval_amsas
 
   belongs_to  :college, :foreign_key => 'college_id'
   belongs_to  :ptschedule
@@ -41,13 +41,22 @@ class Ptdo < ActiveRecord::Base
   end
 
   def auto_unit_approval_for_academician
-    if unit_approve.blank? 
+    if unit_approve.blank? && college.code!='amsas'
       applicant_roles=User.where(userable_id: staff_id).first.roles.map(&:name)
       if applicant_roles.include?("Lecturer") || Programme.roots.map(&:name).include?(applicant.positions.first.unit) #14 - Lecturer
         self.unit_approve=true
         self.unit_review="Auto-approved"
         self.justification="Not applicable for academician"
       end
+    end
+  end
+  
+  def auto_unit_dept_approval_amsas
+    if college.code=='amsas'
+      self.unit_approve=true
+      self.unit_review="Not applicable"
+      self.dept_approve=true
+      self.dept_review="Not applicable"
     end
   end
   
