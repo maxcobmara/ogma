@@ -1,5 +1,5 @@
 class StaffTraining::PtschedulesController < ApplicationController
-  filter_access_to :index, :new, :create, :participants_expenses, :ptschedule_list, :attribute_check => false
+  filter_access_to :index, :new, :create, :participants_expenses, :ptschedule_list, :participantexpenses_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_ptschedule, only: [:show, :edit, :update, :destroy]
 
@@ -77,6 +77,19 @@ class StaffTraining::PtschedulesController < ApplicationController
       format.pdf do
         pdf = Ptschedule_listPdf.new(@ptschedules, view_context, current_user.college)
         send_data pdf.render, filename: "ptschedule_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
+  def participantexpenses_list
+    @search = Ptschedule.search(params[:q])
+    @ptschedules = @search.result
+    respond_to do |format|
+      format.pdf do
+        pdf = Participantexpenses_listPdf.new(@ptschedules, view_context, current_user.college)
+        send_data pdf.render, filename: "participantexpenses_list-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
       end

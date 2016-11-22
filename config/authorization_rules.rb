@@ -554,14 +554,14 @@ authorization do
   role :training_manager do
     has_permission_on :staff_training_ptbudgets, :to => [:manage, :ptbudget_list]
     has_permission_on :staff_training_ptcourses, :to => [:manage, :ptcourse_list]
-    has_permission_on :staff_training_ptschedules, :to => [:manage, :ptschedule_list]
+    has_permission_on :staff_training_ptschedules, :to => [:manage, :ptschedule_list, :participantexpenses_list]
     has_permission_on :staff_training_ptdos, :to =>[:approve, :ptdo_list]
   end
  
   role :training_administration do
     has_permission_on :staff_training_ptbudgets, :to => [:manage, :ptbudget_list]
     has_permission_on :staff_training_ptcourses, :to => [:manage, :ptcourse_list]
-    has_permission_on :staff_training_ptschedules, :to => [:manage, :participants_expenses, :ptschedule_list]
+    has_permission_on :staff_training_ptschedules, :to => [:manage, :participants_expenses, :ptschedule_list, :participantexpenses_list]
     has_permission_on :staff_training_ptdos, :to => [:read, :ptdo_list]
     has_permission_on :staff_training_ptdos, :to => :update do
       if_attribute :final_approve => is_not {true}
@@ -1323,13 +1323,13 @@ authorization do
   #11 - 2/4 OK (Manage & Viewer) TODO User & Member access are similar? - 6Feb2016
   #11-OK - note pending 'Apply for Training' menu link
   role :training_schedule_module_admin do
-     has_permission_on :staff_training_ptschedules, :to => [:manage, :participants_expenses, :ptschedule_list]
+     has_permission_on :staff_training_ptschedules, :to => [:manage, :participants_expenses, :ptschedule_list, :participantexpenses_list]
   end
   role :training_schedule_module_viewer do
-     has_permission_on :staff_training_ptschedules, :to => [:read, :participants_expenses, :ptschedule_list]
+     has_permission_on :staff_training_ptschedules, :to => [:read, :participants_expenses, :ptschedule_list, :participantexpenses_list]
   end
   role :training_schedule_module_user do
-     has_permission_on :staff_training_ptschedules, :to => [:read, :participants_expenses, :update, :ptschedule_list]
+     has_permission_on :staff_training_ptschedules, :to => [:read, :participants_expenses, :update, :ptschedule_list, :participantexpenses_list]
   end
   role :training_schedule_module_member do
      has_permission_on :staff_training_ptschedules, :to => [:read, :participants_expenses, :update, :ptschedule_list]
