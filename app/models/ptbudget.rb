@@ -3,6 +3,30 @@ class Ptbudget < ActiveRecord::Base
   validates_presence_of :fiscalstart, :budget
   validates_uniqueness_of :fiscalstart
   
+  # define scope
+  def self.budget_balance_search(query) 
+    budget_ids=[]
+    Ptbudget.all.each{|x|budget_ids << x.id if x.budget_balance.to_f==query.to_f}
+    where(id: budget_ids)
+  end
+  
+  def self.used_budget_search(query) 
+    budget_ids=[]
+    Ptbudget.all.each{|x|budget_ids << x.id if x.used_budget.to_f==query.to_f}
+    where(id: budget_ids)
+  end
+  
+  def self.budget_balance_percent_search(query) 
+    budget_ids=[]
+    Ptbudget.all.each{|x|budget_ids << x.id if x.budget_balance_percent.to_f==query.to_f}
+    where(id: budget_ids)
+  end
+  
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:budget_balance_search, :used_budget_search, :budget_balance_percent_search]
+  end
+  
   def budget_start
    Ptbudget.first.fiscalstart  rescue Date.today
   end
@@ -32,6 +56,10 @@ class Ptbudget < ActiveRecord::Base
   
   def budget_balance   #current amount
     acc_budget-used_budget
+  end
+  
+  def budget_balance_percent
+    (budget_balance.to_f / budget.to_f) *  100
   end
   
   def acc_budget   #accumulated as of current fiscalstart

@@ -560,7 +560,7 @@ authorization do
  
   role :training_administration do
     has_permission_on :staff_training_ptbudgets, :to => [:manage, :ptbudget_list]
-    has_permission_on :staff_training_ptcourses], :to => [:manage, :ptcourse_list]
+    has_permission_on :staff_training_ptcourses, :to => [:manage, :ptcourse_list]
     has_permission_on :staff_training_ptschedules, :to => [:manage, :participants_expenses]
     has_permission_on :staff_training_ptdos, :to => [:read, :ptdo_list]
     has_permission_on :staff_training_ptdos, :to => :update do
@@ -1294,7 +1294,7 @@ authorization do
      has_permission_on :staff_training_ptbudgets, :to => [:manage, :ptbudget_list]
   end
   role :training_budget_module_viewer do
-     has_permission_on :staff_training_ptbudgets, :to => [:read, , :ptbudget_list]
+     has_permission_on :staff_training_ptbudgets, :to => [:read, :ptbudget_list]
   end
   role :training_budget_module_user do
      has_permission_on :staff_training_ptbudgets, :to => [:read, :update, :ptbudget_list]

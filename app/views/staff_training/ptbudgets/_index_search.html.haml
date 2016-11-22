@@ -1,0 +1,17 @@
+= search_form_for @search, url: staff_training_ptbudgets_path, class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=f.text_field :fiscalstart_eq, size:2, class:  'date_picker_reverse form-control', value: @search.fiscalstart_eq.try(:strftime, '%d-%m-%Y')
+    %td=f.text_field :budget_eq, size:2, class: 'form-control'
+    %td=f.text_field :used_budget_search, size: 2, class: 'form-control'
+    %td=f.text_field :budget_balance_search, size: 2, class: 'form-control'
+    %td
+      .input-group
+        =f.text_field :budget_balance_percent_search, size: 2, class: 'form-control'
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw
+            
+            
+            
+       
+      
