@@ -5,7 +5,8 @@ class StaffTraining::PtcoursesController < ApplicationController
   before_action :set_ptcourse, only: [:show, :edit, :update, :destroy]
 
   def index
-    @ptcourses = Ptcourse.all
+    @search = Ptcourse.search(params[:q])
+    @ptcourses = @search.result
   end
   
   def show

@@ -143,7 +143,7 @@
       = f.collection_select :provider_id, AddressBook.all, :id, :name, {:prompt => "Select" }, class: 'selectpicker'
       
   .form-group
-    %label.col-sm-2.control-label= f.label t 'staff.training.course.duration', for: :provider
+    %label.col-sm-2.control-label= f.label t 'staff.training.course.duration', for: :duration
     .col-md-1
       = f.text_field :duration, class: 'form-control'
     .col-md-2

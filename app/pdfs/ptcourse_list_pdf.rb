@@ -1,6 +1,6 @@
 class Ptcourse_listPdf < Prawn::Document
   def initialize(ptcourses, view, college)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 40, page_size: 'A4', page_layout: :portrait })
     @ptcourses = ptcourses
     @view = view
     @college=college
@@ -13,6 +13,7 @@ class Ptcourse_listPdf < Prawn::Document
   end
   
   def record
+    total_recs=@ptcourses.count
     table(line_item_rows, :column_widths => [30, 100, 70, 50, 70, 130, 70], :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
@@ -20,7 +21,7 @@ class Ptcourse_listPdf < Prawn::Document
       row(0).align = :center
       row(0..1).font_style = :bold
       row(1).background_color = 'FFE34D'
-      column(1..2).align = :center
+      row(2..total_recs+1).column(4).align =:right
       self.width=520
     end
   end

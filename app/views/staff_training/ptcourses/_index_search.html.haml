@@ -1,0 +1,15 @@
+= search_form_for @search, url: staff_training_ptcourses_path, class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=f.text_field :name_cont, size:2, class:  'form-control'
+    %td=f.text_field :provider_name_cont, size:2, class: 'form-control'
+    %td
+      =f.text_field :duration_eq, size: 2, class: 'form-control'
+      =f.select :duration_type_eq, DropDown::DURATION_TYPE, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width" => "auto"}
+    %td=f.text_field :cost_eq, size: 2, class: 'form-control'
+    %td=f.text_field :description_cont, size: 2, class: 'form-control'
+    %td
+      .input-group
+        =f.select :approved_eq, [[(t 'all_records'), ''], [(t 'approved'), true], [(t 'not_approved'), false]], {},{class: 'selectpicker', "data-width" => "auto"}
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw
