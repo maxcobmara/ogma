@@ -116,6 +116,7 @@ Ogma::Application.routes.draw do
     resources :ptschedules do
       collection do
         get :participants_expenses
+        get :ptschedule_list
       end
     end
     resources :ptdos do

@@ -1,10 +1,12 @@
 class StaffTraining::PtschedulesController < ApplicationController
-  filter_access_to :index, :new, :create, :participants_expenses, :attribute_check => false
+  filter_access_to :index, :new, :create, :participants_expenses, :ptschedule_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_ptschedule, only: [:show, :edit, :update, :destroy]
 
   def index
-    @ptschedules = Ptschedule.all#where('start >= ?', Date.today).order("start ASC")
+    #@ptschedules = Ptschedule.all#where('start >= ?', Date.today).order("start ASC")
+    @search = Ptschedule.search(params[:q])
+    @ptschedules = @search.result
   end
   
   def show
@@ -65,6 +67,19 @@ class StaffTraining::PtschedulesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @ptschedules }
+    end
+  end
+  
+  def ptschedule_list
+    @search = Ptschedule.search(params[:q])
+    @ptschedules = @search.result
+    respond_to do |format|
+      format.pdf do
+        pdf = Ptschedule_listPdf.new(@ptschedules, view_context, current_user.college)
+        send_data pdf.render, filename: "ptschedule_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
     end
   end
   

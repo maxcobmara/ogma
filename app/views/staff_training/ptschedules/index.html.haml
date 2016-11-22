@@ -6,11 +6,12 @@
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
     
-
-   
+%table
+  %body
+    = render "index_search"   
 - @ptschedules.each do |scheduled|
   .row.calendar_list
     .col-md-1.date
@@ -26,14 +27,14 @@
     .col-md-1.badges
       //TODO do a max min http://codepen.io/bamf/pen/gqzcI
       .badge
-        Max
+        =(t 'staff.training.schedule.max')
         = scheduled.max_participants
       %br
       .badge
-        Min
+        =(t 'staff.training.schedule.min')
         = scheduled.min_participants
     .col-md-1
-      %td= link_to scheduled.course.name, new_staff_training_ptdo_path(:ptschedule_id => scheduled) 
+      %td= link_to (t 'staff.training.application_status.title_apply'), new_staff_training_ptdo_path(:ptschedule_id => scheduled) 
     .col-md-1
       - permitted_to? :update, :staff_training_ptschedules do
         %td= link_to(t('staff.training.schedule.manage'), staff_training_ptschedule_path(scheduled))

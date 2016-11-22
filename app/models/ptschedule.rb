@@ -23,6 +23,10 @@ class Ptschedule < ActiveRecord::Base
     (DropDown::PAYMENT.find_all{|disp, value| value == payment}).map{|disp, value| disp}.first
   end
   
+  def course_details
+   "#{course.name}: #{I18n.t('from')} #{start.strftime('%d-%m-%Y')} #{I18n.t('to')} #{enddate.strftime('%d-%m-%Y')} (#{I18n.t('for')} #{course.course_total_days})"
+  end
+  
 end
 
 # == Schema Information
