@@ -1170,7 +1170,7 @@ ms_MY:
         budget: Jumlah
         used: Digunakan
         balance: Baki
-        new: Belanjawan Latihan Kakitangan Baru
+        new: Belanjawan Baru Latihan Kakitangan
         add_budget: "+ Belanjawan Tambahan"
         additional_budget: " (Tambahan)"
       course:
@@ -1215,6 +1215,7 @@ ms_MY:
         level: Peringkat
         domestic: Dalam Negeri
         overseas: Luar Negara
+        cost: Kos
       schedule:
         title_schedule: Jadual Latihan
         new: Penjadualan Baru
@@ -1229,6 +1230,8 @@ ms_MY:
         budget_ok: Belanjawan Diluluskan
         min_participants: Jum Minima Peserta
         max_participants: Jum Maksima Peserta
+        min: Min
+        max: Maks
         manage: Pengurusan Jadual
         participants_expenses: "Penyertaan & Perbelanjaan"
         payment_method: Kaedah Pembayaran

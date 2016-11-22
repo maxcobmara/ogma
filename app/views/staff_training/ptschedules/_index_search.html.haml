@@ -1,0 +1,26 @@
+= search_form_for @search, url: staff_training_ptschedules_path, class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td
+      .row 
+        .col-md-2
+          .col-md-10=f.text_field :start_eq, size:2, class:  'form-control date_picker_reverse', value: @search.start.try(:strftime, '%d-%m-%Y'), placeholder: (t 'staff.training.schedule.start')
+        .col-md-6
+          .col-md-6
+            =f.text_field :course_name_cont, size: 2, class: 'form-control', placeholder: (t 'staff.training.course.name')
+            =f.text_field :course_description_cont, size: 2, class: 'form-control', placeholder: (t 'staff.training.course.description')
+          .col-md-4
+            =f.text_field :location_cont, size: 2, class: 'form-control', placeholder: (t 'staff.training.schedule.location')
+            =f.text_field :course_provider_name_cont, size: 2, class: 'form-control', placeholder: (t 'staff.training.course.provider')
+          .col-md-2 &nbsp;
+        .col-md-2
+          .col-md-6
+          .col-md-6
+            =f.text_field :max_participants_eq, size: 2, class: 'form-control', placeholder: (t 'staff.training.schedule.max')
+            =f.text_field :min_participants_eq, size: 2, class: 'form-control', placeholder: (t 'staff.training.schedule.min')
+        .col-md-1 &nbsp;
+        .col-md-1
+          .input-group
+            /=f.select :approved_eq, [[(t 'all_records'), ''], [(t 'approved'), true], [(t 'not_approved'), false]], {},{class: 'selectpicker', "data-width" => "auto"}
+            %span.input-group-btn
+              %button.btn.btn-sm.btn-default.right{:type => "submit"}
+                %i.fa.fa-search.fa-fw

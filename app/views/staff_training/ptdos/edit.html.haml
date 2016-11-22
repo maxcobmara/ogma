@@ -20,7 +20,7 @@
         .col-sm-2.control-label
           = f.label t 'staff.training.application_status.date'
         .col-md-3
-          = @ptdo.ptschedule.start
+          = @ptdo.ptschedule.start.try(:strftime, '%d-%m-%Y')
           
       .form-group
         .col-sm-2.control-label
@@ -39,7 +39,7 @@
       /Unit Approval Block
       - permitted_to? :update, :staff_training_ptdos do
         /Hack : Training Administration should not approved siblings application, must be done by Training Manager
-        - if (@current_user.roles.map(&:name).include?("Training Administration") && @current_user.unit_members.include?(@ptdo.staff_id)==false) || @current_user.roles.map(&:name).include?("Training Manager") || (@current_user.roles.map(&:name).include?("Training Administration")==false && @current_user.roles.map(&:name).include?("Training Manager")==false)|| @current_user.roles.map(&:authname).include?("training_attendance_module_admin") || @current_user.roles.map(&:authname).include?("training_attendance_module_user")
+        - if (@current_user.roles.map(&:name).include?("Training Administration") && @current_user.unit_members.include?(@ptdo.staff_id)==false) || @current_user.roles.map(&:name).include?("Training Manager") || (@current_user.roles.map(&:name).include?("Training Administration")==false && @current_user.roles.map(&:name).include?("Training Manager")==false)|| @current_user.roles.map(&:authname).include?("training_attendance_module_admin") || @current_user.roles.map(&:authname).include?("training_attendance_module_user") || is_developer? || current_user.roles.pluck(:authname).include?("administration")
           - if @ptdo.unit_approve.blank?
             .form-group
               .col-sm-2.control-label
@@ -69,7 +69,7 @@
       /Department Approval Block  
       - permitted_to? :update, :staff_training_ptdos do
         - if @ptdo.unit_approve? && @ptdo.dept_approve.blank?          
-          - if ((User.where(userable_id: @ptdo.staff_id).first.roles.map(&:name).include?("Lecturer") || Programme.roots.map(&:name).include?(@ptdo.applicant.positions.first.unit)) && @current_user.userable.positions.first.name != "Timbalan Pengarah (Pengurusan)" ) || (User.where(userable_id: @ptdo.staff_id).first.roles.map(&:name).include?("Lecturer")==false && Programme.roots.map(&:name).include?(@ptdo.applicant.positions.first.unit)==false && @current_user.userable.positions.first.name == "Timbalan Pengarah (Pengurusan)") || @current_user.roles.map(&:name).include?("Training Manager") || @current_user.roles.map(&:name).include?("Training Administration") || @current_user.roles.map(&:authname).include?("training_attendance_module_admin") || @current_user.roles.map(&:authname).include?("training_attendance_module_user")
+          - if ((User.where(userable_id: @ptdo.staff_id).first.roles.map(&:name).include?("Lecturer") || Programme.roots.map(&:name).include?(@ptdo.applicant.positions.first.unit)) && @current_user.userable.positions.first.name != "Timbalan Pengarah (Pengurusan)" ) || (User.where(userable_id: @ptdo.staff_id).first.roles.map(&:name).include?("Lecturer")==false && Programme.roots.map(&:name).include?(@ptdo.applicant.positions.first.unit)==false && @current_user.userable.positions.first.name == "Timbalan Pengarah (Pengurusan)") || @current_user.roles.map(&:name).include?("Training Manager") || @current_user.roles.map(&:name).include?("Training Administration") || @current_user.roles.map(&:authname).include?("training_attendance_module_admin") || @current_user.roles.map(&:authname).include?("training_attendance_module_user") || is_developer? || current_user.roles.pluck(:authname).include?("administration")
             .form-group
               .col-sm-2.control-label
                 = f.label t 'staff.training.application_status.dept_review'
@@ -98,7 +98,7 @@
             .col-md-3
               = f.check_box :final_approve, class: 'form-control'
               
-      - if @ptdo.dept_approve? && @ptdo.final_approve? && @ptdo.staff_id == @current_user.userable_id
+      - if (@ptdo.dept_approve? && @ptdo.final_approve?) && (@ptdo.staff_id == @current_user.userable_id  || is_developer? || current_user.roles.pluck(:authname).include?("administration"))
         .form-group
           .col-sm-2.control-label
             = f.label t 'staff.training.application_status.trainee_report'

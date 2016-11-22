@@ -1,6 +1,7 @@
 class Ptdo < ActiveRecord::Base
   before_save  :whoami, :auto_unit_approval_for_academician
 
+  belongs_to  :college, :foreign_key => 'college_id'
   belongs_to  :ptschedule
   belongs_to  :staff
   belongs_to  :applicant, :class_name => 'Staff',   :foreign_key => 'staff_id'
@@ -122,7 +123,11 @@ class Ptdo < ActiveRecord::Base
         elsif checker == []
           "Staff No Longer Exists"
        else
-         staff.mykad_with_staff_name
+         if college.code=='amsas'
+           staff.staff_with_rank
+         else
+           staff.mykad_with_staff_name
+         end
        end
   end
   
@@ -143,7 +148,8 @@ class Ptdo < ActiveRecord::Base
   #used in Ptdosearches : Show & Ptdo : show_total_days
   def self.staff_total_days(ptdoids_staff)
     sum_total_days = 0
-    ptcourse_ids = Ptdo.where('id IN(?) AND final_approve=? AND trainee_report is not null', ptdoids_staff, true).map(&:ptcourse_id)  #valid attended courses
+    #ptcourse_ids = Ptdo.where('id IN(?) AND final_approve=? AND trainee_report is not null', ptdoids_staff, true).map(&:ptcourse_id)  #valid attended courses
+    ptcourse_ids= Ptschedule.joins(:ptdos).where('ptdos.id IN(?) AND ptdos.final_approve=? AND ptdos.trainee_report is not null', ptdoids_staff, true).pluck(:ptcourse_id).uniq
     ptcourse_ids.each do |ptcourse_id|
       attended = Ptcourse.find(ptcourse_id)
       total_days=self.staff_course_days(attended)

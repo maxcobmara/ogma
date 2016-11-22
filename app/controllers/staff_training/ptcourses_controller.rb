@@ -1,11 +1,12 @@
 class StaffTraining::PtcoursesController < ApplicationController
-  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :index, :new, :create, :ptcourse_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   
   before_action :set_ptcourse, only: [:show, :edit, :update, :destroy]
 
   def index
-    @ptcourses = Ptcourse.all
+    @search = Ptcourse.search(params[:q])
+    @ptcourses = @search.result
   end
   
   def show
@@ -58,6 +59,18 @@ class StaffTraining::PtcoursesController < ApplicationController
     end
   end
   
+  def ptcourse_list
+    @search = Ptcourse.search(params[:q])
+    @ptcourses = @search.result
+    respond_to do |format|
+      format.pdf do
+        pdf = Ptcourse_listPdf.new(@ptcourses, view_context, current_user.college)
+        send_data pdf.render, filename: "ptcourse_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
   
   private
       # Use callbacks to share common setup or constraints between actions.
@@ -67,7 +80,7 @@ class StaffTraining::PtcoursesController < ApplicationController
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def ptcourse_params
-        params.require(:ptcourse).permit(:cost, :course_type, :description, :duration, :duration_type, :name, :provider_id, :approved, :training_classification, :level)
+        params.require(:ptcourse).permit(:cost, :course_type, :description, :duration, :duration_type, :name, :provider_id, :approved, :training_classification, :level, :college_id, {:data => []})
       end
   
   

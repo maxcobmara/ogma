@@ -1,11 +1,11 @@
 class StaffTraining::PtdosController < ApplicationController
-  filter_access_to :index, :new, :create, :show_total_days, :training_report, :attribute_check => false
+  filter_access_to :index, :new, :create, :show_total_days, :training_report, :ptdo_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_ptdo, only: [:show, :edit, :update, :destroy]
   
   def index
     roles = current_user.roles.pluck(:authname)
-    @is_admin = roles.include?("administration") || roles.include?("training_administration") || roles.include?("training_manager") || roles.include?("training_attendance_module")
+    @is_admin = roles.include?("developer") || roles.include?("administration") || roles.include?("training_administration") || roles.include?("training_manager") || roles.include?("training_attendance_module")
     @is_programme_mgr = roles.include?("programme_manager")
     @is_unit_leader = roles.include?("unit_leader")
     @is_admin_superior = true if roles.include?("administration_staff") && current_user.userable.positions.first.name=="Timbalan Pengarah (Pengurusan)"
@@ -87,10 +87,10 @@ class StaffTraining::PtdosController < ApplicationController
   end
   
   def training_report
-    who=params[:id]
-    who=params[:q][:staff_id] if who.nil?
+    #who=params[:id]
+    #who=params[:q][:staff_id] if who.nil?
     @search = Ptdo.search(params[:q])
-    @ptdos = @search.result.where('final_approve=? and staff_id=? and trainee_report is not null', true, who) 
+    @ptdos = @search.result.where('final_approve=? and staff_id=? and trainee_report is not null', true, current_user.userable_id)#who) 
     domestic_courses_ids=Ptcourse.domestic.map(&:id)
     domestic_schedule_ids=Ptschedule.where(ptcourse_id: domestic_courses_ids).map(&:id)
     @domestic = @ptdos.where('ptschedule_id IN(?)', domestic_schedule_ids)
@@ -100,11 +100,24 @@ class StaffTraining::PtdosController < ApplicationController
     
      respond_to do |format|
        format.pdf do
-         pdf = Training_reportPdf.new(@ptdos, @domestic, @overseas, who, view_context)
+         pdf = Training_reportPdf.new(@ptdos, @domestic, @overseas, current_user.userable_id, view_context)
          send_data pdf.render, filename: "training_report-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
        end
+    end
+  end
+  
+  def ptdo_list
+    @search = Ptdo.search(params[:q])
+    @ptdos = @search.result
+    respond_to do |format|
+      format.pdf do
+        pdf = Ptdo_listPdf.new(@ptdos, view_context, current_user.college)
+        send_data pdf.render, filename: "ptdo_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
     end
   end
   
@@ -116,6 +129,6 @@ class StaffTraining::PtdosController < ApplicationController
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def ptdo_params
-        params.require(:ptdo).permit(:id, :ptcourse_id, :ptschedule_id, :staff_id, :justification, :unit_review, :unit_approve, :dept_review, :dept_approve, :replacement_id, :final_approve, :trainee_report, :payment, :remark)
+        params.require(:ptdo).permit(:id, :ptcourse_id, :ptschedule_id, :staff_id, :justification, :unit_review, :unit_approve, :dept_review, :dept_approve, :replacement_id, :final_approve, :trainee_report, :payment, :remark, :college_id, {:data => []})
       end  
 end

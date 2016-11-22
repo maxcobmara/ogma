@@ -23,6 +23,10 @@ class College < ActiveRecord::Base
   has_many :examquestions
   has_many :exammarks
   has_many :grades
+  has_many :ptbudgets
+  has_many :ptcourses
+  has_many :ptschedules
+  has_many :ptdos
   # staffs
   
   serialize :data, Hash

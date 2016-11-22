@@ -7,17 +7,17 @@
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_training_ptbudget_path(:newtype =>"1")
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), ptbudget_list_staff_training_ptbudgets_path(params.merge(format: 'pdf'))
 
 %table.table-striped.table-hover.ogma
   %thead
     %tr
-      %th= t('staff.training.budget.start')
-      %th= t('staff.training.budget.budget')
-      %th= t('staff.training.budget.used')
-      %th= t('staff.training.budget.balance')
-      %th= t('staff.training.budget.balance')+" (%)"
+      %th{width: '40%'}= t('staff.training.budget.start')
+      %th{width: '15%'}= t('staff.training.budget.budget')
+      %th{width: '15%'}= t('staff.training.budget.used')
+      %th{width: '15%'}= t('staff.training.budget.balance')
+      %th{width: '15%'}= t('staff.training.budget.balance')+" (%)"
     /- @ptbudgets.each do |budget|
     /  %tbody
     /    %tr
@@ -27,6 +27,7 @@
     /      %td= ringgols(budget.budget_balance)
 
     %tbody    
+      = render "index_search"
       - @ptbudgets.group_by{|x|x.fiscal_end}.each do |fiscal_ending, budgets|
         - if budgets.count>1
           - main_budget_id=0
@@ -35,6 +36,7 @@
               - main_budget_id=ptbudget.id 
               %tr
                 %td
+                  mmmm
                   = link_to (l(ptbudget.fiscalstart).to_s+" "+t('to')+" "+l(ptbudget.fiscal_end)), staff_training_ptbudget_path(ptbudget)
                   - if ptbudget.fiscal_end > Date.today && ptbudget.fiscal_end <= Date.today.end_of_year
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -82,4 +84,4 @@
             %td{:style =>"text-align: right;"}=h ringgols(ptbudget.budget) 
             %td{:style =>"text-align: right;"}=h ringgols(ptbudget.used_budget)
             %td{:style =>"text-align: right;"}=h ringgols(ptbudget.budget_balance)
-            %td{:style =>"text-align: right;"}=h number_with_precision((ptbudget.budget_balance.to_f / ptbudget.budget.to_f) *  100, :precision => 2)
+            %td{:style =>"text-align: right;"}=h number_with_precision(ptbudget.budget_balance_percent, :precision => 2)

@@ -2,7 +2,8 @@ class Ptcourse < ActiveRecord::Base
   
   has_many :scheduled, :class_name => 'Ptschedule'
   belongs_to :provider, :class_name => 'AddressBook', :foreign_key => 'provider_id'
-  
+  belongs_to  :college, :foreign_key => 'college_id'
+
   validates_presence_of :name
   validates_presence_of :level, :if => :trainingclass?
   

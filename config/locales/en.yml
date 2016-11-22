@@ -1245,6 +1245,7 @@ en:
         level: Level
         domestic: Domestic
         overseas: Overseas
+        cost: Cost
       schedule:
         title_schedule: Training Schedule
         new: Schedule a Course
@@ -1258,7 +1259,9 @@ en:
         duration: Duration
         budget_ok: Budget Approval
         min_participants: Minimum Participants
-        max_participnats: Maximum Participants
+        max_participants: Maximum Participants
+        min: Min
+        max: Max
         manage: Manage Schedule
         participants_expenses: "Participants & Expenses"
         payment_method: Payment Method

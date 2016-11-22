@@ -7,14 +7,14 @@
   .form-group
     %label.col-sm-2.control-label= f.label t 'staff.training.schedule.start', for: :start
     .col-md-2
-      = f.text_field :start, class: 'form-control date_picker '
+      = f.text_field :start, class: 'form-control date_picker_reverse', value: @ptschedule.start.try(:strftime, '%d-%m-%Y')
 
   .form-group
     %label.col-sm-2.control-label= f.label t 'staff.training.schedule.participants', for: :min_participants
     .col-md-1
-      = f.text_field :min_participants, class: 'form-control', placeholder: "Min"
+      = f.text_field :min_participants, class: 'form-control', placeholder: (t 'staff.training.schedule.min')
     .col-md-1
-      = f.text_field :max_participants, class: 'form-control', placeholder: "Max"
+      = f.text_field :max_participants, class: 'form-control', placeholder: (t 'staff.training.schedule.max')
 
 
   .form-group

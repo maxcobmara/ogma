@@ -6,23 +6,23 @@
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), participantexpenses_list_staff_training_ptschedules_path(params.merge(format: 'pdf'))
 
 .row
   %table.table-striped.table-hover.ogma
     %thead
       %tr
         %th No
-        %th= t('staff.training.application_status.staff_name')
-        %th= t('staff.position')
-        %th= sort_link(@search, :course_name, t('staff.training.application_status.course_name'))
-        %th= sort_link(@search, :start, (t('staff.training.schedule.start')+' - '+t('staff.training.schedule.end')))
-        %th= t('staff.training.schedule.duration')
-        %th= sort_link(@search, :final_price , t('staff.training.schedule.price'))
-        %th= t('staff.training.schedule.budget_ok')
-        %th= sort_link(@search, :min_participants , t('staff.training.schedule.min_participants'))
-        %th= sort_link(@search, :payment, (t('staff.training.schedule.local_order')+' / '+t('staff.training.schedule.cash')))
-        %th= t('staff.training.schedule.remark')
+        %th{width: '18%'}= t('staff.training.application_status.staff_name')
+        %th{width: '8%'}= t('staff.position')
+        %th{width: '15%'}= sort_link(@search, :course_name, t('staff.training.application_status.course_name'))
+        %th{width: '12%'}= sort_link(@search, :start, (t('staff.training.schedule.start')+' - '+t('staff.training.schedule.end')))
+        %th{width: '5%'}= t('staff.training.schedule.duration')
+        %th{width: '8%'}= sort_link(@search, :final_price , t('staff.training.schedule.price'))
+        %th{width: '4%'}= t('staff.training.schedule.budget_ok')
+        %th{width: '10%'}= sort_link(@search, :min_participants , t('staff.training.schedule.min_participants'))
+        %th{width: '10%'}= sort_link(@search, :payment, (t('staff.training.schedule.local_order')+' / '+t('staff.training.schedule.cash')))
+        %th{width: '10%'}= t('staff.training.schedule.remark')
       
     %tbody
       = render "index_search3"
@@ -34,20 +34,17 @@
         - ptdos.each_with_index do |ptdo, indexx|
           %tr
             %td=no+=1
-            %td= ptdo.staff.name
+            %td= ptdo.staff.staff_with_rank
             %td=h ptdo.staff.try(:positions).try(:first).try(:name)
             - if indexx==0
               %td{:rowspan=>"#{ptdos.count}"}=h link_to(ptschedule.course.name, staff_training_ptschedule_path(ptschedule))
               %td{:rowspan=>"#{ptdos.count}", :align => :center}=h (ptschedule.start.try(:strftime, '%d-%m-%Y')).to_s+" " +t('to').downcase+"  "+(ptdo.ptschedule.enddate.try(:strftime, '%d-%m-%Y')).to_s
               %td{:rowspan=>"#{ptdos.count}", :align => :center}=duration_in_string=ptschedule.course.course_total_days
               %td{:rowspan=>"#{ptdos.count}"}=h ringgols(ptschedule.final_price)
-              %td{:rowspan=>"#{ptdos.count}", :align => :center}=h ptschedule.budget_ok? ? image_tag('tick.png') : image_tag('cross.png')
+              %td{:rowspan=>"#{ptdos.count}", :align => :center}=h ptschedule.budget_ok? ? fa_icon('check') : fa_icon('times')
               %td{:rowspan=>"#{ptdos.count}", :align => :center}
                 - participants_no=ptdos.count
-                - if participants_no >= ptschedule.min_participants
-                  = image_tag('tick.png')
-                - else
-                  = image_tag('cross.png') 
+                = participants_no >= ptschedule.min_participants ? fa_icon('check') : fa_icon('times')
                 %br
                 = participants_no.to_s+" / "+ptschedule.min_participants.to_s+" ("+ptschedule.max_participants.to_s+")"
               %td{:rowspan=>"#{ptdos.count}", :align => :center}=h ptschedule.render_payment

@@ -1,5 +1,5 @@
 class StaffTraining::PtbudgetsController < ApplicationController
-  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :index, :new, :create, :ptbudget_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   helper_method :sort_column, :sort_direction
   before_action :set_ptbudget, only: [:show, :edit, :update, :destroy]
@@ -28,7 +28,12 @@ class StaffTraining::PtbudgetsController < ApplicationController
   # GET /ptbudgets/new.xml
   def new
     @ptbudget = Ptbudget.new
-    @newtype = params[:newtype]
+    newtype = params[:newtype]
+    if newtype=="1"
+      @ptbudget.fiscalstart= @ptbudget.next_budget_date
+    elsif newtype =="2" 
+      @ptbudget.fiscalstart = Date.today 
+    end
     #@ptbudget.fiscalstart = Ptbudget.last.fiscalstart + 1.year rescue Date.today
 
     respond_to do |format|
@@ -95,9 +100,23 @@ class StaffTraining::PtbudgetsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-end
+  
+  def ptbudget_list
+    @search = Ptbudget.search(params[:q])
+    @ptbudgets = @search.result
+    respond_to do |format|
+      format.pdf do
+        pdf = Ptbudget_listPdf.new(@ptbudgets, view_context, current_user.college)
+        send_data pdf.render, filename: "budget_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
 
-private
+
+  private
     # Use callbacks to share common setup or constraints between actions.
     def set_ptbudget
       @ptbudget = Ptbudget.find(params[:id])
@@ -106,7 +125,7 @@ private
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ptbudget_params
-      params.require(:ptbudget).permit(:fiscalstart, :budget, :used_budget, :budget_balance)
+      params.require(:ptbudget).permit(:fiscalstart, :budget, :used_budget, :budget_balance, :college_id, {:data => []})
     end
     
     def sort_column
@@ -116,3 +135,5 @@ private
     def sort_direction
         %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
     end
+    
+end

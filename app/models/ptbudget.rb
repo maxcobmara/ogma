@@ -1,10 +1,36 @@
 class Ptbudget < ActiveRecord::Base
   
+  belongs_to  :college, :foreign_key => 'college_id'
+
   validates_presence_of :fiscalstart, :budget
   validates_uniqueness_of :fiscalstart
   
+  # define scope
+  def self.budget_balance_search(query) 
+    budget_ids=[]
+    Ptbudget.all.each{|x|budget_ids << x.id if x.budget_balance.to_f==query.to_f}
+    where(id: budget_ids)
+  end
+  
+  def self.used_budget_search(query) 
+    budget_ids=[]
+    Ptbudget.all.each{|x|budget_ids << x.id if x.used_budget.to_f==query.to_f}
+    where(id: budget_ids)
+  end
+  
+  def self.budget_balance_percent_search(query) 
+    budget_ids=[]
+    Ptbudget.all.each{|x|budget_ids << x.id if x.budget_balance_percent.to_f==query.to_f}
+    where(id: budget_ids)
+  end
+  
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:budget_balance_search, :used_budget_search, :budget_balance_percent_search]
+  end
+  
   def budget_start
-   Ptbudget.first.fiscalstart
+   Ptbudget.first.fiscalstart  rescue Date.today
   end
   
   def fiscal_end
@@ -34,6 +60,10 @@ class Ptbudget < ActiveRecord::Base
     acc_budget-used_budget
   end
   
+  def budget_balance_percent
+    (budget_balance.to_f / budget.to_f) *  100
+  end
+  
   def acc_budget   #accumulated as of current fiscalstart
     if fiscalstart.month==budget_start.month && fiscalstart.day==budget_start.day 
       accumulated_budget=budget
@@ -53,7 +83,7 @@ class Ptbudget < ActiveRecord::Base
         count+=1
       end
     end
-    @last_main+1.year
+    budget_date = @last_main+1.year rescue Date.today #@last_main+1.year
   end 
   
 end
