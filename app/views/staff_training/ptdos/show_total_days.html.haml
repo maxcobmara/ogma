@@ -7,7 +7,7 @@
 
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to t('staff.training.application_status.training_request'), staff_training_ptdos_path
+    %li= link_to (fa_icon "sun-o", text: (t 'staff.training.application_status.training_request')), staff_training_ptdos_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li.dropdown

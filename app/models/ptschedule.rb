@@ -2,6 +2,7 @@ class Ptschedule < ActiveRecord::Base
 
   has_many :ptdos, :dependent => :destroy
   belongs_to :course, :class_name => 'Ptcourse', foreign_key: 'ptcourse_id'
+  belongs_to  :college, :foreign_key => 'college_id'
   
   validates_presence_of :ptcourse_id, :message => "Please Select Course"
   validates_presence_of :start, :location, :min_participants, :max_participants

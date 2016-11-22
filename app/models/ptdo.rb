@@ -1,6 +1,7 @@
 class Ptdo < ActiveRecord::Base
   before_save  :whoami, :auto_unit_approval_for_academician
 
+  belongs_to  :college, :foreign_key => 'college_id'
   belongs_to  :ptschedule
   belongs_to  :staff
   belongs_to  :applicant, :class_name => 'Staff',   :foreign_key => 'staff_id'
@@ -122,7 +123,11 @@ class Ptdo < ActiveRecord::Base
         elsif checker == []
           "Staff No Longer Exists"
        else
-         staff.mykad_with_staff_name
+         if college.code=='amsas'
+           staff.staff_with_rank
+         else
+           staff.mykad_with_staff_name
+         end
        end
   end
   

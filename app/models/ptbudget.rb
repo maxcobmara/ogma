@@ -1,5 +1,7 @@
 class Ptbudget < ActiveRecord::Base
   
+  belongs_to  :college, :foreign_key => 'college_id'
+
   validates_presence_of :fiscalstart, :budget
   validates_uniqueness_of :fiscalstart
   
