@@ -134,6 +134,9 @@
   %li=link_to content_tag(:span, "#{creator_approved_examquestions}", class: "badge") +(t 'notifications.creator_approved_examquestions'), exam_examquestions_path
   
  #23Nov2016
+ - if approved_ptdos > 0
+  %li=link_to content_tag(:span, "#{approved_ptdos}", class: "badge") +(t 'notifications.approved_ptdos'), staff_training_ptdos_path
+ 
  - if final_approval_ptdos > 0
   %li=link_to content_tag(:span, "#{final_approval_ptdos}", class: "badge") +(t 'notifications.final_approval_ptdos'), staff_training_ptdos_path
   

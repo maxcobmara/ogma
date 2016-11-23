@@ -9,6 +9,7 @@ class Ptschedule < ActiveRecord::Base
   
   validates :max_participants, :numericality => { :less_than_or_equal_to => 999 }
   validates :min_participants, :numericality => { :greater_than => 0, :less_than_or_equal_to => :max_participants }, :unless => 'max_participants.nil?'
+  validates :final_price, presence: true, :if => :budget_ok?
   
   def enddate
     duration=Ptdo.staff_course_days(Ptcourse.find(ptcourse_id))

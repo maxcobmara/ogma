@@ -20,34 +20,39 @@
             %dd= h @ptdo.ptschedule.try(:course).try(:name)
 
             %dt= t 'staff.training.application_status.date'
-            %dd= h @ptdo.ptschedule.start
+            %dd= h @ptdo.ptschedule.start.try(:strftime, '%d-%m-%Y')
 
             %dt= t 'staff.training.application_status.staff_name'
             %dd= link_to @ptdo.applicant_details, (staff_info_path(@ptdo.staff_id)) rescue nil
             
-            %br
-            %dt= t 'staff.training.application_status.justification'
-            %dd= h @ptdo.justification
+            - if @ptdo.college.code!='amsas'
+              %br
+              %dt= t 'staff.training.application_status.justification'
+              %dd= h @ptdo.justification
 
-            %dt= t 'staff.training.application_status.unit_review'
-            %dd= h @ptdo.unit_review
+              %dt= t 'staff.training.application_status.unit_review'
+              %dd= h @ptdo.unit_review
 
-            %dt= t 'staff.training.application_status.unit_decision'
-            %dd= h @ptdo.unit_approve? ? t('staff.training.application_status.approved') :  t('staff.training.application_status.rejected')
+              %dt= t 'staff.training.application_status.unit_decision'
+              %dd= h @ptdo.unit_approve? ? t('staff.training.application_status.approved') :  t('staff.training.application_status.rejected')
+            
+              %br
+              %dt= t 'staff.training.application_status.dept_review'
+              %dd= h @ptdo.dept_review
+            
+              %dt= t 'staff.training.application_status.dept_decision'
+              %dd= h @ptdo.dept_approve? ? t('staff.training.application_status.approved') :  t('staff.training.application_status.rejected')
+            
+              %dt= t 'staff.training.application_status.replacement_staff'
+              %dd= h @ptdo.replacement.try(:name)
             
             %br
-            %dt= t 'staff.training.application_status.dept_review'
-            %dd= h @ptdo.dept_review
-            
-            %dt= t 'staff.training.application_status.dept_decision'
-            %dd= h @ptdo.dept_approve? ? t('staff.training.application_status.approved') :  t('staff.training.application_status.rejected')
-            
-            %dt= t 'staff.training.application_status.replacement_staff'
-            %dd= h @ptdo.replacement.try(:name)
-            
-            %br
-            %dt= t 'staff.training.application_status.final_approve'
-            %dd= h @ptdo.final_approve? ? t('staff.training.application_status.approved') :  t('staff.training.application_status.rejected')
+            %dt= @ptdo.college.code=='amsas' ? (t 'staff.training.application_status.single_approve') : (t 'staff.training.application_status.final_approve')
+            %dd
+              - if @ptdo.college.code=='amsas'
+                = h @ptdo.final_approve? ? t('staff.training.application_status.approved') : t('staff.training.application_status.auto_app_require_director_app')
+              - else
+                = h @ptdo.final_approve? ? t('staff.training.application_status.approved') :  t('staff.training.application_status.rejected')
             
             %dt= t 'staff.training.application_status.trainee_report'
             %dd= h @ptdo.trainee_report

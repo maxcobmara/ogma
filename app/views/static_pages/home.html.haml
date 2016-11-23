@@ -9,8 +9,11 @@
     /=Page.find(1).college.name
     =@college.name
   .col-md-3
-  .col-md-3.piclogo{:style => "float:right; height:120px; background:#999;"}
-   logo
+  /.col-md-3.piclogo{:style => "float:right; height:120px; background:#999;"}
+  / logo
+  .col-md-3.piclogo{:style => "display: table; float:right; height:120px; background:#999;text-align: center;"}
+   /logo
+   %span{:style => "display: table-cell; vertical-align: middle;"}=image_tag @college.logo
  .row.title
   .col-md-4
    /= simple_format(Page.find(1).body)
