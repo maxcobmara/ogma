@@ -266,6 +266,22 @@ module Notifications
     Examquestion.where(qstatus: 'Approved').where(creator_id: current_staff_id).count
   end
   
+  #all colleges
+  def final_approval_ptdos 
+    Ptdo.where(unit_approve: true).where(dept_approve: true).where(final_approve: [nil, false]).where(staff_id: current_user.director_subordinates).count
+  end
+  
+  #kskbjb only TODO - check below againts kskbjb data
+  #programme manager - user.unit_members (NOTE - unit approval - auto approved for lecturers)
+  #administration staff (Timbalan Pengarah) - user.admin_subordinates
+  def dept_approval_ptdos
+    Ptdo.where(unit_approve: true).where(dept_approve: [nil, false]).where(staff_id: current_user.unit_members+current_user.admin_subordinates).count
+  end
+  #unit leader - user.unit_members
+  def unit_approval_ptdos
+    Ptdo.where(unit_approve: [nil, false]).where(staff_id: current_user.unit_members).count
+  end
+  
 end
 
 

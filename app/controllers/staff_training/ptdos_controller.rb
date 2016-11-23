@@ -10,7 +10,7 @@ class StaffTraining::PtdosController < ApplicationController
     @is_unit_leader = roles.include?("unit_leader")
     @is_admin_superior = true if roles.include?("administration_staff") && current_user.userable.positions.first.name=="Timbalan Pengarah (Pengurusan)"
     if current_user.college.code=="amsas"
-      directors=Position.where(name: ['Pengarah Pendidikan Dan Latihan', 'Komandan Akademi', 'Komandan Pusat Latihan', 'Ketua Penolong Pengarah Kompetensi/Kawalan Mutu']).pluck(:staff_id)
+      directors=Position.where('name ILIKE(?) OR name ILIKE(?) OR name ILIKE(?)', 'Pengarah%', 'Komandan%', 'Ketua Penolong Pengarah%').pluck(:staff_id)
       @is_director = true if directors.include?(current_user.userable_id)
     else
       @is_director = true if roles.include?("administration_staff") && current_user.userable.positions.first.name=="Pengarah"
@@ -27,13 +27,9 @@ class StaffTraining::PtdosController < ApplicationController
       end
       @search = Ptdo.unit_members(current_user.userable.positions.first.unit, current_user.userable_id, roles2).search(params[:q])
     elsif @is_admin_superior
-       @search = Ptdo.where(staff_id: @current_user.admin_subordinates).search(params[:q])
+       @search = Ptdo.where(staff_id: current_user.admin_subordinates).search(params[:q])
     elsif @is_director
-      if current_user.college.code=="amsas"
-        @search=Ptdo.search(params[:q]) #directors should be able to see all application
-      else
-        @search = Ptdo.where(staff_id: @current_user.director_subordinates).search(params[:q])
-      end
+        @search = Ptdo.where(staff_id: current_user.director_subordinates).search(params[:q])
     else
       @search = Ptdo.sstaff2(current_user.userable.id).search(params[:q])
     end 

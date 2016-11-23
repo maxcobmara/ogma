@@ -1286,7 +1286,9 @@ en:
         await_dept_app: Awaiting Department Approval
         app_by_unit_head: "Approved by Unit head, awaiting Dept approval"
         app_by_dept_head: "Approved by Dept head, awaiting Pengarah approval"
+        auto_app_require_director_app: "Awaiting Director / Comandant / Chief Asst Director approval"
         all_app_comp: All approvals complete
+        approval_completed: Application Approved
         report_submit: Report Submitted
         status_not_available: Status Not Available
         staff_training_details: Staff Training Details
@@ -4210,6 +4212,9 @@ en:
     editors_rejected_examquestion: " Checked Examquestions were rejected"
     editors_pending_submission_for_approval: " Examquestions - pending submission for approval"
     creator_approved_examquestions: " Examquestions were approved"
+    final_approval_ptdos: " Staff Training requests for final approval"
+    dept_approval_ptdos: "Staff Training requests for Department approval"
+    unit_approval_ptdos: " Staff Training request for Unit approval"
     
   helpers:
     links:

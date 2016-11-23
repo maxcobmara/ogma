@@ -272,7 +272,7 @@ class User < ActiveRecord::Base
     post_name=mypost.name
     if college.code=="amsas"
       dir_sub=[]
-      directors_post=Position.where(name: ['Pengarah Pendidikan Dan Latihan', 'Komandan Akademi', 'Komandan Pusat Latihan', 'Ketua Penolong Pengarah Kompetensi/Kawalan Mutu'])
+      directors_post=Position.where('name ILIKE(?) OR name ILIKE(?) OR name ILIKE(?)', 'Pengarah%', 'Komandan%', 'Ketua Penolong Pengarah%')
       directors_post.each{|x|dir_sub+=x.descendants.pluck(:staff_id)}
     else
       if post_name=="Pengarah"
