@@ -1,29 +1,12 @@
 class Student::StudentCounselingSessionsController < ApplicationController
-  filter_access_to :index, :new, :create, :feedback_referrer, :attribute_check => false
+  filter_access_to :index, :new, :create, :feedback_referrer, :counseling_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_student_counseling_session, only: [:show, :edit, :update, :destroy]
+  before_action :set_index_list, only: [:index, :counseling_list]
    
   # GET /student_counseling_sessions
   # GET /student_counseling_sessions.xml
   def index
-    @search = StudentCounselingSession.search(params[:q])
-    @appointments = @search.result.find_appointment
-    @appointments = @appointments.page(params[:page]||1)  
-    @session_dones = @search.result.find_session_done
-    #@session_dones = @session_dones.page(params[:page]||1)
-    @student_counseling_sessions = @search.result
-    @student_counseling_sessions = @student_counseling_sessions.page(params[:page]||1)
-    
-    @appointments_by_case = @appointments.group_by{|item|item.case_id}
-    @session_dones_by_case = @session_dones.group_by{|item|item.case_id}
-    
-    @sdc=[]
-    @session_dones_by_case.each do |caseid, ss|
-      @sdc << ss
-    end
-    
-    @sdc =  Kaminari.paginate_array(@sdc).page(params[:page]||1) 
-    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @student_counseling_sessions }
@@ -133,10 +116,41 @@ class Student::StudentCounselingSessionsController < ApplicationController
      end
   end
   
+  def counseling_list
+    respond_to do |format|
+      format.pdf do
+        pdf =Counseling_listPdf.new(@appointments, @appointments_by_case, @session_dones, @session_dones_by_case, view_context, current_user.college)
+        send_data pdf.render, filename: "counseling_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_student_counseling_session
       @student_counseling_session = StudentCounselingSession.find(params[:id])
+    end
+    
+    def set_index_list
+      @search = StudentCounselingSession.search(params[:q])
+      @appointments = @search.result.find_appointment
+      @appointments = @appointments.page(params[:page]||1)  
+      @session_dones = @search.result.find_session_done
+      #@session_dones = @session_dones.page(params[:page]||1)
+      @student_counseling_sessions = @search.result
+      @student_counseling_sessions = @student_counseling_sessions.page(params[:page]||1)
+    
+      @appointments_by_case = @appointments.group_by{|item|item.case_id}
+      @session_dones_by_case = @session_dones.group_by{|item|item.case_id}
+    
+      @sdc=[]
+      @session_dones_by_case.each do |caseid, ss|
+        @sdc << ss
+      end
+    
+      @sdc =  Kaminari.paginate_array(@sdc).page(params[:page]||1) 
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
