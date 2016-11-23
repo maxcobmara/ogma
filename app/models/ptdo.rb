@@ -1,5 +1,5 @@
 class Ptdo < ActiveRecord::Base
-  before_save  :whoami, :auto_unit_approval_for_academician
+  before_save  :whoami, :auto_unit_approval_for_academician, :auto_unit_dept_approval_amsas
 
   belongs_to  :college, :foreign_key => 'college_id'
   belongs_to  :ptschedule
@@ -41,13 +41,22 @@ class Ptdo < ActiveRecord::Base
   end
 
   def auto_unit_approval_for_academician
-    if unit_approve.blank? 
+    if unit_approve.blank? && college.code!='amsas'
       applicant_roles=User.where(userable_id: staff_id).first.roles.map(&:name)
       if applicant_roles.include?("Lecturer") || Programme.roots.map(&:name).include?(applicant.positions.first.unit) #14 - Lecturer
         self.unit_approve=true
         self.unit_review="Auto-approved"
         self.justification="Not applicable for academician"
       end
+    end
+  end
+  
+  def auto_unit_dept_approval_amsas
+    if college.code=='amsas'
+      self.unit_approve=true
+      self.unit_review="Not applicable"
+      self.dept_approve=true
+      self.dept_review="Not applicable"
     end
   end
   
@@ -103,9 +112,17 @@ class Ptdo < ActiveRecord::Base
         I18n.t("staff.training.application_status.app_by_unit_head")#"Approved by Unit head, awaiting Dept approval"
       end  
     elsif dept_approve == true && dept_approve == true && final_approve.nil? == true
-      I18n.t("staff.training.application_status.app_by_dept_head") #"Approved by Dept head, awaiting Pengarah approval"
+      if college.code=='amsas'
+        I18n.t("staff.training.application_status.auto_app_require_director_app") #Amsas only - auto Unit & Dept Approval, just require Director/Komandan/Chief Asst Director
+      else
+        I18n.t("staff.training.application_status.app_by_dept_head") #"Approved by Dept head, awaiting Pengarah approval"
+      end
     elsif dept_approve == true && dept_approve == true && final_approve == true && trainee_report.nil? == true
-      I18n.t("staff.training.application_status.all_app_comp") #"All approvals complete"
+      if college.code=='amsas'
+        I18n.t("staff.training.application_status.approval_completed")  #Approved
+      else
+        I18n.t("staff.training.application_status.all_app_comp") #"All approvals complete"
+      end
     elsif dept_approve == true && dept_approve == true && final_approve == true && trainee_report.nil? == false
       I18n.t("staff.training.application_status.report_submit") #"Report Submitted"
     else

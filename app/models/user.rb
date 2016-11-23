@@ -270,10 +270,16 @@ class User < ActiveRecord::Base
   def director_subordinates
     mypost=userable.positions.first
     post_name=mypost.name
-    if post_name=="Pengarah"
-      dir_sub=mypost.descendants.map(&:staff_id)
-    else
+    if college.code=="amsas"
       dir_sub=[]
+      directors_post=Position.where('name ILIKE(?) OR name ILIKE(?) OR name ILIKE(?)', 'Pengarah%', 'Komandan%', 'Ketua Penolong Pengarah%')
+      directors_post.each{|x|dir_sub+=x.descendants.pluck(:staff_id)}
+    else
+      if post_name=="Pengarah"
+        dir_sub=mypost.descendants.map(&:staff_id)
+      else
+        dir_sub=[]
+      end
     end
     dir_sub
   end

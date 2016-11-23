@@ -149,6 +149,18 @@ authorization do
      if_attribute :final_approve => is {true}
      if_attribute :ptschedule_id => is_in {Ptschedule.where('start <=?', Date.today).pluck(:id)}
    end
+   # NOTE - for amsas - just 'staff' role, whereas  for kskbjb - director (approving ptdo) requires 'administration_staff' role 
+   has_permission_on :staff_training_ptdos, :to => [:read, :ptdo_list], :join_by => :and do
+     if_attribute :staff_id => is_in {user.director_subordinates}   
+     if_attribute :college_id => is {College.where(code: 'amsas').first.id}
+   end
+    has_permission_on :staff_training_ptdos, :to => :update, :join_by => :and do                        # Comandant / Chief Assistant Director / Director
+      if_attribute :staff_id => is_in {user.director_subordinates}                                                        
+      if_attribute :unit_approve => is {true}
+      if_attribute :dept_approve => is {true}
+      if_attribute :final_approve => is_not {true}
+      if_attribute :college_id => is {College.where(code: 'amsas').first.id}
+    end
  
    #instructor Appraisal
    has_permission_on :staff_instructor_appraisals, :to => :menu
@@ -984,12 +996,15 @@ authorization do
       if_attribute :unit_approve => is {true}
       if_attribute :dept_approve => is_not {true}
     end
+    # NOTE - for kskbjb - director (approving ptdo) requires 'administration_staff' role whereas for amsas - just 'staff' role
     has_permission_on :staff_training_ptdos, :to => :update, :join_by => :and do                        # act a Director
       if_attribute :staff_id => is_in {user.director_subordinates}
       if_attribute :unit_approve => is {true}
       if_attribute :dept_approve => is {true}
       if_attribute :final_approve => is_not {true}
+      if_attribute :college_id => is_not {College.where(code: 'amsas').first.id}
     end
+    
     #access for Timbalan Pengarah (Pengurusan) & Pengarah(Timbalans+Ketua2 Programs)
     has_permission_on :staff_staff_attendances, :to => [:approval, :update, :show] do
       if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}

@@ -1,0 +1,22 @@
+.col-md-offset-3
+  - permitted_to? :update, :staff_training_ptdos do
+    - if @ptdo.dept_approve? && @ptdo.final_approve.blank? 
+      /&& @current_user.userable.positions.first.name == "Pengarah" ||  
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'staff.training.application_status.final_approve'
+        .col-md-3
+          = f.check_box :final_approve, class: 'form-control'
+              
+  - if (@ptdo.dept_approve? && @ptdo.final_approve?) && (@ptdo.staff_id == @current_user.userable_id  || is_developer? || current_user.roles.pluck(:authname).include?("administration"))
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'staff.training.application_status.trainee_report'
+      .col-md-3
+        = f.text_area :trainee_report, :size => "30x5", class: 'form-control'
+
+  .form-group
+    .col-sm-offset-2.col-sm-1
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_training_ptdos_path, :class => 'btn btn-default'
+    .col-md-2
+      = f.submit t('update'), class: "btn btn-primary"

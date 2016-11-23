@@ -1240,6 +1240,7 @@ ms_MY:
         remark: Catatan
         budget_ok: Kelulusan Perbelanjaan
         tick_to_approve: Pilih kotak semak untuk luluskan
+        applied_attended: "Telah dipohon / dihadiri"
       application_status:
         title_apply: Permohonan Latihan
         title: Status Permohonan
@@ -1255,7 +1256,9 @@ ms_MY:
         await_dept_app: Menunggu Kelulusan Jabatan
         app_by_unit_head: "Diluluskan oleh Ketua Unit, menunggu kelulusan Ketua Jabatan"
         app_by_dept_head: "Diluluskan oleh Ketua Jabatan, menunggu kelulusan Pengarah"
+        auto_app_require_director_app: "Menunggu kelulusan Pengarah / Komandan / Ketua Penolong Pengarah"
         all_app_comp: Semua kelulusan lengkap
+        approval_completed: Permohonan Diluluskan
         report_submit: Laporan telah dihantar
         status_not_available: Status tidak tersedia
         staff_training_details: Maklumat Latihan Staf
@@ -4131,6 +4134,9 @@ ms_MY:
     editors_rejected_examquestion: " Soalan Peperiksaan yang disemak telah ditolak"
     editors_pending_submission_for_approval: " Soalan Peperiksaan dalam semakan belum dihantar untuk kelulusan"
     creator_approved_examquestions: " Soalan Peperiksaan telah diluluskan"
+    final_approval_ptdos: " Permohonan Latihan Staf untuk kelulusan akhir"
+    dept_approval_ptdos: " Permohonan Latihan Staf untuk kelulusan Jabatan"
+    unit_approval_ptdos: " Permohonan Latihan Staf untuk kelulusan Unit"
     
   helpers:
     links:

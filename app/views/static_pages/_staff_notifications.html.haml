@@ -132,3 +132,16 @@
   
  - if creator_approved_examquestions > 0
   %li=link_to content_tag(:span, "#{creator_approved_examquestions}", class: "badge") +(t 'notifications.creator_approved_examquestions'), exam_examquestions_path
+  
+ #23Nov2016
+ - if final_approval_ptdos > 0
+  %li=link_to content_tag(:span, "#{final_approval_ptdos}", class: "badge") +(t 'notifications.final_approval_ptdos'), staff_training_ptdos_path
+  
+ - if dept_approval_ptdos > 0
+  %li=link_to content_tag(:span, "#{dept_approval_ptdos}", class: "badge") +(t 'notifications.dept_approval_ptdos'), staff_training_ptdos_path
+  
+ - if unit_approval_ptdos > 0
+  %li=link_to content_tag(:span, "#{unit_approval_ptdos}", class: "badge") +(t 'notifications.unit_approval_ptdos'), staff_training_ptdos_path
+    
+  
+  
