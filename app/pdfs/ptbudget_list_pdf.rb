@@ -15,14 +15,20 @@ class Ptbudget_listPdf < Prawn::Document
   def record
     total_recs=@ptbudgets.count
     sum_rows=[]
+    sub_rows=[]
     ind=0
     no=2
     @ptbudgets.group_by{|x|x.fiscal_end}.sort.reverse.each do |fiscal_ending, budgets|
       if budgets.count>1
         budgets.each do |ptbudget|
-          ptbudgets_multiple_cnt=Ptbudget.where('id IN(?) and id!=?', budgets.map(&:id), ptbudget.id).order(fiscalstart: :asc).count
+          ptbudgets_multiple=Ptbudget.where('id IN(?) and id!=?', budgets.map(&:id), ptbudget.id).order(fiscalstart: :asc)
+          ptbudgets_multiple_cnt=ptbudgets_multiple.count
           sum_rows << no+1+ptbudgets_multiple_cnt
-	  #ind=no+1+ptbudgets_multiple_cnt
+          sub_cnt=0
+          for subbudget in ptbudgets_multiple
+            sub_rows << no+1+sub_cnt
+            sub_cnt+=1
+	  end
         end
       else
       end
@@ -39,6 +45,9 @@ class Ptbudget_listPdf < Prawn::Document
       self.width=520
       for sum_row in sum_rows
         row(sum_row).font_style=:bold
+      end
+      for sub_row in sub_rows
+        row(sub_row).column(0).align=:right
       end
     end
   end
