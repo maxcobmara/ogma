@@ -4,9 +4,11 @@
       /&& @current_user.userable.positions.first.name == "Pengarah" ||  
       .form-group
         .col-sm-2.control-label
-          = f.label t 'staff.training.application_status.final_approve'
-        .col-md-3
+          = f.label t 'staff.training.application_status.single_approve'
+        .col-md-1
           = f.check_box :final_approve, class: 'form-control'
+        .col-md-5
+          .small=t 'staff.training.application_status.director_app'
               
   - if (@ptdo.dept_approve? && @ptdo.final_approve?) && (@ptdo.staff_id == @current_user.userable_id  || is_developer? || current_user.roles.pluck(:authname).include?("administration"))
     .form-group
@@ -16,7 +18,7 @@
         = f.text_area :trainee_report, :size => "30x5", class: 'form-control'
 
   .form-group
-    .col-sm-offset-2.col-sm-1
+    .col-sm-offset-2.col-sm-2
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_training_ptdos_path, :class => 'btn btn-default'
     .col-md-2
       = f.submit t('update'), class: "btn btn-primary"

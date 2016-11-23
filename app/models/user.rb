@@ -272,8 +272,13 @@ class User < ActiveRecord::Base
     post_name=mypost.name
     if college.code=="amsas"
       dir_sub=[]
+      #any of these positions can approve anybody application
       directors_post=Position.where('name ILIKE(?) OR name ILIKE(?) OR name ILIKE(?)', 'Pengarah%', 'Komandan%', 'Ketua Penolong Pengarah%')
-      directors_post.each{|x|dir_sub+=x.descendants.pluck(:staff_id)}
+      if directors_post.pluck(:staff_id).include?(userable_id)
+        directors_post.each{|x|dir_sub+=x.descendants.pluck(:staff_id)}
+      else
+        dir_sub=[]
+      end
     else
       if post_name=="Pengarah"
         dir_sub=mypost.descendants.map(&:staff_id)

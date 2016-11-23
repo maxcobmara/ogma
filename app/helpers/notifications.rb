@@ -267,6 +267,10 @@ module Notifications
   end
   
   #all colleges
+  def approved_ptdos
+    Ptdo.where(unit_approve: true).where(dept_approve: true).where(final_approve: true).where(staff_id: current_staff_id).where(trainee_report: nil).count
+  end
+  #all colleges
   def final_approval_ptdos 
     Ptdo.where(unit_approve: true).where(dept_approve: true).where(final_approve: [nil, false]).where(staff_id: current_user.director_subordinates).count
   end
