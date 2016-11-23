@@ -3,13 +3,16 @@
 
 .row.fluid
   - student_ids = StudentDisciplineCase.all.pluck(:student_id).uniq
-  - @students_disciplines = Student.where(id: student_ids).order(course_id: :asc)
+  - if current_user.college.code=="amsas"
+    - @students_disciplines = Student.where(id: student_ids).order(rank_id: :asc, name: :asc)
+  - else
+    - @students_disciplines = Student.where(id: student_ids).order(course_id: :asc)
   = form_tag(action: :anacdotal_report, format: 'pdf') do
     .row
       .col-md-offset-3
         .form-group
           .col-sm-2.control-label
-            %b= t 'student.students.matrix_name'
+            %b= current_user.college.code=='amsas' ? (t 'student.students.name') : (t 'student.students.matrix_name')
           .col-md-5
             - if current_user.college.code=="kskbjb"
               = select_tag('student', options_from_collection_for_select(@students_disciplines,:id, :matrix_name), :include_blank=> (t 'select'), class: 'selectpicker', 'data-width'=>"90%")

@@ -3,7 +3,14 @@
     %td= f.text_field :icno_cont, size: 2,  :class => "form-control"
     %td
       .col-md-5= f.text_field :name_cont, class: "form-control", placeholder: "Student Name"
-      .col-md-4=f.collection_select :course_id_eq, Programme.roots, :id, :programme_list, {include_blank: (t 'actions.all_records')}, {class: 'selectpicker'}
+      .col-md-4
+        =f.collection_select :course_id_eq, Programme.roots, :id, :programme_list, {include_blank: (t 'actions.all_programmes'), "data-width"=> "auto"}, {class: 'selectpicker'}
+        - intakes=[]
+        - if current_user.college.code=='amsas'
+          - Intake.select('DISTINCT monthyear_intake').each{|x|intakes << ["Siri "+x.monthyear_intake.strftime('%m/%Y'), x.monthyear_intake]}
+        - else
+          - Intake.select('DISTINCT monthyear_intake').each{|x|intakes << [x.monthyear_intake.strftime('%b %Y'), x.monthyear_intake]}
+        =f.select :intakestudent_monthyear_intake_eq, intakes, {include_blank: (t 'actions.all_intakes')}, {class: 'selectpicker'}
     %td= f.text_field :matrixno_start, size: 2,  :class => "form-control"
     %td.input-group
       = f.text_field :race_cont, size: 2,  :class => "form-control"    	  

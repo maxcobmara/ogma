@@ -1,13 +1,14 @@
 class Anacdotal_reportPdf < Prawn::Document 
   def initialize(discipline_cases, view, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    @college=college
     @discipline_cases= discipline_cases
     @view = view
     font "Times-Roman"
     text "#{college.name}", :align => :center, :size => 12, :style => :bold
     text "#{I18n.t('student.discipline.report_title')}", :align => :center, :size => 12, :style => :bold
     move_down 30
-    text "#{I18n.t('student.students.name')} : #{@discipline_cases.first.student.name}", :align => :left, :size => 11, :indent_paragraphs => 10
+    text "#{I18n.t('student.students.name')} : #{@discipline_cases.first.college.code=='amsas' ? @discipline_cases.first.student.student_with_rank : @discipline_cases.first.student.name}", :align => :left, :size => 11, :indent_paragraphs => 10
     if college.code=="kskbjb"
       text "#{I18n.t('student.students.matrixno')} : #{@discipline_cases.first.student.try(:matrixno)}", :align => :left, :size => 11, :indent_paragraphs => 10
     end
@@ -15,6 +16,10 @@ class Anacdotal_reportPdf < Prawn::Document
     text "#{I18n.t('student.students.intake_id')} : #{@discipline_cases.first.college.code=='amsas' ? 'Siri '+ @discipline_cases.first.student.intakestudent.monthyear_intake.try(:strftime, '%m/%Y') : @discipline_cases.first.student.intakestudent.monthyear_intake.try(:strftime, '%b %Y')}", :align => :left, :size => 11, :indent_paragraphs => 10
     move_down 10
     record
+    page_count.times do |i|
+      go_to_page(i+1)
+      footer
+    end
   end
   
   def record
@@ -37,6 +42,10 @@ class Anacdotal_reportPdf < Prawn::Document
        #Tindakan
        #"#{I18n.t('student.discipline.refer_bpl') if discipline_case.action_type=="Ref to BPL" && !discipline_case.action_type.blank?} #{I18n.t('student.discipline.refer_tphep') if discipline_case.action_type=="Ref TPHEP" && !discipline_case.action_type.blank?} #{I18n.t('student.discipline.no_case') if discipline_case.action_type=="no_case" && !discipline_case.action_type.blank? } #{I18n.t('student.discipline.advise') if discipline_case.action_type=="advise" && !discipline_case.action_type.blank?}"
      end
+  end
+  
+  def footer
+    draw_text "#{page_number} / #{page_count}",  :size => 8, :at => [500,-5]
   end
   
 end

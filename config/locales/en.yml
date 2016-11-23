@@ -509,6 +509,8 @@ en:
     check_all: "Tick to SELECT or DESELECT ALL records."
     check_all2: "Tick to SELECT or DESELECT ALL records for printing of KEW.PA-17 and KEW.PA-20."
     all_records: All Records
+    all_programmes: All Programmes
+    all_intakes: All Intakes
     select_one: "Please select at least one record for editing."
     submitted: Submitted
     not_submitted: Not Submitted

@@ -9,6 +9,10 @@ class Discipline_reportPdf < Prawn::Document
     text "#{I18n.t('student.discipline.list')}", :align => :center, :size => 12, :style => :bold
     move_down 10
     record
+    page_count.times do |i|
+      go_to_page(i+1)
+      footer
+    end
   end
   
   def record
@@ -58,6 +62,10 @@ class Discipline_reportPdf < Prawn::Document
         end
       end
       header+body
+  end
+
+  def footer
+    draw_text "#{page_number} / #{page_count}",  :size => 8, :at => [760,-5]
   end
   
 end

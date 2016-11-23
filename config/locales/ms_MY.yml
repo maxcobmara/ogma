@@ -489,6 +489,8 @@ ms_MY:
     check_all: "Pilih kotak semak ini untuk MEMILIH atau MENYAHPILIH SEMUA rekod"
     check_all2: "Pilih kotak semak ini untuk MEMILIH atau MENYAHPILIH SEMUA rekod bagi cetakan KEW.PA-17 dan KEW.PA-20."
     all_records: Semua Rekod
+    all_programmes: Semua Program
+    all_intakes: Semua Ambilan
     select_one: "Sila pilih sekurang-kurangnya satu rekod untuk disunting."
     submitted: Dihantar
     not_submitted: Tidak Dihantar

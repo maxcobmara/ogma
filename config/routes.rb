@@ -325,6 +325,7 @@ Ogma::Application.routes.draw do
       end
       collection do
         get :feedback_referrer
+        get :counseling_list
       end
     end
     resources :leaveforstudents do
