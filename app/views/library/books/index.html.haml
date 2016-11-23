@@ -58,7 +58,7 @@
             
       - @acc_by_book.each do |bookid3, acc3|
         /AMSAS view
-        - if current_user.college.code!='amsas'
+        - if current_user.college.code=='amsas'
           - book=Book.find(bookid3)
           %tr
             %td=h (DropDown::MEDIA.find_all{|disp, value| value == book.try(:mediatype)}).map {|disp, value| disp}[0] 
