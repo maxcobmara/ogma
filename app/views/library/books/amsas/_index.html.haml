@@ -1,0 +1,32 @@
+/AMSAS view
+- acc_by_book.each do |bookid3, acc3|
+  - book=Book.find(bookid3)
+  %tr
+    %td=h (DropDown::MEDIA.find_all{|disp, value| value == book.try(:mediatype)}).map {|disp, value| disp}[0] 
+    %td
+      - if book
+        - if book.photo_file_name == nil
+          =t 'book.no_image'
+        - else
+          =image_tag book.photo.url(:thumbnail)
+    %td=h link_to book.title, library_book_path(book)
+    %td=book.try(:author)
+    %td=book.try(:isbn)
+    %td
+      =h book.book_quantity 
+      /if index2 == 0 && !@search.accessionno_search
+      = 1 if @search.accessionno_search
+    %td
+      - acc3.each_with_index do |acc,index2|
+        =h acc.accession_no 
+        %br
+    %td=h book.classlcc
+    %td=h book.location
+    %td
+      - acc3.each_with_index do |acc,index2|
+        =h (DropDown::STATUS.find_all{|disp, value| value == acc.status}).map {|disp, value| disp}[0]
+        %br
+    %td
+      - if book.roman != nil 
+        - if book.roman.include?(';') || book.roman.include?(':') || book.roman.include?(',')
+          &#10003;
