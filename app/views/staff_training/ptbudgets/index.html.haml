@@ -36,9 +36,12 @@
               - main_budget_id=ptbudget.id 
               %tr
                 %td
-                  mmmm
                   = link_to (l(ptbudget.fiscalstart).to_s+" "+t('to')+" "+l(ptbudget.fiscal_end)), staff_training_ptbudget_path(ptbudget)
-                  - if ptbudget.fiscal_end > Date.today && ptbudget.fiscal_end <= Date.today.end_of_year
+                  /=ptbudget.fiscal_end > Date.today
+                  /=ptbudget.fiscalstart < Date.today
+                  /=[364, 365].include?((ptbudget.fiscal_end-ptbudget.fiscalstart).to_i)
+                  - if ptbudget.fiscal_end > Date.today && ptbudget.fiscalstart < Date.today && [364, 365].include?((ptbudget.fiscal_end-ptbudget.fiscalstart).to_i)
+                    /- if ptbudget.fiscal_end > Date.today && ptbudget.fiscal_end <= Date.today.end_of_year
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     = link_to t('staff.training.budget.add_budget'), :action =>'new', :newtype=> "2" 
                     /--aaa--
@@ -77,7 +80,11 @@
           %tr
             %td
               = link_to (l(ptbudget.fiscalstart).to_s+" "+t('to')+" "+l(ptbudget.fiscal_end)), staff_training_ptbudget_path(ptbudget)
-              - if ptbudget.fiscal_end > Date.today && ptbudget.fiscal_end <= Date.today.end_of_year 
+              /=ptbudget.fiscal_end > Date.today
+              /=ptbudget.fiscalstart < Date.today
+              /=[364, 365].include?((ptbudget.fiscal_end-ptbudget.fiscalstart).to_i)
+              - if ptbudget.fiscal_end > Date.today && ptbudget.fiscalstart < Date.today && [364, 365].include?((ptbudget.fiscal_end-ptbudget.fiscalstart).to_i)
+                /- if ptbudget.fiscal_end > Date.today && ptbudget.fiscal_end <= Date.today.end_of_year 
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 = link_to (t 'ptbudget.additional_budget'), new_staff_training_ptbudget_path(:newtype=> "2")
                 /--ccc--

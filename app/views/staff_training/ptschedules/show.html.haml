@@ -43,7 +43,7 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_training_ptschedules_path, class: 'btn btn-default'
-      - permitted_to? :manage, :ptbudgets do 
+      - permitted_to? :manage, :staff_training_ptbudgets do 
         = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('staff.training.schedule.participants_expenses', :default => t("helpers.links.back")),  participants_expenses_staff_training_ptschedules_path, class: 'btn btn-default'
       = link_to content_tag(:i, "", class: "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_training_ptschedule_path(@ptschedule), class: 'btn btn-primary'
       = link_to content_tag(:i, "", class: "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |

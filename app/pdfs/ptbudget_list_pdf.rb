@@ -14,6 +14,20 @@ class Ptbudget_listPdf < Prawn::Document
      
   def record
     total_recs=@ptbudgets.count
+    sum_rows=[]
+    ind=0
+    no=2
+    @ptbudgets.group_by{|x|x.fiscal_end}.sort.reverse.each do |fiscal_ending, budgets|
+      if budgets.count>1
+        budgets.each do |ptbudget|
+          ptbudgets_multiple_cnt=Ptbudget.where('id IN(?) and id!=?', budgets.map(&:id), ptbudget.id).order(fiscalstart: :asc).count
+          sum_rows << no+1+ptbudgets_multiple_cnt
+	  #ind=no+1+ptbudgets_multiple_cnt
+        end
+      else
+      end
+      no+=1
+    end
     table(line_item_rows, :column_widths => [30, 170, 90, 90, 80, 60], :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
@@ -21,8 +35,11 @@ class Ptbudget_listPdf < Prawn::Document
       row(0).align = :center
       row(0..1).font_style = :bold
       row(1).background_color = 'FFE34D'
-      row(2..total_recs+1).columns(2..5).align=:right
+      row(2..total_recs+2).columns(2..5).align=:right
       self.width=520
+      for sum_row in sum_rows
+        row(sum_row).font_style=:bold
+      end
     end
   end
 
@@ -38,12 +55,13 @@ class Ptbudget_listPdf < Prawn::Document
           if ptbudget.fiscalstart.month==ptbudget.budget_start.month && ptbudget.fiscalstart.day==ptbudget.budget_start.day 
             main_budget_id=ptbudget.id 
 	    mainbudget="(#{@view.l(ptbudget.fiscalstart).to_s} #{I18n.t('to')} #{@view.l(ptbudget.fiscal_end)})"
-            body << ["#{counter += 1}", mainbudget, @view.ringgols(ptbudget.budget), @view.ringgols(ptbudget.used_budget), @view.ringgols(ptbudget.budget_balance) , @view.number_with_precision((ptbudget.budget_balance.to_f / ptbudget.budget.to_f) *  100, :precision => 2)]
-            @ptbudgets_multiple=Ptbudget.where('id IN(?) and id!=?', budgets.map(&:id), main_budget_id).order(fiscalstart: :asc)
+	    @ptbudgets_multiple=Ptbudget.where('id IN(?) and id!=?', budgets.map(&:id), main_budget_id).order(fiscalstart: :asc)
+            body << ["#{counter += 1}", mainbudget, @view.ringgols(ptbudget.budget), {content: @view.ringgols(ptbudget.used_budget), rowspan: @ptbudgets_multiple.count+1}, @view.ringgols(ptbudget.budget_balance) , @view.number_with_precision((ptbudget.budget_balance.to_f / ptbudget.budget.to_f) *  100, :precision => 2)]
+            
+	    cnt=cnt||0
             @ptbudgets_multiple.each do |ptbudget|
                 multi_budget="(#{@view.l(ptbudget.fiscalstart).to_s} #{I18n.t('to')} #{@view.l(ptbudget.fiscal_end)})"
-                body << ["- ", multi_budget, "+ #{@view.ringgols(ptbudget.budget)}", @view.ringgols(ptbudget.budget_balance), @view.number_with_precision(ptbudget.budget_balance_percent, :precision => 2)]
-                #(ptbudget.budget_balance.to_f / ptbudget.acc_budget.to_f) *  100
+                body << ["(#{cnt+=1})", multi_budget, "+ #{@view.ringgols(ptbudget.budget)}", @view.ringgols(ptbudget.budget_balance), @view.number_with_precision((ptbudget.budget_balance.to_f / ptbudget.acc_budget.to_f) *  100, :precision => 2)]
             end
 
             heading_budget=Ptbudget.find(main_budget_id)
@@ -51,7 +69,7 @@ class Ptbudget_listPdf < Prawn::Document
             all_budget=all_budget_recs.map(&:budget).sum 
             latest_balance=all_budget-all_budget_recs[0].used_budget
 	    
-	    body << ["", @view.ringgols(all_budget), @view.ringgols(all_budget_recs[0].used_budget), @view.ringgols(latest_balance), @view.number_with_precision((latest_balance.to_f / all_budget.to_f) *  100, :precision => 2)]
+	    body << ["", "", @view.ringgols(all_budget), @view.ringgols(all_budget_recs[0].used_budget), @view.ringgols(latest_balance), @view.number_with_precision((latest_balance.to_f / all_budget.to_f) *  100, :precision => 2)]
 
           end #endof ptbudget.fis...
         end #endof budgets
