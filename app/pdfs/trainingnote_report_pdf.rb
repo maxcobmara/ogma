@@ -14,61 +14,42 @@ class Trainingnote_reportPdf < Prawn::Document
   end
 
   def record
-    row_count=1
     row_red=[]
     row_non_remove=[]
-#     @trainingnotes.each do |prog,x|
-#       if x
-#         x.each_with_index do |y, nos|
-#           row_count+=1 if y.topicdetail.topic_code 
-#           #row_non_remove << nos+2 if  y.lesson_plan_trainingnotes.count > 0  || !y.timetable_id.blank?    #2 rows - header
-#         end
-#       else
-#         row_count+=1
-#         row_red << row_count if prog.topicdetail_id.blank? && !prog.timetable_id.blank?
-#         #row_non_remove << row_count if  prog.lesson_plan_trainingnotes.count > 0  || !prog.timetable_id.blank?
-#       end
-#     end
-    
     row_count=2
-#     prog_count=0
-#     subject_count=0
-#     topic_count=0
     row_programmes=[]
     row_subjects=[]
     row_topics=[]
-#     notes_count=0
     @trainingnotes2.where('topicdetail_id is not null').group_by{|r|r.topicdetail.subject_topic.root}.each do |prog, notes_byprog|
-      row_programmes << row_count
-      row_count+=1
-      
-      notes_byprog.group_by{|t|t.topicdetail.subject_topic.subject_of_topic_subtopic}.each do |subject, notes_bysubject|
-        row_subjects << row_count
-	row_count+=1
+        row_programmes << row_count
+        row_count+=1
+        notes_byprog.group_by{|t|t.topicdetail.subject_topic.subject_of_topic_subtopic}.each do |subject, notes_bysubject|
+            row_subjects << row_count
+	    row_count+=1
 	
-	notes_bysubject.group_by{|u|u.topicdetail.subject_topic}.each do |topic, trainingnotes|
-	  row_topics << row_count
-	  row_count+=1
-	  
-	  for note in trainingnotes
-	      if note.topicdetail.topic_code
-	          if note.timetable_id?
-                      row_non_remove << row_count       #status='*'     #'Non-removable, but editable'
-                  else
-                      if note.lesson_plan_trainingnotes.count > 0
-                          row_non_remove << row_count   #status='#'   #'Non-removable'
-	              else
-			  #status=''#'OK'
-	              end
-	           end
-               end 
-	       row_count+=1
-	  end
-	end
+	    notes_bysubject.group_by{|u|u.topicdetail.subject_topic}.each do |topic, trainingnotes|
+	        row_topics << row_count
+	        row_count+=1
+	        for note in trainingnotes
+	            if note.topicdetail.topic_code
+	                if note.timetable_id?
+                            row_non_remove << row_count       #status='*'     #'Non-removable, but editable'
+                        else
+                            if note.lesson_plan_trainingnotes.count > 0
+                                row_non_remove << row_count   #status='#'   #'Non-removable'
+	                    else
+			        #status=''#'OK'
+	                    end
+	                end
+                    end 
+	            row_count+=1
+	        end
+	    end
 
-      end
-
+        end
     end
+    
+    topicdetail_not_exist_title=row_count
     
     for tnote in @trainingnotes2.where('topicdetail_id is null')
       row_count+=1
@@ -96,13 +77,22 @@ class Trainingnote_reportPdf < Prawn::Document
       end
       for row_programme in row_programmes
 	row(row_programme).background_color = 'FFE34D'
+	row(row_programme).borders=[:top, :left, :bottom, :right]
+	row(row_programme).font_style =:bold
       end
       for row_subject in row_subjects
 	row(row_subject).background_color='FDF8A1' #'FDD4EA'
+	row(row_subject).borders=[:top, :left, :bottom, :right]
       end
       for row_topic in row_topics
 	row(row_topic).background_color='FDFBD4' #'D4FDE5'
+	row(row_topic).borders=[:top, :left, :bottom, :right]
       end
+      row(topicdetail_not_exist_title).borders=[:top, :left, :bottom, :right]
+      row(topicdetail_not_exist_title).background_color='E8E9E8'
+      row(topicdetail_not_exist_title).text_color ='EC0C16'
+      row(topicdetail_not_exist_title).font_style = :bold
+      
       self.width=755
     end
   end
@@ -113,60 +103,7 @@ class Trainingnote_reportPdf < Prawn::Document
     header = [[{content: "#{I18n.t('training.trainingnote.list').upcase}<br> #{@college.name.upcase}", colspan: 8}],
               [{content: 'No', colspan: 2}, I18n.t('training.trainingnote.title'), I18n.t('training.trainingnote.reference'), I18n.t('training.trainingnote.version'), I18n.t('training.trainingnote.release'), I18n.t('training.trainingnote.file_name'), I18n.t('training.trainingnote.staff_id') ]]
     body=[]
-#     @trainingnotes.each do |prog,x|
-#       if x
-#         x.each_with_index do |y, nos|
-#           ###START---
-#           if y.topicdetail.topic_code
-# 	     if y.timetable_id?
-#                status='*'#'Non-removable, but editable'
-#             else
-#               if y.lesson_plan_trainingnotes.count > 0
-#                 status='#'#'Non-removable'
-# 	      else
-# 		status=''#'OK'
-# 	      end
-# 	     end
-# 	     programme=Programme.find(y.topicdetail.topic_code).root.name
-# 	     subject=Programme.find(y.topicdetail.topic_code).parent.subject_list 
-# 	     topic=Programme.find(y.topicdetail.topic_code).name
-# 	     ###---refer NOTE
-# 	     if y.topicdetail_id==nil && y.timetable_id!=nil
-# 	       topicdetail_status='**'#'Topic Detail not exist'
-# 	     else
-# 	       topicdetail_status=''
-# 	     end
-# 	     #programme, subject, topic,
-# 	     body << [status,"#{counter += 1}", "#{y.title} #{topicdetail_status}", y.reference, y.version, y.release.try(:strftime, '%d-%m-%Y'), y.document_file_name, y.note_creator.rank_id? ? y.note_creator.staff_with_rank : y.note_creator.try(:name)]
-# 	  end 
-# 	  ###END---
-# 	end
-# 
-#       else
-#         ##START
-#         #---NOTE - this part shall cater for existing Training Notes without Topic Detail - applied only to KSKBJB
-#         # as for AMSAS - latest codes updates -- New Training Note (Topic selection - filtered by Topic Detail record)
-#         # TODO - to remove this part when no longer required
-#         if prog.timetable_id?
-#           status='*'
-#         else
-#           if prog.lesson_plan_trainingnotes.count > 0
-#             status='#'#'Non-removable'
-#           else
-#             status=''#'OK'
-#           end
-#         end
-#         if prog.topicdetail_id.blank? && prog.timetable_id!=nil
-#           topicdetail_status=I18n.t('training.trainingnote.topicdetail_not_exist')
-#         else
-#           topicdetail_status=''
-#         end
-# 	#{content: topicdetail_status, colspan: 3}, 
-#         body <<  [status, "#{counter += 1}", "#{prog.title} #{topicdetail_status}", prog.reference, prog.version, prog.release.try(:strftime, '%d %b %Y'), prog.document_file_name, prog.note_creator.rank_id? ? prog.note_creator.staff_with_rank : prog.note_creator.try(:name)]
-#         ###END---
-#       end
-#     end
-    
+
     @trainingnotes2.where('topicdetail_id is not null').group_by{|r|r.topicdetail.subject_topic.root}.each do |prog, notes_byprog|
         body << [{content: prog.programme_list, colspan: 8}]
         notes_byprog.group_by{|t|t.topicdetail.subject_topic.subject_of_topic_subtopic}.each do |subject, notes_bysubject|
@@ -201,8 +138,7 @@ class Trainingnote_reportPdf < Prawn::Document
         end
     end
    
-    ####
-    ##---
+    # TODO - to remove this part(below) when no longer required
     body << [{content: I18n.t('training.trainingnote.topicdetail_not_exist'), colspan: 8}]
     for tnote in @trainingnotes2.where('topicdetail_id is null')
 	if tnote.timetable_id?
