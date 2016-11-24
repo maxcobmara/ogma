@@ -24,146 +24,138 @@
     %thead
       %tr
         %th{width: '3%'}=t 'training.trainingnote.plan'
-        %th{width: '10%'}=t 'training.trainingnote.programme'
-        %th{width: '10%'}=t 'training.trainingnote.subject'
-        %th{width: '10%'}= sort_link(@search, :topic_subtopic, (t 'training.trainingnote.topic_subtopic'))
-        %th{width: '15%'}= sort_link(@search, :title, (t 'training.trainingnote.title'))
+        /%th{width: '10%'}=t 'training.trainingnote.programme'
+        /%th{width: '10%'}=t 'training.trainingnote.subject'
+        /%th{width: '10%'}= sort_link(@search, :topic_subtopic, (t 'training.trainingnote.topic_subtopic'))
+        %th{width: '27%'}= sort_link(@search, :title, (t 'training.trainingnote.title'))
         %th{width: '10%'}= sort_link(@search, :reference, (t 'training.trainingnote.reference'))
-        %th{width: '6%'}= sort_link(@search, :version, (t 'training.trainingnote.version'))
-        %th{width: '7%'}= sort_link(@search, :release, (t 'training.trainingnote.release'))
-        %th{width: '15%'}= sort_link(@search, :file_name, (t 'training.trainingnote.file_name'))
-        %th{width: '14%'}=sort_link(@search, :staff_id, (t 'training.trainingnote.staff_id'))
+        %th{width: '10%'}= sort_link(@search, :version, (t 'training.trainingnote.version'))
+        %th{width: '10%'}= sort_link(@search, :release, (t 'training.trainingnote.release'))
+        %th{width: '20%'}= sort_link(@search, :file_name, (t 'training.trainingnote.file_name'))
+        %th{width: '20%'}=sort_link(@search, :staff_id, (t 'training.trainingnote.staff_id'))
        
     %tbody
     = render "index_search"
-    
-    /- @trainingnotes.group_by(&:topicdetail_id).each do |topicdetail_id, trainingnotes |
-    /  - topiccode=Topicdetail.find(topicdetail_id).topic_code if topicdetail_id
-    /  %tr
-    /    %td{:colspan=> '8'}
-    /      /programme
-    /      %b= Programme.find(topiccode).try(:root).name if topicdetail_id && topiccode
-    /  %tr
-    /    %td &nbsp;
-    /    %td{:colspan=> '7'}
-    /      /subject
-    /      %b= Programme.find(topiccode).try(:parent).subject_list if topicdetail_id && topiccode
-    /  %tr
-    /    %td &nbsp;
-    /    %td &nbsp;
-    /    %td{:colspan=>'6'}
-    /      %b=Programme.find(topiccode).name if topicdetail_id && topiccode
-    
-    /  - trainingnotes.each do |trainingnote|
-    /    %tr
-    /      %td &nbsp;
-    /      %td &nbsp;
-    /      %td &nbsp;
-    /     %td
-    /      =h link_to trainingnote.title, training_trainingnote_path(trainingnote)
-    /        %br
-    /        - if trainingnote.topicdetail_id==nil && trainingnote.timetable_id!=nil
-    /          %font{:color=>'blue'}
-    /            %b Topic Detail
-    /            not exist, 
-    /            = link_to "CREATE ONE", new_training_topicdetail_path
-    /           to match.
-    /           - @topic=WeeklytimetableDetail.find(trainingnote.timetable_id).topic
-    /            Topic : 
-    /            =Programme.find(@topic).semester_subject_topic 
-    /            )
-    /      %td=h trainingnote.reference
-    /      %td=h trainingnote.version
-    /      %td=h trainingnote.release.try(:strftime, '%d %b %Y')
-    /      %td
-    /        = link_to image_tag('attach.png'), trainingnote.document.url
-    /        &nbsp; 
-    /        = link_to trainingnote.document_file_name, trainingnote.document.url
-            
-    /=@trainingnotes_lala.count
-    - @trainingnotes_lala.each do |prog,x|
-      - if x
-        /%BR
-        - x.each_with_index do |y, nos|
-          - if y.topicdetail.topic_code
-            %tr
-              /%td=y.id
-              %td
-                - if y.timetable_id?
-                  /= fa_icon("check-square") 
-                  = link_to content_tag(:i, "", :class => "fa fa-check-square"), training_lesson_plan_path(LessonPlan.where(schedule: y.timetable_id).first.id)
-                - else
-                  - if y.lesson_plan_trainingnotes.count > 0
-                    = fa_icon("check-square-o")
-                  - else
-                    = fa_icon("minus")
-              %td=Programme.find(y.topicdetail.topic_code).root.name if y.topicdetail.topic_code
-              %td=Programme.find(y.topicdetail.topic_code).parent.subject_list if y.topicdetail.topic_code
-              %td 
-                =Programme.find(y.topicdetail.topic_code).name if y.topicdetail.topic_code
-                /=y.topicdetail.topic_code 
-              %td
-                =h link_to y.title, training_trainingnote_path(y)
-                /%br
-                - if y.topicdetail_id==nil && y.timetable_id!=nil
-                  %font{:color=>'blue'}
-                    %b Topic Detail
-                    not exist, 
-                    = link_to "CREATE ONE", new_training_topicdetail_path
-                    to match.
-                    - @topic=WeeklytimetableDetail.find(y.timetable_id).topic
-                    Topic : 
-                    =Programme.find(@topic).semester_subject_topic 
-                    )
-              %td=y.reference
-              %td=y.version
-              %td=y.release.try(:strftime, '%d %b %Y')
-              %td= y.document_file_name
-              /= link_to image_tag('attach.png'), y.document.url
-              /&nbsp; 
-              /=link_to y.document_file_name, y.document.url
-              /%BR
-              %td= y.note_creator.rank_id? ? y.note_creator.staff_with_rank : y.note_creator.try(:name)
-      - else
-        /---NOTE - this part shall cater for existing Training Notes without Topic Detail - applied only to KSKBJB
-        / as for AMSAS - latest codes updates -- New Training Note (Topic selection - filtered by Topic Detail record)
-        / TODO - to remove this part when no longer required
+    - @trainingnotes2.where('topicdetail_id is not null').group_by{|r|r.topicdetail.subject_topic.root}.each do |prog, notes_byprog|
+      %tr
+        %td.group{colspan: 10}= prog.programme_list
+      - notes_byprog.group_by{|t|t.topicdetail.subject_topic.subject_of_topic_subtopic}.each do |subject, notes_bysubject|
         %tr
-          /%td=prog.id
-          %td
-            - if prog.timetable_id?
-              = fa_icon("check-square") 
+          %td.group{colspan: 10}=subject.subject_list
+        - notes_bysubject.group_by{|u|u.topicdetail.subject_topic}.each do |topic, trainingnotes|
+          %tr
+            %td.group{colspan: 10}=topic.subject_list
+          - for trainingnote in trainingnotes
+            - if trainingnote.topicdetail.topic_code
+              %tr
+                %td
+                  - if trainingnote.timetable_id?
+                    = link_to content_tag(:i, "", :class => "fa fa-check-square"), training_lesson_plan_path(LessonPlan.where(schedule: trainingnote.timetable_id).first.id)
+                  - else
+                    = trainingnote.lesson_plan_trainingnotes.count > 0 ? fa_icon("check-square-o") :  fa_icon("minus")
+                /%td=prog.programme_list
+                /%td=subject.subject_list 
+                /%td=topic.subject_list
+                %td
+                  =h link_to trainingnote.title, training_trainingnote_path(trainingnote)
+                  - if trainingnote.topicdetail_id==nil && y.timetable_id!=nil
+                    %font{:color=>'blue'}
+                      %b Topic Detail
+                      not exist, 
+                      = link_to "CREATE ONE", new_training_topicdetail_path
+                      to match.
+                      - @topic=WeeklytimetableDetail.find(trainingnote.timetable_id).topic
+                      Topic : 
+                      =Programme.find(@topic).semester_subject_topic 
+                      )
+                %td=trainingnote.reference
+                %td=trainingnote.version
+                %td=trainingnote.release.try(:strftime, '%d %b %Y')
+                %td=trainingnote.document_file_name
+                %td=trainingnote.note_creator.rank_id? ? trainingnote.note_creator.staff_with_rank : trainingnote.note_creator.try(:name)
+                  
+        /- x.each_with_index do |y, nos|
+        /  - if y.topicdetail.topic_code
+        /    %tr
+        /      /%td=y.id
+        /      %td
+        /        - if y.timetable_id?
+        /          /= fa_icon("check-square") 
+        /          = link_to content_tag(:i, "", :class => "fa fa-check-square"), training_lesson_plan_path(LessonPlan.where(schedule: y.timetable_id).first.id)
+        /        - else
+        /          - if y.lesson_plan_trainingnotes.count > 0
+        /            = fa_icon("check-square-o")
+        /          - else
+        /            = fa_icon("minus")
+        /      %td=Programme.find(y.topicdetail.topic_code).root.name if y.topicdetail.topic_code
+        /      %td=Programme.find(y.topicdetail.topic_code).parent.subject_list if y.topicdetail.topic_code
+        /      %td 
+        /        =Programme.find(y.topicdetail.topic_code).name if y.topicdetail.topic_code
+        /        /=y.topicdetail.topic_code 
+        /      %td
+        /        =h link_to y.title, training_trainingnote_path(y)
+        /        /%br
+        /        - if y.topicdetail_id==nil && y.timetable_id!=nil
+        /          %font{:color=>'blue'}
+        /            %b Topic Detail
+        /            not exist, 
+        /            = link_to "CREATE ONE", new_training_topicdetail_path
+        /            to match.
+        /            - @topic=WeeklytimetableDetail.find(y.timetable_id).topic
+        /            Topic : 
+        /            =Programme.find(@topic).semester_subject_topic 
+        /            )
+        /      %td=y.reference
+        /      %td=y.version
+        /      %td=y.release.try(:strftime, '%d %b %Y')
+        /      %td= y.document_file_name
+        /      /= link_to image_tag('attach.png'), y.document.url
+        /      /&nbsp; 
+        /      /=link_to y.document_file_name, y.document.url
+        /      /%BR
+        /      %td= y.note_creator.rank_id? ? y.note_creator.staff_with_rank : y.note_creator.try(:name)
+
+    
+    /NOTE - this part shall cater for existing Training Notes without Topic Detail - applied only to KSKBJB
+    /as for AMSAS - latest codes updates -- New Training Note (Topic selection - filtered by Topic Detail record)
+    /TODO - to remove this part when no longer required
+    %tr
+      %td.group{colspan: 10, style: 'background-color: #D2D2D2; color: red;'}=t('training.trainingnote.topicdetail_not_exist')
+    - for tnote in @trainingnotes2.where('topicdetail_id is null')
+      %tr
+        %td
+          - if tnote.timetable_id?
+            = fa_icon("check-square") 
+          - else
+            - if tnote.lesson_plan_trainingnotes.count > 0
+              = fa_icon("check-square-o")
             - else
-              - if prog.lesson_plan_trainingnotes.count > 0
-                = fa_icon("check-square-o")
-              - else
-                = fa_icon("minus")
-          %td &nbsp;
-          %td &nbsp;
-          %td &nbsp;
-          %td
-            =h link_to prog.title, training_trainingnote_path(prog)
-            /%br
-            - if prog.topicdetail_id.blank? && prog.timetable_id!=nil
-              %font{:color=>'blue'}
-                %b Topic Detail
-                not exist, 
-                = link_to "CREATE ONE", new_training_topicdetail_path
-                to match.
-                - @topic=WeeklytimetableDetail.find(prog.timetable_id).topic
-                Topic : 
-                =Programme.find(@topic).semester_subject_topic 
-                )
-          %td= prog.reference
-          %td=prog.version
-          %td=prog.release.try(:strftime, '%d %b %Y')
-          %td= prog.document_file_name
-          /= link_to image_tag('attach.png'), prog.document.url
-          /&nbsp; 
-          /= link_to prog.document_file_name,prog.document.url
-          /%BR
-          %td= prog.note_creator.rank_id? ? prog.note_creator.staff_with_rank : prog.note_creator.try(:name)
+              = fa_icon("minus")
+        /%td &nbsp;
+        /%td &nbsp;
+        /%td &nbsp;
+        %td
+          =h link_to tnote.title, training_trainingnote_path(tnote)
+          - if tnote.topicdetail_id.blank? && tnote.timetable_id!=nil
+            %font{:color=>'blue'}
+              %b Topic Detail
+              not exist, 
+              = link_to "CREATE ONE", new_training_topicdetail_path
+              to match.
+              - @topic=WeeklytimetableDetail.find(tnote.timetable_id).topic
+              Topic : 
+              =Programme.find(@topic).semester_subject_topic 
+              )
+        %td=tnote.reference
+        %td=tnote.version
+        %td=tnote.release.try(:strftime, '%d %b %Y')
+        %td=tnote.document_file_name
+        /= link_to image_tag('attach.png'), prog.document.url
+        /&nbsp; 
+        /= link_to prog.document_file_name,prog.document.url
+        /%BR
+        %td= tnote.note_creator.rank_id? ? tnote.note_creator.staff_with_rank : tnote.note_creator.try(:name)
      
 
-  .right{style:"padding:0 30px; margin:0;"}= paginate @trainingnotes_lala, :theme => 'twitter-bootstrap-3'
+  .right{style:"padding:0 30px; margin:0;"}= paginate @trainingnotes2, :theme => 'twitter-bootstrap-3'
  

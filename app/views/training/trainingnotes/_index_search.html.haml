@@ -1,10 +1,13 @@
 = search_form_for @search, url: training_trainingnotes_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
     %td &nbsp;
-    %td= f.text_field :programme_search, size: 2, :class => "form-control"
-    %td= f.text_field :subject_search, size: 2, :class => "form-control"
-    %td= f.text_field :topicdetail_subject_topic_name_cont, size: 2, :class => "form-control"
-    %td= f.text_field :title_cont, size: 2,  :class => "form-control"
+    %td
+      .col-md-6
+        = f.text_field :programme_search, size: 2, :class => "form-control", placeholder: (t 'student.course')
+        = f.text_field :subject_search, size: 2, :class => "form-control", placeholder: (t 'training.programme.subject')
+      .col-md-6
+        = f.text_field :topicdetail_subject_topic_name_cont, size: 2, :class => "form-control", placeholder: (t 'training.programme.topic')
+        = f.text_field :title_cont, size: 2,  :class => "form-control", placeholder: (t 'training.trainingnote.title')
     %td= f.text_field :reference_cont, size: 2,  :class => "form-control"
     %td= f.text_field :version_cont, size:2, :class => "form-control"
     %td
