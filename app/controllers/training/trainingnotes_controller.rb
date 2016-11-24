@@ -11,15 +11,17 @@
   def index    
     @search = Trainingnote.search(params[:q])
     @trainingnotes2 = @search.result.search2(@programme_id)
-    #@trainingnotes3 = @trainingnotes2.order(:topicdetail_id)
-                
-    by_subject  =@trainingnotes2.where('topicdetail_id is not null').group_by{|x|x.topicdetail.subject_topic}  
-    arr_w_topic=[]
-    by_subject.each{ |tns| arr_w_topic<< tns}
-    wo_topic = @trainingnotes2.where('topicdetail_id is null')
-    combine = arr_w_topic+wo_topic
-    @trainingnotes_lala = Kaminari.paginate_array(combine).page(params[:page]||1) 
-    #@trainingnotes =  Kaminari.paginate_array(@trainingnotes3).page(params[:page]||1) 
+#     #@trainingnotes3 = @trainingnotes2.order(:topicdetail_id)
+#                 
+#     by_subject  =@trainingnotes2.where('topicdetail_id is not null').group_by{|x|x.topicdetail.subject_topic}  
+#     arr_w_topic=[]
+#     by_subject.each{ |tns| arr_w_topic<< tns}
+#     wo_topic = @trainingnotes2.where('topicdetail_id is null')
+#     combine = arr_w_topic+wo_topic
+#     @trainingnotes_lala = Kaminari.paginate_array(combine).page(params[:page]||1) 
+#     #@trainingnotes =  Kaminari.paginate_array(@trainingnotes3).page(params[:page]||1)
+    
+    @trainingnotes2 = @trainingnotes2.page(params[:page]||1)
 
     respond_to do |format|
       format.html # index.html.erb

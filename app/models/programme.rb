@@ -510,6 +510,13 @@ class Programme < ActiveRecord::Base
     (DropDown::COURSE_STATUS.find_all{|disp, value| value == status}).map {|disp, value| disp}.first
   end
   
+  #usage - Trainingnote - Index
+  def subject_of_topic_subtopic
+    if ["Topic", "Subtopic"].include?(course_type)
+      ancestors.where(course_type: 'Subject').first
+    end
+  end
+  
   #kskbjb   
   COURSE_TYPES_PROG1 =  [
       # Displayed	stored in db

@@ -62,32 +62,32 @@ class Trainingnote < ActiveRecord::Base
     end
   end
   
-  #define scope subject
+  #define scope
   def self.subject_search(query)
     if query
-      sel_programme = Programme.where('(code ILIKE(?) OR name ILIKE(?)) AND course_type=?',"%#{query}%", "%#{query}%", "Subject").first
-      if sel_programme!=nil
-        topicids=sel_programme.descendants.pluck(:id)
-        topicdetailsids = Topicdetail.where('topic_code IN(?)', topicids).pluck(:id)
+      sel_subject = Programme.where('(code ILIKE(?) OR name ILIKE(?)) AND course_type=?',"%#{query}%", "%#{query}%", "Subject")
+      if sel_subject!=nil
+        acc_topic_ids=[]
+        sel_subject.each{|x|acc_topic_ids+=x.descendants.pluck(:id)}
+        topicdetails_ids = Topicdetail.where('topic_code IN(?)', acc_topic_ids).pluck(:id)
       else
-        topicdetailsids = []
+        topicdetails_ids = []
       end
-      return Trainingnote.where('topicdetail_id IN(?)', topicdetailsids)
+      where('topicdetail_id IN(?)', topicdetails_ids)
     end
   end
     
   def self.programme_search(query)
     if query
-      sel_programme=Programme.where('name ILIKE(?) AND ancestry_depth=?',"%#{query}%",0).first
+      sel_programme=Programme.roots.where('name ILIKE(?) OR course_type ILIKE(?) OR level ILIKE(?) OR code ILIKE(?) ',"%#{query}%", "%#{query}%", "%#{query}%", "%#{query}%")
       if sel_programme!=nil 
-        topicids=sel_programme.descendants.at_depth(3).pluck(:id)
-        subtopicids=sel_programme.descendants.at_depth(4).pluck(:id)
-        topicdetailsids = Topicdetail.where('topic_code IN(?) OR topic_code IN(?)', topicids, subtopicids).pluck(:id)
-        return Trainingnote.where('topicdetail_id IN(?)', topicdetailsids)
+        acc_desc_ids=[]
+        sel_programme.each{|x|acc_desc_ids+=x.descendants.where(course_type: ['Topic', 'Subtopic']).pluck(:id)}
+        topicdetail_ids=Topicdetail.where(topic_code: acc_desc_ids).pluck(:id)
       else
-        topicdetailsids=[]
+        topicdetail_ids=[]
       end
-      return Trainingnote.where('topicdetail_id IN(?)', topicdetailsids)
+      where('topicdetail_id IN(?)', topicdetail_ids)
     end
   end
   
