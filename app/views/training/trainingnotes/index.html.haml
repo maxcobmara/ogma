@@ -120,7 +120,7 @@
     /as for AMSAS - latest codes updates -- New Training Note (Topic selection - filtered by Topic Detail record)
     /TODO - to remove this part when no longer required
     %tr
-      %td.group{colspan: 10, style: 'background-color: #D2D2D2; color: red;'}Topic Details not exist
+      %td.group{colspan: 10, style: 'background-color: #D2D2D2; color: red;'}=t('training.trainingnote.topicdetail_not_exist')
     - for tnote in @trainingnotes2.where('topicdetail_id is null')
       %tr
         %td

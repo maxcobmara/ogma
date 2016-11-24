@@ -118,7 +118,7 @@
     
     respond_to do |format|
       format.pdf do
-        pdf = Trainingnote_reportPdf.new(@trainingnotes, view_context, current_user.college)
+        pdf = Trainingnote_reportPdf.new(@trainingnotes, @trainingnotes2, view_context, current_user.college)
         send_data pdf.render, filename: "trainingnote_report-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
