@@ -20,14 +20,14 @@ class Trainingnote_reportPdf < Prawn::Document
     row_programmes=[]
     row_subjects=[]
     row_topics=[]
-    @trainingnotes2.where('topicdetail_id is not null').sort_by{|u|u.topicdetail.subject_topic.parent.code}.group_by{|r|r.topicdetail.subject_topic.root}.sort.reverse.each do |prog, notes_byprog|
+    @trainingnotes2.where('topicdetail_id is not null').group_by{|r|r.topicdetail.subject_topic.root}.sort.reverse.each do |prog, notes_byprog|
         row_programmes << row_count
         row_count+=1
-        notes_byprog.group_by{|t|t.topicdetail.subject_topic.subject_of_topic_subtopic}.each do |subject, notes_bysubject|
+        notes_byprog.sort_by{|u|u.topicdetail.subject_topic.parent.code}.group_by{|t|t.topicdetail.subject_topic.subject_of_topic_subtopic}.each do |subject, notes_bysubject|
             row_subjects << row_count
 	    row_count+=1
 	
-	    notes_bysubject.group_by{|u|u.topicdetail.subject_topic}.each do |topic, trainingnotes|
+	    notes_bysubject.sort_by{|u|u.topicdetail.subject_topic.code}.group_by{|u|u.topicdetail.subject_topic}.each do |topic, trainingnotes|
 	        if trainingnotes.count > 1
 	          row_topics << row_count
 	          row_count+=1
