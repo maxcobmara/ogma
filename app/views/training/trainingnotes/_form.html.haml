@@ -9,12 +9,18 @@
         .form-group
           .col-sm-2.control-label
             = f.label t('training.trainingnote.topic_subtopic')
-          .col-md-3
+          .col-md-5
             - if @trainingnote.timetable_id?
-              = text_field_tag(:topicdetail, @trainingnote.topicdetail.semester_subject_topic, class: 'form-control', readonly: 'readonly')
+              - if current_user.college.code=='amsas'
+                = text_field_tag(:topicdetail, @trainingnote.topicdetail.subject_topic_desc, class: 'form-control', readonly: 'readonly')
+              - else
+                = text_field_tag(:topicdetail, @trainingnote.topicdetail.semester_subject_topic, class: 'form-control', readonly: 'readonly')
               = f.hidden_field :topicdetail_id
             - else
-              = f.collection_select :topicdetail_id,@semester_subject_topic_list_bytopicdetail , :id, :semester_subject_topic, {:prompt=>t('select'), :selected=>@trainingnote.topicdetail_id}, {class: 'selectpicker', "data-width"=>'460px'}   
+              - if current_user.college.code=='amsas'
+                = f.collection_select :topicdetail_id,@semester_subject_topic_list_bytopicdetail , :id, :subject_topic_desc, {:prompt=>t('select'), :selected=>@trainingnote.topicdetail_id}, {class: 'selectpicker', "data-width"=>'auto'}   
+              - else
+                = f.collection_select :topicdetail_id,@semester_subject_topic_list_bytopicdetail , :id, :semester_subject_topic, {:prompt=>t('select'), :selected=>@trainingnote.topicdetail_id}, {class: 'selectpicker', "data-width"=>'auto'}   
             
         .form-group
           .col-sm-2.control-label

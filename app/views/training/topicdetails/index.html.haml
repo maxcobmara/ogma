@@ -16,9 +16,9 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th{width: '27%'}=(t 'training.topicdetail.programme')+" | "+(t 'training.topicdetail.subject')
+        %th{width: '30%'}=(t 'training.topicdetail.programme')+" | "+(t 'training.topicdetail.subject')
         %th{width: '20%'}= sort_link(@search, :topic_code, (t 'training.topicdetail.topic_code'))
-        %th{width: '8%'}= t 'training.topicdetail.version_no'
+        %th{width: '5%'}= t 'training.topicdetail.version_no'
         %th{width: '10%'}= t 'training.topicdetail.duration'
         %th{width: '5%'}= t 'training.topicdetail.theory'
         %th{width: '5%'}= t 'training.topicdetail.tutorial'
@@ -29,7 +29,7 @@
     %tbody
     = render "index_search"
     
-    - @topicdetails.each do |topicdetail|
+    - @topicdetails.sort.reverse.each do |topicdetail|
       %tr
         /subject column
         %td

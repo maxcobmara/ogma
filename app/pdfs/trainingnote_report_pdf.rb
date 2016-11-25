@@ -20,7 +20,7 @@ class Trainingnote_reportPdf < Prawn::Document
     row_programmes=[]
     row_subjects=[]
     row_topics=[]
-    @trainingnotes2.where('topicdetail_id is not null').group_by{|r|r.topicdetail.subject_topic.root}.each do |prog, notes_byprog|
+    @trainingnotes2.where('topicdetail_id is not null').sort_by{|u|u.topicdetail.subject_topic.parent.code}.group_by{|r|r.topicdetail.subject_topic.root}.sort.reverse.each do |prog, notes_byprog|
         row_programmes << row_count
         row_count+=1
         notes_byprog.group_by{|t|t.topicdetail.subject_topic.subject_of_topic_subtopic}.each do |subject, notes_bysubject|
@@ -28,8 +28,10 @@ class Trainingnote_reportPdf < Prawn::Document
 	    row_count+=1
 	
 	    notes_bysubject.group_by{|u|u.topicdetail.subject_topic}.each do |topic, trainingnotes|
-	        row_topics << row_count
-	        row_count+=1
+	        if trainingnotes.count > 1
+	          row_topics << row_count
+	          row_count+=1
+		end
 	        for note in trainingnotes
 	            if note.topicdetail.topic_code
 	                if note.timetable_id?
@@ -104,12 +106,14 @@ class Trainingnote_reportPdf < Prawn::Document
               [{content: 'No', colspan: 2}, I18n.t('training.trainingnote.title'), I18n.t('training.trainingnote.reference'), I18n.t('training.trainingnote.version'), I18n.t('training.trainingnote.release'), I18n.t('training.trainingnote.file_name'), I18n.t('training.trainingnote.staff_id') ]]
     body=[]
 
-    @trainingnotes2.where('topicdetail_id is not null').group_by{|r|r.topicdetail.subject_topic.root}.each do |prog, notes_byprog|
+    @trainingnotes2.where('topicdetail_id is not null').group_by{|r|r.topicdetail.subject_topic.root}.sort.reverse.each do |prog, notes_byprog|
         body << [{content: prog.programme_list, colspan: 8}]
-        notes_byprog.group_by{|t|t.topicdetail.subject_topic.subject_of_topic_subtopic}.each do |subject, notes_bysubject|
+        notes_byprog.sort_by{|u|u.topicdetail.subject_topic.parent.code}.group_by{|t|t.topicdetail.subject_topic.subject_of_topic_subtopic}.each do |subject, notes_bysubject|
             body << [{content: subject.subject_list, colspan: 8}]
-            notes_bysubject.group_by{|u|u.topicdetail.subject_topic}.each do |topic, trainingnotes|
-                body << [{content: topic.subject_list, colspan: 8}]
+            notes_bysubject.sort_by{|u|u.topicdetail.subject_topic.code}.group_by{|u|u.topicdetail.subject_topic}.each do |topic, trainingnotes|
+	        if trainingnotes.count > 1
+                    body << [{content: "#{I18n.t('training.trainingnote.topic_subtopic').upcase}: #{topic.subject_list}", colspan: 8}]
+		end
 		for trainingnote in trainingnotes
                     if trainingnote.topicdetail.topic_code
 		        if trainingnote.timetable_id?

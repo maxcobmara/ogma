@@ -18,14 +18,14 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th{style: "width:8%;"}= sort_link(@search, :serialno, (t 'document.serial_no'))
-        %th{style: "width:8%;"}= sort_link(@search, :refno, (t 'document.ref_no'))
-        %th{style: "width:7%;"}= sort_link(@search, :category, (t 'document.category'))
+        %th{style: "width:4%;"}= sort_link(@search, :serialno, (t 'document.serial_no'))
+        %th{style: "width:14%;"}= sort_link(@search, :refno, (t 'document.ref_no'))
+        %th{style: "width:5%;"}= sort_link(@search, :category, (t 'document.category'))
         %th{style: "width:18%;"}= sort_link(@search, :title, (t 'document.title2'))
-        %th{style: "width:7%;"}= sort_link(@search, :letterdt, (t 'document.letter_date'))
-        %th{style: "width:7%;"}= sort_link(@search, :letterxdt, (t 'document.received_date'))
-        %th{style: "width:10%;"}= sort_link(@search, :from, (t 'document.from'))
-        %th{style: "width:10%;"}= sort_link(@search, :cc1date, ("Status / "+(t 'document.circulation_date')))
+        %th{style: "width:6%;"}= sort_link(@search, :letterdt, (t 'document.letter_date'))
+        %th{style: "width:6%;"}= sort_link(@search, :letterxdt, (t 'document.received_date'))
+        %th{style: "width:14%;"}= sort_link(@search, :from, (t 'document.from'))
+        %th{style: "width:8%;"}= sort_link(@search, :cc1date, ("Status / "+(t 'document.circulation_date')))
         %th{style: "width:15%;"}=(t 'document.action_notifications')
         %th{style: "width:5%;"}= sort_link(@search, :closed, (t 'document.file_closed'))
 
@@ -35,14 +35,14 @@
       %tr
         %td.group{:colspan => "10"}
           %span= filedocer [0]
-      - for document in documents
+      - for document in documents.sort_by{|x|x.letterxdt}.reverse
         %tr
           %td= document.serialno
           %td= link_to document.refno, document_path(document)
           %td.centre= (DropDown::DOCUMENT_CATEGORY.find_all{|disp, value| value == document.category.to_s}).map {|disp, value| disp} [0]
           %td= document.title
-          %td.centre= document.letterdt.try(:strftime, "%d %b %Y" )
-          %td.centre= document.letterxdt.try(:strftime, "%d %b %Y" )
+          %td.centre= document.college.code=='amsas'? document.letterdt.try(:strftime, '%d-%m-%Y') : document.letterdt.try(:strftime, "%d %b %Y" )
+          %td.centre= document.college.code=='amsas'? document.letterxdt.try(:strftime, '%d-%m-%Y') : document.letterxdt.try(:strftime, "%d %b %Y" )
           %td= document.from
           %td.centre
             - if document.college.code=='amsas'
@@ -50,13 +50,18 @@
             - else
               = document.cc1closed? ? (fa_icon('check'))+" "+document.cc1date.try(:strftime, "%d %b %Y" ) : fa_icon('times')
           %td
-            - document.circulations.each_with_index do |circulation, ind|
-              - if document.college.code=='amsas'
-                (#{ind+=1}) #{circulation.staff.staff_with_rank} 
-                =circulation.action_closed? ? fa_icon("check") : fa_icon("times")
-              - else
-                (#{ind+=1}) #{circulation.staff.name} - #{circulation.action_taken}
-              %br
+            - total_recipient=document.circulations.count
+            - if total_recipient <= 5
+              - document.circulations.each_with_index do |circulation, ind|
+                - if document.college.code=='amsas'
+                  (#{ind+=1}) #{circulation.staff.staff_with_rank} 
+                  =circulation.action_closed? ? fa_icon("check") : fa_icon("times")
+                - else
+                  (#{ind+=1}) #{circulation.staff.name} - #{circulation.action_taken}
+                %br
+            - else
+              = total_recipient==User.where(userable_type: 'Staff').count ? "All staffs " : ""
+              = " (Replies = #{document.circulations.where(action_closed: true).count} / #{total_recipient})"
           %td.centre= document.closed? ? fa_icon("check", :border => 0) : ""
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @documents_pagi, :theme => 'twitter-bootstrap-3'
