@@ -3214,8 +3214,8 @@ en:
     category: Category
     title2: Title
     letter_date: Letter Date
-    received_date: Received Date
-    from: From
+    received_date: "Received / Sent Date"
+    from: "From / To"
     circulate_to: Circulate To
     action_notifications: "Actions/Notifications"
     closed: Closed
@@ -3227,7 +3227,7 @@ en:
     minit_tindakan: "(Minutes of Action)"
     stafffiled_id: Filled By
     letterdt: Letter Date
-    letterxdt: Received Date
+    letterxdt: "Received / Sent Date"
     circulation_date: Circulation Date
     uploaded: Uploaded File
     upload_change_file: "Upload/Change File"

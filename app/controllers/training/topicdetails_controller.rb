@@ -37,8 +37,10 @@ class Training::TopicdetailsController < ApplicationController
     #@semester_subject_topic_list = Programme.where('ancestry_depth=? OR ancestry_depth=? AND id NOT IN(?)',3,4,Topicdetail.all.map(&:topic_code).uniq).order(:combo_code)
     
     #existing topicdetail matching programme (topic/subtopic)
-    @exist_valid_topicdetails_ids=Programme.joins(:topic_details).where('course_type=? or course_type=?','Topic','Subtopic').pluck(:id)
-    @semester_subject_topic_list = Programme.where('course_type=? or course_type=? and id not in (?)','Topic','Subtopic',@exist_valid_topicdetails_ids).sort_by{|x|x.parent}
+    #@exist_valid_topicdetails_ids=Programme.joins(:topic_details).where('course_type=? or course_type=?','Topic','Subtopic').pluck(:id)
+    #@semester_subject_topic_list = Programme.where('course_type=? or course_type=? and id not in (?)','Topic','Subtopic',@exist_valid_topicdetails_ids).sort_by{|x|x.parent}
+    @exist_valid_topicdetails_ids=Topicdetail.pluck(:topic_code)
+    @semester_subject_topic_list = Programme.where(course_type: ['Topic','Subtopic']).where.not(id: @exist_valid_topicdetails_ids).sort_by{|x|x.parent}
     
     #@programme_listing = Programme.roots
     #@subjects2 = Programme.all.at_depth(2).sort 
@@ -73,8 +75,10 @@ class Training::TopicdetailsController < ApplicationController
   # POST /topicdetails.xml
   def create
     @topicdetail = Topicdetail.new(topicdetail_params)
-    @exist_valid_topicdetails_ids=Programme.joins(:topic_details).where('course_type=? or course_type=?','Topic','Subtopic').pluck(:id)
-    @semester_subject_topic_list = Programme.where('course_type=? or course_type=? and id not in (?)','Topic','Subtopic',@exist_valid_topicdetails_ids).sort_by{|x|x.parent}
+    #@exist_valid_topicdetails_ids=Programme.joins(:topic_details).where('course_type=? or course_type=?','Topic','Subtopic').pluck(:id)
+    #@semester_subject_topic_list = Programme.where('course_type=? or course_type=? and id not in (?)','Topic','Subtopic',@exist_valid_topicdetails_ids).sort_by{|x|x.parent}
+    @exist_valid_topicdetails_ids=Topicdetail.pluck(:topic_code)
+    @semester_subject_topic_list = Programme.where(course_type: ['Topic','Subtopic']).where.not(id: @exist_valid_topicdetails_ids).sort_by{|x|x.parent}
     
     respond_to do |format|
       if @topicdetail.save
@@ -140,7 +144,7 @@ class Training::TopicdetailsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def topicdetail_params
-      params.require(:topicdetail).permit(:topic_name, :topic_code, :duration, :version_no, :objctives, :contents, :theory, :tutorial, :practical, :prepared_by, trainingnotes_attributes: [:id, :release, :title, :version, :document, :staff_id, :_destroy])
+      params.require(:topicdetail).permit(:topic_name, :topic_code, :duration, :version_no, :objctives, :contents, :theory, :tutorial, :practical, :prepared_by, :college_id, {:data => []}, trainingnotes_attributes: [:id, :release, :title, :version, :document, :staff_id, :_destroy])
     end
     
 end

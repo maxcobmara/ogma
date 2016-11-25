@@ -1,5 +1,6 @@
  class Topicdetail < ActiveRecord::Base
   
+  belongs_to :college, :foreign_key => :college_id
   belongs_to :subject_topic, :class_name=>"Programme", :foreign_key => :topic_code
   belongs_to :topic_creator, :class_name=>"Staff", :foreign_key => :prepared_by
   
@@ -63,6 +64,14 @@
       "Sem #{subject_topic.parent.parent.code}"+"-"+"#{subject_topic.parent.code}"+" | "+"#{subject_topic.name}"
     elsif subject_topic.course_type == "Subtopic"
       ">>Sem #{subject_topic.parent.parent.parent.code}"+"-"+"#{subject_topic.parent.parent.code}"+" | "+"#{subject_topic.code} "+"#{subject_topic.name}"
+    end
+  end
+  
+  def subject_topic_desc
+    if subject_topic.course_type=="Topic"
+       "#{subject_topic.root.name} - #{subject_topic.parent.name} | #{subject_topic.name}"
+    elsif parent.parent.course_type=="Subtopic"
+      "#{subject_topic.root.name} - #{subject_topic.parent.parent.code} | #{subject_topic.code} #{subject_topic.name}"
     end
   end
   

@@ -28,23 +28,24 @@
         /%th{width: '10%'}=t 'training.trainingnote.subject'
         /%th{width: '10%'}= sort_link(@search, :topic_subtopic, (t 'training.trainingnote.topic_subtopic'))
         %th{width: '27%'}= sort_link(@search, :title, (t 'training.trainingnote.title'))
-        %th{width: '10%'}= sort_link(@search, :reference, (t 'training.trainingnote.reference'))
-        %th{width: '10%'}= sort_link(@search, :version, (t 'training.trainingnote.version'))
-        %th{width: '10%'}= sort_link(@search, :release, (t 'training.trainingnote.release'))
-        %th{width: '20%'}= sort_link(@search, :file_name, (t 'training.trainingnote.file_name'))
+        %th{width: '16%'}= sort_link(@search, :reference, (t 'training.trainingnote.reference'))
+        %th{width: '4%'}= sort_link(@search, :version, (t 'training.trainingnote.version'))
+        %th{width: '7%'}= sort_link(@search, :release, (t 'training.trainingnote.release'))
+        %th{width: '23%'}= sort_link(@search, :file_name, (t 'training.trainingnote.file_name'))
         %th{width: '20%'}=sort_link(@search, :staff_id, (t 'training.trainingnote.staff_id'))
        
     %tbody
     = render "index_search"
-    - @trainingnotes2.where('topicdetail_id is not null').group_by{|r|r.topicdetail.subject_topic.root}.each do |prog, notes_byprog|
+    - @trainingnotes2.where('topicdetail_id is not null').group_by{|r|r.topicdetail.subject_topic.root}.sort.reverse.each do |prog, notes_byprog|
       %tr
         %td.group{colspan: 10}= prog.programme_list
-      - notes_byprog.group_by{|t|t.topicdetail.subject_topic.subject_of_topic_subtopic}.each do |subject, notes_bysubject|
+      - notes_byprog.sort_by{|u|u.topicdetail.subject_topic.parent.code}.group_by{|t|t.topicdetail.subject_topic.subject_of_topic_subtopic}.each do |subject, notes_bysubject|
         %tr
           %td.group{colspan: 10}=subject.subject_list
-        - notes_bysubject.group_by{|u|u.topicdetail.subject_topic}.each do |topic, trainingnotes|
-          %tr
-            %td.group{colspan: 10}=topic.subject_list
+        - notes_bysubject.sort_by{|u|u.topicdetail.subject_topic.code}.group_by{|u|u.topicdetail.subject_topic}.each do |topic, trainingnotes|
+          - if trainingnotes.count > 1
+            %tr
+              %td.group{colspan: 10}=(t 'training.trainingnote.topic_subtopic').upcase+": "+topic.subject_list
           - for trainingnote in trainingnotes
             - if trainingnote.topicdetail.topic_code
               %tr
@@ -70,7 +71,7 @@
                       )
                 %td=trainingnote.reference
                 %td=trainingnote.version
-                %td=trainingnote.release.try(:strftime, '%d %b %Y')
+                %td=current_user.college.code=='amsas' ? trainingnote.release.try(:strftime, '%d-%m-%Y') : trainingnote.release.try(:strftime, '%d %b %Y')
                 %td=trainingnote.document_file_name
                 %td=trainingnote.note_creator.rank_id? ? trainingnote.note_creator.staff_with_rank : trainingnote.note_creator.try(:name)
                   
