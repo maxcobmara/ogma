@@ -2,18 +2,12 @@ class Staff::InstructorAppraisalsController < ApplicationController
   filter_access_to :index, :new, :create, :instructorevaluation, :instructorevaluation_report, :instructorevaluation_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :qc_appraisal, :attribute_check => true
   
+  before_action :set_index_list
   before_action :set_instructor_appraisal, only: [:show, :edit, :update, :destroy] 
 
   respond_to :html
 
   def index
-    current_roles=current_user.roles.pluck(:authname)
-    @search = InstructorAppraisal.search(params[:q])
-    if current_roles.include?('developer') || current_roles.include?('administration') || current_roles.include?('instructor_appraisals_module_admin') || current_roles.include?('instructor_appraisals_module_viewer') || current_roles.include?('instructor_appraisals_module_user') || current_roles.include?('e_filing')
-      @instructor_appraisals = @search.result
-    else
-      @instructor_appraisals = @search.result.search2(current_user.userable_id)
-    end
     @instructor_appraisals=@instructor_appraisals.page(params[:page]||1)
     respond_with(@instructor_appraisals)
   end
@@ -100,8 +94,6 @@ class Staff::InstructorAppraisalsController < ApplicationController
   end
   
    def instructorevaluation_list
-    @search = InstructorAppraisal.search(params[:q])
-    @instructor_appraisals = @search.result
     respond_to do |format|
       format.pdf do
         pdf = Instructorevaluation_listPdf.new(@instructor_appraisals, view_context, current_user.college)
@@ -115,6 +107,16 @@ class Staff::InstructorAppraisalsController < ApplicationController
   private
     def set_instructor_appraisal
       @instructor_appraisal = InstructorAppraisal.find(params[:id])
+    end
+    
+    def set_index_list
+      current_roles=current_user.roles.pluck(:authname)
+      @search = InstructorAppraisal.search(params[:q])
+      if current_roles.include?('developer') || current_roles.include?('administration') || current_roles.include?('instructor_appraisals_module_admin') || current_roles.include?('instructor_appraisals_module_viewer') || current_roles.include?('instructor_appraisals_module_user') || current_roles.include?('e_filing')
+        @instructor_appraisals = @search.result
+      else
+        @instructor_appraisals = @search.result.search2(current_user.userable_id)
+      end
     end
 
     def instructor_appraisal_params

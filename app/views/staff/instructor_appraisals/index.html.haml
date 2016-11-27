@@ -13,15 +13,17 @@
       /HACK-auth rules failed - as report contains collection of records
       /NOTE-role :staff & module_member (check by: Unit name either Kompetensi or Kawalan Mutu)
       - current_roles=current_user.roles.pluck(:authname)
-      - permitted_to? :instructorevaluation_report, :staff_instructor_appraisals do
-        - if Position.where('unit ILIKE(?) OR unit ILIKE(?)', '%Kompetensi%', '%Kawalan Mutu%').pluck(:staff_id).include?(current_user.userable_id) || current_roles.include?('instructor_appraisals_module_admin') || current_roles.include?('instructor_appraisals_module_viewer') || current_roles.include?('instructor_appraisals_module_user') || current_roles.include?('administration') || current_roles.include?('developer')
-          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-            = fa_icon "external-link", text: (t 'actions.print')
-            %b.caret
-          %ul.dropdown-menu
-            %li= link_to (fa_icon "file-pdf-o", text: (t "instructor_appraisal.list")), instructorevaluation_list_staff_instructor_appraisals_path(params.merge(format: 'pdf' ))
+      /- permitted_to? :instructorevaluation_report, :staff_instructor_appraisals do
+      /  - if Position.where('unit ILIKE(?) OR unit ILIKE(?)', '%Kompetensi%', '%Kawalan Mutu%').pluck(:staff_id).include?(current_user.userable_id) || current_roles.include?('instructor_appraisals_module_admin') || current_roles.include?('instructor_appraisals_module_viewer') || current_roles.include?('instructor_appraisals_module_user') || current_roles.include?('administration') || current_roles.include?('developer')
+      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+        = fa_icon "external-link", text: (t 'actions.print')
+        %b.caret
+      %ul.dropdown-menu
+        - permitted_to? :instructorevaluation_report, :staff_instructor_appraisals do
+          - if Position.where('unit ILIKE(?) OR unit ILIKE(?)', '%Kompetensi%', '%Kawalan Mutu%').pluck(:staff_id).include?(current_user.userable_id) || current_roles.include?('instructor_appraisals_module_admin') || current_roles.include?('instructor_appraisals_module_viewer') || current_roles.include?('instructor_appraisals_module_user') || current_roles.include?('administration') || current_roles.include?('developer')
             %li= link_to (fa_icon "file-pdf-o", text: (t "instructor_appraisal.report")), instructorevaluation_report_staff_instructor_appraisals_path(params.merge(format: 'pdf' ))
-
+        
+        %li= link_to (fa_icon "file-pdf-o", text: (t "instructor_appraisal.list")), instructorevaluation_list_staff_instructor_appraisals_path(params.merge(format: 'pdf' ))
 .row
   %table.table-striped.table-hover.ogma
     %thead

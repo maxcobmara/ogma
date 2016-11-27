@@ -1,14 +1,15 @@
 = search_form_for [:average_instructor, @search], url: staff_average_instructors_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
-    %td= f.text_field :instructor_name_or_instructor_rank_name_or_instructor_rank_shortname_cont, size: 8, :class => "form-control" 
-    %td= f.text_field :programme_name_cont, size: 8, :class => "form-control" 
-    %td= f.text_field :evaluate_date_eq, size: 8,  :class => "form-control date_picker_reverse", value: @search.evaluate_date_eq.try(:strftime, '%d-%m-%Y')
-    %td= f.text_field :title_cont, class: 'form-control'
-    %td= f.text_field :objective_cont, class: 'form-control'
+    %td
+      = f.text_field :instructor_name_or_instructor_rank_name_or_instructor_rank_shortname_cont, size: 8, :class => "form-control", placeholder: (t 'average_instructor.instructor_id')
+      = f.text_field :programme_name_cont, size: 8, :class => "form-control", placeholder: (t 'average_instructor.programme_id')
+    %td= f.text_field :evaluate_date_eq, size: 8,  :class => "form-control date_picker_reverse", value: @search.evaluate_date_eq.try(:strftime, '%d-%m-%Y'), placeholder: (t 'average_instructor.evaluate_date')
+    %td= f.text_field :title_cont, class: 'form-control', placeholder: (t 'average_instructor.title2')
+    %td= f.text_field :objective_cont, class: 'form-control', placeholder: (t 'average_instructor.objective')
     %td= select_tag('q[delivery_type_eq]',options_for_select([[(t 'actions.all_records'),'']]+DropDown::DELIVERY_TYPE), class: 'selectpicker',"data-width"=>'125px')
     /%td
     %td.input-group
-      =f.text_field :evaluator_name_or_evaluator_rank_name_or_evaluator_rank_shortname_cont, size: 8,  :class => "form-control"
+      =f.text_field :evaluator_name_or_evaluator_rank_name_or_evaluator_rank_shortname_cont, size: 8,  :class => "form-control", placeholder: (t 'average_instructor.evaluator_id')
       %span.input-group-btn
         %button.btn.btn-sm.btn-default.right{:type => "submit"}
           %i.fa.fa-search.fa-fw

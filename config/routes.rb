@@ -90,6 +90,9 @@ Ogma::Application.routes.draw do
       member do
         get :averageinstructor_evaluation
       end
+      collection do
+        get :averageinstructor_list
+      end
     end
     resources :titles
     resources :staff_shifts

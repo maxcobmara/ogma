@@ -11,6 +11,7 @@
         %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_average_instructor_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  averageinstructor_list_staff_average_instructors_path(params.merge(format: 'pdf' ))
     /%li.dropdown
     /  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
     /    = fa_icon "external-link", text: (t 'actions.print')
@@ -22,11 +23,10 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th{width: "17%"}=sort_link(@search, :instructor_id, (t 'average_instructor.instructor_id'))
-        %th{width: "12%"}=sort_link(@search, :programme_id, (t 'average_instructor.programme_id'))
+        %th{width: "15%"}=sort_link(@search, :instructor_id, (t 'average_instructor.instructor_id'))
         %th{width: "7%"}=sort_link(@search, :evaluate_date, (t 'average_instructor.evaluate_date'))
         %th{width: "10%"}=sort_link(@search, :title, (t 'average_instructor.title2'))
-        %th{width: "10%"}=t 'average_instructor.objective'
+        %th{width: "24%"}=t 'average_instructor.objective'
         %th{width: "7%"}=sort_link(@search, :delivery_type, (t 'average_instructor.delivery_type'))
         %th{width: "17%"}=sort_link(@search, :evaluator_id, (t 'average_instructor.evaluator_id'))
         /%th{width: "5%"}=(t 'average_instructor.grade')
@@ -34,17 +34,19 @@
         
     %tbody
       = render "index_search"
-      - @average_instructors.each do |average_instructor|
+      - @average_instructors.group_by(&:programme).each do |programme, average_instructors|
         %tr
-          %td=h link_to average_instructor.instructor.staff_with_rank, staff_average_instructor_path(average_instructor)
-          %td=h average_instructor.programme.try(:programme_list)
-          %td.centre=h average_instructor.evaluate_date.try(:strftime, '%d-%m-%Y')
-          %td=h average_instructor.title
-          %td=h average_instructor.objective
-          %td=h average_instructor.render_delivery
-          %td=h average_instructor.evaluator.try(:staff_with_rank)
-          /%td=h average_instructor.try(:grade)
-          /%td=h average_instructor.total_score.nil? ? "" : number_with_precision(average_instructor.total_score, precision: 2) 
+          %td.group{colspan: 6}=programme.try(:programme_list)
+        - for average_instructor in average_instructors
+          %tr
+            %td=h link_to average_instructor.instructor.staff_with_rank, staff_average_instructor_path(average_instructor)
+            %td.centre=h average_instructor.evaluate_date.try(:strftime, '%d-%m-%Y')
+            %td=h average_instructor.title
+            %td=h average_instructor.objective
+            %td=h average_instructor.render_delivery
+            %td=h average_instructor.evaluator.try(:staff_with_rank)
+            /%td=h average_instructor.try(:grade)
+            /%td=h average_instructor.total_score.nil? ? "" : number_with_precision(average_instructor.total_score, precision: 2) 
         
   .right{style:"padding:0 30px; margin:0;"}= paginate @average_instructors, :theme => 'twitter-bootstrap-3'            
             

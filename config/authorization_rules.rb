@@ -165,7 +165,7 @@ authorization do
    #instructor Appraisal
    has_permission_on :staff_instructor_appraisals, :to => :menu
    has_permission_on :staff_instructor_appraisals, :to => :create
-   has_permission_on :staff_instructor_appraisals, :to => [:read, :instructorevaluation], :join_by => :or do
+   has_permission_on :staff_instructor_appraisals, :to => [:read, :instructorevaluation, :instructorevaluation_list], :join_by => :or do
      if_attribute :staff_id => is {user.userable.id}
      if_attribute :check_qc => is {user.userable.id}
    end
@@ -184,10 +184,10 @@ authorization do
    
    #Average instructor
    has_permission_on :staff_average_instructors, :to => [:menu, :create]                       
-   has_permission_on :staff_average_instructors, :to => [:manage, :averageinstructor_evaluation] do
+   has_permission_on :staff_average_instructors, :to => [:manage, :averageinstructor_evaluation, :averageinstructor_list] do
      if_attribute :evaluator_id => is {user.userable.id}
    end
-   has_permission_on :staff_average_instructors, :to => [:read, :averageinstructor_evaluation] do
+   has_permission_on :staff_average_instructors, :to => [:read, :averageinstructor_evaluation, :averageinstructor_list] do
      if_attribute :instructor_id => is {user.userable.id}
    end
     
@@ -2485,7 +2485,7 @@ authorization do
     has_permission_on :staff_instructor_appraisals, :to => :update do
       if_attribute :staff_id => is {user.userable.id}
     end
-    has_permission_on :staff_instructor_appraisals, :to => [:read, :instructorevaluation], :join_by => :or do
+    has_permission_on :staff_instructor_appraisals, :to => [:read, :instructorevaluation, :instructorevaluation_list], :join_by => :or do
       if_attribute :staff_id => is {user.userable.id}
       if_attribute :check_qc => is {user.userable.id}
     end
@@ -2508,26 +2508,26 @@ authorization do
   #59 OK 21 Sept2016 - Bhg Kawalan Mutu / Kompetensi - seperti Nazir Sekolah
   #Pentadbir : boleh lakukan kesemuanya (CRUD/A) 
   role :average_instructors_module_admin do                  
-    has_permission_on :staff_average_instructors, :to => [:manage, :averageinstructor_evaluation]
+    has_permission_on :staff_average_instructors, :to => [:manage, :averageinstructor_evaluation, :averageinstructor_list]
   end
   #Paparan : boleh menyenarai, mencetak rekod serta menyemak laporan sahaja (R/A) - anybody can view
   role :average_instructors_module_viewer do
-    has_permission_on :staff_average_instructors, :to => [:read, :averageinstructor_evaluation] 
+    has_permission_on :staff_average_instructors, :to => [:read, :averageinstructor_evaluation, :averageinstructor_list] 
   end
   #Pemilik : hanya boleh memapar dan menyunting rekod sendiri (CRUD/O)
   # NOTE - although instructor_id refers to 'Jurulatih', record is SOLELY created/updated by Kaw Mutu / Kompetensi
   role :average_instructors_module_member do
     has_permission_on :staff_average_instructors, :to => [:menu, :create]                       
-    has_permission_on :staff_average_instructors, :to => [:manage, :averageinstructor_evaluation] do
+    has_permission_on :staff_average_instructors, :to => [:manage, :averageinstructor_evaluation, :averageinstructor_list] do
       if_attribute :evaluator_id => is {user.userable.id}
     end
-    has_permission_on :staff_average_instructors, :to => [:read, :averageinstructor_evaluation] do
+    has_permission_on :staff_average_instructors, :to => [:read, :averageinstructor_evaluation, :averageinstructor_list] do
       if_attribute :instructor_id => is {user.userable.id}
     end
   end
   #Pengguna : boleh memapar & mengemaskini semua rekod (RU/A) - whoever except for 'Jurulatih'
   role :average_instructors_module_user do
-    has_permission_on :staff_average_instructors, :to => [:read, :update, :averageinstructor_evaluation]
+    has_permission_on :staff_average_instructors, :to => [:read, :update, :averageinstructor_evaluation, :averageinstructor_list]
   end
   
   #60-OK 27 Sept2016
