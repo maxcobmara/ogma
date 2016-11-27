@@ -1,13 +1,15 @@
 = search_form_for @search, url: documents_path, class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
-    %td= f.text_field :serialno_cont, size: 2,  :class => "form-control"
-    %td= f.text_field :refno_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :serialno_cont, size: 2,  :class => "form-control", placeholder: (t 'document.serial_no')
+    %td
+      = f.text_field :refno_cont, size: 2,  :class => "form-control", placeholder: (t 'document.ref_no')
+      = f.text_field :cofile_cofileno_or_cofile_name_cont, size: 2, :class => "form-control", placeholder: (t 'document.file_no')
     %td= select_tag('q[category_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'document.letter'),'1'],[(t 'document.memo'),'2'],[(t 'document.circular'),'3'],[(t 'document.others'),'4'],[(t 'document.email'),'5']]),class: 'selectpicker',"data-width"=>'100px')
-    %td= f.text_field :title_cont, size: 2,  :class => "form-control"
-    %td= f.text_field :letterdt_eq, size: 2,  :class => "form-control date_picker"
-    %td= f.text_field :letterxdt_eq, size: 2,  :class => "form-control date_picker"
-    %td= f.text_field :from_cont, size: 2,  :class => "form-control"
-    %td= f.text_field :cc1date_eq, size: 2,  :class => "form-control date_picker"
+    %td= f.text_field :title_cont, size: 2,  :class => "form-control", placeholder: (t 'document.title2')
+    %td= f.text_field :letterdt_eq, size: 2,  :class => "form-control date_picker", placeholder: (t 'document.letter_date')
+    %td= f.text_field :letterxdt_eq, size: 2,  :class => "form-control date_picker", placeholder: (t 'document.received_date')
+    %td= f.text_field :from_cont, size: 2,  :class => "form-control", placeholder: (t 'document.from')
+    %td= f.text_field :cc1date_eq, size: 2,  :class => "form-control date_picker", placeholder: (t 'document.circulation_date')
     %td= f.text_field :circulations_staff_name_cont, size: 8,  :class => "form-control", :placeholder => (t 'document.staff_name')
     %td.input-group
       = select_tag('q[closed_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'yes2'),true],[(t 'no2'),false]]),class: 'selectpicker',"data-width"=>'100px')

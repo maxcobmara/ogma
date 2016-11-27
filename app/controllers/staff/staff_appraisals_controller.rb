@@ -1,17 +1,10 @@
 class Staff::StaffAppraisalsController < ApplicationController
-  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :index, :new, :create, :staffappraisal_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :appraisal_form, :attribute_check => true
+  before_action :set_index_list, only: [:index, :staffappraisal_list]
   before_action :set_staff_appraisal, only: [:show, :edit, :update, :destroy] 
   
   def index
-    roles = current_user.roles.pluck(:authname)
-    @is_admin = roles.include?("administration") || roles.include?("staff_appraisals_module_admin") || roles.include?("staff_appraisals_module_viewer") || roles.include?("staff_appraisals_module_user")
-    if @is_admin
-      @search = StaffAppraisal.search(params[:q])
-    else
-      @search = StaffAppraisal.sstaff2(current_user.userable.id).search(params[:q])
-    end 
-    @staff_appraisals = @search.result
     @staff_appraisals = @staff_appraisals.page(params[:page]||1)
   end
   
@@ -99,10 +92,34 @@ class Staff::StaffAppraisalsController < ApplicationController
     end
   end
   
+   def staffappraisal_list
+    @search = StaffAppraisal.search(params[:q])
+    @staff_appraisals = @search.result
+    respond_to do |format|
+      format.pdf do
+        pdf = Staffappraisal_listPdf.new(@staff_appraisals, view_context, current_user.college)
+        send_data pdf.render, filename: "staffappraisal_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_staff_appraisal
       @staff_appraisal = StaffAppraisal.find(params[:id])
+    end
+    
+    def set_index_list
+      roles = current_user.roles.pluck(:authname)
+      @is_admin = roles.include?("developer") || roles.include?("administration") || roles.include?("staff_appraisals_module_admin") || roles.include?("staff_appraisals_module_viewer") || roles.include?("staff_appraisals_module_user")
+      if @is_admin
+        @search = StaffAppraisal.search(params[:q])
+      else
+        @search = StaffAppraisal.sstaff2(current_user.userable.id).search(params[:q])
+      end 
+      @staff_appraisals = @search.result
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

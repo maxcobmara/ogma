@@ -165,7 +165,7 @@ authorization do
    #instructor Appraisal
    has_permission_on :staff_instructor_appraisals, :to => :menu
    has_permission_on :staff_instructor_appraisals, :to => :create
-   has_permission_on :staff_instructor_appraisals, :to => [:read, :instructorevaluation], :join_by => :or do
+   has_permission_on :staff_instructor_appraisals, :to => [:read, :instructorevaluation, :instructorevaluation_list], :join_by => :or do
      if_attribute :staff_id => is {user.userable.id}
      if_attribute :check_qc => is {user.userable.id}
    end
@@ -179,22 +179,22 @@ authorization do
      if_attribute :checked => is_in {[nil, false]}
    end
    # HACK restriction to Administration, Developer & instructor_appraisals_module_admin in INDEX page
-   has_permission_on :staff_instructor_appraisals, :to => :instructorevaluation_report 
+   has_permission_on :staff_instructor_appraisals, :to => [:instructorevaluation_report , :instructorevaluation_list]
    
    
    #Average instructor
    has_permission_on :staff_average_instructors, :to => [:menu, :create]                       
-   has_permission_on :staff_average_instructors, :to => [:manage, :averageinstructor_evaluation] do
+   has_permission_on :staff_average_instructors, :to => [:manage, :averageinstructor_evaluation, :averageinstructor_list] do
      if_attribute :evaluator_id => is {user.userable.id}
    end
-   has_permission_on :staff_average_instructors, :to => [:read, :averageinstructor_evaluation] do
+   has_permission_on :staff_average_instructors, :to => [:read, :averageinstructor_evaluation, :averageinstructor_list] do
      if_attribute :instructor_id => is {user.userable.id}
    end
     
     
     
    has_permission_on :staff_staff_appraisals, :to => :create                                                # A staff can create appraisal
-   has_permission_on :staff_staff_appraisals, :to => [:show, :appraisal_form] do                                             # but cannot see marking parts
+   has_permission_on :staff_staff_appraisals, :to => [:show, :appraisal_form, :staffappraisal_list] do                                             # but cannot see marking parts
      if_attribute :staff_id => is {user.userable.id}
    end
    has_permission_on :staff_staff_appraisals, :to => :update, :join_by => :and do              # can enter SKT, when skt not yet submitted
@@ -211,7 +211,7 @@ authorization do
      if_attribute :is_skt_ppp_report_done => is {true}
      if_attribute :is_submit_for_evaluation => is_not {true}
    end
-   has_permission_on :staff_staff_appraisals, :to =>[:read, :appraisal_form], :join_by => :or do  # PPP & PPK have read access
+   has_permission_on :staff_staff_appraisals, :to =>[:read, :appraisal_form, :staffappraisal_list], :join_by => :or do  # PPP & PPK have read access
      if_attribute :eval1_by => is {user.userable.id}
      if_attribute :eval2_by => is {user.userable.id}
    end
@@ -534,7 +534,7 @@ authorization do
  end
   
   role :staff_administrator do
-     has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff]
+     has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff, :staff_list]
      has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :actionable, :approval, :manager_admin, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :import_excel, :import, :status ]   #29Apr2013-refer routes.rb
      has_permission_on :staff_fingerprints, :to => [:manage, :approval, :index_admin]
      has_permission_on :staff_staff_shifts, :to => :manage
@@ -1043,17 +1043,17 @@ authorization do
   #####start of Staff Module#######################################
   #1)OK - all 4 - 4Feb2016 ** NOTE - local messaging & groups added into Staff modules - all access as of 'Staff' role
   role :staffs_module_admin do
-    has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
+    has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff, :staff_list] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
     has_permission_on :campus_pages, :to => :flexipage
     has_permission_on :repositories, :to => [:menu, :download]
   end
   role :staffs_module_viewer do
-    has_permission_on :staff_staffs, :to => [:read, :borang_maklumat_staff]
+    has_permission_on :staff_staffs, :to => [:read, :borang_maklumat_staff, :staff_list]
     has_permission_on :campus_pages, :to => :flexipage
     has_permission_on :repositories, :to => [:menu, :download]
   end
   role :staffs_module_user do
-    has_permission_on :staff_staffs, :to => [:read, :update, :borang_maklumat_staff]
+    has_permission_on :staff_staffs, :to => [:read, :update, :borang_maklumat_staff, :staff_list]
     has_permission_on :campus_pages, :to => :flexipage
     has_permission_on :repositories, :to => [:menu, :download]
   end
@@ -1133,18 +1133,18 @@ authorization do
   #5-OK - all 4 - 4-5Feb2016
   #5-OK - for read, but for manage with restrictions as of super admin (PYD, PPP, PPK)
   role :staff_appraisals_module_admin do
-     has_permission_on :staff_staff_appraisals, :to => [:manage, :appraisal_form]
+     has_permission_on :staff_staff_appraisals, :to => [:manage, :appraisal_form, :staffappraisal_list]
   end
   role :staff_appraisals_module_viewer do
-     has_permission_on :staff_staff_appraisals, :to => [:read, :appraisal_form] 
+     has_permission_on :staff_staff_appraisals, :to => [:read, :appraisal_form, :staffappraisal_list] 
   end
   role :staff_appraisals_module_user do
-    has_permission_on :staff_staff_appraisals, :to => [:read, :update, :appraisal_form]
+    has_permission_on :staff_staff_appraisals, :to => [:read, :update, :appraisal_form, :staffappraisal_list]
   end
   role :staff_appraisals_module_member do
     #own record 
     has_permission_on :staff_staff_appraisals, :to => :create                                                # A staff can create appraisal
-    has_permission_on :staff_staff_appraisals, :to => [:show, :appraisal_form] do                # but cannot see marking parts
+    has_permission_on :staff_staff_appraisals, :to => [:show, :appraisal_form, :staffappraisal_list] do                # but cannot see marking parts
       if_attribute :staff_id => is {user.userable.id}
     end
     has_permission_on :staff_staff_appraisals, :to => :update, :join_by => :and do              # can enter SKT, when skt not yet submitted
@@ -1162,7 +1162,7 @@ authorization do
       if_attribute :is_submit_for_evaluation => is_not {true}
     end
     #own (approver - PPP or PPK)
-    has_permission_on :staff_staff_appraisals, :to =>[:read, :appraisal_form], :join_by => :or do  # PPP & PPK have read access
+    has_permission_on :staff_staff_appraisals, :to =>[:read, :appraisal_form, :staffappraisal_list], :join_by => :or do  # PPP & PPK have read access
       if_attribute :eval1_by => is {user.userable.id}
       if_attribute :eval2_by => is {user.userable.id}
     end
@@ -2474,10 +2474,10 @@ authorization do
   
   #58 - OK 21 Sept2016
   role :instructor_appraisals_module_admin do
-    has_permission_on :staff_instructor_appraisals , :to => [:manage, :instructorevaluation, :instructorevaluation_report]
+    has_permission_on :staff_instructor_appraisals , :to => [:manage, :instructorevaluation, :instructorevaluation_report, :instructorevaluation_list]
   end
   role :instructor_appraisals_module_viewer do
-    has_permission_on :staff_instructor_appraisals, :to => [:menu, :show, :instructorevaluation, :instructorevaluation_report]
+    has_permission_on :staff_instructor_appraisals, :to => [:menu, :show, :instructorevaluation, :instructorevaluation_report, :instructorevaluation_list]
   end
   role :instructor_appraisals_module_member do
     has_permission_on :staff_instructor_appraisals, :to => :menu
@@ -2485,7 +2485,7 @@ authorization do
     has_permission_on :staff_instructor_appraisals, :to => :update do
       if_attribute :staff_id => is {user.userable.id}
     end
-    has_permission_on :staff_instructor_appraisals, :to => [:read, :instructorevaluation], :join_by => :or do
+    has_permission_on :staff_instructor_appraisals, :to => [:read, :instructorevaluation, :instructorevaluation_list], :join_by => :or do
       if_attribute :staff_id => is {user.userable.id}
       if_attribute :check_qc => is {user.userable.id}
     end
@@ -2499,35 +2499,35 @@ authorization do
       if_attribute :checked => is_in {[nil, false]}
     end
     # HACK restriction to Administration, Developer & instructor_appraisals_module_admin in INDEX page
-    has_permission_on :staff_instructor_appraisals, :to => :instructorevaluation_report 
+    has_permission_on :staff_instructor_appraisals, :to => [:instructorevaluation_report , :instructorevaluation_list]
   end
   role :instructor_appraisals_module_user do
-    has_permission_on :staff_instructor_appraisals, :to => [:menu, :read, :update, :instructorevaluation, :instructorevaluation_report]
+    has_permission_on :staff_instructor_appraisals, :to => [:menu, :read, :update, :instructorevaluation, :instructorevaluation_report, :instructorevaluation_list]
   end
   
   #59 OK 21 Sept2016 - Bhg Kawalan Mutu / Kompetensi - seperti Nazir Sekolah
   #Pentadbir : boleh lakukan kesemuanya (CRUD/A) 
   role :average_instructors_module_admin do                  
-    has_permission_on :staff_average_instructors, :to => [:manage, :averageinstructor_evaluation]
+    has_permission_on :staff_average_instructors, :to => [:manage, :averageinstructor_evaluation, :averageinstructor_list]
   end
   #Paparan : boleh menyenarai, mencetak rekod serta menyemak laporan sahaja (R/A) - anybody can view
   role :average_instructors_module_viewer do
-    has_permission_on :staff_average_instructors, :to => [:read, :averageinstructor_evaluation] 
+    has_permission_on :staff_average_instructors, :to => [:read, :averageinstructor_evaluation, :averageinstructor_list] 
   end
   #Pemilik : hanya boleh memapar dan menyunting rekod sendiri (CRUD/O)
   # NOTE - although instructor_id refers to 'Jurulatih', record is SOLELY created/updated by Kaw Mutu / Kompetensi
   role :average_instructors_module_member do
     has_permission_on :staff_average_instructors, :to => [:menu, :create]                       
-    has_permission_on :staff_average_instructors, :to => [:manage, :averageinstructor_evaluation] do
+    has_permission_on :staff_average_instructors, :to => [:manage, :averageinstructor_evaluation, :averageinstructor_list] do
       if_attribute :evaluator_id => is {user.userable.id}
     end
-    has_permission_on :staff_average_instructors, :to => [:read, :averageinstructor_evaluation] do
+    has_permission_on :staff_average_instructors, :to => [:read, :averageinstructor_evaluation, :averageinstructor_list] do
       if_attribute :instructor_id => is {user.userable.id}
     end
   end
   #Pengguna : boleh memapar & mengemaskini semua rekod (RU/A) - whoever except for 'Jurulatih'
   role :average_instructors_module_user do
-    has_permission_on :staff_average_instructors, :to => [:read, :update, :averageinstructor_evaluation]
+    has_permission_on :staff_average_instructors, :to => [:read, :update, :averageinstructor_evaluation, :averageinstructor_list]
   end
   
   #60-OK 27 Sept2016

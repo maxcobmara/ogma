@@ -105,4 +105,10 @@ class AverageInstructor < ActiveRecord::Base
       end
     end
     
+    def self.search2(search)
+      if search
+        where('instructor_id=? OR evaluator_id=?', search, search)
+      end
+    end
+    
 end

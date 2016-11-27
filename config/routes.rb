@@ -7,6 +7,7 @@ Ogma::Application.routes.draw do
       end
       collection do
         get :autocomplete
+        get :staff_list
       end
     end
     resources :positions do
@@ -19,6 +20,9 @@ Ogma::Application.routes.draw do
     resources :staff_appraisals do
       member do
         get :appraisal_form
+      end
+      collection do
+        get :staffappraisal_list
       end
     end
     resources :leaveforstaffs do
@@ -79,11 +83,15 @@ Ogma::Application.routes.draw do
       end
       collection do
         get :instructorevaluation_report
+        get :instructorevaluation_list
       end
     end
     resources :average_instructors do
       member do
         get :averageinstructor_evaluation
+      end
+      collection do
+        get :averageinstructor_list
       end
     end
     resources :titles

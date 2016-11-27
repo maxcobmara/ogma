@@ -1,14 +1,13 @@
 class Staff::AverageInstructorsController < ApplicationController
-  filter_access_to :index, :new, :create, :averageinstructor_evaluation, :attribute_check => false 
+  filter_access_to :index, :new, :create, :averageinstructor_evaluation, :averageinstructor_list, :attribute_check => false 
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   
+  before_action :set_index_list, only: [:index, :averageinstructor_list]
   before_action :set_average_instructor, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
 
   def index
-    @search=AverageInstructor.search(params[:q])
-    @average_instructors = @search.result
     @average_instructors=@average_instructors.page(params[:page]||1)
     respond_with(@average_instructors)
   end
@@ -70,10 +69,34 @@ class Staff::AverageInstructorsController < ApplicationController
        end
      end
   end
+  
+  def averageinstructor_list
+    respond_to do |format|
+      format.pdf do
+        pdf = Averageinstructor_listPdf.new(@average_instructors, view_context, current_user.college)
+        send_data pdf.render, filename: "averageinstructor_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
 
   private
     def set_average_instructor
       @average_instructor = AverageInstructor.find(params[:id])
+    end
+    
+    def set_index_list
+      current_roles=current_user.roles.pluck(:authname)
+      admin_roles=['developer', 'administration', 'average_instructors_module_admin', 'average_instructors_module_viewer', 'average_instructors_module_user']
+      adm=[]
+      current_roles.each{|e|adm << admin_roles.include?(e)}
+      @search=AverageInstructor.search(params[:q])
+      if adm.count(true) > 0
+        @average_instructors = @search.result
+      else
+        @average_instructors = @search.result.search2(current_user.userable_id)
+      end
     end
 
     def average_instructor_params
