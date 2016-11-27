@@ -80,6 +80,7 @@ Ogma::Application.routes.draw do
       end
       collection do
         get :instructorevaluation_report
+        get :instructorevaluation_list
       end
     end
     resources :average_instructors do

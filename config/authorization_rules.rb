@@ -179,7 +179,7 @@ authorization do
      if_attribute :checked => is_in {[nil, false]}
    end
    # HACK restriction to Administration, Developer & instructor_appraisals_module_admin in INDEX page
-   has_permission_on :staff_instructor_appraisals, :to => :instructorevaluation_report 
+   has_permission_on :staff_instructor_appraisals, :to => [:instructorevaluation_report , :instructorevaluation_list]
    
    
    #Average instructor
@@ -2474,10 +2474,10 @@ authorization do
   
   #58 - OK 21 Sept2016
   role :instructor_appraisals_module_admin do
-    has_permission_on :staff_instructor_appraisals , :to => [:manage, :instructorevaluation, :instructorevaluation_report]
+    has_permission_on :staff_instructor_appraisals , :to => [:manage, :instructorevaluation, :instructorevaluation_report, :instructorevaluation_list]
   end
   role :instructor_appraisals_module_viewer do
-    has_permission_on :staff_instructor_appraisals, :to => [:menu, :show, :instructorevaluation, :instructorevaluation_report]
+    has_permission_on :staff_instructor_appraisals, :to => [:menu, :show, :instructorevaluation, :instructorevaluation_report, :instructorevaluation_list]
   end
   role :instructor_appraisals_module_member do
     has_permission_on :staff_instructor_appraisals, :to => :menu
@@ -2499,10 +2499,10 @@ authorization do
       if_attribute :checked => is_in {[nil, false]}
     end
     # HACK restriction to Administration, Developer & instructor_appraisals_module_admin in INDEX page
-    has_permission_on :staff_instructor_appraisals, :to => :instructorevaluation_report 
+    has_permission_on :staff_instructor_appraisals, :to => [:instructorevaluation_report , :instructorevaluation_list]
   end
   role :instructor_appraisals_module_user do
-    has_permission_on :staff_instructor_appraisals, :to => [:menu, :read, :update, :instructorevaluation, :instructorevaluation_report]
+    has_permission_on :staff_instructor_appraisals, :to => [:menu, :read, :update, :instructorevaluation, :instructorevaluation_report, :instructorevaluation_list]
   end
   
   #59 OK 21 Sept2016 - Bhg Kawalan Mutu / Kompetensi - seperti Nazir Sekolah

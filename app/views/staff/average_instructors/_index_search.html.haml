@@ -6,8 +6,9 @@
     %td= f.text_field :title_cont, class: 'form-control'
     %td= f.text_field :objective_cont, class: 'form-control'
     %td= select_tag('q[delivery_type_eq]',options_for_select([[(t 'actions.all_records'),'']]+DropDown::DELIVERY_TYPE), class: 'selectpicker',"data-width"=>'125px')
-    %td=f.text_field :evaluator_name_or_evaluator_rank_name_or_evaluator_rank_shortname_cont, size: 8,  :class => "form-control"
+    /%td
     %td.input-group
+      =f.text_field :evaluator_name_or_evaluator_rank_name_or_evaluator_rank_shortname_cont, size: 8,  :class => "form-control"
       %span.input-group-btn
         %button.btn.btn-sm.btn-default.right{:type => "submit"}
           %i.fa.fa-search.fa-fw

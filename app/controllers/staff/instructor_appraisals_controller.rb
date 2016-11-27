@@ -1,5 +1,5 @@
 class Staff::InstructorAppraisalsController < ApplicationController
-  filter_access_to :index, :new, :create, :instructorevaluation, :instructorevaluation_report, :attribute_check => false
+  filter_access_to :index, :new, :create, :instructorevaluation, :instructorevaluation_report, :instructorevaluation_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :qc_appraisal, :attribute_check => true
   
   before_action :set_instructor_appraisal, only: [:show, :edit, :update, :destroy] 
@@ -97,6 +97,19 @@ class Staff::InstructorAppraisalsController < ApplicationController
                                disposition: "inline"
        end
      end
+  end
+  
+   def instructorevaluation_list
+    @search = InstructorAppraisal.search(params[:q])
+    @instructor_appraisals = @search.result
+    respond_to do |format|
+      format.pdf do
+        pdf = Instructorevaluation_listPdf.new(@instructor_appraisals, view_context, current_user.college)
+        send_data pdf.render, filename: "instructorevaluation_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
   end
 
   private
