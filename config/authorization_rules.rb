@@ -194,7 +194,7 @@ authorization do
     
     
    has_permission_on :staff_staff_appraisals, :to => :create                                                # A staff can create appraisal
-   has_permission_on :staff_staff_appraisals, :to => [:show, :appraisal_form] do                                             # but cannot see marking parts
+   has_permission_on :staff_staff_appraisals, :to => [:show, :appraisal_form, :staffappraisal_list] do                                             # but cannot see marking parts
      if_attribute :staff_id => is {user.userable.id}
    end
    has_permission_on :staff_staff_appraisals, :to => :update, :join_by => :and do              # can enter SKT, when skt not yet submitted
@@ -211,7 +211,7 @@ authorization do
      if_attribute :is_skt_ppp_report_done => is {true}
      if_attribute :is_submit_for_evaluation => is_not {true}
    end
-   has_permission_on :staff_staff_appraisals, :to =>[:read, :appraisal_form], :join_by => :or do  # PPP & PPK have read access
+   has_permission_on :staff_staff_appraisals, :to =>[:read, :appraisal_form, :staffappraisal_list], :join_by => :or do  # PPP & PPK have read access
      if_attribute :eval1_by => is {user.userable.id}
      if_attribute :eval2_by => is {user.userable.id}
    end
@@ -1133,18 +1133,18 @@ authorization do
   #5-OK - all 4 - 4-5Feb2016
   #5-OK - for read, but for manage with restrictions as of super admin (PYD, PPP, PPK)
   role :staff_appraisals_module_admin do
-     has_permission_on :staff_staff_appraisals, :to => [:manage, :appraisal_form]
+     has_permission_on :staff_staff_appraisals, :to => [:manage, :appraisal_form, :staffappraisal_list]
   end
   role :staff_appraisals_module_viewer do
-     has_permission_on :staff_staff_appraisals, :to => [:read, :appraisal_form] 
+     has_permission_on :staff_staff_appraisals, :to => [:read, :appraisal_form, :staffappraisal_list] 
   end
   role :staff_appraisals_module_user do
-    has_permission_on :staff_staff_appraisals, :to => [:read, :update, :appraisal_form]
+    has_permission_on :staff_staff_appraisals, :to => [:read, :update, :appraisal_form, :staffappraisal_list]
   end
   role :staff_appraisals_module_member do
     #own record 
     has_permission_on :staff_staff_appraisals, :to => :create                                                # A staff can create appraisal
-    has_permission_on :staff_staff_appraisals, :to => [:show, :appraisal_form] do                # but cannot see marking parts
+    has_permission_on :staff_staff_appraisals, :to => [:show, :appraisal_form, :staffappraisal_list] do                # but cannot see marking parts
       if_attribute :staff_id => is {user.userable.id}
     end
     has_permission_on :staff_staff_appraisals, :to => :update, :join_by => :and do              # can enter SKT, when skt not yet submitted
@@ -1162,7 +1162,7 @@ authorization do
       if_attribute :is_submit_for_evaluation => is_not {true}
     end
     #own (approver - PPP or PPK)
-    has_permission_on :staff_staff_appraisals, :to =>[:read, :appraisal_form], :join_by => :or do  # PPP & PPK have read access
+    has_permission_on :staff_staff_appraisals, :to =>[:read, :appraisal_form, :staffappraisal_list], :join_by => :or do  # PPP & PPK have read access
       if_attribute :eval1_by => is {user.userable.id}
       if_attribute :eval2_by => is {user.userable.id}
     end

@@ -21,6 +21,9 @@ Ogma::Application.routes.draw do
       member do
         get :appraisal_form
       end
+      collection do
+        get :staffappraisal_list
+      end
     end
     resources :leaveforstaffs do
       member do
