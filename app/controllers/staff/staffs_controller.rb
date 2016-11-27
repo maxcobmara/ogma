@@ -1,5 +1,5 @@
 class Staff::StaffsController < ApplicationController
-  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :index, :new, :create, :staff_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :borang_maklumat_staff, :attribute_check => true
   
   before_action :set_staff, only: [:show, :edit, :update, :destroy]
@@ -100,7 +100,20 @@ end
     end
   end
 
-
+ def staff_list
+    @search = Staff.search(params[:q])
+    @staffs = @search.result.includes(:positions)
+    @infos=@staffs
+    respond_to do |format|
+      format.pdf do
+        pdf = Staff_listPdf.new(@infos, view_context, current_user.college)
+        send_data pdf.render, filename: "staff_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_staff

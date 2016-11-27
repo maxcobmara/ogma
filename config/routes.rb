@@ -7,6 +7,7 @@ Ogma::Application.routes.draw do
       end
       collection do
         get :autocomplete
+        get :staff_list
       end
     end
     resources :positions do

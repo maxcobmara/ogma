@@ -534,7 +534,7 @@ authorization do
  end
   
   role :staff_administrator do
-     has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff]
+     has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff, :staff_list]
      has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :actionable, :approval, :manager_admin, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :import_excel, :import, :status ]   #29Apr2013-refer routes.rb
      has_permission_on :staff_fingerprints, :to => [:manage, :approval, :index_admin]
      has_permission_on :staff_staff_shifts, :to => :manage
@@ -1043,17 +1043,17 @@ authorization do
   #####start of Staff Module#######################################
   #1)OK - all 4 - 4Feb2016 ** NOTE - local messaging & groups added into Staff modules - all access as of 'Staff' role
   role :staffs_module_admin do
-    has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
+    has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff, :staff_list] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
     has_permission_on :campus_pages, :to => :flexipage
     has_permission_on :repositories, :to => [:menu, :download]
   end
   role :staffs_module_viewer do
-    has_permission_on :staff_staffs, :to => [:read, :borang_maklumat_staff]
+    has_permission_on :staff_staffs, :to => [:read, :borang_maklumat_staff, :staff_list]
     has_permission_on :campus_pages, :to => :flexipage
     has_permission_on :repositories, :to => [:menu, :download]
   end
   role :staffs_module_user do
-    has_permission_on :staff_staffs, :to => [:read, :update, :borang_maklumat_staff]
+    has_permission_on :staff_staffs, :to => [:read, :update, :borang_maklumat_staff, :staff_list]
     has_permission_on :campus_pages, :to => :flexipage
     has_permission_on :repositories, :to => [:menu, :download]
   end
