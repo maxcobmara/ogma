@@ -280,7 +280,7 @@ authorization do
    end
    
    has_permission_on :staff_travel_claims, :to => [:menu, :create]                                              # A staff can register Travel Claims
-   has_permission_on :staff_travel_claims, :to => [:read, :claimprint], :join_by => :or do            # Applicant / Approver may show / pdf (Finance - refer role)
+   has_permission_on :staff_travel_claims, :to => [:read, :claimprint, :travelclaim_list], :join_by => :or do            # Applicant / Approver may show / pdf (Finance - refer role)
      if_attribute :staff_id => is {user.userable.id}
      if_attribute :approved_by => is {user.userable.id}
    end
@@ -553,7 +553,7 @@ authorization do
   end
   
   role :finance_unit do
-    has_permission_on :staff_travel_claims, :to => [:show, :claimprint] do
+    has_permission_on :staff_travel_claims, :to => [:show, :claimprint, :travelclaim_list] do
       if_attribute :is_submitted => is {true}
     end
     has_permission_on :staff_travel_claims, :to => [:check, :update, :show, :claimprint], :join_by => :and do
@@ -1234,18 +1234,18 @@ authorization do
   #7-OK - 3/4 (Admin, Viewer & User), Member : applicable only for applicant & final approver (To assign user with Finance Check, use 'Finance Unit' role instead, which will disable all type of module access for Travel Claims Module & Training Budget Module)
   # NOTE Travel Claim should come with Travel Request
   role :travel_claims_module_admin do
-    has_permission_on :staff_travel_claims, :to => [:manage, :check, :approve, :claimprint]
+    has_permission_on :staff_travel_claims, :to => [:manage, :check, :approve, :claimprint, :travelclaim_list]
   end
   role :travel_claims_module_viewer do
-    has_permission_on :staff_travel_claims, :to => [:read, :claimprint] 
+    has_permission_on :staff_travel_claims, :to => [:read, :claimprint, :travelclaim_list] 
   end
   role :travel_claims_module_user do
-    has_permission_on :staff_travel_claims, :to => [:check, :approve, :claimprint]
+    has_permission_on :staff_travel_claims, :to => [:check, :approve, :claimprint, :travelclaim_list]
   end
   role :travel_claims_module_member do
     #own records (as role staff)
     has_permission_on :staff_travel_claims, :to => [:menu, :create]                                              # A staff can register Travel Claims
-    has_permission_on :staff_travel_claims, :to => [:read, :claimprint], :join_by => :or do            # Applicant / Approver may show / pdf (Finance - refer role)
+    has_permission_on :staff_travel_claims, :to => [:read, :claimprint, :travelclaim_list], :join_by => :or do            # Applicant / Approver may show / pdf (Finance - refer role)
       if_attribute :staff_id => is {user.userable.id}
       if_attribute :approved_by => is {user.userable.id}
     end
