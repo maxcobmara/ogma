@@ -8,7 +8,7 @@
   = form_for [:staff, @travel_request], html: { class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
     = hidden_field_tag :redirect_location, staff_travel_requests_path 
-    
+    = f.hidden_field :college_id, value: current_user.college_id
     = render :partial => 'form', :locals => {:f => f}        
 
     .col-md-offset-1

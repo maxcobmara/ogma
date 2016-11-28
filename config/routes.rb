@@ -41,6 +41,9 @@ Ogma::Application.routes.draw do
         get :approve
         get :claimprint
       end
+      collection do
+        get :travelclaim_list
+      end
     end
     resources :staff_attendances do
       collection do
@@ -74,6 +77,8 @@ Ogma::Application.routes.draw do
       end
       collection do
         get :travel_log_index
+        get :travelrequest_list
+        get :travellog_list
       end
     end
     resources :vehicles

@@ -259,7 +259,10 @@ authorization do
    end
 
    has_permission_on :staff_travel_requests, :to => [:menu, :create, :travel_log_index]
-   has_permission_on :staff_travel_requests, :to => [:read, :status_movement], :join_by => :or do
+   has_permission_on :staff_travel_requests, :to => :travellog_list do
+     if_attribute :staff_id => is {user.userable_id}
+   end
+   has_permission_on :staff_travel_requests, :to => [:read, :status_movement, :travelrequest_list], :join_by => :or do
      if_attribute :staff_id => is {user.userable.id}
      if_attribute :hod_id => is {user.userable.id}
    end
@@ -1269,17 +1272,20 @@ authorization do
   # NOTE - Restriction as of in Catechumen - INDEX page shall personalize to current user, containing 2 listing ie. 'in_need_of_approval' & 'my_travel_request',
   #whereas Admin, Viewer & User requires listing for ALL travel requests records.????then what's the use of hvg these 3??? Member already enough! to discuss!
   role :travel_requests_module_admin do
-    has_permission_on :staff_travel_requests, :to => [:manage, :travel_log_index, :travel_log, :approval, :status_movement]
+    has_permission_on :staff_travel_requests, :to => [:manage, :travel_log_index, :travel_log, :approval, :status_movement, :travelrequest_list, :travellog_list]
   end                                                                                                                                                     # Admin - can do everything (restrictions: own recs only)
   role :travel_requests_module_viewer do
-    has_permission_on :staff_travel_requests, :to => [:read, :travel_log_index, :status_movement] 
+    has_permission_on :staff_travel_requests, :to => [:read, :travel_log_index, :status_movement, :travelrequest_list, :travellog_list] 
   end                                                                                                                                                     # Viewer - can view everything (restrictions : own recs only)
   role :travel_requests_module_user do
-    has_permission_on :staff_travel_requests, :to => [:approve, :approval, :travel_log, :travel_log_index, :status_movement] # NOTE - approve : Read+Update
+    has_permission_on :staff_travel_requests, :to => [:approve, :approval, :travel_log, :travel_log_index, :status_movement, :travelrequest_list, :travellog_list] # NOTE - approve : Read+Update
   end                                                                                                                                                     # User - can Read & Update (restrictions : own recs only)
   role :travel_requests_module_member do
     has_permission_on :staff_travel_requests, :to => [:menu, :create, :travel_log_index]
-    has_permission_on :staff_travel_requests, :to => [:read, :status_movement], :join_by => :or do
+    has_permission_on :staff_travel_requests, :to => :travellog_list do
+     if_attribute :staff_id => is {user.userable_id}
+   end
+    has_permission_on :staff_travel_requests, :to => [:read, :status_movement, :travelrequest_list], :join_by => :or do
       if_attribute :staff_id => is {user.userable.id}
       if_attribute :hod_id => is {user.userable.id}
     end

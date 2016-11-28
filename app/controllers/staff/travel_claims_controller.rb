@@ -101,7 +101,6 @@ class Staff::TravelClaimsController < ApplicationController
   end
   
   def claimprint
-
     @travel_claim = TravelClaim.find(params[:id])
    #@travelclaimlog = TravelClaimLog.where('travel_request_id =?', travel_request.id )
     respond_to do |format|
@@ -110,6 +109,23 @@ class Staff::TravelClaimsController < ApplicationController
         send_data pdf.render, filename: "claimprint-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
+      end
+    end
+  end
+  
+  def travelclaim_list
+    if @is_admin
+      @search = TravelClaim.search(params[:q])
+    else
+      @search = TravelClaim.sstaff2(current_user.userable.id).search(params[:q])
+    end 
+    @travel_claims = @search.result.order(staff_id: :asc, claim_month: :asc)
+    respond_to do |format|
+      format.pdf do
+        pdf = Travelclaim_listPdf.new(@travel_claims, current_user, view_context, current_user.college)
+        send_data pdf.render, filename: "travelclaim_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
       end
     end
   end
@@ -123,11 +139,11 @@ class Staff::TravelClaimsController < ApplicationController
   def set_admin
     roles = current_user.roles.pluck(:authname)
     mypost = Position.where(staff_id: current_user.userable_id).first
-    @is_admin = true if roles.include?("administration") || roles.include?("finance_unit") || roles.include?("travel_claims_module_admin")|| roles.include?("travel_claims_module_viewer")|| roles.include?("travel_claims_module_user") || mypost.is_root?
+    @is_admin = true if roles.include?("developer") || roles.include?("administration") || roles.include?("finance_unit") || roles.include?("travel_claims_module_admin")|| roles.include?("travel_claims_module_viewer")|| roles.include?("travel_claims_module_user") || mypost.is_root?
   end
   
   def travel_claim_params
-    params.require(:travel_claim).permit(:jobtype, :travel_request_ids, :staff_id, :claim_month, :advance, :total, :is_submitted, :submitted_on, :is_checked, :is_returned, :checked_on, :checked_by, :notes, :is_approved, :approved_on, :approved_by, :accommodations, travel_claim_receipts_attributes: [:id,:expenditure_type, :receipt_code, :amount, :checker, :checker_notes, :_destroy], travel_claim_allowances_attributes: [:id, :travel_claim_id, :quantity, :expenditure_type, :amount, :receipt_code,:checker, :checker_notes,:_destroy])  # travel_requests_attributes: [:id, :travel_claim_id],
+    params.require(:travel_claim).permit(:jobtype, :travel_request_ids, :staff_id, :claim_month, :advance, :total, :is_submitted, :submitted_on, :is_checked, :is_returned, :checked_on, :checked_by, :notes, :is_approved, :approved_on, :approved_by, :accommodations, :college_id, {:data => []}, travel_claim_receipts_attributes: [:id,:expenditure_type, :receipt_code, :amount, :checker, :checker_notes, :_destroy], travel_claim_allowances_attributes: [:id, :travel_claim_id, :quantity, :expenditure_type, :amount, :receipt_code,:checker, :checker_notes,:_destroy])  # travel_requests_attributes: [:id, :travel_claim_id],
   end
   
 end

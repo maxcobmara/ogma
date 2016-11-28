@@ -74,6 +74,14 @@ $(document).ready(function(e) {
     defaultSeconds: 0,
     autoclose: true
   });
+  $('.datetime_picker_reverse').datetimepicker({
+    timepicker:true,
+    format:'d-m-Y H:i',
+    formatDate:'Y-m-d H:i',
+    step: 15,
+    defaultSeconds: 0,
+    autoclose: true
+  });
   $('.datetime_picker2').datetimepicker({
     timepicker:true,
     format: "Y-m-d H:i",
@@ -139,11 +147,12 @@ $(document).ready(function(e) {
       }
   });
   $('.monthyear_picker_reverse').datetimepicker({
-      format: "Y-m-d",
+      format:'d-m-Y',
+      formatDate:'Y-m-d',
       timepicker: false,
       autoclose: true,
       onSelectDate: function(dp, $input) {
-        $input.val($input.val().substr(0,8) + '01');
+        $input.val( '01'+$input.val().substr(2,10));
       }
   });
   $('.year_picker').datetimepicker({

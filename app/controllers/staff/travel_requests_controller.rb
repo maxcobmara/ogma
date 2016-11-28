@@ -1,5 +1,5 @@
  class Staff::TravelRequestsController < ApplicationController
-   filter_access_to :index, :new, :create, :travel_log_index, :attribute_check => false
+   filter_access_to :index, :new, :create, :travel_log_index, :travelrequest_list, :travellog_list, :attribute_check => false
    filter_access_to :show, :edit, :update, :destroy, :travel_log, :approval, :status_movement, :attribute_check => true
    #before_filter :set_current_user
    before_action :set_travel_request, only: [:show, :edit, :update, :destroy]
@@ -127,7 +127,7 @@
      #@travel_log = TravelRequest.find(params[:id])
     # @travel_request =  @travel_log
     @travel_request = TravelRequest.find(params[:id])
-    @travel_request.travel_claim_logs.build
+    #@travel_request.travel_claim_logs.build
   end
   
   def approval
@@ -147,6 +147,33 @@
      end
   end
   
+  def travelrequest_list
+    @search = TravelRequest.search(params[:q])
+    @for_approvals = @search.result.in_need_of_approval(current_user.userable.id)
+    @travel_requests = @search.result.my_travel_requests(current_user.userable.id)
+    respond_to do |format|
+      format.pdf do
+        pdf = Travelrequest_listPdf.new(@for_approvals, @travel_requests, view_context, current_user.college)
+        send_data pdf.render, filename: "travelrequest_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
+  def travellog_list
+    @search = TravelRequest.search(params[:q])
+    @my_approved_requests = @search.result.where('staff_id =? AND hod_accept=?', current_user.userable.id, true)
+    respond_to do |format|
+      format.pdf do
+        pdf = Travellog_listPdf.new(@my_approved_requests, view_context, current_user.college)
+        send_data pdf.render, filename: "travellog_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
   private
   
   def set_travel_request
@@ -160,7 +187,7 @@
     end
   
   def travel_request_params
-    params.require(:travel_request).permit(:staff_id, :document_id, :staff_course_conducted_id, :destination, :depart_at, :return_at, :own_car, :own_car_notes, :dept_car, :others_car, :taxi, :bus, :train, :plane, :other, :other_desc, :is_submitted, :submitted_on, :replaced_by, :mileage, :mileage_replace, :hod_id, :hod_accept, :hod_accept_on, :travel_claim_id, :is_travel_log_complete, :log_mileage, :log_fare, :code, :others_car_notes, travel_claim_logs_attributes: [:id, :travel_request_id, :travel_on, :start_at, :finish_at, :destination, :mileage, :km_money, :checker, :checker_notes,:_destroy])
+    params.require(:travel_request).permit(:staff_id, :document_id, :staff_course_conducted_id, :destination, :depart_at, :return_at, :own_car, :own_car_notes, :dept_car, :others_car, :taxi, :bus, :train, :plane, :other, :other_desc, :is_submitted, :submitted_on, :replaced_by, :mileage, :mileage_replace, :hod_id, :hod_accept, :hod_accept_on, :travel_claim_id, :is_travel_log_complete, :log_mileage, :log_fare, :code, :others_car_notes, :college_id, {:data => []}, travel_claim_logs_attributes: [:id, :travel_request_id, :travel_on, :start_at, :finish_at, :destination, :mileage, :km_money, :checker, :checker_notes,:_destroy])
   end
   
 end

@@ -9,7 +9,7 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_travel_request_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), travelrequest_list_staff_travel_requests_path(params.merge(format: 'pdf'))
 
 .row.filter{style: "display:none;"}
   .col-md-2
@@ -18,14 +18,14 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :document_id, (t 'staff.travel_request.document_id'))
-        %th= sort_link(@search, :staff_id, (t 'staff.travel_request.staff_id'))
-        %th=  sort_link(@search, :destination,(t 'staff.travel_request.destination'))
-        %th= sort_link(@search, :depart_at, (t 'staff.travel_request.depart_at'))
-        %th= sort_link(@search, :return_at, (t 'staff.travel_request.return_at'))
-        %th= sort_link(@search, :purpose, (t 'staff.travel_request.purpose'))
-        %th= sort_link(@search, :is_submitted, (t 'staff.travel_request.is_submitted'))
-        %th=sort_link(@search, :hod_accept, (t 'staff.travel_request.hod_accept'))
+        %th{width: '10%'}= sort_link(@search, :document_id, (t 'staff.travel_request.document_id'))
+        %th{width: '25%'}= sort_link(@search, :staff_id, (t 'staff.travel_request.staff_id'))
+        %th{width: '10%'}=  sort_link(@search, :destination,(t 'staff.travel_request.destination'))
+        %th{width: '10%'}= sort_link(@search, :depart_at, (t 'staff.travel_request.depart_at'))
+        %th{width: '10%'}= sort_link(@search, :return_at, (t 'staff.travel_request.return_at'))
+        %th{width: '19%'}= sort_link(@search, :purpose, (t 'staff.travel_request.purpose'))
+        %th{width: '8%'}= sort_link(@search, :is_submitted, (t 'staff.travel_request.is_submitted'))
+        %th{width: '8%'}=sort_link(@search, :hod_accept, (t 'staff.travel_request.hod_accept'))
         
     %tbody
     = render "index_search"
@@ -35,13 +35,17 @@
     -  @for_approvals.each do |for_approval|
       %tr
         %td=h for_approval.try(:document).try(:refno)
-        %td=h link_to for_approval.applicant.try(:staff_name_with_position), staff_travel_request_path(for_approval)
+        %td
+          - if for_approval.college.code=='amsas'
+            = link_to for_approval.applicant.try(:staff_with_rank), staff_travel_request_path(for_approval)
+          - else
+            = link_to for_approval.applicant.try(:staff_name_with_position), staff_travel_request_path(for_approval)
         %td=h for_approval.destination
-        %td=h for_approval.depart_at.try(:strftime, '%d %b %Y %l:%M %P')
-        %td=h for_approval.return_at.try(:strftime, '%d %b %Y %l:%M %P')
+        %td=h for_approval.college.code=='amsas' ? for_approval.depart_at.try(:strftime, '%d-%m-%Y %H:%M') : for_approval.depart_at.try(:strftime, '%d %b %Y %l:%M %P')
+        %td=h for_approval.college.code=='amsas' ? for_approval.return_at.try(:strftime, '%d-%m-%Y %H:%M') : for_approval.return_at.try(:strftime, '%d %b %Y %l:%M %P')
         %td=h for_approval.document.try(:title)
-        %td=h for_approval.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") 
-        %td=h for_approval.hod_accept? ? image_tag("tick.png") : image_tag("cross.png")
+        %td=h for_approval.is_submitted? ? fa_icon('check') : fa_icon('times')
+        %td=h for_approval.hod_accept? ? fa_icon('check') : fa_icon('times')
     
     %tr
       %td{:colspan=>"8",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'staff.travel_request.my_travel_request'
@@ -49,13 +53,17 @@
     -  @travel_requests.each do |travel_request|
       %tr
         %td=h travel_request.try(:document).try(:refno)
-        %td=h link_to travel_request.applicant.try(:staff_name_with_position), staff_travel_request_path(travel_request)
+        %td
+          - if travel_request.college.code=='amsas'
+            =h link_to travel_request.applicant.try(:staff_with_rank), staff_travel_request_path(travel_request)
+          - else
+            =h link_to travel_request.applicant.try(:staff_name_with_position), staff_travel_request_path(travel_request)
         %td=h travel_request.destination
-        %td=h travel_request.depart_at.try(:strftime, '%d %b %Y %l:%M %P')
-        %td=h travel_request.return_at.try(:strftime, '%d %b %Y %l:%M %P')
+        %td=h travel_request.college.code=='amsas' ? travel_request.depart_at.try(:strftime, '%d-%m-%Y %H:%M') : travel_request.depart_at.try(:strftime, '%d %b %Y %l:%M %P')
+        %td=h travel_request.college.code=='amsas' ? travel_request.return_at.try(:strftime, '%d-%m-%Y %H:%M') : travel_request.return_at.try(:strftime, '%d %b %Y %l:%M %P')
         %td=h travel_request.document.try(:title)
-        %td=h travel_request.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") 
-        %td=h travel_request.hod_accept? ? image_tag("tick.png") : image_tag("cross.png")
+        %td=h travel_request.is_submitted? ? fa_icon('check') : fa_icon('times')
+        %td=h travel_request.hod_accept? ? fa_icon('check') : fa_icon('times')
                 
   /.right{style:"padding:0 30px; margin:0;"}= paginate @for_approvals, :theme => 'twitter-bootstrap-3'
  

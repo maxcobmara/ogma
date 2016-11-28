@@ -4225,6 +4225,8 @@ en:
     final_approval_ptdos: " Staff Training requests for final approval"
     dept_approval_ptdos: "Staff Training requests for Department approval"
     unit_approval_ptdos: " Staff Training requests for Unit approval"
+    travel_claims_for_checking: " Travel Claims for checking"
+    travel_claims_returned: " Travel Claims returned for amendments"
     
   helpers:
     links:

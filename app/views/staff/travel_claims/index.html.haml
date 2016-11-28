@@ -7,7 +7,7 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_travel_claim_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), travelclaim_list_staff_travel_claims_path(params.merge(format: 'pdf'))
 
 .row.filter{style: "display:none;"}
   .col-md-2
@@ -31,7 +31,7 @@
             %font{:style => "color: red;"}= t 'staff.travel_claim.insert_current_salary'
           - else
             = link_to travel_claim.claim_month.try(:strftime,'%B %Y'), staff_travel_claim_path(travel_claim)
-        %td=h travel_claim.staff.name
+        %td=h travel_claim.staff.staff_with_rank
         %td
           - if travel_claim.travel_requests.count > 0 && travel_claim.travel_requests.map(&:own_car).uniq.include?(true)
             - if travel_claim.staff.vehicles.count > 0 &&  travel_claim.staff.current_salary!=nil

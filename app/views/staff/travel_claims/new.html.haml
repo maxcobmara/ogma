@@ -19,7 +19,7 @@
       You have no approved travel requests for processing
     - else      
       = render :partial => 'form', :locals => {:f => f}        
-
+      = f.hidden_field :college_id, value: current_user.college_id
     .col-md-offset-1
       .form-group
         .col-sm-offset-2.col-sm-1

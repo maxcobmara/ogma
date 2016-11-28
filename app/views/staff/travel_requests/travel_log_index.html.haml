@@ -8,7 +8,7 @@
     /to log travel logs - click 'Edit' link for APPROVED travel request in Travel Log Index page OR Show pg of APPROVED Travel Request
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), travellog_list_staff_travel_requests_path(params.merge(format: 'pdf'))
 
 .row.filter{style: "display:none;"}
   .col-md-2
@@ -31,12 +31,16 @@
     - @my_approved_requests.each do |approved_request|
       %tr
         %td=h approved_request.try(:document).try(:refno)
-        %td=h link_to approved_request.applicant.try(:staff_name_with_position), staff_travel_request_path(approved_request)
+        %td
+          - if approved_request.college.code=='amsas'
+            =h link_to approved_request.applicant.try(:staff_with_rank), staff_travel_request_path(approved_request)
+          - else
+            =h link_to approved_request.applicant.try(:staff_name_with_position), staff_travel_request_path(approved_request)
         %td=h approved_request.destination
-        %td=h approved_request.depart_at.try(:strftime, '%d %b %Y %l:%M %P')
-        %td=h approved_request.return_at.try(:strftime, '%d %b %Y %l:%M %P')
+        %td=h approved_request.college.code=='amsas' ? approved_request.depart_at.try(:strftime, '%d-%m-%Y %H:%M') : approved_request.depart_at.try(:strftime, '%d %b %Y %l:%M %P')
+        %td=h approved_request.college.code=='amsas' ? approved_request.return_at.try(:strftime, '%d-%m-%Y %H:%M') : approved_request.return_at.try(:strftime, '%d %b %Y %l:%M %P')
         %td=h approved_request.document.try(:title)
-        %td=h approved_request.hod_accept? ? image_tag("tick.png") : "-"
+        %td=h approved_request.hod_accept? ? fa_icon('check') : "-"
                 
   .right{style:"padding:0 30px; margin:0;"}= paginate @my_approved_requests, :theme => 'twitter-bootstrap-3'
  

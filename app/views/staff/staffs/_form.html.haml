@@ -98,9 +98,11 @@
               = f.fields_for :shift_histories do |builder|
                 - if builder.object.deactivate_date.blank? == true
                   .col-md-1= f.label t 'staff.shift_histories.deactivate_date', for: :deactivate_date
-                  .col-md-2= builder.text_field :deactivate_date, class: 'date_picker_reverse form-control', value: @info.deactivate_date.try(:strftime, '%d-%m-%Y')
+                  .col-md-2= builder.text_field :deactivate_date, class: 'date_picker_reverse form-control'
+                  /, value: @info.deactivate_date.try(:strftime, '%d-%m-%Y')
                   = builder.hidden_field :shift_id, :value =>@info.staff_shift_id
-
+            /=@info.shift_histories.count
+                  
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.thumb', for: :thumb_id

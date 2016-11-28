@@ -64,6 +64,18 @@ module Notifications
  def your_travel_approved
   TravelRequest.where(staff_id: current_staff_id).where(hod_accept: true).where('depart_at > ? AND depart_at <?', Date.today - 1.month, Date.today).pluck(:id, :depart_at)
  end
+ 
+ def travel_claims_for_checking
+   if current_user.roles.pluck(:authname).include?("finance_unit")
+     TravelClaim.where(is_submitted: true).where(is_returned: [nil, false]).where(is_checked: [nil, false]).count
+   else
+     0
+   end
+ end
+ 
+ def travel_claims_returned
+   TravelClaim.where(staff_id: current_staff_id).where(is_submitted: true).where(is_returned: true).where(is_checked: false).count
+ end
 
  def asset_with_defects
   AssetDefect.where(is_processed: nil).where(processed_by: nil).where('decision_by !=?', current_staff_id ).count

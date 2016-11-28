@@ -4145,6 +4145,8 @@ ms_MY:
     final_approval_ptdos: " Permohonan Latihan Staf untuk kelulusan akhir"
     dept_approval_ptdos: " Permohonan Latihan Staf untuk kelulusan Jabatan"
     unit_approval_ptdos: " Permohonan Latihan Staf untuk kelulusan Unit"
+    travel_claims_for_checking: " Tuntutan Perjalanan untuk disemak"
+    travel_claims_returned: "Tuntutan Perjalanan dipulangkan untuk dibaiki"
     
   helpers:
     links:

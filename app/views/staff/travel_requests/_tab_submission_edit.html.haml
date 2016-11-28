@@ -11,7 +11,7 @@
     .col-sm-2.control-label
       = f.label :replaced_by
     .col-md-4
-      = f.collection_select :replaced_by, Staff.where("id IN (?)", @travel_request.repl_staff(@current_user)), :id, :name,{ :include_blank => t('helpers.prompt.select_staff') },{class: 'selectpicker', "data-width"=>'320px'} 
+      = f.collection_select :replaced_by, Staff.where("id IN (?)", @travel_request.repl_staff(current_user)), :id, :staff_with_rank,{ :include_blank => t('helpers.prompt.select_staff') },{class: 'selectpicker', "data-width"=>'320px'} 
   .form-group
     .col-sm-2.control-label
       = f.label :hod_id

@@ -7,7 +7,8 @@ class TravelClaim < ActiveRecord::Base
   belongs_to :staff
   belongs_to :approver,           :class_name => 'Staff',      :foreign_key => 'approved_by'
   belongs_to :checker,            :class_name => 'Staff',      :foreign_key => 'checked_by'
-  
+  belongs_to :college,             :foreign_key => 'college_id'
+
   has_many :travel_requests
   accepts_nested_attributes_for :travel_requests
   
