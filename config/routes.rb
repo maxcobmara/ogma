@@ -31,6 +31,9 @@ Ogma::Application.routes.draw do
         get :processing_level_2
         get :borang_cuti
       end
+      collection do
+        get :leaveforstaff_list
+      end
     end
     resources :travel_claims do
       member do

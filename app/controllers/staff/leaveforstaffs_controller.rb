@@ -1,18 +1,12 @@
 class Staff::LeaveforstaffsController < ApplicationController
-  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :index, :new, :create, :leaveforstaff_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy,  :processing_level_1, :processing_level_2, :borang_cuti, :attribute_check => true
-  before_action :set_leaveforstaff, only: [:show, :edit, :update, :destroy]
+  
   before_action :set_admin, only: [:new, :edit]
-   
+  before_action :set_index_list, only: [:index, :leaveforstaff_list]
+  before_action :set_leaveforstaff, only: [:show, :edit, :update, :destroy]
+
   def index
-    roles = current_user.roles.pluck(:authname)
-    @is_admin = true if roles.include?('developer') || roles.include?("administration") || roles.include?("staff_leaves_module_admin") || roles.include?("staff_leaves_module_viewer") || roles.include?("staff_leaves_module_user")
-    if @is_admin
-      @search = Leaveforstaff.search(params[:q])
-    else
-      @search = Leaveforstaff.sstaff2(current_user.userable.id).search(params[:q])
-    end 
-    @leaveforstaffs = @search.result
     @leaveforstaffs = @leaveforstaffs.order(staff_id: :asc, leavestartdate: :asc).page(params[:page]||1)
   end
   
@@ -93,6 +87,17 @@ class Staff::LeaveforstaffsController < ApplicationController
        end
      end
   end
+  
+  def leaveforstaff_list
+    respond_to do |format|
+      format.pdf do
+        pdf = Leaveforstaff_listPdf.new(@leaveforstaffs, view_context, current_user.college)
+        send_data pdf.render, filename: "leaveforstaff_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -102,7 +107,18 @@ class Staff::LeaveforstaffsController < ApplicationController
     
     def set_admin
       roles = current_user.roles.pluck(:authname)
-      @is_admin = true if roles.include?("developer") || roles.include?("administration") || roles.include?("travel_requests_module_admin") || roles.include?("travel_requests_module_viewer") || roles.include?("travel_requests_module_user")
+      @is_admin = true if roles.include?("developer") || roles.include?("administration") ||  roles.include?("staff_leaves_module_admin") || roles.include?("staff_leaves_module_viewer") || roles.include?("staff_leaves_module_user")
+    end
+    
+    def set_index_list
+      roles = current_user.roles.pluck(:authname)
+      @is_admin = true if roles.include?("developer") || roles.include?("administration") ||  roles.include?("staff_leaves_module_admin") || roles.include?("staff_leaves_module_viewer") || roles.include?("staff_leaves_module_user")
+      if @is_admin
+        @search = Leaveforstaff.search(params[:q])
+      else
+        @search = Leaveforstaff.sstaff2(current_user.userable.id).search(params[:q])
+      end 
+      @leaveforstaffs = @search.result
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
