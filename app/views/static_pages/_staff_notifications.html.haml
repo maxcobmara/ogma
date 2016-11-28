@@ -17,7 +17,7 @@
   %li= link_to content_tag(:span, "#{late_need_a_reason}", class: "badge") + " Late/early attendance require reason submission", attendance_manager_path
  - if travel_request_needs_approval > 0
   %li= link_to content_tag(:span, "#{travel_request_needs_approval}", class: "badge") + " Travel request that requires your approval", staff_travel_requests_path
- - if my_leave_approvals.size > 0
+ - if your_travel_approved.size > 0
   - counter = 0
   - your_travel_approved.each do |travel|
    %li= link_to "Your travel request for #{travel[1].strftime("%b-%d")} has been approved", staff_travel_request_path("#{travel[0]}")

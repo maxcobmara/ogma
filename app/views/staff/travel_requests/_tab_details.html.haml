@@ -16,13 +16,13 @@
     %dd
       =t 'staff.travel_request.own_car'
       - if !@travel_request.applicant.vehicles.blank? && @travel_request.own_car?
-        =image_tag("tick.png")+'('+@travel_request.applicant.vehicles[0].reg_no+' '+ t('staff.transportclass_id')+' : '+@travel_request.transport_class+') '
+        =fa_icon('check')+'('+@travel_request.applicant.vehicles[0].reg_no+' '+ t('staff.transportclass_id')+' : '+@travel_request.transport_class+') '
       - else
         =image_tag("cross.png") 
       =t 'staff.travel_request.dept_car'
-      =h @travel_request.dept_car? ? image_tag("tick.png") : image_tag("cross.png")
+      =h @travel_request.dept_car? ? fa_icon('check') : fa_icon('times')
       =t 'staff.travel_request.others_car'
-      =h @travel_request.others_car? ? image_tag("tick.png")+'('+@travel_request.others_car_notes+')' : image_tag("cross.png")
+      =h @travel_request.others_car? ? fa_icon('check')+'('+@travel_request.others_car_notes+')' : fa_icon('times')
     
     - if !@travel_request.applicant.vehicles.blank? && @travel_request.own_car?
       %dt=t 'staff.travel_request.own_car_notes'
@@ -31,31 +31,31 @@
     %dt=t 'staff.travel_request.public_transport'
     %dd
       =t 'staff.travel_request.taxi'
-      =h @travel_request.taxi? ? image_tag("tick.png") : image_tag("cross.png")
+      =h @travel_request.taxi? ? fa_icon('check') : fa_icon('times')
       =t 'staff.travel_request.bus'
-      =h @travel_request.bus? ? image_tag("tick.png") : image_tag("cross.png") 
+      =h @travel_request.bus? ? fa_icon('check') : fa_icon('times') 
       =t 'staff.travel_request.train'
-      =h @travel_request.train? ? image_tag("tick.png") : image_tag("cross.png") 
+      =h @travel_request.train? ? fa_icon('check') : fa_icon('times') 
       =t 'staff.travel_request.plane'
-      =h @travel_request.plane? ? image_tag("tick.png") : image_tag("cross.png") 
+      =h @travel_request.plane? ? fa_icon('check') : fa_icon('times') 
       =t 'staff.travel_request.other'
-      =h @travel_request.other? ? image_tag("tick.png") : image_tag("cross.png") + ' ' + @travel_request.other_desc 
+      =h @travel_request.other? ? fa_icon('check') : fa_icon('times') + ' ' + @travel_request.other_desc 
     
     - unless @travel_request.hod_accept == true
       %dt=t 'staff.travel_request.mileage_desc'
       %dd
         =t 'staff.travel_request.mileage'
-        /=h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png")
+        /=h @travel_request.mileage? ? fa_icon('check') : fa_icon('times')
         - if @travel_request.mileage_replace==nil 
-          =h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png") 
+          =h @travel_request.mileage? ? fa_icon('check') : fa_icon('times') 
         - else
-          =h @travel_request.mileage_replace? ? image_tag("cross.png") : image_tag("tick.png") 
+          =h @travel_request.mileage_replace? ? fa_icon('times') : fa_icon('check')
 
         =t 'staff.travel_request.mileage_replace'
         %font{:size=>'-2'}
           = t 'staff.travel_request.train_plane_replacement'
-        /=h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") 
+        /=h @travel_request.mileage_replace? ? fa_icon('check') : fa_icon('times') 
         - if @travel_request.mileage_replace==nil
           = image_tag("tick.png") if @travel_request.mileage==false
         - else 
-          =h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") 
+          =h @travel_request.mileage_replace? ? fa_icon('check') : fa_icon('times') 

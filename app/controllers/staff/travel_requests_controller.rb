@@ -1,5 +1,5 @@
  class Staff::TravelRequestsController < ApplicationController
-   filter_access_to :index, :new, :create, :travel_log_index, :travelrequest_list, :attribute_check => false
+   filter_access_to :index, :new, :create, :travel_log_index, :travelrequest_list, :travellog_list, :attribute_check => false
    filter_access_to :show, :edit, :update, :destroy, :travel_log, :approval, :status_movement, :attribute_check => true
    #before_filter :set_current_user
    before_action :set_travel_request, only: [:show, :edit, :update, :destroy]
@@ -155,6 +155,19 @@
       format.pdf do
         pdf = Travelrequest_listPdf.new(@for_approvals, @travel_requests, view_context, current_user.college)
         send_data pdf.render, filename: "travelrequest_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
+  def travellog_list
+    @search = TravelRequest.search(params[:q])
+    @my_approved_requests = @search.result.where('staff_id =? AND hod_accept=?', current_user.userable.id, true)
+    respond_to do |format|
+      format.pdf do
+        pdf = Travellog_listPdf.new(@my_approved_requests, view_context, current_user.college)
+        send_data pdf.render, filename: "travellog_list-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
       end

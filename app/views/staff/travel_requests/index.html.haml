@@ -53,7 +53,11 @@
     -  @travel_requests.each do |travel_request|
       %tr
         %td=h travel_request.try(:document).try(:refno)
-        %td=h link_to travel_request.applicant.try(:staff_name_with_position), staff_travel_request_path(travel_request)
+        %td
+          - if travel_request.college.code=='amsas'
+            =h link_to travel_request.applicant.try(:staff_with_rank), staff_travel_request_path(travel_request)
+          - else
+            =h link_to travel_request.applicant.try(:staff_name_with_position), staff_travel_request_path(travel_request)
         %td=h travel_request.destination
         %td=h travel_request.college.code=='amsas' ? travel_request.depart_at.try(:strftime, '%d-%m-%Y %H:%M') : travel_request.depart_at.try(:strftime, '%d %b %Y %l:%M %P')
         %td=h travel_request.college.code=='amsas' ? travel_request.return_at.try(:strftime, '%d-%m-%Y %H:%M') : travel_request.return_at.try(:strftime, '%d %b %Y %l:%M %P')
