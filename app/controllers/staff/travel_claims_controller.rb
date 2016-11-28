@@ -123,11 +123,11 @@ class Staff::TravelClaimsController < ApplicationController
   def set_admin
     roles = current_user.roles.pluck(:authname)
     mypost = Position.where(staff_id: current_user.userable_id).first
-    @is_admin = true if roles.include?("administration") || roles.include?("finance_unit") || roles.include?("travel_claims_module_admin")|| roles.include?("travel_claims_module_viewer")|| roles.include?("travel_claims_module_user") || mypost.is_root?
+    @is_admin = true if roles.include?("developer") || roles.include?("administration") || roles.include?("finance_unit") || roles.include?("travel_claims_module_admin")|| roles.include?("travel_claims_module_viewer")|| roles.include?("travel_claims_module_user") || mypost.is_root?
   end
   
   def travel_claim_params
-    params.require(:travel_claim).permit(:jobtype, :travel_request_ids, :staff_id, :claim_month, :advance, :total, :is_submitted, :submitted_on, :is_checked, :is_returned, :checked_on, :checked_by, :notes, :is_approved, :approved_on, :approved_by, :accommodations, travel_claim_receipts_attributes: [:id,:expenditure_type, :receipt_code, :amount, :checker, :checker_notes, :_destroy], travel_claim_allowances_attributes: [:id, :travel_claim_id, :quantity, :expenditure_type, :amount, :receipt_code,:checker, :checker_notes,:_destroy])  # travel_requests_attributes: [:id, :travel_claim_id],
+    params.require(:travel_claim).permit(:jobtype, :travel_request_ids, :staff_id, :claim_month, :advance, :total, :is_submitted, :submitted_on, :is_checked, :is_returned, :checked_on, :checked_by, :notes, :is_approved, :approved_on, :approved_by, :accommodations, :college_id, {:data => []}, travel_claim_receipts_attributes: [:id,:expenditure_type, :receipt_code, :amount, :checker, :checker_notes, :_destroy], travel_claim_allowances_attributes: [:id, :travel_claim_id, :quantity, :expenditure_type, :amount, :receipt_code,:checker, :checker_notes,:_destroy])  # travel_requests_attributes: [:id, :travel_claim_id],
   end
   
 end

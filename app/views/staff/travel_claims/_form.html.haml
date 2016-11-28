@@ -14,9 +14,9 @@
             = f.label :claim_month
           .col-md-3
             - if @my_approved_unclaimed_requests != nil 
-              = f.text_field :claim_month, class: 'monthyear_picker form-control' 
+              = f.text_field :claim_month, class: 'monthyear_picker_reverse form-control' 
             - else
-              = f.text_field :claim_month, class:  ' form-control', readonly: 'readonly'  
+              = f.text_field :claim_month, class:  ' form-control', readonly: 'readonly', value: @travel_claim.claim_month.strftime('%d-%m-%Y')
           .col-md-3
             - unless @my_approved_unclaimed_requests != nil 
               (
@@ -36,14 +36,14 @@
               - else
                 - staff_list=Staff.where(id: @current_user.userable_id)
               - selected=@current_user.userable_id
-            = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>selected},{class: 'selectpicker', "data-width"=>'350px'}
+            = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_with_rank_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>selected},{class: 'selectpicker', "data-width"=>'350px'}
             
       - if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true) 
         .col-md-6.col-md-offset-2    
           .form-group
             .col-sm-2.control-label
               = f.label  t('staff.transportclass_id')
-            .col-md-4
+            .col-md-6
               = @travel_claim.travel_requests.first.transport_class+'  ('+@travel_claim.staff.vehicles[0].reg_no+','+@travel_claim.staff.vehicles[0].type_model+' cc)'
               
       #travel_request_log_edit.tab-pane.active

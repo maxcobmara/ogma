@@ -22,6 +22,13 @@
   - your_travel_approved.each do |travel|
    %li= link_to "Your travel request for #{travel[1].strftime("%b-%d")} has been approved", staff_travel_request_path("#{travel[0]}")
 
+ #28Nov2016-start
+ - if travel_claims_for_checking > 0
+  %li= link_to content_tag(:span, "#{travel_claims_for_checking}", class: "badge") + (t 'notifications.travel_claims_for_checking'), staff_travel_claims_path
+ - if travel_claims_returned > 0
+  %li= link_to content_tag(:span, "#{travel_claims_returned}", class: "badge") + (t 'notifications.travel_claims_returned'), staff_travel_claims_path
+ #28Nov2016-end 
+ 
  - permitted_to? :manage, :asset_defects do
   - if asset_with_defects > 0
    %li= link_to content_tag(:span, "#{asset_with_defects}", class: "badge") + "  Defect reports require processing", asset_defects_path
