@@ -101,7 +101,6 @@ class Staff::TravelClaimsController < ApplicationController
   end
   
   def claimprint
-
     @travel_claim = TravelClaim.find(params[:id])
    #@travelclaimlog = TravelClaimLog.where('travel_request_id =?', travel_request.id )
     respond_to do |format|
@@ -110,6 +109,23 @@ class Staff::TravelClaimsController < ApplicationController
         send_data pdf.render, filename: "claimprint-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
+      end
+    end
+  end
+  
+  def travelclaim_list
+    if @is_admin
+      @search = TravelClaim.search(params[:q])
+    else
+      @search = TravelClaim.sstaff2(current_user.userable.id).search(params[:q])
+    end 
+    @travel_claims = @search.result.order(staff_id: :asc, claim_month: :asc)
+    respond_to do |format|
+      format.pdf do
+        pdf = Travelclaim_listPdf.new(@travel_claims, current_user, view_context, current_user.college)
+        send_data pdf.render, filename: "travelclaim_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
       end
     end
   end
