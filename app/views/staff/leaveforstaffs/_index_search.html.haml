@@ -1,10 +1,18 @@
 = search_form_for @search, url: staff_leaveforstaffs_path,  class: "form-inline" do |f|
   %tr.search_row{:style => "display: none;"}
-    - if current_user.college.code=='kskbjb'
-      %td=f.text_field :applicant_name_or_icno_cont, placeholder: (t 'staff_leave.id_or'), class: 'form-control'
-    - else
-      %td=f.text_field :applicant_name_or_applicant_rank_name_or_applicant_rank_shortname_cont, placeholder: (t 'staff_leave.name_rank'), class: 'form-control'
-    %td= select_tag('q[leavetype_eq]', options_for_select([[t('actions.all_records'),''],[t("staff_leave.rest_leave"),1 ],[t("staff_leave.sick_leave"),2],[t("staff_leave.unrecord_leave"),3],[t("staff_leave.partial_leave"),4],[t("staff_leave.unpaid_leave"),5],[t("staff_leave.maternity_leave"),6],[t("staff_leave.hajj_leave"),7]]), class: 'selectpicker form-control',"data-width"=>'180px') 
+    - if @leaveforstaffs.group_by(&:applicant).count == 1
+      - if current_user.college.code=='kskbjb'
+        %td=f.text_field :applicant_name_or_icno_cont, placeholder: (t 'staff_leave.id_or'), class: 'form-control'
+      - else
+        %td=f.text_field :applicant_name_or_applicant_rank_name_or_applicant_rank_shortname_cont, placeholder: (t 'staff_leave.name_rank'), class: 'form-control'
+    %td
+      - if @leaveforstaffs.group_by(&:applicant).count > 1
+        - if current_user.college.code=='kskbjb'
+          =f.text_field :applicant_name_or_icno_cont, placeholder: (t 'staff_leave.id_or'), class: 'form-control'
+        - else
+          =f.text_field :applicant_name_or_applicant_rank_name_or_applicant_rank_shortname_cont, placeholder: (t 'staff_leave.name_rank'), class: 'form-control'
+
+      = select_tag('q[leavetype_eq]', options_for_select([[t('actions.all_records'),''],[t("staff_leave.rest_leave"),1 ],[t("staff_leave.sick_leave"),2],[t("staff_leave.unrecord_leave"),3],[t("staff_leave.partial_leave"),4],[t("staff_leave.unpaid_leave"),5],[t("staff_leave.maternity_leave"),6],[t("staff_leave.hajj_leave"),7]]), class: 'selectpicker form-control',"data-width"=>'180px') 
     %td
       = f.text_field :leavestartdate_eq, class: 'date_picker_reverse form-control', placeholder: (t 'staff_leave.from'), value: @search.leavestartdate_eq.try(:strftime, '%d-%m-%Y')
       = f.text_field :leavenddate_eq, class: 'date_picker_reverse form-control', placeholder: (t 'staff_leave.to'), value: @search.leavenddate_eq.try(:strftime, '%d-%m-%Y')

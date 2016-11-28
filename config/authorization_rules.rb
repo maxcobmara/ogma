@@ -237,14 +237,14 @@ authorization do
    end
 
    has_permission_on :staff_leaveforstaffs, :to => :create                                                       # A staff can register for leave
-   has_permission_on :staff_leaveforstaffs, :to => [:read, :borang_cuti] do                                                    # Staff can view his leave 
+   has_permission_on :staff_leaveforstaffs, :to => [:read, :borang_cuti, :leaveforstaff_list] do                                                    # Staff can view his leave 
      if_attribute :staff_id => is {user.userable.id}
    end
    has_permission_on :staff_leaveforstaffs, :to =>  :delete, :join_by => :and do                    # Staff can delete as long as it is not processed yet
      if_attribute :staff_id => is {user.userable.id}
      if_attribute :approval1 => is_not {true}
    end
-   has_permission_on :staff_leaveforstaffs, :to => [:read, :borang_cuti], :join_by => :or do                          # Penyokong and pelulus can view staff leave
+   has_permission_on :staff_leaveforstaffs, :to => [:read, :borang_cuti, :leaveforstaff_list], :join_by => :or do                          # Penyokong and pelulus can view staff leave
       if_attribute :approval1_id => is {user.userable.id}
       if_attribute :approval2_id => is {user.userable.id}
     end
@@ -1193,18 +1193,18 @@ authorization do
   #6-OK - all 4 - 5Feb2016
   #6-OK - for read, but for manage with restrictions as of super admin (processing_level_1, processing_level_2: penyokong, pelulus)
   role :staff_leaves_module_admin do
-     has_permission_on :staff_leaveforstaffs, :to => [:manage, :processing_level_1, :processing_level_2]
+     has_permission_on :staff_leaveforstaffs, :to => [:manage, :processing_level_1, :processing_level_2, :leaveforstaff_list]
   end
   role :staff_leaves_module_viewer do
-     has_permission_on :staff_leaveforstaffs, :to =>:read
+     has_permission_on :staff_leaveforstaffs, :to =>[:read, :leaveforstaff_list]
   end
   role :staff_leaves_module_user do
-     has_permission_on :staff_leaveforstaffs, :to =>[:read, :update]
+     has_permission_on :staff_leaveforstaffs, :to =>[:read, :update, :leaveforstaff_list]
   end
   role :staff_leaves_module_member do
     #own record
     has_permission_on :staff_leaveforstaffs, :to => :create                                                                       # A staff can register for leave
-    has_permission_on :staff_leaveforstaffs, :to => :read do                                                                    # Staff can view his leave 
+    has_permission_on :staff_leaveforstaffs, :to => [:read, :leaveforstaff_list] do                                                                    # Staff can view his leave 
       if_attribute :staff_id => is {user.userable.id}
     end
     has_permission_on :staff_leaveforstaffs, :to => :delete, :join_by => :and do                                      # Staff can delete as long as it is not processed yet
@@ -1212,7 +1212,7 @@ authorization do
       if_attribute :approval1 => is_not {true}
     end
     #own (approver - Penyokong)
-    has_permission_on :staff_leaveforstaffs, :to => :read, :join_by => :or do                                            # Penyokong and pelulus can view staff leave
+    has_permission_on :staff_leaveforstaffs, :to => [:read, :leaveforstaff_list], :join_by => :or do                                            # Penyokong and pelulus can view staff leave
       if_attribute :approval1_id => is {user.userable.id}
       if_attribute :approval2_id => is {user.userable.id}
     end
