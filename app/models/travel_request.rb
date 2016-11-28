@@ -9,6 +9,7 @@ class TravelRequest < ActiveRecord::Base
   
   belongs_to :travel_claim, :foreign_key => 'travel_claim_id'
   belongs_to :document
+  belongs_to :college, :foreign_key => 'college_id'
   
   validates_presence_of :staff_id, :destination, :depart_at, :return_at
   validates_presence_of :own_car_notes, :if => :mycar?

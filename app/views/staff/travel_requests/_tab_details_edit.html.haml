@@ -8,12 +8,12 @@
     .col-sm-2.control-label
       = f.label :depart_at
     .col-md-2
-      = f.text_field :depart_at,  :class =>  'datetime_picker form-control'
+      = f.text_field :depart_at,  :class =>  'datetime_picker_reverse form-control'
   .form-group
     .col-sm-2.control-label
       = f.label :return_at
     .col-md-2
-      = f.text_field :return_at,  :class =>  'datetime_picker form-control'
+      = f.text_field :return_at,  :class =>  'datetime_picker_reverse form-control'
   .form-group
     .col-sm-2.control-label
       =f.label  t 'staff.travel_request.transport_choice'
@@ -58,18 +58,20 @@
           
   .form-group
     .col-sm-2.control-label 
-      - unless Staff.where(id:25)[0].vehicles.blank?
+      /- unless Staff.where(id:25)[0].vehicles.blank?
+      - unless current_user.userable.vehicles.blank?
         #tr_mileage=f.label :mileage_desc
     .col-md-6
-      - unless Staff.where(id:25)[0].vehicles.blank?
+      /- unless Staff.where(id:25)[0].vehicles.blank?
+      - unless current_user.userable.vehicles.blank?
         .row#tr_mileage2
-          .col-sm-1
+          .col-sm-2
             = f.radio_button :mileage, true
           .col-sm-3
             = f.label :mileage
-          .col-sm-1
+          .col-sm-2
             = f.radio_button :mileage, false
-          .col-sm-6
+          .col-sm-5
             = f.label :mileage_replace
             %font{:size=>'-2'}
               = t 'staff.travel_request.train_plane_replacement'

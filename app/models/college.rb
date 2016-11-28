@@ -28,6 +28,7 @@ class College < ActiveRecord::Base
   has_many :ptschedules
   has_many :ptdos
   has_many :topicdetails
+  has_many :travel_requests
   # staffs
   
   serialize :data, Hash

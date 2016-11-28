@@ -5,13 +5,13 @@
       = f.label :approved_mileage
     .col-md-6
       .row
-        .col-sm-1
+        .col-sm-2
           = f.radio_button :mileage_replace, false, :id => 'approved_mileage',  :class => 'radio_appr_mileage' 
         .col-sm-3
           = f.label :mileage
-        .col-sm-1
+        .col-sm-2
           = f.radio_button :mileage_replace, true, :id => 'approved_mileage',  :class => 'radio_appr_mileage' 
-        .col-sm-6
+        .col-sm-5
           = f.label :mileage_replace
           %font{:size=>'-2',} 
             = t 'staff.travel_request.train_plane_replacement'

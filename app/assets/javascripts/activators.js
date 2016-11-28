@@ -74,6 +74,14 @@ $(document).ready(function(e) {
     defaultSeconds: 0,
     autoclose: true
   });
+  $('.datetime_picker_reverse').datetimepicker({
+    timepicker:true,
+    format:'d-m-Y H:i',
+    formatDate:'Y-m-d H:i',
+    step: 15,
+    defaultSeconds: 0,
+    autoclose: true
+  });
   $('.datetime_picker2').datetimepicker({
     timepicker:true,
     format: "Y-m-d H:i",

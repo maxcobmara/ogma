@@ -74,6 +74,7 @@ Ogma::Application.routes.draw do
       end
       collection do
         get :travel_log_index
+        get :travelrequest_list
       end
     end
     resources :vehicles
