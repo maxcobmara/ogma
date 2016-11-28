@@ -16,7 +16,7 @@
           %li= link_to (t 'staff.travel_request.details'),"#travel_request_details", "data-toggle" => "tab"
           %li=link_to (t 'staff.travel_request.submission'), "#travel_request_submission", "data-toggle" => "tab"
           %li=link_to (t 'staff.travel_request.approval'), "#travel_request_approval", "data-toggle" => "tab" if @travel_request.is_submitted == true
-          %li.active=link_to (t 'staff.travel_request.log_details'), "#travel_logs_details_edit", "data-toggle" => "tab" if @travel_request.staff_id == Login.first.staff_id &&  @travel_request.hod_accept == true 
+          %li.active=link_to (t 'staff.travel_request.log_details'), "#travel_logs_details_edit", "data-toggle" => "tab" if @travel_request.staff_id == current_user.userable_id &&  @travel_request.hod_accept == true 
 
         / display 
         .tab-content{style:"padding-top:1em"}
@@ -56,8 +56,7 @@
                 = render 'travel_claim_log_fields', :f => builder
               %br
               .row
-                /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :travel_claim_logs
-                = link_to_add_fields t('helpers.label.travel_request.add_log'), f, :travel_claim_logs, "",  t('helpers.label.travel_request.add_log')
+                = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :travel_claim_logs, "", t('addmore')
               %br  
               .row
                 .col-sm-2=t 'staff.travel_request.total'

@@ -20,7 +20,8 @@
  - if your_travel_approved.size > 0
   - counter = 0
   - your_travel_approved.each do |travel|
-   %li= link_to "Your travel request for #{travel[1].strftime("%b-%d")} has been approved", staff_travel_request_path("#{travel[0]}")
+   - if TravelRequest.find(travel[0]).travel_claim_logs.count==0
+    %li= link_to "Your travel request for #{travel[1].strftime("%b-%d")} has been approved", staff_travel_request_path("#{travel[0]}")
 
  #28Nov2016-start
  - if travel_claims_for_checking > 0

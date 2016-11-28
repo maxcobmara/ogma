@@ -127,7 +127,7 @@
      #@travel_log = TravelRequest.find(params[:id])
     # @travel_request =  @travel_log
     @travel_request = TravelRequest.find(params[:id])
-    @travel_request.travel_claim_logs.build
+    #@travel_request.travel_claim_logs.build
   end
   
   def approval

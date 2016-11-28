@@ -1,35 +1,20 @@
 %fieldset
-  = f.hidden_field :_destroy
   .row
-    .col-sm-2= f.text_field :travel_on, :class => 'date_picker form-control'
+    .col-sm-2
+      = f.hidden_field :_destroy
+      = f.text_field :travel_on, :class => 'date_picker_reverse form-control', value: f.object.travel_on.try(:strftime, '%d-%m-%Y')
     .col-sm-1= f.text_field :start_at, :class => 'time_picker form-control'
     .col-sm-1= f.text_field :finish_at, :class => 'time_picker form-control'
     .col-sm-3= f.text_field :destination, placeholder: 'Destination', class: 'form-control'
     .col-sm-2= f.text_field :mileage, placeholder: 'Mileage in KM', class: 'form-control'
     .col-sm-2= f.text_field :km_money, placeholder: 'Value in RM', class: 'form-control'
-    .col-sm-1
-      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
-      = link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f 
-      /= link_to content_tag(:i,"", class: "fa-fa-trash-o"), '#', :onclick => '$(this).parent().parent().hide()', title: "Delete", class: "btn btn-danger remove_fields"
-      = link_to content_tag(:i,"", class: "fa-fa-trash-o"), '#', :onclick => 'rmv_field($(this))', title: "Delete", class: "btn btn-danger remove_fields"
-      /= link_to content_tag(:i,"", class: "fa-fa-trash-o"), '#', :onclick => 'rmv_field($(this).parent().parent(),#{f.object_name})', title: "Delete", class: "btn btn-danger remove_fields"
-        
-      = f.object_name
-      = f.object_id
-      = f.object.id
+    .col-sm-1= link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
 
 :javascript
-  
-  $(document).ready(function(){
-  });
-  
-  function rmv_field(curr_fieldset) {
-    $(curr_fieldset).parent().parent().hide();
-  }
 
-  $('.date_picker').datetimepicker({
+  $('.date_picker_reverse').datetimepicker({
     timepicker:false,
-    format:'Y-m-d',
+    format:'d-m-Y',
     formatDate:'Y-m-d'
   });
   $('.time_picker').datetimepicker({
@@ -37,10 +22,13 @@
     format:'H:i',
     step:5,
   });
-
-  function remove_fields(link,fm) {
-    $(link).parent().parent().hide();
-    $(fm).$("input[type=hidden]").value = "1";
-  }
-/document.getElementByName(fm+'[_destroy]').val()=true;
-/$(fm).value= '1';
+  
+  $('.removing_fields').click(function(){
+    var fieldset=$(this).parent().parent().parent();
+    var row=$(this).parent().parent();
+    var all_fields=row.children().children();
+    var destroyer=all_fields[0];
+    destroyer.value=true;    
+    fieldset.hide();
+  });
+ 
