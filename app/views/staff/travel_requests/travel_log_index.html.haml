@@ -5,7 +5,6 @@
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
     /%li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_travel_request_path
-    /to log travel logs - click 'Edit' link for APPROVED travel request in Travel Log Index page OR Show pg of APPROVED Travel Request
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), travellog_list_staff_travel_requests_path(params.merge(format: 'pdf'))
@@ -17,13 +16,13 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :document_id, (t 'staff.travel_request.document_id'))
-        %th= sort_link(@search, :staff_id, (t 'staff.travel_request.staff_id'))
-        %th=  sort_link(@search, :destination,(t 'staff.travel_request.destination'))
-        %th= sort_link(@search, :depart_at, (t 'staff.travel_request.depart_at'))
-        %th= sort_link(@search, :return_at, (t 'staff.travel_request.return_at'))
-        %th= sort_link(@search, :purpose, (t 'staff.travel_request.purpose'))
-        %th=sort_link(@search, :hod_accept, (t 'staff.travel_request.hod_accept'))
+        %th{width: '15%'}= sort_link(@search, :document_id, (t 'staff.travel_request.document_id'))
+        %th{width: '20%'}= sort_link(@search, :staff_id, (t 'staff.travel_request.staff_id'))
+        %th{width: '15%'}=  sort_link(@search, :destination,(t 'staff.travel_request.destination'))
+        %th{width: '10%'}= sort_link(@search, :depart_at, (t 'staff.travel_request.depart_at'))
+        %th{width: '10%'}= sort_link(@search, :return_at, (t 'staff.travel_request.return_at'))
+        %th{width: '15%'}= sort_link(@search, :purpose, (t 'staff.travel_request.purpose'))
+        %th{width: '15%'}=sort_link(@search, :hod_accept, (t 'staff.travel_request.hod_accept'))
         
     %tbody
     = render "index_search2"

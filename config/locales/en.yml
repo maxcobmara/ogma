@@ -1470,6 +1470,7 @@ en:
       returned: Returned
       resubmitted_to_finance: Resubmitted to Finance
       for_checking: For Checking
+      for_rechecking: "For Re-Checking"
       processed: Processed
       approved: Approved
       return_to_staff_for_amendment: Return to Staff for Amendment

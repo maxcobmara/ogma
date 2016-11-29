@@ -3,8 +3,8 @@
     %td=f.text_field :document_refno_cont, size: 2, :class => "form-control"
     %td=f.text_field :applicant_name_cont, size: 2, :class => "form-control"
     %td=f.text_field :destination_cont, size: 2, :class => "form-control"
-    %td=f.text_field :depart_at_gteq, :size=> 2,  :class =>  'date-picker select-picker'
-    %td=f.text_field :return_at_gteq, :size=> 2,  :class =>  'date-picker'
+    %td=f.text_field :depart_at_gteq, :size=> 2,  :class =>  'date-picker form-control', value: @search.depart_at_gteq.try(:strftime, '%d-%m-%Y %H:%M')
+    %td=f.text_field :return_at_gteq, :size=> 2,  :class =>  'date-picker form-control', value: @search.return_at_gteq.try(:strftime, '%d-%m-%Y %H:%M')
     %td=f.text_field :document_title_cont, size: 2, :class => "form-control"
     %td.input-group
       %span.input-group-btn
@@ -14,7 +14,8 @@
   :javascript
     $('.date-picker').datetimepicker({
      timepicker:true,
-       format: "Y-m-d H:i",
+       format:"d-m-Y H:i",
+       formatDate:"Y-m-d",
        step: 15,
        defaultSeconds: 0,
        autoclose: true

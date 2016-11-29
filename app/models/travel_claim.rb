@@ -80,6 +80,52 @@ class TravelClaim < ActiveRecord::Base
     end
   end
   
+  #define scope
+  def self.status_search(query2) 
+     query, userable_id=query2.split("-")
+     if query == '1'
+       evalstatus = where(staff_id: userable_id).where.not(is_submitted: true).where(is_checked: nil)
+     elsif query == '2'
+       evalstatus = where.not(staff_id: userable_id).where.not(is_submitted: true).where(is_checked: nil)
+     elsif query == '3'
+       #staff_id == current_user.userable.id && is_submitted == true && is_checked == nil
+       evalstatus = where(staff_id: userable_id).where(is_submitted: true).where(is_checked: nil)
+     elsif query == '4'
+       #staff_id != current_user.userable.id && is_submitted == true && is_checked == nil
+       evalstatus = where.not(staff_id: userable_id).where(is_submitted: true).where(is_checked: nil)
+     # TODO -  check this part - may no longer applicable  - start here - HIDE first, if activated, dont forget to activate in _index_search as well
+     #elsif query == '5'
+       #staff_id == current_user.userable.id && is_submitted == false && is_checked == false && is_returned == true
+       #evalstatus = where(staff_id: userable_id).where(is_submitted: false).where(is_checked: false).where(is_returned: true)
+     elsif query == '6'
+       #staff_id == current_user.userable.id && is_submitted == true && is_checked == false && is_returned == true
+       evalstatus = where(staff_id: userable_id).where(is_submitted: true).where(is_checked: false).where(is_returned: true)
+     elsif query == '7'
+       #staff_id == current_user.userable.id && is_submitted == true && is_checked == false && is_returned == false 
+       evalstatus = where(staff_id: userable_id).where(is_submitted: true).where(is_checked: false).where(is_returned: false)
+     elsif query == '8'
+       # staff_id != current_user.userable.id && is_submitted == true && is_checked == false	&& is_returned == false 
+       evalstatus = where.not(staff_id: userable_id).where(is_submitted: true).where(is_checked: false).where(is_returned: false)
+     elsif query == '9'
+       # is_submitted == true && is_checked == true && is_approved != true
+       evalstatus = where(is_submitted: true).where.not(is_approved: true)
+     elsif query =='10'
+       #is_submitted == true && is_checked == true && is_approved == true
+       evalstatus = where(is_submitted: true).where(is_checked: true).where(is_approved: true) 
+     elsif query == '11'
+       #staff_id != current_user.userable.id && is_submitted == true && is_checked ==false && is_returned == true 
+       evalstatus = where.not(staff_id: userable_id).where(is_submitted: true).where(is_checked: false).where(is_returned: true)
+     else
+       evalstatus = TravelClaim.all
+     end 
+     evalstatus
+  end
+  
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:status_search] 
+  end
+  
   def my_claim_status(current_user)
     if staff_id == current_user.userable.id && is_submitted != true  && is_checked == nil
       I18n.t('staff.travel_claim.editing') #"editing"
@@ -89,14 +135,21 @@ class TravelClaim < ActiveRecord::Base
       I18n.t('staff.travel_claim.submitted') #"submitted"
     elsif staff_id != current_user.userable.id && is_submitted == true && is_checked == nil
       I18n.t('staff.travel_claim.for_checking') #"for checking"
-    elsif staff_id == current_user.userable.id && is_submitted == false && is_checked == false && is_returned == true #owner amend returned document but did not submit
-      I18n.t('staff.travel_claim.returned') #"returned"
+     
+    #########
+    # TODO - check this part - may no longer applicable  - start here - HIDE first, if activated, dont forget to activate in _index_search as well
+    #elsif staff_id == current_user.userable.id && is_submitted == false && is_checked == false && is_returned == true #owner amend returned document but did not submit
+    #  I18n.t('staff.travel_claim.returned') #"returned"
+    # TODO - check this part - may no longer applicable  - end here
+    #########  
+
     elsif staff_id == current_user.userable.id && is_submitted == true && is_checked == false && is_returned == true #owner amend returned document & re-SUBMIT
-      I18n.t('staff.travel_claim.returned') #"returned"
-    elsif staff_id == current_user.userable.id && is_submitted == true && is_checked == false && is_returned == false 
+      I18n.t('staff.travel_claim.returned') #"returned" - owner screen
+      
+    elsif staff_id == current_user.userable.id && is_submitted == true && is_checked == false && is_returned == false
       I18n.t('staff.travel_claim.resubmitted_to_finance')#"resubmitted to finance"
     elsif staff_id != current_user.userable.id && is_submitted == true && is_checked == false	&& is_returned == false 
-      I18n.t('staff.travel_claim.for_checking') # "for checking"
+      I18n.t('staff.travel_claim.for_rechecking') # "for checking"
     elsif is_submitted == true && is_checked == true && is_approved != true
       I18n.t('staff.travel_claim.processed') #"processed"
     elsif is_submitted == true && is_checked == true && is_approved == true
@@ -107,6 +160,7 @@ class TravelClaim < ActiveRecord::Base
       I18n.t('staff.travel_claim.status_not_known') #"status not known"
     end    
   end
+
   
   def to_be_paid
     if advance == nil
