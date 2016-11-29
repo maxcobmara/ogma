@@ -3,17 +3,17 @@
     .col-sm-2.control-label
       = f.label :destination
     .col-md-5
-      = f.text_field :destination, class: 'form-control'      
+      = f.text_field :destination, class: 'form-control mandatory'      
   .form-group
     .col-sm-2.control-label
       = f.label :depart_at
     .col-md-2
-      = f.text_field :depart_at,  :class =>  'datetime_picker_reverse form-control'
+      = f.text_field :depart_at,  :class =>  'datetime_picker_reverse form-control mandatory'
   .form-group
     .col-sm-2.control-label
       = f.label :return_at
     .col-md-2
-      = f.text_field :return_at,  :class =>  'datetime_picker_reverse form-control'
+      = f.text_field :return_at,  :class =>  'datetime_picker_reverse form-control mandatory'
   .form-group
     .col-sm-2.control-label
       =f.label  t 'staff.travel_request.transport_choice'
