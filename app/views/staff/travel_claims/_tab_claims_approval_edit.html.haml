@@ -4,9 +4,9 @@
       = f.label :is_approved
     .col-md-1
       = f.check_box :is_approved, :id => 'approve1'
-    .col-md-2
+    .col-md-3
       .span_submit1{:style=>"display:none;"}
-        = f.text_field :approved_on, class: 'date_picker form-control'
+        = f.text_field :approved_on, class: 'date_picker_reverse form-control', value: @travel_claim.approved_on.try(:strftime, '%d-%m-%Y')
   .span_submit1{:style=>"display:none;"}
     .form-group
       .col-sm-2.control-label 
@@ -17,7 +17,7 @@
     .col-sm-2.control-label
       = f.label :approved_by
     .col-md-6
-      =f.collection_select :approved_by, Staff.all, :id, :name, {:include_blank=>t('select')},{class: 'selectpicker', "data-width"=>"220px"}
+      =f.collection_select :approved_by, Staff.where(id: @travel_claim.approved_by), :id, :staff_with_rank, {:include_blank=>t('select')},{class: 'selectpicker', "data-width"=>"auto"}
 
 :javascript
 $(document).ready(function(){

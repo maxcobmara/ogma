@@ -5,7 +5,6 @@
     %dt=t 'staff.travel_request.approved_mileage'
     %dd
       =t 'staff.travel_request.mileage'
-      /=h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png")
       -  if @travel_request.mileage_replace==nil
         =h @travel_request.mileage? ? fa_icon('check') : fa_icon('times')
       - else 
@@ -16,5 +15,5 @@
       =h @travel_request.mileage_replace? ? fa_icon('check') : fa_icon('times')
       
     %dt=t 'staff.travel_request.hod_accept', :default => model_class.human_attribute_name(:hod_accepted)+":"
-    %dd
+    %dd{style: 'padding-left: 70px;'}
       =h @travel_request.hod_accept? ? fa_icon('check')+t('staff.travel_request.on2')+ @travel_request.hod_accept_on.try(:strftime, '%d %b %Y').to_s+t( 'staff.travel_request.by')+@travel_request.headofdept.try(:staff_name_with_position) : fa_icon('times')

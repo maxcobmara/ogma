@@ -23,7 +23,7 @@
             %dd=h l(@travel_claim.claim_month, :format => "%B %Y") 
           
             %dt= t 'staff.travel_claim.staff_id', :default => model_class.human_attribute_name(:staff_id) + ":"
-            %dd=h @travel_claim.staff.staff_name_with_position unless @travel_claim.staff.blank?
+            %dd=h @travel_claim.staff.staff_with_rank_position unless @travel_claim.staff.blank?
         
         #travel_request_log.tab-pane
           - for travel_request in @travel_claim.travel_requests

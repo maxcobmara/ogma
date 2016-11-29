@@ -3,24 +3,39 @@
   %dl.dl-horizontal
     %hr
 
-    %dt=(t 'staff.travel_claim.allowance').upcase
-    %dd
+    /%dt=(t 'staff.travel_claim.allowance').upcase
+    /%dd
+    /  /%b
+    /  /  =t 'staff.travel_claim.type' 
+    /  /  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    /  /  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    /  /  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    /  /  =t 'staff.travel_claim.days'
+    /  /  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    /  /  &nbsp;&nbsp;&nbsp;
+    /  /  =t 'staff.travel_claim.value'
+    /  /  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    /  /  =t 'staff.travel_claim.receipt_no'
+    /  /  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    /  /  =t 'staff.travel_claim.total'
+    /  /  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    /  /  =t 'staff.travel_claim.claims_verification'
+      
+      
+.col-md-12.col-md-offset-2
+  .row
+    .col-md-2
       %b
-        =t 'staff.travel_claim.type' 
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        =t 'staff.travel_claim.days'
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;
-        =t 'staff.travel_claim.value'
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        =t 'staff.travel_claim.receipt_no'
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        =t 'staff.travel_claim.total'
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        =t 'staff.travel_claim.claims_verification'
-.col-md-10.col-md-offset-3
+        %u=(t 'staff.travel_claim.allowance').upcase
+  .row{style: 'font-weight: bold;'}
+    .col-md-2=t 'staff.travel_claim.type' 
+    .col-md-1=t 'staff.travel_claim.days'
+    .col-md-1=t 'staff.travel_claim.value'
+    .col-md-1=t 'staff.travel_claim.receipt_no'
+    .col-md-1=t 'staff.travel_claim.total'
+    .col-md-3=t 'staff.travel_claim.claims_verification'
+
+  /.col-md-10.col-md-offset-3
   - for travel_claim_allowance in @travel_claim.travel_claim_allowances
     .row
       .col-md-2=h (DropDown::ALLOWANCETYPE.find_all{|disp, value| value == travel_claim_allowance.expenditure_type}).map {|disp, value| disp}[0]
@@ -31,7 +46,10 @@
       /display Finance Unit OK / Query & Notes
       .col-md-3
         - unless travel_claim_allowance.checker.nil?
-          %font{style: 'color: red;'}= travel_claim_allowance.checker? ? "OK" : "Query : "+travel_claim_allowance.checker_notes
+          /%font{style: 'color: red;'}= travel_claim_allowance.checker? ? "OK" : "Query : "+travel_claim_allowance.checker_notes
+          = travel_claim_allowance.checker? ? "<font style='color: green;'>OK</font>".html_safe : "<font style='color: red;'>Query : #{travel_claim_allowance.checker_notes}</font>".html_safe
+          
+  /.col-md-10.col-md-offset-3
   .row
     .col-md-5
       %br
@@ -39,7 +57,7 @@
     .col-md-1
       %br
       %font{:style=>"font-weight:bold; text-decoration:underline;"}= ringgols(@travel_claim.allowas)
-  %BR
+  /%BR
   - if (@travel_claim.travel_claim_allowances.map(&:expenditure_type) & [31,32]).count > 0 
     .row
       .col-md-2
@@ -51,23 +69,35 @@
 .col-md-10.col-md-offset-1
   %dl.dl-horizontal
     %hr
+/ 
+/     %dt=(t 'staff.travel_claim.receipts').upcase
+/     %dd
+/       %b
+/         =t 'staff.travel_claim.type' 
+/         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/         =t 'staff.travel_claim.receipt_no'
+/         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/         =t 'staff.travel_claim.value'
+/         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/         =t 'staff.travel_claim.claims_verification'
 
-    %dt=(t 'staff.travel_claim.receipts').upcase
-    %dd
+.col-md-12.col-md-offset-2
+  .row
+    .col-md-2
       %b
-        =t 'staff.travel_claim.type' 
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        =t 'staff.travel_claim.receipt_no'
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        =t 'staff.travel_claim.value'
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        =t 'staff.travel_claim.claims_verification'
-.col-md-10.col-md-offset-3
+        %u=(t 'staff.travel_claim.receipts').upcase
+  .row{style: 'font-weight: bold;'}
+    .col-md-3=t 'staff.travel_claim.type'
+    .col-md-2=t 'staff.travel_claim.receipt_no'
+    .col-md-1=t 'staff.travel_claim.value'
+    .col-md-3=t 'staff.travel_claim.claims_verification'
+    
+  /.col-md-10.col-md-offset-3
   - for travel_claim_receipt in @travel_claim.travel_claim_receipts.where('expenditure_type IN (?)', (1..88) )
     .row
       .col-md-3=h (DropDown::RECEIPTTYPE.find_all{|disp, value| value == travel_claim_receipt.expenditure_type}).map {|disp, value| disp}[0]
@@ -76,7 +106,9 @@
       /display Finance Unit OK / Query & Notes
       .col-md-3
         - unless travel_claim_receipt.checker.nil?
-          %font{style: 'color: red;'}= travel_claim_receipt.checker? ? "OK" : "Query : "+travel_claim_receipt.checker_notes
+          /%font{style: 'color: red;'}= travel_claim_receipt.checker? ? "OK" : "Query : "+travel_claim_receipt.checker_notes
+          = travel_claim_receipt.checker? ? "<font style='color: green;'>OK</font>".html_safe : "<font style='color: red;'>Query : #{travel_claim_receipt.checker_notes}</font>".html_safe
+
   - for travel_claim_receipt in @travel_claim.travel_claim_receipts.where('expenditure_type = ?', 99)
     .row
       .col-md-2
@@ -89,7 +121,9 @@
       /display Finance Unit OK / Query & Notes
       .col-md-1
         - unless travel_claim_receipt.checker.nil?
-          %font{style: 'color: red;'}= travel_claim_receipt.checker? ? "OK" : "Query : "+travel_claim_receipt.checker_notes
+          /%font{style: 'color: red;'}= travel_claim_receipt.checker? ? "OK" : "Query : "+travel_claim_receipt.checker_notes
+          = travel_claim_receipt.checker? ? "<font style='color: green;'>OK</font>".html_safe : "<font style='color: red;'>Query : #{travel_claim_receipt.checker_notes}</font>".html_safe
+
   .row
     .col-md-5
       %br
@@ -126,7 +160,7 @@
     %dt= t 'staff.travel_claim.verification'
     %dd
       - if @travel_claim.is_checked==true
-        = t 'staff.travel_claim.verified_ok'
+        %font{style: 'color: green;'}= t 'staff.travel_claim.verified_ok'
       - elsif @travel_claim.is_checked==false
         %font{style: 'color: red;'}= t 'staff.travel_claim.return_to_staff'
    

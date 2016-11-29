@@ -3,51 +3,66 @@
     %hr
     %dt=t 'staff.travel_request.mileage_replace'
     %dd=t 'staff.travel_claim.for'
-TOTAL MILEAGE 
-= @travel_claim.total_mileage
-.col-md-10.col-md-offset-3
-  .row
-    .col-md-2
-      %b=t 'staff.travel_claim.first_500'
-    .col-md-3
-      = @travel_claim.km500
-      km  X
-      /=h @current_user.userable.current_salary.nil? ? "" : @travel_claim.sen_per_km500
-      =h @travel_claim.staff.current_salary.nil? ? "" : @travel_claim.sen_per_km500
-      %b=t 'staff.travel_claim.cent_per_km'
-    .col-md-1=h  @travel_claim.staff.current_salary.nil? ? "" : ringgols(@travel_claim.value_km500) 
-  .row
-    .col-md-2
-      %b 501 km - 1,000 km 
-    .col-md-3
-      = @travel_claim.km1000
-      km  X
-      =h  @travel_claim.staff.current_salary.nil? ? "" : @travel_claim.sen_per_km1000
-      %b=t 'staff.travel_claim.cent_per_km'
-    .col-md-1=h  @travel_claim.staff.current_salary.nil? ? "" : ringgols(@travel_claim.value_km1000) 
-  .row
-    .col-md-2
-      %b 1,001 km - 1,700 km
-    .col-md-3
-      =@travel_claim.km1700 
-      km  X
-      =h  @travel_claim.staff.current_salary.nil? ? "" : @travel_claim.sen_per_km1700
-      %b=t 'staff.travel_claim.cent_per_km'
-    .col-md-1=h  @travel_claim.staff.current_salary.nil? ? "" : ringgols(@travel_claim.value_km1700) 
-  .row
-    .col-md-2
-      %b=t 'staff.travel_claim.km1701_and_above'
-    .col-md-3
-      = @travel_claim.kmmo
-      km  X
-      =h  @travel_claim.staff.current_salary.nil? ? "" : @travel_claim.sen_per_kmmo
-      %b=t 'staff.travel_claim.cent_per_km'
-    .col-md-1=h  @travel_claim.staff.current_salary.nil? ? "" : ringgols(@travel_claim.value_kmmo)   
-  .row
-    .col-md-5
-      %br
-      %b=t 'staff.travel_request.total'
-    .col-md-1
-      %br
-      %font{:style=>"font-weight:bold; text-decoration:underline;"}
-        =h @travel_claim.staff.current_salary.nil? ? "" : ringgols(@travel_claim.value_km)
+    /TOTAL MILEAGE 
+    /= @travel_claim.total_mileage
+    /.col-md-10.col-md-offset-3
+    
+    %dt
+    %dd{style: 'padding-left: 70px;'}
+      .row
+        .col-md-3
+          %b=t 'staff.travel_claim.first_500'
+        .col-md-3
+          = @travel_claim.km500
+          km  X
+          /=h @current_user.userable.current_salary.nil? ? "" : @travel_claim.sen_per_km500
+          =h @travel_claim.staff.current_salary.nil? ? "" : @travel_claim.sen_per_km500
+          %b=t 'staff.travel_claim.cent_per_km'
+        .col-md-2=h  @travel_claim.staff.current_salary.nil? ? "" : ringgols(@travel_claim.value_km500) 
+    
+    %dt
+    %dd{style: 'padding-left: 70px;'}
+      .row
+        .col-md-3
+          %b 501 km - 1,000 km 
+        .col-md-3
+          = @travel_claim.km1000
+          km  X
+          =h  @travel_claim.staff.current_salary.nil? ? "" : @travel_claim.sen_per_km1000
+          %b=t 'staff.travel_claim.cent_per_km'
+        .col-md-2=h  @travel_claim.staff.current_salary.nil? ? "" : ringgols(@travel_claim.value_km1000) 
+
+    %dt
+    %dd{style: 'padding-left: 70px;'}
+      .row
+        .col-md-3
+          %b 1,001 km - 1,700 km
+        .col-md-3
+          =@travel_claim.km1700 
+          km  X
+          =h  @travel_claim.staff.current_salary.nil? ? "" : @travel_claim.sen_per_km1700
+          %b=t 'staff.travel_claim.cent_per_km'
+        .col-md-2=h  @travel_claim.staff.current_salary.nil? ? "" : ringgols(@travel_claim.value_km1700) 
+        
+    %dt
+    %dd{style: 'padding-left: 70px;'}
+      .row
+        .col-md-3
+          %b=t 'staff.travel_claim.km1701_and_above'
+        .col-md-3
+          = @travel_claim.kmmo
+          km  X
+          =h  @travel_claim.staff.current_salary.nil? ? "" : @travel_claim.sen_per_kmmo
+          %b=t 'staff.travel_claim.cent_per_km'
+        .col-md-2=h  @travel_claim.staff.current_salary.nil? ? "" : ringgols(@travel_claim.value_kmmo)   
+        
+    %dt
+    %dd{style: 'padding-left: 70px;'}
+      .row
+        .col-md-6
+          %br
+          %b=t 'staff.travel_request.total'
+        .col-md-2
+          %br
+          %font{:style=>"font-weight:bold; text-decoration:underline;"}
+            =h @travel_claim.staff.current_salary.nil? ? "" : ringgols(@travel_claim.value_km)

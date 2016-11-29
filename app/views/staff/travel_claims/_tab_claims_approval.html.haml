@@ -7,4 +7,4 @@
     %dd=h @travel_claim.is_approved? ? (t 'staff.travel_claim.yes2') +(t 'staff.travel_request.on2') + l(@travel_claim.approved_on).to_s : (t 'staff.travel_claim.no2')
     
     %dt=t 'staff.travel_claim.to_be_approved_by'
-    %dd=h @travel_claim.approver.name unless  @travel_claim.approver.blank? 
+    %dd=h @travel_claim.approver.staff_with_rank unless  @travel_claim.approver.blank? 

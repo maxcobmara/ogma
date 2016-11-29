@@ -1,11 +1,12 @@
 class ClaimprintPdf < Prawn::Document
-  def initialize(travel_claim, view)
+  def initialize(travel_claim, college, view)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @travel_claim = travel_claim
     @view = view
-
+    @college=college
     
-    font "Times-Roman"
+    #font "Times-Roman"
+    font "Helvetica"
     text "LAMPIRAN A", :align => :right, :size => 12, :style => :bold
     move_down 15
     text "KENYATAAN TUNTUTAN PERJALANAN DALAM NEGERI", :align => :center, :size => 12, :style => :bold
@@ -29,7 +30,7 @@ class ClaimprintPdf < Prawn::Document
   
   def table1
     data1 = [[" ", "MAKLUMAT PEGAWAI", ""],
-             ["NAMA", " #{@travel_claim.staff.name} ", ""],
+             ["NAMA", " #{@college.code=='amsas' ? @travel_claim.staff.staff_with_rank : @travel_claim.staff.name} ", ""],
              ["NO KAD PENGENALAN", "#{@travel_claim.staff.formatted_mykad}", ""],
              ["GRED/KATEGORI/KUMPULAN", "#{@travel_claim.staff.staffgrade.name}", ""],
              ["JAWATAN", "#{@travel_claim.staff.try(:positions).try(:first).try(:name)} ", ""],
@@ -68,9 +69,7 @@ class ClaimprintPdf < Prawn::Document
 
              end
              
-             data2 = [["ALAMAT PEJABAT", "Kolej Sains Kesihatan Bersekutu
-                      Lot 8173, Jalan Pesiaran Kempas Baru
-                       81200 Johor Bahru, Johor" ],
+             data2 = [["ALAMAT PEJABAT", "#{@college.name}<br>#{@college.address}" ],
                       ["ALAMAT RUMAH", "#{@travel_claim.staff.addr}"],
                       ["ALAMAT PENGINAPAN", "#{@travel_claim.accommodations if (@travel_claim.travel_claim_allowances.map(&:expenditure_type) & [31,32]).count > 0}"],
                       ["NO GAJI", "#{@travel_claim.staff.salary_no}"],
@@ -79,7 +78,7 @@ class ClaimprintPdf < Prawn::Document
                       ["EMAIL", " #{@travel_claim.staff.coemail}"],
                       ["NO TELEFON BIMBIT","#{@travel_claim.staff.phonecell}"]]
              
-                      table(data2, :column_widths => [180, 360], :cell_style => { :size => 10}) do
+                      table(data2, :column_widths => [180, 360], :cell_style => { :size => 10, :inline_format => true}) do
                       self.width = 540
                       end
              
@@ -128,7 +127,7 @@ def tuntutan
                     end
                     
                     data3 =  [[" TUJUAN"],
-                               ["No. Rujukan : #{travel_request.document.refno} bertarikh #{travel_request.document.letterdt}"],
+                               ["No. Rujukan : #{travel_request.document.refno} bertarikh #{travel_request.document.letterdt.try(:strftime, '%d-%m-%Y')}"],
                                ["Tajuk : #{travel_request.document.title}"],
                                ["Tarikh : #{travel_request.depart_at.try(:strftime,"%d-%m-%Y")} - #{travel_request.return_at.try(:strftime,"%d-%m-%Y")}"]]
               
@@ -381,7 +380,7 @@ end
             ["(d) Panggilan telefon sebanyak RM #{@travel_claim.comms_receipts_total}  dibuat atas urusan rasmi; dan"],
             ["(e) Butir-butir seperti yang dinyatakan di atas adalah benar dan saya bertanggungjawab terhadapnya"],
             ["Tarikh  #{@travel_claim.try(:submitted_on).try(:strftime,"%d-%m-%Y")}"],
-            ["#{@travel_claim.staff.name}  "],
+            ["#{@travel_claim.staff.staff_with_rank}  "],
             ["#{@travel_claim.staff.positions.try(:first).try(:name)} "]]
             
             table(data, :column_widths => [540], :cell_style => { :size => 10}) do
@@ -408,7 +407,7 @@ end
     
     data = [[" PENGESAHAN KEWANGAN"],
             ["Tarikh: #{@travel_claim.checked_on.try(:strftime,"%d-%m-%Y")}"],
-            ["Nama: #{@travel_claim.checker.name unless  @travel_claim.checker.blank? }"],
+            ["Nama: #{@travel_claim.checker.staff_with_rank unless  @travel_claim.checker.blank? }"],
             ["Jawatan: #{@travel_claim.checker.try(:positions).try(:first).try(:name)}"]]
             
             table(data, :column_widths => [540], :cell_style => { :size => 10})  do
@@ -427,8 +426,8 @@ end
     data = [[" PENGESAHAN"],
             ["Adalah disahkan bahawa perjalanan tersebut adalah atas urusan rasmi"],
             ["Tarikh: #{@travel_claim.approved_on.try(:strftime,"%d-%m-%Y")}"],
-            ["Nama: #{@travel_claim.approver.name unless  @travel_claim.approver.blank? }"],
-            ["Jawatan: #{@travel_claim.approver.try(:position).try(:name)}"]]
+            ["Nama: #{@travel_claim.approver.staff_with_rank unless  @travel_claim.approver.blank? }"],
+            ["Jawatan: #{@travel_claim.approver.try(:positions).try(:first).try(:name)}"]]
             
             table(data, :column_widths => [540], :cell_style => { :size => 10})  do
               row(0).background_color = 'FFE34D'

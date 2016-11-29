@@ -293,7 +293,7 @@ authorization do
      if_attribute :is_checked => is {false}
      if_attribute :is_returned => is {true}
    end
-   has_permission_on :staff_travel_claims, :to => [:approve, :update], :join_by => :and do        # Approver may approve if not yet approve
+   has_permission_on :staff_travel_claims, :to => [:approval, :update], :join_by => :and do        # Approver may approve if not yet approve
      if_attribute :approved_by => is {user.userable.id}
      if_attribute :is_approved => is_not {true}
    end
@@ -1234,13 +1234,13 @@ authorization do
   #7-OK - 3/4 (Admin, Viewer & User), Member : applicable only for applicant & final approver (To assign user with Finance Check, use 'Finance Unit' role instead, which will disable all type of module access for Travel Claims Module & Training Budget Module)
   # NOTE Travel Claim should come with Travel Request
   role :travel_claims_module_admin do
-    has_permission_on :staff_travel_claims, :to => [:manage, :check, :approve, :claimprint, :travelclaim_list]
+    has_permission_on :staff_travel_claims, :to => [:manage, :check, :approval, :claimprint, :travelclaim_list]
   end
   role :travel_claims_module_viewer do
     has_permission_on :staff_travel_claims, :to => [:read, :claimprint, :travelclaim_list] 
   end
   role :travel_claims_module_user do
-    has_permission_on :staff_travel_claims, :to => [:check, :approve, :claimprint, :travelclaim_list]
+    has_permission_on :staff_travel_claims, :to => [:check, :approval, :update, :claimprint, :travelclaim_list]          #like Finance Unit Or Approver
   end
   role :travel_claims_module_member do
     #own records (as role staff)
@@ -1259,7 +1259,7 @@ authorization do
       if_attribute :is_returned => is {true}
     end
     #own (final approval-as role staff)
-    has_permission_on :staff_travel_claims, :to => [:approve, :update], :join_by => :and do        # Approver may approve if not yet approve
+    has_permission_on :staff_travel_claims, :to => [:approval, :update], :join_by => :and do        # Approver may approve if not yet approve
       if_attribute :approved_by => is {user.userable.id}
       if_attribute :is_approved => is_not {true}
     end

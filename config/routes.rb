@@ -38,7 +38,7 @@ Ogma::Application.routes.draw do
     resources :travel_claims do
       member do
         get :check
-        get :approve
+        get :approval
         get :claimprint
       end
       collection do
