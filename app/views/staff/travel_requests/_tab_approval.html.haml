@@ -2,17 +2,28 @@
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal    
         
-    %dt=t 'staff.travel_request.approved_mileage'
+    %dt=@travel_request.hod_accept? ? (t 'staff.travel_request.approved_mileage') :  (t 'staff.travel_request.applied_mileage') 
     %dd
-      =t 'staff.travel_request.mileage'
+      ////Batuan
+      =t 'staff.travel_request.mileage'  
       -  if @travel_request.mileage_replace==nil
+        /before approval
         =h @travel_request.mileage? ? fa_icon('check') : fa_icon('times')
       - else 
-        =h @travel_request.mileage_replace? ? fa_icon('check') : fa_icon('times')
+        /after approval
+        =h @travel_request.mileage_replace==false ? fa_icon('check') : fa_icon('times')
+        
+      ////Flight/Train
       =t 'staff.travel_request.mileage_replace'
       %font{:size=>'-2'}
-        = t 'staff.travel_request.train_plane_replacement'
-      =h @travel_request.mileage_replace? ? fa_icon('check') : fa_icon('times')
+        = t 'staff.travel_request.train_plane_replacement'      
+      /=h @travel_request.mileage_replace? ? fa_icon('check') : fa_icon('times')
+      - if @travel_request.mileage_replace==nil
+        /before approval
+        = fa_icon('check') if @travel_request.mileage==false
+      - else 
+        /after approval
+        =h @travel_request.mileage_replace? ? fa_icon('check') : fa_icon('times') 
       
     %dt=t 'staff.travel_request.hod_accept', :default => model_class.human_attribute_name(:hod_accepted)+":"
     %dd{style: 'padding-left: 70px;'}

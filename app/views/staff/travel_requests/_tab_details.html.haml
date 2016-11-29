@@ -56,6 +56,6 @@
           = t 'staff.travel_request.train_plane_replacement'
         /=h @travel_request.mileage_replace? ? fa_icon('check') : fa_icon('times') 
         - if @travel_request.mileage_replace==nil
-          = image_tag("tick.png") if @travel_request.mileage==false
+          = fa_icon('check') if @travel_request.mileage==false
         - else 
           =h @travel_request.mileage_replace? ? fa_icon('check') : fa_icon('times') 

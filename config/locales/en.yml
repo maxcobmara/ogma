@@ -123,6 +123,7 @@ en:
         hod_accept_on: Head of Department acceptance date
         own_car_notes: Reasons
         travel_claim_logs: Travel Logs
+        mileage_replace: Approved Mileage
       travel_claim_logs:
         travel_on: Date
         start_at: From
@@ -1371,6 +1372,7 @@ en:
       submitted_on: Submitted On
       replaced_by: Replacement Staff
       approved_mileage: Approved Mileage
+      applied_mileage: Applied Mileage
       mileage_desc: Mileage
       mileage_desc_km: "Mileage (KM)"
       mileage_value_rm: "Value (RM)"
@@ -4229,6 +4231,7 @@ en:
     travel_claims_for_checking: " Travel Claims for checking"
     travel_claims_returned: " Travel Claims returned for amendments"
     travel_claims_for_approval: " Travel Claims for approval"
+    travel_request_needs_approval: " Travel request that requires your approval"
     
   helpers:
     links:

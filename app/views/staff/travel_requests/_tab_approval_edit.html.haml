@@ -1,20 +1,21 @@
 .col-md-offset-2
   /- if @travel_request.own_car==true
-  .form-group
-    .col-sm-2.control-label
-      = f.label :approved_mileage
-    .col-md-6
-      .row
-        .col-sm-2
-          = f.radio_button :mileage_replace, false, :id => 'approved_mileage',  :class => 'radio_appr_mileage' 
-        .col-sm-3
-          = f.label :mileage
-        .col-sm-2
-          = f.radio_button :mileage_replace, true, :id => 'approved_mileage',  :class => 'radio_appr_mileage' 
-        .col-sm-5
-          = f.label :mileage_replace
-          %font{:size=>'-2',} 
-            = t 'staff.travel_request.train_plane_replacement'
+  - if @travel_request.own_car?
+    .form-group
+      .col-sm-2.control-label
+        = f.label :approved_mileage
+      .col-md-6
+        .row
+          .col-sm-2
+            = f.radio_button :mileage_replace, false, :id => 'approved_mileage',  :class => 'radio_appr_mileage' 
+          .col-sm-3
+            = f.label :mileage
+          .col-sm-2
+            = f.radio_button :mileage_replace, true, :id => 'approved_mileage',  :class => 'radio_appr_mileage' 
+          .col-sm-5
+            = f.label :mileage_replace
+            %font{:size=>'-2',} 
+              = t 'staff.travel_request.train_plane_replacement'
   .form-group
     .col-sm-2.control-label
       = f.label :hod_accept

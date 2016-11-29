@@ -17,12 +17,17 @@ class TravelRequest < ActiveRecord::Base
   validates_presence_of :replaced_by, :if => :check_submit?    #validation during EDIT - refer notes on EDIT & APPROVE button in SHOW page
   validates_presence_of :hod_id, :if => :check_submit?             #validation during EDIT - refer notes on EDIT & APPROVE button in SHOW page
   validates_presence_of :hod_accept_on, :if => :hod_accept?  #validation in APPROVAL page - refer notes on EDIT & APPROVE button in SHOW page
+  validates :mileage_replace, inclusion: [true, false], :if => :approval_own_car?
   
   has_many :travel_claim_logs, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_logs, :reject_if => lambda { |a| a[:destination].blank? }, :allow_destroy =>true
   validates_associated :travel_claim_logs#, :message=>"data is not complete."
   
   attr_accessor :staff_own_car, :tpt_class
+  
+  def approval_own_car?
+    hod_accept? && own_car?
+  end
   
   #controller searches
   def self.in_need_of_approval(u)
@@ -49,7 +54,7 @@ class TravelRequest < ActiveRecord::Base
     replacements
   end
   
-  def hods
+  def hods(curr_user)
 #     unit_name = User.current.userable.positions.first.unit
 #     applicant_post= User.current.userable.positions.first
 #     prog_names = Programme.roots.map(&:name)
@@ -78,10 +83,17 @@ class TravelRequest < ActiveRecord::Base
 #       approver << User.current.userable.positions.first.ancestors.map(&:staff_id) if approver.count==0
 #     end
     #override all above approver - 23Dec2014 - do not remove above yet, may be useful for other submodules
-    hod_posts = Position.where('ancestry_depth<?',2)
-    approver=[] 
-    hod_posts.each do |hod|
-      approver << hod.staff_id if (hod.name.include?("Pengarah")||(hod.name.include?("Timbalan Pengarah")) && hod.staff_id!=nil)
+#     hod_posts = Position.where('ancestry_depth<?',2)
+#     approver=[] 
+#     hod_posts.each do |hod|
+#       approver << hod.staff_id if (hod.name.include?("Pengarah")||(hod.name.include?("Timbalan Pengarah")) && hod.staff_id!=nil)
+#     end
+#     approver
+    
+    if curr_user.college.code=='amsas'
+      approver = Position.where('ancestry_depth<?',2).where('name ILIKE(?) OR name ILIKE(?) OR name ILIKE(?)', "Ketua Penolong Pengarah%", "Pengarah%", "Komandan%").where.not(staff_id: nil).pluck(:id)
+    else
+      approver = Position.where('ancestry_depth<?',2).where('name ILIKE(?) OR name ILIKE(?)', "Pengarah%", "Timbalan Pengarah%").where.not(staff_id: nil).pluck(:id)
     end
     approver
   end

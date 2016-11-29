@@ -105,6 +105,7 @@ ms_MY:
         hod_accept_on: Tarikh Penerimaan Ketua Jabatan
         own_car_notes: Sebab
         travel_claim_logs: Log Perjalanan
+        mileage_replace: Batuan yang Diluluskan
       travel_claim_logs:
         travel_on: Tarikh
         start_at: Dari
@@ -1341,6 +1342,7 @@ ms_MY:
       submitted_on: Tarikh Hantar
       replaced_by: Staf Gantian
       approved_mileage: Batuan yang Diluluskan
+      applied_mileage: Batuan dipohon
       mileage_desc: Batuan 
       mileage_desc_km: "Batuan (KM)"
       mileage_value_rm: "Nilai (RM)"
@@ -4148,7 +4150,8 @@ ms_MY:
     unit_approval_ptdos: " Permohonan Latihan Staf untuk kelulusan Unit"
     travel_claims_for_checking: " Tuntutan Perjalanan untuk disemak"
     travel_claims_returned: " Tuntutan Perjalanan dipulangkan untuk dibaiki"
-    travel_claims_for_approval: " Tuntutan Perjalanan untuk kelulusan"
+    travel_claims_for_approval: " Tuntutan Perjalanan untuk diluluskan"
+    travel_request_needs_approval: " Permohonan Perjalanan untuk diluluskan"
     
   helpers:
     links:

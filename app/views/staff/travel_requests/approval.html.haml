@@ -26,6 +26,16 @@
           
               %dt= t 'staff.travel_request.document_id', :default => model_class.human_attribute_name(:document_id)+":"
               %dd=h @travel_request.reference_document
+              
+              - if @travel_request.own_car?
+                %dt=t 'staff.travel_request.applied_mileage'
+                %dd
+                  -  if @travel_request.mileage_replace==nil
+                    /before approval
+                    =h @travel_request.mileage? ? (t 'staff.travel_request.mileage') : (t 'staff.travel_request.mileage_replace')
+                  - else
+                    /after approval
+                    = @travel_request.mileage_history==1 ? (t 'staff.travel_request.mileage') : (t 'staff.travel_request.mileage_replace')
 
           #travel_request_details.tab-pane
             %br
@@ -43,7 +53,7 @@
     %br
     .row
       .form-group
-        .col-md-1.col-md-offset-2
+        .col-md-2.col-md-offset-2
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_travel_request_path(@travel_request), :class => 'btn btn-default'
         .col-md-2
           .div{style: "margin-left:-40px;"}

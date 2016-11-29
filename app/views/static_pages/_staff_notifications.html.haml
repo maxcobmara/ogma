@@ -16,7 +16,7 @@
  - if late_need_a_reason > 0
   %li= link_to content_tag(:span, "#{late_need_a_reason}", class: "badge") + " Late/early attendance require reason submission", attendance_manager_path
  - if travel_request_needs_approval > 0
-  %li= link_to content_tag(:span, "#{travel_request_needs_approval}", class: "badge") + " Travel request that requires your approval", staff_travel_requests_path
+  %li= link_to content_tag(:span, "#{travel_request_needs_approval}", class: "badge") + (t 'notifications.travel_request_needs_approval'), staff_travel_requests_path
  - if your_travel_approved.size > 0
   - counter = 0
   - your_travel_approved.each do |travel|

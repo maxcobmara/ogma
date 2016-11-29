@@ -15,7 +15,7 @@
       = t 'staff.travel_claim.verified_ok'
     .col-md-4.span_verified_ok{style: 'display: none; '}
       = f.label :approved_by
-      = f.collection_select :approved_by, Staff.joins(:positions).where('positions.id IN(?)', @travel_claim.hods).order('positions.ancestry DESC'), :id, :staff_with_rank_position, {:include_blank => t('helpers.prompt.select_hod')}, {class: 'selectpicker', "data-width"=>'320px'} 
+      = f.collection_select :approved_by, Staff.joins(:positions).where('positions.id IN(?)', @travel_claim.hods).order('positions.ancestry DESC, staffs.rank_id, staffs.name ASC'), :id, :staff_with_rank_position, {:include_blank => t('helpers.prompt.select_hod')}, {class: 'selectpicker', "data-width"=>'auto'} 
 
   .form-group
     .col-sm-2.control-label
