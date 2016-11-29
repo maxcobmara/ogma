@@ -5,20 +5,20 @@
     %dd=h @travel_request.destination
     
     %dt= t 'staff.travel_request.depart_at' 
-    %dd=h @travel_request.depart_at.try(:strftime, '%d %B %Y %l:%M %P') 
+    %dd=h @travel_request.college.code=='amsas' ? @travel_request.depart_at.try(:strftime, '%d-%m-%Y %H:%M') : @travel_request.depart_at.try(:strftime, '%d %B %Y %l:%M %P') 
   
     %dt=t 'staff.travel_request.return_at'
-    %dd=h @travel_request.return_at.try(:strftime, '%d %B %Y %l:%M %P') 
+    %dd=h h @travel_request.college.code=='amsas' ? @travel_request.return_at.try(:strftime, '%d-%m-%Y %H:%M') : @travel_request.return_at.try(:strftime, '%d %B %Y %l:%M %P') 
 
     %hr
     
     %dt=t 'staff.travel_request.transport_choice'
-    %dd
+    %dd{style: 'padding-left: 70px;'}
       =t 'staff.travel_request.own_car'
       - if !@travel_request.applicant.vehicles.blank? && @travel_request.own_car?
         =fa_icon('check')+'('+@travel_request.applicant.vehicles[0].reg_no+' '+ t('staff.transportclass_id')+' : '+@travel_request.transport_class+') '
       - else
-        =image_tag("cross.png") 
+        =fa_icon('times')
       =t 'staff.travel_request.dept_car'
       =h @travel_request.dept_car? ? fa_icon('check') : fa_icon('times')
       =t 'staff.travel_request.others_car'

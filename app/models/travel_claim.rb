@@ -46,10 +46,16 @@ class TravelClaim < ActiveRecord::Base
   end
   
   def hods
-    hod_posts = Position.where('ancestry_depth<?',2)
-    approver=[] 
-    hod_posts.each do |hod|
-      approver << hod.staff_id if (hod.name.include?("Pengarah")||(hod.name.include?("Timbalan Pengarah")) && hod.staff_id!=nil)
+#     hod_posts = Position.where('ancestry_depth<?',2)
+#     approver=[] 
+#     hod_posts.each do |hod|
+#       approver << hod.staff_id if (hod.name.include?("Pengarah")||(hod.name.include?("Timbalan Pengarah")) && hod.staff_id!=nil)
+#     end
+#     approver
+    if college.code=='amsas'
+      approver = Position.where('ancestry_depth<?',2).where('name ILIKE(?) OR name ILIKE(?) OR name ILIKE(?)', "Ketua Penolong Pengarah%", "Pengarah%", "Komandan%").where.not(staff_id: nil).pluck(:id)
+    else
+      approver = Position.where('ancestry_depth<?',2).where('name ILIKE(?) OR name ILIKE(?)', "Pengarah%", "Timbalan Pengarah%").where.not(staff_id: nil).pluck(:id)
     end
     approver
   end

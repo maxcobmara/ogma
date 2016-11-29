@@ -76,6 +76,10 @@ module Notifications
  def travel_claims_returned
    TravelClaim.where(staff_id: current_staff_id).where(is_submitted: true).where(is_returned: true).where(is_checked: false).count
  end
+ 
+ def travel_claims_for_approval
+   TravelClaim.where(is_submitted: true).where(is_checked: true).where(approved_by: current_staff_id).where(is_approved: [nil, false]).count
+ end
 
  def asset_with_defects
   AssetDefect.where(is_processed: nil).where(processed_by: nil).where('decision_by !=?', current_staff_id ).count

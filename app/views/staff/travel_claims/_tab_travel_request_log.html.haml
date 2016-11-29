@@ -4,8 +4,8 @@
     %dt=t 'staff.travel_request.code'
     %dd=travel_request.code
     
-    %dt Status Permohonan
-    %dd=travel_request.hod_accept? ? (t 'staff.travel_request.hod_accept')+(t 'staff.travel_request.on2')+travel_request.hod_accept_on.try(:strftime, "%d %b %Y")+(t 'staff.travel_request.by')+travel_request.headofdept.name : (t 'staff.travel_request.hod_not_accept')
+    %dt=t 'staff.travel_request.application_status'
+    %dd=travel_request.hod_accept? ? (t 'staff.travel_request.hod_accept')+(t 'staff.travel_request.on2')+travel_request.hod_accept_on.try(:strftime, "%d %b %Y")+(t 'staff.travel_request.by')+travel_request.headofdept.staff_with_rank : (t 'staff.travel_request.hod_not_accept')
 
     %dt=t 'staff.travel_request.document_id'
     %dd=travel_request.document.doc_details
@@ -19,38 +19,56 @@
         
     
     %dt=t 'staff.travel_request.log_details'
-    %dd
-      %b
-        =t 'staff.travel_request.date' 
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    %dd{style: 'padding-left: 70px; font-weight: bold;'}
+      /.row
+      .col-md-8
+        = t 'staff.travel_request.date'
+        &nbsp;&nbsp;&nbsp;&nbsp;
         =t 'staff.travel_request.start'
         &nbsp;&nbsp;-&nbsp;&nbsp;
         =t 'staff.travel_request.finish'
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
         =t 'staff.travel_request.destination'
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        =t 'staff.travel_request.mileage_desc_km'
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        =t 'staff.travel_request.mileage_value_rm'
+      .col-md-2=t 'staff.travel_request.mileage_desc_km'
+      .col-md-2=t 'staff.travel_request.mileage_value_rm'
+        
+        
+          
+      /  /=t 'staff.travel_request.date' 
+      /  /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /  /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /  /=t 'staff.travel_request.start'
+      /  /&nbsp;&nbsp;-&nbsp;&nbsp;
+      /  /=t 'staff.travel_request.finish'
+      /  /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /  /=t 'staff.travel_request.destination'
+      /  /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /  /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /  /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /  /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /  /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /  /=t 'staff.travel_request.mileage_desc_km'
+      /  /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /  /=t 'staff.travel_request.mileage_value_rm'
+      
 
-.col-md-10.col-md-offset-3
-  /- if travel_request.travel_claim_logs && travel_request.staff_id == current_user.userable_id && travel_request.hod_accept == true
-  - travel_request.travel_claim_logs.each do |travel_log|
-    .row
-      .col-md-6
-        = travel_log.travel_on.try(:strftime, '%d %b %Y')
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        = travel_log.start_at.strftime('%H:%M %p')
-        &nbsp;&nbsp;-&nbsp;&nbsp;
-        = travel_log.finish_at.strftime('%H:%M %p')
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        = travel_log.destination
-      .col-md-1
-        = travel_log.mileage
-      .col-md-1
-        = travel_log.km_money
+    /.col-md-10.col-md-offset-3
+    /   /- if travel_request.travel_claim_logs && travel_request.staff_id == current_user.userable_id && travel_request.hod_accept == true
+      
+    %dt
+    %dd{style: 'padding-left: 70px;'}
+      - travel_request.travel_claim_logs.each do |travel_log|
+        .row
+          /.col-md-6
+          .col-md-8
+            = travel_log.travel_on.try(:strftime, '%d %b %Y')
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            = travel_log.start_at.strftime('%H:%M %p')
+            &nbsp;&nbsp;-&nbsp;&nbsp;
+            = travel_log.finish_at.strftime('%H:%M %p')
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            = travel_log.destination
+          .col-md-2
+            = travel_log.mileage
+          .col-md-2
+            = travel_log.km_money

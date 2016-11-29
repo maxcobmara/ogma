@@ -4,7 +4,7 @@
     %dt=t 'staff.travel_request.is_submitted', :default => model_class.human_attribute_name(:is_submitted)+":"
     %dd
       =h @travel_request.is_submitted? ? fa_icon('check') : fa_icon('times')
-      =h @travel_request.try(:submitted_on).try(:strftime, '%d %b %Y')+t('by2')+@travel_request.headofdept.staff_with_rank
+      =h @travel_request.try(:submitted_on).try(:strftime, '%d %b %Y')+" "+(t 'to2').downcase+" "+@travel_request.headofdept.staff_with_rank
     
     %dt=t 'staff.travel_request.replaced_by', :default => model_class.human_attribute_name(:replaced_by)+":"
     %dd=h @travel_request.try(:replacement).try(:staff_with_rank)

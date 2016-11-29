@@ -1,8 +1,9 @@
 class Staff::TravelClaimsController < ApplicationController
   filter_access_to :index, :new, :create, :attribute_check => false
-  filter_access_to :show, :edit, :update, :destroy, :check, :approve, :claimprint, :attribute_check => true
+  filter_access_to :show, :edit, :update, :destroy, :check, :approval, :claimprint, :attribute_check => true
   before_action :set_travel_claim, only: [:show, :edit, :update, :destroy]
-  before_action :set_admin, only: [:index, :edit]
+  before_action :set_admin, only: [:index, :edit, :show]
+  
   def index
     if @is_admin
       @search = TravelClaim.search(params[:q])
@@ -46,7 +47,7 @@ class Staff::TravelClaimsController < ApplicationController
     @travel_claim = TravelClaim.find(params[:id])
   end
   
-  def approve
+  def approval
     @travel_claim = TravelClaim.find(params[:id])
   end
   
@@ -105,7 +106,7 @@ class Staff::TravelClaimsController < ApplicationController
    #@travelclaimlog = TravelClaimLog.where('travel_request_id =?', travel_request.id )
     respond_to do |format|
       format.pdf do
-        pdf = ClaimprintPdf.new(@travel_claim, view_context)
+        pdf = ClaimprintPdf.new(@travel_claim, current_user.college, view_context)
         send_data pdf.render, filename: "claimprint-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -139,7 +140,7 @@ class Staff::TravelClaimsController < ApplicationController
   def set_admin
     roles = current_user.roles.pluck(:authname)
     mypost = Position.where(staff_id: current_user.userable_id).first
-    @is_admin = true if roles.include?("developer") || roles.include?("administration") || roles.include?("finance_unit") || roles.include?("travel_claims_module_admin")|| roles.include?("travel_claims_module_viewer")|| roles.include?("travel_claims_module_user") || mypost.is_root?
+    @is_admin = true if roles.include?("developer") || roles.include?("administration") || roles.include?("finance_unit") || roles.include?("travel_claims_module_admin")|| roles.include?("travel_claims_module_viewer")|| roles.include?("travel_claims_module_user")# || mypost.is_root?
   end
   
   def travel_claim_params

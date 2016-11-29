@@ -1400,6 +1400,7 @@ en:
       no_registered_vehicle: "You have NO registered vehicle in this system. Please register your vehicle in Staff submodule first."
       vehicle_must_exist: " must exist if 'own car' is selected"
       no_longer_editable: Travel Request no longer editable
+      application_status: Application Status
 
     travel_claim:
       title: Travel Claims
@@ -4227,6 +4228,7 @@ en:
     unit_approval_ptdos: " Staff Training requests for Unit approval"
     travel_claims_for_checking: " Travel Claims for checking"
     travel_claims_returned: " Travel Claims returned for amendments"
+    travel_claims_for_approval: " Travel Claims for approval"
     
   helpers:
     links:

@@ -29,6 +29,10 @@
  - if travel_claims_returned > 0
   %li= link_to content_tag(:span, "#{travel_claims_returned}", class: "badge") + (t 'notifications.travel_claims_returned'), staff_travel_claims_path
  #28Nov2016-end 
+ #29Nov2016-start
+ - if travel_claims_for_approval > 0
+  %li= link_to content_tag(:span, "#{travel_claims_for_approval}", class: "badge") + (t 'notifications.travel_claims_for_approval'), staff_travel_claims_path
+ #29Nov2016-end
  
  - permitted_to? :manage, :asset_defects do
   - if asset_with_defects > 0

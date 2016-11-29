@@ -29,22 +29,34 @@
       #travel_request_log.tab-pane.active
         - for travel_request in @travel_claim.travel_requests
           = render 'tab_travel_request_log', :travel_request => travel_request
+        /.col-md-10.col-md-offset-1
+        /  %dl.dl-horizontal
+        /  %hr
         .col-md-10.col-md-offset-1
           %dl.dl-horizontal
-          %hr
-        .col-md-10.col-md-offset-3
-          .row
-            .col-md-6 
-              %br
-              %b=t 'staff.travel_request.total'
-            .col-md-1
-              %br
-              %font{:style=>"font-weight:normal; text-decoration:underline;"}
-                =@travel_claim.total_mileage 
-                %br 
-            .col-md-1
-              %br
-              %font{:style=>"font-weight:bold; text-decoration:underline;"}= ringgols(@travel_claim.total_km_money) 
+            %hr
+            %dl
+            %dd{style: 'padding-left: 70px'}
+              .row
+                .col-md-8
+                  %b=t 'staff.travel_request.total'
+                .col-md-2
+                  %font{:style=>"font-weight:normal; text-decoration:underline;"}=@travel_claim.total_mileage 
+                .col-md-2
+                  %font{:style=>"font-weight:bold; text-decoration:underline;"}= ringgols(@travel_claim.total_km_money) 
+        /.col-md-10.col-md-offset-3
+        /  .row
+        /    .col-md-6 
+        /      %br
+        /      %b=t 'staff.travel_request.total'
+        /    .col-md-1
+        /      %br
+        /      %font{:style=>"font-weight:normal; text-decoration:underline;"}
+        /        =@travel_claim.total_mileage 
+        /        %br 
+        /    .col-md-1
+        /      %br
+        /      %font{:style=>"font-weight:bold; text-decoration:underline;"}= ringgols(@travel_claim.total_km_money) 
         
         =render 'tab_mileage_table'   
             
@@ -63,9 +75,10 @@
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('helpers.links.back'), staff_travel_claims_path, :class => 'btn btn-default'
       = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), claimprint_staff_travel_claim_path(@travel_claim, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Print Claim"
-      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.edit'), edit_staff_travel_claim_path(@travel_claim),  :class => 'btn btn-primary' 
+      - if @travel_claim.staff_id==current_user.userable_id || @is_admin
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.edit'), edit_staff_travel_claim_path(@travel_claim),  :class => 'btn btn-primary' 
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.finance_check'), check_staff_travel_claim_path(@travel_claim),  :class => 'btn btn-primary'
-      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.approve'), approve_staff_travel_claim_path(@travel_claim),  :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.approve'), approval_staff_travel_claim_path(@travel_claim),  :class => 'btn btn-primary'
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
         staff_travel_claim_path(@travel_claim),                                                                                                    |
         :method => 'delete',                                                                                                           |

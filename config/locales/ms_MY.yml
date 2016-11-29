@@ -1370,6 +1370,7 @@ ms_MY:
       no_registered_vehicle: "Anda tidak mempunyai rekod kenderaan berdaftar dalam sistem ini. Sila daftarkan kenderaan anda dalam submodul Staf terlebih dahulu."
       vehicle_must_exist: " mesti diisi jika 'kenderaan sendiri' dipilih"
       no_longer_editable: Permohonan Perjalanan tidak lagi boleh disunting
+      application_status: Status Permohonan
       
     travel_claim:
       title: Tuntutan Perjalanan
@@ -4146,7 +4147,8 @@ ms_MY:
     dept_approval_ptdos: " Permohonan Latihan Staf untuk kelulusan Jabatan"
     unit_approval_ptdos: " Permohonan Latihan Staf untuk kelulusan Unit"
     travel_claims_for_checking: " Tuntutan Perjalanan untuk disemak"
-    travel_claims_returned: "Tuntutan Perjalanan dipulangkan untuk dibaiki"
+    travel_claims_returned: " Tuntutan Perjalanan dipulangkan untuk dibaiki"
+    travel_claims_for_approval: " Tuntutan Perjalanan untuk kelulusan"
     
   helpers:
     links:

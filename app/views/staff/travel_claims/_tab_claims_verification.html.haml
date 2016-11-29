@@ -15,9 +15,8 @@
       = t 'staff.travel_claim.verified_ok'
     .col-md-4.span_verified_ok{style: 'display: none; '}
       = f.label :approved_by
-      /= f.collection_select :approved_by, Staff.all, :id, :name, {:include_blank=>t('select'), :selected=>Position.roots.first.staff_id},{class: 'selectpicker', "data-width"=>"220px"}
-      /TODO next - sort / order by postion rank   
-      = f.collection_select :approved_by, Staff.joins(:positions).where('staffs.id IN(?)', @travel_claim.hods).uniq, :id, :name, {:include_blank => t('helpers.prompt.select_hod')}, {class: 'selectpicker', "data-width"=>'320px'} 
+      = f.collection_select :approved_by, Staff.joins(:positions).where('positions.id IN(?)', @travel_claim.hods).order('positions.ancestry DESC'), :id, :staff_with_rank_position, {:include_blank => t('helpers.prompt.select_hod')}, {class: 'selectpicker', "data-width"=>'320px'} 
+
   .form-group
     .col-sm-2.control-label
       = f.label (t 'staff.travel_claim.note_by_finance')
