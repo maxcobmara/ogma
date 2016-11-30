@@ -47,36 +47,26 @@
   .col-md-7.col-md-offset-2
     %hr
     .form-actions
-      - if @travel_request.staff_id == 25 && @travel_request.hod_accept == true
-        /- if @travel_request.staff_id == Login.first.staff_id && @travel_request.hod_accept == true
+      - if @travel_request.staff_id==current_user.userable_id  && @travel_request.hod_accept == true
         = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('helpers.links.back_travel_request'), staff_travel_requests_path, :class => 'btn btn-default'
         = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('helpers.links.back_travel_log'), travel_log_index_staff_travel_requests_path, :class => 'btn btn-default'
       - else
+        /inclusive @is_admin
         = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('helpers.links.back'), staff_travel_requests_path, :class => 'btn btn-default'
        
       = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), status_movement_staff_travel_request_path(@travel_request, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('staff.travel_request.title')
       
-      /owner can edit - use just (if staff_id exist) to pass test
-      /- if @travel_request.staff_id
-      /  /- if @travel_request.staff_id == 25
-      /  /- if @travel_request.staff_id == Login.first.staff_id
       - permitted_to? :update, :staff_travel_requests do
-        / TODO - HOD (while at APPROVAL) & Applicant (while at TRAVEL LOG) can still access this part via direct url, refer 'form' partial
-        - if @travel_request.staff_id==@current_user.userable_id && @travel_request.is_submitted!=true
+        / TODO - HOD (while at APPROVAL) & Applicant (while at TRAVEL LOG) can still access this part via direct url, refer EDIT for temp solution
+        /as for below: display EDIT button only when application not yet submitted & current_user - is applicant OR @is_admin
+        - if (@travel_request.staff_id==current_user.userable_id || @is_admin) && @travel_request.is_submitted!=true
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('actions.edit'), edit_staff_travel_request_path(@travel_request),  :class => 'btn btn-primary' 
       
-      /hod & admin can edit - test will fail -  TO DO - hide this link when ready - only appear if HOD page
-      /  /- if @travel_request.is_submitted == true && @travel_request.staff_id !=@current_user.userable_id
-      /  /- if @travel_request.is_submitted == true 
       - permitted_to? :approval, :staff_travel_requests do
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('staff.travel_request.approval'), approval_staff_travel_request_path(@travel_request),  :class => 'btn btn-primary' 
       
-      
       /owner can edit
-      - if @travel_request.staff_id &&  @travel_request.hod_accept == true 
-        /- if @travel_request.staff_id == 25 &&  @travel_request.hod_accept == true 
-        /- if @travel_request.staff_id == Login.first.staff_id &&  @travel_request.hod_accept == true 
-        /- if @travel_request.travel_claim_logs && @travel_request.staff_id == Login.first.staff_id && @travel_request.hod_accept == true
+      - if (@travel_request.staff_id==current_user.userable_id || @is_admin) &&  @travel_request.hod_accept == true 
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('staff.travel_request.log_details'), travel_log_staff_travel_request_path(@travel_request),  :class => 'btn btn-primary' 
      
       - permitted_to? :destroy, :staff_travel_requests do     

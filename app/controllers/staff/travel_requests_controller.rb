@@ -3,7 +3,7 @@
    filter_access_to :show, :edit, :update, :destroy, :travel_log, :approval, :status_movement, :attribute_check => true
    #before_filter :set_current_user
    before_action :set_travel_request, only: [:show, :edit, :update, :destroy]
-   before_action :set_admin, only: [:new, :edit, :index, :travelrequest_list]
+   before_action :set_admin, only: [:new, :edit, :index, :travelrequest_list, :show]
     
   # GET /travel_requests
   # GET /travel_requests.xml
