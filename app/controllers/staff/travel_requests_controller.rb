@@ -13,7 +13,7 @@
     @travel_requests = @search.result.my_travel_requests(current_user.userable.id)
     #@for_approvals = @for_approvals.page(params[:page]||1)
     if @is_admin
-      @other_travelrequests=@search.result.where.not(staff_id: current_user.userable_id).where.not(hod_id: current_user.userable_id)
+      @other_travelrequests=@search.result.where.not(id: @for_approvals.pluck(:id)+@travel_requests.pluck(:id))
     end
     respond_to do |format|
       format.html # index.html.erb
@@ -154,7 +154,7 @@
     @for_approvals = @search.result.in_need_of_approval(current_user.userable.id)
     @travel_requests = @search.result.my_travel_requests(current_user.userable.id)
     if @is_admin
-      @other_travelrequests=@search.result.where.not(staff_id: current_user.userable_id).where.not(hod_id: current_user.userable_id)
+      @other_travelrequests=@search.result.where.not(id: @for_approvals.pluck(:id)+@travel_requests.pluck(:id))
     else
       @other_travelrequests=[]
     end
