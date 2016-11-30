@@ -9,7 +9,7 @@
     = render 'shared/error_messages', object: f.object
     = hidden_field_tag :redirect_location, staff_travel_requests_path 
     // TODO refer show & auth rules - use below TEMP solution
-    - if @travel_request.is_submitted==true
+    - if @travel_request.is_submitted==true && !@travel_request.hod_id.blank? && !@travel_request.replaced_by.blank?
       .centre
         %font{style: "color: red;"}=t 'staff.travel_request.no_longer_editable'
       %br
