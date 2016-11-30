@@ -64,7 +64,25 @@
         %td=h travel_request.document.try(:title)
         %td=h travel_request.is_submitted? ? fa_icon('check') : fa_icon('times')
         %td=h travel_request.hod_accept? ? fa_icon('check') : fa_icon('times')
-                
+     
+    - if @is_admin
+      %tr
+        %td{:colspan=>"8",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'staff.travel_request.others_unrelated_travel_request'
+      - @other_travelrequests.sort_by{|x|[x.applicant.rank_id, x.applicant.name, x.depart_at]}.each do |travel_request|
+        %tr
+        %td=h travel_request.try(:document).try(:refno)
+        %td
+          - if travel_request.college.code=='amsas'
+            =h link_to travel_request.applicant.try(:staff_with_rank), staff_travel_request_path(travel_request)
+          - else
+            =h link_to travel_request.applicant.try(:staff_name_with_position), staff_travel_request_path(travel_request)
+        %td=h travel_request.destination
+        %td=h travel_request.college.code=='amsas' ? travel_request.depart_at.try(:strftime, '%d-%m-%Y %H:%M') : travel_request.depart_at.try(:strftime, '%d %b %Y %l:%M %P')
+        %td=h travel_request.college.code=='amsas' ? travel_request.return_at.try(:strftime, '%d-%m-%Y %H:%M') : travel_request.return_at.try(:strftime, '%d %b %Y %l:%M %P')
+        %td=h travel_request.document.try(:title)
+        %td=h travel_request.is_submitted? ? fa_icon('check') : fa_icon('times')
+        %td=h travel_request.hod_accept? ? fa_icon('check') : fa_icon('times')
+
   /.right{style:"padding:0 30px; margin:0;"}= paginate @for_approvals, :theme => 'twitter-bootstrap-3'
  
 :javascript

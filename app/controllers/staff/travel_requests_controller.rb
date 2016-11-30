@@ -3,7 +3,7 @@
    filter_access_to :show, :edit, :update, :destroy, :travel_log, :approval, :status_movement, :attribute_check => true
    #before_filter :set_current_user
    before_action :set_travel_request, only: [:show, :edit, :update, :destroy]
-   before_action :set_admin, only: [:new, :edit]
+   before_action :set_admin, only: [:new, :edit, :index, :travelrequest_list]
     
   # GET /travel_requests
   # GET /travel_requests.xml
@@ -12,7 +12,9 @@
     @for_approvals = @search.result.in_need_of_approval(current_user.userable.id)
     @travel_requests = @search.result.my_travel_requests(current_user.userable.id)
     #@for_approvals = @for_approvals.page(params[:page]||1)
-
+    if @is_admin
+      @other_travelrequests=@search.result.where.not(staff_id: current_user.userable_id).where.not(hod_id: current_user.userable_id)
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @travel_requests }
@@ -151,9 +153,14 @@
     @search = TravelRequest.search(params[:q])
     @for_approvals = @search.result.in_need_of_approval(current_user.userable.id)
     @travel_requests = @search.result.my_travel_requests(current_user.userable.id)
+    if @is_admin
+      @other_travelrequests=@search.result.where.not(staff_id: current_user.userable_id).where.not(hod_id: current_user.userable_id)
+    else
+      @other_travelrequests=[]
+    end
     respond_to do |format|
       format.pdf do
-        pdf = Travelrequest_listPdf.new(@for_approvals, @travel_requests, view_context, current_user.college)
+        pdf = Travelrequest_listPdf.new(@for_approvals, @travel_requests, @other_travelrequests, view_context, current_user.college)
         send_data pdf.render, filename: "travelrequest_list-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
@@ -183,7 +190,7 @@
   
   def set_admin
       roles = current_user.roles.pluck(:authname)
-      @is_admin = true if roles.include?("administration") || roles.include?("staff_leaves_module_admin") || roles.include?("staff_leaves_module_viewer") || roles.include?("staff_leaves_module_user")
+      @is_admin = true if roles.include?("developer") ||  roles.include?("administration") || roles.include?("travel_requests_module_admin") || roles.include?("travel_requests_module_viewer") || roles.include?("travel_requests_module_user")
     end
   
   def travel_request_params
