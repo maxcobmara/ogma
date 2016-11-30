@@ -16,10 +16,10 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :claim_month, (t 'staff.travel_claim.month_year'))
-        %th= sort_link(@search, :staff_id, (t 'staff.travel_claim.name'))
-        %th= sort_link(@search, :total, (t 'staff.travel_claim.total'))
-        %th Status
+        %th{width: '25%'}= sort_link(@search, :claim_month, (t 'staff.travel_claim.month_year'))
+        %th{width: '35%'}= sort_link(@search, :staff_id, (t 'staff.travel_claim.name'))
+        %th{width: '20%'}= sort_link(@search, :total, (t 'staff.travel_claim.total'))
+        %th{width: '20%'} Status
    
     %tbody   
     = render "index_search"
@@ -47,7 +47,7 @@
               %font{:color=>"red"}*1
             - else
               =h ringgols(travel_claim.total_claims)
-        %td=h travel_claim.my_claim_status(@current_user).titleize
+        %td=h travel_claim.my_claim_status(current_user).titleize
   %br
   %font{:color => "red", :size=>-2}
     ="*1 - "+(t 'staff.travel_claim.insert_current_salary')

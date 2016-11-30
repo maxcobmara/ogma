@@ -1,11 +1,41 @@
+/1, 3 5, 6, 7 -staff_id==current_user.userable_id
+- arr1=[t('staff.travel_claim.editing'), "1-#{current_user.userable_id}"]
+- arr3=[(t 'staff.travel_claim.submitted'), "3-#{current_user.userable_id}"]
+/- arr5=[(t 'staff.travel_claim.returned'), "5-#{current_user.userable_id}"]
+- arr6=[(t 'staff.travel_claim.returned'), "6-#{current_user.userable_id}"]
+- arr7=[(t 'staff.travel_claim.resubmitted_to_finance'), "7-#{current_user.userable_id}"]
+
+/2, 4, 8, 11 staff_id !=current_user.userable_id
+- arr2=[t('staff.travel_claim.editing_by_staff'), "2-#{current_user.userable_id}"]
+- arr4= [(t 'staff.travel_claim.for_checking'), "4-#{current_user.userable_id}"]
+- arr8=[(t 'staff.travel_claim.for_rechecking'), "8-#{current_user.userable_id}"]
+- arr11=[(t 'staff.travel_claim.return_to_staff_for_amendment'), "11-#{current_user.userable_id}"]
+
+/9 & 10 -- all
+- arr9=[(t 'staff.travel_claim.processed'), "9-#{current_user.userable_id}"]
+- arr10=[t('staff.travel_claim.approved'), "10-#{current_user.userable_id}"]
+
+- listing=[]
+- if @is_admin
+  /- listing << arr1 << arr2 << arr3 << arr4 << arr5 << arr6 << arr7 << arr8 << arr9 << arr10 << arr11
+  - listing << arr1 << arr2 << arr3 << arr4 << arr6 << arr7 << arr8 << arr9 << arr10 << arr11
+- else
+  /- listing << arr1 << arr3 << arr5 << arr6 << arr7 << arr10 << arr11
+  - listing << arr1 << arr3 << arr6 << arr7 << arr9 << arr10
+
+/full list
+/= select_tag('q[status_search]', options_for_select([[(t 'all_records'), ''],[t('staff.travel_claim.editing'), "1-#{current_user.userable_id}"], [t('staff.travel_claim.editing_by_staff'), "2-#{current_user.userable_id}"], [(t 'staff.travel_claim.submitted'), "3-#{current_user.userable_id}"], [(t 'staff.travel_claim.for_checking'), "4-#{current_user.userable_id}"], [(t 'staff.travel_claim.returned'), "5-#{current_user.userable_id}"], [(t 'staff.travel_claim.resubmit_owner'), "6-#{current_user.userable_id}"], [(t 'staff.travel_claim.resubmitted_to_finance'), "7-#{current_user.userable_id}"], [(t 'staff.travel_claim.for_checking'), "8-#{current_user.userable_id}"], [(t 'staff.travel_claim.processed'), "9-#{current_user.userable_id}"],[t('staff.travel_claim.approved'), "10-#{current_user.userable_id}"], [(t 'staff.travel_claim.return_to_staff_for_amendment'), "11-#{current_user.userable_id}"]]),  class: 'selectpicker', "data-width"=> "auto")
+
 = search_form_for @search, url: staff_travel_claims_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
-    %td=f.text_field :claim_month_eq, :size=> 2,  class:  'monthyear_picker form-control'
+    %td=f.text_field :claim_month_eq, :size=> 2,  class:  'monthyear_picker_reverse form-control', value: @search.claim_month_eq.try(:strftime, '%d-%m-%Y')
     %td=f.text_field :staff_name_cont, :size=> 2,  class:  'form-control'
     %td=f.text_field :total_cont, size: 2, class: 'form-control'
     %td
       .input-group
-        /=select_tag('q[hod_accept_on_null]', options_for_select([['All Records',''],['Accepted',0],['Not Accepted',1]]), class: 'selectpicker',"data-width"=>'60px') 
+        = select_tag('q[status_search]', options_for_select([[(t 'all_records'), '']]+listing),  class: 'selectpicker', "data-width"=> "auto")
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw
+            
+

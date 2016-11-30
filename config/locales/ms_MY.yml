@@ -1441,6 +1441,7 @@ ms_MY:
       returned: Dipulangkan
       resubmitted_to_finance: Dihantar Semula ke Unit Kewangan
       for_checking: Untuk Semakan
+      for_rechecking: Untuk Semakan Semula
       processed: Telah Diproses
       approved: Telah Diluluskan
       return_to_staff_for_amendment: Dipulangkan kepada kakitangan untuk pembetulan
