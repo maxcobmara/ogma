@@ -1307,6 +1307,7 @@ ms_MY:
       for_approval: Kelulusan Permohonan Perjalanan 
       my_travel_request: Permohonan Perjalanan Individu
       my_travel_logs: Log Perjalanan Individu
+      others_unrelated_travel_request: "Permohonan Perjalanan Individu Lain (Tidak Berkaitan)"
       new: Permohonan Perjalanan Baru
       edit: Sunting Permohonan Perjalanan
       staff_id: Nama Staf

@@ -1,8 +1,9 @@
 class Travelrequest_listPdf < Prawn::Document
-  def initialize(for_approvals, travel_requests, view, college)
+  def initialize(for_approvals, travel_requests, other_travelrequests, view, college)
     super({top_margin: 40, page_size: 'A4', page_layout: :portrait })
     @for_approvals=for_approvals
     @travel_requests =travel_requests
+    @other_travelrequests=other_travelrequests
     @view = view
     @college=college
     font "Helvetica"
@@ -17,6 +18,9 @@ class Travelrequest_listPdf < Prawn::Document
     title1=2
     row_counts=[title1]
     row_counts << title1+@for_approvals.count+2
+    if @other_travelrequests.count > 0
+      row_counts << title1+@for_approvals.count+2+@travel_requests.count+2
+    end
     table(line_item_rows, :column_widths => [30, 65, 80, 80, 50, 50, 70, 55, 60], :cell_style => { :size => 8,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
@@ -45,9 +49,23 @@ class Travelrequest_listPdf < Prawn::Document
     title2=[[{content: I18n.t('staff.travel_request.my_travel_request'), colspan: 9}]]
     body2=[]
     @travel_requests.each do |travel_request|
-      body2 << ["#{counter2+=1}", travel_request.try(:document).try(:refno), @college.code=='amsas' ? travel_request.applicant.staff_with_rank : travel_request.applicant.try(:staff_name_with_position), travel_request.destination, "#{@college.code=='amsas' ? travel_request.depart_at.try(:strftime, '%d-%m-%Y %H:%M') : travel_request.depart_at.try(:strftime, '%d %b %Y %l:%M %P')}", "#{@college.code=='amsas' ? travel_request.return_at.try(:strftime, '%d-%m-%Y %l:%M') : travel_request.return_at.try(:strftime, '%d %b %Y %l:%M %P')}", travel_request.document.try(:title), "#{travel_request.is_submitted? ? I18n.t('submitted') : I18n.t('not_submitted')}", "#{travel_request.hod_accept? ? I18n.t('approved') : I18n.t('not_approved')}"]
+        body2 << ["#{counter2+=1}", travel_request.try(:document).try(:refno), @college.code=='amsas' ? travel_request.applicant.staff_with_rank : travel_request.applicant.try(:staff_name_with_position), travel_request.destination, "#{@college.code=='amsas' ? travel_request.depart_at.try(:strftime, '%d-%m-%Y %H:%M') : travel_request.depart_at.try(:strftime, '%d %b %Y %l:%M %P')}", "#{@college.code=='amsas' ? travel_request.return_at.try(:strftime, '%d-%m-%Y %l:%M') : travel_request.return_at.try(:strftime, '%d %b %Y %l:%M %P')}", travel_request.document.try(:title), "#{travel_request.is_submitted? ? I18n.t('submitted') : I18n.t('not_submitted')}", "#{travel_request.hod_accept? ? I18n.t('approved') : I18n.t('not_approved')}"]
     end
-    header+title1+body+[[{content: "", colspan: 9}]]+title2+body2+[[{content: "", colspan: 9}]]
+    counter3=counter3||0
+    title3=[[{content: I18n.t('staff.travel_request.others_unrelated_travel_request'), colspan: 9}]]
+    body3=[]
+    @other_travelrequests.each do |travel_request|
+        body3 << ["#{counter3+=1}", travel_request.try(:document).try(:refno), @college.code=='amsas' ? travel_request.applicant.staff_with_rank : travel_request.applicant.try(:staff_name_with_position), travel_request.destination, "#{@college.code=='amsas' ? travel_request.depart_at.try(:strftime, '%d-%m-%Y %H:%M') : travel_request.depart_at.try(:strftime, '%d %b %Y %l:%M %P')}", "#{@college.code=='amsas' ? travel_request.return_at.try(:strftime, '%d-%m-%Y %l:%M') : travel_request.return_at.try(:strftime, '%d %b %Y %l:%M %P')}", travel_request.document.try(:title), "#{travel_request.is_submitted? ? I18n.t('submitted') : I18n.t('not_submitted')}", "#{travel_request.hod_accept? ? I18n.t('approved') : I18n.t('not_approved')}"]
+    end
+    part2=title3+body3+[[{content: "", colspan: 9}]]
+    part1=header+title1+body+[[{content: "", colspan: 9}]]+title2+body2+[[{content: "", colspan: 9}]]
+    if @other_travelrequests.count > 0
+      display_this=part1+part2
+    else
+      display_this=part1
+    end
+    
+    display_this
   end
 
   def footer
