@@ -62,14 +62,31 @@ class Staff::TravelClaimsController < ApplicationController
       @travelrequests.each{|x|@travelrequest_ids << x.to_i}
     end
     respond_to do |format|
-      if @travel_claim.save
-        TravelRequest.where('id IN (?)', @travelrequest_ids).update_all(travel_claim_id: @travel_claim.id)
-        format.html { redirect_to(staff_travel_claim_path(@travel_claim), :notice =>t('staff.travel_claim.title')+t('actions.created')) }
-        format.xml  { render :xml => @travel_claim, :status => :created, :location => @travel_claim }
+      if @travel_claim.claim_month && @travel_claim.staff_id && @travelrequests  #@travel_claim.valid? && @travelrequests
+        @travel_claim.save!
+          TravelRequest.where('id IN (?)', @travelrequest_ids).update_all(travel_claim_id: @travel_claim.id)
+          format.html { redirect_to(staff_travel_claim_path(@travel_claim), :notice =>t('staff.travel_claim.title')+t('actions.created')) }
+          format.xml  { render :xml => @travel_claim, :status => :created, :location => @travel_claim }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @travel_claim.errors, :status => :unprocessable_entity }
+	  msg=""
+	  msg_count=0
+          if @travel_claim.claim_month.blank?
+	    msg+="<li>"+t('staff.travel_claim.claim_month_must_exist')+"</li>"
+	    msg_count+=1
+	  end
+	  if @travel_claim.staff_id.blank?
+	    msg+="<li>"+t('staff.travel_claim.staff_must_exist')+"</li>"
+	    msg_count+=1
+	  end
+	  if !@travelrequests
+	    msg+="<li>"+t('staff.travel_claim.travel_requests_must_exist')+"</li>"
+	    msg_count+=1
+	  end
+	  flash[:notice]=("<font style='color: red;'>#{(t 'errors_title')} #{msg_count} #{(t 'error')} : <ul>#{msg}</font></ul>").html_safe
+	  format.html { render :action => "new" }
+          format.xml  { render :xml => @travel_claim.errors, :status => :unprocessable_entity }
       end
+      
     end
   end
 

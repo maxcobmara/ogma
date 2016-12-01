@@ -467,6 +467,8 @@ ms_MY:
   not_required: Tidak diperlukan
   remark: Catatan
   legend: "Petunjuk :"
+  errors_title: Borang mengandungi 
+  error: ralat
  
   actions:
     new: Baru
@@ -1459,7 +1461,9 @@ ms_MY:
       insert_current_salary: "Sila masukkan 'gaji semasa' dan 'jumlah elaun tetap' dalam submodul Maklumat Kakitangan"
       insert_vehicle: "Sila masukkan butran kenderaan dalam submodul Maklumat Kakitangan"
       claim_exist: "yang dipilih telah wujud"
-      travel_requests_must_exist: mesti disertakan
+      travel_requests_must_exist: Permohonan Perjalanan mesti disertakan
+      staff_must_exist: Nama Staf perlu dipilih
+      claim_month_must_exist: "Bulan & Tahun mesti diisi"
       mileage_xor_km_money: " : Masukkan Batuan (km) atau Nilai (RM), bukan kedua-duanya (diisi / dibiarkan kosong)"
       edit_by_applicant: Suntingan hanya boleh dibuat oleh pemohon
       no_unclaimed_requests: Anda tidak mempunyai sebarang permohonan perjalanan yang belum diproses
