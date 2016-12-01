@@ -1,7 +1,7 @@
 class Staff::PositionsController < ApplicationController
   #filter_access_to :all
-  filter_access_to :index, :new, :create, :organisation_chart, :attribute_check => false
-  filter_access_to :show, :edit, :update, :maklumat_perjawatan, :maklumat_perjawatan_excel, :destroy, :attribute_check => true
+  filter_access_to :index, :new, :create, :organisation_chart, :maklumat_perjawatan, :maklumat_perjawatan_excel, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_position, only: [:show, :edit, :update, :destroy]
   
   def index
@@ -78,7 +78,7 @@ class Staff::PositionsController < ApplicationController
     end
     respond_to do |format|
       format.pdf do
-        pdf = Maklumat_perjawatanPdf.new(@positions, view_context)
+        pdf = Maklumat_perjawatanPdf.new(@positions, current_user.college, view_context)
         send_data pdf.render, filename: "maklumat_perjawatan-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -118,6 +118,6 @@ class Staff::PositionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def position_params
-      params.require(:position).permit(:parent_id,:code, :combo_code, :name, :unit, :tasks_main, :tasks_other, :staffgrade_id, :staff_id, :staff_id2, :is_acting, :ancestry, :ancestry_depth, :postinfo_id, :status)
+      params.require(:position).permit(:parent_id,:code, :combo_code, :name, :unit, :tasks_main, :tasks_other, :staffgrade_id, :staff_id, :staff_id2, :is_acting, :ancestry, :ancestry_depth, :postinfo_id, :status, :college_id, {:data => []})
     end
 end

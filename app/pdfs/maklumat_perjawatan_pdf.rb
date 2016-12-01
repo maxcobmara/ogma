@@ -1,16 +1,18 @@
 class Maklumat_perjawatanPdf < Prawn::Document
-  def initialize(position, view)
+  def initialize(position, college, view)
     super({top_margin: 50, page_size: 'A4', page_layout: :landscape })
     @positions = position
+    @college = college
     @view = view
-    font "Times-Roman"
-    text "LAMPIRAN A", :align => :right, :size => 12, :style => :bold
+    font "Helvetica"
+    text "LAMPIRAN A", :align => :right, :size => 11, :style => :bold
     move_down 5
-    text "MAKLUMAT PERJAWATAN DI KOLEH-KOLEJ LATIHAN", :align => :center, :size => 12, :style => :bold
-    text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 12, :style => :bold
-    text "SEHINGGA #{I18n.l((Position.all.order(updated_at: :desc).pluck(:updated_at).first), format: '%d-%m-%Y')}", :align => :center, :size => 12, :style => :bold   
+    text "MAKLUMAT PERJAWATAN DI KOLEJ-KOLEJ LATIHAN", :align => :center, :size => 11, :style => :bold
+    text "#{'KEMENTERIAN KESIHATAN MALAYSIA' if @college.code=='kskbjb'}", :align => :center, :size => 11, :style => :bold
+    text "#{'PUSAT PENDIDIKAN DAN LATIHAN AGENSI PENGUATKUASAAN MARITIM MALAYSIA' if @college.code=='amsas'}", :align => :center, :size => 11, :style => :bold
+    text "SEHINGGA #{I18n.l((Position.all.order(updated_at: :desc).pluck(:updated_at).first), format: '%d-%m-%Y')}", :align => :center, :size => 11, :style => :bold   
     move_down 10
-    text "KOLEJ: KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 12, :style => :bold    
+    text "KOLEJ: #{@college.name.upcase}", :align => :left, :size => 11, :style => :bold    
     jawatan
 
     #bounding_box([50, 500], :width => 200, :height => 300) do
@@ -53,7 +55,7 @@ class Maklumat_perjawatanPdf < Prawn::Document
     
     #border_width - 3rd one - bottom
     #:border_width => [1, 1, 1, 1], borders: [:left, :right, :top, :bottom], :header =>true
-    table(line_item_rows , :column_widths => [23, 30, 43, 30, 25, 20, 37,45,26, 25, 60, 55, 40, 40, 40, 60, 25,47,25,47,43], :cell_style => { :size => 7}) do 
+    table(line_item_rows , :column_widths => [23, 30, 43, 30, 25, 20, 37,45,26, 25, 60, 55, 40, 40, 40, 60, 27,47,27,47,39], :cell_style => { :size => 7, :padding => [5,2,5,2]}) do 
       row(0..1).font_style = :bold
       row(0..1).background_color = 'FFE34D'
       #header=[0,1]
