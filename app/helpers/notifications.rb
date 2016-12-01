@@ -58,11 +58,11 @@ module Notifications
  end
 
  def travel_request_needs_approval
-  TravelRequest.where(hod_id: current_staff_id).where(hod_accept: nil).count
+  TravelRequest.where(hod_id: current_staff_id).where(is_submitted: true).where(hod_accept: [nil, false]).count
  end
 
  def your_travel_approved
-  TravelRequest.where(staff_id: current_staff_id).where(hod_accept: true).where('depart_at > ? AND depart_at <?', Date.today - 1.month, Date.today).pluck(:id, :depart_at)
+  TravelRequest.where(staff_id: current_staff_id).where(hod_accept: true).where('depart_at > ? AND depart_at <?', Date.today - 2.month, Date.today).pluck(:id, :depart_at)
  end
  
  def travel_claims_for_checking
