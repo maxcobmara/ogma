@@ -126,6 +126,9 @@ ms_MY:
       travel_claim:
         claim_month: "Tuntutan Bagi (bulan & tahun) "
         travel_requests: "Permohonan Perjalanan "
+        staff_id: Nama Staf
+        approved_by: Diluluskan Oleh
+        approved_on: Tarikh Kelulusan
       stationery:
         stationery_adds: Butiran Penambahan Keperluan Pejabat
         stationery_uses: Butiran Pengurangan Keperluan Pejabat
@@ -1456,9 +1459,10 @@ ms_MY:
       insert_current_salary: "Sila masukkan 'gaji semasa' dan 'jumlah elaun tetap' dalam submodul Maklumat Kakitangan"
       insert_vehicle: "Sila masukkan butran kenderaan dalam submodul Maklumat Kakitangan"
       claim_exist: "yang dipilih telah wujud"
-      travel_requests_must_exist: mesti dipilih
+      travel_requests_must_exist: mesti disertakan
       mileage_xor_km_money: " : Masukkan Batuan (km) atau Nilai (RM), bukan kedua-duanya (diisi / dibiarkan kosong)"
       edit_by_applicant: Suntingan hanya boleh dibuat oleh pemohon
+      no_unclaimed_requests: Anda tidak mempunyai sebarang permohonan perjalanan yang belum diproses
 
     travel_claims_transport_groups:
       title: Kumpulan Kenderaan
@@ -4387,7 +4391,7 @@ ms_MY:
         is_submitted: "Hantar?"
         is_returned: "Hantar Semula?"
         is_approved: "Diluluskan?"
-        approved_by: DIluluskan Oleh
+        approved_by: Diluluskan Oleh
 
       staff_appraisal:
         staff_id: Staf

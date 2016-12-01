@@ -57,9 +57,10 @@ class Staff::TravelClaimsController < ApplicationController
     @travel_claim = TravelClaim.new(travel_claim_params)
     #@travelrequests = params[:travel_claim][:travel_request_ids] #array
     @travelrequests= params[:travel_request_ids]
-    @travelrequest_ids=[]
-    @travelrequests.each{|x|@travelrequest_ids << x.to_i}
-    
+    if @travelrequests
+      @travelrequest_ids=[]
+      @travelrequests.each{|x|@travelrequest_ids << x.to_i}
+    end
     respond_to do |format|
       if @travel_claim.save
         TravelRequest.where('id IN (?)', @travelrequest_ids).update_all(travel_claim_id: @travel_claim.id)
@@ -73,7 +74,7 @@ class Staff::TravelClaimsController < ApplicationController
   end
 
   # PUT /travel_claims/1
-  # PUT /travel_claims/1.xml
+  # PUT /travel_claims/1.xml 
   def update
     @travel_claim = TravelClaim.find(params[:id])
 
@@ -81,10 +82,17 @@ class Staff::TravelClaimsController < ApplicationController
       if @travel_claim.update(travel_claim_params)
         format.html { redirect_to(staff_travel_claim_path(@travel_claim), :notice =>t('staff.travel_claim.title')+t('actions.updated')) }
         format.xml  { head :ok }
-      
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @travel_claim.errors, :status => :unprocessable_entity }
+	if @travel_claim.is_checked? && !@travel_claim.approved_by?
+          format.html { render :action => "check" }
+          format.xml  { render :xml => @travel_claim.errors, :status => :unprocessable_entity }
+	elsif @travel_claim.is_approved? && @travel_claim.approved_on.blank?
+	  format.html { render :action => "approval" }
+          format.xml  { render :xml => @travel_claim.errors, :status => :unprocessable_entity }
+	else
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @travel_claim.errors, :status => :unprocessable_entity }
+	end
       end
     end
   end
@@ -140,7 +148,7 @@ class Staff::TravelClaimsController < ApplicationController
   def set_admin
     roles = current_user.roles.pluck(:authname)
     mypost = Position.where(staff_id: current_user.userable_id).first
-    @is_admin = true if roles.include?("developer") || roles.include?("administration") || roles.include?("finance_unit") || roles.include?("travel_claims_module_admin")|| roles.include?("travel_claims_module_viewer")|| roles.include?("travel_claims_module_user")# || mypost.is_root?
+    @is_admin = true if roles.include?("developer") || roles.include?("administration") || roles.include?("travel_claims_module_admin")|| roles.include?("travel_claims_module_viewer")|| roles.include?("travel_claims_module_user")# || mypost.is_root? || roles.include?("finance_unit")
   end
   
   def travel_claim_params

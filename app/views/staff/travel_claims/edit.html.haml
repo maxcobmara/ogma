@@ -9,12 +9,12 @@
     = render 'shared/error_messages', object: f.object
     = hidden_field_tag :redirect_location, staff_travel_claims_path 
       
-    - if ((@travel_claim.staff_id==@current_user.userable_id) || @is_admin==true)
+    - if ((@travel_claim.staff_id==current_user.userable_id) || @is_admin==true)
       = render :partial => 'form', :locals =>{:f=>f}
       = f.hidden_field :jobtype, value: "editing"
       .row 
         .form-group
-          .col-md-1.col-md-offset-2
+          .col-md-2.col-md-offset-3
             = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_travel_claim_path(@travel_claim), :class => 'btn btn-default'
           .col-md-2
             .div{style: "margin-left:-40px;"}

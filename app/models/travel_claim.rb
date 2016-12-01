@@ -20,7 +20,10 @@ class TravelClaim < ActiveRecord::Base
   has_many :travel_claim_allowances, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_allowances, :reject_if => lambda { |a| a[:amount].blank? }, :allow_destroy =>true #must include for Update too
   
-  #validates_presence_of :travel_requests, :message => I18n.t('staff.travel_claim.travel_requests_must_exist')
+  validates_presence_of :travel_requests, :message => I18n.t('staff.travel_claim.travel_requests_must_exist')
+  validates_presence_of :claim_month, :staff_id
+  validates_presence_of :approved_by, :if => :is_checked?
+  validates_presence_of :approved_on, :if => :is_approved?
   validates_uniqueness_of :claim_month, :scope => :staff_id, :message => I18n.t('staff.travel_claim.claim_exist')
   validate :accommodations_must_exist_for_lodging_hotel_claims
   
