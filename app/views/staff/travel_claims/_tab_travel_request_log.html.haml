@@ -8,7 +8,7 @@
     %dd=travel_request.hod_accept? ? (t 'staff.travel_request.hod_accept')+(t 'staff.travel_request.on2')+travel_request.hod_accept_on.try(:strftime, "%d %b %Y")+(t 'staff.travel_request.by')+travel_request.headofdept.staff_with_rank : (t 'staff.travel_request.hod_not_accept')
 
     %dt=t 'staff.travel_request.document_id'
-    %dd=travel_request.document.doc_details
+    %dd=travel_request.try(:document).try(:doc_details)
     
     %dt=t 'staff.travel_request.travel_dates'
     %dd=travel_request.travel_dates

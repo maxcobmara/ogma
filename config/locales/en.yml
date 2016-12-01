@@ -487,6 +487,8 @@ en:
   not_required: Not required
   remark: Remark 
   legend: Legend
+  errors_title: Form contains
+  error: errors
 
   actions:
     new: New
@@ -1488,7 +1490,9 @@ en:
       insert_current_salary: "Please insert 'current salary' and 'total fixed allowance' in Staff Information submodule"
       insert_vehicle: "Please insert vehicle details in Staff Information submodule"
       claim_exist: "already exist"
-      travel_requests_must_exist: must be selected
+      travel_requests_must_exist: Travel Requests must be included
+      staff_must_exist: Staff Name must be selected
+      claim_month_must_exist: "Month & Year is compulsory"
       mileage_xor_km_money: " : Specify a Mileage (km) or a Payment (RM), not both (entered / blank)"
       edit_by_applicant: Editing only allowed by applicant
       no_unclaimed_requests: You have no approved travel requests for processing
