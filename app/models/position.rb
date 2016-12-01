@@ -6,6 +6,7 @@ class Position < ActiveRecord::Base
   validates_uniqueness_of :combo_code
   validates_presence_of   :name
   
+  belongs_to :college, :foreign_key => 'college_id'
   belongs_to :staff, :foreign_key => 'staff_id'
   belongs_to :staffgrade, :class_name => 'Employgrade', :foreign_key => 'staffgrade_id'
   belongs_to :postinfo
@@ -116,6 +117,12 @@ class Position < ActiveRecord::Base
     
     CSV.generate(options) do |csv|
         @positions=[]
+        if all.first.college.code=='kskbjb' 
+          govt_ministry_agency="KEMENTERIAN KESIHATAN MALAYSIA"
+        elsif all.first.college.code=='amsas'
+          govt_ministry_agency="PUSAT PENDIDIKAN DAN LATIHAN AGENSI PENGUATKUASAAN MARITIM MALAYSIA"
+        end
+        college_name=all.first.college.name
         all.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[1].to_i}.sort.reverse!.each do |staffgrade2, positions_of_grade_no|
           positions_of_grade_no.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[0]}.sort.reverse!.each do |staffgrade, positions_by_grade|
             positions_by_grade_w_butiran=[]
@@ -133,10 +140,10 @@ class Position < ActiveRecord::Base
         end
 	csv << [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, "LAMPIRAN A"]
         csv << ["MAKLUMAT PERJAWATAN DI KOLEJ-KOLEJ LATIHAN"]
-        csv << ["KEMENTERIAN KESIHATAN MALAYSIA"]
+        csv << ["#{govt_ministry_agency}"]
         csv << ["SEHINGGA #{I18n.l((Position.all.order(updated_at: :desc).pluck(:updated_at).first), format: '%d-%m-%Y')}"]
         csv << [] #blank row added
-        csv << ["KOLEJ : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU"]
+        csv << ["KOLEJ : #{college_name}"]
         csv << [] #blank row added
         csv <<  [ "BIL", "BUT.","JAWATAN", "GRED", "JUM JWT","ISI",nil, "STATUS PENGISIAN", nil,"KSG", "NAMA PENYANDANG", "NO. K/P / PASSPORT", "JANTINA (L/P)", "BIDANG KEPAKARAN/SUB-KEPAKARAN","TARIKH WARTA PAKAR", "PENEMPATAN","PINJAM KE", nil, "PINJAM DARI", nil, "CATATAN"]
         csv << [nil,nil,nil,nil,nil,nil,"HAKIKI", "KONTRAK", "KUP",nil,nil,nil,nil,nil,nil,nil, "Akt.","Penempatan", "Akt.", "Penempatan", "*" ]
@@ -144,7 +151,7 @@ class Position < ActiveRecord::Base
         
         counter =counter || 0
         @positions.each do |position|
-            csv << ["#{counter += 1}", position.butiran_details, position.name, position.try(:staffgrade).try(:name), position.totalpost2, position.occupied_post,   position.hakiki, position.kontrak, position.kup, position.available_post ,position.try(:staff).try(:name), position.try(:staff).try(:icno),"#{'L' if position.try(:staff).try(:gender)==1} #{'P' if position.try(:staff).try(:gender)==2}","","","","","","","",""]
+            csv << ["#{counter += 1}", position.butiran_details, position.name, position.try(:staffgrade).try(:name), position.totalpost2, position.occupied_post,   position.hakiki, position.kontrak, position.kup, position.available_post ,position.try(:staff).try(:name), position.try(:staff).try(:icno),"#{'L' if position.try(:staff).try(:gender)==1} #{'P' if position.try(:staff).try(:gender)==2}","\'\'","\'\'","\'\'","\'\'","\'\'","\'\'","\'\'","\'\'"]
          end    
     end
     

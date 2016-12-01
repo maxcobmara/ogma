@@ -16,12 +16,12 @@
         %th{width: '18%'}= t('staff.training.application_status.staff_name')
         %th{width: '8%'}= t('staff.position')
         %th{width: '15%'}= sort_link(@search, :course_name, t('staff.training.application_status.course_name'))
-        %th{width: '12%'}= sort_link(@search, :start, (t('staff.training.schedule.start')+' - '+t('staff.training.schedule.end')))
+        %th{width: '14%'}= sort_link(@search, :start, (t('staff.training.schedule.start')+' - '+t('staff.training.schedule.end')))
         %th{width: '5%'}= t('staff.training.schedule.duration')
         %th{width: '8%'}= sort_link(@search, :final_price , t('staff.training.schedule.price'))
         %th{width: '4%'}= t('staff.training.schedule.budget_ok')
         %th{width: '10%'}= sort_link(@search, :min_participants , t('staff.training.schedule.min_participants'))
-        %th{width: '10%'}= sort_link(@search, :payment, (t('staff.training.schedule.local_order')+' / '+t('staff.training.schedule.cash')))
+        %th{width: '8%'}= sort_link(@search, :payment, (t('staff.training.schedule.local_order')+' / '+t('staff.training.schedule.cash')))
         %th{width: '10%'}= t('staff.training.schedule.remark')
       
     %tbody
