@@ -16,9 +16,10 @@
   .form-group
     .col-sm-2.control-label
       = f.label :approved_by
-    .col-md-6
-      =f.collection_select :approved_by, Staff.where(id: @travel_claim.approved_by), :id, :staff_with_rank, {:include_blank=>t('select')},{class: 'selectpicker', "data-width"=>"auto"}
-
+    .col-md-10
+      =@travel_claim.approver.staff_with_rank
+    
+    
 :javascript
 $(document).ready(function(){
   $("input[id='approve1']").change(function() {  

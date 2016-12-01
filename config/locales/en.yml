@@ -144,6 +144,9 @@ en:
       travel_claim:
         claim_month: "Claim For (month & year) "
         travel_requests: "Travel Request(s) "
+        staff_id: Staff Name
+        approved_by: Approval By
+        approved_on: Approval Date
       stationery:
         stationery_adds: Details of Add Supplies
         stationery_uses: "Details of Use/Issue Supplies"
@@ -1488,6 +1491,7 @@ en:
       travel_requests_must_exist: must be selected
       mileage_xor_km_money: " : Specify a Mileage (km) or a Payment (RM), not both (entered / blank)"
       edit_by_applicant: Editing only allowed by applicant
+      no_unclaimed_requests: You have no approved travel requests for processing
       
     travel_claims_transport_groups:
       title: Transport Group

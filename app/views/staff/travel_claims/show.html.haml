@@ -24,7 +24,7 @@
           
           - if @travel_claim.travel_requests.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true) 
             %dt= t('staff.transportclass_id')
-            %dd= @travel_claim.travel_requests.first.transport_class+'  ('+@travel_claim.staff.vehicles[0].reg_no+','+@travel_claim.staff.vehicles[0].type_model+' cc)'
+            %dd= @travel_claim.travel_requests.first.transport_class+'  ('+@travel_claim.staff.vehicles[0].reg_no+', '+@travel_claim.staff.vehicles[0].type_model+' cc)'
         
       #travel_request_log.tab-pane.active
         - for travel_request in @travel_claim.travel_requests

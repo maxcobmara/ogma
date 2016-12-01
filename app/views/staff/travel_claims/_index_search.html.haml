@@ -16,7 +16,7 @@
 - arr10=[t('staff.travel_claim.approved'), "10-#{current_user.userable_id}"]
 
 - listing=[]
-- if @is_admin
+- if @is_admin || current_user.roles.pluck(:authname).include?('finance_unit')==true
   /- listing << arr1 << arr2 << arr3 << arr4 << arr5 << arr6 << arr7 << arr8 << arr9 << arr10 << arr11
   - listing << arr1 << arr2 << arr3 << arr4 << arr6 << arr7 << arr8 << arr9 << arr10 << arr11
 - else
