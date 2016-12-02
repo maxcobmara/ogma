@@ -12,22 +12,25 @@
         %input#option2{:name => "options", :type => "radio"}
           = (t 'people.staff')
   .col-md-6.staff_search{style: "display:none;"}
-    = form_for :search, :url => { :action => "check_status" }, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
+    = form_for :search, :url => { :action => "check_status" }, :html=>{:id => "searchform1", :class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
       .input-group
-        = f.text_field :staff_name, :autofocus => true, :required => true, :class => 'form-control', :type => "input", :id => "input1", placeholder: (t 'staff.name')
+        = f.text_field :staff_name, :autofocus => true, :required => true, :class => 'form-control', :type => "input", placeholder: (t 'staff.name'), value: @staff_name
+        /, :id => "input1"
         %span.input-group-btn
           = f.submit (t 'search'), :class => "btn btn-primary", style: "width:80px;"
       %span.help-block.small= (t 'library.check.search')
       
   .col-md-6.student_search{style: "display:none;"}
-    = form_for :search, :url => { :action => "check_status" }, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
+    = form_for :search, :url => { :action => "check_status" }, :html=>{:id => "searchform2", :class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
       .input-group
-        = f.text_field :student_icno, :autofocus => true, :required => true, :class => 'form-control', :type => "input", :id => "input1", placeholder: (t 'library.check.ic_starts_with'), value: (@params_student_ic = params[:search].try(:[], :student_icno))
+       
+        = f.text_field :student_icno, :autofocus => true, :required => true, :class => 'form-control', :type => "input", placeholder: (t 'library.check.ic_starts_with'), value: @student_ic
+        /, :id => "input1"
+        /value: (@params_student_ic = params[:search].try(:[], :student_icno))
         %span.input-group-btn
           = f.submit (t 'search'), :class => "btn btn-primary", style: "width:80px;"
       %span.help-block.small= (t 'library.check.search')
 
-          
           
 .row.student_search{style: "display:none;"}
 
@@ -55,6 +58,7 @@
                   %span{style: "color:red;"}= transaction.returnduedate.strftime('%d-%m-%Y')
                 - else
                   %span= transaction.returnduedate.strftime('%d-%m-%Y')
+            #add_new_line
           - if @panel == "panel-info"
             .panel-footer
               /.right= link_to "Add", new_library_librarytransaction_path
@@ -133,9 +137,15 @@
 :javascript
   $('#closeme').click(function() {
       $('#new-post-modal').modal('hide');
-      /*location.reload(true); - works on local svr only (inc production)*/
-      history.go(0);
-
+      /*location.reload(true); */
+      /*history.go(0);*/
+      /*both above - works on local svr only (inc production)*/
+      b=$('#search_student_icno').val();
+      a=$('#search_staff_name').val();
+      if(b=="")
+      {  $('#searchform1').submit();}
+      else
+      {  $('#searchform2').submit();}
   });
   
   $('#librarytransaction_accession_acc_book').autocomplete({
