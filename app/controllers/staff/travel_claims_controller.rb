@@ -2,7 +2,7 @@ class Staff::TravelClaimsController < ApplicationController
   filter_access_to :index, :new, :create, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :check, :approval, :claimprint, :attribute_check => true
   before_action :set_travel_claim, only: [:show, :edit, :update, :destroy]
-  before_action :set_admin, only: [:index, :edit, :show]
+  before_action :set_admin, only: [:index, :edit, :show, :travelclaim_list]
   
   def index
     if @is_admin

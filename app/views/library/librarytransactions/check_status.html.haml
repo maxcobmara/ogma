@@ -22,7 +22,7 @@
   .col-md-6.student_search{style: "display:none;"}
     = form_for :search, :url => { :action => "check_status" }, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
       .input-group
-        = f.text_field :student_icno, :autofocus => true, :required => true, :class => 'form-control', :type => "input", :id => "input1", placeholder: "IC Starts with", value: (@params_student_ic = params[:search].try(:[], :student_icno))
+        = f.text_field :student_icno, :autofocus => true, :required => true, :class => 'form-control', :type => "input", :id => "input1", placeholder: (t 'library.check.ic_starts_with'), value: (@params_student_ic = params[:search].try(:[], :student_icno))
         %span.input-group-btn
           = f.submit (t 'search'), :class => "btn btn-primary", style: "width:80px;"
       %span.help-block.small= (t 'library.check.search')
@@ -35,15 +35,16 @@
   %hr
   .col-md-9.col-md-offset-1
     - if (@staff_name != nil || @student_ic != nil) && @librarytransactions == []
-      %h4 Results
-      %p no transactions
+      %h4=t 'library.check.results'
+      %p=t 'library.check.no_transactions'
     - elsif @staff_name != nil && @librarytransactions != []
-      %h4 Results
+      %h4=t 'library.check.results'
       - @librarytransactions.group_by(&:staff).each do |staff, transactions|
         - if transactions.length < 5; @panel = "panel-info"; else @panel = "panel-danger"; end
         .panel{:class => @panel}
           .panel-heading
             = staff.name
+            - @staff = staff
             %span.badge.right= transactions.length
           .panel-body
             - for transaction in transactions
@@ -51,16 +52,17 @@
               .col-sm-9= link_to transaction.try(:accession).try(:book).try(:title), '#', class: "bogus"
               .col-sm-2
                 - if transaction.returnduedate < Date.today.yesterday && transaction.returneddate.blank?
-                  %span{style: "color:red;"}= transaction.returnduedate
+                  %span{style: "color:red;"}= transaction.returnduedate.strftime('%d-%m-%Y')
                 - else
-                  %span= transaction.returnduedate
+                  %span= transaction.returnduedate.strftime('%d-%m-%Y')
           - if @panel == "panel-info"
             .panel-footer
-              .right= link_to "Add", new_library_librarytransaction_path
-              text
-              
+              /.right= link_to "Add", new_library_librarytransaction_path
+              /text
+              = link_to (t 'library.check.add'), "#new-post-modal", :data => {:toggle => "modal", :href => new_library_librarytransaction_path(:staff => :staff_id)},  :class=> "openModal btn btn-primary"
+  
     - elsif @student_ic != nil && @librarytransactions != []
-      %h4 Results
+      %h4=t 'library.check.results'
       - @librarytransactions.group_by(&:student).each do |student, transactions|
         - if transactions.length < 2; @panel = "panel-info"; else @panel = "panel-danger"; end
         .panel{:class => @panel}
@@ -82,38 +84,41 @@
               .col-sm-9= link_to transaction.try(:accession).try(:book).try(:title), '#', class: "bogus"
               .col-sm-2
                 - if transaction.returnduedate < Date.today.yesterday && transaction.returneddate.blank?
-                  %span{style: "color:red;"}= transaction.returnduedate
+                  %span{style: "color:red;"}= transaction.returnduedate.strftime('%d-%m-%Y')
                 - else
-                  %span= transaction.returnduedate
+                  %span= transaction.returnduedate.strftime('%d-%m-%Y')
           - if @panel == "panel-info"
             .panel-footer
               //= link_to "Add", new_library_librarytransaction_path(:student => :student_id), 'data-toggle' => "modal", 'data-target'=> "#new-post-modal", class: 'btn btn-primary'#, url: new_library_librarytransaction_path(:student_id => student.id)#, campaign_name: campaign.name
-              = link_to "Add", "#new-post-modal", :data => {:toggle => "modal", :href => new_library_librarytransaction_path(:student => :student_id)},  :class=> "openModal btn btn-primary"
+              = link_to (t 'library.check.add'), "#new-post-modal", :data => {:toggle => "modal", :href => new_library_librarytransaction_path(:student => :student_id)},  :class=> "openModal btn btn-primary"
               
           
 #new-post-modal.modal.bs-modal-lg{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
   .modal-dialog
     .modal-content
       = form_for([:library, Librarytransaction.new], remote: true, html: {"data-type" => :json}) do |f|
-        = f.hidden_field :student_id, value: @student.id rescue 0
+        = f.hidden_field :student_id, value: @student.id rescue 0 if @student
+        = f.hidden_field :staff_id, value: @staff.id rescue 0 if @staff
         .modal-header
           %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
-          %h4.modal-title Add Item
+          %h4.modal-title=t 'library.check.add_item'
         .modal-body
           %div{style: "padding-left:40px;"}
             .row
               .form-group
                 %label.col-sm-2.control-label{:for => "code"}= t 'accession'
                 .col-md-8
-                  = f.text_field :accession_acc_book, class: 'form-control', data: {autocomplete_source: Accession.order(:accession_no).map(&:acc_book) }, placeholder: "Accession No"
+                  = f.text_field :accession_acc_book, class: 'form-control', data: {autocomplete_source: Accession.where("id NOT IN (?)", @checked_out).order(:accession_no).map(&:acc_book) }, placeholder: "Accession No"
             .row
               .form-group
-                = f.label :checkoutdate, :class => 'col-sm-2 control-label'
-                .col-sm-3= f.text_field :checkoutdate, :class => 'form-control', :type => :text, 'data-behaviour' => 'datepicker_std'
+                = f.label (t 'library.transaction.checkoutdate'), :class => 'col-sm-3 control-label'
+                .col-sm-3= f.text_field :checkoutdate, :class => 'form-control input-daterange', :value => Date.today.strftime('%d-%m-%Y')
             .row
               .form-group
-                = f.label :returnduedate, :class => 'col-sm-2 control-label'
-                .col-sm-3= f.text_field :returnduedate, :class => 'form-control', :type => :text, 'data-behaviour' => 'datepicker_std', :value => 2.weeks.from_now.strftime('%Y-%m-%d')
+                = f.label (t 'library.transaction.returnduedate'), :class => 'col-sm-3 control-label'
+                - due=2.weeks.from_now.strftime('%d-%m-%Y') if @student
+                - due=3.weeks.from_now.strftime('%d-%m-%Y') if @staff
+                .col-sm-3= f.text_field :returnduedate, :class => 'form-control input-daterange', :value => due
         .modal-footer
           .form-group
             = f.submit t('update'), class: "btn btn-primary closeme", id: "closeme"
@@ -125,3 +130,17 @@
       location.reload(true);
 
   });
+  
+  $('#librarytransaction_accession_acc_book').autocomplete({
+      minLength: 2,
+      source: $('#librarytransaction_accession_acc_book').data('autocomplete-source')
+    });
+    
+  $(".input-daterange").datetimepicker({
+      format:"d-m-Y",
+      formatDate:"Y-m-d",
+      timepicker: false,
+      todayBtn: "linked", 
+      todayHighlight: true,
+      autoclose: true
+    });

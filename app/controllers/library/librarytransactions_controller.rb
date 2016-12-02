@@ -115,6 +115,7 @@ class Library::LibrarytransactionsController < ApplicationController
 
   def check_status
     @librarytransactions = []
+    @checked_out = Librarytransaction.where("returneddate IS ?", nil).pluck(:accession_id)
 
     if params[:search].present? && params[:search][:staff_name].present?
       @staff_name = params[:search][:staff_name]

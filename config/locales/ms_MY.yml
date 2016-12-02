@@ -2955,6 +2955,11 @@ ms_MY:
       late_by_days: "Lewat (Hari)"
       total_fine: Jumlah Denda
       total_sum_fine: Jumlah Keseluruhan Denda (RM)
+      select_date: Pilih Tarikh
+      select_book: Pilih Buku
+      add_book: Tambah Buku
+      hit_limit: Kuoata pinjaman anda telah penuh
+      reset_form: Muat semula borang
       analysis:
         main_title: "Analisis & Statistik (Peminjam) - "
         main_title2: "Analisis & Statistik (Monograf) - "
@@ -3011,7 +3016,11 @@ ms_MY:
     check:  
       status: Semak Status
       search: "Carian semak status"
-      
+      add_item: Tambah Item
+      results: Hasil Carian
+      no_transactions: Tiada Transaksi
+      ic_starts_with: IC bermula dengan
+      add: Tambah
       
     book:
       new: Buku Baru
