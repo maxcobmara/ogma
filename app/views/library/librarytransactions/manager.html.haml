@@ -40,6 +40,7 @@
       - if @book_counter < @booklimit; @panel = "panel-info"; else @panel = "panel-danger"; end
       #changing_panel.panel{:class => @panel}
         - if @selected_staff
+          - type=1
           .panel-heading
             = t( 'activerecord.models.staff')
             &nbsp; : &nbsp;
@@ -64,6 +65,7 @@
             %hr
             = render 'book_list'          
         - if @selected_student
+          - type=2
           .panel-heading
             = t( 'activerecord.models.student')
             &nbsp; : &nbsp;
@@ -99,7 +101,7 @@
       .button-toolbar.pull-right
         %span#onload_links
           - if @book_counter < @booklimit
-            = link_to content_tag(:i, "", class: "fa fa-bookmark"), new_library_librarytransaction_path, {id: "new_link", remote: true, class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: (t 'library.transaction.add_book')}
+            = link_to content_tag(:i, "", class: "fa fa-bookmark"), new_library_librarytransaction_path, {id: "new_link", :persontype => type, remote: true, class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: (t 'library.transaction.add_book')}
           -else
             = link_to content_tag(:i, "", class: "fa fa-bookmark"), '#', {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: (t 'library.transaction.hit_limit'), disabled: "disabled"}
         %span#onchange_links
