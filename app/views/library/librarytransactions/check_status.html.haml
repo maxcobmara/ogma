@@ -97,8 +97,14 @@
   .modal-dialog
     .modal-content
       = form_for([:library, Librarytransaction.new], remote: true, html: {"data-type" => :json}) do |f|
-        = f.hidden_field :student_id, value: @student.id rescue 0 if @student
-        = f.hidden_field :staff_id, value: @staff.id rescue 0 if @staff
+        = f.hidden_field :college_id, value: current_user.college_id
+        = f.hidden_field :libcheckout_by, value: current_user.userable_id
+        - if @student
+          = f.hidden_field :student_id, value: @student.id rescue 0
+          = f.hidden_field :ru_staff, value: false
+        - if @staff
+          = f.hidden_field :staff_id, value: @staff.id rescue 0 
+          = f.hidden_field :ru_staff, value: true
         .modal-header
           %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
           %h4.modal-title=t 'library.check.add_item'
