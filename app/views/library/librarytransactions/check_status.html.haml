@@ -133,7 +133,8 @@
 :javascript
   $('#closeme').click(function() {
       $('#new-post-modal').modal('hide');
-      location.reload(true);
+      /*location.reload(true); - works on local svr only (inc production)*/
+      history.go(0);
 
   });
   
