@@ -3062,6 +3062,11 @@ en:
       late_by_days: "Late (Days)"
       total_fine: Total Fine
       total_sum_fine: Grand Total of Fine (RM)
+      select_date: Select Date
+      select_book: Select Book
+      add_book: Add Book
+      hit_limit: You Have Hit Limit
+      reset_form: Reset Form
       analysis:
         main_title: "Analysis & Statistic (Borrower) - "
         main_title2: "Analysis & Statistic (Monograph) - "
@@ -3118,6 +3123,11 @@ en:
     check:  
       status: Check Status
       search: "Search to check status"
+      add_item: Add Item
+      results: Results
+      no_transactions: No Transactions
+      ic_starts_with: IC Starts with
+      add: Add
       
     book: 
       new: New Book

@@ -99,11 +99,11 @@
       .button-toolbar.pull-right
         %span#onload_links
           - if @book_counter < @booklimit
-            = link_to content_tag(:i, "", class: "fa fa-bookmark"), new_library_librarytransaction_path, {id: "new_link", remote: true, class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Add Book"}
+            = link_to content_tag(:i, "", class: "fa fa-bookmark"), new_library_librarytransaction_path, {id: "new_link", remote: true, class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: (t 'library.transaction.add_book')}
           -else
-            = link_to content_tag(:i, "", class: "fa fa-bookmark"), '#', {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "You Have Hit Limit", disabled: "disabled"}
+            = link_to content_tag(:i, "", class: "fa fa-bookmark"), '#', {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: (t 'library.transaction.hit_limit'), disabled: "disabled"}
         %span#onchange_links
-        = link_to content_tag(:i, "", class: "fa fa-repeat"), manager_library_librarytransactions_path, {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Reset Form"}
+        = link_to content_tag(:i, "", class: "fa fa-repeat"), manager_library_librarytransactions_path, {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: (t 'library.transaction.reset_form')}
         - if current_user.college.code=="kskbjb"
           = link_to content_tag(:i, "", class: "fa fa-square"), "http://#{request.host}:3000", {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Back to OLD ICMS"}
       %div#add_book_form

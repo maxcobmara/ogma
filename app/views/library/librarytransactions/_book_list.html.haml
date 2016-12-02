@@ -38,7 +38,7 @@
             =f.hidden_field :id, :value => transaction.id
             =f.hidden_field :returnduedate, :value => transaction.extended_due
             - if transaction.extended==true
-              =image_tag("tick.png")
+              =fa_icon('check')
             - else
               =f.check_box :extended
             =f.submit
