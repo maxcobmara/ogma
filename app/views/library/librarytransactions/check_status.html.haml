@@ -142,9 +142,9 @@
       /*both above - works on local svr only (inc production)*/
       b=$('#search_student_icno').val();
       a=$('#search_staff_name').val();
-      if(b=="")
+      if(b=="" && a!="")
       {  $('#searchform1').submit();}
-      else
+      else if(a=="" && b!="")
       {  $('#searchform2').submit();}
   });
   
