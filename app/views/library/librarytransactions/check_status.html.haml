@@ -133,25 +133,31 @@
           .form-group
             = f.submit t('update'), class: "btn btn-primary closeme", id: "closeme"
 
+/   $('#closeme').click(function() {
+/       $('#new-post-modal').modal('hide');
+/       /*location.reload(true); */
+/       /*history.go(0);*/
+/       /*both above - works on local svr only (inc production)*/
+/       /*TODO - below - not working yet - only works on local svr*/
+/       b=$('#search_student_icno').val();
+/       a=$('#search_staff_name').val();
+/       if(b=="" && a!="")
+/       { 
+/         $('.staff_search').show();
+/         $('#searchform1').submit();
+/       }
+/       else if(a=="" && b!="")
+/       {  
+/         $('.student_search').show();
+/         $('#searchform2').submit();
+/       }
+/   });
 
 :javascript
   $('#closeme').click(function() {
-      $('#new-post-modal').modal('hide');
-      /*location.reload(true); */
-      /*history.go(0);*/
-      /*both above - works on local svr only (inc production)*/
-      b=$('#search_student_icno').val();
-      a=$('#search_staff_name').val();
-      if(b=="" && a!="")
-      { 
-        $('.staff_search').show();
-        $('#searchform1').submit();
-      }
-      else if(a=="" && b!="")
-      {  
-        $('.student_search').show();
-        $('#searchform2').submit();
-      }
+    $('#new-post-modal').modal('hide');
+    $('#searchform1').submit();
+    $('#searchform2').submit();
   });
   
   $('#librarytransaction_accession_acc_book').autocomplete({
