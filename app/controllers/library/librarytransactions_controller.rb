@@ -50,7 +50,11 @@ class Library::LibrarytransactionsController < ApplicationController
     @librarytransaction = Librarytransaction.create!(librarytransaction_params)
     respond_to do |format|
       format.html { redirect_to manager_library_librarytransactions_path }
-      format.js
+      if [nil, false].include?(@librarytransaction.reportlost)
+        format.js { render :create }
+      elsif @librarytransaction.reportlost==true
+        format.js { render :create2, :locals => {:transaction => @librarytransaction}}
+      end
     end
   end
   
@@ -291,7 +295,7 @@ class Library::LibrarytransactionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def librarytransaction_params
-      params.require(:librarytransaction).permit(:accession_id, :ru_staff, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession, :accession_no, :accession_acc_book, :libcheckout_by, :returned, :returneddate, :extended, :fine, :finepay, :finepaydate, :college_id, {:data => []})
+      params.require(:librarytransaction).permit(:accession_id, :ru_staff, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession, :accession_no, :accession_acc_book, :libcheckout_by, :returned, :returneddate, :extended, :fine, :finepay, :finepaydate, :reportlost, :college_id, {:data => []})
       # <-- insert editable fields here inside here e.g (:date, :name)
     end
 

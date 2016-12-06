@@ -44,11 +44,13 @@
       %h4=t 'library.check.results'
       - @librarytransactions.group_by(&:staff).each do |staff, transactions|
         - if transactions.length < 5; @panel = "panel-info"; else @panel = "panel-danger"; end
-        .panel{:class => @panel}
+        #changing_panel.panel{:class => @panel}
           .panel-heading
             = staff.name
             - @staff = staff
-            %span.badge.right= transactions.length
+            %span.badge.right
+              #onload_count= transactions.length
+              #onchange_count
           .panel-body
             - for transaction in transactions
               .col-sm-1= transaction.try(:accession).try(:accession_no)
@@ -58,18 +60,19 @@
                   %span{style: "color:red;"}= transaction.returnduedate.strftime('%d-%m-%Y')
                 - else
                   %span= transaction.returnduedate.strftime('%d-%m-%Y')
-            #add_new_line
+            #listing_staff
+            /#add_new_line
           - if @panel == "panel-info"
             .panel-footer
               /.right= link_to "Add", new_library_librarytransaction_path
               /text
-              = link_to (t 'library.check.add'), "#new-post-modal", :data => {:toggle => "modal", :href => new_library_librarytransaction_path(:staff => :staff_id)},  :class=> "openModal btn btn-primary"
+              #new_link= link_to (t 'library.check.add'), "#new-post-modal", :data => {:toggle => "modal", :href => new_library_librarytransaction_path(:staff => :staff_id)},  :class=> "openModal btn btn-primary"
   
     - elsif @student_ic != nil && @librarytransactions != []
       %h4=t 'library.check.results'
       - @librarytransactions.group_by(&:student).each do |student, transactions|
         - if transactions.length < 2; @panel = "panel-info"; else @panel = "panel-danger"; end
-        .panel{:class => @panel}
+        #changing_panel.panel{:class => @panel}
           .panel-heading
             = student.name
             %br
@@ -79,9 +82,9 @@
             = student.course.course_type
             = student.course.name
             - @student = student
-            
-            
-            %span.badge.right= transactions.length
+            %span.badge.right
+              #onload_count= transactions.length
+              #onchange_count
           .panel-body
             - for transaction in transactions
               .col-sm-1= transaction.try(:accession).accession_no
@@ -91,17 +94,18 @@
                   %span{style: "color:red;"}= transaction.returnduedate.strftime('%d-%m-%Y')
                 - else
                   %span= transaction.returnduedate.strftime('%d-%m-%Y')
+            #listing_student
           - if @panel == "panel-info"
             .panel-footer
               //= link_to "Add", new_library_librarytransaction_path(:student => :student_id), 'data-toggle' => "modal", 'data-target'=> "#new-post-modal", class: 'btn btn-primary'#, url: new_library_librarytransaction_path(:student_id => student.id)#, campaign_name: campaign.name
-              = link_to (t 'library.check.add'), "#new-post-modal", :data => {:toggle => "modal", :href => new_library_librarytransaction_path(:student => :student_id)},  :class=> "openModal btn btn-primary"
-              
-          
+              #new_link= link_to (t 'library.check.add'), "#new-post-modal", :data => {:toggle => "modal", :href => new_library_librarytransaction_path(:student => :student_id)},  :class=> "openModal btn btn-primary"
+
 #new-post-modal.modal.bs-modal-lg{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
   .modal-dialog
     .modal-content
-      = form_for([:library, Librarytransaction.new], remote: true, html: {"data-type" => :json}) do |f|
+      = form_for([:library, Librarytransaction.new], remote: true, html: {"data-type" => "script"}) do |f|
         = f.hidden_field :college_id, value: current_user.college_id
+        = f.hidden_field :reportlost, value: true
         = f.hidden_field :libcheckout_by, value: current_user.userable_id
         - if @student
           = f.hidden_field :student_id, value: @student.id rescue 0
@@ -118,7 +122,7 @@
               .form-group
                 %label.col-sm-2.control-label{:for => "code"}= t 'accession'
                 .col-md-8
-                  = f.text_field :accession_acc_book, class: 'form-control', data: {autocomplete_source: Accession.where("id NOT IN (?)", @checked_out).order(:accession_no).map(&:acc_book) }, placeholder: "Accession No"
+                  = f.text_field :accession_acc_book, class: 'form-control', data: {autocomplete_source: Accession.where("id NOT IN (?)", @checked_out).order(:accession_no).map(&:acc_book)}, placeholder: "Accession No"
             .row
               .form-group
                 = f.label (t 'library.transaction.checkoutdate'), :class => 'col-sm-3 control-label'
@@ -133,13 +137,8 @@
           .form-group
             = f.submit t('update'), class: "btn btn-primary closeme", id: "closeme"
 
-/   $('#closeme').click(function() {
-/       $('#new-post-modal').modal('hide');
-/       /*location.reload(true); */
-/       /*history.go(0);*/
-/       /*both above - works on local svr only (inc production)*/
-/       /*TODO - below - not working yet - only works on local svr*/
-/       b=$('#search_student_icno').val();
+
+/  b=$('#search_student_icno').val();
 /       a=$('#search_staff_name').val();
 /       if(b=="" && a!="")
 /       { 
@@ -151,13 +150,19 @@
 /         $('.student_search').show();
 /         $('#searchform2').submit();
 /       }
-/   });
-
+/    
+/ $('#listing').append("#{ j render("list2")}");
 :javascript
   $('#closeme').click(function() {
-    $('#new-post-modal').modal('hide');
-    $('#searchform1').submit();
-    $('#searchform2').submit();
+      /*$('#new-post-modal').modal('hide');*/
+      
+      /*var a=document.getElementById('librarytransaction_accession_acc_book');*/
+      /*a.value="";*
+      
+      /*location.reload(true);*/
+      /*history.go(0);*/
+      /*both above - works on local svr only (inc production)*/
+
   });
   
   $('#librarytransaction_accession_acc_book').autocomplete({

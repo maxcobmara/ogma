@@ -1,0 +1,11 @@
+.col-sm-1= transaction.try(:accession).accession_no
+.col-sm-9= link_to transaction.try(:accession).try(:book).try(:title), '#', class: "bogus"
+.col-sm-2
+  - if transaction.returnduedate < Date.today.yesterday && transaction.returneddate.blank?
+    %span{style: "color:red;"}= transaction.returnduedate.strftime('%d-%m-%Y')
+  - else
+    %span= transaction.returnduedate.strftime('%d-%m-%Y')
+
+      
+ 
+   
