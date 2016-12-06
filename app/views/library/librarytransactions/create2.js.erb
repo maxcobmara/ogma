@@ -1,0 +1,15 @@
+<% if (@librarytransaction.ru_staff==true) %>
+  $("#listing_staff").append("<%=j render partial: 'list2', locals: {transaction: transaction}  %>"); 
+<% else %>
+  $("#listing_student").append("<%=j render partial: 'list2', locals: {transaction: transaction}  %>"); 
+<% end %>
+
+$('#onload_count').remove();
+$('#onchange_count').html('<%= j render('books_count') %>');
+
+<% if (@librarytransaction.ru_staff==true && Librarytransaction.where(staff_id: @lib.staff_id, returned: [nil, false]).count < 5) || (@librarytransaction.ru_staff==false && Librarytransaction.where(student_id: @lib.student_id,  returned: [nil, false]).count < 2) %>
+document.getElementById("changing_panel").className = "panel panel-info";
+<% else %>
+document.getElementById("changing_panel").className = "panel panel-danger";
+$('#new_link').html('');
+<% end%>
