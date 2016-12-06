@@ -44,14 +44,14 @@ class Staff::StaffsController < ApplicationController
   # POST /staffs
   # POST /staffs.json
  def create
-  @staff = Staff.new(staff_params)
+  @info = Staff.new(staff_params)
   respond_to do |format|
-    if @staff.save
-      format.html { redirect_to @staff, notice: (t 'staff.title')+(t 'actions.created')}
-      format.json { render action: 'show', status: :created, location: @staff }
+    if @info.save
+      format.html { redirect_to staff_infos_path, notice: (t 'staff.title')+(t 'actions.created')}
+      format.json { render action: 'show', status: :created, location: @info }
     else
       format.html { render action: 'new' }
-      format.json { render json: @staff.errors, status: :unprocessable_entity }
+      format.json { render json: @info.errors, status: :unprocessable_entity }
     end
   end
 end
