@@ -1,5 +1,6 @@
 - if @info.new_record? == true
-  - url = new_staff_info_path
+  - url = staff_infos_path
+  /new_staff_info_path
 - else
   - url = staff_info_path(@info)
 
@@ -20,7 +21,7 @@
 .row.fluid
   = form_for [:staff, @info], url: url, :html => { :class => 'form-horizontal' }  do |f|
     = render 'shared/error_messages', object: f.object
-
+    = f.hidden_field :college_id, value: current_user.college_id
 
     / Tab panes
     .tab-content{style:"padding-top:1em"}
