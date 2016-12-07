@@ -82,7 +82,7 @@ end
   def destroy
     @staff.destroy
     respond_to do |format|
-      format.html { redirect_to staffs_url }
+      format.html { redirect_to staff_infos_path }
       format.json { head :no_content }
     end
   end
