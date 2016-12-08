@@ -29,15 +29,25 @@
             %td= link_to user.email, edit_user_path(user)
             %td=h user.userable.try(:staff_with_rank)
             %td
-              = user.userable_type == "Staff" ? list_comma(user.userable.positions.pluck(:name)) : ""
-              = user.userable_type == "Staff" && user.userable.positions.pluck(:unit).present? ? " / "+user.userable.positions.pluck(:unit).first : ""
-            %td.centre
-              - if user.userable_type == "Staff" 
-                = (t 'staff.title') 
-              - elsif user.userable_type == "Student"
-                = (t 'student.title')
+              - if user.userable
+                = user.userable_type == "Staff" ? list_comma(user.userable.positions.pluck(:name)) : ""
+                = user.userable_type == "Staff" && user.userable.positions.pluck(:unit).present? ? " / "+user.userable.positions.pluck(:unit).first : ""
               - else
-                =(t 'user.user_not_link_entity')
+                %span{style: 'color: red;'}
+                  = user.userable_type == "Staff" ? (t 'user.staff_removed') : (t 'user.student_removed')
+                  %br=t 'user.userable_removed2'
+            %td.centre
+              - if user.userable
+                - a='font-weight: bold;'
+              - else
+                - a='color: red; text-decoration: line-through'
+              %span{style: a}    
+                - if user.userable_type == "Staff" 
+                  = (t 'staff.title') 
+                - elsif user.userable_type == "Student"
+                  = (t 'student.title')
+                - else
+                  =(t 'user.user_not_link_entity')
             %td=translated_list_comma(user.roles.pluck(:authname))
             /=list_comma(user.roles.pluck(:name))
 

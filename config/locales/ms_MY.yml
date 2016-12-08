@@ -571,7 +571,9 @@ ms_MY:
     subject2: "ddd"
     remove_module_access: untuk mengeluarkan akses modul yang dipilih
     sign_in_required: "Pautan menu yang dipilih memerlukan akses ke versi BARU sistem ICMS. Sila daftar masuk (sign-in) untuk mengakses. Bagi pendaftaran akaun pengguna, sila gunakan akaun emel seperti mana yang terkandung dalam rekod staf anda dalam ICMS versi LAMA."
-    
+    staff_removed: "Rekod staf tidak lagi wujud. "
+    student_removed: "Rekod pelajar tidak lagi wujud. "
+    userable_removed2: "Sila log masuk untuk padanan semula ATAU padam dan daftar akaun baru."
     ###
      
     roles_modules: "Peranan & Modul Berkaitan"
