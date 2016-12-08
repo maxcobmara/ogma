@@ -591,6 +591,9 @@ en:
     subject2: "Note, upon certain role assignment may restrict user access on certain modules as stated in below table"
     remove_module_access: to remove selected module access
     sign_in_required: "Selected menu link require access in NEW version of ICMS. Please sign-in accordingly. For sign-up purpose, kindly use email account as of your PREVIOUS ICMS version staff record."
+    staff_removed: "Staff record no longer exist. "
+    student_removed: "Student record no longer exist. "
+    userable_removed2: "Please login to rematch OR remove and signup for a new one."
     
     ###
     roles_modules: "Roles & Corresponding Modules"

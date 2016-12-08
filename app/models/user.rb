@@ -209,22 +209,25 @@ class User < ActiveRecord::Base
     
     current_staff=userable_id
     exist_unit_of_staff_in_position = Position.where('unit is not null and staff_id is not null').map(&:staff_id).uniq
-    if exist_unit_of_staff_in_position.include?(current_staff)   
-      
-      current_unit=userable.positions.first.unit
-      #replace current_unit value if academician also a Unit Leader (23)
-      current_roles=User.where(userable_id: userable_id).first.roles.map(&:name) #"Unit Leader" #userable.roles.map(&:role_id) 
-      current_unit=unit_lead_by_academician if current_roles.include?("Unit Leader") && Programme.roots.map(&:name).include?(current_unit)
-      
-      if current_unit=="Pentadbiran"
-        unit_members = Position.where('unit=? OR unit=? OR unit=? OR unit=?', "Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor").map(&:staff_id).uniq-[nil]+Position.where('unit=?', current_unit).map(&:staff_id).uniq-[nil]
-      elsif ["Teknologi Maklumat", "Pusat Sumber", "Kewangan & Akaun", "Sumber Manusia"].include?(current_unit) || Programme.roots.map(&:name).include?(current_unit)
-        unit_members = Position.where('unit=?', current_unit).map(&:staff_id).uniq-[nil]
-      else #logistik & perkhidmatan inc."Unit Perkhidmatan diswastakan / Logistik" or other UNIT just in case - change of unit name, eg. Perpustakaan renamed as Pusat Sumber
-        unit_members = Position.where('unit ILIKE(?)', "%#{current_unit}%").map(&:staff_id).uniq-[nil] 
+    if exist_unit_of_staff_in_position
+      if exist_unit_of_staff_in_position.include?(current_staff) 
+	current_unit=userable.positions.first.unit
+	#replace current_unit value if academician also a Unit Leader (23)
+	current_roles=User.where(userable_id: userable_id).first.roles.map(&:name) #"Unit Leader" #userable.roles.map(&:role_id) 
+	current_unit=unit_lead_by_academician if current_roles.include?("Unit Leader") && Programme.roots.map(&:name).include?(current_unit)
+	
+	if current_unit=="Pentadbiran"
+	  unit_members = Position.where('unit=? OR unit=? OR unit=? OR unit=?', "Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor").map(&:staff_id).uniq-[nil]+Position.where('unit=?', current_unit).map(&:staff_id).uniq-[nil]
+	elsif ["Teknologi Maklumat", "Pusat Sumber", "Kewangan & Akaun", "Sumber Manusia"].include?(current_unit) || Programme.roots.map(&:name).include?(current_unit)
+	  unit_members = Position.where('unit=?', current_unit).map(&:staff_id).uniq-[nil]
+	else #logistik & perkhidmatan inc."Unit Perkhidmatan diswastakan / Logistik" or other UNIT just in case - change of unit name, eg. Perpustakaan renamed as Pusat Sumber
+	  unit_members = Position.where('unit ILIKE(?)', "%#{current_unit}%").map(&:staff_id).uniq-[nil] 
+	end
+      else
+	unit_members = []#Position.find(:all, :conditions=>['unit=?', 'Teknologi Maklumat']).map(&:staff_id).uniq-[nil]
       end
     else
-      unit_members = []#Position.find(:all, :conditions=>['unit=?', 'Teknologi Maklumat']).map(&:staff_id).uniq-[nil]
+      unit_members=[]
     end
     unit_members   #collection of staff_id (member of a unit/dept) - use in model/user.rb (for auth_rules)
     #where('staff_id IN(?)', unit_members) ##use in ptdo.rb (controller - index)
@@ -257,9 +260,13 @@ class User < ActiveRecord::Base
   #for Timbalan Pengarah Pengurusan only - for accessible of staff training application status list w/o assignment on 'Administration' role
   def admin_subordinates
     mypost=userable.positions.first
-    post_name=mypost.name
-    if post_name=="Timbalan Pengarah (Pengurusan)"
-      adm_sub=mypost.descendants.map(&:staff_id)
+    if mypost
+      post_name=mypost.name
+      if post_name=="Timbalan Pengarah (Pengurusan)"
+        adm_sub=mypost.descendants.map(&:staff_id)
+      else
+        adm_sub=[]
+      end
     else
       adm_sub=[]
     end
@@ -269,22 +276,26 @@ class User < ActiveRecord::Base
   #for Pengarah - access - staff training - ptdo
   def director_subordinates
     mypost=userable.positions.first
-    post_name=mypost.name
-    if college.code=="amsas"
-      dir_sub=[]
-      #any of these positions can approve anybody application
-      directors_post=Position.where('name ILIKE(?) OR name ILIKE(?) OR name ILIKE(?)', 'Pengarah%', 'Komandan%', 'Ketua Penolong Pengarah%')
-      if directors_post.pluck(:staff_id).include?(userable_id)
-        directors_post.each{|x|dir_sub+=x.descendants.pluck(:staff_id)}
+    if mypost
+      post_name=mypost.name
+      if college.code=="amsas"
+	dir_sub=[]
+	#any of these positions can approve anybody application
+	directors_post=Position.where('name ILIKE(?) OR name ILIKE(?) OR name ILIKE(?)', 'Pengarah%', 'Komandan%', 'Ketua Penolong Pengarah%')
+	if directors_post.pluck(:staff_id).include?(userable_id)
+	  directors_post.each{|x|dir_sub+=x.descendants.pluck(:staff_id)}
+	else
+	  dir_sub=[]
+	end
       else
-        dir_sub=[]
+	if post_name=="Pengarah"
+	  dir_sub=mypost.descendants.map(&:staff_id)
+	else
+	  dir_sub=[]
+	end
       end
     else
-      if post_name=="Pengarah"
-        dir_sub=mypost.descendants.map(&:staff_id)
-      else
-        dir_sub=[]
-      end
+      dir_sub=[]
     end
     dir_sub
   end
