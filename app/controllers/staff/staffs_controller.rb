@@ -80,10 +80,17 @@ end
   # DELETE /staffs/1
   # DELETE /staffs/1.json
   def destroy
-    @staff.destroy
+#     @staff.destroy
     respond_to do |format|
-      format.html { redirect_to staff_infos_path }
-      format.json { head :no_content }
+      if @info.destroy
+        format.html { redirect_to staff_infos_path }
+        format.json { head :no_content }
+      else
+        errors_line="<ol>"
+        @info.errors.each{|k,v| errors_line+="<li>#{v}</li>"}
+        format.html { redirect_to staff_info_path(@info), notice: ( I18n.t('activerecord.errors.invalid_removal')+"<BR>"+errors_line+"</ol>").html_safe}
+        format.json { head :no_content }
+      end
     end
   end
 

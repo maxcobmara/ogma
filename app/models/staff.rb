@@ -5,6 +5,8 @@ class Staff < ActiveRecord::Base
   validates :icno, presence: true#, numericality: true, length: { is: 12 }, uniqueness: true
   validates_presence_of     :name, :coemail, :code, :appointdt, :current_salary #appointment date must exist be4 can apply leave, salary - for transport class
 
+  before_destroy :valid_for_removal
+  
   belongs_to :title,        :class_name => 'Title',           :foreign_key => 'titlecd_id'
   belongs_to :staffgrade,   :class_name => 'Employgrade',     :foreign_key => 'staffgrade_id'
   belongs_to :staff_shift,  :foreign_key => 'staff_shift_id'
@@ -12,7 +14,7 @@ class Staff < ActiveRecord::Base
 
   has_many :users, as: :userable
 
-  has_many  :positions
+  has_many  :positions, :dependent => :nullify
   has_many  :tenants
   
   has_many :vehicles, :dependent => :destroy
@@ -100,6 +102,11 @@ class Staff < ActiveRecord::Base
   has_many :evaluate_courses
   has_many :average_scores_lecturer, class_name: 'AverageCourse'
   has_many :average_scores_verifier, class_name: 'AverageCourse'
+  
+  has_many :instructor_appraiseds, class_name: 'InstructorAppraisal', foreign_key: 'staff_id'
+  has_many :instructor_qcs, class_name: 'InstructorAppraisal', foreign_key: 'check_qc'
+  has_many :averaged_instructors, class_name: 'AverageInstructor', foreign_key: 'instructor_id'
+  has_many :averaged_evaluators, class_name: 'AverageInstructor', foreign_key: 'evaluator_id'
   
   has_one :mentor, foreign_key: 'staff_id'
   
@@ -287,6 +294,27 @@ class Staff < ActiveRecord::Base
       grandparent_post_ids=Position.where(id: parent_post_ids).map(&:parent_id)
       grandparent_staff_ids=Position.where(id: grandparent_post_ids).pluck(:staff_id)
     end
+    
+    def valid_for_removal
+     ins=instructor_appraiseds.count
+     avg=averaged_instructors.count
+     ten=tenants.count
+     if ins > 0
+       errors.add(:base, "#{I18n.t('instructor_appraisal.title')} : #{ins} #{I18n.t('actions.records')}")
+     end
+     if avg > 0
+       errors.add(:base, "#{I18n.t('average_instructor.title')} : #{avg} #{I18n.t('actions.records')}")
+     end
+     if ten > 0
+       errors.add(:base, "#{I18n.t('student.tenant.title2')} : #{ten} #{I18n.t('actions.records')}")
+     end
+     if ins > 0 || avg > 0 || ten > 0
+       return false
+     else
+       return true
+     end
+   end
+   
   
 end
 

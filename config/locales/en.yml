@@ -409,6 +409,8 @@ en:
             hod_accept_on: Head of Department Accepted Date
             own_car_notes: Reason
             
+        invalid_removal: "Record removal are not allowed. Please remove dependant records (as per listed below), before proceed."
+            
   #common
   search:  Search
   datelabel: Date
