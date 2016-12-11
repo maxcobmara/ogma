@@ -63,10 +63,16 @@ class Campus::LocationsController < ApplicationController
   end
   
   def destroy
-    @location.destroy
     respond_to do |format|
-      format.html { redirect_to campus_locations_url }
-      format.json { head :no_content }
+      if @location.destroy
+        format.html { redirect_to campus_locations_url }
+        format.json { head :no_content }
+      else
+        errors_line=""
+        @location.errors.each{|k,v| errors_line+="<li>#{v}</li>"}
+        format.html { redirect_to campus_location_path(@location), notice: ("<span style='color: red;'>"+ I18n.t('activerecord.errors.invalid_removal')+"<ol>"+errors_line+"</ol></span>").html_safe}
+        format.json { head :no_content }
+      end
     end
   end
   

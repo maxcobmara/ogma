@@ -86,9 +86,9 @@ end
         format.html { redirect_to staff_infos_path }
         format.json { head :no_content }
       else
-        errors_line="<ol>"
+        errors_line=""
         @info.errors.each{|k,v| errors_line+="<li>#{v}</li>"}
-        format.html { redirect_to staff_info_path(@info), notice: ( I18n.t('activerecord.errors.invalid_removal')+"<BR>"+errors_line+"</ol>").html_safe}
+        format.html { redirect_to staff_info_path(@info), notice: ("<span style='color: red;'>"+ I18n.t('activerecord.errors.invalid_removal')+"<ol>"+errors_line+"</ol></span>").html_safe}
         format.json { head :no_content }
       end
     end

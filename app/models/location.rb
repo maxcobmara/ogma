@@ -1,8 +1,9 @@
 class Location < ActiveRecord::Base
   
   has_ancestry :cache_depth => true, orphan_strategy: :restrict
-  before_validation     :set_combo_code
+  before_validation   :set_combo_code
   before_save           :set_combo_code, :set_status
+  before_destroy      :valid_for_removal
   after_touch           :update_status
 
   validates_presence_of  :code, :name, :combo_code
@@ -281,6 +282,15 @@ class Location < ActiveRecord::Base
         csv << [(I18n.t 'student.tenant.total_tenants'), @tenantbed_per_block.count.to_s]
     end
     
+  end
+  
+  def valid_for_removal
+    if tenants.count > 0
+      errors.add(:base, "#{I18n.t('student.tenant.person').titleize} : #{tenants.count} #{I18n.t('actions.records')}")
+      return false
+    else
+      return true
+    end
   end
   
 end

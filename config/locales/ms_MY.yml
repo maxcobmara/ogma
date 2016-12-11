@@ -390,7 +390,7 @@ ms_MY:
             hod_accept_on: Tarikh Penerimaan Ketua Jabatan
             own_car_notes: Sebab
 
-        invalid_removal: "Pemadaman rekod tidak dibenarkan. Sila padam rekod - rekod berkaitan (seperti disenaraikan di bawah) terlebih dahulu."
+        invalid_removal: "Pemadaman rekod tidak dibenarkan.<br>Sila padam rekod - rekod berkaitan terlebih dahulu."
 
   search:  Cari
   datelabel: Tarikh

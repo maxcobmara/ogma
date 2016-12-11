@@ -24,7 +24,7 @@ class Staff < ActiveRecord::Base
   has_many :shift_histories, :dependent => :destroy
   accepts_nested_attributes_for :shift_histories, :reject_if => lambda {|a| a[:deactivate_date].blank?}
 
-  has_many :assets, :foreign_key => "assignedto_id"
+  has_many :assets, :foreign_key => "assignedto_id", :dependent => :nullify
   has_many :reporters, :class_name => 'AssetDefect', :foreign_key => 'reported_by'
 
   has_many :asset_disposal, :foreign_key => 'disposed_by'
@@ -48,7 +48,7 @@ class Staff < ActiveRecord::Base
   has_many :attendingstaffs,    :class_name => 'StaffAttendance', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'#, :dependent => :destroy #attendance staff name
   has_many :approvers,          :class_name => 'StaffAttendance', :foreign_key => 'approved_by' # approver name
   
-  has_many :fingerprint_owners, :class_name => 'Fingerprint', :foreign_key => 'thumb_id'
+  has_many :fingerprint_owners, :class_name => 'Fingerprint', :foreign_key => 'thumb_id', :dependent => :destroy
   has_many :fingerprint_approvers, :class_name => 'Fingerprint', :foreign_key => 'approved_by'
   
   has_many :trainingnotes,    :class_name => 'Trainingnote'
@@ -79,29 +79,29 @@ class Staff < ActiveRecord::Base
 
   #Link to model Staff Appraisal
   has_many :appraisals,     :class_name => 'StaffAppraisal', :foreign_key => 'staff_id', :dependent => :destroy
-  has_many :eval1_officers, :class_name => 'StaffAppraisal', :foreign_key => 'eval1_by'
-  has_many :eval2_officers, :class_name => 'StaffAppraisal', :foreign_key => 'eval2_by'
+  has_many :eval1_officers, :class_name => 'StaffAppraisal', :foreign_key => 'eval1_by', :dependent => :nullify
+  has_many :eval2_officers, :class_name => 'StaffAppraisal', :foreign_key => 'eval2_by', :dependent => :nullify
 
   #Link to Model travel_claim
   has_many :travel_claims, :dependent => :destroy
-  has_many :approvers,           :class_name => 'TravelClaim',      :foreign_key => 'approved_by'
-  has_many :checkers,            :class_name => 'TravelClaim',      :foreign_key => 'checked_by'
+  has_many :approvers,           :class_name => 'TravelClaim',      :foreign_key => 'approved_by', :dependent => :nullify
+  has_many :checkers,            :class_name => 'TravelClaim',      :foreign_key => 'checked_by', :dependent => :nullify
 
   #links to Model TravelRequest
   #has_many :staffs,             :class_name => 'TravelRequest', :foreign_key => 'staff_id', :dependent => :destroy #staff name
   #has_many :replacements, :class_name => 'TravelRequest', :foreign_key => 'replaced_by' #replacement name
   #has_many :headofdepts,  :class_name => 'TravelRequest', :foreign_key => 'hod_id' #hod
-  has_many :travelrequests, :class_name => 'TravelRequest'
-  has_many :replacor_travelstaff, :class_name => 'TravelRequest'
-  has_many :travelrequest_approver, :class_name => 'TravelRequest'
+  has_many :travelrequests, :class_name => 'TravelRequest', :dependent => :destroy   # dependencies as vehicles
+  has_many :replacor_travelstaff, :class_name => 'TravelRequest', :dependent => :nullify
+  has_many :travelrequest_approver, :class_name => 'TravelRequest', :dependent => :nullify
 
   #25Jan2015
   has_many :circulations
   has_many :documents, :through => :circulations
   
   has_many :evaluate_courses
-  has_many :average_scores_lecturer, class_name: 'AverageCourse'
-  has_many :average_scores_verifier, class_name: 'AverageCourse'
+  has_many :average_scores_lecturer, class_name: 'AverageCourse', foreign_key: 'lecturer_id'
+  has_many :average_scores_verifier, class_name: 'AverageCourse', foreign_key: 'principal_id'
   
   has_many :instructor_appraiseds, class_name: 'InstructorAppraisal', foreign_key: 'staff_id'
   has_many :instructor_qcs, class_name: 'InstructorAppraisal', foreign_key: 'check_qc'
@@ -296,9 +296,17 @@ class Staff < ActiveRecord::Base
     end
     
     def valid_for_removal
+     evc=evaluate_courses.count
+     avc=average_scores_lecturer.count
      ins=instructor_appraiseds.count
      avg=averaged_instructors.count
      ten=tenants.count
+     if evc > 0
+       errors.add(:base, "#{I18n.t('evaluate_course.title')} : #{evc} #{I18n.t('actions.records')}")
+     end
+     if avc > 0
+       errors.add(:base, "#{I18n.t('average_course.title')} : #{avc} #{I18n.t('actions.records')}")
+     end
      if ins > 0
        errors.add(:base, "#{I18n.t('instructor_appraisal.title')} : #{ins} #{I18n.t('actions.records')}")
      end
@@ -308,7 +316,7 @@ class Staff < ActiveRecord::Base
      if ten > 0
        errors.add(:base, "#{I18n.t('student.tenant.title2')} : #{ten} #{I18n.t('actions.records')}")
      end
-     if ins > 0 || avg > 0 || ten > 0
+     if evc > 0 || avc > 0 || ins > 0 || avg > 0 || ten > 0
        return false
      else
        return true
