@@ -1530,8 +1530,11 @@ en:
     
     postinfos:
       title: Post Information
+      title2: Post Warrant
       new: New Post Information
+      new2: New Post Warrant
       edit: Edit Post Information
+      edit2: Edit Post Warrant
       details: Details
       staffgrade_id: Grade
       post_count: Position Count

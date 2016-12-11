@@ -17,8 +17,9 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th{width: '15%'}=sort_link(@search, :name, (t 'staff.employgrades.name'))
-        %th{width: '15%'}=sort_link(@search, :group_id, (t 'staff.employgrades.group_id'))
+        %th{width: '45%'}=sort_link(@search, :name, (t 'staff.employgrades.name'))
+        %th{width: '45%'}=sort_link(@search, :group_id, (t 'staff.employgrades.group_id'))
+        %th{width: '10%'}=t('actions.delete')
         
     %tbody
     = render "index_search"
@@ -26,5 +27,6 @@
       %tr
         %td=link_to employgrade.name, edit_staff_employgrade_path(employgrade)
         %td=h employgrade.grade_group
-		
+        %td= link_to content_tag(:i, "", class: "fa fa-trash-o"), staff_employgrade_path(employgrade), :method => 'delete',:data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }
+  
   .right{style:"padding:0 30px; margin:0;"}= paginate @employgrades, :theme => 'twitter-bootstrap-3'

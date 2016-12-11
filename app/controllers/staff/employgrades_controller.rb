@@ -58,7 +58,7 @@ class Staff::EmploygradesController < ApplicationController
   end
   
   def destroy
-    @employgrade = Employgrade.find(params[:id])
+    #@employgrade = Employgrade.find(params[:id])
     @employgrade.destroy
 
     respond_to do |format|
