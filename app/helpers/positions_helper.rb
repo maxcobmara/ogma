@@ -26,7 +26,8 @@ module PositionsHelper
   end
   
   def unit_name(position)
-    if position.name=='Jurulatih'
+    #if position.name=='Jurulatih'
+    if !(position.is_root? || position.name=='Setiausaha Pejabat') && position.college.code=='amsas'
       a="<BR>(#{position.unit})"
     else
       a=""
