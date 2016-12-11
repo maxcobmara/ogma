@@ -27,7 +27,7 @@
       %tr
         %th{width: '10%'}= t 'location.code'
         %th{width: '10%'}= t 'staff.icno'
-        %th{width: '20%'}= t 'staff.name'
+        %th{width: '20%'}= sort_link(@search, :staff_name,(t 'staff.name')) 
         %th{width: '10%'}= t 'student.tenant.key.provided'
         %th{width: '10%'}= t 'student.tenant.key.expected'
         %th{width: '10%'}= t 'student.tenant.key.returned'
@@ -40,7 +40,7 @@
     - @tenants.each do |tenant|
       - unless tenant.staff.nil?
 
-        - if tenant.damages.count==0; damages_text = (t 'no2'); else damages_text = (t 'yes2'); end
+        - if tenant.damages.count==0; damages_text = (fa_icon('times')); else damages_text = (fa_icon('check')); end
         - damage_description = []
 
         %tr
@@ -56,7 +56,7 @@
             - else
               =tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
           %td= tenant.keyreturned.try(:strftime, '%d %b %Y')
-          %td= tenant.force_vacate? ? (t 'yes2') : (t 'no2')
+          %td= tenant.force_vacate? ? (fa_icon('check')) : (fa_icon('times'))
           %td= damages_text
           %td
             - if tenant.damages.count>0
