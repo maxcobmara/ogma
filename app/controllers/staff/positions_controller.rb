@@ -48,7 +48,11 @@ class Staff::PositionsController < ApplicationController
     @position.destroy
 
     respond_to do |format|
-      format.html { redirect_to("http://#{request.host}:3000/positions") }
+      if current_user.college.code=='kskbjb'
+        format.html { redirect_to("http://#{request.host}:3000/positions") }
+      else
+        format.html { redirect_to staff_positions_path}
+      end
       format.xml  { head :ok }
     end
   end

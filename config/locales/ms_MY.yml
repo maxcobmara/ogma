@@ -1499,8 +1499,11 @@ ms_MY:
     
     postinfos:
       title: Butiran Perjawatan
+      title2: Waran Perjawatan
       new: Butiran Perjawatan Baru
+      new2: Waran Perjawatan Baru
       edit: Sunting Butiran Perjawatan
+      edit2: Sunting Waran Perjawatan
       details: Butiran
       staffgrade_id: Gred
       post_count: Bilangan Jawatan

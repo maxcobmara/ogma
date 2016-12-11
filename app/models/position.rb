@@ -23,7 +23,7 @@ class Position < ActiveRecord::Base
   end
   
   def titleize_name
-    self.name = name.titleize
+    self.name = name.titleize if name.include?("(M)")==false
   end
   
   def set_combo_code

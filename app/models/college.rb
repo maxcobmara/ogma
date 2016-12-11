@@ -31,6 +31,7 @@ class College < ActiveRecord::Base
   has_many :travel_requests
   has_many :travel_claims
   has_many :positions
+  has_many :postinfos
   # staffs
   
   serialize :data, Hash
