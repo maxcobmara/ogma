@@ -1871,6 +1871,7 @@ en:
     staff_id: Staff
     is_acting: Is Acting 
     postinfo_id: Position Info
+    postinfo_id2: Position Warrant
     status: Status
     parent_id: Subordinate of
     no_staff: No Staff

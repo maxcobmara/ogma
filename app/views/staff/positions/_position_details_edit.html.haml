@@ -58,9 +58,12 @@
     = f.text_area :tasks_other, :size => "60x7", class: 'form-control'
 .form-group
   .col-sm-2.control-label
-    = f.label t 'position.postinfo_id', for: :postinfo_id
+    - if current_user.college.code=='amsas'
+      = f.label t 'position.postinfo_id2', for: :postinfo_id
+    - else
+      = f.label t 'position.postinfo_id', for: :postinfo_id
   .col-md-4
-    = f.collection_select :postinfo_id, Postinfo.all.order(details: :asc), :id, :details_grade, {:include_blank => t('select')}, {class: 'selectpicker', "data-width"=>"auto"}
+    = f.collection_select :postinfo_id, Postinfo.all.sort_by{|x|x.employgrade.gred_no}, :id, :details_grade, {:include_blank => t('select')}, {class: 'selectpicker', "data-width"=>"auto"}
 .form-group
   .col-sm-2.control-label
     = f.label t 'position.status', for: :status
