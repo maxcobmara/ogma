@@ -1764,6 +1764,7 @@ ms_MY:
     staff_id: Staf
     is_acting: Bertindak Sebagai 
     postinfo_id: Butiran Perjawatan
+    postinfo_id2: Waran Perjawatan
     status: Status
     parent_id: Bawahan kepada
     no_staff: Tiada Staff

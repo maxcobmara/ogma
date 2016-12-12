@@ -402,7 +402,10 @@
                   - permitted_to? :read, :staff_employgrades do
                     %li= link_to t('staff.employgrades.title'), staff_employgrades_path
                   - permitted_to? :read, :staff_postinfos do
-                    %li= link_to t('staff.postinfos.title'), staff_postinfos_path
+                    - if current_user.college.code=='amsas'
+                      %li= link_to t('staff.postinfos.title2'), staff_postinfos_path
+                    - else
+                      %li= link_to t('staff.postinfos.title'), staff_postinfos_path
                 
                 
                 
