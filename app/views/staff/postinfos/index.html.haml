@@ -17,10 +17,10 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th{width: '25%'}=sort_link(@search, :details, (t 'staff.postinfos.details'))
-        %th{width: '25%'}=(t 'staff.postinfos.position')
-        %th{width: '25%'}=sort_link(@search, :staffgrade_id, (t 'staff.postinfos.staffgrade_id'))
-        %th{width: '25%'}=sort_link(@search, :post_count, (t 'staff.postinfos.post_count'))
+        %th{width: '35%'}=sort_link(@search, :details, (t 'staff.postinfos.details'))
+        %th{width: '35%'}=(t 'staff.postinfos.position')
+        %th{width: '15%'}=sort_link(@search, :staffgrade_id, (t 'staff.postinfos.staffgrade_id'))
+        %th{width: '15%'}=sort_link(@search, :post_count, (t 'staff.postinfos.post_count'))
         
     %tbody
     = render "index_search"

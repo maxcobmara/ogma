@@ -8,10 +8,14 @@
   .col-sm-2.control-label
     =f.label t 'staff.postinfos.staffgrade_id', for: :staffgrade_id
   .col-sm-4
-    = f.collection_select :staffgrade_id, Employgrade.all.order(group_id: :asc, name: :asc), :id, :name_and_group,{ :include_blank => (t 'select')}, {class: 'selectpicker'}
+    /Employgrade.all.order(group_id: :asc, name: :asc)  
+    /Employgrade.where.not(group_id: nil).sort_by{|x|[x.gradegroup, x.gred_no]}
+    /Employgrade.where.not(group_id: nil).sort_by{|x|[x.grade_group, x.gred_str, x.gred_no]
+    /Employgrade.where.not(group_id: nil).sort_by{|x|[x.gred_no, x.gred_str, x.grade_group]}
+    = f.collection_select :staffgrade_id, Employgrade.where.not(group_id: nil).sort_by{|x|[x.grade_group, x.gred_no, x.gred_str]}, :id, :name_and_group,{ :include_blank => (t 'select')}, {class: 'selectpicker', "data-width" => "auto"}
 
 .form-group
   .col-sm-2.control-label
     = f.label t 'staff.postinfos.post_count', for: :post_count
-  .col-md-4
+  .col-md-2
     = f.text_field :post_count, class: 'form-control'

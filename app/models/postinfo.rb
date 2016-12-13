@@ -7,6 +7,10 @@ class Postinfo < ActiveRecord::Base
     "#{details}"+" - "+"#{employgrade.name_and_group}"
   end
   
+  def details_start
+    details[0, 5]
+  end
+  
   def self.position_search(query)
     ids=Position.where(id: query).pluck(:postinfo_id)
     where(id: ids)
