@@ -107,7 +107,11 @@ Ogma::Application.routes.draw do
     resources :travel_claims_transport_groups
     resources :travel_claim_mileage_rates
     resources :employgrades
-    resources :postinfos
+    resources :postinfos do
+      collection do
+        get :postinfo_list
+      end
+    end
     resources :mentors
   end
 

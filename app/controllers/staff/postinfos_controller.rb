@@ -1,5 +1,6 @@
 class Staff::PostinfosController < ApplicationController
-  filter_resource_access
+  filter_access_to :index, :new, :create, :postinfo_list, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_postinfo, only: [:show, :edit, :update, :destroy]
   # GET /postinfos
   # GET /postinfos.xml
@@ -26,7 +27,7 @@ class Staff::PostinfosController < ApplicationController
         format.html { redirect_to staff_postinfos_path, :notice =>t('staff.postinfos.title')+t('actions.created')}
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { render :action => "new" }
         format.xml  { render :xml => @postinfo.errors, :status => :unprocessable_entity }
       end
     end
@@ -64,6 +65,19 @@ class Staff::PostinfosController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(staff_postinfos_url) }
       format.xml  { head :ok }
+    end
+  end
+  
+  def postinfo_list
+    @search = Postinfo.search(params[:q])
+    @postinfos = @search.result
+    respond_to do |format|
+      format.pdf do
+        pdf = Postinfo_listPdf.new(@postinfos, view_context, current_user.college)
+        send_data pdf.render, filename: "postinfo_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
     end
   end
   

@@ -1,7 +1,7 @@
 = search_form_for @search, url: staff_postinfos_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
     %td=f.text_field :details_cont, class: 'form-control'
-    %td= f.collection_select :position_search, Position.where(postinfo_id: Postinfo.all.pluck(:id)), :id, :name, {include_blank: (t 'actions.all_records')},{class: 'selectpicker'}
+    %td= f.collection_select :position_search, Position.where(postinfo_id: Postinfo.all.pluck(:id)), :id, :name_unit, {include_blank: (t 'actions.all_records')},{class: 'selectpicker', "data-width" => "auto"}
     %td=select_tag('q[staffgrade_id_eq]', options_for_select([[(t 'actions.all_records'),'']]+Employgrade.where(id: Postinfo.all.pluck(:staffgrade_id)).sort_by{|x|[x.name[1, x.name.size-1].to_i ]}.reverse.collect{|x|[x.name_and_group, x.id]}) , class: 'form-control')
     %td 
       .input-group

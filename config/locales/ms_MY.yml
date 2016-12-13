@@ -342,6 +342,9 @@ ms_MY:
         staff_id: Disediakan oleh
       employgrade:
         name: Gred
+      postinfo:
+        details: Butiran
+        staffgrade_id: Gred
         
     errors:
         template:

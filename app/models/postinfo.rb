@@ -3,6 +3,8 @@ class Postinfo < ActiveRecord::Base
   belongs_to :employgrade, :foreign_key => "staffgrade_id"
   belongs_to :college
   
+  validates :details, :staffgrade_id, presence: true
+  
   def details_grade 
     "#{details}"+" - "+"#{employgrade.name_and_group}"
   end

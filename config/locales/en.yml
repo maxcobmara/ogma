@@ -359,6 +359,9 @@ en:
         staff_id: Prepared by
       employgrade:
         name: Grade
+      postinfo:
+        details: Details
+        staffgrade_id: Grade
  
     errors:
         template:

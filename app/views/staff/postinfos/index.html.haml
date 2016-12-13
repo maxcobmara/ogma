@@ -8,17 +8,14 @@
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_postinfo_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li.dropdown
-      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-        = fa_icon "print", text: (t 'actions.print')
-        %b.caret
+    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  postinfo_list_staff_postinfos_path(params.merge(format: 'pdf' ))
 
 .row
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th{width: '35%'}=sort_link(@search, :details, (t 'staff.postinfos.details'))
-        %th{width: '35%'}=(t 'staff.postinfos.position')
+        %th{width: '25%'}=sort_link(@search, :details, (t 'staff.postinfos.details'))
+        %th{width: '45%'}=(t 'staff.postinfos.position')+", Unit"
         %th{width: '15%'}=sort_link(@search, :staffgrade_id, (t 'staff.postinfos.staffgrade_id'))
         %th{width: '15%'}=sort_link(@search, :post_count, (t 'staff.postinfos.post_count'))
         
@@ -27,7 +24,10 @@
     - @postinfos.each do |postinfo|
       %tr
         %td=link_to postinfo.details, edit_staff_postinfo_path(postinfo)
-        %td=h postinfo.positions.blank? ? "" : postinfo.positions[0].name
+        %td
+          - plist=""
+          - postinfo.positions.each {|post|plist+="<li>"+post.name_unit+"</li>"}
+          =h postinfo.positions.blank? ? "" : "<ol>#{plist}</ol>".html_safe
         %td=h postinfo.employgrade.name 
         %td=h postinfo.post_count
 
