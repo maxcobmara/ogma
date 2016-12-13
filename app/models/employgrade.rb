@@ -7,6 +7,7 @@ class Employgrade < ActiveRecord::Base
   has_many :staffemployschemes, :through => :staffemploygrades
   
   validates_uniqueness_of :name, :scope => :group_id
+  validates_presence_of :name
   
   def grade_group
     (DropDown::GROUP.find_all{|disp, value| value == group_id}).map {|disp, value| disp}[0]
