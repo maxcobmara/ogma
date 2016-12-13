@@ -357,6 +357,8 @@ en:
         trainingnotes: Training Note
       trainingnotes:
         staff_id: Prepared by
+      employgrade:
+        name: Grade
  
     errors:
         template:

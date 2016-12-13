@@ -340,6 +340,8 @@ ms_MY:
         trainingnotes: Nota Latihan
       trainingnotes:
         staff_id: Disediakan oleh
+      employgrade:
+        name: Gred
         
     errors:
         template:

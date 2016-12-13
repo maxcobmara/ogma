@@ -1,6 +1,6 @@
 - model_class = Postinfo
 .page-header
-  %h1= t 'staff.postinfos.edit'
+  %h1= @postinfo.college.code=='amsas' ? (t 'staff.postinfos.edit2') : (t 'staff.postinfos.edit')
   
 .row
   = form_for [:staff, @postinfo],  html: { multipart: true, class: 'form-horizontal' }  do |f| 
@@ -15,4 +15,3 @@
             = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_postinfos_path, :class => 'btn btn-default'
           .col-sm-4
             = f.submit t('update'), class: "btn btn-primary" 
- 
