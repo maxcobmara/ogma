@@ -23,10 +23,18 @@
         
     %tbody
     = render "index_search"
-    - @employgrades.each do |employgrade|
+    /Employgrade.where.not(group_id: nil).sort_by{|x|[x.grade_group, x.gred_no, x.gred_str]}
+    /- @employgrades.each do |employgrade|
+    - @employgrades.where.not(group_id: nil).sort_by{|x|[x.grade_group, x.gred_no, x.gred_str]}.each do |employgrade|
       %tr
         %td=link_to employgrade.name, edit_staff_employgrade_path(employgrade)
         %td=h employgrade.grade_group
-        %td= link_to content_tag(:i, "", class: "fa fa-trash-o"), staff_employgrade_path(employgrade), :method => 'delete',:data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }
+        %td=employgrade.valid_for_removal==true ? (link_to content_tag(:i, "", class: "fa fa-trash-o"), staff_employgrade_path(employgrade), :method => 'delete',:data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }) : ""
+        
+    - @employgrades.where(group_id: nil).sort_by{|x|[x.gred_no, x.gred_str]}.each do |employgrade|
+      %tr
+        %td=link_to employgrade.name, edit_staff_employgrade_path(employgrade)
+        %td=h employgrade.grade_group
+        %td=employgrade.valid_for_removal==true ? (link_to content_tag(:i, "", class: "fa fa-trash-o"), staff_employgrade_path(employgrade), :method => 'delete',:data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }) : ""
   
   .right{style:"padding:0 30px; margin:0;"}= paginate @employgrades, :theme => 'twitter-bootstrap-3'

@@ -1,6 +1,8 @@
 class Employgrade < ActiveRecord::Base
-  has_many :staffs, :class_name => 'Staffs', :foreign_key => 'staffgrade_id'
-  has_many :staffgrades, :class_name => 'Positions'
+  before_destroy :valid_for_removal
+  
+  has_many :staffs, :class_name => 'Staff', :foreign_key => 'staffgrade_id'
+  has_many :staffgrades, :class_name => 'Position', :foreign_key => 'staffgrade_id'
   has_one :rank
   
   has_many :staffemploygrades
@@ -32,6 +34,18 @@ class Employgrade < ActiveRecord::Base
   
   def gred_str
     name.gsub(/[0-9]/, '')
+  end
+  
+  #hide delete icon in index
+  def valid_for_removal
+    stf=staffs.count
+    stg=staffgrades.count
+    #seg=staffemploygrades.count
+    if stf > 0 || stg > 0 || rank # || seg.count > 0
+      return false
+    else
+      return true
+    end
   end
  
 end

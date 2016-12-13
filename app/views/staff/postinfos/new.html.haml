@@ -1,6 +1,6 @@
 - model_class = Postinfo
 .page-header
-  %h1= t 'staff.postinfos.new'
+  %h1=current_user.college.code=='amsas' ?  (t 'staff.postinfos.new2') : (t 'staff.postinfos.new')
   
 .row
   = form_for [:staff, @postinfo],  html: { multipart: true, class: 'form-horizontal' }  do |f| 

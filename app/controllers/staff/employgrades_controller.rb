@@ -58,11 +58,14 @@ class Staff::EmploygradesController < ApplicationController
   end
   
   def destroy
-    #@employgrade = Employgrade.find(params[:id])
-    @employgrade.destroy
-
     respond_to do |format|
-      format.html { redirect_to(staff_employgrades_url) }
+      if @employgrade.destroy
+        format.html { redirect_to(staff_employgrades_url) }
+      else
+        errors_line=""
+        @employgrade.errors.each{|k,v| errors_line+="<li>#{v}</li>"}
+        format.html { redirect_to staff_employgrade_path(@employgrade), notice: ("<span style='color: red;'>"+ I18n.t('activerecord.errors.invalid_removal')+"<ol>"+errors_line+"</ol></span>").html_safe}
+      end
       format.xml  { head :ok }
     end
   end
