@@ -34,6 +34,10 @@ class Position < ActiveRecord::Base
     end
   end
   
+  def name_unit
+    "#{name}, #{unit}"
+  end
+  
   #PDF & Exel section  
   def totalpost
     unless postinfo_id.blank?
