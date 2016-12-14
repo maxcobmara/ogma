@@ -6,7 +6,8 @@
   %ul.nav.navbar-nav.navbar-right
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: "bogus"
-= current_user.college.users.map(&:college_id)  
+- if is_developer?
+  = current_user.college.users.map(&:college_id)  
 .row
   %table.table-striped.table-hover.ogma
     %thead
@@ -21,7 +22,8 @@
     %tbody
       = render "search_bar"
       - @user_by_type.each do |user_type, users| 
-        = users.map(&:college_id)
+        - if is_developer?
+          = users.map(&:college_id)
         - for user in users
           %tr
             - if is_developer?
