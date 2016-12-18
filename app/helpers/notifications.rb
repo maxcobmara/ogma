@@ -18,8 +18,12 @@ module Notifications
      current_user.userable_id
    end
  end
-
-
+ 
+ def current_student
+   if is_student?
+     current_user.userable
+   end
+ end
 
  def leave_notifications
   my_first_level_approval  = Leaveforstaff.where(approval1_id: current_staff_id).where(approval1: nil).count
@@ -50,7 +54,7 @@ module Notifications
  end
 
  def late_need_a_reason
-  if current_staff.positions.exists?
+  if current_staff && current_staff.positions.exists?
    StaffAttendance.where(trigger: true).where(reason: nil).where(thumb_id: current_staff.thumb_id).count
   else
     0
@@ -193,7 +197,11 @@ module Notifications
  end
  
   def borrower_student_late_library_books
-    Librarytransaction.where(student_id: current_student_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
+    if current_student_id!=nil
+      Librarytransaction.where(student_id: current_student_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
+    else
+      0
+    end
   end
 
   def tenancy_admin_staff_late_keys_return
@@ -207,11 +215,19 @@ module Notifications
   end
   
   def tenant_staff_late_keys_return
-    Tenant.where(staff_id: current_staff_id).where('keyexpectedreturn <? AND keyreturned is null', Date.today).count
+    if current_staff_id!=nil
+      Tenant.where(staff_id: current_staff_id).where('keyexpectedreturn <? AND keyreturned is null', Date.today).count
+    else
+      0
+    end
   end
 
   def tenant_student_late_keys_return
-    Tenant.where(student_id: current_student_id).where('keyexpectedreturn <? AND keyreturned is null', Date.today).count
+    if current_student_id!=nil
+      Tenant.where(student_id: current_student_id).where('keyexpectedreturn <? AND keyreturned is null', Date.today).count
+    else
+      0
+    end
   end
   
   def approver_weeklytimetable
@@ -288,14 +304,22 @@ module Notifications
   end
   #all colleges
   def final_approval_ptdos 
-    Ptdo.where(unit_approve: true).where(dept_approve: true).where(final_approve: [nil, false]).where(staff_id: current_user.director_subordinates).count
+    if current_staff && current_staff.positions.exists?
+      Ptdo.where(unit_approve: true).where(dept_approve: true).where(final_approve: [nil, false]).where(staff_id: current_user.director_subordinates).count
+    else
+      0
+      end
   end
   
   #kskbjb only TODO - check below againts kskbjb data
   #programme manager - user.unit_members (NOTE - unit approval - auto approved for lecturers)
   #administration staff (Timbalan Pengarah) - user.admin_subordinates
   def dept_approval_ptdos
-    Ptdo.where(unit_approve: true).where(dept_approve: [nil, false]).where(staff_id: current_user.unit_members+current_user.admin_subordinates).count
+    if current_staff && current_staff.positions.exists?
+      Ptdo.where(unit_approve: true).where(dept_approve: [nil, false]).where(staff_id: current_user.unit_members+current_user.admin_subordinates).count
+    else
+      0
+    end
   end
   #unit leader - user.unit_members
   def unit_approval_ptdos

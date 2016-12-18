@@ -29,21 +29,34 @@
             - if is_developer?
               %td=user.college.try(:code).try(:upcase)
             %td= link_to user.email, edit_user_path(user)
-            %td=h user.userable.try(:staff_with_rank)
+            %td=h user.userable && user.userable_type=='Staff' ? user.userable.try(:staff_with_rank) : user.userable.try(:student_with_rank)
             %td
-              - if user.userable
-                = user.userable_type == "Staff" ? list_comma(user.userable.positions.pluck(:name)) : ""
-                = user.userable_type == "Staff" && user.userable.positions.pluck(:unit).present? ? " / "+user.userable.positions.pluck(:unit).first : ""
+              - if user.userable && (user.userable_type == "Staff" || user.userable_type == "Student")
+                =user.userable_type == "Staff" ? (user.userable.positions_units(is_developer?)).html_safe : t('not_applicable')
+                /= user.userable_type == "Staff" ? list_comma(user.userable.positions.pluck(:name)) : ""
+                /= user.userable_type == "Staff" && user.userable.positions.pluck(:unit).present? ? " / "+user.userable.positions.pluck(:unit).first : ""
               - else
-                %span{style: 'color: red;'}
-                  = user.userable_type == "Staff" ? (t 'user.staff_removed') : (t 'user.student_removed')
-                  %br=t 'user.userable_removed2'
+                - unless user.userable_type.blank?
+                  %span{style: 'color: red;'}
+                    = user.userable_type == "Staff" ? (t 'user.staff_removed') : (t 'user.student_removed')
+                    %br=t 'user.userable_removed2'
+                  
             %td.centre
-              - if user.userable
+              - if user.userable && (user.userable_type == "Staff" || user.userable_type == "Student")
                 - a='font-weight: bold;'
               - else
-                - a='color: red; text-decoration: line-through'
-              %span{style: a}    
+                - unless user.userable_type.blank?
+                  - a='color: red; text-decoration: line-through'
+                - else
+                  - a='color: blue;'
+              /- if user.userable
+              /  - a='font-weight: bold;'
+              /- else
+              /  - unless user.userable_type.blank?
+              /    - a='color: red; text-decoration: line-through'
+              /  - else
+              /    - a='color: blue;'
+              %span{style: a}
                 - if user.userable_type == "Staff" 
                   = (t 'staff.title') 
                 - elsif user.userable_type == "Student"

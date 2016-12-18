@@ -475,6 +475,7 @@ ms_MY:
   legend: "Petunjuk :"
   errors_title: Borang mengandungi 
   error: ralat
+  not_applicable: Tidak berkaitan
  
   actions:
     new: Baru
