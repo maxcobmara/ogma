@@ -12,23 +12,30 @@
       %li= link_to content_tag(:li, fa_icon("file-excel-o", text: (t 'actions.import_excel'))), import_excel_library_books_path     
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: 'index_search_bar'
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li.dropdown
+      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+        = fa_icon "external-link", text: (t 'actions.print')
+        %b.caret
+      %ul.dropdown-menu
+        %li= link_to  (fa_icon "file-pdf-o", text: (t 'library.book.stock_listing')),  stock_listing_library_books_path(params.merge(format: 'pdf' ))
+        %li= link_to  (fa_icon "file-pdf-o", text: (t 'library.book.book_summary')),  book_summary_library_books_path(params.merge(format: 'pdf' ))
 
 .row
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :mediatype, (t 'library.book.mediatype'))
-        %th= t 'library.book.image'
-        %th= sort_link(@search, :title,(t 'library.book.title'))
-        %th= sort_link(@search, :author, (t 'library.book.author'))
-        %th= sort_link(@search, :isbn, (t 'library.book.isbn'))
-        %th= t 'library.book.quantity'
-        %th= sort_link(@search, :accessionno, (t 'library.book.accessionno'))
-        %th= sort_link(@search, :classlcc, (t 'library.book.classlcc'))
-        %th= sort_link(@search, :location, (t 'library.book.location'))
-        %th= sort_link(@search, :status, (t 'library.book.status'))
-        %th{:style=>"width: 10px;"}= t 'library.book.require_update'
+        %th{width: '6%'}= sort_link(@search, :mediatype, (t 'library.book.mediatype'))
+        %th{width: '6%'}= t 'library.book.image'
+        %th{width: '20%'}= sort_link(@search, :title,(t 'library.book.title'))
+        %th{width: '10%'}= sort_link(@search, :author, (t 'library.book.author'))
+        %th{width: '10%'}= sort_link(@search, :isbn, (t 'library.book.isbn'))
+        %th{width: '6%'}= t 'library.book.quantity'
+        %th{width: '10%'}= sort_link(@search, :accessionno, (t 'library.book.accessionno'))
+        %th{width: '10%'}= sort_link(@search, :classlcc, (t 'library.book.classlcc'))
+        %th{width: '10%'}= sort_link(@search, :location, (t 'library.book.location'))
+        %th{width: '10%'}= sort_link(@search, :status, (t 'library.book.status'))
+        %th{width: '5%'}= t 'library.book.require_update'
+        /%th{:style=>"width: 10px;"}= t 'library.book.require_update'
     
     %tbody
       = render "index_search"
@@ -40,39 +47,14 @@
         %tr
           %td{:colspan=>"2"} &nbsp;
           %td
-            =h link_to (ind+1).to_s+") "+bk.title, library_book_path(bk)
+            =h link_to (ind+1).to_s+") "+bk.try(:title), library_book_path(bk.id)
             - permitted_to? :update, :library_books do
-              =h link_to "EDIT","http://#{request.host}:3000/books/#{bk.id}/edit"  
+              /=h link_to "EDIT","http://#{request.host}:3000/books/#{bk.id}/edit"  
+              =h link_to (t 'actions.links.edit')+bk.try(:title), edit_library_book_path(bk.id)
           %td{:colspan=>"3"} &nbsp;
           %td{:style=>"color:red;"}=t'library.book.acc_not_exist'
           %td{:colspan=>"4"} &nbsp;
-            
-      - @acc_by_book.each do |bookid3, acc3|
-        - acc3.each_with_index do |acc,index2|
-          - if (@search.accessionno_search && @result_by_accession.include?(acc.accession_no)) || !@search.accessionno_search
-            %tr
-              %td=h (DropDown::MEDIA.find_all{|disp, value| value == acc.book.try(:mediatype)}).map {|disp, value| disp}[0] 
-              %td
-                - if acc.book
-                  - if acc.book.photo_file_name == nil
-                    =t 'book.no_image'
-                  - else
-                    /=image_tag "http://localhost:3000/assets/books/21001/original/display%20div%20of%20selected%20menu%20item%20ON%20LOAD.png?1410749822"
-                    //acc.book.photo.url GIVING THIS-assets/books/21001/original/no_cover_thumb.png?1410753027 
-                    =image_tag "http://#{request.host}:3000"+acc.book.photo.url, :width => '57px'  
-              %td=h link_to acc.book.title, library_book_path(acc.book)
-              %td=acc.book.try(:author)
-              %td=acc.book.try(:isbn)
-              %td
-                =h acc.book.book_quantity if index2 == 0 && !@search.accessionno_search
-                = 1 if @search.accessionno_search
-              %td=h acc.accession_no
-              %td=h acc.book.classlcc
-              %td=h acc.book.location
-              %td=h (DropDown::STATUS.find_all{|disp, value| value == acc.book.status}).map {|disp, value| disp}[0]
-              %td
-                - if acc.book.roman != nil 
-                  - if acc.book.roman.include?(';') || acc.book.roman.include?(':') || acc.book.roman.include?(',')
-                    &#10003;
-                         
+      
+      = render :partial => "library/books/kskbjb/index", :locals => {:acc_by_book => @acc_by_book}
+
   .right{style:"padding:0 30px; margin:0;"}= paginate @accessions, :theme => 'twitter-bootstrap-3'

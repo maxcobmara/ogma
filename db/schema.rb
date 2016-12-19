@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302145157) do
+ActiveRecord::Schema.define(version: 20161219084454) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,28 +33,22 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "supplied_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "status"
   end
 
   add_index "accessions", ["accession_no"], name: "index_accessions_on_accession_no", using: :btree
   add_index "accessions", ["id"], name: "index_accessions_on_id", using: :btree
 
-  create_table "address_book_items", force: true do |t|
-    t.integer  "address_book_id"
-    t.string   "item"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "address_books", force: true do |t|
-    t.string   "name"
-    t.string   "phone"
-    t.string   "address"
-    t.string   "mail"
-    t.string   "web"
-    t.string   "fax"
-    t.string   "shortname"
+    t.string   "name",       limit: nil
+    t.string   "phone",      limit: nil
+    t.string   "address",    limit: nil
+    t.string   "mail",       limit: nil
+    t.string   "web",        limit: nil
+    t.string   "fax",        limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "shortname",  limit: nil
   end
 
   create_table "answerchoices", force: true do |t|
@@ -1271,8 +1265,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "updated_at"
     t.string   "combo_code"
     t.integer  "ancestry_depth", default: 0
-    t.string   "status"
     t.boolean  "damaged"
+    t.string   "status"
   end
 
   add_index "locations", ["ancestry"], name: "index_locations_on_ancestry", using: :btree
@@ -1530,6 +1524,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.text     "trainee_report"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "payment"
+    t.text     "remark"
   end
 
   create_table "ptdosearches", force: true do |t|

@@ -6,7 +6,8 @@
       = f.select :catsource, DropDown::CATSOURCE,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
   .form-group
     .col-sm-2.control-label
-      %b= (t 'library.book.classno')+" (NLM) / (DDC)"
+      %b= (t 'library.book.classno')+" (LC) / (NLM)"
+      /+" (NLM) / (DDC)"
      
     .col-md-3
       = f.text_field :classlcc, class:'form-control'
@@ -14,7 +15,7 @@
     .col-sm-2.control-label
       = f.label t 'library.book.language', for: :book_language
     .col-md-2
-      = f.select :language, DropDown::LANGUAGE,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
+      = f.select :language, DropDown::LANGUAGE,{:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'160px'}
   .form-group
     .col-sm-2.control-label
       = f.label  t 'library.book.author', for: :author
@@ -81,11 +82,11 @@
       = f.label t 'library.book.mediatype', for: :mediatype
     .col-md-2
       = f.select :mediatype, DropDown::MEDIA,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
-  .form-group
-    .col-sm-2.control-label
-      = f.label "Status", for: :status
-    .col-md-2   
-      = f.select :status, DropDown::STATUS,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
+  /.form-group
+  /  .col-sm-2.control-label
+  /    = f.label "Status", for: :status
+  /  .col-md-2   
+  /    = f.select :status, DropDown::STATUS,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
   .form-group
     .col-sm-2.control-label
       = f.label t 'library.book.series', for: :series
@@ -130,11 +131,21 @@
     .col-sm-2.control-label
       = f.label t 'library.book.photo', for: :photo
     .col-md-6
-      = f.file_field :photo, class: 'form-control'
+      = f.file_field :photo, class: 'form-control', :onchange=>"PreviewImage();"
 
   .form-group
     .col-sm-2.control-label
       = f.label t 'library.book.links', for: :links
     .col-md-4
       = f.text_area :links, :size => '60x6', class: 'form-control'
+
+:javascript
+  function PreviewImage() {
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(document.getElementById("book_photo").files[0]);
+
+    oFReader.onload = function(oFREvent) {
+      document.getElementById("uploadPreviewbook").src = oFREvent.target.result;
+    };
+  };
  

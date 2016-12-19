@@ -41,8 +41,8 @@
     %dt= t 'library.book.mediatype' 
     %dd=h (DropDown::MEDIA.find_all{|disp, value| value == @book.mediatype}).map {|disp, value| disp}[0]
           
-    %dt Status
-    %dd=h (DropDown::STATUS.find_all{|disp, value| value == @book.status}).map {|disp, value| disp}[0]
+    /%dt Status
+    /%dd=h (DropDown::STATUS.find_all{|disp, value| value == @book.status}).map {|disp, value| disp}[0]
           
     %dt= t 'library.book.series' 
     %dd=h @book.series

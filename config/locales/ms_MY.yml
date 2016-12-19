@@ -2470,6 +2470,26 @@ ms_MY:
       bibliography: Bibliografi
       indice: Indeks
       photo: "Muka depan (kulit buku)"
+      availability_title: Semakan Ketersediaan ISBN
+      check_availability: Semak Ketersediaan
+      existing_book: Buku Sedia Ada
+      no_isbn: No ISBN tidak dimasukkan.
+      isbn_exist1: "Rekod buku menggunakan no ISBN yang dimasukkan telah wujud. (Tajuk : "
+      isbn_exist2: "). Sila sunting rekod "
+      isbn_exist3: " (jika perlu)."
+      enter_isbn: Sila masukkan ISBN untuk semakan.
+      not_exist_proceed: ISBN belum digunakan. Anda boleh teruskan mencipta rekod baru.
+      book_summary: "Ringkasan Buku (Verifikasi Stok)"
+      total_books_titles: Jumlah Buku / Judul
+      book_summary_all: Ringkasan Semua Stok
+      book_summary_accessionno: Ringkasan Mengikut No Perolehan
+      book_summary_classlcc: Ringkasan Mengikut No Kelas (LC / NLM) bermula dengan aksana
+      stock_listing: Senarai Stok
+      stock_listing_accessionno: Senarai Mengikut No Perolehan
+      stock_listing_classlcc: Senarai Mengikut No.Kelas (LC / NLM) bermula dengan aksara
+      range: Julat
+      physical_description: Deskripsi Fizikal
+      starting_with: Bermula dengan
   
   buletin:
     list: Senarai Buletin
