@@ -1,0 +1,15 @@
+%br
+- if @result || @result2
+  %span{style: 'color: red'}
+    = t 'library.book.isbn_exist1'
+    %strong=@result.title
+    = t 'library.book.isbn_exist2'
+    = link_to (t 'library.book.existing_book'), edit_library_book_path(@result.id)
+    = t 'library.book.isbn_exist3'
+- else
+  - if @isbnsearch==''
+    %span{style: 'color: red;'}
+      =t 'library.book.enter_isbn'
+  - else
+    %span{style: 'color: green;'}
+      =t 'library.book.not_exist_proceed'

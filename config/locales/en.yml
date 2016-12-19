@@ -2578,6 +2578,26 @@ en:
       bibliography: 
       indice: Index
       photo: Cover page
+      availability_title: ISBN Availability Checking
+      check_availability: Check Availability
+      existing_book: Existing Book
+      no_isbn: No ISBN no was entered.
+      isbn_exist1: "A book record with entered ISBN already exist. (Title : "
+      isbn_exist2: "). Please edit "
+      isbn_exist3: record accordingly.
+      enter_isbn: Please enter ISBN for checking.
+      not_exist_proceed: ISBN not yet exist. You may proceed with new book creation.
+      book_summary: "Book Summary (For Stock Verification)"
+      total_books_titles: Total Books / Titles
+      book_summary_all: Summary of all stocks
+      book_summary_accessionno:  Summary by Accession No
+      book_summary_classlcc: Summary by Class No (LC / NLM) starting with string
+      stock_listing: Stock Listing
+      stock_listing_accessionno: Listing by Accession No
+      stock_listing_classlcc: Listing by Class No (LC/NLM) starting with string
+      range: Range
+      physical_description: Physical Description
+      starting_with: Starting with
       
   buletin:
     list: List of Bulletins

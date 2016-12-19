@@ -16,19 +16,19 @@
     .col-sm-2.control-label
       = f.label  t 'library.book.purchasedate', for: :purchasedate
     .col-md-2
-      = f.text_field :purchasedate, class: 'form-control date_picker'
+      = f.text_field :purchasedate, class: 'form-control date_picker_reverse', value: @book.purchasedate.try(:strftime, '%d-%m-%Y')
   .form-group
     .col-sm-2.control-label
       = f.label  t 'library.book.receiveddate', for: :receiveddate
     .col-md-2
-      = f.text_field :receiveddate, class: 'form-control date_picker'
+      = f.text_field :receiveddate, class: 'form-control date_picker_reverse', value: @book.receiveddate.try(:strftime, '%d-%m-%Y')
   .form-group
     .col-sm-2.control-label
       = f.label  t 'library.book.receiver_id', for: :received_by
     .col-md-4
-      = f.collection_select :receiver_id, Staff.all, :id, :name,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'360px'}
+      = f.collection_select :receiver_id, Staff.all.order(name: :asc), :id, :name,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'360px'}
   .form-group
     .col-sm-2.control-label
       = f.label  t 'library.book.supplier_id', for: :supplied_by
     .col-md-4
-      = f.collection_select :supplier_id, AddressBook.all, :id, :name,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'360px'}
+      = f.collection_select :supplier_id, AddressBook.all.order(name: :asc), :id, :name,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'360px'}

@@ -3,18 +3,22 @@ class Book < ActiveRecord::Base
   before_save :update_tag_no, :extract_roman_into_size_pages
   
   belongs_to :staff, :foreign_key => 'receiver_id'
-  belongs_to :addbook, :foreign_key => 'supplier_id'
+  belongs_to :addbook, :class_name => 'AddressBook', :foreign_key => 'supplier_id'
   has_many  :accessions, :dependent => :destroy
   accepts_nested_attributes_for :accessions, :reject_if => lambda { |a| a[:accession_no].blank? }, :allow_destroy =>true
+  validates_associated :accessions
   
-  attr_accessor :no_perolehan, :no_panggilan, :pengarang, :judul_utama, :edisi, :isbn_e, :bahasa, :tajuk_perkara, :imprint, :ms_indeks, :ms_bibliografi, :deskripsi_fizikal, :harga_rm, :sumber_kewangan, :lokasi, :catitan		#from excel (no_perolehan=accession_no, no_panggilan=classlcc)
+  attr_accessor :no_perolehan, :no_kelas, :pengarang, :judul_utama, :edisi, :isbn_e, :bahasa, :tajuk_perkara, :imprint, :ms_indeks, :ms_bibliografi, :deskripsi_fizikal, :harga_rm, :sumber_kewangan, :lokasi, :catitan		#from excel (no_perolehan=accession_no, no_kelas=classlcc)
 
   #-----------Attach Photo---------------
   has_attached_file :photo,
 			      :url => "/assets/books/:id/:style/:basename.:extension",
-			      :path => ":rails_root/public/assets/books/:id/:style/:basename.:extension"
+			      :path => ":rails_root/public/assets/books/:id/:style/:basename.:extension",
+                              :styles => { :original => "250x300>", :thumbnail => ["50x60", :png] } # NOTE - set default format 4 thumbnail - PNG (PDF prawn only support JPEG & PNG)
   validates_attachment_size :photo, :less_than => 500.kilobytes
-  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']    
+  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png', 'image/gif']
+  validates_presence_of :isbn, :title, :language
+  validates_uniqueness_of :isbn
   
   def update_tag_no
      if tagno == nil
@@ -93,12 +97,25 @@ class Book < ActiveRecord::Base
   def self.accessionno_search(query)
     Book.joins(:accessions).where('accessions.accession_no ILIKE(?)', "%#{query}%")
   end
+  def self.accessionno_from(query)
+    query_final=""
+    query1=(query.to_i-1).to_s
+    if query.size > 1 && query[0]=="0"
+      lead_zeros=query.count("0")
+      0.upto(lead_zeros-1){query_final+="0"}
+    end
+    query_final=query_final+query1
+    Book.joins(:accessions).where('accessions.accession_no >=?', "%#{query_final}%")
+  end
+  def self.accessionno_to(query)
+    Book.joins(:accessions).where('accessions.accession_no <=?', "%#{query}%")
+  end
     
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
     [:mediatype_search]
     [:status_search]
-    [:accessionno_search]
+    [:accessionno_search, :accessionno_from, :accessionno_to]
   end
   
   def self.import(file) 
@@ -113,6 +130,15 @@ class Book < ActiveRecord::Base
   
   def self.messages2(import_result) 
     LibraryHelper.msg_import2(import_result)
+  end
+  
+  def callingno
+    if classlcc!=""
+      c=classlcc
+    else
+      c=classddc
+    end
+    c
   end
   
 end
