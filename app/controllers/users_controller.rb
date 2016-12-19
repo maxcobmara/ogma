@@ -39,6 +39,18 @@ class UsersController < ApplicationController
        end
      end
  end
+ 
+ def destroy
+   respond_to do |format|
+     if @user.destroy
+       format.html { redirect_to users_path, notice: (t 'user.title')+(t 'actions.deleted') }
+       format.json { head :no_content }
+     else
+       format.html { render users_path }
+       format.json { render json: @user.errors, status: :unprocessable_entity }
+     end
+   end
+ end
 
  private
    # Use callbacks to share common setup or constraints between actions.

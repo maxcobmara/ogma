@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
 
   belongs_to :college, foreign_key: 'college_id'
   
+  before_save :set_college
+  
   acts_as_messageable
 
  #Now you can easily fetch the current_user in models by User.current, enjoy it!
@@ -520,5 +522,9 @@ class User < ActiveRecord::Base
    roles.map do |role|
     role.authname.to_sym
    end
+  end
+  
+  def set_college
+    self.college_id=2 # TODO - rely on domain name
   end
 end

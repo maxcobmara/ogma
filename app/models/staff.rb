@@ -319,7 +319,9 @@ class Staff < ActiveRecord::Base
      if evc > 0 || avc > 0 || ins > 0 || avg > 0 || ten > 0
        return false
      else
-       users.first.roles.destroy_all
+       if users.first
+         users.first.roles.destroy_all 
+       end
        return true
      end
    end
