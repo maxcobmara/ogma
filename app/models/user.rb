@@ -6,8 +6,10 @@ class User < ActiveRecord::Base
 
   belongs_to :userable, polymorphic: true
   has_and_belongs_to_many :roles
-  
+
   belongs_to :college, foreign_key: 'college_id'
+  
+  before_save :set_college
   
   acts_as_messageable
 
@@ -520,5 +522,9 @@ class User < ActiveRecord::Base
    roles.map do |role|
     role.authname.to_sym
    end
+  end
+  
+  def set_college
+    self.college_id=2 # TODO - rely on domain name
   end
 end

@@ -12,7 +12,7 @@ class Staff < ActiveRecord::Base
   belongs_to :staff_shift,  :foreign_key => 'staff_shift_id'
   belongs_to :rank, :foreign_key => 'rank_id'
 
-  has_many :users, as: :userable
+  has_many :users, as: :userable, :dependent => :nullify
 
   has_many  :positions, :dependent => :nullify
   has_many  :tenants
@@ -319,8 +319,42 @@ class Staff < ActiveRecord::Base
      if evc > 0 || avc > 0 || ins > 0 || avg > 0 || ten > 0
        return false
      else
+       if users.first
+         users.first.roles.destroy_all 
+       end
        return true
      end
+   end
+   
+   #usage - users/index
+   def positions_units(dev)
+     if positions.blank?
+       a="-"
+     else
+       a=""
+       cnt=0
+       if dev==true
+         post_total=positions.count
+       else
+	 #positions.count(positions.pluck(:name).include?('Jangan Delete Dulu')==true) #temp
+	 b=0
+	 positions.pluck(:name).each{|x|b+=1 if x.include?('Jangan Delete Dulu')==true}
+         post_total=positions.count-b
+       end
+       for post in positions
+         a+=",<br>" if cnt > 0 && cnt < post_total
+         if post.name.include?('Jangan Delete Dulu')  #temp
+	   if dev==true
+             a+=post.name+" / "+post.unit
+	     cnt+=1
+	   end
+	 else
+           a+=post.name+" / "+post.unit
+	   cnt+=1
+	 end
+       end
+     end
+     a
    end
    
   

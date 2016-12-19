@@ -121,6 +121,10 @@ module ApplicationHelper
     current_user.roles.pluck(:authname).include?('developer')==true
   end
   
+  def is_admin?
+    current_user.roles.pluck(:authname).include?('administration')==true
+  end
+  
   def is_student?
     current_user.userable_type == 'Student'
   end

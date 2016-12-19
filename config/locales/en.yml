@@ -496,6 +496,7 @@ en:
   legend: Legend
   errors_title: Form contains
   error: errors
+  not_applicable: Not applicable
 
   actions:
     new: New
