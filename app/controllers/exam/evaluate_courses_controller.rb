@@ -250,7 +250,8 @@ class Exam::EvaluateCoursesController < ApplicationController
       
       #####amsas
       if current_user.college.code=="amsas"
-        @lecturer_list = Staff.joins(:positions).where('positions.name=?', "Jurulatih").order(rank_id: :asc, name: :asc)
+        #@lecturer_list = Staff.joins(:positions).where('positions.name=?', "Jurulatih").order(rank_id: :asc, name: :asc).uniq
+        @lecturer_list=Staff.joins(:positions).where('positions.name ilike(?) or positions.tasks_main ilike(?) or positions.tasks_other ilike(?)', "%Jurulatih%", "%Jurulatih%", "%Jurulatih%").order(rank_id: :asc, name: :asc).uniq
         @subjectlist_preselect_prog=Programme.where(course_type: 'Subject').order(:code)
       end
     end

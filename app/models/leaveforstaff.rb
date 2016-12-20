@@ -3,7 +3,6 @@ class Leaveforstaff < ActiveRecord::Base
     paginates_per 10  
   
     before_save :save_my_approvers, :save_duration
-  
 
     belongs_to :applicant,    :class_name => 'Staff', :foreign_key => 'staff_id'
     belongs_to :replacement,  :class_name => 'Staff', :foreign_key => 'replacement_id'

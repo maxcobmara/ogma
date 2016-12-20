@@ -497,6 +497,7 @@ en:
   errors_title: Form contains
   error: errors
   not_applicable: Not applicable
+  none: None
 
   actions:
     new: New

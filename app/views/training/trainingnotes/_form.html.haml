@@ -27,7 +27,7 @@
         .form-group
           .col-sm-2.control-label
             = f.label t('training.trainingnote.staff_id'), for: :staff_id
-          .col-md-3
+          .col-md-6
             - if @trainingnote.staff_id?
               - prepared_by = @trainingnote.staff_id
             - else
