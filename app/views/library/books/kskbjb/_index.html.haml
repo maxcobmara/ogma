@@ -14,10 +14,13 @@
               /=image_tag "http://#{request.host}:3000"+acc.book.photo.url, :width => '57px'  
                       
               //http://stackoverflow.com/questions/16094949/how-do-i-check-if-a-file-exists-using-its-url-without-downloading-it
+              /- uri = URI("http://#{request.host}:3000"+acc.book.photo.url)
+              /- request=Net::HTTP.new uri.host
+              /- response=request.request_head uri.path 
               - uri = URI("http://#{request.host}:3000"+acc.book.photo.url)
-              - request=Net::HTTP.new uri.host
-              - response=request.request_head uri.path 
-              - if response.code.to_i==200
+              - res=Net::HTTP.get_response(uri)
+              /- if response.code.to_i==200
+              - if res.code.to_i==200
                 /baca catechumen
                 =image_tag "http://#{request.host}:3000"+acc.book.photo.url, :width => '57px' 
               - else
