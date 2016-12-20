@@ -54,6 +54,11 @@ class Staff < ActiveRecord::Base
   has_many :fingerprint_owners, :class_name => 'Fingerprint', :foreign_key => 'thumb_id', :dependent => :destroy
   has_many :fingerprint_approvers, :class_name => 'Fingerprint', :foreign_key => 'approved_by'
   
+  has_many :leaves_taken, :class_name => 'Leaveforstaff', :foreign_key => 'staff_id', :dependent => :destroy
+  has_many :leaves_replacer, :class_name => 'Leaveforstaff', :foreign_key => 'replacement_id', :dependent => :nullify
+  has_many :leaves_supported, :class_name => 'Leaveforstaff', :foreign_key => 'approval1_id', :dependent => :nullify
+  has_many :leaves_approved, :class_name => 'Leaveforstaff', :foreign_key =>  'approval2_id', :dependent => :nullify
+  
   has_many :trainingnotes, :class_name => 'Trainingnote', :dependent => :nullify
 
   has_many          :qualifications, :dependent => :destroy
@@ -91,31 +96,28 @@ class Staff < ActiveRecord::Base
   has_many :checkers,            :class_name => 'TravelClaim',      :foreign_key => 'checked_by', :dependent => :nullify
 
   #links to Model TravelRequest
-  #has_many :staffs,             :class_name => 'TravelRequest', :foreign_key => 'staff_id', :dependent => :destroy #staff name
-  #has_many :replacements, :class_name => 'TravelRequest', :foreign_key => 'replaced_by' #replacement name
-  #has_many :headofdepts,  :class_name => 'TravelRequest', :foreign_key => 'hod_id' #hod
-  has_many :travelrequests, :class_name => 'TravelRequest', :dependent => :destroy   # dependencies as vehicles
-  has_many :replacor_travelstaff, :class_name => 'TravelRequest', :dependent => :nullify
-  has_many :travelrequest_approver, :class_name => 'TravelRequest', :dependent => :nullify
+  has_many :travelrequests, :class_name => 'TravelRequest', :foreign_key => 'staff_id', :dependent => :destroy   # dependencies as vehicles
+  has_many :replacor_travelstaff, :class_name => 'TravelRequest', :foreign_key => 'replaced_by', :dependent => :nullify
+  has_many :travelrequest_approver, :class_name => 'TravelRequest', :foreign_key => 'hod_id', :dependent => :nullify
 
   #25Jan2015
   has_many :circulations
   has_many :documents, :through => :circulations
   
-  has_many :evaluate_courses
-  has_many :average_scores_lecturer, class_name: 'AverageCourse', foreign_key: 'lecturer_id'
-  has_many :average_scores_verifier, class_name: 'AverageCourse', foreign_key: 'principal_id'
+  has_many :evaluate_courses, :dependent => :destroy
+  has_many :average_scores_lecturer, class_name: 'AverageCourse', foreign_key: 'lecturer_id', :dependent => :destroy
+  has_many :average_scores_verifier, class_name: 'AverageCourse', foreign_key: 'principal_id', :dependent => :nullify
   
-  has_many :instructor_appraiseds, class_name: 'InstructorAppraisal', foreign_key: 'staff_id'
-  has_many :instructor_qcs, class_name: 'InstructorAppraisal', foreign_key: 'check_qc'
-  has_many :averaged_instructors, class_name: 'AverageInstructor', foreign_key: 'instructor_id'
-  has_many :averaged_evaluators, class_name: 'AverageInstructor', foreign_key: 'evaluator_id'
+  has_many :instructor_appraiseds, class_name: 'InstructorAppraisal', foreign_key: 'staff_id', :dependent => :destroy
+  has_many :instructor_qcs, class_name: 'InstructorAppraisal', foreign_key: 'check_qc', :dependent => :nullify
+  has_many :averaged_instructors, class_name: 'AverageInstructor', foreign_key: 'instructor_id', :dependent => :destroy
+  has_many :averaged_evaluators, class_name: 'AverageInstructor', foreign_key: 'evaluator_id', :dependent => :nullify
   
-  has_one :mentor, foreign_key: 'staff_id'
+  has_one :mentor, foreign_key: 'staff_id', :dependent => :nullify
   
-  has_many :discipline_case_processed, class_name: 'StudentDisciplineCase' #KS / Programme Mgr - FK : assigned_to
-  has_many :discipline_case_referred, class_name: 'StudentDisciplineCase' # Mentor @ Kaunselor / TPHEP - FK : assigned2_to
-  has_many :discipline_case_comanded, class_name: 'StudentDisciplineCase' #Comandant (amsas only) - FK : commandant_id
+  has_many :discipline_case_processed, class_name: 'StudentDisciplineCase', :dependent => :nullify #KS / Programme Mgr - FK : assigned_to
+  has_many :discipline_case_referred, class_name: 'StudentDisciplineCase', :dependent => :nullify # Mentor @ Kaunselor / TPHEP - FK : assigned2_to
+  has_many :discipline_case_comanded, class_name: 'StudentDisciplineCase', :dependent => :nullify#Comandant (amsas only) - FK : commandant_id
 
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
