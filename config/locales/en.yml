@@ -4011,6 +4011,10 @@ en:
       remark_title: Reference
       topicdetail_not_exist: "'Topic Detail' record not exist"
       legend: "Legend : "
+      topic_not_available: "Should topic / subtopic not available for selection, please create Topic Detail first"
+      create_one: CREATE Topic Detail
+      tomatch: to match
+      topic: Topic
 
     lesson_plan:
       title: Lesson Plan & Report Listing
