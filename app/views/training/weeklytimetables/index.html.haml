@@ -38,7 +38,7 @@
           %td=h weeklytimetable.college.code=='amsas' ? weeklytimetable.try(:startdate).try(:strftime, "%d-%m-%Y") : weeklytimetable.try(:startdate).try(:strftime, "%d %b %Y") 
           %td=h weeklytimetable.college.code=='amsas' ? weeklytimetable.try(:enddate).try(:strftime, "%d-%m-%Y") : weeklytimetable.try(:enddate).try(:strftime, "%d %b %Y") 
           %td=h weeklytimetable.try(:academic_semester).try(:semester)
-          %td=h weeklytimetable.try(:schedule_creator).rank_id? ? weeklytimetable.try(:schedule_creator).staff_with_rank :  weeklytimetable.try(:schedule_creator).try(:name) 
+          %td=h weeklytimetable.schedule_creator.staff_with_rank
           %td
             =h weeklytimetable.is_submitted? ? fa_icon('check') : fa_icon('times')
             - if weeklytimetable.hod_rejected==true && weeklytimetable.is_submitted==nil 

@@ -55,7 +55,7 @@ class Trainingnote_reportPdf < Prawn::Document
     
     for tnote in @trainingnotes2.where('topicdetail_id is null')
       row_count+=1
-      row_red << row_count if tnote.topicdetail_id.blank? && !tnote.timetable_id.blank?
+      row_red << row_count if tnote.topicdetail_id.blank? #&& !tnote.timetable_id.blank?
       row_non_remove << row_count if  tnote.lesson_plan_trainingnotes.count > 0  || !tnote.timetable_id.blank?
     end
     
@@ -154,15 +154,17 @@ class Trainingnote_reportPdf < Prawn::Document
 	         status=''#'OK'
             end
         end
-        title_blank="#{tnote.title} "
-	if tnote.topicdetail_id.blank? && tnote.timetable_id!=nil
-	    title_blank+="Topic Detail not exist"
-	    @topic=WeeklytimetableDetail.find(tnote.timetable_id).topic
-	    title_blank+=" #{Programme.find(@topic).semester_subject_topic}"
+        title_blank="#{tnote.title} <br>"
+	if tnote.topicdetail_id.blank?
+	    title_blank+="#{I18n.t('training.trainingnote.topicdetail_not_exist')}"
+	    if  tnote.timetable_id!=nil
+	      @topic=WeeklytimetableDetail.find(tnote.timetable_id).topic
+	      title_blank+="<br>(#{I18n.t('training.trainingnote.topic')} : #{Programme.find(@topic).semester_subject_topic})"
+	    end
 	end
-	if tnote.topicdetail_id.blank? && tnote.timetable_id!=nil
-             topicdetail_status=I18n.t('training.trainingnote.topicdetail_not_exist')
-        end
+# 	if tnote.topicdetail_id.blank? && tnote.timetable_id!=nil
+#              topicdetail_status=I18n.t('training.trainingnote.topicdetail_not_exist')
+#         end
 	#{content: topicdetail_status, colspan: 3},
 	body << [status,"#{counter += 1}", title_blank, tnote.reference, tnote.version,  tnote.release.try(:strftime, '%d-%m-%Y'), tnote.document_file_name, tnote.note_creator.rank_id? ? tnote.note_creator.staff_with_rank : tnote.note_creator.try(:name)]
     end

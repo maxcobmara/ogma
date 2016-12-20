@@ -73,7 +73,7 @@
                 %td=trainingnote.version
                 %td=current_user.college.code=='amsas' ? trainingnote.release.try(:strftime, '%d-%m-%Y') : trainingnote.release.try(:strftime, '%d %b %Y')
                 %td=trainingnote.document_file_name
-                %td=trainingnote.note_creator.rank_id? ? trainingnote.note_creator.staff_with_rank : trainingnote.note_creator.try(:name)
+                %td=trainingnote.staff_id? ? trainingnote.note_creator.staff_with_rank : ""
                   
         /- x.each_with_index do |y, nos|
         /  - if y.topicdetail.topic_code
@@ -137,16 +137,17 @@
         /%td &nbsp;
         %td
           =h link_to tnote.title, training_trainingnote_path(tnote)
-          - if tnote.topicdetail_id.blank? && tnote.timetable_id!=nil
-            %font{:color=>'blue'}
-              %b Topic Detail
-              not exist, 
-              = link_to "CREATE ONE", new_training_topicdetail_path
-              to match.
+          /- if tnote.topicdetail_id.blank? && tnote.timetable_id!=nil
+          - if tnote.topicdetail_id.blank? 
+            %br
+            = link_to "#{(t 'training.trainingnote.create_one')}", new_training_topicdetail_path
+            =t('training.trainingnote.tomatch')
+
+            - if tnote.timetable_id!=nil
               - @topic=WeeklytimetableDetail.find(tnote.timetable_id).topic
-              Topic : 
-              =Programme.find(@topic).semester_subject_topic 
-              )
+              %br
+              ="("+(t 'training.trainingnote.topic')+" : "+Programme.find(@topic).semester_subject_topic+")"
+
         %td=tnote.reference
         %td=tnote.version
         %td=tnote.release.try(:strftime, '%d %b %Y')
@@ -155,7 +156,7 @@
         /&nbsp; 
         /= link_to prog.document_file_name,prog.document.url
         /%BR
-        %td= tnote.note_creator.rank_id? ? tnote.note_creator.staff_with_rank : tnote.note_creator.try(:name)
+        %td= tnote.staff_id? ? tnote.note_creator.staff_with_rank : ""
      
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @trainingnotes2, :theme => 'twitter-bootstrap-3'

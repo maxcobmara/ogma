@@ -40,10 +40,13 @@ class Staff < ActiveRecord::Base
   has_many :driven_vehicles, :foreign_key => 'driver_id'
 
   has_many :timetables
-  has_many :prepared_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'prepared_by', :dependent => :nullify
+  has_many :prepared_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'prepared_by'
   has_many :endorsed_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'endorsed_by', :dependent => :nullify
   has_many :weekly_schedule_details, :class_name => 'WeeklytimetableDetail', :foreign_key => 'lecturer_id', :dependent => :nullify
   has_many :intakes  #upon graduation, may become coordinator for other intakes
+
+  has_many :owned_lesson_plans, :class_name => 'LessonPlan', :foreign_key => 'lecturer'
+  has_many :prepared_lesson_plans, :class_name => 'LessonPlan', :foreign_key => 'prepared_by', :dependent => :nullify
 
   has_many :attendingstaffs,    :class_name => 'StaffAttendance', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'#, :dependent => :destroy #attendance staff name
   has_many :approvers,          :class_name => 'StaffAttendance', :foreign_key => 'approved_by' # approver name
@@ -51,7 +54,7 @@ class Staff < ActiveRecord::Base
   has_many :fingerprint_owners, :class_name => 'Fingerprint', :foreign_key => 'thumb_id', :dependent => :destroy
   has_many :fingerprint_approvers, :class_name => 'Fingerprint', :foreign_key => 'approved_by'
   
-  has_many :trainingnotes,    :class_name => 'Trainingnote'
+  has_many :trainingnotes, :class_name => 'Trainingnote', :dependent => :nullify
 
   has_many          :qualifications, :dependent => :destroy
   accepts_nested_attributes_for :qualifications, :allow_destroy => true, :reject_if => lambda { |a| a[:level_id].blank? }
@@ -301,11 +304,13 @@ class Staff < ActiveRecord::Base
      ins=instructor_appraiseds.count
      avg=averaged_instructors.count
      ten=tenants.count
+     schmkr=prepared_weekly_schedules.count
+     ownlp=owned_lesson_plans.count
      if evc > 0
-       errors.add(:base, "#{I18n.t('evaluate_course.title')} : #{evc} #{I18n.t('actions.records')}")
+       errors.add(:base, "#{I18n.t('exam.evaluate_course.title')} : #{evc} #{I18n.t('actions.records')}")
      end
      if avc > 0
-       errors.add(:base, "#{I18n.t('average_course.title')} : #{avc} #{I18n.t('actions.records')}")
+       errors.add(:base, "#{I18n.t('exam.average_course.title')} : #{avc} #{I18n.t('actions.records')}")
      end
      if ins > 0
        errors.add(:base, "#{I18n.t('instructor_appraisal.title')} : #{ins} #{I18n.t('actions.records')}")
@@ -316,7 +321,13 @@ class Staff < ActiveRecord::Base
      if ten > 0
        errors.add(:base, "#{I18n.t('student.tenant.title2')} : #{ten} #{I18n.t('actions.records')}")
      end
-     if evc > 0 || avc > 0 || ins > 0 || avg > 0 || ten > 0
+     if schmkr > 0
+       errors.add(:base, "#{I18n.t('training.weeklytimetable.title')} : #{schmkr} #{I18n.t('actions.records')}")
+     end
+     if ownlp > 0
+       errors.add(:base, "#{I18n.t('training.lesson_plan.title3')} : #{ownlp} #{I18n.t('actions.records')}")
+     end
+     if evc > 0 || avc > 0 || ins > 0 || avg > 0 || ten > 0 || schmkr > 0 || ownlp > 0
        return false
      else
        if users.first

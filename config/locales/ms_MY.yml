@@ -3929,6 +3929,10 @@ ms_MY:
       remark_title: Rujukan
       topicdetail_not_exist: Rekod 'Butiran Topik' tidak wujud
       legend: Petunjuk
+      topic_not_available: "Sekiranya topik/subtopik tiada dalam senarai pilihan, sila CIPTA Butiran Topik terlebih dahulu."
+      create_one: CIPTA Butiran Topik
+      tomatch: untuk padanan
+      topic: Topik
 
     lesson_plan:
       title: Senarai Pelan & Laporan Pengajaran

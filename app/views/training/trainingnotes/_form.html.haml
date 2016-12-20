@@ -10,7 +10,8 @@
           .col-sm-2.control-label
             = f.label t('training.trainingnote.topic_subtopic')
           .col-md-5
-            - if @trainingnote.timetable_id?
+            /- if @trainingnote.timetable_id? 
+            - if @trainingnote.topicdetail_id?
               - if current_user.college.code=='amsas'
                 = text_field_tag(:topicdetail, @trainingnote.topicdetail.subject_topic_desc, class: 'form-control', readonly: 'readonly')
               - else
@@ -21,25 +22,27 @@
                 = f.collection_select :topicdetail_id,@semester_subject_topic_list_bytopicdetail , :id, :subject_topic_desc, {:prompt=>t('select'), :selected=>@trainingnote.topicdetail_id}, {class: 'selectpicker', "data-width"=>'auto'}   
               - else
                 = f.collection_select :topicdetail_id,@semester_subject_topic_list_bytopicdetail , :id, :semester_subject_topic, {:prompt=>t('select'), :selected=>@trainingnote.topicdetail_id}, {class: 'selectpicker', "data-width"=>'auto'}   
-            
+              .small
+                =t 'training.trainingnote.topic_not_available'
         .form-group
           .col-sm-2.control-label
             = f.label t('training.trainingnote.staff_id'), for: :staff_id
           .col-md-3
             - if @trainingnote.staff_id?
               - prepared_by = @trainingnote.staff_id
-              - lecturers=Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)','Pengajar', @staff_w_adminrole).order('name ASC')
             - else
               - prepared_by = @current_user.userable_id
-              - lecturers=Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)','Jurulatih', @staff_w_adminrole).order('rank_id ASC, name ASC')
+              
 
             - if current_user.college.code=="kskbjb"
+              - lecturers=Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)','Pengajar', @staff_w_adminrole).order('name ASC')
               - if @trainingnote.timetable_id?
                 = text_field_tag(:staff, Staff.find(prepared_by).name, class: 'form-control', readonly: 'readonly')
                 = f.hidden_field :staff_id
               - else
                 = f.collection_select :staff_id, lecturers, :id, :name, {:include_blank =>t('select'), :selected=>prepared_by},{class: 'selectpicker', "data-width"=>'260px'} 
             - else
+              - lecturers=Staff.all.order('rank_id ASC, name ASC')
               - if @trainingnote.timetable_id?
                 = text_field_tag(:staff, Staff.find(prepared_by).staff_with_rank, class: 'form-control', readonly: 'readonly')
                 = f.hidden_field :staff_id
