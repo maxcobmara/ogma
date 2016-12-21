@@ -1337,12 +1337,10 @@ authorization do
   #29-OK, but note pending extend, extend2, return & return2
   #29 - 3/4 OK (Admin/Viewer/User)
   role :library_transactions_module_admin do
-    has_permission_on :library_librarytransactions, :to => [:manage, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext] 
-    # TODO extend, extend2, return, return2
+    has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext] 
   end
   role :library_transactions_module_viewer do
     has_permission_on :library_librarytransactions, :to => [:read, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext] 
-    # TODO extend, extend2, return, return2
   end
   role :library_transactions_module_user do
     has_permission_on :library_librarytransactions, :to => [:read, :update, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext]
