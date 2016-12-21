@@ -487,8 +487,8 @@ authorization do
  #Group Library   -------------------------------------------------------------------------------
 
   role :librarian do
-    has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import]
-    has_permission_on :library_librarytransactions, :to => [:manage, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext] # TODO - extend, return
+    has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import, :check_availability, :stock_listing, :book_summary]
+    has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext]
     has_permission_on :students, :to => [:read, :borang_maklumat_pelajar]
   end
 

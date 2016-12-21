@@ -2,8 +2,8 @@ class Library::LibrarytransactionsController < ApplicationController
 
   before_action :set_librarytransaction, only: [:show, :edit, :update, :destroy]
   filter_access_to :manager, :require => :manage,  :attribute_check => false
-  filter_access_to :show, :edit, :update, :destroy, :check_status, :late_books, :extend, :extend2, :return, :return2, :attribute_check => true
-  filter_access_to :index, :new, :create,  :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext,:attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :late_books,  :extending, :returning, :attribute_check => true
+  filter_access_to :index, :new, :create, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext,:attribute_check => false
 
   def index
 #     @filters = Librarytransaction::FILTERS
@@ -12,7 +12,9 @@ class Library::LibrarytransactionsController < ApplicationController
 #     else
 #       @librarytransactions = Librarytransaction.all
 #     end
-    @librarytransactions=Librarytransaction.borrowed
+    #@librarytransactions=Librarytransaction.borrowed
+    @search=Librarytransaction.borrowed.search(params[:q])
+    @librarytransactions=@search.result
     @paginated_transaction = @librarytransactions.order(checkoutdate: :desc).page(params[:page]).per(15)
     @libtran_days = @paginated_transaction.group_by {|t| t.checkoutdate}
   end
@@ -24,20 +26,20 @@ class Library::LibrarytransactionsController < ApplicationController
     @checked_out = Librarytransaction.where("returneddate IS ?", nil).pluck(:accession_id)
 
     @librarytransaction = Librarytransaction.new
-    if @@selected_staff
+    if @@selected_staff || params[:persontype]==1
       @librarytransaction.ru_staff = true
       @librarytransaction.staff_id = @@selected_staff.id
-    elsif @@selected_student
+    elsif @@selected_student || params[:persontype]==2
       @librarytransaction.ru_staff = false
       @librarytransaction.student_id = @@selected_student.id
     end
 
     #@librarytransaction.accession_id = 1
-    @librarytransaction.checkoutdate = Date.today()
+    @librarytransaction.checkoutdate = Date.today().strftime('%d-%m-%Y')
     if @librarytransaction.ru_staff == true
-      @librarytransaction.returnduedate = Date.today() + 21.days
+      @librarytransaction.returnduedate = (Date.today() + 21.days).strftime('%d-%m-%Y')
     elsif @librarytransaction.ru_staff == false
-      @librarytransaction.returnduedate = Date.today() + 14.days
+      @librarytransaction.returnduedate = (Date.today() + 14.days).strftime('%d-%m-%Y')
     end
   end
 
@@ -48,15 +50,29 @@ class Library::LibrarytransactionsController < ApplicationController
     @librarytransaction = Librarytransaction.create!(librarytransaction_params)
     respond_to do |format|
       format.html { redirect_to manager_library_librarytransactions_path }
+      if [nil, false].include?(@librarytransaction.reportlost)
+        format.js { render :create }
+      elsif @librarytransaction.reportlost==true
+        format.js { render :create2, :locals => {:transaction => @librarytransaction}}
+      end
+    end
+  end
+  
+  def destroy
+    @librarytransaction=Librarytransaction.destroy(params[:id])
+    respond_to do |format|
+      format.html { redirect_to manager_library_librarytransactions_path }
       format.js
     end
   end
 
-  def update
+   def update
     respond_to do |format|
       if @librarytransaction.update(librarytransaction_params)
-        format.html { redirect_to library_librarytransaction_path(@librarytransaction), notice: (t 'location.title')+(t 'actions.updated')  }
+        #format.html { redirect_to library_librarytransaction_path(@librarytransaction), notice: (t 'location.title')+(t 'actions.updated')  }
+        format.html {redirect_to library_librarytransactions_path}
         format.json { head :no_content }
+        format.js
       else
         format.html { render action: 'edit' }
         format.json { render json: @librarytransaction.errors, status: :unprocessable_entity }
@@ -102,7 +118,8 @@ class Library::LibrarytransactionsController < ApplicationController
 
   def check_status
     @librarytransactions = []
-
+    @checked_out = Librarytransaction.where("returneddate IS ?", nil).pluck(:accession_id)
+    
     if params[:search].present? && params[:search][:staff_name].present?
       @staff_name = params[:search][:staff_name]
       @staff_list = Staff.where("name ILIKE ?", "%#{@staff_name}%").pluck(:id)
@@ -148,27 +165,14 @@ class Library::LibrarytransactionsController < ApplicationController
       GROUP BY name, s.coemail, b.title;")
 
   end
-
-
-  # TODO - page not ready - acceptance (ICMS) - start
-  def extend
+  
+  def extending
     @librarytransaction = Librarytransaction.find(params[:id])
   end
 
-  def extend2
-    @librarytransaction = Librarytransaction.find(params[:id])
-    render :layout => false
-  end
-
-  def return
+  def returning
     @librarytransaction = Librarytransaction.find(params[:id])
   end
-
-  def return2
-    @librarytransaction = Librarytransaction.find(params[:id])
-    render :layout => false
-  end
-  # TODO - page not ready - acceptance (ICMS) - end
   
   def analysis
     yyear = params[:reporting_year]
@@ -266,7 +270,7 @@ class Library::LibrarytransactionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def librarytransaction_params
-      params.require(:librarytransaction).permit(:accession_id, :ru_staff, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession, :accession_no, :accession_acc_book, :libcheckout_by)
+      params.require(:librarytransaction).permit(:accession_id, :ru_staff, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession, :accession_no, :accession_acc_book, :libcheckout_by, :returned, :returneddate, :extended, :fine, :finepay, :finepaydate, :reportlost)
       # <-- insert editable fields here inside here e.g (:date, :name)
     end
 

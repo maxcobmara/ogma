@@ -2418,33 +2418,54 @@ en:
   
   library:
     title: Library
+    help: Help
     transaction: 
       manager: Library Transaction Manager
       title: Library Transactions
       list: Library Transaction List
+      rules_regulations: Rules & Regulations
       book_id: Book ID
       borrower: Borrowed By
       add: Add
       author: Author
       staffstudent: Staff / Trainee
-      staff: S
-      student: T
+      staff2: Staff
+      student2: Trainee
+      staff_index: S
+      student_index: T
       checkoutdate: Checked Out
       checkoutby: Loan Released By
       extendby: Loan Extended By
       returnby: Received By
       studentname: Borrowed By
       duedate: Due Date
+      returnduedate: Return Due Date
+      returning: Return of Book
+      return: Return?
       extend: Extend
-      extended: Returned
+      extended: Extended
+      extending: Loan Extension
+      extend_for: "Extend loan for : "
+      extension_remark: Loan extension allocated for staffs is 21 days, whereas for students is 14 days.
+      fourteen_days: another 14 days
+      twentyone_days: another 21 days
+      not_extended: No extension
+      cancel: Cancel
       returneddate: Returned On
+      not_overdue: Not overdue
+      overdue: Overdue
       new: Create New Transaction
       returnrec: Return Transaction
       edit: Edit Library Transaction
       details: Loaned Book Details
       loanedtotype: Member is Staff?
+      late_by:  late by 
+      fine_rate: " days x RM 1.00 / day"
       fine: Fine to be Paid
       finepay: Fine Paid?
+      finepay2: Pay Fine?
+      fine_remark: "Please leaves 'Pay Fine?' field blank OR insert zero if no payment is made."
+      fine_remark2: Please confirm 'Pay Fine?' amount (if there's any) before checking 
       finepaydate: Fine Paid Date
       lost: Lost?
       reportdetails: Report Details
@@ -2452,6 +2473,20 @@ en:
       replaceddate: Replaced Date
       report: Report Lost
       analysis_statistic: "Analysis & Statistics"
+      loan_details: Book on-loan details
+      latereturn_report: Late Book Return Report
+      borrower_name: Borrower Name
+      book_title: Book Title
+      staff: "Staff of "
+      student: Student
+      late_by_days: "Late (Days)"
+      total_fine: Total Fine
+      total_sum_fine: Grand Total of Fine (RM)
+      select_date: Select Date
+      select_book: Select Book
+      add_book: Add Book
+      hit_limit: You Have Hit Limit
+      reset_form: Reset Form
       analysis:
         main_title: "Analysis & Statistic (Borrower) - "
         main_title2: "Analysis & Statistic (Monograph) - "
@@ -2575,7 +2610,7 @@ en:
       acc_not_exist: "Not Exist"
       acc_must_unique: "(Additional Notes : Accession No must UNIQUE)"
       use_language: "(Additional Notes : Use 'ing' or 'en' for English, use 'mel' or 'ms_MY' for Malay)"
-      bibliography: 
+      bibliography: Bibliography
       indice: Index
       photo: Cover page
       availability_title: ISBN Availability Checking
@@ -2671,6 +2706,11 @@ en:
   check:  
     status: Check Status
     search: "Search to check status"
+    add_item: Add Item
+    results: Results
+    no_transactions: No Transactions
+    ic_starts_with: IC Starts with
+    add: Add
 
   ptbudgets:
     list: Set Annual Training Budget

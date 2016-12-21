@@ -4,14 +4,78 @@
   #insert_book_details
 - else
   .row
-    .col-sm-2.table_title= t 'book.accession_no'
-    .col-sm-7.table_title= t 'book.title'
+    .col-sm-1.table_title= t 'library.book.accession_no'
+    .col-sm-5.table_title= t 'library.book.title'
     .col-sm-2.table_title= t 'library.transaction.returnduedate'
+    .col-sm-2.table_title
+      %span{style: 'color: blue;'}= (t 'library.transaction.return')
+      =" : "+(t 'library.transaction.finepay2')
+    .col-sm-1.table_title= t 'library.transaction.extend'
+    .col-sm-1.table_title= t 'helpers.links.destroy'
   
   - @existing_library_transactions.each do | transaction |
+    - bk=transaction.accession.book
     - if transaction.returnduedate < Date.today.yesterday && transaction.returneddate.blank?; @style = "overdue"; else; @style = "plain"; end
     #insert_book_details
-    .row{:class => @style}
-      .col-sm-2= transaction.try(:accession).try(:accession_no)
-      .col-sm-7= link_to transaction.try(:accession).try(:book).try(:title), '#', class: "bogus"
-      .col-sm-2= transaction.returnduedate
+    .row{:class => @style, :id => "row_#{transaction.id}"}
+      .col-sm-1= transaction.try(:accession).try(:accession_no)
+      .col-sm-5= link_to transaction.try(:accession).try(:book).try(:title), '#', :data => {:title => bk.title, :isbn =>bk.isbn, :callno=>bk.callingno, :author=>bk.try(:author), :imprint=>bk.try(:publish_location)+","+bk.try(:publisher)+", "+bk.try(:publish_date)}, class: 'loanbook_details'
+      .col-sm-2= transaction.returnduedate.strftime('%d-%m-%Y')
+      .col-sm-2
+        /=link_to "RETURN", library_librarytransaction_path(transaction), method: :update, remote: true
+        - @librarytransaction=transaction
+        = form_for [:library, @librarytransaction], remote: true, :html => { :class => 'edit_loan' } do |f|
+          =f.hidden_field :id, :value => transaction.id
+          =f.check_box :returned
+          =f.hidden_field :returneddate, :value => Date.today
+          - if Date.today.yesterday > transaction.returnduedate 
+            = f.text_field :fine, value: transaction.recommended_fine
+          =f.submit
+      .col-sm-1
+        /EXTEND
+        - if transaction.returnduedate >= Date.today.yesterday
+          = form_for [:library, @librarytransaction], remote: true, :html => { :class => 'extend_loan' } do |f|
+            =f.hidden_field :id, :value => transaction.id
+            =f.hidden_field :returnduedate, :value => transaction.extended_due
+            - if transaction.extended==true
+              =fa_icon('check')
+            - else
+              =f.check_box :extended
+            =f.submit
+      .col-sm-1
+        /=link_to "(remove)", library_librarytransaction_path(@transaction_id), method: :delete, remote: true
+        =link_to content_tag(:i, "", class: "fa fa-trash-o"),  library_librarytransaction_path(transaction), method: :delete, remote: true
+
+  %BR  
+  .row 
+    .small
+      %ol
+        %li{style: 'color: red;'}=t 'library.transaction.fine_remark'
+        %li{style: 'color: blue;'}
+          =t 'library.transaction.fine_remark2'
+          %strong=t 'library.transaction.return'
+        %li=t 'library.transaction.extension_remark'
+
+/ :javascript /already moved to coffee script
+/   $('.edit_loan input[type=submit]').remove();
+/   $('.edit_loan input[type=checkbox]').click(function(){
+/     /*alert("Nak return!"); */
+/     $(this).parent('form').submit();
+/   });
+/   
+/ $('.extend_loan input[type=submit]').remove();
+/   $('.extend_loan input[type=checkbox]').click(function(){
+/     /*alert("Nak extend!"); */
+/     $(this).parent('form').submit();
+/   });  
+
+:javascript
+  $('.loanbook_details').click(function(){
+    var title = $(this).data('title');
+    var isbn = $(this).data('isbn');
+    var callno = $(this).data('callno');
+    var author = $(this).data('author');
+    var imprint = $(this).data('imprint');
+    $('#book_particulars').toggle("highlight");
+    $('#book_particulars').html("<b><u><center>#{t('library.transaction.loan_details')}</center></u></b><font size=-1><b>#{t('library.book.title')}</b>: "+title+"<br><b>ISBN</b>: "+isbn+"<br><b>#{t('library.book.classlcc')}</b>: "+callno+"<br><b>#{t('library.book.author')}</b>: "+author+"<br><b>Imprint</b>: "+imprint);
+  });

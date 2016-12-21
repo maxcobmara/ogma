@@ -502,8 +502,8 @@ module DropDown
     
   LOAN = [
         #  Displayed       stored in db 
-        [ I18n.t('library.book.open_shelf') ],
-        [ I18n.t('library.book.red_spot')]
+        [ I18n.t('library.book.open_shelf'), 1],
+        [ I18n.t('library.book.red_spot'), 3]
   ]
   
   LANGUAGE = [
