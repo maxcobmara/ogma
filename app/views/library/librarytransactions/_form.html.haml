@@ -1,26 +1,28 @@
 %div#add_book_form_page
   = form_for [:library, @librarytransaction], remote: true, :html => { :class => 'form-horizontal' } do |f|
-    %h4 Add Book
+    %h4=t 'library.transaction.add_book'
     = render 'shared/flashes'
     = f.hidden_field :staff_id
     = f.hidden_field :ru_staff
     = f.hidden_field :student_id
     = f.hidden_field :libcheckout_by, :value => @current_user.userable_id
+    /= f.hidden_field :college_id, value: current_user.college_id
   
     .form-group
       .col-sm-2.control-label
-        = f.label "Select Book"
+        = f.label (t 'library.transaction.select_book')
       .col-md-6
         = f.text_field :accession_acc_book, class: 'form-control', data: {autocomplete_source: Accession.where("id NOT IN (?)", @checked_out).order(:accession_no).map(&:acc_book) }, placeholder: "Accession No"
       
     .form-group
       .col-sm-2.control-label
-        = f.label "Select Dates"
+        = f.label (t 'library.transaction.select_date')
       .col-md-5
-        #datepicker.input-daterange.input-group
-          = f.text_field :checkoutdate, class: "form-control", :type => :text
+        /#datepicker.input-daterange.input-group
+        #datepicker.input-group
+          = f.text_field :checkoutdate, class: "input-daterange form-control", :type => :text
           %span.input-group-addon to
-          = f.text_field :returnduedate, class: "form-control", :type => :text
+          = f.text_field :returnduedate, class: "input-daterange form-control", :type => :text
       
     .form-group
       .col-sm-offset-2.col-sm-2
@@ -36,8 +38,10 @@
     });
   
     $(".input-daterange").datetimepicker({
-      format: "yyyy-mm-dd",
+      format:"d-m-Y",
+      formatDate:"Y-m-d",
       timepicker: false,
       todayBtn: "linked", 
-      todayHighlight: true
+      todayHighlight: true,
+      autoclose: true
     });

@@ -1,4 +1,24 @@
-.row
-  .col-sm-2= @librarytransaction.try(:accession).try(:accession_no)
-  .col-sm-7= link_to @librarytransaction.try(:accession).try(:book).try(:title), '#', class: "bogus"
-  .col-sm-2= @librarytransaction.returnduedate
+- bk=@librarytransaction.accession.book
+.row{:id => "row_#{@librarytransaction.id}"}
+  .col-sm-1= @librarytransaction.try(:accession).try(:accession_no)
+  .col-sm-5= link_to @librarytransaction.try(:accession).try(:book).try(:title), '#', :data => {:title => bk.title, :isbn =>bk.isbn, :callno=>bk.callingno, :author=>bk.try(:author), :imprint=>bk.try(:publish_location)+","+bk.try(:publisher)+", "+bk.try(:publish_date)}, class: 'loanbook_details2'
+  .col-sm-2=@librarytransaction.returnduedate.try(:strftime, '%d-%m-%Y')
+  .col-sm-2 
+    /RETURN
+  .col-sm-1
+    /EXTEND
+    =@librarytransaction.extended==true ? fa_icon('check') : ""
+  .col-sm-1
+    /=link_to " (return book)", library_librarytransaction_path(@transaction_id), method: :delete, remote: true
+    =link_to content_tag(:i, "", class: "fa fa-trash-o"),  library_librarytransaction_path(@librarytransaction), method: :delete, remote: true
+    
+:javascript
+  $('.loanbook_details2').click(function(){
+    var title = $(this).data('title');
+    var isbn = $(this).data('isbn');
+    var callno = $(this).data('callno');
+    var author = $(this).data('author');
+    var imprint = $(this).data('imprint');
+    $('#book_particulars').toggle("highlight");
+    $('#book_particulars').html("<b><u><center>#{t('library.transaction.loan_details')}</center></u></b><font size=-1><b>#{t('library.book.title')}</b>: "+title+"<br><b>ISBN</b>: "+isbn+"<br><b>#{t('library.book.classlcc')}</b>: "+callno+"<br><b>#{t('library.book.author')}</b>: "+author+"<br><b>Imprint</b>: "+imprint);
+  });

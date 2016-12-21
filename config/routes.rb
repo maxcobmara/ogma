@@ -182,6 +182,11 @@ Ogma::Application.routes.draw do
       end
     end
     resources :address_books
+    resources :pages do
+      member do
+        get :flexipage
+      end
+    end
   end
 
   resources :events do
@@ -329,8 +334,8 @@ Ogma::Application.routes.draw do
   namespace :library do
     resources :librarytransactions do
       member do
-        get :extend
-        get :return
+        get :extending
+        get :returning
       end
       collection do
         get :check_status
@@ -345,6 +350,7 @@ Ogma::Application.routes.draw do
         get :analysis_statistic
         post :analysis_statistic
         get :analysis_statistic_main
+	get :latereturn_report
       end
     end
     resources :books do

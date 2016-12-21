@@ -2310,32 +2310,55 @@ ms_MY:
   
   library:
     title: Perpustakaan
+    help: Bantuan
     transaction: 
+      manager: Pengurusan Transaksi Perpustakaan
       title: Transaksi Perpustakaan
       list: Senarai Transaksi Perpustakaan
+      rules_regulations: Peraturan Perpustakaan
       book_id: ID Buku
       borrower: Peminjam
       add: Tambah
       author : Pengarang
       staffstudent: Staf / Pelatih
-      staff: S
-      student: P
+      staff2: Staf
+      student2: Pelatih
+      staff_index: S
+      student_index: P
       studentname: Dipinjam Oleh
       checkoutdate: Tarikh Pinjaman
       checkoutby: Pengawai Pengeluar Pinjaman
       extendby: Pegawai Pengeluar Pinjaman (sambungan)
       returnby: Pegawai Pemulangan Pinjaman 
-      duedate: Tarikh Harus Pulang
+      #duedate: Tarikh Harus Pulang
+      returnduedate: Tarikh Luput
+      returning: Pemulangan Pinjaman
+      return: Pulang?
       extend: Sambung?
-      extended: Returned
+      extended: Disambung
+      extending: Sambung Pinjaman
+      extend_for: "Pinjaman dilanjutkan : "
+      extension_remark: Sambungan pinjaman bagi staf adalah 21 hari, manakala bagi pelatih adalah 14 hari.
+      fourteen_days: sebanyak 14 hari
+      twentyone_days: sebanyak 21 hari
+      not_extended: Tiada sambungan
+      returned: Pemulangan
+      cancel: Batal
       returneddate: Tarikh Dipulang
+      not_overdue: Belum tamat tempoh
+      overdue: Tamat tempoh
       new: Cipta Transaksi Baru
       returnrec: Transaksi Pemulangan
       edit: Kemaskini Transaksi Perpustakaan
       details: Butiran Buku Yang Dipinjam
       loanedtotype: Dipinjam oleh Staf?
+      late_by: lewat 
+      fine_rate: " hari x RM 1.00 / sehari"
       fine: Denda Perlu Dibayar
       finepay: Bayar?
+      finepay2: Denda dibayar
+      fine_remark: "Sila kosongkan medan 'Denda dibayar' atau masukkan sifar jika tiada bayaran dibuat (diskaun/pengecualian)."
+      fine_remark2: Sila pastikan amaun 'Denda dibayar' (jika ada) dikemaskini terlebih dahulu, sebelum memilih kotak semak
       finepaydate: Tarikh Membayar Denda
       lost: Hilang?
       reportdetails: Laporan
@@ -2343,6 +2366,20 @@ ms_MY:
       replaceddate: Tarikh Ganti
       report: Laporan Kehilangan
       analysis_statistic: "Analisis & Statistik"
+      loan_details: Butiran buku dipinjam
+      latereturn_report: Laporan Lewat Pemulangan Buku
+      borrower_name: Nama Peminjam
+      book_title: Tajuk Buku
+      staff: "Staf "
+      student: Pelajar
+      late_by_days: "Lewat (Hari)"
+      total_fine: Jumlah Denda
+      total_sum_fine: Jumlah Keseluruhan Denda (RM)
+      select_date: Pilih Tarikh
+      select_book: Pilih Buku
+      add_book: Tambah Buku
+      hit_limit: Kuoata pinjaman anda telah penuh
+      reset_form: Muat semula borang
       analysis:
         main_title: "Analisis & Statistik (Peminjam) - "
         main_title2: "Analisis & Statistik (Monograf) - "
@@ -2399,7 +2436,11 @@ ms_MY:
     check:  
       status: Semak Taraf
       search: "Carian semak taraf"
-      
+      add_item: Tambah Item
+      results: Hasil Carian
+      no_transactions: Tiada Transaksi
+      ic_starts_with: IC bermula dengan
+      add: Tambah
       
     book:
       new: Buku Baru
