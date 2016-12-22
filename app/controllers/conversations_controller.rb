@@ -287,7 +287,8 @@ class ConversationsController < ApplicationController
   def set_staff_list
     user_ids=User.where(userable_type: 'Staff').where('userable_id is not null').order(userable_id: :asc).pluck(:id)
     staff_list=[]
-    user_ids.each{|user_id|  staff_list << [Staff.joins(:users).where('users.id=?', user_id).first.name, user_id]}
+    #user_ids.each{|user_id|  staff_list << [Staff.joins(:users).where('users.id=?', user_id).first.name, user_id]}
+    user_ids.each{|user_id|  staff_list << [Staff.joins(:users).where('users.id=?', user_id).first.name, user_id] if Staff.joins(:users).where('users.id=?', user_id).count > 0}
     @staff_list=staff_list.sort
     @group_list=Group.all.collect{|x|[(t 'group.groups')+x.name, (x.members[:user_ids]-[""]).join(",") ]}
     @staff_list+=@group_list
