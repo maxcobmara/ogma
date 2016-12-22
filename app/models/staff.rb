@@ -115,9 +115,9 @@ class Staff < ActiveRecord::Base
   
   has_one :mentor, foreign_key: 'staff_id', :dependent => :nullify
   
-  has_many :discipline_case_processed, class_name: 'StudentDisciplineCase', :dependent => :nullify #KS / Programme Mgr - FK : assigned_to
-  has_many :discipline_case_referred, class_name: 'StudentDisciplineCase', :dependent => :nullify # Mentor @ Kaunselor / TPHEP - FK : assigned2_to
-  has_many :discipline_case_comanded, class_name: 'StudentDisciplineCase', :dependent => :nullify#Comandant (amsas only) - FK : commandant_id
+  has_many :discipline_case_processed, class_name: 'StudentDisciplineCase', :foreign_key => 'assigned_to', :dependent => :nullify #KS / Programme Mgr - FK : assigned_to
+  has_many :discipline_case_referred, class_name: 'StudentDisciplineCase', :foreign_key => 'assigned2_to', :dependent => :nullify # Mentor @ Kaunselor / TPHEP - FK : assigned2_to
+  has_many :discipline_case_comanded, class_name: 'StudentDisciplineCase', :foreign_key => 'comandant_id', :dependent => :nullify#Comandant (amsas only) - FK : comandant_id
 
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
@@ -329,6 +329,39 @@ class Staff < ActiveRecord::Base
      if ownlp > 0
        errors.add(:base, "#{I18n.t('training.lesson_plan.title3')} : #{ownlp} #{I18n.t('actions.records')}")
      end
+     
+     user=User.where(userable_id: id)
+     if user.count > 0 
+       #1)SENDER-remove sent messages by destroyed staff (sender_id=user_id)
+       notifications=Mailboxer::Notification.where(sender_id: user.first.id)
+       if notifications.count > 0
+         conversations=Mailboxer::Conversation.where(id: notifications.pluck(:conversation_id))
+         receipts=Mailboxer::Receipt.where(notification_id: notifications.pluck(:id))
+         notifications.destroy_all
+         conversations.destroy_all
+         receipts.destroy_all
+       end
+       
+       #2)RECEIVER  (receiver_id=user_id)
+       receipts2=Mailboxer::Receipt.where(mailbox_type: 'inbox').where(receiver_id: user.first.id)
+       if receipts2.count > 0 #receiving multiple msg
+       #if receipts2.count==1 #1 message only
+	 for receipt in receipts2
+           receipt_rows=Mailboxer::Receipt.where(mailbox_type: ['inbox', 'sentbox']).where(notification_id: receipt.notification_id) 
+           if receipt_rows.count==2 #sole recipient
+             notification=Mailboxer::Notification.where(id: receipt.notification_id).first 
+             conversation=Mailboxer::Conversation.where(id: notification.conversation_id).first
+	     receipt_rows.destroy_all
+             notification.destroy
+	     conversation.destroy
+	   else #multiple recipient, remove receipt of use_id only
+	     toremove=receipt_rows.where(receiver_id: user.first.id).first
+	     toremove.destroy
+           end
+         end
+       end 
+     end
+
      if evc > 0 || avc > 0 || ins > 0 || avg > 0 || ten > 0 || schmkr > 0 || ownlp > 0
        return false
      else
