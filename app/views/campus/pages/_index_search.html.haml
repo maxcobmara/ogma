@@ -1,0 +1,11 @@
+= search_form_for [:pages, @search], url: campus_pages_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td= f.text_field :position_eq, size: 8,  :class => "form-control" 
+    %td= f.text_field :navlabel_cont, size: 8,  :class => "form-control"
+    %td= f.text_field :name_cont, size: 8,  :class => "form-control"
+    %td= select_tag('q[admin_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'yes2'),true],[(t 'no2'),false]]),class: 'selectpicker')
+    %td.input-group
+      = select_tag('q[redirect_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'yes2'),true],[(t 'no2'),false]]),class: 'selectpicker')
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw

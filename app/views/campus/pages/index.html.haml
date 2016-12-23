@@ -1,0 +1,53 @@
+- model_class = Page
+.page-header
+  %h1= t('campus.pages.list')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    - permitted_to? :create, :campus_pages do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'campus.pages.new'))), new_campus_page_path
+  %ul.nav.navbar-nav.navbar-right
+    %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+= render 'shared/flashes'
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th{width: '10%'}=sort_link(@search, :position, (t 'campus.pages.position'))
+        %th{width: '30%'}=sort_link(@search, :navlabel, (t 'campus.pages.navlabel'))
+        %th{width: '30%'}=sort_link(@search, :name, (t 'campus.pages.name'))
+        %th{width: '15%'}=(t 'campus.pages.admin')
+        %th{width: '15%'}=(t 'campus.pages.redirect')
+        
+    %tbody
+      = render "index_search"
+      - @pages.group_by{|x|x.parent}.each do |parent, pages|
+        - if parent.present?
+          %tr
+            %td.group2=parent.position
+            %td.group2= link_to parent.navlabel, campus_page_path(parent)
+            %td.group2
+              - if parent.id==1
+                =link_to parent.name, root_url
+              - else
+                =link_to parent.name, flexipage_campus_page_path(parent)
+            %td.group2=parent.admin==true ? fa_icon('check') : fa_icon('times')
+            %td.group2=parent.redirect==true ? fa_icon('check') : fa_icon('times')
+        - pages.each_with_index do |page, count|
+          - unless @pages.pluck(:parent_id).uniq.include?(page.id)
+            %tr
+              %td=page.position
+              %td= link_to page.navlabel, campus_page_path(page)
+              %td
+                - if page.id==1
+                  =link_to page.name, root_url
+                - else
+                  =link_to page.name, flexipage_campus_page_path(page)
+              %td=page.admin==true ? fa_icon('check') : fa_icon('times')
+              %td=page.redirect==true ? fa_icon('check') : fa_icon('times')
+          
+     
+  /.right{style:"padding:0 30px; margin:0;"}= paginate @pages, :theme => 'twitter-bootstrap-3'    

@@ -1,0 +1,38 @@
+.col-md-offset-2         
+  .form-group
+    .col-sm-2.control-label
+      = f.label t('campus.pages.admin'), for: :admin
+    .col-md-6
+      .form-inline
+        .form-group
+          = t 'yes2'
+          = f.radio_button :admin, true
+        .form-group
+          = t 'no2'
+          = f.radio_button :admin, false
+      
+  .form-group
+    .col-sm-2.control-label
+      = f.label t('campus.pages.redirect'), for: :redirect
+    .col-md-6
+      .form-inline
+        .form-group
+          = t 'yes2'
+          = f.radio_button :redirect, true
+        .form-group
+          = t 'no2'
+          = f.radio_button :redirect, false
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label :action_name
+    .col-md-6
+      = f.text_field :action_name, class: 'form-control'
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label :controller_name
+    .col-md-6
+      = f.text_field :controller_name, class: 'form-control'
+      
+      

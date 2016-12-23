@@ -1,0 +1,31 @@
+.col-md-offset-2      
+  .form-group
+    .col-sm-2.control-label
+      = f.label (t 'campus.pages.body'), for: :body
+    #html.col-md-8
+      = link_to (t 'campus.pages.view_editor'), "#", id: "get_editor"
+      .small=t('campus.pages.remark_editor')
+      = f.text_area :body2, class: 'form-control', :size => '5x20', value: @page.body
+      /= render 'page_content', :f => f
+    #texteditor.col-md-8{style: 'display: none;'}
+      = link_to (t 'campus.pages.view_html'), "#", id: "get_html"
+      .small=t('campus.pages.remark_html')
+      = f.text_area :body3, :id => 'myNicEditor', value: @page.body
+
+:javascript
+  //<![CDATA[
+    bkLib.onDomLoaded(function() {
+        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('myNicEditor')));
+    });
+  //]]>
+  
+  $(document).ready(function(){
+    $("#get_editor").click(function(evt) {
+      $("#html").hide();
+      $("#texteditor").show();
+    });
+    $("#get_html").click(function(evt) {
+      $("#html").show();
+      $("#texteditor").hide();
+    });
+  });
