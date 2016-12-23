@@ -23,7 +23,16 @@ class Position < ActiveRecord::Base
   end
   
   def titleize_name
-    self.name = name.titleize if name.include?("(M)")==false
+    if college.code=='amsas'
+      nos=name.split(" ").last
+      if ['I', 'II'].include?(nos.upcase)
+        self.name=name.gsub(nos, "")+nos.upcase
+      else
+        self.name = name.titleize
+      end
+    else
+      self.name = name.titleize
+    end
   end
   
   def set_combo_code
