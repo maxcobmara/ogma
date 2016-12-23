@@ -72,7 +72,7 @@
                   /= link_to fa_icon "inbox", :action => 'return', :id => librarytransaction
                   = link_to content_tag(:li, fa_icon("inbox")), returning_library_librarytransaction_path(librarytransaction)
             //= permitted_to? :manage, :librarytransactions do %>
-            %td
+            %td=link_to content_tag(:i, "", class: "fa fa-trash-o"), library_librarytransaction_path(:id => librarytransaction, :reportlost => true), :method => 'delete',:data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }
 
                     
 
