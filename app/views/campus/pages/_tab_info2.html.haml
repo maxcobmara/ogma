@@ -1,0 +1,15 @@
+%dt=t 'campus.pages.admin'
+%dd=h @page.admin==true ? fa_icon('check') : fa_icon('times')
+
+%dt=t 'campus.pages.redirect'
+%dd=h @page.redirect==true ? fa_icon('check') : fa_icon('times')
+    
+- if @page.parent_id?
+  %dt=t 'campus.pages.parent_id'
+  %dd=h @page.try(:parent).try(:name)
+
+%dt Action Name
+%dd=h @page.action_name
+
+%dt Controller Name
+%dd=h @page.controller_name
