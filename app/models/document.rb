@@ -81,7 +81,7 @@ class Document < ActiveRecord::Base
   end
 
   def staffiled_list
-    (User.joins(:roles).where('authname=? or authname=? or authname=? or authname=?', "e_filing", "files_module_admin", "files_module_user", "files_module_member").pluck(:userable_id)+Array(stafffiled_id)).compact.uniq
+    (User.joins(:roles).where('authname=? or authname=? or authname=? or authname=?', "e_filing", "documents_module_admin", "documents_module_user", "documents_module_member").pluck(:userable_id)+Array(stafffiled_id)).compact.uniq
     #add existing stafffiled_id just in case of changed of person in charge
   end
   

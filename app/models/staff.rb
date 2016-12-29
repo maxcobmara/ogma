@@ -101,8 +101,12 @@ class Staff < ActiveRecord::Base
   has_many :travelrequest_approver, :class_name => 'TravelRequest', :foreign_key => 'hod_id', :dependent => :nullify
 
   #25Jan2015
-  has_many :circulations
+  has_many :circulations, :dependent => :destroy
   has_many :documents, :through => :circulations
+   
+  has_one :documentfiller, :class_name => 'Document', :foreign_key => 'stafffiled_id', :dependent => :destroy
+  has_one :documentpreparer, :class_name => 'Document', :foreign_key => 'prepared_by', :dependent => :destroy
+  has_one :documentfirstcirculate, :class_name => 'Document', :foreign_key => 'cc1staff_id', :dependent => :nullify
   
   has_many :evaluate_courses, :dependent => :destroy
   has_many :average_scores_lecturer, class_name: 'AverageCourse', foreign_key: 'lecturer_id', :dependent => :destroy
