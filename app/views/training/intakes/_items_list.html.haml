@@ -1,0 +1,9 @@
+/For checking
+/=@intake.description
+/= @intake.division
+
+- 0.upto(@intake.description.to_i-1).each do |cnt|
+  .row
+    /NOTE field must be in this format: id=intake_division_0[name], name=intake[division][0[name]]
+    .col-sm-offset-2.col-sm-2=text_field_tag "intake[division][#{cnt}[name]]",  (@intake.division[cnt.to_s]['name'] rescue nil), class: 'form-control', placeholder: t('training.intake.division_name')
+    .col-sm-2=text_field_tag "intake[division][#{cnt}[total_student]]",  (@intake.division[cnt.to_s]['total_student'] rescue nil), class: 'form-control', placeholder: t('training.intake.total_students')

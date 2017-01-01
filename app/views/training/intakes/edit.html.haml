@@ -8,7 +8,7 @@
 = render 'shared/flashes'
 
 .row
-  = form_for [:training, @intake],  :html => { :class => 'form-horizontal' } do |f| 
+  = form_for [:training, @intake],  :html => { :class => 'form-horizontal', id: 'form1'}, remote: true do |f| 
     = render 'shared/error_messages', object: f.object
     = render :partial => 'form', :locals => {:f => f}
     .row
@@ -17,4 +17,17 @@
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), training_intake_path(@intake), :class => 'btn btn-default'
         .col-md-2
           .div{style: "margin-left:-40px;"}
-            = f.submit t('update'), class: "btn btn-primary"
+            = link_to (t 'submit'), training_intake_path(@intake), :class => 'btn btn-primary', :id => 'submit_show'
+
+:javascript
+  
+  $(document).ready(function(){
+    var link_submit=document.getElementById("submit_show");
+    link_submit.addEventListener("click", function(){
+      $("#form1").submit();
+    });
+    $('.k1').change(function(){
+      $("#form1").submit();
+    });
+  });
+  

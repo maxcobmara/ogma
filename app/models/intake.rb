@@ -1,5 +1,7 @@
 class Intake < ActiveRecord::Base
   
+  serialize :data, Hash
+   
   before_save :apply_month_year_if_nil
   before_destroy :valid_for_removal
   
@@ -11,8 +13,31 @@ class Intake < ActiveRecord::Base
   has_many   :lessonplans, :class_name => 'LessonPlan', :foreign_key=>'intake_id' 
   has_one :examresult
   
-  validates :programme_id, :name, :description, :register_on, :staff_id, presence: true
+  validates :programme_id, :name,:register_on, presence: true # :description, => kumpulan / group
+  #validate :description & :staff_id only for kskb
 
+  def division=(value)
+    data[:division] = value
+  end
+  def division
+    data[:division]
+  end
+  
+  def self.division_search(query)
+    ids=[]
+    for intk in Intake.all
+      0.upto(intk.description.to_i-1) do |x|
+        ids << intk.id if (intk.division[x.to_s]["name"]).downcase.include?(query.downcase)
+      end
+    end
+    where(id: ids)
+  end
+
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:division_search]
+  end  
+  
   def apply_month_year_if_nil
     if monthyear_intake==nil && register_on!=nil
       self.monthyear_intake = register_on.to_date.beginning_of_month

@@ -50,9 +50,11 @@ class Training::IntakesController < ApplicationController
     @intake = Intake.new(intake_params)
     respond_to do |format|
       if @intake.save
-        flash[:notice] = (t 'training.intake.title')+(t 'actions.created')
-        format.html { redirect_to(training_intake_path(@intake)) }
-        format.xml  { render :xml => @intake, :status => :created, :location => @intake }
+#         flash[:notice] = (t 'training.intake.title')+(t 'actions.created')
+#         format.html { redirect_to(training_intake_path(@intake)) }
+#         format.xml  { render :xml => @intake, :status => :created, :location => @intake }
+        format.html { render action: 'edit'}
+        format.json { render action: 'show', status: :created, location: @schedule }
 
       else
         format.html { render :action => "new" }
@@ -70,6 +72,7 @@ class Training::IntakesController < ApplicationController
       if @intake.update(intake_params)
         format.html { redirect_to(training_intake_path(@intake), :notice => (t 'training.intake.title')+(t 'actions.updated'))}
         format.xml  { head :ok }
+	format.js
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @intake.errors, :status => :unprocessable_entity }
@@ -112,7 +115,11 @@ class Training::IntakesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def intake_params
-      params.require(:intake).permit(:name, :description, :register_on, :programme_id, :is_active, :monthyear_intake, :staff_id, :college_id, {:data => []})
+      #params.require(:intake).permit!
+      params.require(:intake).permit(:name, :description, :register_on, :programme_id, :is_active, :monthyear_intake, :staff_id, :college_id, {:data => []}).tap do |whitelisted|
+        whitelisted[:division]=params[:intake][:division]
+      end
+      #ref - http://blog.trackets.com/2013/08/17/strong-parameters-by-example.html
     end
 
 end

@@ -3828,6 +3828,14 @@ en:
       programme_id: Programme
       is_active: Is Active
       staff_id: Group Coordinator
+      coordinator: Coordinator
+      total_division: Total Division
+      division_name: Division Name
+      active: Active
+      not_active: Not Active
+      total_students: Total Students
+      person: person
+      proceed: Proceed
     timetable:
       title: Timetable
       list: Timetable Format List

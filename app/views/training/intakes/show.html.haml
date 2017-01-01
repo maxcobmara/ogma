@@ -17,21 +17,27 @@
             %dt= t'training.intake.programme_id'
             %dd=h @intake.programme.programme_list
 
-            %dt= t'training.intake.name'
+            %dt= @intake.college.code=='amsas' ? "Siri " : (t 'training.intake.name')
             %dd=h @intake.name
-
-            %dt= t'training.intake.description'
-            %dd=h @intake.description
 
             %dt= t'training.intake.register_on'
             %dd=h @intake.register_on.try(:strftime, "%d %b %Y")
 
             %dt= t'training.intake.is_active'
-            %dd=h @intake.is_active? ? "Active" : "Not Active"
+            %dd=h @intake.is_active? ? (t 'training.intake.active') : (t 'training.intake.not_active')
             
-            %dt= t'training.intake.staff_id'
+            %dt= @intake.college.code=='amsas' ? (t 'training.intake.coordinator') : (t 'training.intake.staff_id')
             %dd=h @intake.coordinator.try(:name)
-
+            
+            %dt=@intake.college.code=='amsas' ? (t 'training.intake.total_division') : (t 'training.intake.description')
+            %dd=h @intake.description
+              
+            - if @intake.college.code=='amsas' && @intake.description.to_i > 0 
+              %dt=(t 'training.intake.division_name')
+              %dd{style: 'padding-left: 70px;'}
+                - 0.upto(@intake.description.to_i-1) do |x|
+                  ="(#{x+1}) #{@intake.division[x.to_s]["name"]} - #{@intake.division[x.to_s]["total_student"]} #{(t 'training.intake.person')}"
+                  %br
 .row
   .col-md-4.col-md-offset-3
     %hr

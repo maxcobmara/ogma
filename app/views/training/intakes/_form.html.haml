@@ -13,33 +13,26 @@
             .col-sm-2.control-label
               = f.label :programme_id
             .col-md-3
-              = f.collection_select :programme_id, Programme.roots.order(course_type: :asc, name: :asc), :id, :programme_list, {:include_blank=> (t 'helpers.prompt.select_programme')},{class: 'selectpicker mandatory', "data-width"=>'280px'}
+              = f.collection_select :programme_id, Programme.roots.order(course_type: :asc, name: :asc), :id, :programme_list, {:include_blank=> (t 'helpers.prompt.select_programme')},{class: 'selectpicker mandatory', "data-width"=>"auto"}
+
           .form-group
             .col-sm-2.control-label
-              = f.label :name
+              = current_user.college.code=='amsas' ? "<b>Siri </b>".html_safe : (t 'helpers.label.intake.name')
             .col-md-3
               = f.text_field :name, class: 'form-control mandatory', :size => 20
               .small
                 &nbsp;
                 = current_user.college.code=='amsas' ? "(Sample: 1/2011, 3/2013, 7/2013)" : "(Sample.: Jan 2013, March 2013, July 2013)"
-          .form-group
-            .col-sm-2.control-label
-              = f.label :description
-            .col-md-3
-              = f.text_field :description, class: 'form-control mandatory'
+             
           .form-group
             .col-sm-2.control-label
               = f.label :register_on
             .col-md-3
               = f.text_field :register_on, class: 'form-control date_picker_reverse mandatory', value: @intake.try(:register_on).try(:strftime, '%d-%m-%Y')
+              
           .form-group
             .col-sm-2.control-label
-              = f.label :is_active
-            .col-md-3
-              = f.check_box :is_active
-          .form-group
-            .col-sm-2.control-label
-              = f.label :staff_id
+              = current_user.college.code=='amsas' ? "<b>#{t('training.intake.coordinator')}</b>".html_safe : (t 'helpers.label.intake.staff_id')
             .col-md-3
               - if current_user.college.code=="kskbjb"
                 - programme_names = Programme.roots.where(course_type: "Diploma").pluck(:name)
@@ -47,4 +40,33 @@
                 - academician_post_ids=Position.where('unit IN(?) or unit IN(?) or unit=? or unit=? or unit=?', programme_names, commonsubject_names, "Pos Basik", "Diploma Lanjutan", "Pengkhususan").pluck(:staff_id).compact
                 = f.collection_select :staff_id, Staff.where(id: academician_post_ids).order(name: :asc), :id, :name, {:include_blank=> (t 'select')},{class: 'selectpicker mandatory', "data-width"=>'280px'}
               - else
-                = f.collection_select :staff_id, Staff.order(name: :asc), :id, :name, {:include_blank=> (t 'select')},{class: 'selectpicker mandatory', "data-width"=>'280px'}
+                = f.collection_select :staff_id, Staff.order(name: :asc), :id, :name, {:include_blank=> (t 'select')},{class: 'selectpicker', "data-width"=>"auto"}
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label :is_active
+            .col-md-3
+              = f.check_box :is_active
+
+          - unless current_user.college.code=='amsas'
+            .form-group
+              .col-sm-2.control-label
+                =f.label :description
+              .col-md-1
+                = f.text_field :description, class: 'form-control mandatory'
+                
+          - if current_user.college.code=='amsas'
+            .form-group
+              .col-sm-2.control-label
+                %b=t 'training.intake.total_division'
+              .col-md-1
+                = f.text_field :description, class: 'k1 form-control mandatory', value: @intake.description
+            #divisions_grid      
+              - unless @intake.new_record? && @intake.description.nil?
+                = f.fields_for :division do |builder|
+                  - 0.upto(@intake.description.to_i-1).each do |cnt|
+                    .row
+                      .col-sm-offset-2.col-sm-2= builder.text_field "#{cnt}[name]", class: 'form-control', value: (@intake.division[cnt.to_s]['name'] rescue nil), placeholder: t('training.intake.division_name')
+                      .col-sm-2= builder.text_field "#{cnt}[total_student]", class: 'form-control', value: (@intake.division[cnt.to_s]['total_student'] rescue nil), placeholder: t('training.intake.total_students')
+                      //NOTE - field must be in this format: id=intake_division_0[name], name=intake[division][0[name]]
+
