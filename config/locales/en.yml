@@ -196,9 +196,9 @@ en:
         hdate: Date
       intake:
         programme_id: Programme
-        name: Month & Year
-        description: Group
-        register_on: Register on
+        name: "Siri / Month & Year"
+        description: Total Division / Group
+        register_on: Registration Date
         staff_id: Group Coordinator
       academic_session:
         semester: Semester

@@ -13,8 +13,8 @@ class Intake < ActiveRecord::Base
   has_many   :lessonplans, :class_name => 'LessonPlan', :foreign_key=>'intake_id' 
   has_one :examresult
   
-  validates :programme_id, :name,:register_on, presence: true # :description, => kumpulan / group
-  #validate :description & :staff_id only for kskb
+  validates :programme_id, :name,:register_on, :description, presence: true # :description, => total division (amsas)
+  #validate :staff_id only for kskb
 
   def division=(value)
     data[:division] = value

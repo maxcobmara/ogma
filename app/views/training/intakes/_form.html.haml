@@ -54,13 +54,15 @@
                 =f.label :description
               .col-md-1
                 = f.text_field :description, class: 'form-control mandatory'
-                
+
           - if current_user.college.code=='amsas'
             .form-group
               .col-sm-2.control-label
                 %b=t 'training.intake.total_division'
               .col-md-1
                 = f.text_field :description, class: 'k1 form-control mandatory', value: @intake.description
+              .col-md-2  
+                .small 0 jika tiada
             #divisions_grid      
               - unless @intake.new_record? && @intake.description.nil?
                 = f.fields_for :division do |builder|

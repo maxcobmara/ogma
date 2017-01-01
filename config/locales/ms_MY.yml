@@ -178,8 +178,8 @@ ms_MY:
         hdate: Tarikh
       intake:
         programme_id: Program
-        name: Bulan & Tahun
-        description: Kumpulan
+        name: "Siri  / Bulan & Tahun"
+        description: Jumlah Kumpulan / Kumpulan
         register_on: Tarikh Pendaftaran
         staff_id: Penyelaras Kumpulan
       academic_session:
