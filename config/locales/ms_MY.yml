@@ -178,8 +178,8 @@ ms_MY:
         hdate: Tarikh
       intake:
         programme_id: Program
-        name: Bulan & Tahun
-        description: Kumpulan
+        name: "Siri  / Bulan & Tahun"
+        description: Jumlah Kumpulan / Kumpulan
         register_on: Tarikh Pendaftaran
         staff_id: Penyelaras Kumpulan
       academic_session:
@@ -3746,6 +3746,14 @@ ms_MY:
       programme_id: Program
       is_active: "Aktif?"
       staff_id: Penyelaras Kumpulan
+      coordinator: Penyelaras
+      total_division: Jumlah Kumpulan
+      division_name: Nama Kumpulan
+      active: Aktif
+      not_active: Tidak Aktif
+      total_students: Jumlah Pelajar
+      person: orang
+      proceed: Teruskan
     timetable:
       title: Jadual Waktu
       list: Senarai Format Jadual Waktu

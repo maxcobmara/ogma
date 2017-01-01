@@ -6,7 +6,7 @@
 = render 'shared/flashes'
 
 .row.fluid
-  = form_for [:training, @intake], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+  = form_for [:training, @intake], html: { multipart: true, class: 'form-horizontal', id: 'form1'}, remote: false  do |f| 
     = render 'shared/error_messages', object: f.object
     = render :partial => 'form', :locals => {:f => f}
 	
@@ -15,4 +15,10 @@
         .col-sm-offset-2.col-sm-1
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), training_intakes_path, :class => 'btn btn-default'
         .col-sm-offset-1.col-sm-2
-          = f.submit t('create'), class: "btn btn-primary"
+          /= f.submit t('create'), class: "btn btn-primary"
+          /- if @intake.new_record?
+          = f.submit (t 'training.intake.proceed'), :class => 'btn btn-primary'
+          /- else
+          /  = link_to (t 'helpers.links.submit'), @intake, :class => 'btn btn-primary', :id => 'submit_show'
+
+      

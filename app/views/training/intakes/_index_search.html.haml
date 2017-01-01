@@ -1,6 +1,12 @@
 = search_form_for @search, url: training_intakes_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
-    %td= f.text_field :description_cont, size: 2, class: "form-control"
+    - if current_user.college.code=="amsas"
+      %td= f.text_field :name_cont, size: 2, class: "form-control"
+    %td
+      - if current_user.college.code!="amsas"
+        = f.text_field :description_cont, size: 2, class: "form-control"
+      - else
+        = f.text_field :division_search, size: 2, class: "form-control"
     %td= f.text_field :register_on_gteq, size: 2, class: 'form-control date_picker'
     %td= f.text_field :programme_name_cont, size: 2,  class: "form-control"
     %td= f.text_field :coordinator_name_cont, size: 2,  class: "form-control" 
