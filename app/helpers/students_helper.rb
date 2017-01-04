@@ -1,5 +1,5 @@
 module StudentsHelper
-
+  include DropDown
   def year_and_sem
     current_month = Date.today.strftime("%m")
     current_year = Date.today.strftime("%Y")
@@ -243,7 +243,7 @@ module StudentsHelper
   #for Import Excel -- start
   def self.update_student(spreadsheet)
     spreadsheet.default_sheet = spreadsheet.sheets.first 
-    header = spreadsheet.row(1)
+    header = spreadsheet.row(2)
     
     student_status=[]
     Student::STATUS_COMBINE.each do |name, saved_status|
@@ -276,7 +276,12 @@ module StudentsHelper
     student_religion=[]
     Student::RELIGION.each{|n, sb| student_religion << sb}
     
+    student_bloodtype=[]
+    DropDown::BLOOD_TYPE.each{|n, sb| student_bloodtype << sb}
+    
     student_intake=Intake.pluck(:id)
+    
+    student_rank=Rank.pluck(:id)
     
     saved_students=[]
     icno_not_exist=[]
@@ -292,7 +297,7 @@ module StudentsHelper
     marital_not_valid=[]
     #race_not_valid=[] - not compulsory
     
-    (2..spreadsheet.last_row).each do |i|
+    (4..spreadsheet.last_row).each do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose] 
 
       #retrieve UNIQUE fields of icno
@@ -352,6 +357,22 @@ module StudentsHelper
         status_not_valid << i
       end
       
+
+      rank_e=row["rank_id"]
+      if rank_e.is_a? String
+        if student_rank.include?(rank_e.to_i)
+          rank_e = rank_e.to_i
+        else
+          rank_e=nil
+        end
+      else
+        if student_rank.include?(rank_e.to_i)
+          rank_e = rank_e.to_i
+        else
+          rank_e=nil
+        end
+      end
+      
       ssponsor_e=row["ssponsor"]
       if ssponsor_e.is_a? String
         if student_sponsor.include?(ssponsor_e)
@@ -380,23 +401,25 @@ module StudentsHelper
         end
       end
       
-      course_id_e=row["course_id"]
-      if course_id_e.is_a? String 
-        if LibraryHelper.all_digits(course_id_e) && student_course.include?(course_id_e.to_i)
-          course_id_e=course_id_e.to_i
-        else
-          #wrong data ignored - number required
-          course_id_e=nil
-          course_id_not_valid << i
-        end
-      else
-        if student_course.include?(course_id_e)
-          course_id_e=course_id_e.to_i 
-        else
-          course_id_e=nil
-          course_id_not_valid << i
-        end
-      end
+#course_id_e=1
+# NOTE - still in use for Kskbjb - 5Jan2017
+#       course_id_e=row["course_id"]
+#       if course_id_e.is_a? String 
+#         if LibraryHelper.all_digits(course_id_e) && student_course.include?(course_id_e.to_i)
+#           course_id_e=course_id_e.to_i
+#         else
+#           #wrong data ignored - number required
+#           course_id_e=nil
+#           course_id_not_valid << i
+#         end
+#       else
+#         if student_course.include?(course_id_e)
+#           course_id_e=course_id_e.to_i 
+#         else
+#           course_id_e=nil
+#           course_id_not_valid << i
+#         end
+#       end
       
       race2_e=row["race2"]
       if race2_e.is_a? String 
@@ -453,6 +476,22 @@ module StudentsHelper
         end
       end
       ##
+
+      bloodtype_e=row["bloodtype"]
+      if bloodtype_e.is_a? String 
+        if LibraryHelper.all_digits(bloodtype_e)&& student_bloodtype.include?(bloodtype_e)
+          bloodtype_e=bloodtype_e
+        else
+          #wrong data ignored - number required
+          bloodtype_e=nil
+        end
+      else
+        if student_bloodtype.include?(bloodtype_e.to_i.to_s)
+          bloodtype_e=bloodtype_e.to_i.to_s
+        else
+          bloodtype_e=nil
+        end
+      end
       
       mrtlstatuscd_e=row["mrtlstatuscd"]
       if mrtlstatuscd_e.is_a? String 
@@ -507,38 +546,54 @@ module StudentsHelper
       intake_e=row["intake_id"]
       if intake_e.is_a? String 
         if LibraryHelper.all_digits(intake_e) && student_intake.include?(intake_e.to_i)
-          intake_id_e=intake_id_e.to_i
+          intake_e=intake_e.to_i
+	  ###
+	  studentintake=Intake.find(intake_e)
+	  college_id_e=studentintake.college_id
+	  course_id_e=studentintake.programme_id
+	  ###
         else
           #wrong data ignored - number required
           intake_e=nil
+	  college_id_e=nil
+	  course_id_e=nil
           intake_not_valid << i
         end
       else
         if student_intake.include?(intake_e)
           intake_e=intake_e.to_i
+	  ###
+	  studentintake=Intake.find(intake_e)
+	  college_id_e=studentintake.college_id
+	  course_id_e=studentintake.programme_id
+	  ###
         else
           intake_e=nil
+	  college_id_e=nil
+	  course_id_e=nil
           intake_not_valid << i
         end
       end
       
-      college_id_e=row["college_id"]
-      if college_id_e.is_a? String 
-        if LibraryHelper.all_digits(college_id_e) && student_course.include?(college_id_e.to_i)
-          college_id_e=college_id_e.to_i
-        else
-          #wrong data ignored - number required
-          college_id_e=nil
-          college_id_not_valid << i
-        end
-      else
-        if student_course.include?(college_id_e)
-          college_id_e=college_id_e.to_i 
-        else
-          college_id_e=nil
-          college_id_not_valid << i
-        end
-      end
+#college_id_e=2
+# NOTE - still in use for Kskbjb - 5Jan2017
+#       college_id_e=row["college_id"]
+#       if college_id_e.is_a? String 
+#         if LibraryHelper.all_digits(college_id_e) && student_course.include?(college_id_e.to_i)
+#           college_id_e=college_id_e.to_i
+#         else
+#           #wrong data ignored - number required
+#           college_id_e=nil
+#           college_id_not_valid << i
+#         end
+#       else
+#         if student_course.include?(college_id_e)
+#           college_id_e=college_id_e.to_i 
+#         else
+#           college_id_e=nil
+#           college_id_not_valid << i
+#         end
+#       end
       
       ##validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :sbirthdt,     :gender, :mrtlstatuscd, :intake,:course_id
       
@@ -559,12 +614,13 @@ module StudentsHelper
         student_rec.sstatus = sstatus_e
         student_rec.ssponsor = ssponsor_e
         student_rec.sbirthdt = sbirthdt_e 
-        student_rec.intake = intake_e
 	student_rec.birthplace=birthplace_e #required for Amsas
 	student_rec.religion=religion_e #required for Amsas
 	student_rec.intake_id=intake_e
 	student_rec.intake=''
-        student_rec.attributes = row.to_hash.slice("matrixno","sstatus_remark", "semail", "regdate", "offer_letter_serial", "end_training", "address", "address_posbasik")
+	student_rec.rank_id=rank_e
+	student_rec.bloodtype=bloodtype_e
+        student_rec.attributes = row.to_hash.slice("matrixno","sstatus_remark", "semail", "regdate", "offer_letter_serial", "end_training", "address", "address_posbasik", "department")
         student_rec.save!
         #saved_students << student_rec if !student_rec.id.nil?
         saved_students << i #if !student_rec.id.nil?

@@ -2,8 +2,9 @@ class Student < ActiveRecord::Base
   include StudentsHelper
   
   before_save  :titleize_name
-  validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :course_id, :intake_id   #:intake
+  validates_presence_of     :icno, :name, :sstatus, :stelno,  :gender, :sbirthdt, :mrtlstatuscd, :course_id, :intake_id   #:intake
   validates_presence_of :birthplace, :religion, :if => :college_is_amsas?
+  validates_presence_of :ssponsor, :if => :college_is_not_amsas?
   validates_numericality_of :icno, :stelno
   #validates_length_of       :icno, :is =>12
   validates_uniqueness_of   :icno
@@ -103,6 +104,10 @@ class Student < ActiveRecord::Base
   
   def college_is_amsas?
     college_id==2
+  end
+  
+  def college_is_not_amsas?
+    college_id!=2
   end
   
   def self.year_and_sem(intake)

@@ -376,6 +376,7 @@ en:
             taken: "must be unique"
             illegal_char: contains illegal characters
             invalid: is invalid
+            record_invalid: Record invalid
         models:
           student:
             attributes:
@@ -2729,6 +2730,7 @@ en:
       marital_invalid: "record(s) with invalid 'mrtlstatuscd' "
       course_id_invalid: "record(s) with invalid 'course_id' "
       intake_invalid: "record(s) with invalid 'intake' "
+      college_invalid: "record(s) with invalid 'college_id' "
       
     leaveforstudent:
       title: Student Leave
@@ -3197,10 +3199,10 @@ en:
       disposed: Disposed
       image: Image
       require_update: "Physical Description (Require Update?)"
-      excel_format: Excel Format
+      excel_format: Excel Format (Sample)
       import_excel: Import Book From Excel File
       excel_conditions: Excel File Conditions
-      condition_line: "Header (first line) of an Excel file must use names / terms as below :"
+      condition_line: "Header (third row / yellow coloured row) of an Excel file must use names / terms as below :"
       use_mark: "(Additional Notes : Use either (,) or (:) or (;) in between Roman No, Total Pages and Thickness of a book (eg: ix,56ms,20cm))"
       use_mark2: "(Additional Notes : Use either (,) or (:) or (;) in between Publish Location, Publisher dan Year Published (eg: Edinburgh,Churchill Livingstone,1983))"
       wrong_price_types: "Note : Cell format for 'harga_rm' column is INVALID. Use 'Number : General' cell format type and RE-IMPORT EXCEL FILE."
@@ -3836,6 +3838,7 @@ en:
       total_students: Total Students
       person: person
       proceed: Proceed
+      zero_nil: 0 if nil
     timetable:
       title: Timetable
       list: Timetable Format List
