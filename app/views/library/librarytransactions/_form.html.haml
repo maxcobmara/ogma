@@ -26,7 +26,7 @@
         #datepicker.input-group
           = f.text_field :checkoutdate, class: "input-daterange form-control", :type => :text
           %span.input-group-addon to
-          = f.text_field :returnduedate, class: "input-daterange form-control", :type => :text
+          = f.text_field :returnduedate, class: "input-daterange form-control", :type => :text, value: @defaultreturn
       
     .form-group
       .col-sm-offset-2.col-sm-2

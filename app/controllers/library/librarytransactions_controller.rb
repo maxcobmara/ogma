@@ -39,11 +39,14 @@ class Library::LibrarytransactionsController < ApplicationController
     if @librarytransaction.ru_staff == true
       if current_user.college.code=='amsas'
         @librarytransaction.returnduedate = (Date.today() + 30.days).strftime('%d-%m-%Y')
+	@defaultreturn=(Date.today() + 30.days).strftime('%d-%m-%Y')
       else
         @librarytransaction.returnduedate = (Date.today() + 21.days).strftime('%d-%m-%Y')
+	@defaultreturn=(Date.today() + 21.days).strftime('%d-%m-%Y')
       end
     elsif @librarytransaction.ru_staff == false
       @librarytransaction.returnduedate = (Date.today() + 14.days).strftime('%d-%m-%Y')
+      @defaultreturn=(Date.today() + 14.days).strftime('%d-%m-%Y')
     end
   end
 
