@@ -3045,6 +3045,7 @@ en:
       extending: Loan Extension
       extend_for: "Extend loan for : "
       extension_remark: Loan extension allocated for staffs is 21 days, whereas for students is 14 days.
+      extension_remark2: Loan extension allocated for staffs is 30 days, whereas for students is 14 days.
       fourteen_days: another 14 days
       twentyone_days: another 21 days
       not_extended: No extension

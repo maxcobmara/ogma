@@ -5,6 +5,7 @@ class Staff < ActiveRecord::Base
   validates :icno, presence: true#, numericality: true, length: { is: 12 }, uniqueness: true
   validates_presence_of     :name, :coemail, :code, :appointdt, :current_salary #appointment date must exist be4 can apply leave, salary - for transport class
 
+  before_save :remove_whitespace_begin_end
   before_destroy :valid_for_removal
   
   belongs_to :title,        :class_name => 'Title',           :foreign_key => 'titlecd_id'
@@ -140,6 +141,9 @@ class Staff < ActiveRecord::Base
 
   #--------------------Declerations----------------------------------------------------
   
+   def remove_whitespace_begin_end
+     self.name=name.strip
+   end 
    def create_shift_history_nodate(saved_shift, current_shift, new_deactivate_date)
       new_shift = ShiftHistory.new
       new_shift.shift_id = saved_shift #should save history not new one

@@ -54,7 +54,7 @@
         %li{style: 'color: blue;'}
           =t 'library.transaction.fine_remark2'
           %strong=t 'library.transaction.return'
-        %li=t 'library.transaction.extension_remark'
+        %li=current_user.college.code=='amsas' ? (t 'library.transaction.extension_remark2') : (t 'library.transaction.extension_remark')
 
 / :javascript /already moved to coffee script
 /   $('.edit_loan input[type=submit]').remove();

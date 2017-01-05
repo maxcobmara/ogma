@@ -2935,6 +2935,7 @@ ms_MY:
       extending: Sambung Pinjaman
       extend_for: "Pinjaman dilanjutkan : "
       extension_remark: Sambungan pinjaman bagi staf adalah 21 hari, manakala bagi pelatih adalah 14 hari.
+      extension_remark2: Sambungan pinjaman bagi staf adalah 30 hari, manakala bagi pelatih adalah 14 hari.
       fourteen_days: sebanyak 14 hari
       twentyone_days: sebanyak 21 hari
       not_extended: Tiada sambungan
