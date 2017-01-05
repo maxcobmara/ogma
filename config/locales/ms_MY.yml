@@ -358,7 +358,8 @@ ms_MY:
             too_short: "ialah sangat pendek (minimum ialah {{count}} huruf)"
             taken: "sudah digunakan"
             illegal_char: mengandungi aksara yang tidak sah
-            invalid: adalah tidak sah   
+            invalid: adalah tidak sah  
+            record_invalid: Rekod tidak sah
         models:
           student:
             attributes:
@@ -458,7 +459,7 @@ ms_MY:
   approve: Kelulusan
   add_details: Tambah Butiran
   or: atau
-  excel_format: Format Excel
+  excel_format: Sampel Format Excel
   pdf_format: Format PDF
   select_excel_file: Sila pilih fail Excel untuk diimport
   reports: Laporan
@@ -2618,6 +2619,7 @@ ms_MY:
       marital_invalid: " rekod dengan data 'mrtlstatuscd' tidak sah "
       course_id_invalid: " rekod dengan data 'course_id' tidak sah "
       intake_invalid: " rekod dengan data 'intake' tidak sah "
+      college_invalid: " rekod dengan data 'college_id' tidak sah "
     
     leaveforstudent:
       title: Permohonan Cuti Pelajar
@@ -2933,6 +2935,7 @@ ms_MY:
       extending: Sambung Pinjaman
       extend_for: "Pinjaman dilanjutkan : "
       extension_remark: Sambungan pinjaman bagi staf adalah 21 hari, manakala bagi pelatih adalah 14 hari.
+      extension_remark2: Sambungan pinjaman bagi staf adalah 30 hari, manakala bagi pelatih adalah 14 hari.
       fourteen_days: sebanyak 14 hari
       twentyone_days: sebanyak 21 hari
       not_extended: Tiada sambungan
@@ -3091,7 +3094,7 @@ ms_MY:
       excel_format: Format Excel
       import_excel: Import Buku Dari Fail Excel
       excel_conditions: Syarat Fail Excel
-      condition_line: "'Header' (baris pertama) fail Excel mestilah menggunakan nama / terma seperti di bawah :"
+      condition_line: "'Header' (baris ketiga / baris berwarna kuning) fail Excel mestilah menggunakan nama / terma seperti di bawah :"
       use_mark: "(Nota Tambahan : Gunakan samada (,) atau (:) atau (;) di antara No Roman, Jumlah Muka Surat dan Ketebalan buku (cth: ix,56ms,20cm))"
       use_mark2: "(Nota Tambahan : Gunakan samada (,) atau (:) atau (;) di antara Lokasi Diterbitkan, Penerbit dan Tahun Diterbitkan (cth: Edinburgh,Churchill Livingstone,1983))"
       wrong_price_types: "Nota : Format sel bagi lajur 'harga_rm' (Harga Buku) adalah TIDAK SAH. Gunakan format sel 'Number : General' dan IMPORT SEMULA FAIL EXCEL."
@@ -3754,6 +3757,7 @@ ms_MY:
       total_students: Jumlah Pelajar
       person: orang
       proceed: Teruskan
+      zero_nil: 0 jika tiada
     timetable:
       title: Jadual Waktu
       list: Senarai Format Jadual Waktu

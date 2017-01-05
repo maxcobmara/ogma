@@ -37,7 +37,11 @@ class Library::LibrarytransactionsController < ApplicationController
     #@librarytransaction.accession_id = 1
     @librarytransaction.checkoutdate = Date.today().strftime('%d-%m-%Y')
     if @librarytransaction.ru_staff == true
-      @librarytransaction.returnduedate = (Date.today() + 21.days).strftime('%d-%m-%Y')
+      if current_user.college.code=='amsas'
+        @librarytransaction.returnduedate = (Date.today() + 30.days).strftime('%d-%m-%Y')
+      else
+        @librarytransaction.returnduedate = (Date.today() + 21.days).strftime('%d-%m-%Y')
+      end
     elsif @librarytransaction.ru_staff == false
       @librarytransaction.returnduedate = (Date.today() + 14.days).strftime('%d-%m-%Y')
     end

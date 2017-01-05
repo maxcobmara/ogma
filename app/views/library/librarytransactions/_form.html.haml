@@ -12,7 +12,11 @@
       .col-sm-2.control-label
         = f.label (t 'library.transaction.select_book')
       .col-md-6
-        = f.text_field :accession_acc_book, class: 'form-control', data: {autocomplete_source: Accession.where("id NOT IN (?)", @checked_out).order(:accession_no).map(&:acc_book) }, placeholder: "Accession No"
+        - if @checked_out!=[]
+          - accession_of_books=Accession.where("id NOT IN (?)", @checked_out)
+        - else
+          - accession_of_books=Accession.all
+        = f.text_field :accession_acc_book, class: 'form-control', data: {autocomplete_source: accession_of_books.order(:accession_no).map(&:acc_book) }, placeholder: "Accession No"
       
     .form-group
       .col-sm-2.control-label

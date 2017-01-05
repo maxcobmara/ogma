@@ -62,7 +62,7 @@
               .col-md-1
                 = f.text_field :description, class: 'k1 form-control mandatory', value: @intake.description
               .col-md-2  
-                .small 0 jika tiada
+                .small=t 'training.intake.zero_nil'
             #divisions_grid      
               - unless @intake.new_record? && @intake.description.nil?
                 = f.fields_for :division do |builder|
