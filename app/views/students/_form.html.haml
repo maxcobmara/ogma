@@ -20,7 +20,8 @@
         = render :partial => 'tab_student_details_edit', :locals => {:f => f}
       #course_details_edit.tab-pane
         %br
-        = render :partial => 'tab_course_details_edit', :locals => {:f => f}
+        /= render :partial => 'tab_course_details_edit', :locals => {:f => f}
+        = render :partial => "students/#{current_user.college.code}/tab_course_details_edit", :locals => {:f => f}
 
       #health_status_edit.tab-pane
         %br

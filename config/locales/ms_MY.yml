@@ -1824,7 +1824,7 @@ ms_MY:
     no_user2: "Tiada Pengguna / Staf sepadan (masukkan/kemaskini data 'icno', bagi worksheet 'USERINFO' dalam fail Excel DAN pastikan data 'No MyKad' dan 'THUMB ID' dalam ICMS-Maklumat Staf adalah berpadanan)"
     log_in: Log Masuk
     log_out: Log Keluar
-    excel_format: Format Excel
+    excel_format: Sampel Format Excel
     date_range1: "Carian 'Semua Jabatan / Unit' - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 bulan terakhir)"
     date_range2: "Carian mengikut Jabatan / Unit - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 tahun terakhir)"
     require_complete_data: "-- <Unit / Jabatan> : Data kakitangan (Waktu Anjal dan Thumb ID) serta perjawatan (Staf) dalam Jabatan / Unit perlulah lengkap bagi membolehkan carian dilakukan"
@@ -2620,6 +2620,8 @@ ms_MY:
       course_id_invalid: " rekod dengan data 'course_id' tidak sah "
       intake_invalid: " rekod dengan data 'intake' tidak sah "
       college_invalid: " rekod dengan data 'college_id' tidak sah "
+      group_not_exist: "Tiada rekod"
+      select_intake: Sila pilih Sesi pengambilan
     
     leaveforstudent:
       title: Permohonan Cuti Pelajar
@@ -3091,7 +3093,7 @@ ms_MY:
       disposed: Dilupus
       image: Imej
       require_update: "Deskripsi Fizikal (Perlu Dikemaskini?)"
-      excel_format: Format Excel
+      excel_format: Sampel Format Excel
       import_excel: Import Buku Dari Fail Excel
       excel_conditions: Syarat Fail Excel
       condition_line: "'Header' (baris ketiga / baris berwarna kuning) fail Excel mestilah menggunakan nama / terma seperti di bawah :"

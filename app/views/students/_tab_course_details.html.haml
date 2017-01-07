@@ -2,16 +2,22 @@
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal
     %dt= t 'student.students.course_id' , :default => model_class.human_attribute_name(:course_id) + ":"
-    %dd= @student.course_id.blank? ? " " : @student.course.try(:programme_list)
+    %dd
+      - if @student.college.code=='kskbjb'
+        = @student.course_id.blank? ? " " : @student.course.try(:programme_list)
+      - else
+        = @student.intakestudent.programme.programme_list
 
     %dt= t 'student.students.intake_id' , :default => model_class.human_attribute_name(:intake_id) + ":"
     %dd
       - unless @student.intake_id.blank? 
-        = @student.college.code=='amsas' ? "Siri "+@student.intakestudent.monthyear_intake.strftime("%m/%Y") : @student.intakestudent.monthyear_intake.strftime("%B %Y")
+        = @student.college.code=='amsas' ? "Siri "+@student.intakestudent.name : @student.intakestudent.monthyear_intake.strftime("%B %Y")
       - else
         = @student.intake.blank? ? "-" : @student.intake.strftime("%B %Y")
     
-    /@student.intake.blank? ? "-" : @student.intake.strftime("%B %Y")
-  
-    %dt= t 'student.students.remarks' , :default => model_class.human_attribute_name(:address_posbasik) + ":"
+    - if @student.college.code=='amsas' && @student.group_id!=nil
+      %dt= t 'student.students.group_id', :default => model_class.human_attribute_name(:group_id) + ":"
+      %dd= @student.intakestudent.division[@student.group_id.to_s][:name]
+
+    %dt= t 'student.students.remarks' , :default => model_class.human_attribute_name(:remarks) + ":"
     %dd= @student.course_remarks
