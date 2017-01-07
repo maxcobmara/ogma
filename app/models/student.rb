@@ -1,7 +1,7 @@
 class Student < ActiveRecord::Base
   include StudentsHelper
   
-  before_save  :titleize_name, :amsas_intake_update_course
+  before_save  :titleize_name, :amsas_intake_update_course, :remove_group_id
   validates_presence_of     :icno, :name, :sstatus, :stelno,  :gender, :sbirthdt, :mrtlstatuscd, :intake_id#, :semail   #:intake
   validates_presence_of :birthplace, :religion, :if => :college_is_amsas?
   validates_presence_of :ssponsor, :course_id, :if => :college_is_not_amsas?
@@ -157,6 +157,14 @@ class Student < ActiveRecord::Base
   def amsas_intake_update_course
     if college_id==2 && intake_id!=nil
       self.course_id=Intake.find(intake_id).programme_id
+    end
+  end
+  
+  def remove_group_id
+    if group_id!=nil
+      unless intakestudent.description.to_i > 0
+        self.group_id=nil
+      end
     end
   end
 
