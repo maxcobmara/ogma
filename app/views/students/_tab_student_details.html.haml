@@ -23,7 +23,7 @@
     %dd=  @student.render_sponsor
 
     %dt= t 'student.students.gender' , :default => model_class.human_attribute_name(:gender) + ":"
-    %dd= (Student::GENDER.find_all{|disp, value| value == @student.gender.to_s}).map {|disp, value| disp} [0]
+    %dd=@student.render_gender
 		  
     %dt= t 'student.students.sbirthd' , :default => model_class.human_attribute_name(:sbirthd) + ":"
     %dd= @student.sbirthdt.try(:strftime, '%d-%m-%Y')

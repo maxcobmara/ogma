@@ -1,10 +1,10 @@
 class Student < ActiveRecord::Base
   include StudentsHelper
   
-  before_save  :titleize_name
-  validates_presence_of     :icno, :name, :sstatus, :stelno,  :gender, :sbirthdt, :mrtlstatuscd, :course_id, :intake_id   #:intake
+  before_save  :titleize_name, :amsas_intake_update_course
+  validates_presence_of     :icno, :name, :sstatus, :stelno,  :gender, :sbirthdt, :mrtlstatuscd, :intake_id#, :semail   #:intake
   validates_presence_of :birthplace, :religion, :if => :college_is_amsas?
-  validates_presence_of :ssponsor, :if => :college_is_not_amsas?
+  validates_presence_of :ssponsor, :course_id, :if => :college_is_not_amsas?
   validates_numericality_of :icno, :stelno
   #validates_length_of       :icno, :is =>12
   validates_uniqueness_of   :icno
@@ -83,7 +83,11 @@ class Student < ActiveRecord::Base
   end
   
   def render_sponsor
-    (Student::SPONSOR.find_all{|disp, value| value==ssponsor}).map {|disp, value| disp}[0]
+    if college.code=='kskbjb'
+      (Student::SPONSOR.find_all{|disp, value| value==ssponsor}).map {|disp, value| disp}[0]
+    else
+       (Student::SPONSOR_AMSAS.find_all{|disp, value| value==ssponsor}).map {|disp, value| disp}[0]
+    end
   end
   
   def render_marital
@@ -100,6 +104,10 @@ class Student < ActiveRecord::Base
   
   def render_birthplace
      (Student::STATECD.find_all{|disp, value| value == birthplace}).map {|disp, value| disp} [0]
+  end
+  
+  def render_gender
+     (Student::GENDER.find_all{|disp, value| value == gender.to_s}).map {|disp, value| disp} [0]
   end
   
   def college_is_amsas?
@@ -144,6 +152,12 @@ class Student < ActiveRecord::Base
 #----------------------Declarations---------------------------------------------------------------------------------
   def titleize_name
     self.name = name.titleize
+  end
+  
+  def amsas_intake_update_course
+    if college_id==2 && intake_id!=nil
+      self.course_id=Intake.find(intake_id).programme_id
+    end
   end
 
   def age
@@ -629,6 +643,11 @@ STATUS_COMBINE = [
 SPONSOR = [
          #  Displayed       stored in db
          [ "Kementerian Kesihatan Malaysia","KKM" ],
+         [ "Swasta","swasta" ],
+         [ "Sendiri", "FaMa" ]
+]
+SPONSOR_AMSAS = [
+         #  Displayed       stored in db
          [ "Suruhanjaya Perkhidmatan Awam","SPA" ],
          [ "Swasta","swasta" ],
          [ "Sendiri", "FaMa" ]

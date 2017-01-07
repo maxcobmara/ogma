@@ -480,7 +480,7 @@ en:
   approve: Approve
   add_details: Add Details
   or: or
-  excel_format: Excel Format
+  excel_format: Excel Format (Sample)
   pdf_format: PDF Format
   select_excel_file: Please select an Excel file for import
   reports: Reports
@@ -1932,7 +1932,7 @@ en:
     no_user2: "No matching staff / user (insert/update 'icno' of worksheet 'USERINFO' in excel file AND make sure 'MyKad No' and 'THUMB ID' data in ICMS - Staff Info are matching)"
     log_in: Log In
     log_out: Log Out
-    excel_format: Excel Format
+    excel_format: Excel Format (Sample)
     date_range1: "Searching 'All Department / Unit' - Attendance records for selected date range (within the latest 2 months)"
     date_range2: "Searching by Department / Unit - Attendance records for selected date range (within the latest 2 years)"
     require_complete_data: "-- <Unit / Department> :  Complete staff (Staff Shift and Thumb ID) and positions (staff) data are required for searching to works"
@@ -2731,6 +2731,8 @@ en:
       course_id_invalid: "record(s) with invalid 'course_id' "
       intake_invalid: "record(s) with invalid 'intake' "
       college_invalid: "record(s) with invalid 'college_id' "
+      group_not_exist: No record
+      select_intake: Please select Intake first
       
     leaveforstudent:
       title: Student Leave

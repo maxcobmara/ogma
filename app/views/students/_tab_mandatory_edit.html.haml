@@ -45,7 +45,11 @@
     .col-sm-2.control-label
       =f.label t 'student.students.ssponsor', for: :ssponsor
     .col-md-3
-      = f.select :ssponsor, Student::SPONSOR, {:include_blank =>t('helpers.prompt.select_sponsor')}, {class: 'selectpicker mandatory', 'data-width' => "auto"}
+      - if current_user.college.code=='kskbjb'
+        - sponsoring_body=Student::SPONSOR
+      - else 
+        -sponsoring_body=Student::SPONSOR_AMSAS
+      = f.select :ssponsor, sponsoring_body, {:include_blank =>t('helpers.prompt.select_sponsor')}, {class: 'selectpicker mandatory', 'data-width' => "auto"}
 
   .form-group
     .col-sm-2.control-label

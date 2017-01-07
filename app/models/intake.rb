@@ -56,6 +56,11 @@ class Intake < ActiveRecord::Base
     "#{description} (#{name}) | #{programme.programme_list}"
   end
   
+  #amsas
+  def siri_programmelist
+    "#{name} | #{programme.programme_list}"
+  end
+  
   def self.get_intake(student_intake, courseid)
     intakeid=0
     a=Intake.where(monthyear_intake: student_intake, programme_id: courseid)
