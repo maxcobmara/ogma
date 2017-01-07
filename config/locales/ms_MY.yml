@@ -506,6 +506,7 @@ ms_MY:
     all_records: Semua Rekod
     all_programmes: Semua Program
     all_intakes: Semua Ambilan
+    all_groups: Semua Kumpulan
     select_one: "Sila pilih sekurang-kurangnya satu rekod untuk disunting."
     submitted: Dihantar
     not_submitted: Tidak Dihantar

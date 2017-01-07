@@ -527,6 +527,7 @@ en:
     all_records: All Records
     all_programmes: All Programmes
     all_intakes: All Intakes
+    all_groups: All Divisions
     select_one: "Please select at least one record for editing."
     submitted: Submitted
     not_submitted: Not Submitted
