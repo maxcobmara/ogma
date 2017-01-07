@@ -51,23 +51,48 @@
 
     %tbody
     = render "index_search"
-    - @students.group_by{|t|t.intakestudent.monthyear_intake}.each do |intake, student_course|
+    - if current_user.college.code=='amsas'
+      - @students_all=@students.group_by{|t|t.intakestudent}
+    - else
+      - @students_all=@students.group_by{|t|t.intakestudent.monthyear_intake}
+    - @students_all.each do |intake, student_course|
       %tr
         %td.group{:colspan => "10", :style => "background-color:#EFF1F1;"}
-          %span{:style => "color:#218AFB;font-weight:bold;"}=current_user.college.code=="amsas" ? "Siri "+intake.try(:strftime, '%m/%Y') : intake.try(:strftime, '%m/%Y')
-      - student_course.group_by(&:course).each do |course, students|
-        %tr
-          %td.group{:colspan => "12", :style => "background-color:#E5E4E2;"}
-            %span{:style => "color:#black;font-weight:bold;font-size:14px"}= link_to course.try(:programme_list), "#", class: 'bogus'
-        - for student in students
+          %span{:style => "color:#218AFB;font-weight:bold;"}=current_user.college.code=="amsas" ? "Siri "+intake.siri_programmelist : intake.try(:strftime, '%m/%Y')
+      - if current_user.college.code=='amsas'
+        /- for student in student_course
+        /student_course -> per intake/group, group_id -> division
+        - student_course.group_by(&:group_id).each do |group_id, students|
           %tr
-            %td= link_to student.formatted_mykad, student_path(student)
-            %td= student.student_with_rank
-            %td= student.matrixno
-            %td
-              - if (student.race2.nil? && !student.race.nil? && student.race!='')||(student.race2.blank? && !student.race.blank? &&  student.race!='')
-                %font{:color => "red"}
-                  *#{student.race}
+            %td.group{:colspan => "12", :style => "background-color:#E5E4E2;"}
+              - if group_id!=nil
+                - group_name=intake.division[group_id.to_s][:name]
+              - else
+                - group_name=""
+              %span{:style => "color:#black;font-weight:bold;font-size:14px"}= link_to group_name, "#", class: 'bogus'
+          - for student in students
+            %tr
+              %td= link_to student.formatted_mykad, student_path(student)
+              %td= student.student_with_rank
+              %td= student.matrixno
+              %td
+                - if (student.race2.nil? && !student.race.nil? && student.race!='')||(student.race2.blank? && !student.race.blank? &&  student.race!='')
+                  %font{:color => "red"}
+                    *#{student.race}
+      - else
+        - student_course.group_by(&:course).each do |course, students|
+          %tr
+            %td.group{:colspan => "12", :style => "background-color:#E5E4E2;"}
+              %span{:style => "color:#black;font-weight:bold;font-size:14px"}= link_to course.try(:programme_list), "#", class: 'bogus'
+          - for student in students
+            %tr
+              %td= link_to student.formatted_mykad, student_path(student)
+              %td= student.student_with_rank
+              %td= student.matrixno
+              %td
+                - if (student.race2.nil? && !student.race.nil? && student.race!='')||(student.race2.blank? && !student.race.blank? &&  student.race!='')
+                  %font{:color => "red"}
+                    *#{student.race}
 
 
 

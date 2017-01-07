@@ -61,6 +61,18 @@ class Student < ActiveRecord::Base
 #     [:course_search]
 #   end
   
+  def self.division_search(query)
+    if query
+      intakeid,k=query.split("~")
+    end
+    where(intake_id: intakeid).where(group_id: k)
+  end
+    
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:division_search]
+  end
+  
   def intake_course
     #asal "#{intake}"+","+"#{course_id}"
     "#{intakestudent.monthyear_intake.strftime('%d-%m-%Y')}"+","+"#{course_id}"

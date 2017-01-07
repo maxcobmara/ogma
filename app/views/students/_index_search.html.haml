@@ -3,17 +3,32 @@
     %td= f.text_field :icno_cont, size: 2,  :class => "form-control"
     %td
       .col-md-5= f.text_field :name_cont, class: "form-control", placeholder: "Student Name"
-      .col-md-4
-        =f.collection_select :course_id_eq, Programme.roots, :id, :programme_list, {include_blank: (t 'actions.all_programmes'), "data-width"=> "auto"}, {class: 'selectpicker'}
+      .col-md-5
+        - unless current_user.college.code=='amsas'
+          =f.collection_select :course_id_eq, Programme.roots, :id, :programme_list, {include_blank: (t 'actions.all_programmes'), "data-width"=> "auto"}, {class: 'selectpicker'}
         - intakes=[]
         - if current_user.college.code=='amsas'
-          - Intake.select('DISTINCT monthyear_intake').each{|x|intakes << ["Siri "+x.monthyear_intake.strftime('%m/%Y'), x.monthyear_intake]}
+          - Intake.all.order(monthyear_intake: :desc).each{|x|intakes << ['Siri '+x.siri_programmelist, x.name]}
+          = f.select :intakestudent_name_eq, intakes, {include_blank: (t 'actions.all_intakes')}, {class: 'selectpicker'}
+          
+          - arr=[]
+          - intake_ids_with_division=Intake.where.not(description: '0').pluck(:id)
+          - intake_ids_with_division.each do |intake_id|
+            - intake_desc=Intake.find(intake_id).siri_programmelist
+            - divs_arr=[]
+            - divs= Intake.find(intake_id).division
+            - divs.each do |k,v| 
+              - arr << ["#{intake_desc}: #{v[:name]}", "#{intake_id}~#{k}"]
+          /=arr
+          = f.select :division_search, arr, {include_blank: (t 'actions.all_groups')}, {class: 'selectpicker'}
+          
         - else
           - Intake.select('DISTINCT monthyear_intake').each{|x|intakes << [x.monthyear_intake.strftime('%b %Y'), x.monthyear_intake]}
-        =f.select :intakestudent_monthyear_intake_eq, intakes, {include_blank: (t 'actions.all_intakes')}, {class: 'selectpicker'}
+          =f.select :intakestudent_monthyear_intake_eq, intakes, {include_blank: (t 'actions.all_intakes')}, {class: 'selectpicker'}
     %td= f.text_field :matrixno_start, size: 2,  :class => "form-control"
     %td.input-group
       = f.text_field :race_cont, size: 2,  :class => "form-control"    	  
       %span.input-group-btn
         %button.btn.btn-sm.btn-default.right{:type => "submit"}
           %i.fa.fa-search.fa-fw
+          
