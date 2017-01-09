@@ -21,7 +21,7 @@
 
 %br
 %h4=t('library.book.excel_conditions')
-- if is_admin? || is_developer?
+- if is_developer?
   =image_tag("sample_excel_view_admin.png")
 - else
   =image_tag("sample_excel_view.png")
@@ -32,7 +32,7 @@
   %table.table.table-bordered.table-condensed
     %thead
       %tr{style: 'background-color: grey; color: white;'}
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th No
           %th=t('student.students.field')
         %th No
@@ -40,7 +40,7 @@
         %th=t('student.students.description')
     %tbody
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3A
           %th{style: 'background-color: #DFE5ED;'}
             icno
@@ -51,7 +51,7 @@
           %span{style: 'color: red'}*
         %td=t('student.students.icno_must_unique2')
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3B
           %th{style: 'background-color: #DFE5ED;'}
             name
@@ -62,14 +62,14 @@
           %span{style: 'color: red'}*
         %td=t('student.students.name_must_not_blank2')
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3C
           %th{style: 'background-color: #DFE5ED;'} matrixno
         %th 3
         %th{style: 'background-color: yellow;'} No. APMM (No. Body)
         %td=t('student.students.bodyno')
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3D
           %th{style: 'background-color: #DFE5ED;'} 
             stelno
@@ -80,7 +80,7 @@
           %span{style: 'color: red'}*
         %td=t('student.students.stelno_must_not_blank2')
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3E
           %th{style: 'background-color: #DFE5ED;'} 
             sbirthdt
@@ -91,56 +91,56 @@
           %span{style: 'color: red'}*
         %td=t('student.students.date_format')
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3F
           %th{style: 'background-color: #DFE5ED;'} semail
         %th 6
         %th{style: 'background-color: yellow;'}Emel Pelatih
         %td=t('student.students.semail')
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3G
           %th{style: 'background-color: #DFE5ED;'} regdate
         %th 7
         %th{style: 'background-color: yellow;'}Tarikh Daftar
         %td=t('student.students.date_format')
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3H
           %th{style: 'background-color: #DFE5ED;'} offer_letter_serial
         %th 8
         %th{style: 'background-color: yellow;'}No. Surat Tawaran
         %td=t('student.students.offer_letter_serial')
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3I
           %th{style: 'background-color: #DFE5ED;'} end_training
         %th 9
         %th{style: 'background-color: yellow;'}Tarikh Tamat Belajar
         %td=t('student.students.date_format')
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3J
           %th{style: 'background-color: #DFE5ED;'} address
         %th 10
         %th{style: 'background-color: yellow;'}Alamat Rumah
         %td=t('student.students.address')
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3K
           %th{style: 'background-color: #DFE5ED;'} address_posbasik
         %th 11
         %th{style: 'background-color: yellow;'}Alamat Bertugas
         %td=t('student.students.address_posbasik')
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3L
           %th{style: 'background-color: #DFE5ED;'} department
         %th 12
         %th{style: 'background-color: yellow;'}Unit / Bahagian / Cawangan
         %td=t('student.students.department')
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3M
           %th{style: 'background-color: #DFE5ED;'} rank_id
         %th 13
@@ -151,7 +151,7 @@
             - Rank.order(id: :asc).each do |rank|
               %li= rank.id.to_s+" - "+rank.short_full_name
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3N
           %th{style: 'background-color: #DFE5ED;'} race2
         %th 14
@@ -162,7 +162,7 @@
             - Student::RACE.each do |name, id|
               %li=id.to_s+" - "+name
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3O
           %th{style: 'background-color: #DFE5ED;'}
             mrtlstatuscd
@@ -174,7 +174,7 @@
         %td=t('student.students.mrtlstatuscd_must_use2')
 
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3P
           %th{style: 'background-color: #DFE5ED;'} 
             gender
@@ -185,7 +185,7 @@
           %span{style: 'color: red'}*
         %td=t('student.students.gender_must_use2')
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3Q
           %th{style: 'background-color: #DFE5ED;'} 
             birthplace
@@ -200,7 +200,7 @@
             - Student::STATECD.each do |v,k|
               %li= k.to_s+" - "+v
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3R
           %th{style: 'background-color: #DFE5ED;'} bloodtype
         %th 15
@@ -213,7 +213,7 @@
               %li= k.to_s+" - "+v
                         
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3S
           %th{style: 'background-color: #DFE5ED;'} 
             religion
@@ -228,7 +228,7 @@
             - Student::RELIGION.each do |v,k|
               %li= k.to_s+" - "+v
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3T
           %th{style: 'background-color: #DFE5ED;'} 
             intake_id
@@ -244,7 +244,7 @@
               - for intake in intakes.sort_by{|y|y.id}
                 %li= intake.id.to_s+" - Siri "+monthyear_int.strftime('%m/%Y')+" | "+intake.programme.programme_list
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3U
           %th{style: 'background-color: #DFE5ED;'} 
             ssponsor
@@ -255,7 +255,7 @@
           %span{style: 'color: red'}*
         %td=t('student.students.ssponsor_must_use_amsas')
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3V
           %th{style: 'background-color: #DFE5ED;'} 
             sstatus
@@ -266,7 +266,7 @@
           %span{style: 'color: red'}*
         %td=t('student.students.sstatus_must_use2')
       %tr
-        - if is_admin? || is_developer?
+        - if is_developer?
           %th 3W
           %th{style: 'background-color: #DFE5ED;'} sstatus_remark
         %th 18

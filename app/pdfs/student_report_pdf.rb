@@ -1,10 +1,14 @@
 class Student_reportPdf < Prawn::Document 
-  def initialize(students, view, programme_id, college)
+  def initialize(students, view, intake_programme_id, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :landscape })
     @students = students
     @view = view
     @college = college
-    course=Programme.find(programme_id)
+    if @college.code=='amsas'
+      course=Intake.find(intake_programme_id).programme
+    else
+      course=Programme.find(intake_programme_id)
+    end
     font "Times-Roman"
     text "#{college.name}", :align => :center, :size => 12, :style => :bold
     text "#{Programme.find(programme_id).programme_list}", :align => :center, :size => 12, :style => :bold

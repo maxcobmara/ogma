@@ -251,7 +251,7 @@ module StudentsHelper
     end
     
     student_sponsor=[]
-    Student::SPONSOR.each do |name, saved_sponsor|
+    Student::SPONSOR_AMSAS.each do |name, saved_sponsor|
       student_sponsor << saved_sponsor
     end
     
