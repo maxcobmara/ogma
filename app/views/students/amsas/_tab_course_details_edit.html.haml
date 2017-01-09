@@ -3,7 +3,7 @@
     .col-sm-2.control-label
       =f.label t 'student.students.intake_id', for: :intake_id
     .col-md-7
-      = f.collection_select :intake_id, Intake.all.order(register_on: :desc), :id, :siri_programmelist,{:include_blank=> (t 'select')},{class: 'selectpicker mandatory', "data-width"=>"auto"}
+      = f.collection_select :intake_id, Intake.all.order(register_on: :desc, id: :desc), :id, :siri_programmelist,{:include_blank=> (t 'select')},{class: 'selectpicker mandatory', "data-width"=>"auto"}
 
   .form-group
     .col-sm-2.control-label

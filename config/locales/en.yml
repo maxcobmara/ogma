@@ -2706,9 +2706,7 @@ en:
       name_must_not_blank: "(Additional notes : this field can't be blank)"
       stelno_must_not_blank: "(Additional notes : this field (student telephone no) can't be blank)"
       sstatus_must_use: "(Additional notes : Use 'Current', 'Graduated', 'Repeat', 'On Leave', 'Transfer College' or 'Expelled' accordingly)"
-      sstatus_must_use2: "(Additional notes : Use 'Asaspeg' , 'Asasllp', 'Lanpeg' or 'Lanllp' accordingly)"
       ssponsor_must_use: "(Additional notes : Use 'KKM' for Kementerian Kesihatan Malaysia, 'SPA' for Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Private and 'FaMa' for Own)"
-      ssponsor_must_use_amsas: "(Additional notes : Use 'SPA' for Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Private and 'FaMa' for Own)"
       gender_must_use: "(Additional notes : Use '1' for Male and '2' for female)"
       sbirthdt_must_use: "(Additional notes : Date of Birth - date must in 'yyyy-mm-dd' format)"
       mrtlstatuscd_must_use: "(Additional notes : Marital status - use '1' for single, '2' for married, '3' for others)"
@@ -2736,6 +2734,24 @@ en:
       college_invalid: "record(s) with invalid 'college_id' "
       group_not_exist: No record
       select_intake: Please select Intake first
+      field: Field
+      description: Description
+      
+      icno_must_unique2: "Mykad No must unique in '999999999999' format."
+      name_must_not_blank2: "Field cannot be blank."
+      stelno_must_not_blank2: "Field canot be blank."
+      gender_must_use2: "Use '1' for Male dan '2' for Female"
+      date_format: "Date must be in 'yyyy-mm-dd' format"
+      mrtlstatuscd_must_use2: "Use '1' for single, '2' for married, '3' for others"
+      sstatus_must_use2: "Use 'Asaspeg' , 'Asasllp', 'Lanpeg' or 'Lanllp' accordingly."
+      ssponsor_must_use_amsas: "Use 'SPA' for Suruhanjaya Perkhidmatan Awam, 'swasta' for Private and 'FaMa' for Own"
+      rank_id_accordingly2: "Use No for 'Pangkat' according to following list :"
+      religion_accordingly: "Use No for 'Agama' according to following list :"
+      intake_id_accordingly2: "Use No for 'Sesi Pengambilan' according to following list :"
+      race2_accordingly2: "Use No for 'Bangsa / Keturunan' according to following list :"
+      birthplace_accordingly2: "Use No for 'Tempat Lahir' according to following list :"
+      religion_accordingly2: "Use No for 'Agama' according to following list :"
+      remark: Remark
       
     leaveforstudent:
       title: Student Leave
@@ -3208,7 +3224,7 @@ en:
       excel_format: Excel Format (Sample)
       import_excel: Import Book From Excel File
       excel_conditions: Excel File Conditions
-      condition_line: "Header (third row / yellow coloured row) of an Excel file must use names / terms as below :"
+      condition_line: "Header (third row / yellow coloured row) of an Excel file must use adhere terms as listed below :"
       use_mark: "(Additional Notes : Use either (,) or (:) or (;) in between Roman No, Total Pages and Thickness of a book (eg: ix,56ms,20cm))"
       use_mark2: "(Additional Notes : Use either (,) or (:) or (;) in between Publish Location, Publisher dan Year Published (eg: Edinburgh,Churchill Livingstone,1983))"
       wrong_price_types: "Note : Cell format for 'harga_rm' column is INVALID. Use 'Number : General' cell format type and RE-IMPORT EXCEL FILE."
