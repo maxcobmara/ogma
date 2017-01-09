@@ -290,6 +290,7 @@ Ogma::Application.routes.draw do
       get :kumpulan_etnik_excel
       post :import
       get 'import_excel', to: "students#import_excel"
+      get 'import_excel_amsas', to: "students#import_excel_amsas"
     end
     member do
       get :borang_maklumat_pelajar

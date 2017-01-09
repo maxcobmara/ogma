@@ -7,7 +7,10 @@
   %ul.nav.navbar-nav
     - permitted_to? :create, :students do
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_student_path
-      %li= link_to content_tag(:li, fa_icon("file-excel-o", text: (t 'actions.import_excel'))), import_excel_students_path    
+      - if current_user.college.code=='amsas'
+        %li= link_to content_tag(:li, fa_icon("file-excel-o", text: (t 'actions.import_excel'))), import_excel_amsas_students_path    
+      - else
+        %li= link_to content_tag(:li, fa_icon("file-excel-o", text: (t 'actions.import_excel'))), import_excel_students_path    
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     - permitted_to? :student_report, :students do

@@ -2669,7 +2669,7 @@ en:
       male: Male
       female: Female
       upload: Upload
-      group_id: Group
+      group_id: Division
       intake_id: Intake Session
       end_training: End of Training Date
       level_id: Level
@@ -2707,12 +2707,14 @@ en:
       stelno_must_not_blank: "(Additional notes : this field (student telephone no) can't be blank)"
       sstatus_must_use: "(Additional notes : Use 'Current', 'Graduated', 'Repeat', 'On Leave', 'Transfer College' or 'Expelled' accordingly)"
       sstatus_must_use2: "(Additional notes : Use 'Asaspeg' , 'Asasllp', 'Lanpeg' or 'Lanllp' accordingly)"
-      ssponsor_must_use: "(Additional notes : Use 'KKM' for Kementerian Kesihatan Malaysia, 'SPA' for Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Private dan 'FaMa' for Own)"
+      ssponsor_must_use: "(Additional notes : Use 'KKM' for Kementerian Kesihatan Malaysia, 'SPA' for Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Private and 'FaMa' for Own)"
+      ssponsor_must_use_amsas: "(Additional notes : Use 'SPA' for Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Private and 'FaMa' for Own)"
       gender_must_use: "(Additional notes : Use '1' for Male and '2' for female)"
       sbirthdt_must_use: "(Additional notes : Date of Birth - date must in 'yyyy-mm-dd' format)"
       mrtlstatuscd_must_use: "(Additional notes : Marital status - use '1' for single, '2' for married, '3' for others)"
       regdate_must_use: "(Additional notes : Registration date - date must in 'yyyy-mm-dd' format)"
       course_id_accordingly: "(Additional notes : Use 'course_id' accordingly as per listed (course_id - programme name)) : "
+      rank_id_accordingly: "(Additional notes : Use 'rank_id' accordingly as per listed (rank_id - rank name)) : "
       college_id_default: Default value for 
       end_training_must_use: "(Additional notes : End of training - date must in 'yyyy-mm-dd' format)"
       additional_notes: "Additional notes : "

@@ -1,0 +1,365 @@
+- model_class = Student
+.page-header
+  %h1= t('student.students.import_excel')
+  %br=link_to (t 'student.students.list'), students_path
+= render 'shared/flashes'
+  
+%br
+= form_tag import_students_path, multipart: true do
+  .row
+    .form-group
+      .col-md-4.col-md-offset-2
+        = file_field_tag :file
+      .col-md-1
+        = submit_tag "Import", :class => 'btn btn-primary'
+    .form-group
+      .col-md-4.col-md-offset-2
+        - if current_user.college.code=="amsas"
+          = link_to (t 'excel_format'), '/public/excel_format/student_import_amsas.xls', :action => 'download_excel_format'
+        - else
+          = link_to (t 'excel_format'), '/public/excel_format/student_import.xls', :action => 'download_excel_format_amsas'
+
+%br
+%h4=t('library.book.excel_conditions')
+=image_tag("sample_excel_view.png")
+%br
+%br=t('library.book.condition_line')
+
+.col-md-10
+  %table.table.table-bordered.table-condensed
+    %thead
+      %tr{style: 'background-color: grey; color: white;'}
+        %th No
+        %th Field
+        %th No
+        %th Item
+        %th Description
+    %tbody
+      %tr
+        %th 3A
+        %th 
+          icno
+          %span{style: 'color: red'}*
+        %th 1
+        %th{style: 'background-color: yellow;'}
+          No. MyKad
+          %span{style: 'color: red'}*
+        %td=t('student.students.icno_must_unique')
+      %tr
+        %th 3B
+        %th 
+          name
+          %span{style: 'color: red'}*
+        %th 2
+        %th{style: 'background-color: yellow;'}
+          Nama Pelatih
+          %span{style: 'color: red'}*
+        %td=t('student.students.name_must_not_blank')
+      %tr
+        %th 3C
+        %th matrixno
+        %th 3
+        %th{style: 'background-color: yellow;'} No. APMM (No. Body)
+        %td=t('student.students.bodyno')
+      %tr
+        %th 3D
+        %th 
+          stelno
+          %span{style: 'color: red'}*
+        %th 4
+        %th{style: 'background-color: yellow;'}
+          No. Tel Bimbit
+          %span{style: 'color: red'}*
+        %td=t('student.students.stelno_must_not_blank')
+      %tr
+        %th 3E
+        %th 
+          sbirthdt
+          %span{style: 'color: red'}*
+        %th 5
+        %th{style: 'background-color: yellow;'}
+          Tarikh Lahir
+          %span{style: 'color: red'}*
+        %td=t('student.students.sbirthdt_must_use')
+      %tr
+        %th 3F
+        %th semail
+        %th 6
+        %th{style: 'background-color: yellow;'}Emel Pelatih
+        %td=t('student.students.semail')
+      %tr
+        %th 3G
+        %th regdate
+        %th 7
+        %th{style: 'background-color: yellow;'}Tarikh Daftar
+        %td=t('student.students.regdate_must_use')
+      %tr
+        %th 3H
+        %th offer_letter_serial
+        %th 8
+        %th{style: 'background-color: yellow;'}No. Surat Tawaran
+        %td=t('student.students.offer_letter_serial')
+      %tr
+        %th 3I
+        %th end_training
+        %th 9
+        %th{style: 'background-color: yellow;'}Tarikh Tamat Belajar
+        %td=t('student.students.end_training_must_use')
+      %tr
+        %th 3J
+        %th address
+        %th 10
+        %th{style: 'background-color: yellow;'}Alamat Rumah
+        %td=t('student.students.address')
+      %tr
+        %th 3K
+        %th address_posbasik
+        %th 11
+        %th{style: 'background-color: yellow;'}Alamat Bertugas
+        %td=t('student.students.address_posbasik')
+      %tr
+        %th 3L
+        %th department
+        %th 12
+        %th{style: 'background-color: yellow;'}Unit / Bahagian / Cawangan
+        %td=t('student.students.department')
+      %tr
+        %th 3M
+        %th rank_id
+        %th 13
+        %th{style: 'background-color: yellow;'}Pangkat
+        %td
+          =t('student.students.rank_id_accordingly')
+          %ul
+            - Rank.order(id: :asc).each do |rank|
+              %li= rank.id.to_s+" - "+rank.short_full_name
+      %tr
+        %th 3N
+        %th race2
+        %th 14
+        %th{style: 'background-color: yellow;'}Bangsa / Keturunan
+        %td
+          =t('student.students.race2_accordingly')
+          %ul
+            - Student::RACE.each do |name, id|
+              %li=id.to_s+" - "+name
+      %tr
+        %th 3O
+        %th
+          mrtlstatuscd
+          %span{style: 'color: red'}*
+        %th 15
+        %th{style: 'background-color: yellow;'}
+          Status Perkahwinan
+          %span{style: 'color: red'}*
+        %td=t('student.students.mrtlstatuscd_must_use')
+
+      %tr
+        %th 3P
+        %th 
+          gender
+          %span{style: 'color: red'}*
+        %th 16
+        %th{style: 'background-color: yellow;'}
+          Jantina
+          %span{style: 'color: red'}*
+        %td=t('student.students.gender_must_use')
+      %tr
+        %th 3Q
+        %th 
+          birthplace
+          %span{style: 'color: red'}*
+        %th 14
+        %th{style: 'background-color: yellow;'}
+          Tempat Lahir
+          %span{style: 'color: red'}*
+        %td
+          =t('student.students.birthplace')
+          %ul
+            - Student::STATECD.each do |v,k|
+              %li= v+" - "+v.to_s
+      %tr
+        %th 3R
+        %th 
+          bloodtype
+        %th 15
+        %th{style: 'background-color: yellow;'}
+          Kumpulan Darah
+        %td
+          =t('student.students.bloodtype')
+          %ul
+            - Student::BLOOD_TYPE.each do |v,k|
+              %li= v+" - "+v.to_s
+                        
+      %tr
+        %th 3S
+        %th 
+          religion
+          %span{style: 'color: red'}*
+        %th 16
+        %th{style: 'background-color: yellow;'}
+          Agama
+          %span{style: 'color: red'}*
+        %td
+          =t('student.students.religion_accordingly')
+          %ul
+            - Student::RELIGION.each do |v,k|
+              %li= v+" - "+v.to_s       
+      %tr
+        %th 3T
+        %th 
+          intake_id
+          %span{style: 'color: red'}*
+        %th 17
+        %th{style: 'background-color: yellow;'}
+          Sesi Pengambilan
+          %span{style: 'color: red'}*
+        %td
+          =t('student.students.intake_id_accordingly')
+          %ul
+            - Intake.all.group_by{|x|x.monthyear_intake}.each do |monthyear_int, intakes|
+              - for intake in intakes.sort_by{|y|y.id}
+                %li= intake.id.to_s+" - Siri "+monthyear_int.strftime('%m/%Y')+" | "+intake.programme.programme_list
+      %tr
+        %th 3U
+        %th 
+          ssponsor
+          %span{style: 'color: red'}*
+        %th 16
+        %th{style: 'background-color: yellow;'}
+          Penaja
+          %span{style: 'color: red'}*
+        %td=t('student.students.ssponsor_must_use_amsas')
+      %tr
+        %th 3V
+        %th 
+          sstatus
+          %span{style: 'color: red'}*
+        %th 17
+        %th{style: 'background-color: yellow;'}
+          Status
+          %span{style: 'color: red'}*
+        %td=t('student.students.sstatus_must_use2')
+      %tr
+        %th 3W
+        %th 
+          sstatus_remark
+        %th 18
+        %th{style: 'background-color: yellow;'}
+          Catatan
+        %td="("+t('student.students.additional_notes')+t('student.students.sstatus_remark')+" "+(t 'or').upcase+" "+t('student.students.sstatus_remark2')+" "+" - "+t('student.students.repeated_notes')+")"
+
+.col-md-12
+
+/   %ol
+/     %li 
+/       %b icno
+/       %font{color: "red"}*
+/       =" - "+t('student.students.icno_must_unique')
+/     %li 
+/       %b name
+/       %font{color: "red"}*
+/       =" - "+t('student.students.name_must_not_blank')
+/     %li 
+/       %b matrixno
+/       =" - "+t('student.students.matrixno')
+/     %li 
+/       %b sstatus
+/       %font{color: "red"}*
+/       - if current_user.college.code=="amsas"
+/         =" - "+t('student.students.sstatus_must_use2')
+/       - else
+/         =" - "+t('student.students.sstatus_must_use')
+/     %li 
+/       %b sstatus_remark
+/       ="- ("+t('student.students.additional_notes')+t('student.students.sstatus_remark')+" "+(t 'or').upcase+" "+t('student.students.sstatus_remark2')+" "+" - "+t('student.students.repeated_notes')+")"
+/     %li 
+/       %b stelno
+/       %font{color: "red"}*
+/       =" - "+t('student.students.stelno_must_not_blank')
+/     %li 
+/       %b ssponsor
+/       - if current_user.college.code!="amsas"
+/         %font{color: "red"}*
+/       =" - "+t('student.students.ssponsor_must_use')
+/     %li 
+/       %b gender
+/       %font{color: "red"}*
+/       =" - "+t('student.students.gender_must_use')
+/     %li 
+/       %b sbirthdt
+/       %font{color: "red"}*
+/       =" - "+t('student.students.sbirthdt_must_use')
+/     %li 
+/       %b mrtlstatuscd
+/       %font{color: "red"}*
+/       =" - "+t('student.students.mrtlstatuscd_must_use')
+/     %li 
+/       %b semail
+/       =" - "+t('student.students.semail')
+/     %li 
+/       %b regdate
+/       =" - "+t('student.students.regdate_must_use')
+/     %li 
+/       %b course_id
+/       %font{color: "red"}*
+/       =" - "+t('student.students.course_id_accordingly')
+/       %ul
+/         - Programme.roots.sort.each do |course|
+/           %li= course.id.to_s+" - "+course.name
+/     %li 
+/       %b offer_letter_serial
+/       =" - "+t('student.students.offer_letter_serial')
+/     %li 
+/       %b end_training
+/       =" - "+t('student.students.end_training_must_use')
+/     /%li 
+/     /  %b intake
+/     /  %font{color: "red"}*
+/     /  =" - "+t('student.students.intake_must_use')
+/     %li
+/       %b intake_id
+/       %font{color: "red"}*
+/       =" - "+t('student.students.intake_id_accordingly')
+/       %ul
+/         - Intake.all.group_by{|x|x.monthyear_intake}.each do |monthyear_int, intakes|
+/           - for intake in intakes.sort_by{|y|y.id}
+/             %li= intake.id.to_s+" - Siri "+monthyear_int.strftime('%m/%Y')+" | "+intake.programme.programme_list
+/     %li
+/       %b race2
+/       =" - "+t('student.students.race2_accordingly')
+/       %ul
+/         - Student::RACE.each do |name, id|
+/           %li=id.to_s+" - "+name
+/     %li 
+/       %b address
+/       =" - "+t('student.students.address')
+/     %li 
+/       %b address_posbasik 
+/       =" - "+t('student.students.address_posbasik')
+/     %li
+/       %b college_id
+/       = " - "+t('student.students.college_id_default')+" "+current_user.college.name.upcase+" : "+current_user.college_id.to_s
+/     %li
+/       %b birthplace
+/       %font{color: "red"}*
+/       =" - "+t('student.students.birthplace_accordingly')
+/       %ul
+/         - Student::STATECD.each do |v,k|
+/           %li= v+" - "+v.to_s
+/     %li
+/       %b religion
+/       %font{color: "red"}*
+/       =" - "+t('student.students.religion_accordingly')
+/       %ul
+/         - Student::RELIGION.each do |v,k|
+/           %li= v+" - "+v.to_s
+/         
+
+.col-md-12
+  %B 
+    %u=t('notes')+" : "
+  %font{color: "red"}*
+  =t('compulsory_fields')
+  %BR
+  %BR

@@ -2597,11 +2597,13 @@ ms_MY:
       sstatus_must_use: "(Nota Tambahan : Gunakan 'Current', 'Graduated', 'Repeat', 'On Leave', 'Transfer College' atau 'Expelled' mengikut kesesuaian)"
       sstatus_must_use2: "(Nota Tambahan : Gunakan 'asaspeg' , 'asasllp', 'lanpeg' atau 'lanllp' mengikut kesesuaian)"
       ssponsor_must_use: "(Nota Tambahan : Gunakan 'KKM' untuk Kementerian Kesihatan Malaysia, 'SPA' untuk Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Swasta dan 'FaMa' untuk sendiri)"
+      ssponsor_must_use_amsas: "(Nota Tambahan : Gunakan 'SPA' untuk Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Swasta dan 'FaMa' untuk sendiri)"
       gender_must_use: "(Nota Tambahan : Gunakan '1' untuk Lelaki dan '2' untuk Perempuan)"
       sbirthdt_must_use: "(Nota Tambahan : Tarikh Lahir - tarikh mesti dalam format 'tttt-bb-hh')"
       mrtlstatuscd_must_use: "(Nota Tambahan : Status perkahwinan - gunakan '1' untuk bujang, '2' untuk berkahwin, '3' untuk lain-lain)"
       regdate_must_use: "(Nota Tambahan : Tarikh Pendaftaran - tarikh mesti dalam format 'tttt-bb-hh')"
       course_id_accordingly: "(Nota Tambahan : Gunakan 'course_id' berdasarkan senarai berikut (course_id - nama program)) : "
+      rank_id_accordingly: "(Nota Tambahan : Gunakan 'rank_id' berdasarkan senarai berikut (rank_id - pangkat)) : "
       college_id_default: Nilai ditetapkan bagi 
       end_training_must_use: "(Nota Tambahan : Tarikh Tamat Belajar - tarikh mesti dalam format 'tttt-bb-hh')"
       additional_notes: "Nota Tambahan : "
