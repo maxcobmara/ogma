@@ -10,7 +10,11 @@ class StudentsController < ApplicationController
   def index
     #scope - student of college - based on current_user.college_id?
     @search = Student.where(college_id: current_user.college_id).search(params[:q])
-    @students_all = @search.result.order(intake: :asc, course_id: :asc)
+    if current_user.college.code=='amsas'
+      @students_all = @search.result.order(intake_id: :desc, group_id: :asc)
+    else
+      @students_all = @search.result.order(intake: :asc, course_id: :asc)
+    end
     @students = @students_all.page(params[:page]||1)
     respond_to do |format|
       format.html

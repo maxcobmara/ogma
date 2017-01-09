@@ -2593,11 +2593,9 @@ ms_MY:
       import_excel: Import Pelajar dari Fail Excel
       icno_must_unique: "(Nota Tambahan : No Mykad mestilah UNIK dalam format '999999999999')"
       name_must_not_blank: "(Nota Tambahan : Medan ini tidak boleh dikosongkan)"
-      stelno_must_not_blank: "(Nota Tambahan : Medan ini (no telefon pelajar) tidak boleh dikosongkan)"
+      stelno_must_not_blank: "(Nota Tambahan : Medan ini tidak boleh dikosongkan)"
       sstatus_must_use: "(Nota Tambahan : Gunakan 'Current', 'Graduated', 'Repeat', 'On Leave', 'Transfer College' atau 'Expelled' mengikut kesesuaian)"
-      sstatus_must_use2: "(Nota Tambahan : Gunakan 'asaspeg' , 'asasllp', 'lanpeg' atau 'lanllp' mengikut kesesuaian)"
       ssponsor_must_use: "(Nota Tambahan : Gunakan 'KKM' untuk Kementerian Kesihatan Malaysia, 'SPA' untuk Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Swasta dan 'FaMa' untuk sendiri)"
-      ssponsor_must_use_amsas: "(Nota Tambahan : Gunakan 'SPA' untuk Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Swasta dan 'FaMa' untuk sendiri)"
       gender_must_use: "(Nota Tambahan : Gunakan '1' untuk Lelaki dan '2' untuk Perempuan)"
       sbirthdt_must_use: "(Nota Tambahan : Tarikh Lahir - tarikh mesti dalam format 'tttt-bb-hh')"
       mrtlstatuscd_must_use: "(Nota Tambahan : Status perkahwinan - gunakan '1' untuk bujang, '2' untuk berkahwin, '3' untuk lain-lain)"
@@ -2611,7 +2609,6 @@ ms_MY:
       intake_id_accordingly: "(Nota Tambahan : Gunakan 'intake_id' berdasarkan senarai berikut (intake_id - Siri | Program))"
       race2_accordingly: "(Nota Tambahan : Gunakan 'race2' berdasarkan senarai berikut (race2 - nama kaum)) : "
       birthplace_accordingly: "(Nota Tambahan : Gunakan 'birthplace' berdasarkan senarai berikut (birthplace - name negeri))"
-      religion_accordingly: "(Nota Tambahan : Gunakan 'religion' berdasarkan senarai berikut (religion - nama agama))"
       icno_invalid: " rekod dengan data 'icno' tidak sah "
       name_invalid: " rekod dengan data 'nama' tidak sah "
       stelno_invalid: " rekod dengan data 'stelno' tidak sah "
@@ -2625,7 +2622,25 @@ ms_MY:
       college_invalid: " rekod dengan data 'college_id' tidak sah "
       group_not_exist: "Tiada rekod"
       select_intake: Sila pilih Sesi pengambilan
-    
+      field: Medan
+      description: Deskripsi
+      
+      icno_must_unique2: "No Mykad mestilah UNIK dalam format '999999999999'"
+      name_must_not_blank2: "Medan ini tidak boleh dikosongkan"
+      stelno_must_not_blank2: "Medan ini tidak boleh dikosongkan"
+      gender_must_use2: "Gunakan '1' untuk Lelaki dan '2' untuk Perempuan"
+      date_format: "Tarikh mesti dalam format 'tttt-bb-hh'"
+      mrtlstatuscd_must_use2: "Gunakan '1' untuk bujang, '2' untuk berkahwin, '3' untuk lain-lain"
+      sstatus_must_use2: "Gunakan 'asaspeg' , 'asasllp', 'lanpeg' atau 'lanllp' mengikut kesesuaian."
+      ssponsor_must_use_amsas: "Gunakan 'SPA' untuk Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Swasta dan 'FaMa' untuk sendiri."
+      rank_id_accordingly2: "Gunakan No untuk 'Pangkat' berdasarkan senarai berikut :"
+      religion_accordingly: "Gunakan No untuk 'Agama' berdasarkan senarai berikut :"
+      intake_id_accordingly2: "Gunakan No untuk 'Sesi Pengambilan' berdasarkan senarai berikut :"
+      race2_accordingly2: "Gunakan No untuk 'Bangsa / Keturunan' berdasarkan senarai berikut :"
+      birthplace_accordingly2: "Gunakan No untuk 'Tempat Lahir' berdasarkan senarai berikut :"
+      religion_accordingly2: "Gunakan No untuk 'Agama' berdasarkan senarai berikut :"
+      remark: Catatan
+      
     leaveforstudent:
       title: Permohonan Cuti Pelajar
       list: Senarai Permohonan Cuti Pelajar
@@ -3099,7 +3114,7 @@ ms_MY:
       excel_format: Sampel Format Excel
       import_excel: Import Buku Dari Fail Excel
       excel_conditions: Syarat Fail Excel
-      condition_line: "'Header' (baris ketiga / baris berwarna kuning) fail Excel mestilah menggunakan nama / terma seperti di bawah :"
+      condition_line: "'Header' (baris ketiga / baris berwarna kuning) fail Excel mestilah menepati terma seperti di bawah :"
       use_mark: "(Nota Tambahan : Gunakan samada (,) atau (:) atau (;) di antara No Roman, Jumlah Muka Surat dan Ketebalan buku (cth: ix,56ms,20cm))"
       use_mark2: "(Nota Tambahan : Gunakan samada (,) atau (:) atau (;) di antara Lokasi Diterbitkan, Penerbit dan Tahun Diterbitkan (cth: Edinburgh,Churchill Livingstone,1983))"
       wrong_price_types: "Nota : Format sel bagi lajur 'harga_rm' (Harga Buku) adalah TIDAK SAH. Gunakan format sel 'Number : General' dan IMPORT SEMULA FAIL EXCEL."
