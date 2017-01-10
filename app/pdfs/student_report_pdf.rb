@@ -11,14 +11,14 @@ class Student_reportPdf < Prawn::Document
     end
     font "Times-Roman"
     text "#{college.name}", :align => :center, :size => 12, :style => :bold
-    text "#{Programme.find(programme_id).programme_list}", :align => :center, :size => 12, :style => :bold
+    text "#{college.code=='amsas' ? 'Siri '+Intake.find(intake_programme_id).siri_programmelist : course.programme_list}", :align => :center, :size => 12, :style => :bold
     text "#{I18n.t('student.students.list')}", :align => :center, :size => 12, :style => :bold
     move_down 10
     record
   end
   
   def record
-    table(line_item_rows, :column_widths => [25,70,110,60,80,40,40,40,40,40,40,40,60,100], :cell_style => { :size => 8,  :inline_format => :true}) do
+    table(line_item_rows, :column_widths => [25,70,110,60,60,60,40,40,40,40,40,40,60,100], :cell_style => { :size => 8,  :inline_format => :true}) do
       row(0).font_style = :bold
       row(0).background_color = 'FFE34D'
       self.row_colors = ["FEFEFE", "FFFFFF"]
@@ -33,10 +33,12 @@ class Student_reportPdf < Prawn::Document
     #a="\'\'"              #use in Excel (remove '' from empty cells)
     #a=nil                 #use in PDF (remove '' from empty cells))
     counter = counter || 0
-    header =[ ["", "#{I18n.t('student.students.icno')}", "#{I18n.t('student.students.name')}", "#{I18n.t('student.students.matrixno')}", "#{I18n.t('student.students.course_id')}", "#{I18n.t('student.students.intake_id')}","#{I18n.t('student.students.ssponsor')}", "Status", "#{I18n.t('student.students.status_remark')}", "#{I18n.t('student.students.gender')}", "#{I18n.t('student.students.race')}", "#{I18n.t('student.students.mrtlstatuscd')}", "#{I18n.t('student.students.stelno')}", "#{I18n.t('student.students.semail')}"]]
+    header =[ ["", "#{I18n.t('student.students.icno')}", "#{I18n.t('student.students.name')}", "#{@college.code=='amsas'? I18n.t('student.students.bodyno') : I18n.t('student.students.matrixno')}", "#{I18n.t('student.students.rank_id')}","#{I18n.t('student.students.department')}", "#{I18n.t('student.students.ssponsor')}", "Status", "#{I18n.t('student.students.status_remark')}", "#{I18n.t('student.students.gender')}", "#{I18n.t('student.students.race')}", "#{I18n.t('student.students.mrtlstatuscd')}", "#{I18n.t('student.students.stelno')}", "#{I18n.t('student.students.semail')}"]]
+    #"#{I18n.t('student.students.course_id')}", "#{I18n.t('student.students.intake_id')}",
     header +
       @students.map do |student|
-      ["#{counter+=1}","#{student.formatted_mykad}", "#{student.name}", "#{student.matrixno unless student.matrixno.blank?}", "#{student.display_programme}", "#{@college.code=='amsas' ? student.display_intake_amsas : student.display_intake}", "#{student.ssponsor}", "#{student.render_status unless student.sstatus.blank?}", "#{student.sstatus_remark unless student.sstatus_remark.blank?}", "#{student.display_gender}", "#{student.display_race}", "#{student.render_marital unless student.mrtlstatuscd}", "#{student.try(:stelno)}", "#{student.display_semail}"]
+      ["#{counter+=1}","#{student.formatted_mykad}", "#{student.name}", "#{student.matrixno unless student.matrixno.blank?}", "#{student.rank.try(:name)}", "#{student.department}", "#{student.render_sponsor}", "#{student.render_status unless student.sstatus.blank?}", "#{student.sstatus_remark unless student.sstatus_remark.blank?}", "#{student.display_gender}", "#{student.display_race}", "#{student.render_marital unless student.mrtlstatuscd}", "#{student.try(:stelno)}", "#{student.display_semail}"]
+      #"#{student.display_programme}", "#{@college.code=='amsas' ? student.display_intake_amsas : student.display_intake}",
     end
   end
   

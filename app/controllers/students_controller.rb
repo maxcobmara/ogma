@@ -196,15 +196,15 @@ class StudentsController < ApplicationController
   end
   
   def student_report
-    @programme_id=params[:programme_id].to_i
+    intake_programme_id=params[:programme_id].to_i
     if current_user.college.code=="kskbjb"
-      @students = Student.where(sstatus: ['Current', 'Repeat'], course_id: @programme_id).order(intake: :asc, course_id: :asc)
+      @students = Student.where(sstatus: ['Current', 'Repeat'], course_id: intake_programme_id).order(intake: :asc, course_id: :asc)
     else
-      @students=Student.where(course_id: @programme_id).order(intake: :asc, course_id: :asc) #.where(college_id: current_user.college.id)
+      @students=Student.where(intake_id: intake_programme_id).order(intake: :asc, course_id: :asc) #.where(college_id: current_user.college.id)
     end
     respond_to do |format|
       format.pdf do
-        pdf = Student_reportPdf.new(@students, view_context, @programme_id, current_user.college)
+        pdf = Student_reportPdf.new(@students, view_context, intake_programme_id, current_user.college)
         send_data pdf.render, filename: "student-list-{Date.today}",
         type: "application/pdf",
         disposition: "inline"
