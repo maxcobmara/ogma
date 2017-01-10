@@ -23,7 +23,7 @@ class Intake_reportPdf < Prawn::Document
     end
     college_code=@college.code
     if college_code=="amsas"
-      columnswidth=[30, 40, 110, 60, 140, 100,40]
+      columnswidth=[30, 50, 110, 60, 130, 100,40]
     else
       columnswidth=[30, 60, 70, 180, 140,40]
     end

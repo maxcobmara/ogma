@@ -50,6 +50,15 @@ module StudentsHelper
       #a=nil                 #use in PDF (remove '' from empty cells))
     end
   end
+  
+  def display_department
+    unless department.blank? 
+      a="#{department}"
+    else                      #blank includes: nil, false, [], {}, ""
+      a="\'\'"                 #use in Excel (remove '' from empty cells)
+      #a=nil                 #use in PDF (remove '' from empty cells))
+    end
+  end
  
   def display_race
     unless race2.nil? 
