@@ -308,7 +308,10 @@ module StudentsHelper
       #retrieve UNIQUE fields of icno
       #additional Float check required for numbers-only data
       #lstrip required for string to remove leading/preceeding spaces
-      icno_e=row["icno"] 
+      icno_e=row["icno"]
+      if icno_e.include?("-")
+	icno_e=icno_e.gsub!("-","")
+      end
       if icno_e.is_a? Numeric
         icno_e=icno_e.to_i.to_s #if icno_e.to_i.to_s.size==12 #- temporary remark for as armed force no size is differ
       elsif icno_e.is_a? String
@@ -332,9 +335,12 @@ module StudentsHelper
         name_e=nil
       end 
       
-      stelno_e=row["stelno"] 
+      stelno_e=row["stelno"]
+      if stelno_e && stelno_e.include?("-")
+	stelno_e=stelno_e.gsub!("-","")
+      end
       if stelno_e.is_a? Numeric
-        stelno_e= stmrtlstatuscd_e=mrtlstatuscd_e.to_selno_e.to_i.to_s
+        stelno_e= stelno_e.gsub.to_i.to_s
       elsif stelno_e.is_a? String
 	 if stelno_e.lstrip.size>0
           stelno_e=stelno_e.lstrip
@@ -498,7 +504,7 @@ module StudentsHelper
         end
       end
       
-      mrtlstatuscd_e=row["mrtlstatuscd"]
+      mrtlstatuscd_e=row["mrtlstatuscd"] #mrtlstatuscd_e=mrtlstatuscd_e.to_s
       if mrtlstatuscd_e.is_a? String 
         if LibraryHelper.all_digits(mrtlstatuscd_e) && student_marital.include?(mrtlstatuscd_e)
           #mrtlstatuscd_e=mrtlstatuscd_e.to_s
