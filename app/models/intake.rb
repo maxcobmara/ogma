@@ -58,7 +58,7 @@ class Intake < ActiveRecord::Base
   
   #amsas
   def siri_programmelist
-    "#{name} | #{programme.programme_list}"
+    "Siri #{name} | #{programme.programme_list}"
   end
   
   def self.get_intake(student_intake, courseid)
@@ -71,7 +71,7 @@ class Intake < ActiveRecord::Base
   #usage - new multiple (exammarks & grades)
   def intake_list
     if college.code=='amsas'
-      ["Siri #{monthyear_intake.strftime('%m/%Y')}", monthyear_intake]
+      ["Siri #{siri_programmelist}"]
     else
       ["#{monthyear_intake.strftime('%b %Y')}", monthyear_intake]
     end

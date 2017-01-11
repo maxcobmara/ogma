@@ -396,6 +396,8 @@ module DropDown
             [ "Ulang Semester", "5"]
    ]
      
+    # TODO - to remove & placed into TimetablePeriod -- be4 remove TO CHECK other related Training & Exams related modules
+    # 1st amendment: TimetablePeriod in Timetable - NEW / EDIT page (_timetable_period_fields.html.haml) 
     DAY_CHOICE = [
          #  Displayed       stored in db
          [ "Sun-Wed / Mon-Thurs",  1 ],

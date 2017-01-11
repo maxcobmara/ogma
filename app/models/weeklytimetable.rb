@@ -20,7 +20,13 @@ class Weeklytimetable < ActiveRecord::Base
   accepts_nested_attributes_for :weeklytimetable_details, :reject_if => proc {|a|a['topic'].blank? || a['lecturer_id'].blank? || a['lecture_method'].blank?} 
 
   #validates_presence_of :programme_id, :semester, :intake_id, :format1, :format2
-  validates_presence_of :programme_id, :intake_id, :startdate, :enddate, :week, :prepared_by, :semester, :format1, :format2
+  # TODO 
+  #1) remove validation for programme_id (amsas) but before save set value for course_id by default based on selected intake
+  #2) give wt creator - ability to amend title of completed WT
+  #3) IN WT - show & PDF - special for AMSAS only - if an INTAKE 'contains' divisions --> add in display of (group name) in left upmost column accordingly, (to confirm with Abby first).-betul tak takde different slot for each divisions as appeared in their WT.
+  #validates_presence_of :programme_id, :intake_id, :startdate, :enddate, :week, :prepared_by, :semester, :format1, :format2
+  validates_presence_of :intake_id, :startdate, :enddate, :week, :prepared_by, :format1, :format2
+  validates_presence_of :programme_id, :semester, :if => :college_isnot_amsas?
   validate :approved_or_rejected, :restrict_lecturer_per_class_duration
   validates_presence_of :hod_approved_on, :if => :hod_approval?
   validates_presence_of :hod_rejected_on, :reason, :if => :hod_rejection?
@@ -52,6 +58,10 @@ class Weeklytimetable < ActiveRecord::Base
   
   def hod_rejection?
     hod_rejected==true && hod_approved==false
+  end
+  
+  def college_isnot_amsas?
+    college_id!=2
   end
   
   def manual_remove_details_if_marked

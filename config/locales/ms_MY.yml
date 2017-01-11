@@ -187,7 +187,7 @@ ms_MY:
         total_week: Bilangan Minggu
       weeklytimetable:
         programme_id: Program
-        intake_id: "Kumpulan /Sesi Pengambilan"
+        intake_id: "Sesi Pengambilan"
         startdate: Tarikh Mula
         enddate: Tarikh Akhir
         week: Minggu
@@ -4318,14 +4318,17 @@ ms_MY:
       weeklytimetable:
         programme_id: Program
         intake_id: Kumpulan
+        intake_id2: Sesi Pengambilan
         #group_id: Kumpulan
         startdate: Tarikh Mula
         enddate: Tarikh Akhir
         semester: Semester
         prepared_by: Disediakan Oleh
         endorsed_by: Diluluskan Oleh
-        format1: "Format (Aha-Rabu/ Isn-Kha)"
-        format2: "Format (Khamis/ Jumaat)"
+        format1: "Format (Ahad-Rabu)"
+        format1b: "Format (Isnin-Khamis)"
+        format2: "Format (Khamis)"
+        format2b: "Format (Jumaat)"
         week: Minggu
         is_submitted: Telah Dihantar
         submitted_on: Tarikh Dihantar

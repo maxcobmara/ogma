@@ -40,7 +40,7 @@
     - allstudents.group_by{|t|t.intakestudent}.each do |intake, student_by_intake|
       %tr
         %td.group{:colspan => "10", :style => "background-color:#EFF1F1;"}
-          %span{:style => "color:#218AFB;font-weight:bold;"}="Siri "+intake.siri_programmelist
+          %span{:style => "color:#218AFB;font-weight:bold;"}=intake.siri_programmelist
           /NOTE: group_id -> division
       - student_by_intake.group_by(&:group_id).each do |group_id, students|
         %tr

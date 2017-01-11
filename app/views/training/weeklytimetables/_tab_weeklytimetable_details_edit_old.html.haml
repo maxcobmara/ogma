@@ -1,18 +1,19 @@
 .col-md-offset-2
-  .form-group
-    .col-sm-2.control-label
-      = f.label :programme_id
-    .col-md-3
-      = f.collection_select :programme_id, @programme_list, :id, :programme_list, {:include_blank => (t 'helpers.prompt.select_programme'), :selected => @programme_id},{class: 'selectpicker mandatory', "data-width"=>'280px'}
+  - unless current_user.college.code=="amsas"
+    .form-group
+      .col-sm-2.control-label
+        = f.label :programme_id
+      .col-md-3
+        = f.collection_select :programme_id, @programme_list, :id, :programme_list, {:include_blank => (t 'helpers.prompt.select_programme'), :selected => @programme_id},{class: 'selectpicker mandatory', "data-width"=>'280px'}
        
   .form-group
     .col-sm-2.control-label
-      = f.label :intake_id
+      =current_user.college.code=='amsas' ?  (f.label :intake_id2) : (f.label :intake_id) 
     .col-md-3
       - if current_user.college.code=="amsas"
-        = f.collection_select :intake_id, @intake_list.order(monthyear_intake: :desc), :id, :programmelist_group_intake,{:include_blank=> (t 'helpers.prompt.select_intake')},{class: 'selectpicker mandatory', "data-width"=>'280px'}
+        = f.collection_select :intake_id, @intake_list, :id, :siri_programmelist,{:include_blank=> (t 'helpers.prompt.select_intake')},{class: 'selectpicker mandatory', "data-width"=> "auto"}
       - else
-        = f.collection_select :intake_id, @intake_list, :id, :programme_group_intake,{:include_blank=> (t 'helpers.prompt.select_intake')},{class: 'selectpicker mandatory', "data-width"=>'280px'}
+        = f.collection_select :intake_id, @intake_list, :id, :programme_group_intake,{:include_blank=> (t 'helpers.prompt.select_intake')},{class: 'selectpicker mandatory', "data-width"=>"auto"}
        
   .form-group
     .col-sm-2.control-label
@@ -26,11 +27,12 @@
     .col-md-3
       = f.text_field :enddate, class: 'date_picker_reverse form-control mandatory'
  
-  .form-group
-    .col-sm-2.control-label
-      = f.label :semester
-    .col-md-3
-      = f.collection_select :semester, AcademicSession.all.order(created_at: :desc), :id, :semester,{:include_blank =>(t 'helpers.prompt.select_semester')},{class: 'selectpicker mandatory', "data-width"=>'280px'}
+  - unless current_user.college.code=="amsas" 
+    .form-group
+      .col-sm-2.control-label
+        = f.label :semester
+      .col-md-3
+        = f.collection_select :semester, AcademicSession.all.order(created_at: :desc), :id, :semester,{:include_blank =>(t 'helpers.prompt.select_semester')},{class: 'selectpicker mandatory', "data-width"=>'280px'}
        
   .form-group
     .col-sm-2.control-label
@@ -49,12 +51,12 @@
 
   .form-group
     .col-sm-2.control-label
-      = f.label :format1
+      = current_user.college.code=="amsas" ? (f.label :format1b) : (f.label :format1)
     .col-md-3
       = f.collection_select :format1, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')},{class: 'selectpicker mandatory', "data-width"=>'360px'}
 	  
   .form-group
     .col-sm-2.control-label
-      = f.label :format2
+      = current_user.college.code=="amsas" ? (f.label :format2b) : (f.label :format2)
     .col-md-3
       = f.collection_select :format2, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')}, {class: 'selectpicker mandatory', "data-width"=>'360px'}
