@@ -3,7 +3,7 @@ class Weeklytimetable < ActiveRecord::Base
   #controller searches, variables, lists, relationship checking
   
   #before_save :set_semester
-  before_save :set_to_nil_where_false, :intake_must_match_with_programme
+  before_save :set_to_nil_where_false, :intake_must_match_with_programme, :update_programme_amsas
   before_save :manual_remove_details_if_marked, prepend: true
   
   belongs_to :schedule_programme, :class_name => 'Programme',       :foreign_key => 'programme_id'
@@ -72,6 +72,12 @@ class Weeklytimetable < ActiveRecord::Base
           db_wd.destroy
         end
       end
+    end
+  end
+  
+  def update_programme_amsas
+    if college_id==2
+      self.programme_id=Intake.find(intake_id).programme_id
     end
   end
   
@@ -598,12 +604,16 @@ class Weeklytimetable < ActiveRecord::Base
   
   private
     def intake_must_match_with_programme
-      valid_intakes = Intake.where(programme_id: programme_id).pluck(:id)
-      if valid_intakes.include?(intake_id)
-        return true
+      if college_id!=2
+        valid_intakes = Intake.where(programme_id: programme_id).pluck(:id)
+        if valid_intakes.include?(intake_id)
+          return true
+        else
+          errors.add(:base, I18n.t('training.weeklytimetable.intake_programme_must_match'))
+          return false
+        end
       else
-        errors.add(:base, I18n.t('training.weeklytimetable.intake_programme_must_match'))
-        return false
+        return true
       end
     end
   

@@ -20,7 +20,7 @@
       
           %dt= t 'training.weeklytimetable.intake_id' , :default => model_class.human_attribute_name(:intake_id) + ":"
           %dd= @weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)
-		  
+ 
           %dt= t 'training.weeklytimetable.startdate' , :default => model_class.human_attribute_name(:startdate) + ":"
           %dd= @weeklytimetable.startdate.try(:strftime, "%d/%m/%Y") 
 
@@ -47,7 +47,8 @@
       #weeklytimetable_details.tab-pane.active
         = render 'tab_timetable_period'
       #daily_details.tab-pane
-        = render 'tab_daily_details'
+        /= render 'tab_daily_details'
+        = render :partial => "training/weeklytimetables/#{current_user.college.code}/tab_daily_details"
       #submission_approval.tab-pane
         = render 'tab_approval'
 

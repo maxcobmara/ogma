@@ -3,7 +3,7 @@
     .col-sm-2.control-label
       = f.label :intake_id2
     .col-md-3
-      = f.collection_select :intake_id, @intake_list, :id, :siri_programmelist,{:include_blank=> (t 'helpers.prompt.select_intake')},{class: 'selectpicker mandatory', "data-width"=> "auto"}
+      = f.collection_select :intake_id, @intake_list, :id, :siri_programmelist,{:include_blank=> (t 'helpers.prompt.select_intake')}, {class: 'selectpicker mandatory', "data-width"=> "auto"}
 
   .form-group
     .col-sm-2.control-label
@@ -32,11 +32,11 @@
   .form-group
     .col-sm-2.control-label
       = f.label :format1b
-    .col-md-3
-      = f.collection_select :format1, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')}, {class: 'selectpicker mandatory', "data-width"=>'360px'}
-	  
+    .col-md-6
+      = f.collection_select :format1, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
+      .small Remark : * This format shall be applied to weekend classes.
   .form-group
     .col-sm-2.control-label
       = f.label :format2b
     .col-md-3
-      = f.collection_select :format2, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')}, {class: 'selectpicker mandatory', "data-width"=>'360px'}
+      = f.collection_select :format2, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
