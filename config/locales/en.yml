@@ -4402,14 +4402,17 @@ en:
       weeklytimetable:
         programme_id: Programme
         intake_id: Group
+        intake_id2: Intake
         #group_id: Group
         startdate: Start Date
         enddate: End Date
         semester: Semester
         prepared_by: Prepared By
         endorsed_by: Endorsed By
-        format1: "Format (Sun-Wed/ Mon-Thurs)"
-        format2: "Format (Thursday/ Friday)"
+        format1: "Format (Sun-Wed)"
+        format1: "Format (Mon-Thurs)"
+        format2: "Format (Thursday)"
+        format2: "Format (Friday)"
         week: Week
         is_submitted: "Submit ?"
         submitted_on: Submission Date

@@ -11,7 +11,7 @@ class Student_reportPdf < Prawn::Document
     end
     font "Times-Roman"
     text "#{college.name}", :align => :center, :size => 12, :style => :bold
-    text "#{college.code=='amsas' ? 'Siri '+Intake.find(intake_programme_id).siri_programmelist : course.programme_list}", :align => :center, :size => 12, :style => :bold
+    text "#{college.code=='amsas' ? Intake.find(intake_programme_id).siri_programmelist : course.programme_list}", :align => :center, :size => 12, :style => :bold
     text "#{I18n.t('student.students.list')}", :align => :center, :size => 12, :style => :bold
     move_down 10
     record

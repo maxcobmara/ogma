@@ -30,10 +30,35 @@ class TimetablePeriod < ActiveRecord::Base
     [ 'Rehat / Pipe Down', 7],
     [ 'Rehat', 8]
   ]
-  
+
   #Latihan Fizikal/Sukan (Jurulatih Fizikal)
   #MAKAN MALAM / SOLAT MAGRIB / SOLAT ISYAK / LAWATAN MALAM (PEGAWAI BERTUGAS HARIAN)
   #REHAT / PIPE DOWN (PEGAWAI BERTUGAS HARIAN)
+  
+  NON_CLASS_REV=[
+      #display  #stored in db
+      [ "SOLAT SUBUH BERJEMAAH DI MASJID", 1 ],
+      [ "EMA", 2 ],
+      [ "PERSONAL ADMIN", 3 ],
+      [ "EMA", 4 ],
+      [ "DIVISIONAL OFFICER PERIOD", 5 ],
+      [ "KUDAPAN", 6 ],
+      [ "MAKAN TENGAHARI / SOLAT ZOHOR", 7 ],
+      [ "MINUM PETANG / SOLAT ASAR", 8 ],
+      [ "MAKAN MALAM / SOLAT MAGHRIB & ISYAK", 9],
+      [ "PIPE DOWN", 10]
+    ]
+  
+  DAY_CHOICE = [
+         #  Displayed       stored in db
+         [ "Sun-Wed", 1 ],
+         [ "Thursday", 2 ]
+    ]
+  DAY_CHOICE2 = [
+         #  Displayed       stored in db
+         [ "Mon-Thurs", 1 ],
+         [ "Friday", 2 ]
+    ]
   
 end
 

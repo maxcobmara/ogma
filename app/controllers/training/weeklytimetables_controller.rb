@@ -130,13 +130,15 @@ class Training::WeeklytimetablesController < ApplicationController
     @is_admin = roles.include?("developer") || roles.include?("administration") || roles.include?("weeklytimetables_module_admin") || roles.include?("weeklytimetables_module_viewer") || roles.include?("weeklytimetables_module_user")
     if @is_admin
       @programme_list=Programme.roots
-      @intake_list=Intake.all.order(programme_id: :asc, monthyear_intake: :desc)
       if current_user.college.code=="kskbjb"
         posbasics=["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
         prog_names=@programme_list.where(course_type: "Diploma").pluck(:name)
         @lecturer_list= Staff.joins(:positions).where('positions.unit IN(?) or positions.unit IN(?)', prog_names, posbasics).order(name: :asc)
+        @intake_list=Intake.all.order(programme_id: :asc, monthyear_intake: :desc)
       else
-        @lecturer_list=Staff.joins(:positions).where('positions.name=?', 'Jurulatih')
+        lecturer_ids=User.joins(:roles).where('roles.name=?','Lecturer').pluck(:userable_id)
+        @lecturer_list=Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)', 'Jurulatih', lecturer_ids)
+        @intake_list=Intake.all.order(id: :desc, register_on: :desc)
       end
     else
       if current_user.college.code=='kskbjb'

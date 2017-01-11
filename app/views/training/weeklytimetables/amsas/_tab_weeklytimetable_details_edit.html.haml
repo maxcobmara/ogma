@@ -1,0 +1,42 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label :intake_id2
+    .col-md-3
+      = f.collection_select :intake_id, @intake_list, :id, :siri_programmelist,{:include_blank=> (t 'helpers.prompt.select_intake')},{class: 'selectpicker mandatory', "data-width"=> "auto"}
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label :startdate
+    .col-md-3
+      = f.text_field :startdate, class: 'date_picker_reverse form-control mandatory'
+       
+  .form-group
+    .col-sm-2.control-label
+      = f.label :enddate
+    .col-md-3
+      = f.text_field :enddate, class: 'date_picker_reverse form-control mandatory'
+       
+  .form-group
+    .col-sm-2.control-label
+      = f.label :week
+    .col-md-3
+      = f.text_field :week, class: 'form-control mandatory'
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label :prepared_by
+    .col-md-3
+      = f.collection_select :prepared_by, @lecturer_list.order('rank_id ASC, name ASC'), :id, :staff_with_rank, {:include_blank =>(t 'select'), :selected => @staffid},{class: 'selectpicker mandatory', "data-width"=>"auto"}
+ 
+  .form-group
+    .col-sm-2.control-label
+      = f.label :format1b
+    .col-md-3
+      = f.collection_select :format1, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')}, {class: 'selectpicker mandatory', "data-width"=>'360px'}
+	  
+  .form-group
+    .col-sm-2.control-label
+      = f.label :format2b
+    .col-md-3
+      = f.collection_select :format2, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')}, {class: 'selectpicker mandatory', "data-width"=>'360px'}

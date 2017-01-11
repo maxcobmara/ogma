@@ -14,7 +14,7 @@
       #weeklytimetable_details.tab-pane.active
         %br
         - if @weeklytimetable.new_record?
-          = render :partial => 'tab_weeklytimetable_details_edit', :locals => {:f => f}  
+          = render :partial =>"training/weeklytimetables/#{current_user.college.code}/tab_weeklytimetable_details_edit", :locals => {:f => f}  
         - else
           =render :partial => 'show_main'   
       #daily_details.tab-pane
