@@ -3,6 +3,11 @@
   %h1= t 'training.timetable.title'
 = render 'shared/flashes'
 
+- if @timetable.college.code=='amsas'
+  - day_display = TimetablePeriod::DAY_CHOICE2
+- else
+  - day_display = TimetablePeriod::DAY_CHOICE
+
 .row
   .col-md-offset-1
     / Nav tabs
@@ -37,7 +42,7 @@
               .showform
                 %table#subtable
                   %tr
-                    %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:11px;font-weight: bold;"}= (DropDown::DAY_CHOICE.find_all{|disp, value| value == (row_things.map(&:day_name)[0]) }).map {|disp, value| disp}[0]
+                    %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:11px;font-weight: bold;"}= (day_display.find_all{|disp, value| value == (row_things.map(&:day_name)[0]) }).map {|disp, value| disp}[0]
                     - for periods in row_things
                       - if periods.day_name == 1
                         %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:10px;"}

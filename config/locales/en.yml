@@ -3884,6 +3884,7 @@ en:
       start_at: Start At
       end_at: End At
       is_break: Break
+      alternate_all: "* 2 EMA options : alternate days / all days"
     academic_session:
       title: Academic Session
       list: Academic Session List
@@ -4410,9 +4411,9 @@ en:
         prepared_by: Prepared By
         endorsed_by: Endorsed By
         format1: "Format (Sun-Wed)"
-        format1: "Format (Mon-Thurs)"
+        format1b: "Format (Mon-Thurs)"
         format2: "Format (Thursday)"
-        format2: "Format (Friday)"
+        format2b: "Format (Friday)"
         week: Week
         is_submitted: "Submit ?"
         submitted_on: Submission Date

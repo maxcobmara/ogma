@@ -48,7 +48,9 @@
               %b= t'training.timetable_period.end_at'
             .col-md-3
               %b= current_user.college.code=='amsas' ? (t 'training.weeklytimetable.non_class') : (t 'training.timetable_period.is_break')
-              .small{style: 'color: red;'}=t 'training.weeklytimetable.ignore_if_class'
+              .small{style: 'color: red;'}
+                =t 'training.weeklytimetable.ignore_if_class'
+                %br=(t 'training.timetable_period.alternate_all')
             .col-md-2
               %b= t'helpers.links.destroy'
           %br

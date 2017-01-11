@@ -3801,6 +3801,7 @@ ms_MY:
       start_at: Masa Mula
       end_at: Masa Tamat
       is_break: Rehat 
+      alternate_all: "* 2 Pilihan EMA : hari berselang / setiap hari"
     academic_session:
       title: Sesi Akademik
       list: Senarai Sesi Akademik

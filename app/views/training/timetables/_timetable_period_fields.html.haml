@@ -4,8 +4,8 @@
   .row
     .col-md-1.col-sm-offset-2
       = f.hidden_field :_destroy
-      = f.select :sequence, 1..12, { :prompt => (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
-    .col-md-2= f.select :day_name, DropDown::DAY_CHOICE,{ :prompt => (t 'select')}, {class: 'selectpicker',"data-width"=>"auto"}
+      = f.select :sequence, 1..15, { :prompt => (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+    .col-md-2= f.select :day_name, TimetablePeriod::DAY_CHOICE2,{ :prompt => (t 'select')}, {class: 'selectpicker',"data-width"=>"auto"}
     .col-md-1
       - unless f.object.start_at.blank?
         = f.text_field :start_at, class: 'form-control time_picker2', value: f.object.start_at.strftime("%H:%M")
@@ -19,7 +19,7 @@
     /.col-md-3
     - if current_user.college.code=='amsas'
       .col-md-1= f.check_box :is_break, class: 'isbreak'
-      .col-md-2= f.select :non_class, TimetablePeriod::NON_CLASS, {include_blank: (t 'select')}, {class: 'form-control non_class', "data-width" => "auto"}
+      .col-md-2= f.select :non_class, TimetablePeriod::NON_CLASS_REV, {include_blank: (t 'select')}, {class: 'form-control non_class', "data-width" => "auto"}
     - else
       .col-md-3
         = f.check_box :is_break
@@ -36,38 +36,28 @@
   var saved1=document.getElementsByClassName('saved_one');
 
   $('.non_class').each(function(){
-    full_id=$(this).attr("id");  
-    var idno=full_id.substring(full_id.lastIndexOf("attributes_")+11, full_id.lastIndexOf("_non_class"));
-    var non_class_input=document.getElementById(full_id);
-    var ischeck_input=document.getElementById("timetable_timetable_periods_attributes_"+idno+"_is_break");
-    ischeck_value=ischeck_input.checked;
+    isbreak_fields=document.getElementsByClassName("isbreak");
+    non_class_fields=document.getElementsByClassName("non_class");
     
-    /*new fieldset ONLY*/
-    if(idno > saved1[0].value)
-    {  
-      if(ischeck_value==true)
-      { non_class_input.style.display="block";}
+    for(var i=0; i<isbreak_fields.length; i++)
+    {
+      if(isbreak_fields[i].checked==true)
+      { non_class_fields[i].style.display="block";}
       else
-      { non_class_input.style.display="none";}
+      {non_class_fields[i].style.display="none";}
     }
   });
   
   $('.isbreak').click(function(){
-    var break_inc_new=document.getElementsByClassName('isbreak');
-    full_id=$(this).attr("id");    
-    var ischeck_input=document.getElementById(full_id);
-    ischeck_value=ischeck_input.checked;
+    isbreak_fields=document.getElementsByClassName("isbreak");
+    non_class_fields=document.getElementsByClassName("non_class");
     
-    var idno=full_id.substring(full_id.lastIndexOf("attributes_")+11, full_id.lastIndexOf("_is_break"));
-    var non_class_input=document.getElementById("timetable_timetable_periods_attributes_"+idno+"_non_class");
-   
-    /*if(idno > 20) */
-    if(idno > saved1[0].value)
-    { 
-      if (ischeck_value==true)
-      {  non_class_input.style.display="block";}
+    for(var i=0; i<isbreak_fields.length; i++)
+    {
+      if(isbreak_fields[i].checked==true)
+      { non_class_fields[i].style.display="block";}
       else
-      {  non_class_input.style.display="none";}
+      {non_class_fields[i].style.display="none";}
     }
   });
   
@@ -79,3 +69,38 @@
     destroyer.value=true;    
     fieldset.hide();
   });
+  
+  
+/     full_id=$(this).attr("id");  
+/     var idno=full_id.substring(full_id.lastIndexOf("attributes_")+11, full_id.lastIndexOf("_non_class"));
+/     var non_class_input=document.getElementById(full_id);
+/     var ischeck_input=document.getElementById("timetable_timetable_periods_attributes_"+idno+"_is_break");
+/     ischeck_value=ischeck_input.checked; 
+  
+/     /*new fieldset ONLY*/
+/     if(idno > saved1[0].value)
+/     {  
+/       if(ischeck_value==true)
+/       { non_class_input.style.display="block";}
+/       else
+/       { non_class_input.style.display="none";}
+/     }
+/ 
+/   $('.isbreak').click(function(){
+/     var break_inc_new=document.getElementsByClassName('isbreak');
+/     full_id=$(this).attr("id");    
+/     var ischeck_input=document.getElementById(full_id);
+/     ischeck_value=ischeck_input.checked;
+/     
+/     var idno=full_id.substring(full_id.lastIndexOf("attributes_")+11, full_id.lastIndexOf("_is_break"));
+/     var non_class_input=document.getElementById("timetable_timetable_periods_attributes_"+idno+"_non_class");
+/    
+/     /*if(idno > 20) */
+/     if(idno > saved1[0].value)
+/     { 
+/       if (ischeck_value==true)
+/       {  non_class_input.style.display="block";}
+/       else
+/       {  non_class_input.style.display="none";}
+/     }
+/   });

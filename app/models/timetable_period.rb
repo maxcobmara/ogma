@@ -15,7 +15,7 @@ class TimetablePeriod < ActiveRecord::Base
   end
   
   def render_no_class
-    (TimetablePeriod::NON_CLASS.find_all{|disp, value| value == non_class}).map{|disp, value| disp}[0]
+    (TimetablePeriod::NON_CLASS_REV.find_all{|disp, value| value == non_class}).map{|disp, value| disp}[0]
   end
   
 
@@ -40,14 +40,20 @@ class TimetablePeriod < ActiveRecord::Base
       [ "SOLAT SUBUH BERJEMAAH DI MASJID", 1 ],
       [ "EMA", 2 ],
       [ "PERSONAL ADMIN", 3 ],
-      [ "EMA", 4 ],
-      [ "DIVISIONAL OFFICER PERIOD", 5 ],
-      [ "KUDAPAN", 6 ],
-      [ "MAKAN TENGAHARI / SOLAT ZOHOR", 7 ],
-      [ "MINUM PETANG / SOLAT ASAR", 8 ],
-      [ "MAKAN MALAM / SOLAT MAGHRIB & ISYAK", 9],
-      [ "PIPE DOWN", 10]
+      [ "SARAPAN PAGI", 4 ],
+      [ "EMA", 5 ],
+      [ "DIVISIONAL OFFICER PERIOD", 6 ],
+      [ "KUDAPAN", 7 ],
+      [ "MAKAN TENGAHARI / SOLAT ZOHOR", 8 ],
+      [ "MINUM PETANG / SOLAT ASAR", 9 ],
+      [ "MAKAN MALAM / SOLAT MAGHRIB & ISYAK", 10],
+      [ "PIPE DOWN", 11]
     ]
+  
+  #Related rules for AMSAS 
+  #- if EMA==2 --> start from Monday - alternate, this field/cell EMA vs ''.
+  #Either EMA==2 or EMA==5, for weekends (Saturday & Sunday) --> this field/cell should become 'KULIAH SUBUH' field
+  
   
   DAY_CHOICE = [
          #  Displayed       stored in db
