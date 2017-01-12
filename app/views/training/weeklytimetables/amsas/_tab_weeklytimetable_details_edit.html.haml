@@ -34,7 +34,7 @@
       = f.label :format1b
     .col-md-6
       = f.collection_select :format1, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
-      .small Remark : * This format shall be applied to weekend classes.
+      .small=t('training.weeklytimetable.applied_weekends')
   .form-group
     .col-sm-2.control-label
       = f.label :format2b

@@ -17,7 +17,7 @@ class Student < ActiveRecord::Base
   validates_attachment_content_type :photo, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
   
   has_many :users, as: :userable
-  has_and_belongs_to_many :klasses          #has_and_belongs_to_many :programmes
+  #has_and_belongs_to_many :klasses          #has_and_belongs_to_many :programmes
 
   belongs_to :course,         :class_name => 'Programme', :foreign_key => 'course_id'       #Link to Programme
   belongs_to :intakestudent,  :class_name => 'Intake',    :foreign_key => 'intake_id'       #Link to Model intake
@@ -29,9 +29,9 @@ class Student < ActiveRecord::Base
   has_many  :student_counseling_sessions                                                    #Link to Counselling
 
   has_many  :studentgrade,    :class_name => 'Grade',     :foreign_key => 'student_id'      #Link to Model Grade
-  has_many  :student,         :class_name => 'Sdicipline',:foreign_key => 'student_id'      #Link to Model Sdicipline
+  has_many  :student_discipline_cases,         :class_name => 'Sdicipline',:foreign_key => 'student_id'      #Link to Model Sdicipline
   has_many  :studentevaluate, :class_name => 'Courseevaluation', :foreign_key => 'student_id'#Link to Model CourseEvaluation
-  has_many  :student,         :class_name => 'Residence', :foreign_key => 'student_id'      #Link to Model residence
+  has_many  :student_residences,         :class_name => 'Residence', :foreign_key => 'student_id'      #Link to Model residence
   has_many  :tenants
 
   has_many  :librarytransactions                                                            #Link to LibraryTransactions

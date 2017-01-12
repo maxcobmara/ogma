@@ -3945,6 +3945,7 @@ en:
       personalize: Personalize Timetable
       date_day_time_topic_method: "Date Day (Time Slot) - Topic (Class Method)"
       slot_count: Slot Count
+      applied_weekends: "Remark : * This format shall be applied to weekend classes."
       
     weeklytimetable_detail:
       topic: Topic
