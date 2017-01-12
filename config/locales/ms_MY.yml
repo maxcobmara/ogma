@@ -3862,6 +3862,7 @@ ms_MY:
       personalize: Jadual Waktu Individu
       date_day_time_topic_method: "Tarikh Hari (Slot Masa) - Topik (Kaedah Pengajaran)"
       slot_count: Bilangan Slot
+      applied_weekends: "Catatan : * Format ini akan turut digunapakai jika terdapat kelas pada hujung minggu."
 
     weeklytimetable_detail:
       topic: Topik

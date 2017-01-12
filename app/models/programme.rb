@@ -1,7 +1,7 @@
 class Programme < ActiveRecord::Base
   before_save :set_combo_code
   #after_save :copy_topic_topicdetail
-  before_destroy :valid_for_removal
+  #before_destroy :valid_for_removal
   
   has_ancestry :cache_depth => true, :orphan_strategy => :destroy
   has_many :topic_details, :class_name => 'Topicdetail', :dependent =>:nullify, :foreign_key => 'topic_code'   #31Oct2013
@@ -563,13 +563,14 @@ class Programme < ActiveRecord::Base
     
   private
   
-    def valid_for_removal
-      if weeklytimetables.count > 0 || intakes.count > 0 || topic_for_weeklytimetable_details.count > 0
-        return false
-      else
-        return true
-      end
-    end
+#use this OR dependent (destroy / nullify)
+#     def valid_for_removal
+#       if weeklytimetables.count > 0 || intakes.count > 0 || topic_for_weeklytimetable_details.count > 0
+#         return false
+#       else
+#         return true
+#       end
+#     end
     
 end
 

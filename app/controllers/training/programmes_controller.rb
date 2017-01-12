@@ -82,7 +82,7 @@ class Training::ProgrammesController < ApplicationController
     if @programme.destroy
       flash[:notice] = t('training.programme.title')+t('actions.removed')
     else
-      flash[:error] = 'Removal of Subject/Topic is forbidden, due to existance of Subject/Topic in Examquestion.'
+      flash[:notice] = 'Removal of Subject/Topic is forbidden, due to existance of Subject/Topic in Examquestion.'
     end  
 
     respond_to do |format|
