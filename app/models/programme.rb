@@ -3,12 +3,15 @@ class Programme < ActiveRecord::Base
   #after_save :copy_topic_topicdetail
   before_destroy :valid_for_removal
   
-  has_ancestry :cache_depth => true
-  has_many :topic_details, :class_name => 'Topicdetail',:dependent =>:nullify, :foreign_key => 'topic_code'   #31Oct2013
-  has_many :weeklytimetables
-  has_many :intakes
-  has_many :topic_for_weeklytimetable_details, :class_name => 'WeeklytimetableDetail', :foreign_key => 'topic'
-  has_many :examresults
+  has_ancestry :cache_depth => true, :orphan_strategy => :destroy
+  has_many :topic_details, :class_name => 'Topicdetail', :dependent =>:nullify, :foreign_key => 'topic_code'   #31Oct2013
+  has_many :intakes, :dependent => :nullify
+  has_many :weeklytimetables, :dependent => :destroy
+  has_many :topic_for_weeklytimetable_details, :class_name => 'WeeklytimetableDetail', :foreign_key => 'topic', :dependent => :destroy
+  has_many :examresults, :dependent => :destroy
+  has_many :exams, :foreign_key => 'subject_id', :dependent => :destroy
+  has_many :grades, :foreign_key => 'subject_id', :dependent => :destroy
+  has_many :examquestions, :foreign_key => 'topic_id', :dependent => :destroy
   
   attr_accessor :programme_listng, :subject_listing, :topic_listing, :subject_listing2
   
