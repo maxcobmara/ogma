@@ -309,7 +309,7 @@ module StudentsHelper
       #additional Float check required for numbers-only data
       #lstrip required for string to remove leading/preceeding spaces
       icno_e=row["icno"]
-      if icno_e.include?("-")
+      if icno_e.to_s.include?("-")
 	icno_e=icno_e.gsub!("-","")
       end
       if icno_e.is_a? Numeric
@@ -336,7 +336,7 @@ module StudentsHelper
       end 
       
       stelno_e=row["stelno"]
-      if stelno_e && stelno_e.include?("-")
+      if stelno_e && stelno_e.to_s.include?("-")
 	stelno_e=stelno_e.gsub!("-","")
       end
       if stelno_e.is_a? Numeric
@@ -349,6 +349,7 @@ module StudentsHelper
           stelno_e=nil
         end
       else
+	#phone no cell in excel is blank
         stelno_not_exist << i
 	stelno_e=nil
       end
@@ -649,7 +650,7 @@ module StudentsHelper
       end
       msg=a[:svs].count.to_s+(I18n.t 'actions.records')+(I18n.t 'actions.imported_updated')+(I18n.t 'actions.line_no_excel')+lines+")"
     end
-    msg 
+    msg
   end 
 
   def self.msg_import2(a) 

@@ -39,7 +39,7 @@ class StudentsController < ApplicationController
       msg=Student.messages(a)
       msg2=Student.messages2(a)      
       
-      if a[:svs].count>0 && a[:ine].count==0 && a[:stnv].count==0 && a[:spnv].count==0
+      if a[:svs].count>0 &&( a[:ine].count==0 && a[:stnv].count==0 && a[:spnv].count==0 && a[:nne].count==0 && a[:stne].count==0 && a[:sbnv].count==0 && a[:gnv].count==0 && a[:mnv].count==0 && a[:cinv].count==0 && a[:inv].count==0 )
         respond_to do |format|
           flash[:notice]= msg
           format.html {redirect_to students_url}
@@ -48,14 +48,22 @@ class StudentsController < ApplicationController
         respond_to do |format|
           flash[:notice]= msg if a[:svs].count>0
           flash[:error] = msg2
-          format.html { redirect_to import_excel_students_url}
+	  if current_user.college.code=='amsas'
+            format.html { redirect_to import_excel_amsas_students_url}
+	  else
+	    format.html { redirect_to import_excel_students_url}
+	  end
           #flash.discard
         end
       end
       
     else
       respond_to do |format|
-        format.html { redirect_to import_excel_students_url, :notice => (t 'select_excel_file')}
+	if current_user.college.code=='amsas'
+          format.html { redirect_to import_excel_amsas_students_url, :notice => (t 'select_excel_file')}
+	else
+          format.html { redirect_to import_excel_amsas_students_url, :notice => (t 'select_excel_file')}
+	end
       end
     end
   end
