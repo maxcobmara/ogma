@@ -14,9 +14,56 @@ class Staff::StaffsController < ApplicationController
       @search = Staff.where('name not ILIKE(?)', "ICMS%").search(params[:q])
     end
     @search1=@search.result
-    @staffs = @search.result.includes(:positions)
-    @staffs = @staffs.page(params[:page]||1)
+    
+    ###
+    #sorted_employgrades=Employgrade.sorted_grades(Employgrade.where(id: @search.result.where('staffgrade_id is not null').pluck(:staffgrade_id))   )
+    
+    #1) NOTE: Legend/formula - ...Home/Desktop/APMM Kuantan ICMS/[0] Format, Ref/Gred.pdf
+    maritim = [     24, 22, 20,  18,     16,  14, 13, 12, 10,   8,  [5,6],   nil,  4,    2,    1]             
+    non_maritim=[54, 52, 48, "46A", 44,  41, 41, 38, 36,  32,    29,   27,  22,  20,  17]
+    
+    #2) combine above 2 arrays to become : 
+    #{0=>[24, 54], 1=>[22, 52], 2=>[20, 48], 3=>[18, "46A"], 4=>[16, 44], 5=>[14, 41], 6=>[13, 41], 7=>[12, 38], 8=>[10, 36], 9=>[8, 32], 10=>[[5, 6], 29], 11=>[nil, 27], 12=>[4, 22], 13=>[2, 20], 14=>[1, 17]} 
+    combine_grades=Hash.new
+    0.upto(maritim.size-1).each{|cnt| combine_grades[cnt]=[maritim[cnt], non_maritim[cnt]]}
+    
+    cnt=0
+    grade41_count=Employgrade.where.not('name ILIKE(?) or name ILIKE(?)', "x%", "X%").where('name ilike(?)', "%41").count
+    
+    @staffs_w_grades=[]
+    #for sorted_g in sorted_employgrades
+    combine_grades.each do |k, v|
+#         for m_grd in m_grds.sort_by(&:name)
+#             be4slash, afterslash=m_grd.name.split("/")
+#             x=be4slash.gsub(/[^0-9]/, "").to_i
+#             if x==v[0]  
+      for staff in @search.result.where('staffgrade_id is not null').sort_by{|x|x.staffgrade.name}
+	    be4slash, afterslash=staff.staffgrade.name.split("/")
+            x=be4slash.gsub(/[^0-9]/, "").to_i
+            if x==v[0]
+	      @staffs_w_grades << staff
+	    end
+	    if k==10
+                if v[0].include?(x)
+                    @staffs_w_grades << staff
+                end
+            end
+	    if x==v[1] && (x !=41 || (x==41 && cnt < grade41_count))    
+                @staffs_w_grades << staff
+                cnt+=1 if v[1]==41
+            end
+      end
+    end
+    @staffs_wo_grades=@search.result.where('staffgrade_id is null')
+    ###
+    
+    #@staffs = @search.result.includes(:positions)
+    @staffs=@staffs_w_grades+@staffs_wo_grades
+    @staffs = Kaminari.paginate_array(@staffs).page(params[:page]||1)  #@staffs.page(params[:page]||1)
     @infos = @staffs
+    
+    
+    
   end
 
   def auto_complete
