@@ -1,6 +1,7 @@
 = search_form_for @search, url:  staff_infos_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
     %td=f.text_field :icno_cont, :size=> 2,  class:  'form-control'
+    %td=f.text_field :staffgrade_name_cont, :size => 2, class: 'form-control'
     %td=f.text_field :name_cont, :size=> 2,  class:  'form-control'
     %td=f.text_field :positions_name_cont, size: 2, class: 'form-control'
     %td
