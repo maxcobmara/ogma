@@ -7,7 +7,13 @@ class Staff::StaffsController < ApplicationController
   # GET /staffs
   # GET /staffs.json
   def index
-    @search = Staff.search(params[:q])
+    current_roles=current_user.roles.pluck(:authname)
+    if current_roles.include?('developer')
+      @search = Staff.search(params[:q])
+    else
+      @search = Staff.where('name not ILIKE(?)', "ICMS%").search(params[:q])
+    end
+    @search1=@search.result
     @staffs = @search.result.includes(:positions)
     @staffs = @staffs.page(params[:page]||1)
     @infos = @staffs

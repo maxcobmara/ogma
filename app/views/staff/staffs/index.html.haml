@@ -16,6 +16,7 @@
     %thead
       %tr
         %th= sort_link(@search, :icno, (t 'staff.icno'))
+        %th= sort_link(@search, :staffgrade_id, (t 'staff.staffgrade_id'))
         %th= sort_link(@search, :name, (t 'staff.name'))
         - if current_user.college.code=="amsas"
           %th{style: "width:20%;"}= sort_link(@search, :positions_name,(t 'staff.position'))
@@ -27,6 +28,7 @@
       - @staffs.each do |staff|
         %tr
           %td= link_to formatted_mykad(staff.icno), staff_info_path(staff)
+          %td=staff.staffgrade.try(:name)
           %td= staff.name 
           %td
             -for position in staff.positions
