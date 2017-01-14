@@ -106,7 +106,11 @@ Ogma::Application.routes.draw do
     resources :staff_shifts
     resources :travel_claims_transport_groups
     resources :travel_claim_mileage_rates
-    resources :employgrades
+    resources :employgrades do
+      collection do
+        get :employgrade_list
+      end
+    end
     resources :postinfos do
       collection do
         get :postinfo_list

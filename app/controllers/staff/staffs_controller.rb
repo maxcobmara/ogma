@@ -3,19 +3,11 @@ class Staff::StaffsController < ApplicationController
   filter_access_to :show, :edit, :update, :destroy, :borang_maklumat_staff, :attribute_check => true
   
   before_action :set_staff, only: [:show, :edit, :update, :destroy]
+  before_action :set_index_list, only: [:index, :staff_list]
 
   # GET /staffs
   # GET /staffs.json
   def index
-    current_roles=current_user.roles.pluck(:authname)
-    if current_roles.include?('developer')
-      @search = Staff.search(params[:q])
-    else
-      @search = Staff.where('name not ILIKE(?)', "ICMS%").search(params[:q])
-    end
-    @search1=@search.result
-    @staffs = @search.result.includes(:positions)
-    @staffs = @staffs.page(params[:page]||1)
     @infos = @staffs
   end
 
@@ -114,9 +106,6 @@ end
   end
 
  def staff_list
-    @search = Staff.search(params[:q])
-    @staffs = @search.result.includes(:positions)
-    @infos=@staffs
     respond_to do |format|
       format.pdf do
         pdf = Staff_listPdf.new(@infos, view_context, current_user.college)
@@ -132,6 +121,26 @@ end
     def set_staff
       @staff = Staff.find(params[:id])
       @info = @staff
+    end
+    
+    def set_index_list
+      current_roles=current_user.roles.pluck(:authname)
+      if current_roles.include?('developer')
+        @search = Staff.search(params[:q])
+      else
+        @search = Staff.where('name not ILIKE(?)', "ICMS%").search(params[:q])
+      end
+      if current_user.college.code=='amsas'
+        @staffs_w_grades=Employgrade.sorted_staff_bygrade(@search.result.where('staffs.staffgrade_id is not null'))  
+        @staffs_wo_grades=@search.result.where('staffs.staffgrade_id is null')
+        @staffs = @staffs_w_grades+@staffs_wo_grades
+        @infos = @staffs
+        @staffs = Kaminari.paginate_array(@staffs.uniq).page(params[:page]||1)  
+      else
+        @staffs = @search.result.includes(:positions)
+        @infos = @staffs
+        @staffs=@staffs.page(params[:page]||1)
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

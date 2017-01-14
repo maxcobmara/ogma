@@ -1,6 +1,6 @@
 class Staff_listPdf < Prawn::Document
   def initialize(infos, view, college)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 30, page_size: 'A4', page_layout: :portrait })
     @infos = infos
     @view = view
     @college=college
@@ -14,11 +14,11 @@ class Staff_listPdf < Prawn::Document
   
   def record
     if @college.code=="amsas"
-      columnswidth=[30, 80, 150, 150, 120]
+      columnswidth=[30, 80, 50, 60, 160, 150]
     else
       columnswidth=[30, 80, 240, 180]
     end
-    table(line_item_rows, :column_widths => columnswidth, :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
+    table(line_item_rows, :column_widths => columnswidth, :cell_style => { :size => 8,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
       row(0).style size: 11
@@ -32,16 +32,15 @@ class Staff_listPdf < Prawn::Document
   def line_item_rows
     counter = counter || 0
     if @college.code=="amsas"
-      colcount=5
+      colcount=6
     else
       colcount=4
     end
-    header = [[{content: "#{I18n.t('staff.list').upcase}<br> #{@college.name.upcase}", colspan: colcount}]]
-    details=["No", I18n.t('staff.icno'), I18n.t('staff.name'), I18n.t('staff.position')]
+    header = [[{content: "#{@college.name.upcase}<br>#{I18n.t('staff.list').upcase}", colspan: colcount}]]
     if @college.code=="amsas"
-      header << details+[I18n.t('staff.rank_id')]
+      header << ["No", I18n.t('staff.icno'),I18n.t('staff.staffgrade_id'), I18n.t('staff.rank_id'), I18n.t('staff.name'), I18n.t('staff.position')]
     else
-      header << details
+      header << ["No", I18n.t('staff.icno'), I18n.t('staff.name'), I18n.t('staff.position')]
     end
     body=[]
     @infos.map do |info|
@@ -51,7 +50,7 @@ class Staff_listPdf < Prawn::Document
       end
       ic_name=[@view.formatted_mykad(info.icno), info.name]
       if @college.code=="amsas"
-        body << ["#{counter += 1}"]+ic_name+[myposts]+[info.try(:rank.try(:name))]
+        body << ["#{counter += 1}"]+[@view.formatted_mykad(info.icno), info.try(:staffgrade).try(:name), info.try(:rank).try(:shortname), info.name]+[myposts]
       else
         body << ["#{counter += 1}"]+ic_name+[myposts]
       end

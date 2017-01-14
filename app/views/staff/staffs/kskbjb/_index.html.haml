@@ -1,0 +1,16 @@
+%table.table-striped.table-hover.ogma
+  %thead
+    %tr
+      %th{style: "width:33%;"}= sort_link(@search, :icno, (t 'staff.icno'))
+      %th{style: "width:34%;"}= sort_link(@search, :name, (t 'staff.name'))
+      %th{style: "width:33%;"}= sort_link(@search, :positions_name,(t 'staff.position'))
+    %tbody
+      = render "index_search"
+      - @staffs.each do |staff|
+        %tr
+          %td= link_to formatted_mykad(staff.icno), staff_info_path(staff)
+          %td= staff.name 
+          %td
+            -for position in staff.positions
+              = position.name
+              <BR>

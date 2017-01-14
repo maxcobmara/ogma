@@ -9,33 +9,9 @@
   %ul.nav.navbar-nav.navbar-right
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), staff_list_staff_infos_path(params.merge(format: 'pdf'))
-      
+
 .row
   //.right{style:"padding:0 30px; margin:0;"}= paginate @staffs, :theme => 'twitter-bootstrap-3', :pagination_class => "pagination-sm"
-  %table.table-striped.table-hover.ogma
-    %thead
-      %tr
-        %th= sort_link(@search, :icno, (t 'staff.icno'))
-        %th= sort_link(@search, :staffgrade_id, (t 'staff.staffgrade_id'))
-        %th= sort_link(@search, :name, (t 'staff.name'))
-        - if current_user.college.code=="amsas"
-          %th{style: "width:20%;"}= sort_link(@search, :positions_name,(t 'staff.position'))
-          %th{style: "width:20%;"}=sort_link(@search, :rank_id, (t 'staff.rank_id'))
-        - else
-          %th{style: "width:33%;"}= sort_link(@search, :positions_name,(t 'staff.position'))
-    %tbody
-      = render "search_bar"
-      - @staffs.each do |staff|
-        %tr
-          %td= link_to formatted_mykad(staff.icno), staff_info_path(staff)
-          %td=staff.staffgrade.try(:name)
-          %td= staff.name 
-          %td
-            -for position in staff.positions
-              = position.name
-              <BR>
-          - if current_user.college.code=="amsas"
-            %td=staff.try(:rank).try(:name)
-          
+  = render :partial => "staff/staffs/#{current_user.college.code}/index"
   .right{style:"padding:0 30px; margin:0;"}= paginate @staffs, :theme => 'twitter-bootstrap-3'
 

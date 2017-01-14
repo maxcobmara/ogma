@@ -548,7 +548,7 @@ authorization do
      has_permission_on :staff_titles, :to => :manage
      has_permission_on :staff_positions, :to =>[:manage, :maklumat_perjawatan, :organisation_chart]
      has_permission_on :banks, :to => :manage
-     has_permission_on :staff_employgrades, :to => :manage
+     has_permission_on :staff_employgrades, :to => [:manage, :employgrade_list]
      has_permission_on :staff_postinfos, :to => :manage
      ###restricted as of in Staff role
      #has_permission_on :staff_staff_appraisals, :to => [:manage, :appraisal_form]    # NOTE : restricted - PPP & PPK + marks by PPP & PPK become viewable 
@@ -2429,10 +2429,10 @@ authorization do
   
   #56-OK 19 Sept2016
   role :staff_employgrades_module_admin do
-    has_permission_on :staff_employgrades, :to => :manage
+    has_permission_on :staff_employgrades, :to => [:manage, :employgrade_list]
   end
   role :staff_employgrades_module_viewer do
-    has_permission_on :staff_employgrades, :to => :read
+    has_permission_on :staff_employgrades, :to => [:read, :employgrade_list]
   end
   
   #57-OK 19 Sept2016

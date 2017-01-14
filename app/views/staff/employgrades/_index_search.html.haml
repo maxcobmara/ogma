@@ -1,6 +1,6 @@
 = search_form_for @search, url: staff_employgrades_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
-    /%td=f.text_field :name_cont, class: 'form-control'
+    %td=f.text_field :name_cont, class: 'form-control'
     %td 
       .input-group
         =select_tag('q[group_id_eq]', options_for_select([[(t 'actions.all_records'),'']]+DropDown::GROUP, @search.group_id_eq) , class: 'form-control')
