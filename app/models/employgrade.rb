@@ -112,18 +112,22 @@ class Employgrade < ActiveRecord::Base
       for staff in staff_list.sort_by{|x|x.staffgrade.name}
 	    be4slash, afterslash=staff.staffgrade.name.split("/")
             x=be4slash.gsub(/[^0-9]/, "").to_i
-            if x==v[0]
-	      staffs_w_grades << staff
+            first_char=be4slash.lstrip[0,1]
+            if first_char.downcase=='x'            #maritime grade should start with letter 'x' of 'X'
+              if x==v[0]
+	        staffs_w_grades << staff
+	      end
+	      if k==10
+                  if v[0].include?(x)
+                      staffs_w_grades << staff
+                  end
+              end
+	    else
+	      if x==v[1] && (x !=41 || (x==41 && cnt < Employgrade.grade41_count))    
+                  staffs_w_grades << staff
+                  cnt+=1 if v[1]==41
+              end
 	    end
-	    if k==10
-                if v[0].include?(x)
-                    staffs_w_grades << staff
-                end
-            end
-	    if x==v[1] && (x !=41 || (x==41 && cnt < Employgrade.grade41_count))    
-                staffs_w_grades << staff
-                cnt+=1 if v[1]==41
-            end
       end
     end
     staffs_w_grades
