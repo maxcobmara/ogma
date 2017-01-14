@@ -128,7 +128,7 @@ end
       if current_roles.include?('developer')
         @search = Staff.search(params[:q])
       else
-        @search = Staff.where('name not ILIKE(?)', "ICMS%").search(params[:q])
+        @search = Staff.where('staffs.name not ILIKE(?)', "ICMS%").search(params[:q])
       end
       if current_user.college.code=='amsas'
         @staffs_w_grades=Employgrade.sorted_staff_bygrade(@search.result.where('staffs.staffgrade_id is not null'))  

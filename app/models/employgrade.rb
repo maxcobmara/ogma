@@ -123,7 +123,7 @@ class Employgrade < ActiveRecord::Base
                   end
               end
 	    else
-	      if x==v[1] && (x !=41 || (x==41 && cnt < Employgrade.grade41_count))    
+	      if x==v[1]                                    #should list all staff with same employgrade
                   staffs_w_grades << staff
                   cnt+=1 if v[1]==41
               end
