@@ -134,7 +134,7 @@ end
         @staffs_w_grades=Employgrade.sorted_staff_bygrade(@search.result.where('staffs.staffgrade_id is not null'))  
         @staffs_wo_grades=@search.result.where('staffs.staffgrade_id is null')
         @staffs = @staffs_w_grades+@staffs_wo_grades
-        @infos = @staffs
+        @infos = @staffs.uniq
         @staffs = Kaminari.paginate_array(@staffs.uniq).page(params[:page]||1)  
       else
         @staffs = @search.result.includes(:positions)
