@@ -8,10 +8,7 @@
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_employgrade_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li.dropdown
-      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-        = fa_icon "print", text: (t 'actions.print')
-        %b.caret
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), employgrade_list_staff_employgrades_path(params.merge(format: 'pdf'))
 
 .row
   %table.table-striped.table-hover.ogma

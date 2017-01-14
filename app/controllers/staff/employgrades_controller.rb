@@ -1,5 +1,7 @@
 class Staff::EmploygradesController < ApplicationController
-  filter_resource_access
+  filter_access_to :index, :new, :create, :employgrade_list, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
+  
   before_action :set_employgrade, only: [:show, :edit, :update, :destroy]
   before_action :set_sorted_grade, only: [:index, :employgrade_list]
   # GET /employgrades
@@ -73,6 +75,19 @@ class Staff::EmploygradesController < ApplicationController
   end
   
   def employgrade_list
+    if current_user.college.code=='amsas'
+      @employgrades=@egrades
+    else
+      @employgrades=@employgrades
+    end
+    respond_to do |format|
+      format.pdf do
+        pdf = Employgrade_listPdf.new(@employgrades, view_context, current_user.college)
+        send_data pdf.render, filename: "employgrade_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
   end
   
   private
