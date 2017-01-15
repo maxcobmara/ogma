@@ -20,7 +20,10 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  
+  errors:
+    messages:
+      not_saved: "There were problems with the following fields:"
+
   activerecord:
     models:
       staff: Staff
@@ -379,7 +382,7 @@ en:
       postinfo:
         details: Details
         staffgrade_id: Grade
- 
+
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -422,6 +425,12 @@ en:
           stationery: Office Supplies
           stationery_add: Office Supplies Additions
           statonery_use: Office Supplies Deductions
+
+          user:
+            attributes:
+              email:
+                not_found: is not registered for ICMS
+
         attributes:
           travel_request:
             destination: Destination
@@ -554,8 +563,6 @@ en:
     line_no_excel: " (excel file - line no : "
     uncheck: Uncheck
     are_you_sure: "Are you sure?"
-    
-  errors:
 
   views:
     pagination:

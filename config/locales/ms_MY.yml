@@ -1,5 +1,8 @@
 ms_MY:
-  
+  errors:
+    messages:
+      not_saved: "Berikut adalah beberapa masalah:"
+
   activerecord:
     models: 
       staff: Kakitangan
@@ -402,6 +405,11 @@ ms_MY:
                 less_than_or_equal_to: mesti lebih kecil atau sama dengan 100
           travel_request: Permohonan Perjalanan
           kin: Maklumat Waris
+          
+          user:
+            attributes:
+              email:
+                not_found: tidak berdaftar dalam ICMS
          
         attributes:
           travel_request:
@@ -533,8 +541,6 @@ ms_MY:
     line_no_excel:  " (fail excel - no baris : "
     uncheck: Nyahpilih
     are_you_sure: "Anda pasti?"
-    
-  errors:
   
   views:
     pagination:

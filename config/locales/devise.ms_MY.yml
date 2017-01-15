@@ -14,6 +14,8 @@ ms_MY:
       invalid_token: 'Kesalahan pada authentication token.'
       timeout: 'Sesi anda telah tamat, silahkan sign in bagi meneruskan sesi yang baru.'
       inactive: 'Akaun anda belum diaktifkan.'
+      user:
+        not_found_in_database: 'Emel yang dimasukkan tidak berdaftar dalam ICMS.'
     sessions:
       signed_in: 'Proses log masuk berjaya.'
       signed_out: 'Proses log keluar berjaya.'
