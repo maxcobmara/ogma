@@ -283,7 +283,12 @@ ms_MY:
       instructor_appraisal:
         check_qc: Disemak Oleh
       user:
+        sign_up: Daftar
+        sign_up_now: "Daftar sekarang!"
+        new_user: "Pengguna baru?"
+        login: Log Masuk
         change_password: Ubah Kata Laluan
+        change_my_password: Ubah Kata Laluan Saya
         email: Emel
         password: Kata Laluan
         password_confirmation: Sahkan Kata Laluan
@@ -291,6 +296,18 @@ ms_MY:
         leaves_blank: "(dibiarkan kosong jika tiada perubahan diperlukan)"
         current_required: "(kata laluan semasa diperlukan untuk sahkan perubahan kata laluan)"
         details: Butiran Akaun
+        remember_me: Ingati Saya
+        forgot_your_password: "Lupa Kata Laluan Anda?"
+        reset_password: "Set Semula Kata Laluan ICMS Versi Baru : Ogma"
+        reset_password2: Set Semula Kata Laluan
+        send_reset_password: "Hantar emel mengenai langkah mengubah (set semula) Kata Laluan"
+        characters_minimum: aksara minima
+        hello: Hai
+        reset_request: "Seseorang telah meminta pautan untuk mengubah kata laluan anda. Anda boleh mengubah kata laluan menerusi pautan yang disediakan di bawah."
+        ignore_request: "Sila abaikan emel ini, jika anda tidak meminta pautan mengubah kata laluan ini."
+        password_unchanged: "Kata laluan anda tidak akan berubah selagi anda tidak mengakses pautan di atas dan mencipta kata laluan baru."
+        automated_email: "Emel ini dijana secara automatik. Jangan balas secara terus ke emel ini."
+        signatory: "Pentadbir, ICMS Versi Baru : Ogma."
       repository: 
         title: Tajuk
         category: Kategori
@@ -548,6 +565,41 @@ ms_MY:
     library_email: Email (Library Notification use)
     library_pwd: Password (Library Notification use)
 
+  home:
+    title: Selamat Datang
+    login: Log Masuk
+    sign_in: Log masuk
+    signup: Daftar
+    signup_now: Daftar sekarang
+    nologin_signup: "Tiada akaun? Klik butang 'Daftar sekarang' untuk mendaftar."
+    homepage: Ini adalah muka depan bagi
+    new_version: "ICMS Versi Baru : Ogma"
+    all_colleges: Semua Kolej
+    about_us: Tentang Kami
+    software_credits: Kredit Perisian
+    designed_by: Rekabentuk Oleh
+    software_development: Pembangunan Perisian
+    tester: Penguji
+    contact: Hubungi Kami
+    news: Berita
+  
+  dashboard:
+    email_matches: Emel log masuk anda sepadan dengan rekod berikut
+    here: sini
+    link_account: "untuk memadankan akaun - akaun ini"
+    warning: "Amaran: Akaun pengguna anda tidak sepadan dengan mana - mana rekod staf atau pelajar. Sila hubungi pentadbir sistem ICMS. Berikut adalah senarai staf bertanggungjawab:"
+    notifications: Notifikasi
+    day_calendar: Kalendar Harian
+    messages: Mesej
+    message_you_have: Anda ada
+    messag_incoming: " mesej masuk."
+    unread_messages: " mesej belum dibaca."
+    events: Acara
+    event_recent: Terkini
+    event_today: Hari Ini
+    event_upcoming: Akan Datang
+    no_events_today: Tiada acara pada hari ini
+    
   banks:
     title: Bank
     list: Senarai Bank

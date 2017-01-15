@@ -3,6 +3,6 @@
     &copy; 2003-#{Time.now.year} Yaacob Noor, Nurhashimah Hassan
   %nav
     %ul
-      %li= link_to "Contact", contact_path
+      %li= link_to (t 'home.contact'), contact_path
       %li
-        %a{:href => "http://news.railstutorial.org/"} News
+        %a{:href => "http://news.railstutorial.org/"}=t('home.news')
