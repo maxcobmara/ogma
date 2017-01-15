@@ -3,7 +3,7 @@
  .row.title
   .col-md-6
    //{:style => "background:#F99;"}
-   %h1 Welcome to
+   %h1=t('home.title')
    //TODO when database available use #college.name Kolej Sains Kesihatan Bersekutu
    %h2
     /=Page.find(1).college.name
@@ -37,7 +37,7 @@
  - unless user_signed_in?  
   .row.login
    .col-md-3.col-md-offset-3
-    %h1 Login
+    %h1=t('home.login')
     = form_for(resource, :as => resource_name, :url => session_path(resource_name), class: 'form-horizontal', role: 'form') do |f|
      .form-group
       %label.sr-only{:for => "login_email"} Email address
@@ -51,12 +51,12 @@
         = f.check_box :remember_me, :type => "checkbox"
         = f.label :remember_me
      .col-md-5
-      = f.submit "Sign-In", :class => "btn btn-primary", :type => "submit", style: "float:right; margin-top:10px; margin-right: -15px" #(t 'home.signin')
+      = f.submit (t 'home.sign_in'), :class => "btn btn-primary", :type => "submit", style: "float:right; margin-top:10px; margin-right: -15px" #(t 'home.signin')
    .col-md-2.signup
-    %h1 Signup
-    %p Don't have a login? Sign-up right now by clicking on the awesome button
+    %h1=t('home.signup')
+    %p=t('home.nologin_signup')
     %br
-    =link_to "Sign up now", new_user_registration_path
+    =link_to (t 'home.signup_now'), new_user_registration_path
     %br
 
 
@@ -64,8 +64,8 @@
 
  .row
   %h2
-   This is the home page for the
-   %a{:href => "https://github.com/maxcobmara/ogma"} New ICMS : Ogma
+   =t('home.homepage')
+   %a{:href => "https://github.com/maxcobmara/ogma"}=t('home.new_version')
 
  .row.home_bulletin
   = render 'home_bulletin'
@@ -74,7 +74,7 @@
  .row.developers
   =render 'about'
 
-= link_to 'All Colleges', root_url(:subdomain => false)
+= link_to (t 'home.all_colleges'), root_url(:subdomain => false)
 :javascript
   $(document).ready(function(){
     var yy=document.querySelectorAll("p");

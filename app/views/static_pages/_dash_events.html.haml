@@ -1,23 +1,23 @@
 .row.centre
   .panel.panel-info
     .panel-heading
-      = link_to "Events", events_path
+      = link_to (t 'dashboard.events'), events_path
     .panel-body
       %div{:role => "tabpanel"}
         / Nav tabs
         %ul.nav.nav-tabs.nav-justified{:role => "tablist"}
           %li{:role => "presentation"}
-            %a{"aria-controls" => "home", "data-toggle" => "tab", :href => "#recent", :role => "tab"} Recent
+            %a{"aria-controls" => "home", "data-toggle" => "tab", :href => "#recent", :role => "tab"}=t('dashboard.event_recent')
           %li.active{:role => "presentation"}
-            %a{"aria-controls" => "profile", "data-toggle" => "tab", :href => "#today", :role => "tab"} Today
+            %a{"aria-controls" => "profile", "data-toggle" => "tab", :href => "#today", :role => "tab"}=t('dashboard.event_today')
           %li{:role => "presentation"}
-            %a{"aria-controls" => "messages", "data-toggle" => "tab", :href => "#upcoming", :role => "tab"} Upcoming
+            %a{"aria-controls" => "messages", "data-toggle" => "tab", :href => "#upcoming", :role => "tab"}=t('dashboard.event_upcoming')
         / Tab panes
         .tab-content#event_bar
           #today.tab-pane.active{:role => "tabpanel"}
             - todays_events = Event.where("start_at <= ? AND end_at >= ?", Time.now,  Time.now).order(:end_at).reverse_order.limit(6)
             - if todays_events == []
-              %h5{style: "padding-top:25px; text-align: center;"} No Events Today
+              %h5{style: "padding-top:25px; text-align: center;"}=t('dashboard.no_events_today')
             - else
               - todays_events.each do |e|
                 %div{:class => "sidebar_event_item#{cycle("0", "1")}"}

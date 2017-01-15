@@ -1,0 +1,51 @@
+.row
+ .col-md-6.col-md-offset-2
+  .panel.panel-info
+   .panel-body
+    .row
+     .col-md-12
+      %h1=(t 'activerecord.attributes.user.reset_password')
+      
+      = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }, class: 'form-horizontal') do |f|
+       = devise_error_messages!
+
+       .form-group
+        .col-md-1.col-md-offset-1.control-label
+         = f.label :email
+        .col-md-6.col-md-offset-1
+         = f.email_field :email, autofocus: true, class: 'form-control'
+         %br
+
+       .col-md-12.col-md-offset-1
+        = f.submit (t 'activerecord.attributes.user.send_reset_password') , class: "btn btn-primary"
+    
+    .row
+     .col-md-3
+      %br
+      = render "devise/shared/links"
+      
+      
+///
+/ .row
+/  .col-md-6.col-md-offset-1
+/   %h1=(t 'activerecord.attributes.user.reset_password')
+/ 
+/   = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }, class: 'form-horizontal') do |f|
+/    = devise_error_messages!
+/ 
+/    .form-group
+/     .col-md-1.col-md-offset-1.control-label
+/      = f.label :email
+/     .col-md-6.col-md-offset-1
+/      = f.email_field :email, autofocus: true, class: 'form-control'
+/      %br
+/ 
+/    .col-md-12.col-md-offset-1
+/     = f.submit (t 'activerecord.attributes.user.send_reset_password') , class: "btn btn-primary"
+/ 
+/ %br
+/ .row
+/  .col-md-3.col-md-offset-1
+/   = render "devise/shared/links"
+
+
