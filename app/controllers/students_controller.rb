@@ -8,8 +8,12 @@ class StudentsController < ApplicationController
   # GET /students.xml
 
   def index
-    #scope - student of college - based on current_user.college_id?
-    @search = Student.where(college_id: current_user.college_id).search(params[:q])
+    current_roles=current_user.roles.pluck(:authname)
+    if current_roles.include?('developer')
+      @search = Student.where(college_id: current_user.college_id).search(params[:q])
+    else
+      @search = Student.where(college_id: current_user.college_id).where('name not ILIKE(?)', "ICMS%").search(params[:q])
+    end
     if current_user.college.code=='amsas'
       @students_all = @search.result.order(intake_id: :desc, group_id: :asc)
     else
