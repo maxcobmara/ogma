@@ -34,9 +34,9 @@
       
   .form-group
     .col-sm-2.control-label
-      =f.label t 'student.students.end_training', for: :sbirthdt
+      =f.label t 'student.students.end_training', for: :end_training
     .col-md-3
-      = f.text_field :end_training, class: 'form-control date_picker_reverse', 'data-behaviour' => 'datepicker_today', value: @student.try(:end_training).try(:strftime, '%d-%m-%Y')
+      = f.text_field :end_training, class: 'form-control date_picker_reverse mandatory', 'data-behaviour' => 'datepicker_today', value: @student.try(:end_training).try(:strftime, '%d-%m-%Y')
   
   .form-group
     .col-sm-2.control-label

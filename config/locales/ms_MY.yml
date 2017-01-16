@@ -89,6 +89,7 @@ ms_MY:
         birthplace: Tempat Lahir
         religion: Agama
         intake_id: Kumpulan (Sesi Pengambilan)
+        end_training: Tarikh tamat pengajian
       location:
         combo_code: Kod Lokasi
         damages: Kerosakan di Lokasi
