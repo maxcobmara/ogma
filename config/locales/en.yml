@@ -107,6 +107,7 @@ en:
         birthplace: Place Of Birth
         religion: Religion
         intake_id: Group (Intake)
+        end_training: End of training date
       location:
         combo_code: Location Code
         damages: Location Damages

@@ -2,7 +2,7 @@ class Student < ActiveRecord::Base
   include StudentsHelper
   
   before_save  :titleize_name, :amsas_intake_update_course, :remove_group_id
-  validates_presence_of     :icno, :name, :sstatus, :stelno,  :gender, :sbirthdt, :mrtlstatuscd, :intake_id#, :semail   #:intake
+  validates_presence_of     :icno, :name, :sstatus, :stelno,  :gender, :sbirthdt, :mrtlstatuscd, :intake_id, :end_training #, :semail   #:intake
   validates_presence_of :birthplace, :religion, :if => :college_is_amsas?
   validates_presence_of :ssponsor, :course_id, :if => :college_is_not_amsas?
   validates_numericality_of :icno, :stelno
@@ -32,7 +32,7 @@ class Student < ActiveRecord::Base
   has_many  :student_discipline_cases,         :class_name => 'Sdicipline',:foreign_key => 'student_id'      #Link to Model Sdicipline
   has_many  :studentevaluate, :class_name => 'Courseevaluation', :foreign_key => 'student_id'#Link to Model CourseEvaluation
   has_many  :student_residences,         :class_name => 'Residence', :foreign_key => 'student_id'      #Link to Model residence
-  has_many  :tenants
+  has_many  :tenants, :dependent => :destroy
 
   has_many  :librarytransactions                                                            #Link to LibraryTransactions
   #has_many :studentattendances
