@@ -41,6 +41,7 @@
       #changing_panel.panel{:class => @panel}
         - if @selected_staff
           - borrowertype='1'
+          - test_data=@selected_staff.id
           .panel-heading
             = t( 'activerecord.models.staff')
             &nbsp; : &nbsp;
@@ -66,6 +67,7 @@
             = render 'book_list'          
         - if @selected_student
           - borrowertype='2'
+          - test_data=@selected_student.id
           .panel-heading
             = t( 'activerecord.models.student')
             &nbsp; : &nbsp;
@@ -101,7 +103,7 @@
       .button-toolbar.pull-right
         %span#onload_links
           - if @book_counter < @booklimit
-            = link_to content_tag(:i, "", class: "fa fa-bookmark"), new_library_librarytransaction_path, {id: "new_link", :persontype => borrowertype, remote: true, class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: (t 'library.transaction.add_book')}
+            = link_to content_tag(:i, "", class: "fa fa-bookmark"), new_library_librarytransaction_path, {id: "new_link", :persontype => borrowertype, :loanperson => test_data , remote: true, class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: (t 'library.transaction.add_book')}
           -else
             = link_to content_tag(:i, "", class: "fa fa-bookmark"), '#', {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: (t 'library.transaction.hit_limit'), disabled: "disabled"}
         %span#onchange_links
