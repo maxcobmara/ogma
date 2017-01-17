@@ -26,12 +26,18 @@ class Library::LibrarytransactionsController < ApplicationController
     @checked_out = Librarytransaction.where("returneddate IS ?", nil).pluck(:accession_id)
 
     @librarytransaction = Librarytransaction.new
-    if @@selected_staff || params[:persontype]=='1'
+    if @@selected_staff #|| params[:persontype]=='1'
       @librarytransaction.ru_staff = true
       @librarytransaction.staff_id = @@selected_staff.id
-    elsif @@selected_student || params[:persontype]=='2'
+    elsif @@selected_student #|| params[:persontype]=='2'
       @librarytransaction.ru_staff = false
       @librarytransaction.student_id = @@selected_student.id
+    elsif params[:persontype]=='1'
+      @librarytransaction.ru_staff = true
+      @librarytransaction.staff_id =params[:loanperson]
+    elsif params[:persontype]=='2'
+      @librarytransaction.ru_staff = false
+      @librarytransaction.student_id =params[:loanperson]
     end
 
     #@librarytransaction.accession_id = 1
