@@ -51,18 +51,20 @@
   // Part A : On load - Edit (saved items)
   //http://stackoverflow.com/questions/27002434/jquery-set-optgroup-selected-value?rq=1
   //----------------------------------------------------------------------------------------------------------------------------------------
-  var selected_intake_text=$("#student_intake_id option:selected").text();
-  var selected_group_id=$("#groupid").val();
-
-  //will set selected 'option' - of selected 'optgroup[label]'
-  var optgroup=$("#student_group_id optgroup[label='"+selected_intake_text+"']");
-  var option = optgroup.find("option[value='"+0+"']");
-  option.attr('selected', true);
-  
-  //shall limit display of above selected 'option' in it's 'optgroup[label]' only
-  $("#student_group_id").children("optgroup").hide();
-  $("#student_group_id").children("optgroup[label='"+selected_intake_text+"']").show();
-
+  $("#student_intake_id").each(function(){
+    var selected_intake_text=$("#student_intake_id option:selected").text();
+    var selected_group_id=$("#groupid").val();
+    
+    /*will set selected 'option' - of selected 'optgroup[label]'*/
+    var optgroup=$("#student_group_id optgroup[label='"+selected_intake_text+"']");
+    var option = optgroup.find("option[value='"+selected_group_id+"']");
+    option.attr('selected', true);
+    
+    /*shall limit display of above selected 'option' in it's 'optgroup[label]' only*/
+    $("#student_group_id").children("optgroup").hide();
+    $("#student_group_id").children("optgroup[label='"+selected_intake_text+"']").show();
+  });
+ 
   // Part B : When Intake_id field changes
   //-----------------------------------------------------------
   $("#student_intake_id").change(function(){

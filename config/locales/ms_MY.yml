@@ -2619,7 +2619,7 @@ ms_MY:
       upload: Muat Naik Gambar
       group_id: Kumpulan
       intake_id: Sesi Pengambilan
-      end_training: Tarikh Tamat Pengajian
+      end_training: Tarikh Tamat Belajar
       level_id: Tahap
       qname: Kelayakan
       institute: Institusi
@@ -2679,10 +2679,12 @@ ms_MY:
       course_id_invalid: " rekod dengan data 'course_id' tidak sah "
       intake_invalid: " rekod dengan data 'Sesi Pengambilan tidak sah "
       college_invalid: " rekod dengan data 'college_id' tidak sah "
+      end_training_invalid: " rekod dengan data 'Tarikh Tamat Belajar' tidak sah"
       group_not_exist: "Tiada rekod"
       select_intake: Sila pilih Sesi pengambilan
       field: Medan
       description: Deskripsi
+      column: Lajur Excel
       
       icno_must_unique2: "No Mykad mestilah UNIK dalam format '999999999999'. Sila gunakan format sel 'Number - General'"
       name_must_not_blank2: "Medan ini tidak boleh dikosongkan"
@@ -2694,7 +2696,7 @@ ms_MY:
       ssponsor_must_use_amsas: "Gunakan 'SPA' untuk Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Swasta dan 'FaMa' untuk sendiri."
       rank_id_accordingly2: "Gunakan No untuk 'Pangkat' berdasarkan senarai berikut :"
       religion_accordingly: "Gunakan No untuk 'Agama' berdasarkan senarai berikut :"
-      intake_id_accordingly2: "Gunakan No untuk 'Sesi Pengambilan' berdasarkan senarai berikut :"
+      intake_id_accordingly2: "Gunakan No untuk 'Sesi Pengambilan' (mesti diisi) dan 'Kumpulan' (jika ada)  berdasarkan senarai berikut :"
       race2_accordingly2: "Gunakan No untuk 'Bangsa / Keturunan' berdasarkan senarai berikut :"
       birthplace_accordingly2: "Gunakan No untuk 'Tempat Lahir' berdasarkan senarai berikut :"
       religion_accordingly2: "Gunakan No untuk 'Agama' berdasarkan senarai berikut :"

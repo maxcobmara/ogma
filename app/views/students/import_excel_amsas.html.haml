@@ -35,7 +35,7 @@
         - if is_developer?
           %th No
           %th=t('student.students.field')
-        %th No
+        %th=t('student.students.column')
         %th Item
         %th=t('student.students.description')
     %tbody
@@ -45,7 +45,7 @@
           %th{style: 'background-color: #DFE5ED;'}
             icno
             %span{style: 'color: red'}*
-        %th 1
+        %th A
         %th{style: 'background-color: yellow;'}
           No. MyKad
           %span{style: 'color: red'}*
@@ -56,7 +56,7 @@
           %th{style: 'background-color: #DFE5ED;'}
             name
             %span{style: 'color: red'}*
-        %th 2
+        %th B
         %th{style: 'background-color: yellow;'}
           Nama Pelatih
           %span{style: 'color: red'}*
@@ -65,7 +65,7 @@
         - if is_developer?
           %th 3C
           %th{style: 'background-color: #DFE5ED;'} matrixno
-        %th 3
+        %th C
         %th{style: 'background-color: yellow;'} No. APMM (No. Body)
         %td=t('student.students.bodyno')
       %tr
@@ -74,7 +74,7 @@
           %th{style: 'background-color: #DFE5ED;'} 
             stelno
             %span{style: 'color: red'}*
-        %th 4
+        %th D
         %th{style: 'background-color: yellow;'}
           No. Tel Bimbit
           %span{style: 'color: red'}*
@@ -85,7 +85,7 @@
           %th{style: 'background-color: #DFE5ED;'} 
             sbirthdt
             %span{style: 'color: red'}*
-        %th 5
+        %th E
         %th{style: 'background-color: yellow;'}
           Tarikh Lahir
           %span{style: 'color: red'}*
@@ -94,56 +94,60 @@
         - if is_developer?
           %th 3F
           %th{style: 'background-color: #DFE5ED;'} semail
-        %th 6
+        %th F
         %th{style: 'background-color: yellow;'}Emel Pelatih
         %td=t('student.students.semail')
       %tr
         - if is_developer?
           %th 3G
           %th{style: 'background-color: #DFE5ED;'} regdate
-        %th 7
+        %th G
         %th{style: 'background-color: yellow;'}Tarikh Daftar
         %td=t('student.students.date_format')
       %tr
         - if is_developer?
           %th 3H
           %th{style: 'background-color: #DFE5ED;'} offer_letter_serial
-        %th 8
+        %th H
         %th{style: 'background-color: yellow;'}No. Surat Tawaran
         %td=t('student.students.offer_letter_serial')
       %tr
         - if is_developer?
           %th 3I
-          %th{style: 'background-color: #DFE5ED;'} end_training
-        %th 9
-        %th{style: 'background-color: yellow;'}Tarikh Tamat Belajar
+          %th{style: 'background-color: #DFE5ED;'} 
+            end_training
+            %span{style: 'color: red'}*
+        %th I
+        %th{style: 'background-color: yellow;'}
+          Tarikh Tamat Belajar
+          %span{style: 'color: red'}*
         %td=t('student.students.date_format')
       %tr
         - if is_developer?
           %th 3J
           %th{style: 'background-color: #DFE5ED;'} address
-        %th 10
+        %th J
         %th{style: 'background-color: yellow;'}Alamat Rumah
         %td=t('student.students.address')
       %tr
         - if is_developer?
           %th 3K
           %th{style: 'background-color: #DFE5ED;'} address_posbasik
-        %th 11
+        %th K
         %th{style: 'background-color: yellow;'}Alamat Bertugas
         %td=t('student.students.address_posbasik')
       %tr
         - if is_developer?
           %th 3L
           %th{style: 'background-color: #DFE5ED;'} department
-        %th 12
+        %th L
         %th{style: 'background-color: yellow;'}Unit / Bahagian / Cawangan
         %td=t('student.students.department')
       %tr
         - if is_developer?
           %th 3M
           %th{style: 'background-color: #DFE5ED;'} rank_id
-        %th 13
+        %th M
         %th{style: 'background-color: yellow;'}Pangkat
         %td
           =t('student.students.rank_id_accordingly2')
@@ -154,7 +158,7 @@
         - if is_developer?
           %th 3N
           %th{style: 'background-color: #DFE5ED;'} race2
-        %th 14
+        %th N
         %th{style: 'background-color: yellow;'}Bangsa / Keturunan
         %td
           =t('student.students.race2_accordingly2')
@@ -167,7 +171,7 @@
           %th{style: 'background-color: #DFE5ED;'}
             mrtlstatuscd
             %span{style: 'color: red'}*
-        %th 15
+        %th O
         %th{style: 'background-color: yellow;'}
           Status Perkahwinan
           %span{style: 'color: red'}*
@@ -179,7 +183,7 @@
           %th{style: 'background-color: #DFE5ED;'} 
             gender
             %span{style: 'color: red'}*
-        %th 16
+        %th P
         %th{style: 'background-color: yellow;'}
           Jantina
           %span{style: 'color: red'}*
@@ -190,7 +194,7 @@
           %th{style: 'background-color: #DFE5ED;'} 
             birthplace
             %span{style: 'color: red'}*
-        %th 14
+        %th Q
         %th{style: 'background-color: yellow;'}
           Tempat Lahir
           %span{style: 'color: red'}*
@@ -203,7 +207,7 @@
         - if is_developer?
           %th 3R
           %th{style: 'background-color: #DFE5ED;'} bloodtype
-        %th 15
+        %th R
         %th{style: 'background-color: yellow;'}
           Kumpulan Darah
         %td
@@ -218,7 +222,7 @@
           %th{style: 'background-color: #DFE5ED;'} 
             religion
             %span{style: 'color: red'}*
-        %th 16
+        %th S
         %th{style: 'background-color: yellow;'}
           Agama
           %span{style: 'color: red'}*
@@ -229,14 +233,18 @@
               %li= k.to_s+" - "+v
       %tr
         - if is_developer?
-          %th 3T
+          %th 3T, 3U
           %th{style: 'background-color: #DFE5ED;'} 
             intake_id
             %span{style: 'color: red'}*
-        %th 17
+            %br
+            group_id
+        %th T, U
         %th{style: 'background-color: yellow;'}
           Sesi Pengambilan
           %span{style: 'color: red'}*
+          %br
+          =t('student.students.group_id')
         %td
           =t('student.students.intake_id_accordingly2')
           %ul
@@ -247,33 +255,39 @@
             - intake_list.group_by{|x|x.monthyear_intake}.each do |monthyear_int, intakes|
               - for intake in intakes.sort_by{|y|y.id}.reverse
                 %li= intake.id.to_s+" - "+intake.siri_programmelist
+                - if intake.description.to_i > 0
+                  %u=t('student.students.group_id')+": "
+                  %br
+                  - intake.division.each do |k,v|
+                    =k+" - "+v[:name]
+                    %br
       %tr
         - if is_developer?
-          %th 3U
+          %th 3V
           %th{style: 'background-color: #DFE5ED;'} 
             ssponsor
             %span{style: 'color: red'}*
-        %th 16
+        %th V
         %th{style: 'background-color: yellow;'}
           Penaja
           %span{style: 'color: red'}*
         %td=t('student.students.ssponsor_must_use_amsas')
       %tr
         - if is_developer?
-          %th 3V
+          %th 3W
           %th{style: 'background-color: #DFE5ED;'} 
             sstatus
             %span{style: 'color: red'}*
-        %th 17
+        %th W
         %th{style: 'background-color: yellow;'}
           Status
           %span{style: 'color: red'}*
         %td=t('student.students.sstatus_must_use2')
       %tr
         - if is_developer?
-          %th 3W
+          %th 3X
           %th{style: 'background-color: #DFE5ED;'} sstatus_remark
-        %th 18
+        %th X
         %th{style: 'background-color: yellow;'}
           Catatan
         %td=t('student.students.remark')
