@@ -64,7 +64,7 @@
 
 %ul#header_tree
   %li
-    %span.combo_code= (t 'training.programme.combo_code')
+    %span.combo_code=current_user.college.code=='amsas' ? (t 'training.programme.combo_code_amsas') : (t 'training.programme.combo_code')
     %span.credits= (t 'training.programme.credits')
     %span.status=  (t 'training.programme.status')
     %span.duration= (t 'training.programme.duration')
