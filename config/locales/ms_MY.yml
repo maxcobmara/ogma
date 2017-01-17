@@ -3935,6 +3935,7 @@ ms_MY:
       new_programme: Program Baru
       edit: Sunting Sukatan Kurikulum
       combo_code: "Kod  -  Nama Program / Semester / Subjek / Topik / Subtopik"
+      combo_code_amsas: "Kod  -  Nama Program / Modul / Subjek / Topik / Subtopik"
       code: Kod
       code2: Kod Kombo
       name: Nama
@@ -3959,6 +3960,7 @@ ms_MY:
       tutorial: Tutorial
       lecture: Kuliah
       semester: Semester
+      module: Modul
       subject: Subjek
       commonsubject: Subjek Asas
       topic: Topik

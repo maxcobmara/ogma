@@ -4019,6 +4019,7 @@ en:
       new_programme: New Programme
       edit: Edit Curriculum Item
       combo_code: "Code  -  Programme / Semester / Subject / Topic / Subtopic Name"
+      combo_code_amsas: "Code  -  Programme / Module / Subject / Topic / Subtopic Name"
       code: Code
       code2: Combo Code
       name: Name
@@ -4043,6 +4044,7 @@ en:
       tutorial: Tutorial
       lecture: Lecture
       semester: Semester
+      module: Module
       subject: Subject
       commonsubject: Common Subject
       topic: Topic

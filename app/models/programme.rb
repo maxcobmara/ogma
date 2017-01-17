@@ -556,6 +556,7 @@ class Programme < ActiveRecord::Base
   #amsas
   COURSE_TYPES_SUB2 = [
       # Displayed	stored in db
+       [I18n.t('training.programme.module'),'Module'],
        [I18n.t('training.programme.subject'),'Subject'],
        [I18n.t('training.programme.topic'),'Topic'],
        [I18n.t('training.programme.subtopic'), 'Subtopic']
