@@ -71,7 +71,7 @@ class Intake < ActiveRecord::Base
   #usage - new multiple (exammarks & grades)
   def intake_list
     if college.code=='amsas'
-      ["Siri #{siri_programmelist}"]
+      ["#{siri_programmelist}"]
     else
       ["#{monthyear_intake.strftime('%b %Y')}", monthyear_intake]
     end
