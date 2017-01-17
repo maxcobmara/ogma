@@ -2792,10 +2792,12 @@ en:
       course_id_invalid: "record(s) with invalid 'course_id' "
       intake_invalid: "record(s) with invalid 'Sesi Pengambilan' "
       college_invalid: "record(s) with invalid 'college_id' "
+      end_training_invalid: "record(s) with invalid 'Tarikh Tamat Belajar' "
       group_not_exist: No record
       select_intake: Please select Intake first
       field: Field
       description: Description
+      column: Excel Column
       
       icno_must_unique2: "Mykad No must unique in '999999999999' format. Please use cell format: 'Number - General'"
       name_must_not_blank2: "Field cannot be blank."
@@ -2807,7 +2809,7 @@ en:
       ssponsor_must_use_amsas: "Use 'SPA' for Suruhanjaya Perkhidmatan Awam, 'swasta' for Private and 'FaMa' for Own"
       rank_id_accordingly2: "Use No for 'Pangkat' according to following list :"
       religion_accordingly: "Use No for 'Agama' according to following list :"
-      intake_id_accordingly2: "Use No for 'Sesi Pengambilan' according to following list :"
+      intake_id_accordingly2: "Use No for 'Sesi Pengambilan' (compulsory) and 'Kumpulan' (if available) according to following list :"
       race2_accordingly2: "Use No for 'Bangsa / Keturunan' according to following list :"
       birthplace_accordingly2: "Use No for 'Tempat Lahir' according to following list :"
       religion_accordingly2: "Use No for 'Agama' according to following list :"

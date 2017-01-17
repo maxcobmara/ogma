@@ -21,3 +21,6 @@
 
     %dt= t 'student.students.remarks' , :default => model_class.human_attribute_name(:remarks) + ":"
     %dd= @student.course_remarks
+    
+    %dt=t 'student.students.end_training'
+    %dd=@student.end_training.try(:strftime, '%d-%m-%Y')

@@ -298,6 +298,7 @@ module StudentsHelper
     course_id_not_valid=[]
     college_id_not_valid=[]
     sbirthdt_not_valid=[]
+    end_training_not_valid=[]
     intake_not_valid=[]
     marital_not_valid=[]
     #race_not_valid=[] - not compulsory
@@ -539,6 +540,24 @@ module StudentsHelper
         sbirthdt_not_valid << i
       end
       
+      ###
+      end_training_e=row["end_training"]
+      unless end_training_e.nil? || end_training_e.blank? || end_training_e==""
+        if end_training_e.is_a? Date
+        else
+           if end_training_e.size==10
+             end_training_e=end_training_e.to_date
+           else
+             end_training_e=nil
+             end_training_not_valid << i
+           end
+        end
+      else
+        end_training_e=nil
+        end_training_not_valid << i
+      end
+      ###
+      
 #       intake_e=row["intake"]
 #       unless intake_e.nil? || intake_e.blank? || intake_e==""
 #         if intake_e.is_a? Date
@@ -563,12 +582,32 @@ module StudentsHelper
 	  studentintake=Intake.find(intake_e)
 	  college_id_e=studentintake.college_id
 	  course_id_e=studentintake.programme_id
+	  # NOTE when intake valid, group can be assigned, still check for valid group, ok - can save, invalid --> assign value of group_id as nil
+	  if studentintake.description.to_i > 0
+	    group_e=row["group_id"]
+	    group_ids=[]
+	    studentintake.division.keys.each{|x|group_ids << x.to_i}
+            if group_e.is_a? String 
+	      if LibraryHelper.all_digits(group_e) && group_ids.include?(group_e.to_i)
+		group_e=group_e.to_i
+	      else
+		group_e=nil
+	      end
+	    else
+	      if group_ids.include?(group_e)
+		group_e=group_e.to_i
+	      end
+	    end
+	  else
+	    group_e=nil
+	  end
 	  ###
         else
           #wrong data ignored - number required
           intake_e=nil
 	  college_id_e=nil
 	  course_id_e=nil
+	  group_e=nil
           intake_not_valid << i
         end
       else
@@ -578,11 +617,31 @@ module StudentsHelper
 	  studentintake=Intake.find(intake_e)
 	  college_id_e=studentintake.college_id
 	  course_id_e=studentintake.programme_id
+	  # NOTE when intake valid, group can be assigned, still check for valid group, ok - can save, invalid --> assign value of group_id as nil
+	  if studentintake.description.to_i > 0
+	    group_e=row["group_id"]
+	    group_ids=[]
+	    studentintake.division.keys.each{|x|group_ids << x.to_i}
+            if group_e.is_a? String 
+	      if LibraryHelper.all_digits(group_e) && group_ids.include?(group_e.to_i)
+		group_e=group_e.to_i
+	      else
+		group_e=nil
+	      end
+	    else
+	      if group_ids.include?(group_e)
+		group_e=group_e.to_i
+	      end
+	    end
+	  else
+	    group_e=nil
+	  end
 	  ###
         else
           intake_e=nil
 	  college_id_e=nil
 	  course_id_e=nil
+	  group_e=nil
           intake_not_valid << i
         end
       end
@@ -607,14 +666,15 @@ module StudentsHelper
 #         end
 #       end
       
-      ##validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :sbirthdt,     :gender, :mrtlstatuscd, :intake,:course_id
+      ##validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :sbirthdt,     :gender, :mrtlstatuscd, :intake,:course_id, :end_training
+      # NOTE - end_training required - for valid student selection under Student Residence bed allocation
       
       #based on above UNIQUE fields, retrieve existing record(s) Or create new
       student_recs = Student.where(icno: icno_e)
       student_rec = student_recs.first || Student.new
 
-      #columns in excel - icno, name, stelno, sstatus, ssponsor, sbirthdt, gender, mrtlstatuscd, course_id & intake MUST EXIST
-      if icno_e && name_e && stelno_e && sstatus_e && ssponsor_e && sbirthdt_e && gender_e && mrtlstatuscd_e && course_id_e && intake_e  && college_id_e ##&& race2_e
+      #columns in excel - icno, name, stelno, sstatus, ssponsor, sbirthdt, end_training, mrtlstatuscd, course_id & intake MUST EXIST
+      if icno_e && name_e && stelno_e && sstatus_e && ssponsor_e && sbirthdt_e && end_training_e && gender_e && mrtlstatuscd_e && course_id_e && intake_e  && college_id_e  ##&& race2_e
         student_rec.icno = icno_e
         student_rec.name = name_e
         student_rec.stelno = stelno_e
@@ -626,10 +686,12 @@ module StudentsHelper
         student_rec.sstatus = sstatus_e
         student_rec.ssponsor = ssponsor_e
         student_rec.sbirthdt = sbirthdt_e 
+	student_rec.end_training= end_training_e
 	student_rec.birthplace=birthplace_e #required for Amsas
 	student_rec.religion=religion_e #required for Amsas
 	student_rec.intake_id=intake_e
 	student_rec.intake=''
+	student_rec.group_id=group_e if group_e
 	student_rec.rank_id=rank_e
 	student_rec.bloodtype=bloodtype_e
         student_rec.attributes = row.to_hash.slice("matrixno","sstatus_remark", "semail", "regdate", "offer_letter_serial", "end_training", "address", "address_posbasik", "department")
@@ -638,7 +700,7 @@ module StudentsHelper
         saved_students << i #if !student_rec.id.nil?
       end
     end
-    result={:svs=>saved_students, :ine=> icno_not_exist, :stnv=>status_not_valid, :spnv=>sponsor_not_valid, :nne => name_not_exist, :stne =>stelno_not_exist, :sbnv => sbirthdt_not_valid, :gnv =>gender_not_valid, :mnv=>marital_not_valid, :cinv=>course_id_not_valid, :inv =>intake_not_valid, :colnv => college_id_not_valid} 
+    result={:svs=>saved_students, :ine=> icno_not_exist, :stnv=>status_not_valid, :spnv=>sponsor_not_valid, :nne => name_not_exist, :stne =>stelno_not_exist, :sbnv => sbirthdt_not_valid, :etnv => end_training_not_valid, :gnv =>gender_not_valid, :mnv=>marital_not_valid, :cinv=>course_id_not_valid, :inv =>intake_not_valid, :colnv => college_id_not_valid} 
   end
   
   def self.msg_import(a) 
@@ -782,6 +844,19 @@ module StudentsHelper
         lines12+=", " if no < (a[:colnv].count)-1
       end
       msg+=a[:colnv].count.to_s+(I18n.t 'student.students.college_invalid')+(I18n.t 'actions.line_no_excel')+lines12+")"
+    end 
+    ##
+    ##
+    if (a[:ine].count>0 || a[:nne].count>0 || a[:stne].count>0 || a[:stnv].count>0 || a[:spnv].count>0 ||  a[:sbnv].count>0 || a[:gnv].count>0 || a[:mnv].count>0|| a[:cinv].count>0 || a[:inv].count>0 || a[:colnv].count > 0) && a[:etnv].count > 0
+      msg+=", "
+    end
+    if a[:etnv].count>0
+      lines13=''
+      a[:etnv].each_with_index do |l,no|
+        lines13+=l.to_s
+        lines13+=", " if no < (a[:etnv].count)-1
+      end
+      msg+=a[:etnv].count.to_s+(I18n.t 'student.students.end_training_invalid')+(I18n.t 'actions.line_no_excel')+lines13+")"
     end 
     ##
     msg
