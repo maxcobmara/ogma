@@ -240,9 +240,13 @@
         %td
           =t('student.students.intake_id_accordingly2')
           %ul
-            - Intake.all.group_by{|x|x.monthyear_intake}.each do |monthyear_int, intakes|
-              - for intake in intakes.sort_by{|y|y.id}
-                %li= intake.id.to_s+" - Siri "+monthyear_int.strftime('%m/%Y')+" | "+intake.programme.programme_list
+            - if is_developer?
+              - intake_list=Intake.all
+            - else
+              - intake_list=Intake.where('name not ILIKE(?)', "%ICMS%")
+            - intake_list.group_by{|x|x.monthyear_intake}.each do |monthyear_int, intakes|
+              - for intake in intakes.sort_by{|y|y.id}.reverse
+                %li= intake.id.to_s+" - "+intake.siri_programmelist
       %tr
         - if is_developer?
           %th 3U

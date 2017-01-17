@@ -3,10 +3,11 @@ class Training::IntakesController < ApplicationController
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
     
   before_action :set_intake, only: [:show, :edit, :update, :destroy]
+  before_action :set_index_report, only: [:index, :intake_report]
+  
   # GET /intakes
   # GET /intakes.xml
   def index
-    @search = Intake.search(params[:q])
     @intakes2 = @search.result
     @intakes3 = @intakes2.page(params[:page]||1)  
     @intakes = @intakes3.order(monthyear_intake: :desc).group_by(&:monthyear_intake)
@@ -93,7 +94,6 @@ class Training::IntakesController < ApplicationController
   end
   
   def intake_report
-    @search = Intake.search(params[:q])
     @intakes2 = @search.result
     @intakes3 = @intakes2.page(params[:page]||1)  
     @intakes = @intakes3.order(monthyear_intake: :desc).group_by(&:monthyear_intake)
@@ -111,6 +111,15 @@ class Training::IntakesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_intake
       @intake = Intake.find(params[:id])
+    end
+    
+    def set_index_report
+      current_roles=current_user.roles.pluck(:authname)
+      if current_roles.include?('developer')
+        @search = Intake.where(college_id: current_user.college_id).search(params[:q])
+      else
+        @search = Intake.where(college_id: current_user.college_id).where('name not ILIKE(?)', "%ICMS%").search(params[:q])
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
