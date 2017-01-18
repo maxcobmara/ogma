@@ -57,8 +57,12 @@ class Intake < ActiveRecord::Base
   end
   
   #amsas
+  def siri_name
+    "Siri #{name}"
+  end
+  
   def siri_programmelist
-    "Siri #{name} | #{programme.programme_list}"
+    "#{siri_name} | #{programme.programme_list}"
   end
   
   def self.get_intake(student_intake, courseid)

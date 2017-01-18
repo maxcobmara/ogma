@@ -7,7 +7,7 @@
        
   .form-group
     .col-sm-2.control-label
-      = f.label :intake_id
+      = f.label :group_id
     .col-md-3
       = f.collection_select :intake_id, @intake_list, :id, :programme_group_intake,{:include_blank=> (t 'helpers.prompt.select_intake')},{class: 'selectpicker mandatory', "data-width"=>"auto"}
        

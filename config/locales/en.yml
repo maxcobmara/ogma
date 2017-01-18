@@ -2730,7 +2730,6 @@ en:
       female: Female
       upload: Upload
       group_id: Division
-      intake_id: Intake Session
       end_training: End of Training Date
       level_id: Level
       qname: Qualification
@@ -3963,8 +3962,8 @@ en:
       approval: Weekly Timetable Approval
       details: Weekly Timetable Details
       programme_id: Programme
-      intake_id: Group
-      #group_id: Group
+      intake_id: Intake Session
+      group_id: Group
       startdate: Start Date
       enddate: End Date
       semester: Semester
@@ -4467,9 +4466,8 @@ en:
         total_week: Total Week
       weeklytimetable:
         programme_id: Programme
-        intake_id: Group
-        intake_id2: Intake
-        #group_id: Group
+        intake_id: Intake Session
+        group_id: Group
         startdate: Start Date
         enddate: End Date
         semester: Semester

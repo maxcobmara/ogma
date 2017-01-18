@@ -138,7 +138,11 @@ class Training::WeeklytimetablesController < ApplicationController
       else
         lecturer_ids=User.joins(:roles).where('roles.name=?','Lecturer').pluck(:userable_id)
         @lecturer_list=Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)', 'Jurulatih', lecturer_ids)
-        @intake_list=Intake.all.order(id: :desc, register_on: :desc)
+	if roles.include?("developer")
+          @intake_list=Intake.all.order(id: :desc, register_on: :desc)
+	else
+	  @intake_list=Intake.where.not('name ILIKE (?)', "%ICMS%").order(id: :desc, register_on: :desc)
+	end
       end
     else
       if current_user.college.code=='kskbjb'
@@ -148,7 +152,7 @@ class Training::WeeklytimetablesController < ApplicationController
         group_intake_ids=Intake.where(programme_id: @programme_id, staff_id: @staffid).pluck(:id).compact
       else
 	@programme_list=Programme.roots
-        group_intake_ids=Intake.all.pluck(:id)
+        group_intake_ids=Intake.where.not('name ILIKE (?)', "%ICMS%").pluck(:id)
       end
       @intake_list=Intake.where(id: group_intake_ids)
       @lecturer_list=Staff.where(id: @staffid)

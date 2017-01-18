@@ -3879,8 +3879,8 @@ ms_MY:
       approval: Kelulusan Jadual Waktu Mingguan
       details: Butiran Jadual Waktu
       programme_id: Program
-      intake_id: Kumpulan
-      #group_id: Kumpulan
+      intake_id: Sesi Pengambilan
+      group_id: Kumpulan
       startdate: Tarikh Mula
       enddate: Tarikh Akhir
       semester: Semester
@@ -4382,9 +4382,8 @@ ms_MY:
         total_week: Bilangan Minggu
       weeklytimetable:
         programme_id: Program
-        intake_id: Kumpulan
-        intake_id2: Sesi Pengambilan
-        #group_id: Kumpulan
+        intake_id: Sesi Pengambilan
+        group_id: Kumpulan
         startdate: Tarikh Mula
         enddate: Tarikh Akhir
         semester: Semester
