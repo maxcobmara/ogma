@@ -41,7 +41,7 @@ class Weekly_timetablePdf < Prawn::Document
       text "KUMPULAN PELATIH : #{@weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)}", :align => :left, :size => 9
       table_date_semester_week
     else
-      text "KUMPULAN PELATIH : #{@weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)}", :align => :left, :size => 9
+      text "SESI PENGAMBILAN : #{@weeklytimetable.try(:schedule_intake).try(:siri_name)}", :align => :left, :size => 9
     end
     
     text "TARIKH : #{@weeklytimetable.startdate.to_date.strftime('%d-%m-%Y')} HINGGA : #{@weeklytimetable.enddate.to_date.strftime('%d-%m-%Y')}", :align =>:left, :size => 9

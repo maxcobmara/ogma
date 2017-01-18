@@ -13,11 +13,12 @@
     %dt= t 'training.weeklytimetable.enddate' , :default => model_class.human_attribute_name(:enddate) + ":"
     %dd= @weeklytimetable.enddate.try(:strftime, "%d %b %Y") 
 
-    %dt= t 'training.weeklytimetable.semester' , :default => model_class.human_attribute_name(:semester) + ":"
-    %dd= @weeklytimetable.academic_semester.semester.split("/").join(" / ")
+    - if @weeklytimetable.college.code!='amsas'
+      %dt= t 'training.weeklytimetable.semester' , :default => model_class.human_attribute_name(:semester) + ":"
+      %dd= @weeklytimetable.academic_semester.semester.split("/").join(" / ")
 
-    %dt= t 'training.weeklytimetable.week' , :default => model_class.human_attribute_name(:week) + ":"
-    %dd= @weeklytimetable.week.to_s+" / "+@weeklytimetable.academic_semester.total_week.to_s
+      %dt= t 'training.weeklytimetable.week' , :default => model_class.human_attribute_name(:week) + ":"
+      %dd= @weeklytimetable.week.to_s+" / "+@weeklytimetable.academic_semester.total_week.to_s
 
     %dt= t 'training.weeklytimetable.prepared_by' , :default => model_class.human_attribute_name(:prepared_by) + ":"
     %dd= @weeklytimetable.college.code=="amsas" ? @weeklytimetable.schedule_creator.staff_with_rank : @weeklytimetable.schedule_creator.name

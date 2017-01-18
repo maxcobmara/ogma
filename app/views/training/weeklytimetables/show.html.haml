@@ -19,7 +19,7 @@
           %dd= @weeklytimetable.try(:schedule_programme).try(:programme_list)
       
           %dt= t 'training.weeklytimetable.intake_id' , :default => model_class.human_attribute_name(:intake_id) + ":"
-          %dd= @weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)
+          %dd=@weeklytimetable.college.code=="amsas" ? @weeklytimetable.schedule_intake.siri_name : @weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)
  
           %dt= t 'training.weeklytimetable.startdate' , :default => model_class.human_attribute_name(:startdate) + ":"
           %dd= @weeklytimetable.startdate.try(:strftime, "%d/%m/%Y") 
@@ -27,12 +27,13 @@
           %dt= t 'training.weeklytimetable.enddate' , :default => model_class.human_attribute_name(:enddate) + ":"
           %dd= @weeklytimetable.enddate.try(:strftime, "%d/%m/%Y") 
 
-          %dt= t 'training.weeklytimetable.semester' , :default => model_class.human_attribute_name(:semester) + ":"
-          %dd 
-            - sem = @weeklytimetable.academic_semester.try(:semester)
-            = sem.nil? ? "" : sem.split("/").join(" / ")
-          %dt= t 'training.weeklytimetable.week' , :default => model_class.human_attribute_name(:week) + ":"
-          %dd= @weeklytimetable.week.to_s+" / "+@weeklytimetable.academic_semester.try(:total_week).to_s
+          - if @weeklytimetable.college.code!='amsas'
+            %dt= t 'training.weeklytimetable.semester' , :default => model_class.human_attribute_name(:semester) + ":"
+            %dd 
+              - sem = @weeklytimetable.academic_semester.try(:semester)
+              = sem.nil? ? "" : sem.split("/").join(" / ")
+            %dt= t 'training.weeklytimetable.week' , :default => model_class.human_attribute_name(:week) + ":"
+            %dd= @weeklytimetable.week.to_s+" / "+@weeklytimetable.academic_semester.try(:total_week).to_s
 
           %dt= t 'training.weeklytimetable.prepared_by' , :default => model_class.human_attribute_name(:prepared_by) + ":"
           %dd= @weeklytimetable.college.code=="amsas" ? @weeklytimetable.schedule_creator.staff_with_rank : @weeklytimetable.schedule_creator.name
