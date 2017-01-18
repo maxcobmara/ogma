@@ -3,6 +3,7 @@
     %td= f.text_field :schedule_programme_name_cont, size: 2,  :class => "form-control"
     - if current_user.college.code=='amsas'
       %td= f.text_field :schedule_intake_name_cont, size: 2,  :class => "form-control"
+      %td=f.text_field :timetable_monthurs_name_cont, size: 2,  :class => "form-control"
     - else
       %td= f.text_field :schedule_intake_description_cont, size: 2,  :class => "form-control"
     %td= f.text_field :startdate_gteq, size: 2,  :class => "form-control date_picker"
