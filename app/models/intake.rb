@@ -14,7 +14,7 @@ class Intake < ActiveRecord::Base
   has_one :examresult
   
   validates :programme_id, :name,:register_on, :description, presence: true # :description, => total division (amsas)
-  #validate :staff_id only for kskb
+  validate :staff_id, presence: true, :if => :college_isnot_amsas?
 
   def division=(value)
     data[:division] = value
@@ -37,6 +37,10 @@ class Intake < ActiveRecord::Base
   def self.ransackable_scopes(auth_object = nil)
     [:division_search]
   end  
+  
+  def college_isnot_amsas?
+    college_id!=2
+  end
   
   def apply_month_year_if_nil
     if monthyear_intake==nil && register_on!=nil
@@ -75,10 +79,27 @@ class Intake < ActiveRecord::Base
   #usage - new multiple (exammarks & grades)
   def intake_list
     if college.code=='amsas'
-      ["#{siri_programmelist}"]
+      ["#{siri_programmelist}", monthyear_intake]
     else
       ["#{monthyear_intake.strftime('%b %Y')}", monthyear_intake]
     end
+  end
+  
+  def intake_list_name
+    ["#{siri_programmelist}", name]
+  end
+  
+  def self.division_list
+    arr=[]
+    for intk in Intake.where.not(description: '0')
+      if intk.description.to_i > 0
+        
+        intk.division.each do |k,v|
+	  arr << ["#{intk.siri_programmelist}: #{v[:name]}", "#{intk.id}~#{k}"]
+        end
+      end
+    end
+    arr
   end
   
   private
