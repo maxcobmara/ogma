@@ -412,6 +412,6 @@ class Exam::ExamsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def exam_params
-      params.require(:exam).permit(:name, :description, :created_by, :course_id, :subject_id, :klass_id, :exam_on, :duration, :full_marks, :starttime, :endtime, :topic_id, :sequ, examtemplates_attributes: [:id, :_destroy, :questiontype, :quantity, :total_marks], :examquestion_ids => [], :seq => [])
+      params.require(:exam).permit(:name, :description, :created_by, :course_id, :subject_id, :klass_id, :exam_on, :duration, :full_marks, :starttime, :endtime, :topic_id, :sequ, :college_id, examtemplates_attributes: [:id, :_destroy, :questiontype, :quantity, :total_marks], :examquestion_ids => [], :seq => [])
     end
 end

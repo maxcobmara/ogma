@@ -12,7 +12,7 @@ class StudentsController < ApplicationController
     if current_roles.include?('developer')
       @search = Student.where(college_id: current_user.college_id).search(params[:q])
     else
-      @search = Student.where(college_id: current_user.college_id).where('name not ILIKE(?)', "ICMS%").search(params[:q])
+      @search = Student.where(college_id: current_user.college_id).where('students.name not ILIKE(?)', "ICMS%").search(params[:q])
     end
     if current_user.college.code=='amsas'
       @students_all = @search.result.order(intake_id: :desc, group_id: :asc)
