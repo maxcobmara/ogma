@@ -34,7 +34,7 @@
       - @exam_templates.each do |exam_template|
         %tr
           %td= link_to exam_template.name, exam_exam_template_path(exam_template)
-          %td=h exam_template.creator.userable.name
+          %td=h exam_template.try(:creator).try(:userable).try(:staff_with_rank)
           - DropDown::QTYPE.each do |channel|
             - var_channel = channel[1].parameterize.downcase.underscore
             - @weight = (exam_template.question_count[var_channel.to_s]['weight']rescue nil)

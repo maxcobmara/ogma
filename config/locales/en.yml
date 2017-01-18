@@ -4040,6 +4040,7 @@ en:
       remark_text7: descendant 
       remark_text8: node (other than Programme), select 'New node' in a parent node 'Show' page.
       remark_text9: "Click at 'Programme / Semester / Subject / Topic / Subtopic Name' to display 'Show' page."
+      remark_text9_amsas: "Click at 'Programme / Module / Subject / Topic / Subtopic Name' to display 'Show' page."
       method: Lecture Method
       practical: Practical
       tutorial: Tutorial
