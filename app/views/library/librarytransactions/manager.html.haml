@@ -42,8 +42,8 @@
         - if @selected_staff
           - borrowertype='1'
           - test_data=@selected_staff.id
-          =text_field_tag :person, @selected_staff.id
-          =text_field_tag :job, '1'
+          /=text_field_tag :person, @selected_staff.id
+          /=text_field_tag :job, '1'
           .panel-heading
             = t( 'activerecord.models.staff')
             &nbsp; : &nbsp;
@@ -70,8 +70,8 @@
         - if @selected_student
           - borrowertype='2'
           - test_data=@selected_student.id
-          =text_field_tag :person, @selected_student.id
-          =text_field_tag :job, '2'
+          /=text_field_tag :person, @selected_student.id
+          /=text_field_tag :job, '2'
           .panel-heading
             = t( 'activerecord.models.student')
             &nbsp; : &nbsp;
