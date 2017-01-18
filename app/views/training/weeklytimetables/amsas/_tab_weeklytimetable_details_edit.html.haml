@@ -16,12 +16,13 @@
       = f.label :enddate
     .col-md-3
       = f.text_field :enddate, class: 'date_picker_reverse form-control mandatory'
-       
-  .form-group
-    .col-sm-2.control-label
-      = f.label :week
-    .col-md-3
-      = f.text_field :week, class: 'form-control mandatory'
+      
+  / TODO - To confirm - For each Intake, should academic session been set too, as of programme? Should 'academic session' goes live in the future - this 'week' field may be required (usage -> Week : 5/25 - fifth week of the academic session)
+  /.form-group
+  /  .col-sm-2.control-label
+  /    = f.label :week
+  /  .col-md-3
+  /    = f.text_field :week, class: 'form-control mandatory'
 
   .form-group
     .col-sm-2.control-label
