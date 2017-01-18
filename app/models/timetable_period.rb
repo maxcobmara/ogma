@@ -15,7 +15,12 @@ class TimetablePeriod < ActiveRecord::Base
   end
   
   def render_no_class
-    (TimetablePeriod::NON_CLASS_REV.find_all{|disp, value| value == non_class}).map{|disp, value| disp}[0]
+    #(TimetablePeriod::NON_CLASS_REV.find_all{|disp, value| value == non_class}).map{|disp, value| disp}[0]
+    if timetable.name.include?('BK-LAT-RAN-01-01')
+      (TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class}).map{|disp, value|disp}[0]
+    else
+      (TimetablePeriod::NON_CLASS_REV.find_all{|disp, value| value == non_class}).map{|disp, value| disp}[0]
+    end
   end
   
 

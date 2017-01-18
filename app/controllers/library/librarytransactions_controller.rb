@@ -34,10 +34,10 @@ class Library::LibrarytransactionsController < ApplicationController
       @librarytransaction.student_id = @@selected_student.id
     elsif params[:persontype]=='1'
       @librarytransaction.ru_staff = true
-      @librarytransaction.staff_id =params[:loanperson]
+      @librarytransaction.staff_id =params[:loanperson].to_i
     elsif params[:persontype]=='2'
       @librarytransaction.ru_staff = false
-      @librarytransaction.student_id =params[:loanperson]
+      @librarytransaction.student_id =params[:loanperson].to_i
     end
 
     #@librarytransaction.accession_id = 1
