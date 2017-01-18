@@ -23,8 +23,8 @@ class Weeklytimetable < ActiveRecord::Base
   #2) give wt creator - ability to amend title of completed WT
   #3) IN WT - show & PDF - special for AMSAS only - if an INTAKE 'contains' divisions --> add in display of (group name) in left upmost column accordingly, (to confirm with Abby first).-betul tak takde different slot for each divisions as appeared in their WT.
   #validates_presence_of :programme_id, :intake_id, :startdate, :enddate, :week, :prepared_by, :semester, :format1, :format2
-  validates_presence_of :intake_id, :startdate, :enddate, :week, :prepared_by, :format1, :format2
-  validates_presence_of :programme_id, :semester, :if => :college_isnot_amsas?
+  validates_presence_of :intake_id, :startdate, :enddate, :prepared_by, :format1, :format2
+  validates_presence_of :programme_id, :semester, :week, :if => :college_isnot_amsas?
   validate :approved_or_rejected, :restrict_lecturer_per_class_duration
   validates_presence_of :hod_approved_on, :if => :hod_approval?
   validates_presence_of :hod_rejected_on, :reason, :if => :hod_rejection?
