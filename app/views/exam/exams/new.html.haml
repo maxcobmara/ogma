@@ -8,7 +8,7 @@
   = form_for [:exam, @exam], html: { class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
     = hidden_field_tag :redirect_location, exam_exams_path 
-    
+    = f.hidden_field :college_id, value: current_user.college_id
     = render :partial => 'new_form', :locals => {:f => f}        
 
     .col-md-offset-1

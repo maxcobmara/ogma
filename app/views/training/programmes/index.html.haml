@@ -39,7 +39,7 @@
           \/ 
           %u=t 'training.programme.remark_text4'
           =t 'training.programme.remark_text5'
-        %li=t 'training.programme.remark_text9'
+        %li=current_user.college.code=='amsas' ? (t 'training.programme.remark_text9_amsas') : (t 'training.programme.remark_text9')
         %li 
           =t 'training.programme.remark_text6'
           %i=t 'training.programme.remark_text7'

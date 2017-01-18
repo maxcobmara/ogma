@@ -3957,6 +3957,7 @@ ms_MY:
       remark_text7: waris
       remark_text8: baru (selain Program), pilih 'Nod Baru' dalam laman 'Papar' nod induk.
       remark_text9: "Klik pada 'Nama Program / Semester / Subjek / Topik / Subtopik' untuk ke laman 'Papar'."
+      remark_text9_amsas: "Klik pada 'Nama Program / Modul / Subjek / Topik / Subtopik' untuk ke laman 'Papar'."
       method: Kaedah Pengajaran
       practical: Amali
       tutorial: Tutorial
