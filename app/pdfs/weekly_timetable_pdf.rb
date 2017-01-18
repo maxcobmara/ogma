@@ -126,9 +126,9 @@ class Weekly_timetablePdf < Prawn::Document
         isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
         1.upto(@count1) do |col|
           if isbreak.include?(col)
-            all_col << 50
+            all_col << 45
           else
-            all_col << 50
+            all_col << 45
           end
         end 
       end
@@ -474,16 +474,34 @@ class Weekly_timetablePdf < Prawn::Document
     
     #size & columns count
     #[3]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
-    if @college.code=='amsas' && @count1 > 8
-       all_col = [55]
-       isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
-       1.upto(@count1) do |col|
-	 if isbreak.include?(col)
-	   all_col << 55
-	 else
-           all_col << 90
-	 end
-       end 
+    if @college.code=='amsas'
+	
+      ### NOTE - 18Jan2017 - new VS old ISO format - start
+      if @count1 > 8 && @count1 < 12
+        ##BK-LAT-RAN-01-01 (old ISO format)
+        all_col = [55]
+        isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
+        1.upto(@count1) do |col|
+          if isbreak.include?(col)
+            all_col << 55
+          else
+            all_col << 90
+          end
+        end 
+      elsif @count1 > 11
+        ##BK-LAT-URK-01-01 (new ISO format)
+        all_col = [55]
+        isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
+        1.upto(@count1) do |col|
+          if isbreak.include?(col)
+            all_col << 45
+          else
+            all_col << 45
+          end
+        end 
+      end
+      ###- 18Jan2017 - new VS old ISO format - end
+      
     else
       all_col = [55]
       0.upto(@count1) do |no|
