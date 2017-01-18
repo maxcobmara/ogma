@@ -40,7 +40,10 @@
                 /  //1)Amsas - to display non_class items accordingly
                 - if @weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
                   - non_class_value=@weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: col).first.non_class
-                  - disp=TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                  - if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT-RAN-01-01')
+                    - disp=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                  - else
+                    - disp=TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
                   /EMA - 2 (1st row) 11Jan2017
                   - if non_class_value==2
                     - dcount=1
@@ -54,7 +57,10 @@
               - elsif break_format1[col-1]==true && row!=1
                 - if @weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
                   - non_class_value=@weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: col).first.non_class
-                  - disp=TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                  - if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT-RAN-01-01')
+                    - disp=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                  - else
+                    - disp=TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
                   /EMA - 2 (3rd row) 11Jan2017
                   - if non_class_value==2
                     - if row==3
@@ -112,7 +118,10 @@
                     //3)Amsas - to display non_class items accordingly
                     - if @weeklytimetable.timetable_friday.timetable_periods.where('non_class is not null').count > 0
                       - non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(sequence: col2).first.non_class
-                      =TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                      - if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT-RAN-01-01')
+                        =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                      - else
+                        =TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
                     - else
                       = t 'training.weeklytimetable.break'
                   ////asal-15Jan2017-end-be4 rowspan & remove header weekend
@@ -128,7 +137,10 @@
                     //3)Amsas - to display non_class items accordingly
                     - if @weeklytimetable.timetable_friday.timetable_periods.where('non_class is not null').count > 0
                       - non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(sequence: col2).first.non_class
-                      =TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                      - if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT-RAN-01-01')
+                        =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                      - else
+                        =TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
                     - else
                       = t 'training.weeklytimetable.break'
                     
@@ -257,7 +269,10 @@
                         - if [2,5].include?(non_class_value)
                           KULIAH SUBUH
                         - else
-                          =TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                          - if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT-RAN-01-01')
+                            =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                          - else
+                            =TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
                       - else
                         = t 'training.weeklytimetable.break'
                   //rowspan & remove header - weekend - 15Jan2017-end
