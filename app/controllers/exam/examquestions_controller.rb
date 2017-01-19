@@ -216,7 +216,7 @@ class Exam::ExamquestionsController < ApplicationController
            if current_user.college.code=="kskbjb"
              @subjects=Programme.subject_groupbyprogramme
            elsif current_user.college.code=="amsas"
-             @subjects=Programme.subject_groupbyprogramme_amsas
+             @subjects=Programme.subject_groupbyprogramme2  #subject_groupbyprogramme_amsas
            end
         else
           if current_user.college.code=="kskbjb"
