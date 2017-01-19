@@ -129,6 +129,8 @@ class Exam < ActiveRecord::Base
   def set_full_marks
     unless id.nil? || id.blank?
       self.full_marks = total_marks
+    else
+      self.full_marks=0
     end
   end
   
@@ -181,7 +183,7 @@ class Exam < ActiveRecord::Base
         end
         @exams = Exam.where(subject_id: postbasic_subject_ids)#.where('subject_id NOT IN(?)', common_subject)
       else
-        subject_of_programme = Programme.find(search).descendants.at_depth(2).map(&:id)
+        subject_of_programme = Programme.find(search).descendants.where(course_type: 'Subject').map(&:id)
         @exams=Exam.where(subject_id: subject_of_programme).order('exam_on DESC, subject_id ASC')
         #@exams = Exam.where('subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject).order('exam_on DESC, subject_id ASC')
       end

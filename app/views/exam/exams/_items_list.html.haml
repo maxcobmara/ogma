@@ -1,5 +1,6 @@
 %br
 - if items.count > 0
+  %b=t('exam.exams.available_questions')
   .small.right=t('exam.exams.already_selected')
   %table.table.table-bordered
     %head
@@ -27,5 +28,5 @@
                 = check_box_tag "exam[examquestion_ids][]", item.id
 
 - else
-  No question available. Select other subject and / or topic, or create one. 
+  =t('exam.exams.question_not_available')
   %BR

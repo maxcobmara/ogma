@@ -18,15 +18,15 @@ class Exam_listPdf < Prawn::Document
     else
       colwidths=[30, 20, 130, 120, 120, 60, 70, 90, 70, 50]
     end
-    row_count=0
+    row_count=2                 #rows for document header / title
     col_redmark=[]
     @programme_exams.each do |programme, exams|
         exams.each_with_index do |exam, cnt|
           if exam.complete_paper==false
-              col_redmark << cnt+2+row_count 
+              col_redmark << cnt+row_count 
           end
-          row_count+=exams.count
         end
+	row_count+=exams.count
     end
     table(line_item_rows, :column_widths => colwidths, :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]

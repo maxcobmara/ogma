@@ -3470,11 +3470,13 @@ ms_MY:
       create_template: Teruskan & Pilih Template Peperiksaan
       filters: Saringan
       existing: Soalan TELAH dipilih
-      programme_subject_topic: "* Pilih Program, Subjek, Topik and klik pautan 'Display Available Questions' untuk memapar soalan yang tersedia bagi topik dipilih."
+      programme_subject_topic1: "* Pilih Program, Subjek, Topik dan klik "
+      programme_subject_topic2: " untuk memapar soalan yang tersedia bagi topik dipilih."
+      available_questions: Soalan yang tersedia
       already_selected: "X menandakan soalan telah dipilih"
       subject_topic_name: "Subjek | Topik"
       must_unique: " - bagi subjek dan tarikh yang dipilih telah wujud."
-      created_add_question_details: "Butiran Kertas Peperiksaan telah berjaya disimpan, masukkan Butiran Soalan Peperiksaan dan klik Kemaskini untuk menyimpan butiran."
+      created_add_question_details: "Butiran Kertas Peperiksaan telah berjaya disimpan, pilih Template Kertas Soalan dan masukkan Butiran Soalan Peperiksaan dan klik Kemaskini untuk menyimpan butiran."
       seq_must_select: "Urutan bagi setiap soalan mesti dipilih."
       seq_increase_by_one: "Urutan semua soalan mestilah langkau 1."
       seq_must_unique: "Urutan soalan mestilah unik."

@@ -15,10 +15,12 @@
       .form-group
         .col-sm-offset-2.col-sm-1
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_exams_path, :class => 'btn btn-default'
-        .col-sm-3
-          = f.submit t('exam.exams.create_exam'),  :name=> :submit_button, class: "btn btn-primary"
-        .col-sm-1
-          =t('or').upcase
-        .col-sm-3
-          = f.submit t('exam.exams.create_template'),  :name=> :submit_button, class: "btn btn-primary"
+        .col-sm-9
+          .col-sm-5
+            = f.submit t('exam.exams.create_exam'),  :name=> :submit_button, class: "btn btn-primary"
+          .col-sm-1
+            =t('or').upcase
+          .col-sm-5
+            = f.submit t('exam.exams.create_template'),  :name=> :submit_button, class: "btn btn-primary"
+          .col-sm-1
           
