@@ -3553,11 +3553,13 @@ en:
       create_template: Proceed  & Select Exam Template ONLY
       filters: Filters
       existing: Existing Questions
-      programme_subject_topic: "* Select Programme, Subject, Topic and click 'Display Available Questions' link to view available questions."
+      programme_subject_topic1: "* Select Programme, Subject, Topic and click "
+      programme_subject_topic2: " to view available questions."
+      available_questions: Available Questions
       already_selected: "X indicates question already selected"
       subject_topic_name: "Subject | Topic"
       must_unique: " - for selected subject and date already exist."
-      created_add_question_details: "Examination Paper Details were successfully saved, enter Question Details accordingly and click Update to save details."
+      created_add_question_details: "Examination Paper Details were successfully saved, select Exampaper Template and enter Question Details accordingly and click Update to save details."
       seq_must_select: "Sequence for each question must be selected."
       seq_increase_by_one: "Sequence for all questions must increase by 1."
       seq_must_unique: "Sequence for each question must be unique."

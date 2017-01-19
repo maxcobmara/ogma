@@ -14,7 +14,10 @@
   .row
     %b=t 'exam.exams.filters'
     .small 
-      =t('exam.exams.programme_subject_topic')
+      =t('exam.exams.programme_subject_topic1')
+      /= link_to content_tag(:i, "", :class => "fa fa-search"), "#", :class => 'btn btn-info'
+      =image_tag('search-blue-icon.png', :size => '27x25')
+      =t('exam.exams.programme_subject_topic2')
 
   .form-group
     .col-sm-2.control-label
@@ -42,13 +45,17 @@
   /= text_field_tag(:test2)
   = hidden_field_tag(:current_exam, @exam.id)
   .row
-    #question_title
+    .col-md-5.col-sm-offset-2#question_title
+    .col-md-10
+      %hr
     .col-md-10#question_list{:style=>"display: none;"}
       = render partial: 'item_grid', locals: {items: @items}
     
   /Part 2 : Display EXISTING questions
   .row 
-    %b=t('exam.exams.existing')
+    %br
+    - if @exam.examquestions.count>0  
+      %b=t('exam.exams.existing')
   .row
     .col-md-10
       - if @exam.examquestions.count>0  
