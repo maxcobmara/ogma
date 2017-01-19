@@ -148,18 +148,40 @@ class Programme < ActiveRecord::Base
     Programme.roots.order('course_type, name ASC').map(&:programme_list)
   end
   
-  #original - start
+  #Revision : 19Jan2017 - to support module display - start
   def self.subject_groupbyprogramme2
-    subjectby_programmelists=Programme.where(course_type: "Subject").group_by{|x|x.root.programme_list}
-    @groupped_subject=[]
-    subjectby_programmelists.each do |programmelist, subjects|
-      pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
-      subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]} 
-      @groupped_subject << [programmelist, pg_subjects]
+    if Programme.where(course_type: "Module").count > 0
+      level1_programmelists=Programme.at_depth(1).group_by{|x|x.root}
+      @groupped_subject=[]
+      level1_programmelists.each do |prog, levelones|
+	pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+	levelones.group_by(&:course_type).each do |coursetype, level1|
+	  if coursetype=='Module'
+	    for level in level1
+	      pg_subjects << ["MODULE: #{level.subject_list}"]
+	      Programme.find(level.id).descendants.where(course_type: 'Subject').each{|subject|pg_subjects << [" --- "+subject.subject_list, subject.id]} 
+	    end
+	  elsif coursetype=='Subject'
+	    Programme.find(prog.id).descendants.where(course_type: 'Subject').each{|subject|pg_subjects << [subject.subject_list, subject.id]} 
+	  end
+	  @groupped_subject << [prog.programme_list, pg_subjects]
+	end
+      end
+    else
+      #original - start-------------------
+      subjectby_programmelists=Programme.where(course_type: "Subject").group_by{|x|x.root.programme_list}
+      @groupped_subject=[]
+      subjectby_programmelists.each do |programmelist, subjects|
+        pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+        subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]} 
+        @groupped_subject << [programmelist, pg_subjects]
+      end
+      #@groupped_subject
+      #original - end--------------------
     end
     @groupped_subject
   end
-  #original - end
+  #Revision : 19Jan2017 - to support module display - end
   
   #use in exam controller - set shareable data - administrators
   def self.subject_groupbyprogramme
@@ -314,7 +336,14 @@ class Programme < ActiveRecord::Base
     topicby_subjectids.each do |subjectid, topics|
       sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
       topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
-      @groupped_topic << [Programme.find(subjectid).subject_list2, sb_topics]
+      #@groupped_topic << [Programme.find(subjectid).subject_list2, sb_topics]
+      #19Jan2017 - as of Programme.subject_groupbyprogramme2 - start
+      if Programme.find(subjectid).parent.course_type=='Module'
+        @groupped_topic << [" --- "+Programme.find(subjectid).subject_list, sb_topics]
+      else
+        @groupped_topic << [Programme.find(subjectid).subject_list, sb_topics]
+      end
+      #19Jan2017 - as of Programme.subject_groupbyprogramme2 - end
     end
     @groupped_topic
   end

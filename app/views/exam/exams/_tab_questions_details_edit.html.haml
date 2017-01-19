@@ -22,8 +22,8 @@
   .form-group
     .col-sm-2.control-label
       = f.label :programme_id
-    .col-md-6
-      = select_tag("course_name", options_for_select(@programme_names), :include_blank => (t 'select'),  class: 'selectpicker')
+    .col-md-5
+      = select_tag("course_name", options_for_select(@programme_names), :include_blank => (t 'select'),  class: 'form-control')
 
   .form-group
     .col-sm-2.control-label
