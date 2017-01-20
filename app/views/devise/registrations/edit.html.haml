@@ -1,0 +1,33 @@
+- model_class = User
+.page-header
+  %h1= t('activerecord.attributes.user.change_password')
+= render 'shared/flashes'
+
+.row
+  = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put,  :class => 'form-horizontal'  }) do |f| 
+    /= render 'shared/error_messages', object: f.object
+    = devise_error_messages!
+    = render :partial => 'form', :locals => {:f => f}
+
+    .row
+      .col-md-7.col-md-offset-4
+        .form-group
+          .col-md-1
+            = link_to t('back'), :back, class: "btn btn-primary"
+          .col-md-2.col-md-offset-1
+            = f.submit t('update'), class: "btn btn-primary"
+
+
+  /%h3 Cancel My Account
+  
+  /%p
+  /  Unhappy?
+  /  = button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete
+
+
+
+  
+
+
+
+ 

@@ -196,6 +196,32 @@ ms_MY:
         exam_id: Peperiksaan Akhir
       exam_template:
         name: Nama Template
+      user:
+        sign_up: Daftar
+        sign_up_now: "Daftar sekarang!"
+        new_user: "Pengguna baru?"
+        login: Log Masuk
+        change_password: Ubah Kata Laluan
+        change_my_password: Ubah Kata Laluan Saya
+        email: Emel
+        password: Kata Laluan
+        password_confirmation: Sahkan Kata Laluan
+        current_password: Kata Laluan Semasa
+        leaves_blank: "(dibiarkan kosong jika tiada perubahan diperlukan)"
+        current_required: "(kata laluan semasa diperlukan untuk sahkan perubahan kata laluan)"
+        details: Butiran Akaun
+        remember_me: Ingati Saya
+        forgot_your_password: "Lupa Kata Laluan Anda?"
+        reset_password: "Set Semula Kata Laluan ICMS Versi Baru : Ogma"
+        reset_password2: Set Semula Kata Laluan
+        send_reset_password: "Hantar emel mengenai langkah mengubah (set semula) Kata Laluan"
+        characters_minimum: aksara minima
+        hello: Hai
+        reset_request: "Seseorang telah meminta pautan untuk mengubah kata laluan anda. Anda boleh mengubah kata laluan menerusi pautan yang disediakan di bawah."
+        ignore_request: "Sila abaikan emel ini, jika anda tidak meminta pautan mengubah kata laluan ini."
+        password_unchanged: "Kata laluan anda tidak akan berubah selagi anda tidak mengakses pautan di atas dan mencipta kata laluan baru."
+        automated_email: "Emel ini dijana secara automatik. Jangan balas secara terus ke emel ini."
+        signatory: "Pentadbir, ICMS Versi Baru : Ogma."
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -234,6 +260,12 @@ ms_MY:
                 less_than_or_equal_to: mesti lebih kecil atau sama dengan 100
           travel_request: Permohonan Perjalanan
           kin: Maklumat Waris
+          user:
+            attributes:
+              email:
+                not_found: tidak berdaftar dalam ICMS
+              password_confirmation:
+                confirmation: ": data yang dimasukkan tidak sama dengan Kata Laluan"
          
         attributes:
           travel_request:

@@ -215,6 +215,32 @@ en:
         exam_id: Final Exam
       exam_template:
         name: Template Name
+      user:
+        sign_up: Sign Up
+        sign_up_now: "Sign up now!"
+        new_user: "New user?"
+        login: Login
+        change_password: Change Password
+        change_my_password: Change My Password
+        email: Email
+        password: Password
+        password_confirmation: Password Confirmation
+        current_password: Current Password
+        leaves_blank: "(leave blank if you don't want to change it)"
+        current_required: "(we need your current password to confirm your changes)"
+        details: Account Details
+        remember_me: Remember Me
+        forgot_your_password: "Forgot Your Password?"
+        reset_password: "Reset Password for New ICMS : Ogma"
+        reset_password2: Reset Password
+        send_reset_password: Send me reset password instructions
+        characters_minimum: characters minimum
+        hello: Hello
+        reset_request: "Someone has requested a link to change your password. You can do this through the link below."
+        ignore_request: "If you didn't request this, please ignore this email."
+        password_unchanged: "Your password won't change until you access the link above and create a new one."
+        automated_email: "This is an automated email. Do not reply directly to this email."
+        signatory: "Administration, New ICMS : Ogma."
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -256,6 +282,13 @@ en:
           stationery: Office Supplies
           stationery_add: Office Supplies Additions
           statonery_use: Office Supplies Deductions
+          user:
+            attributes:
+              email:
+                not_found: is not registered for ICMS
+              password_confirmation:
+                confirmation: ": value entered was different from Password"
+
         attributes:
           travel_request:
             destination: Destination
