@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   belongs_to :userable, polymorphic: true
   has_and_belongs_to_many :roles
   
-  has_many :exam_templates, :dependent => :nullify
+  has_many :exam_templates, :foreign_key => 'created_by', :dependent => :nullify
 
   belongs_to :college, foreign_key: 'college_id'
   
