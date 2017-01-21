@@ -1,23 +1,64 @@
 - provide(:title, 'Sign In')
-%h1 Sign in
-= form_for(resource, :as => resource_name, :url => session_path(resource_name), :classis => 'form-horizontal"', :role => 'form') do |f|
-  .row
-    .col-lg-6.col-lg-offset-2
-      = render 'shared/error_messages'
-      = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-        .form-group
-          %label.col-lg-2.control-label= f.label :email
-          .col-lg-10= f.text_field :email, :placeholder => "Email", :class => "form-control"
-        .form-group
-          %label.col-lg-2.control-label= f.label :password
-          .col-lg-10= f.password_field :password, :placeholder => "Password", :class => "form-control"
-        - if devise_mapping.rememberable?
-          .col-lg-offset-2.col-lg-10
-            .checkbox
-              = f.check_box :remember_me, :type => "checkbox"
-              = f.label :remember_me
-        .col-lg-offset-2.col-lg-10
-          = f.submit "Sign in", :class => "btn btn-lg btn-primary", :type => "submit"
-          %p
-            New user? #{link_to "Sign up now!", new_user_registration_path} <BR/>
-            = render "devise/shared/links"
+/ %h1=(t 'activerecord.attributes.user.login')
+/ = form_for(resource, :as => resource_name, :url => session_path(resource_name), :classis => 'form-horizontal"', :role => 'form') do |f|
+/   .row
+/     .col-lg-6.col-lg-offset-2
+/       /= render 'shared/error_messages'
+/       = render 'shared/flashes'
+/       = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+/         .form-group
+/           %label.col-lg-2.control-label= f.label :email
+/           .col-lg-10= f.text_field :email, :placeholder => "Email", autofocus: true, :class => "form-control"
+/         .form-group
+/           %label.col-lg-2.control-label= f.label :password
+/           .col-lg-10= f.password_field :password, :placeholder => "Password", autocomplete: "off", :class => "form-control"
+/         - if devise_mapping.rememberable?
+/           .col-lg-offset-2.col-lg-10
+/             .checkbox
+/               = f.check_box :remember_me, :type => "checkbox"
+/               = f.label :remember_me
+/         .col-lg-offset-2.col-lg-10
+/           = f.submit  (t 'activerecord.attributes.user.login'), :class => "btn btn-lg btn-primary", :type => "submit"
+/           %p
+/             #{ (t 'activerecord.attributes.user.new_user') } #{link_to  (t 'activerecord.attributes.user.sign_up_now') , new_user_registration_path} <BR/>
+/             = render "devise/shared/links"
+
+.row
+  .col-md-6.col-md-offset-2
+    .panel.panel-info
+      .panel-body
+        .row
+          .col-md-12
+            %h1=(t 'activerecord.attributes.user.login')
+      
+            = form_for(resource, as: resource_name, url: session_path(resource_name), html: { method: :post }, class: 'form-horizontal') do |f|
+              /= devise_error_messages!
+              = render 'shared/flashes'
+
+              .form-group
+                .col-md-2.col-md-offset-1.control-label
+                  = f.label :email
+                .col-md-7
+                  = f.email_field :email, autofocus: true, class: 'form-control'
+              
+              .form-group
+                .col-md-2.col-md-offset-1.control-label
+                  = f.label :password
+                .col-md-7
+                  = f.password_field :password, :placeholder => "Password", autocomplete: "off", :class => "form-control"
+              
+              - if devise_mapping.rememberable?
+                .form-group
+                  .col-md-2.col-md-offset-1
+                  .col-md-7
+                    .checkbox
+                      = f.check_box :remember_me, :type => "checkbox"
+                      = f.label :remember_me
+
+              .col-md-offset-3
+                .col-md-4
+                  = f.submit (t 'activerecord.attributes.user.login') , class: "btn btn-primary"
+                .col-md-8
+                  #{ (t 'activerecord.attributes.user.new_user') } #{link_to  (t 'activerecord.attributes.user.sign_up_now') , new_user_registration_path}
+              .col-md-12.col-md-offset-3
+                %br= render "devise/shared/links"

@@ -341,6 +341,7 @@ ms_MY:
   active: Aktif
   not_active: Tidak Aktif
   must_exist: mesti wujud
+  click: Klik
  
   actions:
     new: Baru
@@ -391,6 +392,42 @@ ms_MY:
     
   support:
     title: Jadual Sokongan
+
+  home:
+    title: Selamat Datang
+    login: Log Masuk
+    sign_in: Log masuk
+    signup: Daftar
+    signup_now: Daftar sekarang
+    nologin_signup: "Tiada akaun? Klik butang 'Daftar sekarang' untuk mendaftar."
+    homepage: Ini adalah muka depan bagi
+    new_version: "ICMS Versi Baru : Ogma"
+    all_colleges: Semua Kolej
+    about_us: Tentang Kami
+    software_credits: Kredit Perisian
+    designed_by: Rekabentuk Oleh
+    software_development: Pembangunan Perisian
+    tester: Penguji
+    contact: Hubungi Kami
+    news: Berita
+  
+  dashboard:
+    email_matches: Emel log masuk anda sepadan dengan rekod berikut
+    here: sini
+    link_account: "untuk memadankan akaun - akaun ini"
+    warning: "Amaran: Akaun pengguna anda tidak sepadan dengan mana - mana rekod staf atau pelajar. Sila hubungi pentadbir sistem ICMS. Berikut adalah senarai staf bertanggungjawab:"
+    notifications: Notifikasi
+    day_calendar: Kalendar Harian
+    messages: Mesej
+    message_you_have: Anda ada
+    message_incoming: " mesej masuk."
+    unread_messages: " mesej belum dibaca."
+    events: Acara
+    event_recent: Terkini
+    event_today: Hari Ini
+    event_upcoming: Akan Datang
+    no_events_today: Tiada acara pada hari ini
+    no_events_recent: Tiada acara sejak minggu lepas
     
   banks:
     title: Bank
