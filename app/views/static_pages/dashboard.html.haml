@@ -12,14 +12,14 @@
   - if current_user.userable_id.nil?
    - if existing.count > 0
     .alert.alert-info
-     Your login email matches the following account :
+     =(t 'dashboard.email_matches')+" : "
      %strong #{existing.first.name}
-     Click
+     =t('click')
      = link_to 'here', link_user_path(current_user)
-     to link these accounts
+     =t('dashboard.link_account')
    - else
     .alert.alert-info
-     Warning: Your user account is currently not associated with any staff or student record. Please contact your ICMS system administrator. Below are a list of people authorised to do so:
+     =t('dashboard.warning')
      %ul
       %li Pn Maslinda binti Wahab (Unit : Teknologi Maklumat)
       %li Pn Nor Hairun Nisa binti Mohamad Ali (Unit : Teknologi Maklumat)
@@ -28,7 +28,7 @@
  .col-md-3
   .row
    .panel.panel-danger
-    .panel-heading Notifications
+    .panel-heading=(t 'dashboard.notifications')
     .panel-body.notifications{style: "padding:0;"}
      - if is_staff?
       = render 'staff_notifications'
@@ -40,7 +40,7 @@
 
  .col-md-6
   .panel.panel-primary
-   .panel-heading Day Calendar
+   .panel-heading=t('dashboard.day_calendar')
    .panel-body{:style => "min-height:150px;"}
     Calendar Goes Here <BR>
     - @bulletins.each do |bulletin|
@@ -50,8 +50,27 @@
  .col-md-3
   .row
    .panel.panel-warning
-    .panel-heading Messages
+    .panel-heading=t('dashboard.messages')
     .panel-body
-     We'll put messages here
+     - if mailbox.inbox.count == 0
+      /We'll put messages here
+      =(t 'dashboard.message_you_have')
+      %b 0 
+      =t('dashboard.message_incoming')
+     - else
+      =(t 'dashboard.message_you_have')
+      %b=unread_messages_count.to_s+' / '+mailbox.inbox.count.to_s
+      =t('dashboard.unread_messages')
+      /mailbox refers to Mailbox::Conversation
+      .small
+       %ul
+        - count=0
+        - for conversation in mailbox.inbox.order(created_at: :desc)
+         - count+=1
+         - if count < 6
+          %li
+           =conversation.created_at.strftime('%d %b %Y')+", "
+           %b=conversation.originator.userable.name
+           = link_to ("- "+(t 'view')), conversation_path(conversation) 
 
   = render "dash_events"

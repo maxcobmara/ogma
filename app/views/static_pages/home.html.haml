@@ -3,7 +3,7 @@
  .row.title
   .col-md-6
    //{:style => "background:#F99;"}
-   %h1 Welcome to
+   %h1=t('home.title')
    //TODO when database available use #college.name Kolej Sains Kesihatan Bersekutu
    %h2  Kolej Sains Kesihatan Bersekutu Johor Bahru
   .col-md-3
@@ -12,7 +12,7 @@
  .row.title
   .col-md-4
    %p
-    Projek pembinaan KSKBJB telah mula dirancang dalam Rancangan Malaysia keâ8 dan telah dilaksanakan dalam Rancangan Malaysia ke-9  dengan mempunyai keluasan tapak seluas 30 ekar (menggunakan sebahagian daripada lot tanah Hospital Permai). KSKBJB merangkumi Blok Pentadbiran, Pusat Sumber, Blok Akademik yang merangkumi Dewan Kuliah, Auditorium dan Makmal Keterampilan. Disamping itu juga, turut disediakan 3 Blok Asrama Pelatih, Kafeteria, Surau dan Blok Kediaman Kakitangan serta kemudahan infrastruktur untuk aktiviti riadah turut disediakan. Ini telah menjadikan kompleks ini kompleks yang serba lengkap. KSKBJB telah diserahkan secara rasmi kepada Bahagian Pengurusan Latihan, Kementerian Kesihatan Malaysia (KKM) pada 1 Jun 2010 dan proses perpindahan daripada Kolej Kejururawatan Johor Bahru dan Kolej Radiografi Johor Bahru yang berada di Hospital Sultanah Aminah telah dilaksanakan secara berperingkat dan selesai sepenuhnya pada 15 Jun 2010.
+    Projek pembinaan KSKBJB telah mula dirancang dalam Rancangan Malaysia ke-8 dan telah dilaksanakan dalam Rancangan Malaysia ke-9  dengan mempunyai keluasan tapak seluas 30 ekar (menggunakan sebahagian daripada lot tanah Hospital Permai). KSKBJB merangkumi Blok Pentadbiran, Pusat Sumber, Blok Akademik yang merangkumi Dewan Kuliah, Auditorium dan Makmal Keterampilan. Disamping itu juga, turut disediakan 3 Blok Asrama Pelatih, Kafeteria, Surau dan Blok Kediaman Kakitangan serta kemudahan infrastruktur untuk aktiviti riadah turut disediakan. Ini telah menjadikan kompleks ini kompleks yang serba lengkap. KSKBJB telah diserahkan secara rasmi kepada Bahagian Pengurusan Latihan, Kementerian Kesihatan Malaysia (KKM) pada 1 Jun 2010 dan proses perpindahan daripada Kolej Kejururawatan Johor Bahru dan Kolej Radiografi Johor Bahru yang berada di Hospital Sultanah Aminah telah dilaksanakan secara berperingkat dan selesai sepenuhnya pada 15 Jun 2010.
  .row.buttons
   .col-md-1.col-md-offset-3
    %i.fa.fa-sign-in.fa-4x
@@ -31,7 +31,7 @@
  - unless user_signed_in?  
   .row.login
    .col-md-3.col-md-offset-3
-    %h1 Login
+    %h1=t('home.login')
     = form_for(resource, :as => resource_name, :url => session_path(resource_name), class: 'form-horizontal', role: 'form') do |f|
      .form-group
       %label.sr-only{:for => "login_email"} Email address
@@ -45,12 +45,12 @@
         = f.check_box :remember_me, :type => "checkbox"
         = f.label :remember_me
      .col-md-5
-      = f.submit "Sign-In", :class => "btn btn-primary", :type => "submit", style: "float:right; margin-top:10px; margin-right: -15px" #(t 'home.signin')
+      = f.submit (t 'home.sign_in'), :class => "btn btn-primary", :type => "submit", style: "float:right; margin-top:10px; margin-right: -15px" #(t 'home.signin')
    .col-md-2.signup
-    %h1 Signup
-    %p Don't have a login? Sign-up right now by clicking on the awesome button
+    %h1=t('home.signup')
+    %p=t('home.nologin_signup')
     %br
-    =link_to "Sign up now", new_user_registration_path
+    =link_to (t 'home.signup_now'), new_user_registration_path
     %br
 
 
@@ -58,8 +58,8 @@
 
  .row
   %h2
-   This is the home page for the
-   %a{:href => "https://github.com/maxcobmara/ogma"} New ICMS : Ogma
+   =t('home.homepage')
+   %a{:href => "https://github.com/maxcobmara/ogma"}=t('home.new_version')
 
  .row.home_bulletin
   = render 'home_bulletin'

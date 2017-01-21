@@ -364,6 +364,7 @@ en:
   active: Active
   not_active: Not Active
   must_exist: must exist
+  click: Click
 
   actions:
     new: New
@@ -414,7 +415,43 @@ en:
     
   support:
     title: Support Tables
+
+  home:
+    title: Welcome to
+    login: Login
+    sign_in: "Sign-In"
+    signup: Signup
+    signup_now: Sign up now
+    nologin_signup: "Don't have a login? Sign-up right now by clicking on the awesome button"
+    homepage: This is the home page for the
+    new_version: "New ICMS : Ogma"
+    all_colleges: All Colleges
+    about_us: About Us
+    software_credits: Software Credits
+    designed_by: Designed By
+    software_development: Software Development
+    tester: Tester
+    contact: Contact
+    news: News
     
+  dashboard:
+    email_matches: Your login email matches the following account
+    here: here
+    link_account: to link these accounts
+    warning: "Warning: Your user account is currently not associated with any staff or student record. Please contact your ICMS system administrator. Below are a list of people authorised to do so:"
+    notifications: Notifications
+    day_calendar: Day Calendar
+    messages: Messages
+    message_you_have: "You have "
+    message_incoming: " incoming message."
+    unread_messages: " unread messages."
+    events: Events
+    event_recent: Recent
+    event_today: Today
+    event_upcoming: Upcoming
+    no_events_today:  No Events Today
+    no_events_recent: No events since last week
+
   banks:
     title: Banks
     list: Lists of Banks
