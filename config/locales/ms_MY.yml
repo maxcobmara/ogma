@@ -3395,7 +3395,8 @@ ms_MY:
 
     pages:
       title: Laman
-      list: Senarai Laman
+      list: Senarai Laman (Boleh Ubah)
+      new: Laman Baru
       edit: Sunting Laman
       position: Kedudukan
       navlabel: Label Navigasi
