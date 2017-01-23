@@ -3477,7 +3477,8 @@ en:
  
     pages:
       title: Pages
-      list: Pages List
+      list: Pages List (Editable)
+      new: New Page
       edit: Edit Page
       position: Position
       navlabel: Navigation Label
