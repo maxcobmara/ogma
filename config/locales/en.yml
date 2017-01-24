@@ -627,7 +627,8 @@ en:
     event_recent: Recent
     event_today: Today
     event_upcoming: Upcoming
-    no_events_today:  No Events Today
+    no_events_today:  No events today
+    no_events_recent: No events since last week
     
   banks:
     title: Banks
@@ -4213,8 +4214,9 @@ en:
       web: Web 
     
     pages:
-      title: Pages
-      list: Pages List
+      title: Pages (Editable)
+      list: Pages List (Editable)
+      new: New Page
       edit: Edit Page
       position: Position
       navlabel: Navigation Label

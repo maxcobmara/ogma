@@ -8,7 +8,7 @@
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'campus.pages.new'))), new_campus_page_path
   %ul.nav.navbar-nav.navbar-right
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), page_list_campus_pages_path(params.merge(format: 'pdf'))
 
 = render 'shared/flashes'
 
@@ -16,9 +16,10 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
+        %th{width: '10%'} ID
         %th{width: '10%'}=sort_link(@search, :position, (t 'campus.pages.position'))
-        %th{width: '30%'}=sort_link(@search, :navlabel, (t 'campus.pages.navlabel'))
-        %th{width: '30%'}=sort_link(@search, :name, (t 'campus.pages.name'))
+        %th{width: '25%'}=sort_link(@search, :navlabel, (t 'campus.pages.navlabel'))
+        %th{width: '25%'}=sort_link(@search, :name, (t 'campus.pages.name'))
         %th{width: '15%'}=(t 'campus.pages.admin')
         %th{width: '15%'}=(t 'campus.pages.redirect')
         
@@ -27,6 +28,7 @@
       - @pages.group_by{|x|x.parent}.each do |parent, pages|
         - if parent.present?
           %tr
+            %td.group2=parent.id
             %td.group2=parent.position
             %td.group2= link_to parent.navlabel, campus_page_path(parent)
             %td.group2
@@ -39,6 +41,7 @@
         - pages.each_with_index do |page, count|
           - unless @pages.pluck(:parent_id).uniq.include?(page.id)
             %tr
+              %td=page.id
               %td=page.position
               %td= link_to page.navlabel, campus_page_path(page)
               %td

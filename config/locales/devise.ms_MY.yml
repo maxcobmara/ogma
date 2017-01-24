@@ -7,7 +7,7 @@ ms_MY:
  
   devise:
     failure:
-      unauthenticated: 'Anda harus mendaftar atau sign in sebelum meneruskan .'
+      unauthenticated: 'Anda harus mendaftar atau log masuk sebelum meneruskan.'
       unconfirmed: 'Anda harus melakukan proses pengesahan sebalum meneruskan.'
       locked: 'Akaun anda terkunci.'
       invalid: 'Emel atau kata laluan yang anda masukkan salah.'

@@ -599,13 +599,14 @@ ms_MY:
     day_calendar: Kalendar Harian
     messages: Mesej
     message_you_have: Anda ada
-    messag_incoming: " mesej masuk."
+    message_incoming: " mesej masuk."
     unread_messages: " mesej belum dibaca."
     events: Acara
     event_recent: Terkini
     event_today: Hari Ini
     event_upcoming: Akan Datang
     no_events_today: Tiada acara pada hari ini
+    no_events_recent: Tiada acara sejak minggu lepas
     
   banks:
     title: Bank
@@ -4129,8 +4130,9 @@ ms_MY:
       web: Web 
 
     pages:
-      title: Laman
-      list: Senarai Laman
+      title: Laman Boleh Ubah
+      list: Senarai Laman (Boleh Ubah)
+      new: Laman Baru
       edit: Sunting Laman
       position: Kedudukan
       navlabel: Label Navigasi
