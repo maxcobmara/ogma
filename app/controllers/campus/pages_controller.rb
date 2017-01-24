@@ -1,6 +1,6 @@
 class Campus::PagesController < ApplicationController
   #filter_resource_access
-  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :index, :new, :create, :page_list, :attribute_check => false
   filter_access_to :show, :flexipage, :edit, :update, :destroy, :attribute_check => true
   before_action :set_page, only: [:show, :edit, :update, :destroy,  :flexipage]
   
@@ -54,6 +54,25 @@ class Campus::PagesController < ApplicationController
       else
         format.html { render action: 'new' }
         format.json { render json: @page.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def page_list
+    current_roles=current_user.roles.pluck(:authname)
+    @search=Page.search(params[:q])
+    if current_roles.include?('developer')
+      @search=Page.search(params[:q])
+    else
+      @search=Page.where(admin: true).search(params[:q])
+    end
+    @pages= @search.result.order(position: :asc)
+    respond_to do |format|
+      format.pdf do
+        pdf = Page_listPdf.new(@pages, view_context, current_user.college)
+        send_data pdf.render, filename: "page_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
       end
     end
   end

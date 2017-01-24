@@ -29,7 +29,7 @@ authorization do
    has_permission_on :colleges, :to => [:show, :update] do
      if_attribute :id => is {user.college_id}
    end
-   has_permission_on :campus_pages, :to => :menu
+   has_permission_on :campus_pages, :to =>[:menu, :page_list]
    has_permission_on :campus_pages, :to =>[:update, :show, :flexipage] do
      if_attribute :admin => is {true}
    end
@@ -481,7 +481,7 @@ authorization do
    has_permission_on :groups, :to => :show do
      if_attribute :id => is_in {user.members_of_msg_group}
    end
-   has_permission_on :campus_pages, :to => :flexipage
+   has_permission_on :campus_pages, :to => :flexipage                                                      # A staff can view pages (ie. library rules & regulations)
    has_permission_on :repositories, :to => [:read, :create, :download]
    has_permission_on :repositories, :to => :update do
      if_attribute :staff_id => is {user.userable.id}

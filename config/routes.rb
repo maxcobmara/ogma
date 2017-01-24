@@ -250,6 +250,9 @@ Ogma::Application.routes.draw do
       member do
         get :flexipage
       end
+      collection do
+        get :page_list
+      end
     end
     resources :bookingfacilities do
       member do

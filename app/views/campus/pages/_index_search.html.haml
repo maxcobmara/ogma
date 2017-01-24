@@ -1,5 +1,6 @@
 = search_form_for [:pages, @search], url: campus_pages_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
+    %td= f.text_field :id_eq, size: 8, :class => "form-control"
     %td= f.text_field :position_eq, size: 8,  :class => "form-control" 
     %td= f.text_field :navlabel_cont, size: 8,  :class => "form-control"
     %td= f.text_field :name_cont, size: 8,  :class => "form-control"
