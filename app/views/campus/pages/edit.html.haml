@@ -13,7 +13,7 @@
         %br
         .form-group
           .col-md-1.col-md-offset-2
-            - if permitted_to? :update, :campus_pages
+            - if permitted_to? :manage, :campus_pages
               = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), campus_page_path, :class => 'btn btn-default'
             - else
               = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), flexipage_campus_page_path(@page), :class => 'btn btn-default'

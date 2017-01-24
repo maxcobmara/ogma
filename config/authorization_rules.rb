@@ -29,10 +29,7 @@ authorization do
    has_permission_on :colleges, :to => [:show, :update] do
      if_attribute :id => is {user.college_id}
    end
-   has_permission_on :campus_pages, :to =>[:menu, :page_list]
-   has_permission_on :campus_pages, :to =>[:update, :show, :flexipage] do
-     if_attribute :admin => is {true}
-   end
+   has_permission_on :campus_pages, :to =>[:manage, :page_list, :flexible]
    has_permission_on :repositories, :to => [:manage, :download]
    has_permission_on :staff_mentors, :to => :manage
     
