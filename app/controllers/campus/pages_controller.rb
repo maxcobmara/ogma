@@ -5,13 +5,14 @@ class Campus::PagesController < ApplicationController
   before_action :set_page, only: [:show, :edit, :update, :destroy,  :flexipage]
   
   def index
-    current_roles=current_user.roles.pluck(:authname)
+#     current_roles=current_user.roles.pluck(:authname)
+#     @search=Page.search(params[:q])
+#     if current_roles.include?('developer')
+#       @search=Page.search(params[:q])
+#     else
+#       @search=Page.where(admin: true).search(params[:q])
+#     end
     @search=Page.search(params[:q])
-    if current_roles.include?('developer')
-      @search=Page.search(params[:q])
-    else
-      @search=Page.where(admin: true).search(params[:q])
-    end
     @pages= @search.result.order(position: :asc)
     #@pages= @pages.page(params[:page]||1)  # TODO - same parameter name in use  --> :page
   end
@@ -59,13 +60,14 @@ class Campus::PagesController < ApplicationController
   end
 
   def page_list
-    current_roles=current_user.roles.pluck(:authname)
+#     current_roles=current_user.roles.pluck(:authname)
+#     @search=Page.search(params[:q])
+#     if current_roles.include?('developer')
+#       @search=Page.search(params[:q])
+#     else
+#       @search=Page.where(admin: true).search(params[:q])
+#     end
     @search=Page.search(params[:q])
-    if current_roles.include?('developer')
-      @search=Page.search(params[:q])
-    else
-      @search=Page.where(admin: true).search(params[:q])
-    end
     @pages= @search.result.order(position: :asc)
     respond_to do |format|
       format.pdf do
