@@ -1,5 +1,6 @@
 - if @info.new_record? == true
-  - url = new_staff_info_path
+  - url = staff_infos_path
+  /new_staff_info_path
 - else
   - url = staff_info_path(@info)
 
@@ -73,11 +74,6 @@
                 = f.label t 'staff.thumb', for: :thumb_id
               .col-md-1
                 = f.text_field :thumb_id, class: 'form-control mandatory'
-
-          .form-group
-            .col-sm-offset-2.col-sm-2
-              = f.submit t('update'), class: "btn btn-primary"
-
 
       //photo upload pane
       #personal.tab-pane
@@ -244,10 +240,6 @@
             /= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :vehicles
             = link_to_add_fields t('addmore'), f, :mycpds, "",  t('addmore')
 
-          .form-group
-            .col-sm-offset-2.col-sm-2
-              = f.submit t('update', class: "btn btn-primary")
-
       //photo upload pane
       #photo_upload.tab-pane
         .col-md-offset-2
@@ -261,10 +253,6 @@
                 = link_to (t 'document.download'), f.object.photo.url
 
               = f.file_field :photo
-
-          .form-group
-            .col-sm-offset-2.col-sm-2
-              = f.submit t('update', class: "btn btn-primary")
 
       //employment pane
       #employment.tab-pane
@@ -293,7 +281,7 @@
             .col-sm-2.control-label
               = f.label t 'staff.appointdt', for: :appointdt
             .col-md-2
-              = f.text_field :appointdt, class: 'form-control date_picker'
+              = f.text_field :appointdt, class: 'form-control date_picker mandatory'
 
           .form-group
             .col-sm-2.control-label
@@ -410,10 +398,6 @@
             .col-md-2
               = f.select :uniformstat, DropDown::UNIFORM, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
 
-          .form-group
-            .col-sm-offset-2.col-sm-2
-              = f.submit t('update', class: "btn btn-primary")
-
       #qualifications.tab-pane
         .row
           .col-sm-offset-2.col-sm-2= t 'staff.level_id'
@@ -425,7 +409,6 @@
           .col-sm-offset-2.col-sm-2
             /= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :qualifications
             = link_to_add_fields t('addmore'), f, :qualifications, "",  t('addmore')
-            = f.submit t('update'), class: "btn btn-primary"
 
       #finance.tab-pane
         .row
@@ -458,10 +441,6 @@
           /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :bankaccounts
           = link_to_add_fields t('addmore'), f, :bankaccounts, "",  t('addmore')
 
-        .form-group
-          .col-sm-offset-2.col-sm-2
-            = f.submit t('update', class: "btn btn-primary")
-
       #loans.tab-pane
         .row
           .col-sm-offset-1.col-sm-1= t 'staff.loans.ltype'
@@ -480,10 +459,6 @@
           /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :loans
           = link_to_add_fields t('addmore'), f, :loans, "",  t('addmore')
 
-        .form-group
-          .col-sm-offset-2.col-sm-2
-            = f.submit t('update', class: "btn btn-primary")
-
       #contacts.tab-pane
         .row
           .col-sm-offset-1.col-sm-1= t 'staff.kintype_id'
@@ -499,10 +474,15 @@
           = link_to_add_fields t('addmore'), f, :kins, "",  t('addmore')
 
 
-        .form-group
-          .col-sm-offset-2.col-sm-2
+    .row
+      .form-group
+        .col-sm-offset-4.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_infos_path, :class => 'btn btn-default'
+        .col-sm-2
+          - if @info.new_record? == true
+            = f.submit t('create'), class: "btn btn-primary"
+          - else
             = f.submit t('update'), class: "btn btn-primary"
-
 
 :javascript
   var current_shift = $("#staff_staff_shift_id").val();
