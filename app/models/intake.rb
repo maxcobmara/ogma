@@ -105,7 +105,7 @@ class Intake < ActiveRecord::Base
   private
   
   def valid_for_removal
-    if weeklytimetables.count > 0
+    if weeklytimetables.count > 0 || students.count > 0 || lessonplans.count > 0 || examresult.count > 0
       return false
     else
       return true

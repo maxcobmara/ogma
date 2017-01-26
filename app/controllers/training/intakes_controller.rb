@@ -85,11 +85,15 @@ class Training::IntakesController < ApplicationController
   # DELETE /intakes/1.xml
   def destroy
     @intake = Intake.find(params[:id])
-    @intake.destroy
-
     respond_to do |format|
-      format.html { redirect_to(training_intakes_url) }
-      format.xml  { head :ok }
+      # weeklytimetables.count > 0 || students.count > 0 || lessonplans.count > 0 || examresult.count > 0
+      if @intake.destroy
+        format.html { redirect_to(training_intakes_url) }
+        format.xml  { head :ok }
+      else
+        format.html { redirect_to(training_intake_path(@intake), :notice => (t 'training.intake.removal_prohibited_others_still_exist').html_safe ) }
+        format.xml  { head :ok }
+      end
     end
   end
   

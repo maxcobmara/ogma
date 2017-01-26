@@ -3925,6 +3925,7 @@ en:
       person: person
       proceed: Proceed
       zero_nil: 0 if nil
+      removal_prohibited_others_still_exist: "Removal of selected Intake is NOT ALLOWED, due to existing related records in the following modules. Please remove related records first, before proceed.<ul><li>Students</li><li> Weeklytimetable</li><li>Lesson plans</li><li>Examination results</li></ul>"
     timetable:
       title: Timetable
       list: Timetable Format List
