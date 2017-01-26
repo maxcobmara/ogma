@@ -3842,6 +3842,7 @@ ms_MY:
       person: orang
       proceed: Teruskan
       zero_nil: 0 jika tiada
+      removal_prohibited_others_still_exist: "Rekod Sesi Pengambilan yang dipilih TIDAK BOLEH DIPADAM, kerana rekod - rekod berkaitan bagi modul berikut masih wujud. Sila padam rekod - rekod berkaitan terlebih dahulu. <ul><li>Pelajar</li><li>Jadual waktu</li><li>Pelan pengajaran</li><li>Keputusan peperiksaan</li></ul>"
     timetable:
       title: Jadual Waktu
       list: Senarai Format Jadual Waktu
