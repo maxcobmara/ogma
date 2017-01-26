@@ -59,5 +59,7 @@
               - if (student.race2.nil? && !student.race.nil? && student.race!='')||(student.race2.blank? && !student.race.blank? &&  student.race!='')
                 %font{:color => "red"}
                   *#{student.race}
+              - else
+                =student.render_race
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @students, :theme => 'twitter-bootstrap-3'
