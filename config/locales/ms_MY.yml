@@ -366,6 +366,11 @@ ms_MY:
       postinfo:
         details: Butiran
         staffgrade_id: Gred
+      document:
+        refno: No rujukan
+        category: Kategori
+        title: Tajuk
+        from: Daripada / kepada
         
     errors:
         template:
