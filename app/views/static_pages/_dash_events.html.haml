@@ -45,7 +45,7 @@
           #recent.tab-pane{:role => "tabpanel"}
             - past_events = Event.where("end_at < ? AND end_at >= ? ", Time.now, 7.days.ago.beginning_of_day).order(:end_at).reverse_order.limit(6)
             - if past_events == []
-              %h5{style: "padding-top:25px; text-align: center;"} No events since last week
+              %h5{style: "padding-top:25px; text-align: center;"}=t('dashboard.no_events_recent')
             - else
               - past_events.each do |e|
                 %div{:class => "sidebar_event_item#{cycle("0", "1")}"}

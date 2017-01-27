@@ -13,25 +13,6 @@ class Librarytransaction < ActiveRecord::Base
   
   attr_accessor :booktitle, :staf_who, :student_who, :newduedate, :late_days_count
   
-  #validates :accession_id , presence: true
-  #validates :checkoutdate, :returnduedate, presence: true
-  
-  def update_book_status
-    acc_to_update=Accession.find(accession_id)
-    if returned==true
-      acc_to_update.status=1 #available
-    else
-      acc_to_update.status=2 #on loan
-    end
-    acc_to_update.save!
-  end
-  
-  def update_book_status2
-    acc_to_update=Accession.find(accession_id)
-    acc_to_update.status=1 #available
-    acc_to_update.save!
-  end
-  
   #18May2013-compulsory to have this method in order for autocomplete field to work
 
   #scope :borrowed, -> {where("returned = ? OR returned IS ?", false, nil)}
@@ -49,6 +30,27 @@ class Librarytransaction < ActiveRecord::Base
     #{:scope => "returned",   :label => "Telah dipulangkan"},  #Returned
     {:scope => "overdue",    :label => "Tamat Tempoh"}        #Overdue
   ]
+  
+  #validates :accession_id , presence: true
+  #validates :checkoutdate, :returnduedate, presence: true
+  validates :accession_id, inclusion: {in: Accession.where('id NOT IN(?)', Librarytransaction.borrowed.pluck(:accession_id)).pluck(:id)}
+  validate :validate_due_date_before_checkout_date
+
+  def update_book_status
+    acc_to_update=Accession.find(accession_id)
+    if returned==true
+      acc_to_update.status=1 #available
+    else
+      acc_to_update.status=2 #on loan
+    end
+    acc_to_update.save!
+  end
+  
+  def update_book_status2
+    acc_to_update=Accession.find(accession_id)
+    acc_to_update.status=1 #available
+    acc_to_update.save!
+  end
   
   #define scope
   def self.borrower_search(query)
@@ -141,6 +143,15 @@ class Librarytransaction < ActiveRecord::Base
   def late_days
     (returneddate-returnduedate).to_i if returneddate > returnduedate
   end
+  
+  private
+  
+    #validation logic
+    def validate_due_date_before_checkout_date
+      if checkoutdate && returnduedate
+        errors.add(:base, "Your must borrow before you return it") if returnduedate < checkoutdate
+      end
+    end
 
 end
 
