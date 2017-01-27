@@ -6,7 +6,7 @@ class Staff < ActiveRecord::Base
   validates_presence_of     :name, :coemail, :code, :appointdt, :current_salary #appointment date must exist be4 can apply leave, salary - for transport class
 
   before_save :remove_whitespace_begin_end
-  before_destroy :valid_for_removal
+  before_destroy :valid_for_removal, :remove_from_groups
   
   belongs_to :title,        :class_name => 'Title',           :foreign_key => 'titlecd_id'
   belongs_to :staffgrade,   :class_name => 'Employgrade',     :foreign_key => 'staffgrade_id'
@@ -154,6 +154,17 @@ class Staff < ActiveRecord::Base
       #If 'staff_shift_id' CHANGED - 'deactivate_date' will be displayed - if date is entered record will be saved & vice versa.
       #create/save 'shift history' here by giving default value as Date.today for condition when 'staff_shift_id' is changed but 'deactivate_date' not entered.
     end 
+    
+    def remove_from_groups
+      for group in Group.all
+        if users.count > 0 && group.is_member(users.first.id)==true
+          new_userids_arr=group.members[:user_ids]-[users.first.id.to_s]
+	  new_userids_hash=Hash.new
+	  new_userids_hash[:user_ids]=new_userids_arr
+          group.update(members: new_userids_hash)
+        end
+      end
+    end
   
     def age
       Date.today.year - cobirthdt.year unless cobirthdt == nil
