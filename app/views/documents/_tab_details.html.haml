@@ -24,7 +24,7 @@
     %dd
       - if @document.data.exists? then
         = @document.data_file_name
-        = link_to (t 'document.download'), @document.data.url 
+        = link_to (t 'download'), @document.data.url 
       - else
         =t 'document.no_attachment'
   %br
