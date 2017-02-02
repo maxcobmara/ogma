@@ -19,7 +19,7 @@ class Document < ActiveRecord::Base
   belongs_to :college, :foreign_key => 'college_id'
 
   validates_attachment_content_type :data, 
-                                    :content_type => ['application/pdf','application/txt', 'appljoooo2@gmail.comication/msword',
+                                    :content_type => ['application/pdf','application/txt', 'application/msword',
                                                       'application/msexcel','image/png','image/jpeg','text/plain',
                                                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
                                     :storage => :file_system,
