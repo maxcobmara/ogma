@@ -93,7 +93,7 @@
       %tbody
         - for asset_placement in @asset.asset_placements
           %tr
-            %td= check_kin {asset_placement.location.name} 
+            %td= check_kin {asset_placement.location.combo_code} 
             %td= asset_placement.staff.try(:name)
             %td= asset_placement.reg_on.try(:strftime, "%d/%m/%y")
             %td=h asset_placement.asset.assettype==2 ? asset_placement.quantity : 1

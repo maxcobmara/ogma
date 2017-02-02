@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   belongs_to :college, foreign_key: 'college_id'
   
   before_save :set_college
+  before_destroy :remove_from_groups
   
   acts_as_messageable
 
@@ -518,6 +519,17 @@ class User < ActiveRecord::Base
       group_ids << gr.id if gr.listing.include?(id)
     end
     group_ids
+  end
+
+  def remove_from_groups
+    for group in Group.all
+      if group.is_member(id)==true
+        new_userids_arr=group.members[:user_ids]-[id.to_s]
+        new_userids_hash=Hash.new
+        new_userids_hash[:user_ids]=new_userids_arr
+        group.update(members: new_userids_hash)
+      end
+    end
   end
   
   def role_symbols

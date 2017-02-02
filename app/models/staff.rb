@@ -102,12 +102,13 @@ class Staff < ActiveRecord::Base
   has_many :travelrequest_approver, :class_name => 'TravelRequest', :foreign_key => 'hod_id', :dependent => :nullify
 
   #25Jan2015
-  has_many :circulations, :dependent => :destroy
+  has_many :circulations, :dependent => :destroy   #also destroy all recipient (any group members) NOTE 2Feb2017 - to be a group member - user acct required
   has_many :documents, :through => :circulations
-   
-  has_one :documentfiller, :class_name => 'Document', :foreign_key => 'stafffiled_id', :dependent => :destroy
-  has_one :documentpreparer, :class_name => 'Document', :foreign_key => 'prepared_by', :dependent => :destroy
-  has_one :documentfirstcirculate, :class_name => 'Document', :foreign_key => 'cc1staff_id', :dependent => :nullify
+  
+  #restrict destroy - or all previous docs will be removed 2Feb2017
+  has_many :documentfiller, :class_name => 'Document', :foreign_key => 'stafffiled_id'
+  has_many :documentpreparer, :class_name => 'Document', :foreign_key => 'prepared_by'
+  has_many :documentfirstcirculate, :class_name => 'Document', :foreign_key => 'cc1staff_id'
   
   has_many :evaluate_courses, :dependent => :destroy
   has_many :average_scores_lecturer, class_name: 'AverageCourse', foreign_key: 'lecturer_id', :dependent => :destroy
@@ -153,7 +154,7 @@ class Staff < ActiveRecord::Base
       #By default, 'deactivate_date is hidden && 'if 'deactivate_date' is blank - no 'shift history' will be saved'
       #If 'staff_shift_id' CHANGED - 'deactivate_date' will be displayed - if date is entered record will be saved & vice versa.
       #create/save 'shift history' here by giving default value as Date.today for condition when 'staff_shift_id' is changed but 'deactivate_date' not entered.
-    end 
+    end
     
     def remove_from_groups
       for group in Group.all
@@ -327,6 +328,12 @@ class Staff < ActiveRecord::Base
      ten=tenants.count
      schmkr=prepared_weekly_schedules.count
      ownlp=owned_lesson_plans.count
+     
+     #documents
+     docfiler=documentfiller.count
+     docprep=documentpreparer.count
+     doccc=documentfirstcirculate.count
+  
      if evc > 0
        errors.add(:base, "#{I18n.t('exam.evaluate_course.title')} : #{evc} #{I18n.t('actions.records')}")
      end
@@ -347,6 +354,16 @@ class Staff < ActiveRecord::Base
      end
      if ownlp > 0
        errors.add(:base, "#{I18n.t('training.lesson_plan.title3')} : #{ownlp} #{I18n.t('actions.records')}")
+     end
+     
+     if docfiler > 0
+       errors.add(:base, "#{I18n.t('document.title')} (#{I18n.t('document.stafffiled_id')})  : #{docfiler} #{I18n.t('actions.records')}")
+     end
+     if docprep > 0
+       errors.add(:base, "#{I18n.t('document.title')} (#{I18n.t('document.prepared_by')}) : #{docprep} #{I18n.t('actions.records')}")
+     end
+     if doccc > 0
+       errors.add(:base, "#{I18n.t('document.title')} (#{I18n.t('document.cc1staff_id')}) : #{doccc} #{I18n.t('actions.records')}")
      end
      
      user=User.where(userable_id: id)
@@ -381,7 +398,7 @@ class Staff < ActiveRecord::Base
        end 
      end
 
-     if evc > 0 || avc > 0 || ins > 0 || avg > 0 || ten > 0 || schmkr > 0 || ownlp > 0
+     if evc > 0 || avc > 0 || ins > 0 || avg > 0 || ten > 0 || schmkr > 0 || ownlp > 0 || docfiler > 0 || docprep > 0 || doccc > 0
        return false
      else
        if users.first

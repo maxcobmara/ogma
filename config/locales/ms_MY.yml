@@ -3248,6 +3248,7 @@ ms_MY:
     file_closed: "Fail ditutup?"
     minit_tindakan: "(Minit Tindakan)"
     stafffiled_id: Diisi Oleh
+    prepared_by: Disediakan Oleh
     letterdt: Tarikh Surat
     letterxdt: "Tarikh Terima / Hantar"
     circulation_date: Tarikh Edaran
