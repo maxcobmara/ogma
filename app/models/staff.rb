@@ -6,8 +6,9 @@ class Staff < ActiveRecord::Base
   validates_presence_of     :name, :coemail, :code, :appointdt, :current_salary #appointment date must exist be4 can apply leave, salary - for transport class
 
   before_save :remove_whitespace_begin_end
-  before_destroy :valid_for_removal, :remove_from_groups
+  before_destroy :valid_for_removal, :remove_from_groups, :update_document_when_last_circulation
   
+  belongs_to :college
   belongs_to :title,        :class_name => 'Title',           :foreign_key => 'titlecd_id'
   belongs_to :staffgrade,   :class_name => 'Employgrade',     :foreign_key => 'staffgrade_id'
   belongs_to :staff_shift,  :foreign_key => 'staff_shift_id'
@@ -163,6 +164,18 @@ class Staff < ActiveRecord::Base
 	  new_userids_hash=Hash.new
 	  new_userids_hash[:user_ids]=new_userids_arr
           group.update(members: new_userids_hash)
+        end
+        if group.listing.count==0
+          group.destroy
+        end
+      end
+    end
+    
+    #1 staff - M circulations ( M documents)
+    def update_document_when_last_circulation
+      for document in documents
+        if college.code=='amsas' && document.cc2closed == true && document.circulations && document.circulations.count==1
+          document.update_attributes(cc2closed: false, cc2date: nil)
         end
       end
     end

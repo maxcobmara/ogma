@@ -1,7 +1,8 @@
 class Circulation < ActiveRecord::Base
   belongs_to :document
   belongs_to :staff
-   
+  belongs_to :college
+
 #---------------------AttachFile------------------------------------------------------------------------
  has_attached_file :action,
                     :url => "/assets/documents/:id/:style/:basename.:extension",
@@ -14,5 +15,5 @@ class Circulation < ActiveRecord::Base
                                     :storage => :file_system,
                                     :message => "Invalid File Format"                        
   validates_attachment_size :action, :less_than => 5.megabytes
- 
+  
 end

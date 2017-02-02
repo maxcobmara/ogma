@@ -362,8 +362,15 @@ en:
         action: Action
         closed_at_college_on: Date closed (college)
       document:
+        refno: Ref no
+        category: Category
+        title: Title
+        from: From / to
+        cc1date: Circulation/Minute date
         cc2date: Circulation/Minute date
-        circulations: Circulate to
+        circulations: 
+          one: Circulate to
+          other: Circulate to
       tenant:
         staff_id: Name
         student_id: Mykad No.
@@ -383,11 +390,6 @@ en:
       postinfo:
         details: Details
         staffgrade_id: Grade
-      document:
-        refno: Ref no
-        category: Category
-        title: Title
-        from: From / to
 
     errors:
         template:
@@ -569,6 +571,7 @@ en:
     line_no_excel: " (excel file - line no : "
     uncheck: Uncheck
     are_you_sure: "Are you sure?"
+    click: Click
 
   views:
     pagination:

@@ -344,9 +344,15 @@ ms_MY:
         action: Tindakan
         closed_at_college_on: Tarikh Ditutup (Kolej)
       document:
+        refno: No rujukan
+        category: Kategori
+        title: Tajuk
+        from: Daripada / kepada
         cc1date: Tarikh Edaran / Minit
         cc2date: Tarikh Edaran / Minit
-        circulations: Diedarkan kepada
+        circulations: 
+          one: Diedarkan kepada
+          other: Diedarkan kepada
       tenant:
         staff_id: Nama
         student_id: No Mykad
@@ -366,11 +372,7 @@ ms_MY:
       postinfo:
         details: Butiran
         staffgrade_id: Gred
-      document:
-        refno: No rujukan
-        category: Kategori
-        title: Tajuk
-        from: Daripada / kepada
+        
         
     errors:
         template:
@@ -547,6 +549,7 @@ ms_MY:
     line_no_excel:  " (fail excel - no baris : "
     uncheck: Nyahpilih
     are_you_sure: "Anda pasti?"
+    click: Klik
   
   views:
     pagination:
