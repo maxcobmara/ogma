@@ -29,15 +29,15 @@
             %thead
               %tr
                 %th=(t 'group.membership')
-                %th= sort_link(@search, :name, (t 'group.name'))
-                %th= sort_link(@search, :description, (t 'group.description'))
+                %th{width: '25%'}= sort_link(@search, :name, (t 'group.name'))
+                %th{width: '25%'}= sort_link(@search, :description, (t 'group.description'))
                 - permitted_to? :read, :groups do
-                  %th= sort_link(@search, :members, ((t 'group.members')+"    ("+(t 'group.position')+")"))
+                  %th{width: '45%'}= sort_link(@search, :members, ((t 'group.members')+"    ("+(t 'group.position')+")"))
             %tbody
               = render "index_search"
               - @groups.each do |group| 
                 %tr
-                  %td.centre=group.is_member(current_user.id) ? image_tag("tick.png") : image_tag("cross.png")
+                  %td.centre=group.is_member(current_user.id) ? fa_icon('check') : fa_icon('times')
                   %td=link_to group.name, group_path(group)
                   %td=group.description
                   - permitted_to? :read, :groups do

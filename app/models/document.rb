@@ -1,7 +1,7 @@
 class Document < ActiveRecord::Base
 
   before_save :set_actionstaff2_to_blank_if_close_is_selected
-
+  
   has_many :asset_disposals
   has_many :asset_losses
   has_attached_file :data,
@@ -62,7 +62,6 @@ class Document < ActiveRecord::Base
       self.cc2staff_id = nil
     end
   end
-
 
   def filedocer
     suid = file_id
@@ -125,6 +124,11 @@ class Document < ActiveRecord::Base
     recipients_staffids
   end
   
+  def render_document
+     (DropDown::DOCUMENT_CATEGORY.find_all{|disp, value| value == category.to_s}).map {|disp, value| I18n.t("document."+disp.downcase)} [0]
+     #(DropDown::DOCUMENT_CATEGORY.find_all{|disp, value| value == category.to_s}).map {|disp, value| disp} [0]
+  end
+ 
 end
 
 # == Schema Information

@@ -14,7 +14,7 @@
     .alert.alert-info
      =(t 'dashboard.email_matches')+" : "
      %strong #{existing.first.name}
-     Click
+     =". "+(t 'actions.click')
      = link_to (t 'dashboard.here'), link_user_path(current_user)
      =t('dashboard.link_account')
    - else

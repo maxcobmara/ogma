@@ -3,7 +3,7 @@
   %dl.dl-horizontal
 
     %dt= t 'document.category' , :default => model_class.human_attribute_name(:category) + ":"
-    %dd= (DropDown::DOCUMENT_CATEGORY.find_all{|disp, value| value == @document.category.to_s}).map {|disp, value| disp} [0]
+    %dd= @document.render_document
 
     %dt= t 'document.letterdt' , :default => model_class.human_attribute_name(:letterdt) + ":"
     %dd= @document.letterdt.try(:strftime, "%d %b %Y" )

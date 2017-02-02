@@ -39,7 +39,7 @@
         %tr
           %td= document.serialno
           %td= link_to document.refno, document_path(document)
-          %td.centre= (DropDown::DOCUMENT_CATEGORY.find_all{|disp, value| value == document.category.to_s}).map {|disp, value| disp} [0]
+          %td.centre= document.render_document
           %td= document.title
           %td.centre= document.college.code=='amsas'? document.letterdt.try(:strftime, '%d-%m-%Y') : document.letterdt.try(:strftime, "%d %b %Y" )
           %td.centre= document.college.code=='amsas'? document.letterxdt.try(:strftime, '%d-%m-%Y') : document.letterxdt.try(:strftime, "%d %b %Y" )

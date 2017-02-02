@@ -20,6 +20,7 @@ class College < ActiveRecord::Base
   has_many :student_counseling_sessions
   has_many :student_attendances
   has_many :documents
+  has_many :circulations
   has_many :examquestions
   has_many :exammarks
   has_many :grades
@@ -30,6 +31,7 @@ class College < ActiveRecord::Base
   has_many :topicdetails
   has_many :travel_requests
   has_many :travel_claims
+  has_many :staffs
   has_many :positions
   has_many :postinfos
   # staffs
