@@ -12,11 +12,11 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :asset_assetcode, (t 'asset.assetcode'))
-        %th= t('asset.category.type_name_model')
-        %th= sort_link(@search, :asset_serialno, (t 'asset.serialno'))
-        %th= sort_link(@search, :asset_location_location_name, (t 'location.title'))
-        %th= t('asset.defect.notes')
+        %th{width: '25%'}= sort_link(@search, :asset_assetcode, (t 'asset.assetcode'))
+        %th{width: '30%'}= t('asset.category.type_name_model')
+        %th{width: '15%'}= sort_link(@search, :asset_serialno, (t 'asset.serialno'))
+        %th{width: '15%'}= sort_link(@search, :asset_location_location_name, (t 'location.title'))
+        %th{width: '15%'}= t('asset.defect.notes')
     %tbody
     = render "index_search"
     - @defective.each do |defect|

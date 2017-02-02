@@ -3358,6 +3358,7 @@ en:
     file_closed: "File closed?"
     minit_tindakan: "(Minutes of Action)"
     stafffiled_id: Filled By
+    prepared_by: Prepared By
     letterdt: Letter Date
     letterxdt: "Received / Sent Date"
     circulation_date: Circulation Date
