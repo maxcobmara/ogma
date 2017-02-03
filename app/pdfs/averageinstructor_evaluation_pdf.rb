@@ -516,8 +516,8 @@ class Averageinstructor_evaluationPdf < Prawn::Document
   end
   
   def table_ending
-    data=[["#{I18n.t('instructor_appraisal.prepared').upcase}: BKKM","#{I18n.t('exam.evaluate_course.date_updated')} : #{@average_instructor.updated_at.try(:strftime, '%d-%m-%Y')} "]]
-    table(data, :column_widths => [310,200], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom]}) do
+    data=[["#{I18n.t('instructor_appraisal.prepared').upcase}: BKKM","#{I18n.t('exam.evaluate_course.date_updated')} : 5 DISEMBER 2011"]]
+    table(data, :column_widths => [290,220], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom]}) do
       a = 0
       b = 1
       column(0).font_style = :bold

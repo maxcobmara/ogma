@@ -229,6 +229,52 @@ en:
         sequence: Period
       academic_session:
         total_week: Total Week
+      average_instructor:
+        instructor_id: Instructor
+        evaluator_id: Evaluating officer
+        evaluate_date: Evaluation date
+        delivery_type: Delivery type
+        start_at: Start at
+        end_at: End at
+        pbq1: "Part A - Before Teaching Session (Question 1)"
+        pbq2: "Part A - Before Teaching Session (Question 2)"
+        pbq3: "Part A - Before Teaching Session (Question 3)"
+        pbq4: "Part A - Before Teaching Session (Question 4)"
+        pdq1: "Part A - During Teaching Session (Question 1)"
+        pdq2: "Part A - During Teaching Session (Question 2)"
+        pdq3: "Part A - During Teaching Session (Question 3)"
+        pdq4: "Part A - During Teaching Session (Question 4)"
+        pdq5: "Part A - During Teaching Session (Question 5)"
+        dq1: "Part B : DELIVERY (Question 1)"
+        dq2: "Part B : DELIVERY (Question 2)"
+        dq3: "Part B : DELIVERY (Question 3)"
+        dq4: "Part B : DELIVERY (Question 4)"
+        dq5: "Part B : DELIVERY (Question 5)"
+        dq6: "Part B : DELIVERY (Question 6)"
+        dq7: "Part B : DELIVERY (Question 7)"
+        dq8: "Part B : DELIVERY (Question 8)"
+        dq9: "Part B : DELIVERY (Question 9)"
+        dq10: "Part B : DELIVERY (Question 10)"
+        dq11: "Part B : DELIVERY (Question 11)"
+        dq12: "Part B : DELIVERY (Question 12)"
+        uq1: "Part C : USAGE (Question 1)"
+        uq2: "Part C : USAGE (Question 2)"
+        uq3: "Part C : USAGE (Question 3)"
+        uq4: "Part C : USAGE (Question 4)"
+        vq1: "Part D : VERIFICATION (Question 1)"
+        vq2: "Part D : VERIFICATION (Question 2)"
+        vq3: "Part D : VERIFICATION (Question 3)"
+        vq4: "Part D : VERIFICATION (Question 4)"
+        vq5: "Part D : VERIFICATION (Question 5)"
+        gttq1: "Part E : GENERAL TEACHING TECHNIQUE (Question 1)"
+        gttq2: "Part E : GENERAL TEACHING TECHNIQUE (Question 2)"
+        gttq3: "Part E : GENERAL TEACHING TECHNIQUE (Question 3)"
+        gttq4: "Part E : GENERAL TEACHING TECHNIQUE (Question 4)"
+        gttq5: "Part E : GENERAL TEACHING TECHNIQUE (Question 5)"
+        gttq6: "Part E : GENERAL TEACHING TECHNIQUE (Question 6)"
+        gttq7: "Part E : GENERAL TEACHING TECHNIQUE (Question 7)"
+        gttq8: "Part E : GENERAL TEACHING TECHNIQUE (Question 8)"
+        gttq9: "Part E : GENERAL TEACHING TECHNIQUE (Question 9)"
       evaluate_course:
         staff_id: Lecturer
         invite_lec: Invitation Lecturer
@@ -2240,7 +2286,7 @@ en:
     verification: Verification
     general_teaching_technique: General Teaching Technique
     instructions: Instructions
-    instruction1: Tick / at related score according to provided scale
+    instruction1: Tick ( / ) at related score according to provided scale
     instruction2: Include review where appropiate
     scale: Measurement Scale
     excellent: Excellent

@@ -211,6 +211,53 @@ ms_MY:
         sequence: Sesi
       academic_session:
         total_week: Bilangan Minggu
+      average_instructor:
+        instructor_id: Nama Jurulatih
+        evaluator_id: Pegawai Penilai
+        evaluate_date: Tarikh Penilaian
+        delivery_type: Jenis Penyampaian
+        start_at: Masa Mula 
+        end_at: Masa Selesai
+        pbq1: "Bahagian A - Sebelum Sesi Mengajar (Soalan 1)"
+        pbq2: "Bahagian A - Sebelum Sesi Mengajar (Soalan 2)"
+        pbq3: "Bahagian A - Sebelum Sesi Mengajar (Soalan 3)"
+        pbq4: "Bahagian A - Sebelum Sesi Mengajar (Soalan 4)"
+        pdq1: "Bahagian A - Semasa Sesi Mengajar (Soalan 1)"
+        pdq2: "Bahagian A - Semasa Sesi Mengajar (Soalan 2)"
+        pdq3: "Bahagian A - Semasa Sesi Mengajar (Soalan 3)"
+        pdq4: "Bahagian A - Semasa Sesi Mengajar (Soalan 4)"
+        pdq5: "Bahagian A - Semasa Sesi Mengajar (Soalan 5)"
+        dq1: "Bahagian B : PENYAMPAIAN (Soalan 1)"
+        dq2: "Bahagian B : PENYAMPAIAN (Soalan 2)"
+        dq3: "Bahagian B : PENYAMPAIAN (Soalan 3)"
+        dq4: "Bahagian B : PENYAMPAIAN (Soalan 4)"
+        dq5: "Bahagian B : PENYAMPAIAN (Soalan 5)"
+        dq6: "Bahagian B : PENYAMPAIAN (Soalan 6)"
+        dq7: "Bahagian B : PENYAMPAIAN (Soalan 7)"
+        dq8: "Bahagian B : PENYAMPAIAN (Soalan 8)"
+        dq9: "Bahagian B : PENYAMPAIAN (Soalan 9)"
+        dq10: "Bahagian B : PENYAMPAIAN (Soalan 10)"
+        dq11: "Bahagian B : PENYAMPAIAN (Soalan 11)"
+        dq12: "Bahagian B : PENYAMPAIAN (Soalan 12)"
+        uq1: "Bahagian C : PENGGUNAAN (Soalan 1)"
+        uq2: "Bahagian C : PENGGUNAAN (Soalan 2)"
+        uq3: "Bahagian C : PENGGUNAAN (Soalan 3)"
+        uq4: "Bahagian C : PENGGUNAAN (Soalan 4)"
+        vq1: "Bahagian D : PENGESAHAN (Soalan 1)"
+        vq2: "Bahagian D : PENGESAHAN (Soalan 2)"
+        vq3: "Bahagian D : PENGESAHAN (Soalan 3)"
+        vq4: "Bahagian D : PENGESAHAN (Soalan 4)"
+        vq5: "Bahagian D : PENGESAHAN (Soalan 5)"
+        gttq1: "Bahagian E : TEKNIK UMUM MENGAJAR (Soalan 1)"
+        gttq2: "Bahagian E : TEKNIK UMUM MENGAJAR (Soalan 2)"
+        gttq3: "Bahagian E : TEKNIK UMUM MENGAJAR (Soalan 3)"
+        gttq4: "Bahagian E : TEKNIK UMUM MENGAJAR (Soalan 4)"
+        gttq5: "Bahagian E : TEKNIK UMUM MENGAJAR (Soalan 5)"
+        gttq6: "Bahagian E : TEKNIK UMUM MENGAJAR (Soalan 6)"
+        gttq7: "Bahagian E : TEKNIK UMUM MENGAJAR (Soalan 7)"
+        gttq8: "Bahagian E : TEKNIK UMUM MENGAJAR (Soalan 8)"
+        gttq9: "Bahagian E : TEKNIK UMUM MENGAJAR (Soalan 9)"
+
       evaluate_course:
         staff_id: Pengajar
         invite_lec: Pengajar Jemputan
@@ -2129,7 +2176,7 @@ ms_MY:
     verification: Pengesahan
     general_teaching_technique: Teknik Umum Mengajar
     instructions: Arahan
-    instruction1: Tandakan / pada ruangan skor yang berkaitan mengikut skala yang telah ditetapkan.
+    instruction1: Tandakan ( / ) pada ruangan skor yang berkaitan mengikut skala yang telah ditetapkan.
     instruction2: Tuliskan ulasan jika perlu.
     scale: Skala Pengukuran
     excellent: Cemerlang
