@@ -3762,15 +3762,19 @@ en:
       edit: "Edit Course Evaluation (Lecturer)"
       student_id: Student
       staff_id: Lecturer
+      staff_id2: Lecturer Name
       course_id: Programme
+      course_id2: Course
       subject_id: Subject
+      subject_id2: Module/Subject
       programme_subject: "Programme - Subject"
       programme_or_subject: Programme or Subject or Topic 
       evaluate_date: Evaluation Date
+      estimate_date2: Date
       appraisal_details: Appraisal Details
       invite_lec: Invitation Lecturer
       invite_lec_topic: Topic
-      comment: Comment
+      comment: Remarks / Comment
       description: Description
       score: Score
       objective_achieved: "Achievement of lesson objectives."
@@ -3804,6 +3808,10 @@ en:
       question: Q
       total_scores: Total Scores
       average_scores: Average Scores
+      student_verification: Student Verification
+      signatory: Signatory
+      full_name: Full Name
+      mykad_no: I/C No
     
     average_course:
       title: Analysis Data for Average Score of Evaluation for Lecturer
