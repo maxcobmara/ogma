@@ -3679,15 +3679,19 @@ ms_MY:
       edit: "Sunting Penilaian Program (Pengajar)"
       student_id: Pelajar
       staff_id: Pengajar
+      staff_id2: Nama Pensyarah
       course_id: Program
+      course_id2: Kursus
       subject_id: Subjek
+      subject_id2: Modul/Matapelajaran
       programme_subject: "Program - Subjek"
       programme_or_subject: Program atau Subjek atau Topik
       evaluate_date: Tarikh Penilaian
+      evaluate_date2: Tarikh
       appraisal_details: Butiran Penilaian
       invite_lec: Pengajar Jemputan
       invite_lec_topic: Topik
-      comment: Komen
+      comment: Catatan / Komen
       description: Perkara
       score: Skor
       objective_achieved: "Pencapaian objektif pelajaran."
@@ -3721,6 +3725,10 @@ ms_MY:
       question: S
       total_scores: Jumlah Skor
       average_scores: Skor Purata
+      student_verification: Pengesahan Pelatih
+      signatory: Tandatangan
+      full_name: Nama Penuh
+      mykad_no: No K/Pengenalan
       
     average_course:
       title: Data Analisa Skor Purata Penilaian Pensyarah
@@ -3731,13 +3739,13 @@ ms_MY:
       dissatisfaction: Ketidakpuasan Am
       recommend_for_improvement: Cadangan Pembaikan
       lesson_content: Isi Kandungan Pelajaran
-      evaluation_category: Kategori Pilihan
+      evaluation_category: Kategori Penilaian
       support_justify: Justifikasi Sokongan
       principal_id: Pengesahan Ketua Sekolah
       principal_date: Tarikh
       subject_id: Tajuk Pelajaran
       delivery_quality: Mutu Penyampaian
-      lecturer_knowledge: Pengetahuan Pensyarah"
+      lecturer_knowledge: Pengetahuan Pensyarah
       organisation: Organisasi
       expertise_qualification: Kepakaran/ Kelayakan
       

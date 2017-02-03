@@ -8,9 +8,14 @@ class InstructorevaluationPdf < Prawn::Document
       move_down 10
     end
     bounding_box([10,770], :width => 400, :height => 100) do |y2|
+      if college.code=="kskbjb"
        image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
+      else
+	move_down 10
+	image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.70
+      end
     end
-    bounding_box([150,750], :width => 350, :height => 100) do |y2|
+    bounding_box([150,760], :width => 350, :height => 100) do |y2|
       if college.code=="kskbjb"
         move_down 30
         text "#{college.name}"
@@ -29,7 +34,7 @@ class InstructorevaluationPdf < Prawn::Document
       end
     else
       bounding_box([430,770], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+        image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.80
       end
     end
     move_down 30
@@ -73,7 +78,7 @@ class InstructorevaluationPdf < Prawn::Document
           ["", "*<br>*<br>*", {content: @notes4a, colspan: 5}],
           ["*", {content: @notes5, colspan: 6}],
            ["*", {content: @notes6, colspan: 6}],["","","","","","",""]]
-    table(data2, :column_widths => [25,15, 185,175, 40, 40, 40], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom],  :inline_format => :true, :padding=>[2,5,3,5]}) do
+    table(data2, :column_widths => [25,15, 185,175, 40, 40, 40], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom],  :inline_format => :true, :padding=>[2,5,3,5]}) do
       a = 0
       b = 1
       row(0).font_style=:bold
@@ -170,10 +175,10 @@ class InstructorevaluationPdf < Prawn::Document
     
     data << ["","","","#{I18n.t('instructor_appraisal.total').upcase}", total_two, total_one, "0"]
     
-    table(data, :header => true, :column_widths => [25,15, 190,185, 35, 35, 35], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom],  :inline_format => :true, :padding=>[2,5,3,5]}) do
+    table(data, :header => true, :column_widths => [25,15, 190,185, 35, 35, 35], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom],  :inline_format => :true, :padding=>[2,5,3,5]}) do
       a = 0
       b = 1
-      row(12).height=30
+      row(12).height=50
       row(12).borders=[]
       row(50).column(0..2).borders=[]
       row(50).column(3).borders=[:right]
@@ -224,7 +229,7 @@ class InstructorevaluationPdf < Prawn::Document
     totalmarks=@appraisal.total_mark#(arr_marks-[""]).sum
     data3=[["", ">= 90", "89 - 65", "&lt; 64"], 
           ["#{I18n.t('instructor_appraisal.total_score1').upcase}<br>#{I18n.t('instructor_appraisal.total_score2').upcase}", "#{totalmarks if totalmarks >= 90}", "#{totalmarks if totalmarks > 64 && totalmarks <90 }", "#{totalmarks if totalmarks < 65}"]]
-    table(data3, :column_widths => [100, 50, 50, 50], :cell_style => {:size=>11, :borders => [], :inline_format => :true}, :position => :center) do
+    table(data3, :column_widths => [100, 50, 50, 50], :cell_style => {:size=>10, :borders => [], :inline_format => :true}, :position => :center) do
       a=0
       b=1
       row(0).column(0).borders=[]
@@ -243,12 +248,12 @@ class InstructorevaluationPdf < Prawn::Document
   
   def table_signatory
     data=[["#{I18n.t('instructor_appraisal.date2').upcase}: <u>#{@appraisal.appraisal_date.try(:strftime, '%d-%m-%Y')}</u>", "#{I18n.t('instructor_appraisal.signatory').upcase}: ..............................................."], ["", "#{I18n.t('instructor_appraisal.name')}: <u>#{@appraisal.instructor.name}</u>"], ["", "#{I18n.t('instructor_appraisal.rank').upcase}: <u>#{@appraisal.instructor.rank.try(:name)}</u>"]]
-    table(data, :column_widths => [255, 255],  :cell_style => {:size=>11, :borders => [], :inline_format => :true})
+    table(data, :column_widths => [255, 255],  :cell_style => {:size=>10, :borders => [], :inline_format => :true})
   end
   
   def table_ending
     data=[["#{I18n.t('instructor_appraisal.prepared').upcase}: BKKM","#{I18n.t('exam.evaluate_course.date_updated')} : #{@appraisal.updated_at.try(:strftime, '%d-%m-%Y')} "]]
-    table(data, :column_widths => [310,200], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom]}) do
+    table(data, :column_widths => [310,200], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom]}) do
       a = 0
       b = 1
       column(0).font_style = :bold

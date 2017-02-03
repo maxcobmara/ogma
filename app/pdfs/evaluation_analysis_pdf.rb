@@ -1,6 +1,6 @@
 class Evaluation_analysisPdf < Prawn::Document  
   def initialize(average_course, view, evs_int, college, actual_scores, evaluator)
-    super({top_margin: 40, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 40, left_margin: 60, page_size: 'A4', page_layout: :portrait })
     @average_course= average_course
     @view = view
     @evs_int = evs_int
@@ -12,20 +12,24 @@ class Evaluation_analysisPdf < Prawn::Document
     if college.code=="kskbjb"
       move_down 10
     end
-    bounding_box([10,770], :width => 400, :height => 100) do |y2|
-       image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
+    bounding_box([0,770], :width => 400, :height => 100) do |y2|
+       if college.code=="kskbjb"
+          image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
+       else
+	 move_down 5
+          image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.7
+       end
     end
-    bounding_box([150,750], :width => 350, :height => 100) do |y2|
+    bounding_box([120,750], :width => 350, :height => 100) do |y2|
       if college.code=="kskbjb"
         move_down 30
         text "#{college.name}"
         move_down 1
         text "#{I18n.t('exam.evaluate_course.title')}"
       else
-        draw_text "PPL APMM", :at => [80, 100], :style => :bold
-        draw_text "NO.DOKUMEN: BK-KKM-04-04", :at => [15, 85], :style => :bold
-        draw_text "BORANG DATA ANALISA SKOR PURATA PENILAIAN", :at => [-30, 65], :style => :bold
-        draw_text "PENSYARAH", :at => [75, 50], :style => :bold
+        draw_text "PPL APMM", :at => [90, 90], :style => :bold
+        draw_text "NO.DOKUMEN: BK-KKM-04-04", :at => [25, 65], :style => :bold
+        draw_text "BORANG DATA ANALISA SKOR PURATA PENILAIAN PENSYARAH", :at => [-60, 40], :style => :bold
       end
     end
     
@@ -35,13 +39,15 @@ class Evaluation_analysisPdf < Prawn::Document
       end
     else
       bounding_box([430,770], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+        image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.8
       end
     end
-   
+   move_down 20
     text "#{I18n.t('exam.evaluate_course.by_quality_dept')}", :align => :center, :size => 12
     if college.code=="kskbjb"
       move_down 20
+    else
+      move_down 10
     end
     text ""
     table_detailing
@@ -53,31 +59,35 @@ class Evaluation_analysisPdf < Prawn::Document
     start_new_page
     table_detailing2
     move_down 50
-    table_footer
+    table_ending
+    page_count.times do |i|
+      go_to_page(i+1)
+      footer
+    end
   end
   
   def table_detailing
-    data=[["<u>#{I18n.t('exam.average_course.lecturer_data').upcase}</u>"],
-          ["1.  #{I18n.t('exam.average_course.lecturer_id')} : #{@average_course.lecturer.try(:staff_with_rank) }"],
-          ["2. #{I18n.t('exam.average_course.icno')} : #{@average_course.lecturer.try(:formatted_mykad) }    #{I18n.t('staff.rank_id')}/Jawatan : #{@average_course.lecturer.try(:rank).try(:name)}/#{@average_course.lecturer.try(:positions).try(:first).name}"],
-          ["3.  #{I18n.t('exam.average_course.organisation')} : #{@average_course.organisation}"], 
-          ["4.  #{I18n.t('exam.average_course.expertise_qualification')} : #{@average_course.expertise_qualification}"],[""],
-          ["<u>#{I18n.t('exam.average_course.course_data').upcase}</u>"],
-          ["5.  #{I18n.t('exam.evaluate_course.course_id')} : #{@average_course.subject.root.name}"],
-          ["6.  #{I18n.t('training.programme.course_type')} : #{@average_course.subject.root.course_type=='Asas' ? '<b>Asas</b>' : 'Asas'}  #{@average_course.subject.root.course_type=='Pertengahan' ? '<b>Pertengahan</b>' : 'Pertengahan'}  #{@average_course.subject.root.course_type=='Lanjutan' ? '<b>Lanjutan</b>' : 'Asas'}"],
-          ["7.  #{I18n.t('exam.average_course.total_students')} : #{@evaluator_count} / #{@total_student}"],
-          ["8.  #{I18n.t('training.programme.level')} : #{@average_course.subject.root.level=='peg' ? '<b>PEG</b>' : 'PEG'}  #{@average_course.subject.root.level=='llp' ? '<b>LLP</b>' : 'LLP'} "],[""],
-          ["<u>#{I18n.t('exam.average_course.evaluation_analysis_data').upcase}</u>"],
-          ["9.  #{I18n.t('exam.average_course.subject_id') } : #{@average_course.subject.subject_list}"],
-          ["10.  #{I18n.t('exam.evaluate_course.average_scores')} : "], [""]
+    data=[[{content: "<u>#{I18n.t('exam.average_course.lecturer_data').upcase}</u>", colspan: 2}],
+          [{content: "1.  #{I18n.t('exam.average_course.lecturer_id')} : <u>#{@average_course.lecturer.try(:staff_with_rank) }</u>", colspan: 2}],
+          ["2.  #{I18n.t('exam.average_course.icno')} : <u>#{@average_course.lecturer.try(:formatted_mykad) }</u>", " #{I18n.t('staff.rank_id')}/Jawatan : <u>#{@average_course.lecturer.try(:rank).try(:name)}/#{@average_course.lecturer.try(:positions).try(:first).name}</u>"],
+          [{content: "3.  #{I18n.t('exam.average_course.organisation')} : <u>#{@average_course.organisation}</u>"}, colspan: 2], 
+          [{content: "4.  #{I18n.t('exam.average_course.expertise_qualification')} : <u>#{@average_course.expertise_qualification}</u>", colspan: 2}],["", ""],
+          [{content: "<u>#{I18n.t('exam.average_course.course_data').upcase}</u>", colspan: 2}],
+          [{content: "5.  #{I18n.t('exam.evaluate_course.course_id')} : <u>#{@average_course.subject.root.name}</u>", colspan: 2}],
+          [{content: "6.  #{I18n.t('training.programme.course_type')} : #{@average_course.subject.root.course_type=='Asas' ? '<b>Asas</b>' : 'Asas'}  #{@average_course.subject.root.course_type=='Pertengahan' ? '<b>Pertengahan</b>' : 'Pertengahan'}  #{@average_course.subject.root.course_type=='Lanjutan' ? '<b>Lanjutan</b>' : 'Lanjutan'}", colspan: 2}],
+          [{content: "7.  #{I18n.t('exam.average_course.total_students')} : <u>#{@evaluator_count} / #{@total_student}</u>", colspan: 2}],
+          [{content: "8.  #{I18n.t('training.programme.level')} : #{@average_course.subject.root.level=='peg' ? '<b>PEG</b>' : 'PEG'}  #{@average_course.subject.root.level=='llp' ? '<b>LLP</b>' : 'LLP'} ", colspan: 2}],["", ""],
+          [{content: "<u>#{I18n.t('exam.average_course.evaluation_analysis_data').upcase}</u>", colspan: 2}],
+          [{content: "9.  #{I18n.t('exam.average_course.subject_id') } : <u>#{@average_course.subject.subject_list}</u>", colspan: 2}],
+          [{content: "10.  #{I18n.t('exam.evaluate_course.average_scores')} : ", colspan: 2}], ["", ""]
           ]
-    table(data, :column_widths => [510], :cell_style => { :size => 11, :inline_format => true, :padding => [0, 0, 0, 0]})  do
+    table(data, :column_widths => [200, 290], :cell_style => { :size => 11, :inline_format => true, :padding => [0, 0, 0, 0]})  do
       rows(0..2).borders=[]
-      column(0).borders=[]
+      column(0..1).borders=[]
       rows(0..4).height=20
-      row(5).height=5
+      row(5).height=10
       rows(6..10).height=20
-      row(11).height=5
+      row(11).height=10
       rows(12..14).height=20
       row(15).height=3
       a = 0
@@ -85,7 +95,7 @@ class Evaluation_analysisPdf < Prawn::Document
       row(0).font_style = :bold
       row(6).font_style = :bold
       row(12).font_style = :bold
-      column(1).font_style = :bold
+      row(0).column(1).font_style = :bold
       while a < b do
         a=+1
       end
@@ -105,7 +115,7 @@ class Evaluation_analysisPdf < Prawn::Document
              ["9.","#{I18n.t('exam.evaluate_course.suitable_assessment')}","#{@evs_int[8]==1? '<b>'+@evs_int[8].to_s+'</b>' : ""}","#{@evs_int[8]==2? '<b>'+@evs_int[8].to_s+'</b>' : ""}", "#{@evs_int[8]==3? '<b>'+@evs_int[8].to_s+'</b>' : ""}", "#{@evs_int[8]==4? '<b>'+@evs_int[8].to_s+'</b>' : ""}","#{@evs_int[8]==5? '<b>'+@evs_int[8].to_s+'</b>' : ""}", "#{@evs_int[8]==6? '<b>'+@evs_int[8].to_s+'</b>' : ""}","#{@evs_int[8]==7? '<b>'+@evs_int[8].to_s+'</b>' : ""}" ,"#{@evs_int[8]==8? '<b>'+@evs_int[8].to_s+'</b>' : ""}", "#{@evs_int[8]==9? '<b>'+@evs_int[8].to_s+'</b>' : ""}"]
              ] 
      
-       table(data, :column_widths => [30, 340, 15, 15,15,15,15,15,15,15,20], :cell_style=>{:size=>10, :borders=>[:left, :right, :top, :bottom], :inline_format => :true}) do
+       table(data, :column_widths => [30, 320, 15, 15,15,15,15,15,15,15,20], :cell_style=>{:size=>10, :borders=>[:left, :right, :top, :bottom], :inline_format => :true}) do
          a=0
          b=9
          rows(0).font_style = :bold
@@ -118,29 +128,31 @@ class Evaluation_analysisPdf < Prawn::Document
   end
   
   def table_detailing2
-    data=[[{content: "11.  #{I18n.t('exam.average_course.dissatisfaction')} : #{@average_course.dissatisfaction}", colspan: 2}], [{content: "12.  #{I18n.t('exam.average_course.recommend_for_improvement')} : #{@average_course.recommend_for_improvement}", colspan: 2}],
+    data=[[{content: "11.  #{I18n.t('exam.average_course.dissatisfaction')} : <u>#{@average_course.dissatisfaction}</u>", colspan: 2}], [{content: "12.  #{I18n.t('exam.average_course.recommend_for_improvement')} : <u>#{@average_course.recommend_for_improvement}</u>", colspan: 2}],
           [{content: "", colspan: 2}], [{content: "<u>#{I18n.t('exam.average_course.evaluation_summary').upcase}</u>", colspan: 2}], [{content: "", colspan: 2}],
-          [{content: "13.  #{I18n.t('exam.average_course.criteria_notes')}", colspan: 2}], ["","a.      #{I18n.t('exam.average_course.lecturer_knowledge')}   #{@average_course.lecturer_knowledge}"],
-         ["","b.      #{I18n.t('exam.average_course.delivery_quality')}             #{@average_course.delivery_quality}"], ["","c.      #{I18n.t('exam.average_course.lesson_content')}    #{@average_course.lesson_content}"], 
+          [{content: "13.  #{I18n.t('exam.average_course.criteria_notes')}", colspan: 2}], ["","a.      #{I18n.t('exam.average_course.lecturer_knowledge')}      <b>#{@average_course.lecturer_knowledge}</b>"],
+         ["","b.      #{I18n.t('exam.average_course.delivery_quality')}              <b>#{@average_course.delivery_quality}</b>"], ["","c.      #{I18n.t('exam.average_course.lesson_content')}      <b>#{@average_course.lesson_content}</b>"], 
           [{content: "14.  #{I18n.t('exam.average_course.evaluation_category')} :  #{@average_course.evaluation_category==true ? '<b>'+I18n.t('exam.average_course.qualified')+'</b>' : I18n.t('exam.average_course.qualified')} #{@average_course.evaluation_category==false ? '<b>'+I18n.t('exam.average_course.not_qualified')+'</b>' : I18n.t('exam.average_course.not_qualified')}", colspan: 2}], [""],
-         [{content: "15.  <b>#{I18n.t('exam.average_course.support_justify')}</b> : #{@average_course.support_justify}", colspan: 2}],[{content: "#{I18n.t('exam.average_course.principal_verification').upcase}", colspan: 2}],
-         [{content: "#{I18n.t('exam.average_course.signatory')} : ", colspan: 2}], [{content: "#{I18n.t('exam.average_course.principal_id')} : #{@average_course.verifier.try(:staff_with_rank)}", colspan: 2}], [{content: "#{I18n.t('staff.rank_id')} : #{@average_course.verifier.try(:rank).try(:name)}", colspan: 2}], [{content: "#{I18n.t('exam.average_course.principal_date')} : #{@average_course.principal_date.try(:strftime, '%d-%m-%Y')}", colspan: 2}] ]
-    table(data, :column_widths => [70,440], :cell_style => { :size => 11, :inline_format => true, :padding => [0, 0, 0, 0]})  do
+         [{content: "15.  <b>#{I18n.t('exam.average_course.support_justify')}</b> : <u>#{@average_course.support_justify}</u>", colspan: 2}],[{content: "#{I18n.t('exam.average_course.principal_verification').upcase}: ", colspan: 2}],
+         [{content: "#{I18n.t('exam.average_course.signatory')} : ___________________________________ ", colspan: 2}], [{content: "#{I18n.t('exam.evaluate_course.full_name')} :<u> #{@average_course.verifier.try(:staff_with_rank)}</u>", colspan: 2}], [{content: "#{I18n.t('staff.rank_id')} : <u>#{@average_course.verifier.try(:rank).try(:name)}</u>", colspan: 2}], [{content: "#{I18n.t('exam.average_course.principal_date')} : <u>#{@average_course.principal_date.try(:strftime, '%d/%m/%Y')}</u>", colspan: 2}] ]
+    table(data, :column_widths => [70,420], :cell_style => { :size => 11, :inline_format => true, :padding => [0, 0, 0, 0]})  do
       a=0
       b=1
       rows(0..2).borders=[]
       column(0..1).borders=[]
       row(3).font_style = :bold
       rows(11..12).font_style = :bold
-      rows(0..1).height=40
+      rows(0..1).height=80
       row(2).height=5
       row(3).height=20
       row(4).height=5
       row(5).height=40
-      rows(6..8).height=20
+      rows(6..7).height=20
+      row(8).height=40
       row(9).height=25
       row(10).height=5
-      rows(11..12).height=40
+      row(11).height=120
+      row(12).height=80
       rows(13..16).height=20
       
       
@@ -150,9 +162,9 @@ class Evaluation_analysisPdf < Prawn::Document
     end
   end
   
-  def table_footer
-    data=[["#{I18n.t('exam.evaluate_course.prepared_by')} : BKMM ","#{I18n.t('exam.evaluate_course.date_updated')} : #{@average_course.updated_at.try(:strftime, '%d-%m- %Y')} "]]
-    table(data, :column_widths => [255,255], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom]}) do
+  def table_ending
+    data=[["#{I18n.t('exam.evaluate_course.prepared_by')} : BKMM ","#{I18n.t('exam.evaluate_course.date_updated')} : #{@average_course.updated_at.try(:strftime, '%d-%m-%Y')} "]]
+    table(data, :column_widths => [260,230], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom]}) do
       a = 0
       b = 1
       column(0).font_style = :bold
@@ -161,6 +173,10 @@ class Evaluation_analysisPdf < Prawn::Document
         a=+1
       end
     end
+  end
+  
+  def footer
+    draw_text "#{page_number} #{I18n.t('instructor_appraisal.from')} 2",  :size => 8, :at => [240,-5]
   end
   
 end
