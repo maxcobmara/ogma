@@ -1,0 +1,49 @@
+%hr
+.col-md-12
+  %table
+    %tr
+      %td
+        %b=t 'instructor_appraisal.purpose'
+        %ul
+          %li=t 'instructor_appraisal.general_notes1'
+          %li=t 'instructor_appraisal.notes2'
+          %li=t 'instructor_appraisal.notes3'
+
+.col-md-10.col-md-offset-1
+  %table.table.table-bordered
+    %tr
+      %th.centre{:colspan=>"5"}=t 'exam.evaluate_course.evaluation_scale'
+    %tr
+      %th.centre{:width=>"80px;"} 2
+      %th.centre{:width=>"80px;"} 1 
+      %th.centre{:width=>"80px;"} 0
+    %tr
+      %td.centre=t 'instructor_appraisal.always_practice'
+      %td.centre=t 'instructor_appraisal.frequently_practice'
+      %td.centre=t 'instructor_appraisal.rarely_practice'
+    
+.col-md-12
+  %table
+    %tr
+      %td
+        %ul
+          %li=t 'instructor_appraisal.notes4'
+            
+.col-md-10.col-md-offset-1
+  %table.table.table-bordered
+    %tr
+      %th.centre{:width=>"80px;"}=(t 'instructor_appraisal.good').gsub("-","")
+      %th.centre{:width=>"80px;"}=(t 'instructor_appraisal.satisfactory').gsub("-","")
+      %th.centre{:width=>"80px;"}=(t 'instructor_appraisal.unsatisfactory').gsub("-","")
+    %tr
+      %td.centre="90 "+(t 'instructor_appraisal.and_above')
+      %td.centre 89-65
+      %td.centre="64 "+(t 'instructor_appraisal.or_below')
+
+.col-md-12
+  %table
+    %tr
+      %td
+        %ul
+          %li=t 'instructor_appraisal.notes5'
+          %li=t 'instructor_appraisal.notes6'

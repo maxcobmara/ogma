@@ -332,7 +332,10 @@ ms_MY:
         schedule: Jadual waktu
         endorsed_by: Kelulusan Oleh
       instructor_appraisal:
+        staff_id: Jurulatih
+        appraisal_date: Tarikh penilaian
         check_qc: Disemak Oleh
+        check_date: Tarikh disemak
       user:
         sign_up: Daftar
         sign_up_now: "Daftar sekarang!"
@@ -2148,6 +2151,7 @@ ms_MY:
     prepared: Disediakan
     from: daripada
     marks: Markah
+    one_per_quarter: " : Penilaian hanya boleh diisi sekali setiap 3 bulan. Penilaian terakhir anda bertarikh "
     
   average_instructor:
     title: Penilaian & Analisa Skor Purata Jurulatih

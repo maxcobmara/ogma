@@ -349,7 +349,10 @@ en:
         lecturer: Lecturer
         schedule: Timetable
       instructor_appraisal:
+        staff_id: Instructor
+        appraisal_date: Appraisal date
         check_qc: Checked By
+        check_date: Date checked
       user:
         sign_up: Sign Up
         sign_up_now: "Sign up now!"
@@ -2258,6 +2261,7 @@ en:
     prepared: Prepared by
     from: of
     marks: Marks
+    one_per_quarter: " : Evaluation can be filled in once in every 3 months. Your last evaluation is done on "
     
   average_instructor:
     title: Evaluation & Average Score Analysis for Instructor

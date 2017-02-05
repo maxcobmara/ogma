@@ -47,8 +47,13 @@ class Staff::InstructorAppraisalsController < ApplicationController
         format.html { redirect_to staff_instructor_appraisal_path(@instructor_appraisal), notice: (t 'instructor_appraisal.title')+(t 'actions.updated')  }
         format.json { render action: 'show', status: :created, location: @instructor_appraisal }
       else
-        format.html { render action: 'new' }
-        format.json { render json: @rank.errors, status: :unprocessable_entity }
+        if @instructor_appraisal.qc_sent==true && @instructor_appraisal.check_qc==nil
+          format.html { render action: 'edit' }
+          format.json { render json: @rank.errors, status: :unprocessable_entity }
+	else
+	  format.html { render action: 'qc_appraisal' }
+          format.json { render json: @rank.errors, status: :unprocessable_entity }
+	end
       end
     end
   end
