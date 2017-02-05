@@ -1,6 +1,6 @@
 class Instructorevaluation_listPdf < Prawn::Document
   def initialize(instructor_appraisals, view, college)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 40, left_margin: 60, page_size: 'A4', page_layout: :portrait })
     @instructor_appraisals = instructor_appraisals
     @view = view
     @college=college
@@ -13,14 +13,14 @@ class Instructorevaluation_listPdf < Prawn::Document
   end
   
   def record
-    table(line_item_rows, :column_widths => [30, 140, 60, 55, 55, 130, 60], :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
+    table(line_item_rows, :column_widths => [30, 140, 60, 50, 55, 100, 60], :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
       row(0).style size: 11
       row(0).align = :center
       row(0..1).font_style = :bold
       row(1).background_color = 'FFE34D'
-      self.width=530
+      columns(3..4).align=:center
     end
   end
 
@@ -35,7 +35,7 @@ class Instructorevaluation_listPdf < Prawn::Document
   end
   
   def footer
-    draw_text "#{page_number} / #{page_count}",  :size => 8, :at => [500,-5]
+    draw_text "#{page_number} / #{page_count}",  :size => 8, :at => [490,-5]
   end
 
 end

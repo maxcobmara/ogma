@@ -1,6 +1,6 @@
 class InstructorevaluationPdf < Prawn::Document  
   def initialize(instructor_appraisal, view, college)
-    super({top_margin: 40, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 40, left_margin: 60, page_size: 'A4', page_layout: :portrait })
     @appraisal  = instructor_appraisal
     @view = view
     font "Helvetica"
@@ -22,7 +22,7 @@ class InstructorevaluationPdf < Prawn::Document
         move_down 1
         text "#{I18n.t('exam.evaluate_course.title')}"
       else
-        draw_text "PPL APMM", :at => [80, 85], :style => :bold
+        draw_text "PPL APMM", :at => [70, 85], :style => :bold
         draw_text "#{I18n.t('instructor_appraisal.document_no').upcase}: BK-KKM-04-01", :at => [15, 70], :style => :bold
         draw_text "#{I18n.t('instructor_appraisal.form_title').upcase}", :at => [-25, 45], :style => :bold
       end
@@ -41,7 +41,7 @@ class InstructorevaluationPdf < Prawn::Document
     table_main
     move_down 70
     table_signatory
-    move_down 230
+    move_down 250
     table_ending
     page_count.times do |i|
       go_to_page(i+1)
@@ -78,7 +78,7 @@ class InstructorevaluationPdf < Prawn::Document
           ["", "*<br>*<br>*", {content: @notes4a, colspan: 5}],
           ["*", {content: @notes5, colspan: 6}],
            ["*", {content: @notes6, colspan: 6}],["","","","","","",""]]
-    table(data2, :column_widths => [25,15, 185,175, 40, 40, 40], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom],  :inline_format => :true, :padding=>[2,5,3,5]}) do
+    table(data2, :column_widths => [15,15, 165, 175, 40, 40, 40], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom],  :inline_format => :true, :padding=>[2,5,3,5]}) do
       a = 0
       b = 1
       row(0).font_style=:bold
@@ -173,9 +173,9 @@ class InstructorevaluationPdf < Prawn::Document
 #     data << [{content: "47", colspan: 2},{content: "#{I18n.t('instructor_appraisal.q47')}", colspan: 2},"#{@appraisal.q47.to_i==2 ? '<b>2</b>' : '2'}","#{@appraisal.q47.to_i==1 ? '<b>1</b>' : '1'}","#{@appraisal.q47.to_i==0 ? '<b>0</b>' : 0}"]
 #     data << [{content: "48", colspan: 2},{content: "#{I18n.t('instructor_appraisal.q48')}", colspan: 2},"#{@appraisal.q48.to_i==2 ? '<b>2</b>' : '2'}","#{@appraisal.q48.to_i==1 ? '<b>1</b>' : '1'}","#{@appraisal.q48.to_i==0 ? '<b>0</b>' : 0}"]
     
-    data << ["","","","#{I18n.t('instructor_appraisal.total').upcase}", total_two, total_one, "0"]
+    data << ["","","","<b><i>#{I18n.t('instructor_appraisal.total').upcase}</i></b>", total_two, total_one, "0"]
     
-    table(data, :header => true, :column_widths => [25,15, 190,185, 35, 35, 35], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom],  :inline_format => :true, :padding=>[2,5,3,5]}) do
+    table(data, :header => true, :column_widths => [20,15, 170,180, 35, 35, 35], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom],  :inline_format => :true, :padding=>[2,5,3,5]}) do
       a = 0
       b = 1
       row(12).height=50
@@ -228,8 +228,8 @@ class InstructorevaluationPdf < Prawn::Document
     move_down 30
     totalmarks=@appraisal.total_mark#(arr_marks-[""]).sum
     data3=[["", ">= 90", "89 - 65", "&lt; 64"], 
-          ["#{I18n.t('instructor_appraisal.total_score1').upcase}<br>#{I18n.t('instructor_appraisal.total_score2').upcase}", "#{totalmarks if totalmarks >= 90}", "#{totalmarks if totalmarks > 64 && totalmarks <90 }", "#{totalmarks if totalmarks < 65}"]]
-    table(data3, :column_widths => [100, 50, 50, 50], :cell_style => {:size=>10, :borders => [], :inline_format => :true}, :position => :center) do
+          ["<b><i>#{I18n.t('instructor_appraisal.total_score1').upcase}<br>#{I18n.t('instructor_appraisal.total_score2').upcase}</i></b>", "#{totalmarks if totalmarks >= 90}", "#{totalmarks if totalmarks > 64 && totalmarks <90 }", "#{totalmarks if totalmarks < 65}"]]
+    table(data3, :column_widths => [100, 50, 50, 50], :cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding => [2,0,5,0]}, :position => :center) do
       a=0
       b=1
       row(0).column(0).borders=[]
@@ -248,24 +248,19 @@ class InstructorevaluationPdf < Prawn::Document
   
   def table_signatory
     data=[["#{I18n.t('instructor_appraisal.date2').upcase}: <u>#{@appraisal.appraisal_date.try(:strftime, '%d-%m-%Y')}</u>", "#{I18n.t('instructor_appraisal.signatory').upcase}: ..............................................."], ["", "#{I18n.t('instructor_appraisal.name')}: <u>#{@appraisal.instructor.name}</u>"], ["", "#{I18n.t('instructor_appraisal.rank').upcase}: <u>#{@appraisal.instructor.rank.try(:name)}</u>"]]
-    table(data, :column_widths => [255, 255],  :cell_style => {:size=>10, :borders => [], :inline_format => :true})
+    table(data, :column_widths => [255, 240],  :cell_style => {:size=>11, :borders => [], :inline_format => :true})
   end
   
   def table_ending
-    data=[["#{I18n.t('instructor_appraisal.prepared').upcase}: BKKM","#{I18n.t('exam.evaluate_course.date_updated')} : #{@appraisal.updated_at.try(:strftime, '%d-%m-%Y')} "]]
-    table(data, :column_widths => [310,200], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom]}) do
-      a = 0
-      b = 1
-      column(0).font_style = :bold
-      column(1).font_style = :bold
-      while a < b do
-        a=+1
-      end
+    data=[["#{I18n.t('instructor_appraisal.prepared').upcase}: BKKM","#{I18n.t('exam.evaluate_course.date_updated')} : 5 DISEMBER 2011 "]]
+    table(data, :column_widths => [290,200], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom], :padding => [2,2,2,5]}) do
+      columns(0..1).font_style = :bold
+      row(0).height=18
     end
   end
   
   def footer
-    draw_text "#{page_number} #{I18n.t('instructor_appraisal.from')} 3",  :size => 8, :at => [240,-5]
+    draw_text "#{page_number} #{I18n.t('instructor_appraisal.from')} #{page_count}",  :size => 10, :at => [220,-5]
   end
   
 end

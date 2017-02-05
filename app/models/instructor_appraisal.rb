@@ -3,7 +3,10 @@ class InstructorAppraisal < ActiveRecord::Base
   before_save :update_total
   belongs_to :checker, class_name: 'Staff', foreign_key: 'check_qc'
   belongs_to :instructor, class_name: 'Staff', foreign_key: 'staff_id'
+  validates :staff_id, :appraisal_date, presence: true
   validates :check_qc, presence: true, :if => :appraisal_sent?
+  validates :check_date, presence: true, :if => :appraisal_checked?
+  validate :one_per_quarter
 
   serialize :data, Hash
 
@@ -350,6 +353,10 @@ class InstructorAppraisal < ActiveRecord::Base
     qc_sent==true
   end
   
+  def appraisal_checked?
+    checked==true
+  end
+  
   def update_total
     self.total_mark= totalscore
   end
@@ -373,5 +380,19 @@ class InstructorAppraisal < ActiveRecord::Base
       where('staff_id=? OR check_qc=?', search, search)
     end
   end
+  
+  private
+  
+    def one_per_quarter
+      #http://stackoverflow.com/questions/9428605/find-number-of-months-between-two-dates-in-ruby-on-rails
+      #(date2.year * 12 + date2.month) - (date1.year * 12 + date1.month) 
+      if id.nil? && staff_id 
+        last_evaluation=InstructorAppraisal.where(staff_id: staff_id).last.appraisal_date
+        diff_current_last=(appraisal_date.year * 12 + appraisal_date.month) - (last_evaluation.year * 12 + last_evaluation.month)
+        if diff_current_last < 3
+          errors.add(:appraisal_date, I18n.t('instructor_appraisal.one_per_quarter')+last_evaluation.strftime('%d-%m-%Y')+".")
+        end
+      end
+    end
     
 end
