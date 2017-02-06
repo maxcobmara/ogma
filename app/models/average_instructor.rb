@@ -1,5 +1,6 @@
 class AverageInstructor < ActiveRecord::Base
   
+  belongs_to :college
   belongs_to :instructor, class_name: 'Staff', foreign_key: 'instructor_id'
   belongs_to :programme, class_name: 'Programme', foreign_key: 'programme_id'
   belongs_to :evaluator, class_name: 'Staff', foreign_key: 'evaluator_id'

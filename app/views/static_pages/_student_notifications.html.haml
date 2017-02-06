@@ -8,6 +8,4 @@
   
  /1Nov2016
  - if tenant_student_late_keys_return > 0
-  %li=link_to content_tag(:span, "#{tenant_staff_late_keys_return}", class: "badge") +(t 'notifications.late_return_keys_student')+"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(#{Tenant.where(student_id: current_student_id).last.location.combo_code})".html_safe, "#"
-
-
+  %li=link_to content_tag(:span, "#{tenant_student_late_keys_return}", class: "badge") +(t 'notifications.late_return_keys_student')+"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(#{Tenant.where(student_id: current_student_id).last.location.combo_code})".html_safe, "#"

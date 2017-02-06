@@ -6,6 +6,7 @@
 .row.fluid
   = form_for [:staff, @average_instructor], html: { multipart: true, class: 'edit_form form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
+    = f.hidden_field :college_id, value: current_user.college_id
     = render :partial => 'form', :locals => {:f => f}
 
     .col-md-offset-1

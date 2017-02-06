@@ -24,12 +24,12 @@
       = t 'exam.evaluate_course.invite_lec_topic'
   %dd
     - unless @evaluate_course.subject_id.blank? 
-      =h @evaluate_course.subjectevaluate.subject_list
+      =h @evaluate_course.college.code=='amsas' ? @evaluate_course.subjectevaluate.module_subject_list2 : @evaluate_course.subjectevaluate.subject_list
     - else
       =h @evaluate_course.invite_lec_topic
  
   %dt= t 'exam.evaluate_course.comment'
-  %dd=h @evaluate_course.comment
+  %dd{style: 'padding-left: 70px;'}=h @evaluate_course.comment
   
   %dt= t 'exam.evaluate_course.evaluate_date'
   %dd= @evaluate_course.evaluate_date.try(:strftime, '%d %b %Y')

@@ -93,12 +93,14 @@ class CourseevaluationPdf < Prawn::Document
     if @college.code=='amsas' 
       a=I18n.t('exam.evaluate_course.subject_id2')
       b=I18n.t('exam.evaluate_course.staff_id2')
+      c=@evaluate_course.subjectevaluate.module_subject_list2
     else
       a=I18n.t('exam.evaluate_course.subject_id')
-      b=I18n.t('exam.evaluate_course.staff_id2')
+      b=I18n.t('exam.evaluate_course.staff_id')
+      c=@evaluate_course.subjectevaluate.subject_list
     end
     data=[["#{@college.code=='amsas' ? I18n.t('exam.evaluate_course.course_id2') : I18n.t('exam.evaluate_course.course_id')} :","#{@evaluate_course.stucourse.programme_list}","",""],
-          ["#{a unless @evaluate_course.subject_id.blank? } #{I18n.t('exam.evaluate_course.invite_lec_topic') unless @evaluate_course.invite_lec.blank?} :","#{@evaluate_course.subjectevaluate.subject_list unless @evaluate_course.subject_id.blank?} #{@evaluate_course.invite_lec_topic unless @evaluate_course.invite_lec.blank?}","#{I18n.t('exam.evaluate_course.evaluate_date2')} : ","#{@evaluate_course.evaluate_date.try(:strftime, '%d/%m/%Y')}"],
+          ["#{a unless @evaluate_course.subject_id.blank? } #{I18n.t('exam.evaluate_course.invite_lec_topic') unless @evaluate_course.invite_lec.blank?} :","#{c unless @evaluate_course.subject_id.blank?} #{@evaluate_course.invite_lec_topic unless @evaluate_course.invite_lec.blank?}","#{I18n.t('exam.evaluate_course.evaluate_date2')} : ","#{@evaluate_course.evaluate_date.try(:strftime, '%d/%m/%Y')}"],
           ["#{b unless @evaluate_course.staff_id.blank?} #{I18n.t('exam.evaluate_course.invite_lec') unless @evaluate_course.invite_lec.blank?} : ","#{@evaluate_course.staff_id? ? @evaluate_course.staffevaluate.try(:staff_with_rank) : @evaluate_course.invite_lec}","",""]]
     table(data, :column_widths => [150, 210, 70, 90], :cell_style => { :size => 10})  do
               a = 0
@@ -156,7 +158,7 @@ class CourseevaluationPdf < Prawn::Document
     table(data, :column_widths => [510],:cell_style => {:inline_format => :true, :size=>10, :borders => [], :padding => [7,0,0,20]}) do
       a = 0
       b = 1
-      column(0).font_style = :bold
+      column(0).row(0).font_style = :bold
       row(1).height = 90
       while a < b do
         a=+1
@@ -183,8 +185,8 @@ class CourseevaluationPdf < Prawn::Document
   end
   
   def table_ending
-    data=[["#{I18n.t('instructor_appraisal.prepared').upcase}: BKKM","#{I18n.t('exam.evaluate_course.date_updated')} : #{@evaluate_course.updated_at.try(:strftime, '%d-%m-%Y')} "]]
-    table(data, :column_widths => [310,200], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom]}) do
+    data=[["#{I18n.t('instructor_appraisal.prepared').upcase}: BKKM","#{I18n.t('exam.evaluate_course.date_updated')} : 5 DISEMBER 2011 "]]
+    table(data, :column_widths => [310,200], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom], :padding => [2,2,2,5]}) do
       a = 0
       b = 1
       column(0).font_style = :bold

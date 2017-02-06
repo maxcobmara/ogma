@@ -277,8 +277,9 @@ en:
         gttq9: "Part E : GENERAL TEACHING TECHNIQUE (Question 9)"
       evaluate_course:
         staff_id: Lecturer
+        student_id: Student
         invite_lec: Invitation Lecturer
-        subject_id: Subject
+        subject_id: Module/Subject
         invite_lec_topic: Topic
         evaluate_date: Evaluation Date
         course_id: Programme
@@ -3818,12 +3819,12 @@ en:
       staff_id2: Lecturer Name
       course_id: Programme
       course_id2: Course
-      subject_id: Subject
-      subject_id2: Module/Subject
+      subject_id: Module / Subject
+      subject_id2: Module / Subject
       programme_subject: "Programme - Subject"
       programme_or_subject: Programme or Subject or Topic 
       evaluate_date: Evaluation Date
-      estimate_date2: Date
+      evaluate_date2: Date
       appraisal_details: Appraisal Details
       invite_lec: Invitation Lecturer
       invite_lec_topic: Topic

@@ -252,7 +252,12 @@ class Exam::EvaluateCoursesController < ApplicationController
       if current_user.college.code=="amsas"
         #@lecturer_list = Staff.joins(:positions).where('positions.name=?', "Jurulatih").order(rank_id: :asc, name: :asc).uniq
         @lecturer_list=Staff.joins(:positions).where('positions.name ilike(?) or positions.tasks_main ilike(?) or positions.tasks_other ilike(?)', "%Jurulatih%", "%Jurulatih%", "%Jurulatih%").order(rank_id: :asc, name: :asc).uniq
-        @subjectlist_preselect_prog=Programme.where(course_type: 'Subject').order(:code)
+        if current_user.userable_type=="Student"
+          student_course=current_user.userable.intakestudent.programme_id
+          @subjectlist_preselect_prog=Programme.where(id: student_course).first.descendants.where(course_type: ['Module', 'Subject']).order(combo_code: :asc)
+        else
+          @subjectlist_preselect_prog=Programme.where(course_type: ['Module', 'Subject']).order(combo_code: :asc)
+        end
       end
     end
     
@@ -303,6 +308,6 @@ class Exam::EvaluateCoursesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def evaluate_course_params
-      params.require(:evaluate_course).permit(:course_id, :subject_id, :staff_id, :student_id, :evaluate_date, :comment, :ev_obj, :ev_knowledge, :ev_deliver, :ev_content, :ev_tool, :ev_topic, :ev_work, :ev_note, :invite_lec, :average_course_id, :invite_lec_topic, :ev_assessment)
+      params.require(:evaluate_course).permit(:course_id, :subject_id, :staff_id, :student_id, :evaluate_date, :comment, :ev_obj, :ev_knowledge, :ev_deliver, :ev_content, :ev_tool, :ev_topic, :ev_work, :ev_note, :invite_lec, :average_course_id, :invite_lec_topic, :ev_assessment, :college_id, {:data => []})
     end
 end
