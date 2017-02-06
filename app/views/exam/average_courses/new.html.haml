@@ -10,6 +10,7 @@
     = hidden_field_tag :redirect_location, exam_average_courses_path 
     = f.hidden_field :subject_id, value: params[:subject_id]
     = f.hidden_field :lecturer_id, value: params[:lecturer_id]
+    = f.hidden_field :college_id, value: current_user.college_id
     
     = render :partial => 'form', :locals => {:f => f}        
 

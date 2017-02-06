@@ -1,4 +1,5 @@
 class AverageCourse < ActiveRecord::Base
+  belongs_to :college
   belongs_to :lecturer, class_name: 'Staff', foreign_key: 'lecturer_id'
   belongs_to :verifier, class_name: 'Staff', foreign_key: 'principal_id'
   belongs_to :subject, class_name: 'Programme', foreign_key: 'subject_id'
