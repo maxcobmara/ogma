@@ -1,18 +1,19 @@
 class Averageinstructor_evaluationPdf < Prawn::Document  
   def initialize(average_instructor, view, college)
-    super({top_margin: 40, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 40, left_margin: 55, page_size: 'A4', page_layout: :portrait })
     @average_instructor  = average_instructor
     @view = view
     font "Helvetica"
     if college.code=="kskbjb"
       move_down 10
     end
-    bounding_box([10,770], :width => 400, :height => 100) do |y2|
+    bounding_box([0,770], :width => 400, :height => 100) do |y2|
       if college.code=="kskbjb"
          move_down 5
          image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
       else
-        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.7
+        move_down 5
+        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.65
       end
     end
     bounding_box([150,750], :width => 350, :height => 100) do |y2|
@@ -22,9 +23,9 @@ class Averageinstructor_evaluationPdf < Prawn::Document
         move_down 1
         text "#{I18n.t('exam.evaluate_course.title')}"
       else
-        draw_text "PPL APMM", :at => [80, 105], :style => :bold
+        draw_text "PPL APMM", :at => [70, 105], :style => :bold
         draw_text "#{I18n.t('instructor_appraisal.document_no').upcase}: BK-KKM-04-02", :at => [15, 90], :style => :bold
-        draw_text "#{I18n.t('average_instructor.form_title1').upcase}", :at => [10, 65], :style => :bold
+        draw_text "#{I18n.t('average_instructor.form_title1').upcase}", :at => [0, 65], :style => :bold
 	draw_text "#{I18n.t('average_instructor.form_title2').upcase}", :at => [25, 50], :style => :bold
       end
     end
@@ -35,7 +36,7 @@ class Averageinstructor_evaluationPdf < Prawn::Document
       end
     else
       bounding_box([430,770], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.8
+        image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
       end
     end
     
@@ -44,21 +45,28 @@ class Averageinstructor_evaluationPdf < Prawn::Document
     table_legend
     move_down 5
     table_a_heading
+    move_down 10
     table_a_content
+    start_new_page
+    move_down 30
     table_b_heading
+    move_down 10
     table_b_content
     move_down 30
     table_c_heading
+    move_down 10
     table_c_content
     move_down 30
     table_d_heading
+    move_down 10
     table_d_content
     start_new_page
     table_e_heading
+    move_down 10
     table_e_content
-    move_down 10
+    move_down 20
     table_summary
-    move_down 10
+    move_down 20
     table_score_legend
     table_review
     table_signatory
@@ -82,7 +90,7 @@ class Averageinstructor_evaluationPdf < Prawn::Document
            ["",": ","#{@average_instructor.display_objective[4]}","#{I18n.t('average_instructor.duration')}","#{@average_instructor.duration}"],
            ["#{I18n.t('average_instructor.delivery_type')}","#{@average_instructor.display_delivery} ","T : Teori     P : Praktikal     L  Lain-lain","",""]
     ]
-    table(data, :column_widths => [110,20, 250, 80, 60],  :cell_style => {:size=>11, :borders => [], :inline_format => :true, :padding=>[5,0,5,5]}) do
+    table(data, :column_widths => [95,20, 235, 80, 60],  :cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding=>[5,0,5,5]}) do
       row(0).columns(0..1).borders=[:top]
       row(0).column(0).borders=[:left, :top]
       row(0).column(2).borders=[:right, :top]
@@ -102,41 +110,41 @@ class Averageinstructor_evaluationPdf < Prawn::Document
   def stroke_details
     #lines use for table_info
     stroke do
-	horizontal_line 135, 505, :at => 660 #kursus
-	horizontal_line 135, 505, :at => 637 #jurulatih
-	horizontal_line 135, 505, :at => 614 #tarikh
-	horizontal_line 135, 505, :at => 591 #tajuk
-	horizontal_line 135, 360, :at => 568 #objektif
-	horizontal_line 135, 360, :at => 545
-	horizontal_line 135, 360, :at => 522
-	horizontal_line 135, 360, :at => 499
-	horizontal_line 135, 360, :at => 476
+	horizontal_line 120, 475, :at => 660 #kursus #135, 505, :at => 660
+	horizontal_line 120, 475, :at => 640 #637 #jurulatih
+	horizontal_line 120, 475, :at => 617 #614 #tarikh
+	horizontal_line 120, 475, :at => 594 #591 #tajuk
+	horizontal_line 120, 330, :at => 573 #568 #objektif
+	horizontal_line 120, 330, :at => 552 #545
+	horizontal_line 120, 330, :at => 530 #522
+	horizontal_line 120, 330, :at => 508 #499
+	horizontal_line 120, 330, :at => 487 #476
 	
 	#time box
-	horizontal_line 420, 505, :at => 568 #masa
-	horizontal_line 380, 500, :at => 540
-	horizontal_line 380, 500, :at => 520
-	horizontal_line 380, 500, :at => 495
-	horizontal_line 380, 500, :at => 475
-	vertical_line 475, 541, :at => 380
-	vertical_line 475, 541, :at => 455
-	vertical_line 475, 541, :at => 500
+	horizontal_line 390, 475, :at => 573 # 420, 505, :at =>568 #masa
+	horizontal_line 350, 470, :at => 552 #380, 500, :at =>540
+	horizontal_line 350, 470, :at => 530 #520
+	horizontal_line 350, 470, :at => 508 #495
+	horizontal_line 350, 470, :at => 487 #475
+	vertical_line 552, 487, :at => 350 #475, 541, :at => 380
+	vertical_line 552, 487, :at => 425
+	vertical_line 552, 487, :at => 470
 	
 	#delivery_type box
-	horizontal_line 115, 140, :at => 470
-	horizontal_line 115, 140, :at => 455
-	vertical_line 455, 470, :at => 115
-	vertical_line 455, 470, :at => 140
+	horizontal_line 100, 125, :at => 481 #115, 140, :at => 470
+	horizontal_line 100, 125, :at => 468 #115, 140, :at => 455
+	vertical_line 468, 481, :at => 100 #455, 470, :at => 115
+	vertical_line 468, 481, :at => 125 #455, 470, :at => 140  
     end
   end
   
   def table_legend
     move_down 5
-    text "1. #{I18n.t('average_instructor.instrument')}", :size => 11
+    text "1. #{I18n.t('average_instructor.instrument')}", :size => 10
     move_down 5
-    data_legend=[["","#{I18n.t('average_instructor.dimension')}", "#{I18n.t('average_instructor.weightage2')}"], ["", "A. #{I18n.t('average_instructor.preparation')}", "25%"], 
-          ["", "B. #{I18n.t('average_instructor.delivery.')}", "30%"], ["", "C. #{I18n.t('average_instructor.usage')}", "5%"], ["", "D. #{I18n.t('average_instructor.verification')}", "20%"],["", "E. #{I18n.t('average_instructor.general_teaching_technique')}","20%"]]
-     table(data_legend, :column_widths => [30, 200, 100],  :position => :left, :cell_style => {:size=>11, :borders => [:top, :bottom, :left, :right], :inline_format => :true, :padding => [0,0,0,5]}) do
+    data_legend=[["","#{I18n.t('average_instructor.dimension')}", "#{I18n.t('average_instructor.weightage2')}"], ["", "A. #{I18n.t('average_instructor.preparation').upcase}", "25%"], 
+          ["", "B. #{I18n.t('average_instructor.delivery.').upcase}", "30%"], ["", "C. #{I18n.t('average_instructor.usage').upcase}", "5%"], ["", "D. #{I18n.t('average_instructor.verification').upcase}", "20%"],["", "E. #{I18n.t('average_instructor.general_teaching_technique').upcase}","20%"]]
+     table(data_legend, :column_widths => [30, 190, 90],  :position => :left, :cell_style => {:size=>10, :borders => [:top, :bottom, :left, :right], :inline_format => :true, :padding => [1,0,2,5]}) do
        row(0).column(2).style :align => :center
        row(1..5).column(2).style :align => :center
        row(0..5).column(0).borders=[:right]
@@ -144,7 +152,7 @@ class Averageinstructor_evaluationPdf < Prawn::Document
      move_down 5
      
      data_legend2=[["#{I18n.t('average_instructor.instructions')}"],["1. #{I18n.t('average_instructor.instruction1')}"],["2. #{I18n.t('average_instructor.instruction2')}"]]
-     table(data_legend2, :column_widths => [520], :cell_style => {:size=>11, :borders => [], :inline_format => :true, :padding => [0,2,0,5]}) do
+     table(data_legend2, :column_widths => [500], :cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding => [0,2,1,5]}) do
        row(0).borders=[:top, :left ,:right]
        row(1).borders=[:left, :right]
        row(2).borders=[:bottom, :left, :right]
@@ -152,15 +160,16 @@ class Averageinstructor_evaluationPdf < Prawn::Document
      move_down 5
      
      data_legend3=[["#{I18n.t('average_instructor.scale')}", "5. #{I18n.t('average_instructor.excellent')}", "4. #{I18n.t('average_instructor.good')}", "3. #{I18n.t('average_instructor.average')}", "2. #{I18n.t('average_instructor.weak')}", "1. #{I18n.t('average_instructor.very_weak')}"]]
-     table(data_legend3, :column_widths => [120, 90,55,80,80],  :position => :left, :cell_style => {:size=>11, :borders => [:top, :bottom, :left, :right], :inline_format => :true, :padding => [2,2,2,5]}) do
+     table(data_legend3, :column_widths => [100, 90,60,80,80, 90],  :position => :left, :cell_style => {:size=>10, :borders => [:top, :bottom, :left, :right], :inline_format => :true, :padding => [2,2,2,5]}) do
        row(0).background_color = 'F0F0F0'
        row(0).font_style=:bold
      end
+     move_down 5
   end
   
   def table_a_heading
     data=[["#{I18n.t('average_instructor.part').upcase} A :", "#{I18n.t('average_instructor.preparation').upcase}", {content: "#{I18n.t('average_instructor.score').upcase}", colspan: 5}, "#{I18n.t('average_instructor.review').upcase}"], ["","","5","4","3","2","1", ""]]
-    table(data, :column_widths => [155,140,20,20,20,20,20,125],  :cell_style => {:size=>11, :borders => [], :inline_format => :true, :padding => [0,0,0,5]}) do
+    table(data, :column_widths => [135,140,20,20,20,20,20,125],  :cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding => [0,0,0,5]}) do
       row(0..1).font_style=:bold
       row(0).column(0).borders=[:top, :left]
       row(1).column(0).borders=[:bottom, :left]
@@ -178,7 +187,7 @@ class Averageinstructor_evaluationPdf < Prawn::Document
   
   def table_b_heading
     data=[["#{I18n.t('average_instructor.part').upcase} B :", "#{I18n.t('average_instructor.delivery').upcase}", {content: "#{I18n.t('average_instructor.score').upcase}", colspan: 5}, "#{I18n.t('average_instructor.review').upcase}"], ["","","5","4","3","2","1", ""]]
-    table(data, :column_widths => [155,140,20,20,20,20,20,125],  :cell_style => {:size=>11, :borders => [], :inline_format => :true, :padding => [0,0,0,5]}) do
+    table(data, :column_widths => [135,140,20,20,20,20,20,125],  :cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding => [0,0,0,5]}) do
       row(0..1).font_style=:bold
       row(0).column(0).borders=[:top, :left]
       row(1).column(0).borders=[:bottom, :left]
@@ -196,7 +205,7 @@ class Averageinstructor_evaluationPdf < Prawn::Document
   
   def table_c_heading
     data=[["#{I18n.t('average_instructor.part').upcase} C :", "#{I18n.t('average_instructor.usage').upcase}", {content: "#{I18n.t('average_instructor.score').upcase}", colspan: 5}, "#{I18n.t('average_instructor.review').upcase}"], ["","","5","4","3","2","1", ""]]
-    table(data, :column_widths => [155,140,20,20,20,20,20,125],  :cell_style => {:size=>11, :borders => [], :inline_format => :true, :padding => [0,0,0,5]}) do
+    table(data, :column_widths => [135,140,20,20,20,20,20,125],  :cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding => [0,0,0,5]}) do
       row(0..1).font_style=:bold
       row(0).column(0).borders=[:top, :left]
       row(1).column(0).borders=[:bottom, :left]
@@ -214,7 +223,7 @@ class Averageinstructor_evaluationPdf < Prawn::Document
   
   def table_d_heading
     data=[["#{I18n.t('average_instructor.part').upcase} D :", "#{I18n.t('average_instructor.verification').upcase}", {content: "#{I18n.t('average_instructor.score').upcase}", colspan: 5}, "#{I18n.t('average_instructor.review').upcase}"], ["","","5","4","3","2","1", ""]]
-    table(data, :column_widths => [155,140,20,20,20,20,20,125],  :cell_style => {:size=>11, :borders => [], :inline_format => :true, :padding => [0,0,0,5]}) do
+    table(data, :column_widths => [135,140,20,20,20,20,20,125],  :cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding => [0,0,0,5]}) do
       row(0..1).font_style=:bold
       row(0).column(0).borders=[:top, :left]
       row(1).column(0).borders=[:bottom, :left]
@@ -232,7 +241,7 @@ class Averageinstructor_evaluationPdf < Prawn::Document
   
   def table_e_heading
     data=[["#{I18n.t('average_instructor.part').upcase} E :", "#{I18n.t('average_instructor.general_teaching_technique').upcase}", {content: "#{I18n.t('average_instructor.score').upcase}", colspan: 5}, "#{I18n.t('average_instructor.review').upcase}"], ["","","5","4","3","2","1", ""]]
-    table(data, :column_widths => [155,140,20,20,20,20,20,125],  :cell_style => {:size=>11, :borders => [], :inline_format => :true, :padding => [0,0,0,5]}) do
+    table(data, :column_widths => [135,140,20,20,20,20,20,125],  :cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding => [0,0,0,5]}) do
       row(0..1).font_style=:bold
       row(0).column(0).borders=[:top, :left]
       row(1).column(0).borders=[:bottom, :left]
@@ -264,10 +273,10 @@ class Averageinstructor_evaluationPdf < Prawn::Document
          [{content: "#{I18n.t('average_instructor.obtained_score')}", colspan: 2}, "",{content:"#{@average_instructor.marks_a} / 45", colspan: 3},"", ""],[{content: "", colspan: 8}]
           ]
     data=data_a1+data_a2
-    table(data, :column_widths => [20, 275, 20,20,20,20,20, 125],:cell_style => {:size=>11, :borders => [], :inline_format => :true, :padding => [0,0,0,0], :padding=> [2,0,2,5]}) do
+    table(data, :column_widths => [20, 255, 20,20,20,20,20, 125],:cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding => [0,0,0,0], :padding=> [2,0,2,5]}) do
       row(1..8).column(2..6).borders=[:top,:left, :bottom, :right] #score boxes
       row(0..18).column(0).borders=[:left]
-      row(0).column(0).borders=[:left,:right]
+      row(0).column(0).borders=[:left,:right, :top]
       row(0).column(0).font_style=:bold #sebelum mengajar
       row(1).column(7).borders=[:right]
       row(2).column(0).borders=[:left, :right]
@@ -317,10 +326,10 @@ class Averageinstructor_evaluationPdf < Prawn::Document
          ["12.", "#{I18n.t('average_instructor.dq12')}", "#{@average_instructor.dq12==5? '/' : ''}","#{@average_instructor.dq12==4? '  /' : ''}","#{@average_instructor.dq12==3? '/' : ''}","#{@average_instructor.dq12==2? '/' : ''}","#{@average_instructor.dq12==1? '/' : ''}", @average_instructor.dq12review],[{content: "", colspan: 8}], [{content: "#{I18n.t('average_instructor.obtained_score')}", colspan: 2}, "",{content:"#{@average_instructor.marks_b} / 60", colspan: 3},"", ""],[{content: "", colspan: 8}],
           ]
     data=data_a1+data_a2
-    table(data, :column_widths => [20, 275, 20,20,20,20,20, 125],:cell_style => {:size=>11, :borders => [], :inline_format => :true, :padding => [0,0,0,0], :padding=> [2,0,2,5]}) do
+    table(data, :column_widths => [20, 255, 20,20,20,20,20, 125],:cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding => [0,0,0,0], :padding=> [2,0,2,5]}) do
       row(1..8).column(2..6).borders=[:top,:left, :bottom, :right] #score boxes
       row(0..23).column(0).borders=[:left]
-      row(0).column(0).borders=[:left,:right]
+      row(0).column(0).borders=[:left,:right, :top]
       row(1).column(7).borders=[:right]
       row(2).column(0).borders=[:left, :right]
       row(3).column(7).borders=[:right]
@@ -362,10 +371,10 @@ class Averageinstructor_evaluationPdf < Prawn::Document
          ["4.", "#{I18n.t('average_instructor.uq4')}", "#{@average_instructor.uq4==5? '/' : ''}","#{@average_instructor.uq4==4? '  /' : ''}","#{@average_instructor.uq4==3? '/' : ''}","#{@average_instructor.uq4==2? '/' : ''}","#{@average_instructor.uq4==1? '/' : ''}", @average_instructor.uq4review],[{content: "", colspan: 8}],
          [{content: "", colspan: 8}], [{content: "#{I18n.t('average_instructor.obtained_score')}", colspan: 2}, "",{content:"#{@average_instructor.marks_c} / 20", colspan: 3},"", ""],[{content: "", colspan: 8}]
           ]
-    table(data, :column_widths => [20, 275, 20,20,20,20,20, 125],:cell_style => {:size=>11, :borders => [], :inline_format => :true, :padding => [0,0,0,0], :padding=> [2,0,2,5]}) do
+    table(data, :column_widths => [20, 255, 20,20,20,20,20, 125],:cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding => [0,0,0,0], :padding=> [2,0,2,5]}) do
       row(1..8).column(2..6).borders=[:top,:left, :bottom, :right] #score boxes
       row(0..18).column(0).borders=[:left]
-      row(0).column(0).borders=[:left,:right]
+      row(0).column(0).borders=[:left,:right, :top]
       row(1).column(7).borders=[:right]
       row(2).column(0).borders=[:left, :right]
       row(3).column(7).borders=[:right]
@@ -394,10 +403,10 @@ class Averageinstructor_evaluationPdf < Prawn::Document
           ["5.", "#{I18n.t('average_instructor.vq5')}", "#{@average_instructor.vq5==5? '/' : ''}","#{@average_instructor.vq5==4? '  /' : ''}","#{@average_instructor.vq5==3? '/' : ''}","#{@average_instructor.vq5==2? '/' : ''}","#{@average_instructor.vq5==1? '/' : ''}", @average_instructor.vq5review],[{content: "", colspan: 8}],
          [{content: "", colspan: 8}], [{content: "#{I18n.t('average_instructor.obtained_score')}", colspan: 2}, "",{content:"#{@average_instructor.marks_d} / 20", colspan: 3},"", ""],[{content: "", colspan: 8}]
           ]
-    table(data, :column_widths => [20, 275, 20,20,20,20,20, 125],:cell_style => {:size=>11, :borders => [], :inline_format => :true, :padding => [0,0,0,0], :padding=> [2,0,2,5]}) do
+    table(data, :column_widths => [20, 255, 20,20,20,20,20, 125],:cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding => [0,0,0,0], :padding=> [2,0,2,5]}) do
       row(1..8).column(2..6).borders=[:top,:left, :bottom, :right] #score boxes
       row(0..20).column(0).borders=[:left]
-      row(0).column(0).borders=[:left,:right]
+      row(0).column(0).borders=[:left,:right, :top]
       row(1).column(7).borders=[:right]
       row(2).column(0).borders=[:left, :right]
       row(3).column(7).borders=[:right]
@@ -433,10 +442,10 @@ class Averageinstructor_evaluationPdf < Prawn::Document
          ["9.", "#{I18n.t('average_instructor.gttq9')}", "#{@average_instructor.gttq9==5? '/' : ''}","#{@average_instructor.gttq9==4? '  /' : ''}","#{@average_instructor.gttq9==3? '/' : ''}","#{@average_instructor.gttq9==2? '/' : ''}","#{@average_instructor.gttq9==1? '/' : ''}", @average_instructor.gttq9review],[{content: "", colspan: 8}],
           [{content: "#{I18n.t('average_instructor.obtained_score')}", colspan: 2}, "",{content:"#{@average_instructor.marks_e} / 45", colspan: 3},"", ""],[{content: "", colspan: 8}]]
   
-    table(data, :column_widths => [20, 275, 20,20,20,20,20, 125],:cell_style => {:size=>11, :borders => [], :inline_format => :true, :padding => [0,0,0,0], :padding=> [2,0,2,5]}) do
+    table(data, :column_widths => [20, 255, 20,20,20,20,20, 125],:cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding => [0,0,0,0], :padding=> [2,0,2,5]}) do
       row(1..8).column(2..6).borders=[:top,:left, :bottom, :right] #score boxes
       row(0..23).column(0).borders=[:left]
-      row(0).column(0).borders=[:left,:right]
+      row(0).column(0).borders=[:left,:right, :top]
       row(1).column(7).borders=[:right]
       row(2).column(0).borders=[:left, :right]
       row(3).column(7).borders=[:right]
@@ -465,16 +474,18 @@ class Averageinstructor_evaluationPdf < Prawn::Document
   end 
   
   def table_summary
-    text "#{I18n.t('average_instructor.evaluation_summary').upcase}", :size => 11, :style => :bold
-    
+    text "#{I18n.t('average_instructor.evaluation_summary').upcase}", :size => 10, :style => :bold
+    move_down 5
     data=[[{content: "#{I18n.t('average_instructor.performance_component')}", colspan: 2}, "#{I18n.t('average_instructor.max_score')}<br>(x)","#{I18n.t('average_instructor.obtained_score')}<br>(y)", "#{I18n.t('average_instructor.weightage')}<br>(w)", "#{I18n.t('average_instructor.percent')}<br> (y/x) X w"], 
-          ["A", "#{I18n.t('average_instructor.preparation')}", "45", @average_instructor.marks_a, "25", @view.number_with_precision(@average_instructor.percent_a, precision: 2)],
-          ["B", "#{I18n.t('average_instructor.delivery')}","60",@average_instructor.marks_b,"30", @view.number_with_precision(@average_instructor.percent_b, precision: 2)],
-          ["C", "#{I18n.t('average_instructor.usage')}","20",@average_instructor.marks_c,"5",@view.number_with_precision(@average_instructor.percent_c, precision: 2)],
-          ["D", "#{I18n.t('average_instructor.verification')}","25",@average_instructor.marks_d,"20",@view.number_with_precision(@average_instructor.percent_d, precision: 2)],
-          ["E", "#{I18n.t('average_instructor.general_teaching_technique')}","45",@average_instructor.marks_e,"20", @view.number_with_precision(@average_instructor.percent_e, precision: 2)]]
-    table(data, :column_widths => [20, 140, 80, 80, 80, 80],  :cell_style => {:size=>11,:borders => [:left, :right, :top, :bottom], :inline_format => :true, :padding => [0,2,2,5]}) do
+          ["A", "#{I18n.t('average_instructor.preparation').upcase}", "45", @average_instructor.marks_a, "25", @view.number_with_precision(@average_instructor.percent_a, precision: 2)],
+          ["B", "#{I18n.t('average_instructor.delivery').upcase}","60",@average_instructor.marks_b,"30", @view.number_with_precision(@average_instructor.percent_b, precision: 2)],
+          ["C", "#{I18n.t('average_instructor.usage').upcase}","20",@average_instructor.marks_c,"5",@view.number_with_precision(@average_instructor.percent_c, precision: 2)],
+          ["D", "#{I18n.t('average_instructor.verification').upcase}","25",@average_instructor.marks_d,"20",@view.number_with_precision(@average_instructor.percent_d, precision: 2)],
+          ["E", "#{I18n.t('average_instructor.general_teaching_technique').upcase}","45",@average_instructor.marks_e,"20", @view.number_with_precision(@average_instructor.percent_e, precision: 2)]]
+    table(data, :column_widths => [30, 180, 40, 80, 60, 80],  :cell_style => {:size=>10,:borders => [:left, :right, :top, :bottom], :inline_format => :true, :padding => [0,2,2,5]}) do
        row(0).font_style=:bold
+       column(0).font_style=:bold
+       column(0).style :align => :center
        row(0).column(0).style :align => :center
        row(0).column(0).style :valign => :center
        column(2..5).style :align => :center
@@ -483,12 +494,12 @@ class Averageinstructor_evaluationPdf < Prawn::Document
   
   def table_score_legend
     data=[["#{I18n.t('average_instructor.score_range')}", "#{I18n.t('average_instructor.grade')}", "#{I18n.t('average_instructor.performance')}"], 
-          ["85 - 100", "A", "#{I18n.t('average_instructor.excellent')}"],
+          ["85 - 100", "A", "#{I18n.t('average_instructor.very_good')}"],
           ["70 - 84", "B", "#{I18n.t('average_instructor.good')}"], 
           ["50 - 69", "C", "#{I18n.t('average_instructor.average')}"], 
           ["40 - 49", "D", "#{I18n.t('average_instructor.weak')}"], 
           ["&lt; 40", "E", "#{I18n.t('average_instructor.very_weak')}"], ]
-    table(data, :column_widths => [100,100,100],  :cell_style => {:size=>11,:borders => [:left, :right, :top, :bottom], :inline_format => :true, :padding => [0,2,2,2]}, :position => :center) do
+    table(data, :column_widths => [100,100,100],  :cell_style => {:size=>10,:borders => [:left, :right, :top, :bottom], :inline_format => :true, :padding => [0,2,2,2]}, :position => :center) do
        row(0).font_style=:bold
        row(0).column(0..1).style :align => :center
        column(0..1).style :align => :center
@@ -498,15 +509,15 @@ class Averageinstructor_evaluationPdf < Prawn::Document
   def table_review
     data_review=[["#{I18n.t('average_instructor.review')} :",""], 
                         ["", "<u>#{@average_instructor.review}</u>"]]
-    table(data_review, :column_widths => [80, 430],  :cell_style => {:size=>11,:borders => [], :inline_format => :true, :padding => [0,0,0,0]}) do
+    table(data_review, :column_widths => [60, 430],  :cell_style => {:size=>10,:borders => [], :inline_format => :true, :padding => [0,0,0,0]}) do
        row(0).column(0).font_style=:bold
        row(1).height=100
     end
   end
   
   def table_signatory
-    data=[["#{I18n.t('instructor_appraisal.signatory')}<br>(#{I18n.t('average_instructor.evaluated_instructor')})", "", "#{I18n.t('instructor_appraisal.signatory')}<br>(Bahagian Pembangunan Kompetensi dan Kawalan Mutu)"],[ "(#{I18n.t('instructor_appraisal.name')}: #{@average_instructor.instructor.staff_with_rank})", "", "(#{I18n.t('instructor_appraisal.name')}: #{@average_instructor.evaluator.staff_with_rank})"], [ "#{I18n.t('instructor_appraisal.date2')}: #{@average_instructor.evaluate_date.try(:strftime, '%d-%m-%Y')}", "", "#{I18n.t('instructor_appraisal.date2')}: #{@average_instructor.evaluate_date.try(:strftime, '%d-%m-%Y')}"]]
-    table(data, :column_widths => [195, 30, 285],  :cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding =>[0,0,0,0]}) do
+    data=[["#{I18n.t('instructor_appraisal.signatory')}<br>(#{I18n.t('average_instructor.evaluated_instructor')})", "", "#{I18n.t('instructor_appraisal.signatory')}<br>(#{I18n.t('average_instructor.quality_division')})"],[ "(#{I18n.t('instructor_appraisal.name')}: #{@average_instructor.instructor.staff_with_rank})", "", "(#{I18n.t('instructor_appraisal.name')}: #{@average_instructor.evaluator.staff_with_rank})"], [ "#{I18n.t('instructor_appraisal.date2')}: #{@average_instructor.evaluate_date.try(:strftime, '%d-%m-%Y')}", "", "#{I18n.t('instructor_appraisal.date2')}: #{@average_instructor.evaluate_date.try(:strftime, '%d-%m-%Y')}"]]
+    table(data, :column_widths => [195, 30, 265],  :cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding =>[0,0,0,0]}) do
       row(0).height=70
       row(0).column(0).style :align => :center
       row(0).column(2).style :align => :center
@@ -517,7 +528,7 @@ class Averageinstructor_evaluationPdf < Prawn::Document
   
   def table_ending
     data=[["#{I18n.t('instructor_appraisal.prepared').upcase}: BKKM","#{I18n.t('exam.evaluate_course.date_updated')} : 5 DISEMBER 2011"]]
-    table(data, :column_widths => [290,220], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom]}) do
+    table(data, :column_widths => [270,220], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom]}) do
       a = 0
       b = 1
       column(0).font_style = :bold
@@ -529,7 +540,7 @@ class Averageinstructor_evaluationPdf < Prawn::Document
   end
   
   def footer
-    draw_text "#{page_number} #{I18n.t('instructor_appraisal.from')} 3",  :size => 8, :at => [240,-5]
+    draw_text "#{page_number} #{I18n.t('instructor_appraisal.from')} 3",  :size => 10, :at => [220,-5]
   end
   
 end

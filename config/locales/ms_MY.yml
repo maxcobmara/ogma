@@ -2181,9 +2181,11 @@ ms_MY:
     general_teaching_technique: Teknik Umum Mengajar
     instructions: Arahan
     instruction1: Tandakan ( / ) pada ruangan skor yang berkaitan mengikut skala yang telah ditetapkan.
+    instruction1b: Pilih skor yang berkaitan mengikut skala yang telah ditetapkan.
     instruction2: Tuliskan ulasan jika perlu.
     scale: Skala Pengukuran
     excellent: Cemerlang
+    very_good: Sangat Baik
     good: Baik
     average: Sederhana
     weak: Lemah
@@ -2243,6 +2245,7 @@ ms_MY:
     grade: Gred
     performance: Prestasi
     evaluated_instructor: Jurulatih Yang Dinilai
+    quality_division: Bahagian Pembangunan Kompetensi dan Kawalan Mutu
     
   asset:
     title: Aset

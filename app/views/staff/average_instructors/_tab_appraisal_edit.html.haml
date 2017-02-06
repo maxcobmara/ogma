@@ -30,7 +30,7 @@
   .row
     %b=t('average_instructor.instructions')
     %ol
-      %li=t('average_instructor.instruction1')
+      %li=t('average_instructor.instruction1b')
       %li=t('average_instructor.instruction2')
       
   %table.table.table-bordered.table-condensed.bg-warning
@@ -429,7 +429,7 @@
       = f.label t 'average_instructor.evaluator_id', for: :evaluator_id
     .col-md-8
       - current_roles=current_user.roles.pluck(:authname)
-      - if (@average_instructor.new_record? && current_roles.include?('average_instructors_module_admin')) || (!@average_instructor.new_record? && current_roles.include?('average_instructors_module_user'))
+      - if is_developer? || is_admin? || (@average_instructor.new_record? && current_roles.include?('average_instructors_module_admin')) || (!@average_instructor.new_record? && current_roles.include?('average_instructors_module_user'))
         = f.collection_select :evaluator_id, Staff.joins(:positions).where('positions.name!=?', 'Jurulatih').order(rank_id: :asc, name: :asc), :id, :staff_with_rank,{ include_blank: (t 'select'), selected: current_user.userable_id},{class: 'selectpicker mandatory', "data-width"=> "300px"}
       - else
         /role :staff - restricted list to authorised person only
