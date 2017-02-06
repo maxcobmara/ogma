@@ -86,7 +86,7 @@ class Exam::AverageCoursesController < ApplicationController
     
     # Never trust parameters from the scary internet, only allow the white list through.
     def average_course_params
-      params.require(:average_course).permit(:lecturer_id, :programme_id, :dissatisfaction, :recommend_for_improvement, :lesson_content, :evaluation_category, :support_justify, :principal_id, :principal_date, :subject_id, :delivery_quality, :lecturer_knowledge, :organisation, :expertise_qualification)
+      params.require(:average_course).permit(:lecturer_id, :programme_id, :dissatisfaction, :recommend_for_improvement, :lesson_content, :evaluation_category, :support_justify, :principal_id, :principal_date, :subject_id, :delivery_quality, :lecturer_knowledge, :organisation, :expertise_qualification, :college_id, {:data => []})
     end
     
 end

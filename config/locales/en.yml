@@ -3819,6 +3819,7 @@ en:
       staff_id2: Lecturer Name
       course_id: Programme
       course_id2: Course
+      course_form: Course/Programme Name
       subject_id: Module / Subject
       subject_id2: Module / Subject
       programme_subject: "Programme - Subject"
@@ -3904,6 +3905,8 @@ en:
       evaluation_analysis_data: Evaluation analysis data
       evaluation_summary: Evaluation Summary
       principal_verification: Principal Verification
+      enter_avgscore: Enter average score from para 10
+      course_type: Course Type
       
     examanalysis:
       title: Examination Analysis by Examination Paper

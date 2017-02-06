@@ -3737,6 +3737,7 @@ ms_MY:
       staff_id2: Nama Pensyarah
       course_id: Program
       course_id2: Kursus
+      course_form: Nama Kursus/Program
       subject_id: Modul / Subjek
       subject_id2: Modul / Matapelajaran
       programme_subject: "Program - Subjek"
@@ -3802,7 +3803,7 @@ ms_MY:
       delivery_quality: Mutu Penyampaian
       lecturer_knowledge: Pengetahuan Pensyarah
       organisation: Organisasi
-      expertise_qualification: Kepakaran/ Kelayakan
+      expertise_qualification: Kepakaran/Kelayakan
       
       criteria_notes: "Kriteria Penilaian LAYAK atau TIDAK LAYAK adalah berdasarkan tiga aspek teras di bawah yang mana skor purata setiap aspek tidak boleh kurang dari nilai 5:"
       icno: No K/P
@@ -3822,6 +3823,8 @@ ms_MY:
       evaluation_analysis_data: Data analisis penilaian
       evaluation_summary: Rumusan Penilaian
       principal_verification: Pengesahan Ketua Sekolah
+      enter_avgscore: Isikan skor purata dari para 10
+      course_type: Jenis Kursus
 
     examanalysis:
       title: Analisa Peperiksaan Mengikut Kertas Peperiksaan

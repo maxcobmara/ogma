@@ -37,6 +37,7 @@ class College < ActiveRecord::Base
   has_many :instructor_appraisals
   has_many :average_instructors
   has_many :evaluate_courses
+  has_many :average_courses
   # staffs
   
   serialize :data, Hash

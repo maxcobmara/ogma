@@ -13,7 +13,7 @@
       .col-md-8.col-md-offset-1
         %dl.dl-horizontal
           %dt=t 'exam.average_course.lecturer_id'
-          %dd=@average_course.lecturer.name
+          %dd=@average_course.lecturer.staff_with_rank_position
           
           %dt=t 'exam.average_course.icno'
           %dd=@average_course.lecturer.try(:formatted_mykad)
