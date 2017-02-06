@@ -1,4 +1,5 @@
 class EvaluateCourse < ActiveRecord::Base
+  belongs_to :college
   belongs_to :studentevaluate,   :class_name => 'Student',   :foreign_key => 'student_id'
   belongs_to :stucourse,         :class_name => 'Programme', :foreign_key => 'course_id'
   belongs_to :subjectevaluate,   :class_name => 'Programme',   :foreign_key => 'subject_id'

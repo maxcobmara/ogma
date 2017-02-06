@@ -260,8 +260,9 @@ ms_MY:
 
       evaluate_course:
         staff_id: Pengajar
+        student_id: Pelajar
         invite_lec: Pengajar Jemputan
-        subject_id: Subjek
+        subject_id: Modul / Subjek
         invite_lec_topic: Topik
         evaluate_date: Tarikh Penilaian
         course_id: Program
@@ -3736,8 +3737,8 @@ ms_MY:
       staff_id2: Nama Pensyarah
       course_id: Program
       course_id2: Kursus
-      subject_id: Subjek
-      subject_id2: Modul/Matapelajaran
+      subject_id: Modul / Subjek
+      subject_id2: Modul / Matapelajaran
       programme_subject: "Program - Subjek"
       programme_or_subject: Program atau Subjek atau Topik
       evaluate_date: Tarikh Penilaian

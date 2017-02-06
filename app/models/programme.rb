@@ -67,6 +67,22 @@ class Programme < ActiveRecord::Base
     prog
   end
   
+  def module_subject_list
+    if course_type=='Module'
+      "#{I18n.t('training.programme.module')} : #{name}"
+    elsif course_type=='Subject'
+      "-- #{subject_list}"
+    end
+  end
+  
+  def module_subject_list2
+    if course_type=='Module'
+      "#{name}"
+    elsif course_type=='Subject'
+      "#{parent.name} / #{code} #{name.titleize}" 
+    end
+  end
+  
   def fullname
     if is_root?
       "#{name}" + " - " + "#{course_type}"   
@@ -142,6 +158,14 @@ class Programme < ActiveRecord::Base
   
   def programmelist_subject
     "#{root.programme_list}"+" - "+"#{code}"+" "+"#{name} "
+  end
+  
+  def programmelist_module_subject
+    if course_type=='Module'
+      "#{root.programme_list} - #{module_subject_list}"
+    else
+      "#{root.programme_list} #{module_subject_list}"
+    end
   end
   
   def self.programme_names

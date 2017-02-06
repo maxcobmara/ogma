@@ -1,6 +1,7 @@
 class InstructorAppraisal < ActiveRecord::Base
   
   before_save :update_total
+  belongs_to :college
   belongs_to :checker, class_name: 'Staff', foreign_key: 'check_qc'
   belongs_to :instructor, class_name: 'Staff', foreign_key: 'staff_id'
   validates :staff_id, :appraisal_date, presence: true

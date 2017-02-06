@@ -1,0 +1,29 @@
+%table.table-striped.table-hover.ogma
+  %thead
+    %tr
+      %th{width: '40%'}= (t 'exam.evaluate_course.programme_subject')
+      %th{width: '20%'}= sort_link(@search, :evaluate_date_eq, (t 'exam.evaluate_course.evaluate_date'))
+      %th{width: '30%'}= sort_link(@search, :staffevaluate_name_cont, (t 'exam.evaluate_course.staff_id'))
+
+  %tbody
+    = render "search_bar"
+    - @evaluate_courses.group_by(&:subject_id).each do |subject, all_evaluations|  
+      - all_evaluations.group_by(&:staff_id).sort.each do |lecturer, evaluations|
+        - if lecturer    
+          - for evaluate_course in evaluations
+            %tr
+              /%td= evaluate_course.student_id.blank? ? "No Student" : evaluate_course.studentevaluate.try(:matrix_name)
+              /%td= link_to (evaluate_course.stucourse.programme_coursetype_name+" - " +(evaluate_course.subject_id.blank? ? (t 'exam.evaluate_course.invite_lec_topic')+" : "+evaluate_course.invite_lec_topic : evaluate_course.subjectevaluate.subject_list)), exam_evaluate_course_path(evaluate_course)
+              %td= link_to (evaluate_course.stucourse.programme_coursetype_name+" - "+evaluate_course.subjectevaluate.subject_list), exam_evaluate_course_path(evaluate_course)
+              %td= evaluate_course.evaluate_date.blank? ? "-" : evaluate_course.evaluate_date.try(:strftime, "%d %b %Y") 
+              %td=h evaluate_course.staff_id.blank? ? (t 'exam.evaluate_course.no_staff')+evaluate_course.invite_lec : evaluate_course.staffevaluate.try(:staff_with_rank)
+
+        
+    - @evaluate_courses.group_by(&:invite_lec_topic).each do |topic, all_evaluations|
+      - all_evaluations.group_by(&:invite_lec).each do |invite_lec, evaluations|
+        - if invite_lec!=""
+          - for evaluate_course in evaluations
+            %tr
+              %td=link_to topic, exam_evaluate_course_path(evaluate_course)
+              %td=evaluate_course.evaluate_date.blank? ? "-" : evaluate_course.evaluate_date.try(:strftime, "%d %b %Y") 
+              %td=evaluate_course.invite_lec_topic

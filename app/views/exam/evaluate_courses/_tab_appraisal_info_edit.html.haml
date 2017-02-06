@@ -52,7 +52,10 @@
         = f.label t 'exam.evaluate_course.invite_lec_topic', for: :invite_lec_topic
     .col-md-6
       .span_staff{:style=>"display: block;"}
-        = f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :programmelist_subject, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+        - if current_user.userable_type=='Student'
+          = f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :module_subject_list, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'auto'}
+        - else
+          = f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :programmelist_module_subject, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'auto'}
       .span_invited{:style=>"display: none;"}
         = f.text_field :invite_lec_topic, class: 'form-control mandatory'
       
