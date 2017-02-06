@@ -2290,7 +2290,8 @@ en:
     verification: Verification
     general_teaching_technique: General Teaching Technique
     instructions: Instructions
-    instruction1: Tick ( / ) at related score according to provided scale
+    instruction1: Tick ( / ) at related score according to provided scale.
+    instruction1b: Check at related score according to provided scale.
     instruction2: Include review where appropiate
     scale: Measurement Scale
     excellent: Excellent
@@ -2354,6 +2355,7 @@ en:
     grade: Grade
     performance: Performance
     evaluated_instructor: Evaluated Instructor
+    quality_division: Competence Development and Quality Control Division
 
   asset:
     title: Assets

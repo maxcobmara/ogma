@@ -393,11 +393,13 @@
       - if @average_instructor.grade=="A"
         %th.active.centre 85 - 100
         %th.active.centre A
-        %th.active.centre=t('average_instructor.excellent')
+        %th.active.centre=t('average_instructor.very_good')
+        /=t('average_instructor.excellent')
       - else
         %td.centre 85 - 100
         %td.centre A
-        %td.centre=t('average_instructor.excellent')
+        %td.centre=t('average_instructor.very_good')
+        /=t('average_instructor.excellent')
     %tr
       - if @average_instructor.grade=="B"
         %th.active.centre 70 - 84
