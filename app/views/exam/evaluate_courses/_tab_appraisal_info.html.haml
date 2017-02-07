@@ -22,7 +22,7 @@
       = t 'exam.evaluate_course.subject_id'
     - else
       = t 'exam.evaluate_course.invite_lec_topic'
-  %dd
+  %dd{style: 'padding-left: 70px;'}
     - unless @evaluate_course.subject_id.blank? 
       =h @evaluate_course.college.code=='amsas' ? @evaluate_course.subjectevaluate.module_subject_list2 : @evaluate_course.subjectevaluate.subject_list
     - else
