@@ -3829,7 +3829,7 @@ en:
       appraisal_details: Appraisal Details
       invite_lec: Invitation Lecturer
       invite_lec_topic: Topic
-      comment: Remarks / Comment
+      comment: Remarks/Comment
       description: Description
       score: Score
       objective_achieved: "Achievement of lesson objectives."
@@ -3864,10 +3864,10 @@ en:
       total_scores: Total Scores
       average_scores: Average Scores
       student_verification: Student Verification
-      signatory: Signatory
+      signatory: "Signatory     "
       full_name: "Full Name    "
       rank_id: "Rank     "
-      mykad_no: I/C No
+      mykad_no: Identification/C No
     
     average_course:
       title: Analysis Data for Average Score of Evaluation for Lecturer

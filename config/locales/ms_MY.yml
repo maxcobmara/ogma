@@ -3747,7 +3747,7 @@ ms_MY:
       appraisal_details: Butiran Penilaian
       invite_lec: Pengajar Jemputan
       invite_lec_topic: Topik
-      comment: Catatan / Komen
+      comment: "Catatan / Komen      "
       description: Perkara
       score: Skor
       objective_achieved: "Pencapaian objektif pelajaran."
@@ -3785,7 +3785,7 @@ ms_MY:
       signatory: Tandatangan
       full_name: Nama Penuh
       rank_id: Pangkat
-      mykad_no: No K/Pengenalan
+      mykad_no: "No K/Pengenalan  "
       
     average_course:
       title: Data Analisa Skor Purata Penilaian Pensyarah
