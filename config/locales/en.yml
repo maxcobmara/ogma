@@ -3819,7 +3819,7 @@ en:
       staff_id2: Lecturer Name
       course_id: Programme
       course_id2: Course
-      course_form: Course/Programme Name
+      course_form: "Course / Programme   "
       subject_id: Module / Subject
       subject_id2: Module / Subject
       programme_subject: "Programme - Subject"
@@ -3872,25 +3872,25 @@ en:
       title: Analysis Data for Average Score of Evaluation for Lecturer
       new: New Data Analysis for Average Score of Evaluation for Lecturer
       edit: Edit Data Analysis for Average Score of Evaluation for Lecturer
-      lecturer_id: Lecturer
+      lecturer_id: "Lecturer Name    "
       programme_id: Programme
-      dissatisfaction: General Dissactifaction
+      dissatisfaction: General Dissatisfaction
       recommend_for_improvement: Recommendations for Improvement
-      lesson_content: Lesson Content
+      lesson_content: "Lesson Content            "
       evaluation_category: Evaluation Category
       support_justify: Support Justification
       principal_id: Verified by
       principal_date: Date
-      subject_id: Lesson Title
+      subject_id: "Lesson Title     "
       delivery_quality: Quality of Delivery
-      lecturer_knowledge: Knowledge of Lecturer
+      lecturer_knowledge: "Knowledge of Lecturer  "
       organisation: Organisation
       expertise_qualification: Expertise/ Qualification
       
       criteria_notes: "Evaluation Criteria QUALIFIED or NOT QUALIFIED is based on the following 3 aspects whereby average of each aspect must not less than 5:"
-      icno: IC No
-      rank_position: Rank/Position
-      total_students: Total of Students
+      icno: "I/C No  "
+      rank_position: "Rank / Position   "
+      total_students: Students Total
       signatory: Signatory
       qualified: Qualified
       not_qualified: Not Qualified

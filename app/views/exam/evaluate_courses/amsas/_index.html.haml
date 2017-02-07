@@ -33,18 +33,17 @@
         
     - else
       /amsas lecturer
-      - evaluate_courses.group_by(&:subject_id).each do |subject, all_evaluations|  
+      - evaluate_courses.where.not(staff_id: nil).group_by(&:subject_id).each do |subject, all_evaluations|  
         - all_evaluations.group_by(&:staff_id).sort.each do |lecturer, evaluations|
-          - if lecturer
-            %tr
-              %td.group{colspan: 3}
-                =Staff.find(lecturer).try(:staff_with_rank)+" | "+(evaluations.first.stucourse.programme_list+" - " +(evaluations.first.subject_id.blank? ? (t 'exam.evaluate_course.invite_lec_topic')+" : "+evaluations.first.invite_lec_topic : evaluations.first.subjectevaluate.subject_list))
-                - analysis=AverageCourse.where(subject_id: evaluations.first.subject_id).where(lecturer_id: lecturer)
-                |
-                - if analysis.count==0
-                  = link_to (t 'exam.average_course.analyse_average_data'), new_exam_average_course_path(subject_id: evaluations.first.subject_id, lecturer_id: lecturer)
-                - else
-                  = link_to (t 'exam.average_course.view_analysis_data'), exam_average_course_path(analysis.first)
+          %tr
+            %td.group{colspan: 3}
+              =Staff.find(lecturer).try(:staff_with_rank)+" | "+(evaluations.first.stucourse.programme_list+" - " +(evaluations.first.subject_id.blank? ? (t 'exam.evaluate_course.invite_lec_topic')+" : "+evaluations.first.invite_lec_topic : evaluations.first.subjectevaluate.subject_list))
+              - analysis=AverageCourse.where(subject_id: evaluations.first.subject_id).where(lecturer_id: lecturer)
+              |
+              - if analysis.count==0
+                = link_to (t 'exam.average_course.analyse_average_data'), new_exam_average_course_path(subject_id: evaluations.first.subject_id, lecturer_id: lecturer)
+              - else
+                = link_to (t 'exam.average_course.view_analysis_data'), exam_average_course_path(analysis.first)
 
           - for evaluate_course in evaluations
             %tr

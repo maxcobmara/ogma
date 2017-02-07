@@ -3810,7 +3810,7 @@ ms_MY:
       rank_position: Pangkat/Jawatan
       total_students: Jumlah Pelatih
       signatory: Tandatangan
-      qualified: Layak
+      qualified: "Layak        "
       not_qualified: Tidak Layak
       principal_name: Nama Penuh
       score_rounded: "Nota: Skor Purata dibulatkan kepada nilai skor (rendah) yang terdekat."
