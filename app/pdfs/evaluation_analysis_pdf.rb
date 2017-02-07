@@ -75,8 +75,8 @@ class Evaluation_analysisPdf < Prawn::Document
       horizontal_line 108, 490, :at => 603 #pensyarah
       horizontal_line 60, 180, :at => 583
       horizontal_line 273, 490, :at => 583
-      horizontal_line 76, 490, :at => 563
-      horizontal_line 129, 490, :at => 543
+      horizontal_line 79, 490, :at => 563
+      horizontal_line 131, 490, :at => 543
       horizontal_line 135, 490, :at => 493 #program
       horizontal_line 185, 205, :at => 487 #asas box
       horizontal_line 185, 205, :at => 472
@@ -106,13 +106,13 @@ class Evaluation_analysisPdf < Prawn::Document
   def table_detailing
     data=[[{content: "<u>#{I18n.t('exam.average_course.lecturer_data').upcase}</u>", colspan: 9}],
           [{content: "1.  #{I18n.t('exam.average_course.lecturer_id')} : #{@average_course.lecturer.try(:staff_with_rank) }", colspan: 9}],
-          [{content: "2.  #{I18n.t('exam.average_course.icno')} : #{@average_course.lecturer.try(:formatted_mykad) }", colspan: 3}, {content: " #{I18n.t('staff.rank_id')}/Jawatan : #{@average_course.lecturer.try(:rank).try(:name)}/#{@average_course.lecturer.try(:positions).try(:first).name}", colspan: 6}],
+          [{content: "2.  #{I18n.t('exam.average_course.icno')} : #{@average_course.lecturer.try(:formatted_mykad) }", colspan: 3}, {content: " #{I18n.t('exam.average_course.rank_position')} : #{@average_course.lecturer.try(:rank).try(:name)}/#{@average_course.lecturer.try(:positions).try(:first).name}", colspan: 6}],
           [{content: "3.  #{I18n.t('exam.average_course.organisation')} : #{@average_course.organisation}", colspan: 9}], 
           [{content: "4.  #{I18n.t('exam.average_course.expertise_qualification')} : #{@average_course.expertise_qualification}", colspan: 9}],[{content: "", colspan: 9}],
           [{content: "<u>#{I18n.t('exam.average_course.course_data').upcase}</u>", colspan: 9}],
           [{content: "5.  #{@average_course.college.code=='amsas' ? I18n.t('exam.evaluate_course.course_form') :  I18n.t('exam.evaluate_course.course_id')} : #{@average_course.subject.root.name}", colspan: 9}],
           ["6.  #{I18n.t('exam.average_course.course_type')} : ","","","#{@average_course.subject.root.course_type=='Asas' ? '/' : ' '}","Asas", "#{@average_course.subject.root.course_type=='Pertengahan' ? 'BBB' : ' '}","Pertengahan", "#{@average_course.subject.root.course_type=='Lanjutan' ? 'CCC' : ' '}", "Lanjutan"],
-          [{content: "7.  #{I18n.t('exam.average_course.total_students')} : #{@evaluator_count} / #{@total_student}", colspan: 9}],
+          [{content: "7.  #{I18n.t('exam.average_course.total_students')} :  #{@evaluator_count} / #{@total_student}", colspan: 9}],
           [{content: "8.  #{I18n.t('training.programme.level')} :  ", colspan: 2},"PEG","#{@average_course.subject.root.level=='peg' ? '/' : ''}","LLP","#{@average_course.subject.root.level=='llp' ? '/' : '' }", {content: "", colspan: 3}],[{content: "", colspan: 9}],
           [{content: "<u>#{I18n.t('exam.average_course.evaluation_analysis_data').upcase}</u>", colspan: 9}],
           [{content: "9.  #{I18n.t('exam.average_course.subject_id') } : #{@average_course.subject.subject_list}", colspan: 9}],
@@ -197,14 +197,14 @@ class Evaluation_analysisPdf < Prawn::Document
       horizontal_line 223, 251, :at => 467 #lesson_content
       vertical_line 467, 482, :at => 223
       vertical_line 467, 482, :at => 251
-      horizontal_line 122, 152, :at => 442 #box layak
-      horizontal_line 122, 152, :at => 427
-      vertical_line 427, 442, :at => 122
-      vertical_line 427, 442, :at => 152
-      horizontal_line 192, 222, :at => 442 #box tak layak
-      horizontal_line 192, 222, :at => 427
-      vertical_line 427, 442, :at => 192
-      vertical_line 427, 442, :at => 222
+      horizontal_line 130, 156, :at => 442 #box layak
+      horizontal_line 130, 156, :at => 427
+      vertical_line 427, 442, :at => 130
+      vertical_line 427, 442, :at => 156
+      horizontal_line 220, 246, :at => 442 #box tak layak
+      horizontal_line 220, 246, :at => 427
+      vertical_line 427, 442, :at => 220
+      vertical_line 427, 442, :at => 246
       horizontal_line 139, 490, :at => 398 #support_justify
       horizontal_line 0, 490, :at => 385
       horizontal_line 0, 490, :at => 373
@@ -226,7 +226,7 @@ class Evaluation_analysisPdf < Prawn::Document
           [{content: "", colspan: 2}], [{content: "<b><u>#{I18n.t('exam.average_course.evaluation_summary').upcase}</u></b>", colspan: 2}], [{content: "", colspan: 2}],
           [{content: "13.  #{I18n.t('exam.average_course.criteria_notes')}", colspan: 2}], ["","a.      #{I18n.t('exam.average_course.lecturer_knowledge')}      <b>#{@average_course.lecturer_knowledge}</b>"],
          ["","b.      #{I18n.t('exam.average_course.delivery_quality')}              <b>#{@average_course.delivery_quality}</b>"], ["","c.      #{I18n.t('exam.average_course.lesson_content')}      <b>#{@average_course.lesson_content}</b>"], 
-          [{content: "14.  #{I18n.t('exam.average_course.evaluation_category')} :  #{@average_course.evaluation_category==true ? '    /    ' : '         '}   #{I18n.t('exam.average_course.qualified')} #{@average_course.evaluation_category==false ? '    /    ' : '         '}    #{ I18n.t('exam.average_course.not_qualified')}", colspan: 2}], [""],
+          [{content: "14.  #{I18n.t('exam.average_course.evaluation_category')} :  #{@average_course.evaluation_category==true ? '     /    ' : '          '}   #{I18n.t('exam.average_course.qualified')} #{@average_course.evaluation_category==false ? '    /    ' : '         '}    #{ I18n.t('exam.average_course.not_qualified')}", colspan: 2}], [""],
          [{content: "15.  <b>#{I18n.t('exam.average_course.support_justify')}</b> : #{@average_course.support_justify}", colspan: 2}], [{content: "", colspan: 2}], [{content: "<b>#{I18n.t('exam.average_course.principal_verification').upcase}: </b>", colspan: 2}],
          [{content: "#{I18n.t('exam.average_course.signatory')} :  ", colspan: 2}], [{content: "#{I18n.t('exam.evaluate_course.full_name')} : #{@average_course.verifier.try(:staff_with_rank)}", colspan: 2}], [{content: "#{I18n.t('staff.rank_id')} : #{@average_course.verifier.try(:rank).try(:name)}", colspan: 2}], [{content: "#{I18n.t('exam.average_course.principal_date')} : #{@average_course.principal_date.try(:strftime, '%d/%m/%Y')}", colspan: 2}] ]
     table(data, :column_widths => [70,420], :cell_style => { :size => 11, :inline_format => true, :padding => [0, 0, 0, 0]})  do

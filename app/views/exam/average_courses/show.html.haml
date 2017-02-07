@@ -45,10 +45,10 @@
         .col-md-8.col-md-offset-1
           %dl.dl-horizontal
             %dt=t 'exam.average_course.dissatisfaction'
-            %dd=@average_course.dissatisfaction
+            %dd{style: 'padding-left: 70px;'}=@average_course.dissatisfaction
             
             %dt=t 'exam.average_course.recommend_for_improvement'
-            %dd=@average_course.recommend_for_improvement
+            %dd{style: 'padding-left: 70px;'}=@average_course.recommend_for_improvement
             
             %br
             .col-md-12
@@ -85,7 +85,7 @@
               %hr
 
             %dt=t 'exam.average_course.support_justify'
-            %dd=@average_course.support_justify
+            %dd{style: 'padding-left: 70px;'}=@average_course.support_justify
             
             %dt=t 'exam.average_course.principal_id'
             %dd=@average_course.verifier.try(:staff_with_rank)
