@@ -3784,6 +3784,7 @@ ms_MY:
       student_verification: Pengesahan Pelatih
       signatory: Tandatangan
       full_name: Nama Penuh
+      rank_id: Pangkat
       mykad_no: No K/Pengenalan
       
     average_course:
@@ -3825,6 +3826,7 @@ ms_MY:
       principal_verification: Pengesahan Ketua Sekolah
       enter_avgscore: Isikan skor purata dari para 10
       course_type: Jenis Kursus
+      signatory: Tandatangan
 
     examanalysis:
       title: Analisa Peperiksaan Mengikut Kertas Peperiksaan

@@ -3865,7 +3865,8 @@ en:
       average_scores: Average Scores
       student_verification: Student Verification
       signatory: Signatory
-      full_name: Full Name
+      full_name: "Full Name    "
+      rank_id: "Rank     "
       mykad_no: I/C No
     
     average_course:
@@ -3880,7 +3881,7 @@ en:
       evaluation_category: Evaluation Category
       support_justify: Support Justification
       principal_id: Verified by
-      principal_date: Date
+      principal_date: "Date  "
       subject_id: "Lesson Title     "
       delivery_quality: Quality of Delivery
       lecturer_knowledge: "Knowledge of Lecturer  "
@@ -3907,6 +3908,7 @@ en:
       principal_verification: Principal Verification
       enter_avgscore: Enter average score from para 10
       course_type: Course Type
+      signatory: "Signatory     "
       
     examanalysis:
       title: Examination Analysis by Examination Paper

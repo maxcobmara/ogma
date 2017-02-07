@@ -97,7 +97,7 @@ class Evaluation_reportPdf < Prawn::Document
                      "#{I18n.t('exam.evaluate_course.question')}4","#{I18n.t('exam.evaluate_course.question')}5","#{I18n.t('exam.evaluate_course.question')}6",
                      "#{I18n.t('exam.evaluate_course.question')}7","#{I18n.t('exam.evaluate_course.question')}8","#{I18n.t('exam.evaluate_course.question')}9", "#{I18n.t('exam.evaluate_course.total')}"]
             evaluate_courses.each do |ec|
-                eval_content << ["#{counter += 1}","#{ec.evaluate_date.strftime('%d/%m/%Y')}<br><i><a href='http://localhost:3003/exam/evaluate_courses/#{ec.id}/courseevaluation.pdf?locale=ms_MY'> >#{I18n.t('view')}</a></i>",
+                eval_content << ["#{counter += 1}","#{ec.evaluate_date.strftime('%d/%m/%Y')}<br><i><a href='#{Rails.root}/exam/evaluate_courses/#{ec.id}/courseevaluation.pdf?locale=ms_MY'> >#{I18n.t('view')}</a></i>",
                                               "#{ec.staff_id.blank? ? ec.invite_lec : ec.staffevaluate.try(:staff_with_rank)}",ec.ev_obj, ec.ev_knowledge, ec.ev_deliver, ec.ev_content, ec.ev_tool, ec.ev_topic, ec.ev_work, ec.ev_note, ec.ev_assessment, @total_line[counter-1] ]
            end 
            eval_content << [{content: "#{I18n.t('exam.evaluate_course.total_scores')}", colspan: 3}, @sum_obj[no], @sum_knowledge[no],                       
