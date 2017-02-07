@@ -525,7 +525,7 @@ class Averageinstructor_evaluationPdf < Prawn::Document
   end
   
   def table_signatory
-    data=[["#{I18n.t('instructor_appraisal.signatory')}<br>(#{I18n.t('average_instructor.evaluated_instructor')})", "", "#{I18n.t('instructor_appraisal.signatory')}<br>(#{I18n.t('average_instructor.quality_division')})"],[ "(#{I18n.t('instructor_appraisal.name')}: #{@average_instructor.instructor.staff_with_rank})", "", "(#{I18n.t('instructor_appraisal.name')}: #{@average_instructor.evaluator.staff_with_rank})"], [ "#{I18n.t('instructor_appraisal.date2')}: #{@average_instructor.evaluate_date.try(:strftime, '%d-%m-%Y')}", "", "#{I18n.t('instructor_appraisal.date2')}: #{@average_instructor.evaluate_date.try(:strftime, '%d-%m-%Y')}"]]
+    data=[["#{I18n.t('exam.average_course.signatory')}<br>(#{I18n.t('average_instructor.evaluated_instructor')})", "", "#{I18n.t('instructor_appraisal.signatory')}<br>(#{I18n.t('average_instructor.quality_division')})"],[ "(#{I18n.t('instructor_appraisal.name')}: #{@average_instructor.instructor.staff_with_rank})", "", "(#{I18n.t('instructor_appraisal.name')}: #{@average_instructor.evaluator.staff_with_rank})"], [ "#{I18n.t('instructor_appraisal.date2')}: #{@average_instructor.evaluate_date.try(:strftime, '%d-%m-%Y')}", "", "#{I18n.t('instructor_appraisal.date2')}: #{@average_instructor.evaluate_date.try(:strftime, '%d-%m-%Y')}"]]
     table(data, :column_widths => [195, 30, 265],  :cell_style => {:size=>10, :borders => [], :inline_format => :true, :padding =>[0,0,0,0]}) do
       row(0).height=70
       row(0).column(0).style :align => :center
