@@ -23,10 +23,10 @@ class CourseevaluationPdf < Prawn::Document
         move_down 1
         text "#{I18n.t('exam.evaluate_course.title')}"
       else
-        draw_text "PPL APMM", :at => [80, 85], :style => :bold
+        draw_text "PPL APMM", :at => [70, 85], :style => :bold
         #draw_text "NO.DOKUMEN: BK-KKM-KS-04-04", :at => [15, 60], :style => :bold
-	draw_text "NO.DOKUMEN: BK-KKM-04-03", :at => [35, 60], :style => :bold
-        draw_text "BORANG PENILAIAN PENSYARAH", :at => [20, 45], :style => :bold
+	draw_text "NO.DOKUMEN: BK-KKM-04-03", :at => [25, 60], :style => :bold
+        draw_text "BORANG PENILAIAN PENSYARAH", :at => [10, 45], :style => :bold
       end
     end
     
@@ -59,7 +59,7 @@ class CourseevaluationPdf < Prawn::Document
     table_comment
     table_signatory
     if college.code=='amsas'
-      move_down 20
+      move_down 40
       table_ending
     end
     page_count.times do |i|
@@ -157,7 +157,7 @@ class CourseevaluationPdf < Prawn::Document
     table(data, :column_widths => [480],:cell_style => {:inline_format => :true, :size=>10, :borders => [], :padding => [7,0,0,20]}) do
       a = 0
       b = 1
-      row(1).height = 70
+      row(1).height = 40
       while a < b do
         a=+1
       end
@@ -166,9 +166,9 @@ class CourseevaluationPdf < Prawn::Document
   
   def table_signatory
     stroke do
-      horizontal_line 86, 300, :at => 91
-      horizontal_line 84, 300, :at => 71
-      horizontal_line 115, 300, :at => 51
+      horizontal_line 86, 300, :at => 121
+      horizontal_line 84, 300, :at => 101
+      horizontal_line 115, 300, :at => 81
     end
     data=[ ["#{I18n.t('exam.evaluate_course.student_verification').upcase}:", ""],
            ["#{I18n.t('exam.evaluate_course.signatory')}: ", ""],
