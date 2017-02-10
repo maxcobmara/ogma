@@ -47,7 +47,7 @@ gem "whenever", "~> 0.9.2", require: false
 gem 'ruby_parser', '~> 3.6.3' #requirement for graphviz
 gem "roo"
 gem 'chosen-rails', '~> 1.4', '>= 1.4.3'
-
+gem "ckeditor"
 
 
 

@@ -37,7 +37,9 @@
       .col-sm-2.control-label
         = f.label :question
       .col-md-6
-        = f.text_area :question, :id => 'myNicEditor', :style=>"width: 545px;"
+        /= f.text_area :question, :id => 'myNicEditor', :style=>"width: 545px;"
+        /= f.cktext_area :question, :style=>"width: 545px;"
+        = f.text_area :question, :id => 'myfield', :style=>"width: 545px;"
 
   .p#MCQ.box
     /START of MCQ section ----------------------------------------
@@ -144,6 +146,7 @@
   /= render :partial => 'status', :locals => {:f => f} if @examquestion.qstatus != "Approved"
 
 :javascript
+  //NicEditor
   //<![CDATA[
     bkLib.onDomLoaded(function() {
         nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('myNicEditor')));
@@ -152,6 +155,36 @@
         nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_2_subanswer')));
     });
   //]]>
+  
+  //CKEditor 8Feb2017 onwards - customised (some toolbars not required as this form is pre-formated with: image uploader(with preview) +question must adhere with certain rules like image position, answers display etc (in exampaper PDF).
+  //Solution to - unsupported clipboard HTML format copied from Ms Word (Win 32)
+  CKEDITOR.replace( 'myfield', {
+    toolbarGroups: [
+      { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+      { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+      { name: 'styles', groups: [ 'styles' ] },
+      { name: 'colors', groups: [ 'colors' ] },
+      { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+      { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+      { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+      { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+      { name: 'forms', groups: [ 'forms' ] },
+      { name: 'links', groups: [ 'links' ] },
+      { name: 'insert', groups: [ 'insert' ] },
+      { name: 'tools', groups: [ 'tools' ] },
+      { name: 'others', groups: [ 'others' ] },
+      { name: 'about', groups: [ 'about' ] }
+    ],
+
+    removeButtons: 'Save,Templates,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,BulletedList,NumberedList,Indent,Outdent,CreateDiv,BGColor,Styles,Format,Font,Blockquote,Language,BidiLtr,BidiRtl,Anchor,Unlink,Link,Image,Flash,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Preview,NewPage,Print,Table'
+  });
+  
+  
+
+  
+  
+  
+  
 
 :javascript
   function PreviewImage() {
