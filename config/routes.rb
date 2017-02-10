@@ -1,5 +1,6 @@
 Ogma::Application.routes.draw do
 
+  mount Ckeditor::Engine => '/ckeditor'
   namespace :staff do
     resources :staffs, as: :infos do
       member do

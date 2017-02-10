@@ -193,6 +193,10 @@ class Exam_paperPdf < Prawn::Document
     draw_text ":  #{@exam.full_marks}", :at => [200, 540], :size => 11
     draw_text ":  #{@exam.full_marks/2}", :at => [200, 520], :size => 11
     table_instructions_amsas
+ 
+    #CKEditor - 10Feb2017
+    #checking_text_editor
+ 
   end
   
   def cover_header
@@ -323,20 +327,34 @@ class Exam_paperPdf < Prawn::Document
       q = Examquestion.find(@seq_questionid[count2])
       
       #check COMPLETE question set HEIGHT, set default as 180 if less than 180
-      q_string=q.question.strip
-      lines=q_string.size/89
-      mod_lines=q_string.size%89
-      if mod_lines==0
-        aa=lines*10+10
-      else #got balance
-        if lines < 1
-          aa=10
-       elsif lines==1
-         aa=lines*10+10
-       else
-          aa=(lines+1)*10+10
-        end
-      end   
+      
+#       #question HEIGHT --> aa
+#       # NOTE 8Feb2017 - start
+#       #q_string=q.question.strip 
+         #10Feb2017- texteditor_pdf shall :
+         #(1)remove &nbsp; (2)replace &hellip; with 3dots (3)replace tag for font color & size (4)replace <p></p> with \n, (5)replace <strong>with <bold>
+         q_string=@view.texteditor_pdf(q.question) 
+#       langkau=q_string.count("\n") 
+#       lines=q_string.size/89
+#       mod_lines=q_string.size%89
+#       if mod_lines==0
+#         aa=lines*10+10
+#       else #got balance
+#         if lines < 1
+#           aa=10
+#        elsif lines==1
+#          aa=lines*10+10
+#        else
+#           aa=(lines+1)*10+10
+#         end
+#       end   
+#       aa+=langkau*10#+36
+#       # NOTE 8Feb2017 - end - after replacing unsupported html tags (<p></p>) with (\n), add 'langkau' to total lines for this question lines (aa)
+#       #bigger font size require bigger height (+20+16+18)
+      
+      #Replace above question HEIGHT --> aa
+      aa=@view.pdf_question_height(q_string)
+      
       if q.diagram.exists? then
         imageheight=130+5+10 #image caption line(5+10)
       else
@@ -369,21 +387,35 @@ class Exam_paperPdf < Prawn::Document
       move_down 20
 
       #display question
+      ## NOTE: 10Feb2017: OPTION 1 - using this require langkau to be define in the correct (max) font size
       text_box q_string, :at => [30, cursor+8], :width => 450, :height => 10, :overflow => :expand, :align => :justify, :inline_format => true
+      move_down aa
+      ## NOTE: 10Feb2017: OPTION 2 - failed to start from x position = 31
+      #text "cak mana keluar #{q_string}", :inline_format => true
 #       bounding_box([30, cursor+8], :width => 450) do
 #           formatted_text_box([{ :text => q_string, :align => :justify,  :width => 450, :height => 40,  :overflow => :expand}])
 #       end
-      move_down aa
+      
  
       #display answerchoices(i, ii, ii, iv) & answers option(A, B, C, D)
-      if q.answerchoices.count > 0
+      data_abcd_1234=[]
+      if q.answerchoices.where.not(description: "").count > 0
         q.answerchoices.sort_by(&:item).each do |ac|
-          text "   #{ac.item}  #{ac.description}", :indent_paragraphs => 40
+          #text "   #{ac.item}  #{ac.description}", :indent_paragraphs => 40
+	  data_abcd_1234 << ["", "#{ac.item}.", "#{ac.description}"]
         end
+	data_abcd_1234 << ["","",""]
         move_down 10
       end
+      data_abcd=[]
       q.examanswers.sort_by(&:item).each do |eans|
-         text "   #{eans.item}  #{eans.answer_desc}", :indent_paragraphs => 40
+        #text "   #{eans.item}  #{eans.answer_desc}", :indent_paragraphs => 40
+        data_abcd_1234 << ["", "#{eans.item}.", "#{eans.answer_desc}"]
+      end
+      table(data_abcd_1234, :column_widths => [30,20, 450], :cell_style => {:size=>12, :borders => [], :inline_format => :true, :padding => [0,0,0,0]}) do
+	  columns(1).align=:left
+	  columns(2).align=:left
+	  rows(4).height=10
       end
       move_down 10
 
@@ -666,5 +698,84 @@ class Exam_paperPdf < Prawn::Document
        end
      end #ENDING - @tosort_seqid.count-1
    end
+   
+  def checking_text_editor
+    ##########checking section#############start########10Feb2017
+    text "ACTUAL DATA:======================================================="
+    move_down 10
+    text "#{@exam.examquestions.first.question}"
+    
+    text "IN FULL (SPLIT BY </span>}:=============================================="
+    move_down 10
+    text "#{span_arr=@exam.examquestions.first.question.split("</span>")}"
+    
+    test_full=""
+    for spn in span_arr
+      if spn.include?("<span")
+	####size#######
+	extsizes=spn.scan('<span style="font-size:small">')
+	extsizem=spn.scan('<span style="font-size:medium">')
+	extsizel=spn.scan('<span style="font-size:large">')
+	extsizexl=spn.scan('<span style="font-size:x-large">')
+	extsizing=spn.scan('<span style="font-size:')
+	extno=spn[/size:(.*?)"/,1]
+	size_str=spn
+	if extsizing !=[]
+	  if extsizem !=[] 
+            size_str=size_str.gsub!('<span style="font-size:medium">', '<font size="14">')+'</font>' 
+	  end
+	  if extsizexl !=[]
+	    size_str=size_str.gsub!('<span style="font-size:x-large">', '<font size="18">')+'</font>'
+	  end
+	  if extsizes !=[]
+	    size_str=size_str.gsub!('<span style="font-size:small">', '<font size="10">')+'</font>'
+	  end
+	  if extsizel !=[]
+	    size_str=size_str.gsub!('<span style="font-size:large">', '<font size="16">')+'</font>' 
+	  end
+	  if extno.to_i!=0
+	    size_str=size_str.gsub!(/<span style=\"font-size:#{extno}\">/, '<font size="'+extno+'">')+'</font>' 
+	  end
+	end
+	####size#######
+	#test_full+=size_str
+	####color######
+	extcolor=spn.scan('<span style="color:')
+	color_str=size_str
+	if extcolor !=[]
+	  color_codes='#'+color_str[/#(.*?)"/,1]
+	  if color_codes!=[]
+            text "kod warna je #{color_codes}"  
+	    color_str=color_str.gsub!(/<span style=\"color:#{color_codes}\">/, '<color rgb="'+color_codes+'">')+'</color>'
+	  end
+	end
+	####color######
+	test_full+=color_str
+      else
+        test_full+=spn
+      end
+    end 
+    
+    move_down 20
+    text "============TEST FULL SEMULA (After color & size rep) ================="
+    move_down 10
+    text "#{test_full}"
+    move_down 20
+    
+    text "========================FINAL ONE (start)========================"
+    move_down 10
+    text "#{@view.texteditor_pdf(@exam.examquestions.first.question)}", :inline_format => true
+    text "========================FINAL ONE (end)========================="
+    move_down 20
+    
+    text "<font size='20'>FON BESAR</font>", :inline_format => true
+    text "<color rgb='#000080'>FON BIRU</color>", :inline_format => true
+    text "SATU<sub> subbscipt ye</sub>", :inline_format => true
+    text "SATU<sup> superscccript yo</sup>", :inline_format => true
+    
+    text "---------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+    text("<color rgb='00ff00'>link: <font size='24' character_spacing='7.5'>please make</font> <color rgb='#0000ff'><u><link href='http://wiki.github.com/sandal/prawn/'>this</link></u></color> clickable.</color> Here we have A<color rgb='#0000ff'><sup><link href='http://wiki.github.com/sandal/prawn/'>superscript</link></sup></color> link and A<color rgb='#0000ff'><sub><link href='http://wiki.github.com/sandal/prawn/'> subscript</link></sub></color> link.", :inline_format => true)
+    ##########checking section#############end########10Feb2017     
+  end
  
 end
