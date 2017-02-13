@@ -9,24 +9,29 @@
   /MCQ Question:answerchoices & examanswers - start
   //if not exist at all OR exist but 1st item has no value-start (upto answerchoice.description)
   %b Question :
-  =simple_format(item.question)
+  /=simple_format(item.question)
+  = item.question.html_safe
   - if item.answerchoices.count != 0 && item.answerchoices[0].description!=""
-    - for answerchoice in item.answerchoices.sort_by{|x|x.item}
-      = answerchoice.item
-      = answerchoice.description
-      %br
+    %table
+      - for answerchoice in item.answerchoices.sort_by{|x|x.item}
+        %tr
+          %td{style: 'width: 25px; vertical-align: top;'}= answerchoice.item+"."
+          %td= answerchoice.description
     %br
   - if item.examanswers.count != 0 && item.examanswers[0].answer_desc!=""
-    - for examanswer in item.examanswers.sort_by{|y|y.item}
-      = examanswer.item
-      = examanswer.answer_desc
+    %table
+      - for examanswer in item.examanswers.sort_by{|y|y.item}
+        %tr
+          %td{style: 'width: 20px; vertical-align: top;'}= examanswer.item+"."
+          %td= examanswer.answer_desc
       %br
     %b Answer : 
     =h item.answer.to_s
             
 - elsif item.questiontype=="SEQ"
   /SEQ Question:shortessay (subquestions, submarks, subanswer) - start
-  =simple_format(item.question)
+  /=simple_format(item.question)
+  = item.question.html_safe
   - for shortessay in item.shortessays.sort_by{|x|x.item}
     %u= (t 'exam.examquestion.subquestion')+" "+shortessay.item+" :"
     %br
@@ -42,7 +47,8 @@
                 
 - elsif item.questiontype=="TRUEFALSE"
   /TRUEFALSE Question:boolean choices & boolean answers - start
-  =simple_format(item.question)
+  /=simple_format(item.question)
+  = item.question.html_safe
   %u= t 'exam.examquestion.booleanchoices'
   %br
   - for booleanchoice in item.booleanchoices.sort_by{|x|x.item}
@@ -58,6 +64,7 @@
          
 - else
   %b Question :
-  = simple_format(item.question)
+  /= simple_format(item.question)
+  = item.question.html_safe
   %b Answer : 
   %br=h item.answer

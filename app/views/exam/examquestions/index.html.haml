@@ -65,7 +65,8 @@
                   %td= question.topic.name
                   %td= question.questiontype
                   %td
-                    = simple_format(question.question)
+                    /= simple_format(question.question)
+                    = question.question.html_safe
                     /%td
                     %b= (t 'exam.examquestion.answer')
                     /MCQ start
