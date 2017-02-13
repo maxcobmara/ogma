@@ -68,20 +68,23 @@
                     /= simple_format(question.question)
                     = question.question.html_safe
                     /%td
+                    %br
                     %b= (t 'exam.examquestion.answer')
                     /MCQ start
                     - if question.questiontype=="MCQ"
                       %br
                       - if question.answerchoices.count != 0 && question.answerchoices[0].description!=""
-                        - for answerchoice in question.answerchoices.sort_by{|x|x.item}
-                          = answerchoice.item
-                          = answerchoice.description
-                          %br
-                        %br
-                      - for examanswer in question.examanswers.sort_by{|y|y.item}
-                        = examanswer.item
-                        = examanswer.answer_desc
-                        %br
+                        %table.table.examquestion
+                          - for answerchoice in question.answerchoices.sort_by{|x|x.item}
+                            %tr
+                              %td.item= answerchoice.item+"."
+                              %td.desc= answerchoice.description
+                      %table.table.examquestion
+                        - for examanswer in question.examanswers.sort_by{|y|y.item}
+                          %tr
+                            %td.item= examanswer.item+"."
+                            %td.desc= examanswer.answer_desc
+                        /%br
                                    
                     - elsif question.questiontype=="SEQ" 
                       /SEQ start
@@ -103,17 +106,20 @@
                       %br
                       %u= t 'exam.examquestion.booleanchoices'
                       %br
-                      - for booleanchoice in question.booleanchoices.sort_by{|x|x.item}
-                        = booleanchoice.item+". "
-                        = booleanchoice.description
-                        %br
+                      %table.table.examquestion
+                        - for booleanchoice in question.booleanchoices.sort_by{|x|x.item}
+                          %tr
+                            %td.item= booleanchoice.item+". "
+                            %td.desc= booleanchoice.description
                       %u= t 'exam.examquestion.booleananswers'
                       %br
-                      - for booleananswer in question.booleananswers.sort_by{|y|y.item}
-                        = booleananswer.item+". "
-                        = (t 'exam.examquestion.true1') if booleananswer.answer==true 
-                        = (t 'exam.examquestion.false1') if booleananswer.answer==false
-                        %br
+                      %table.table.examquestion
+                        - for booleananswer in question.booleananswers.sort_by{|y|y.item}
+                          %tr
+                            %td.item= booleananswer.item+". "
+                            %td.desc
+                              = (t 'exam.examquestion.true1') if booleananswer.answer==true 
+                              = (t 'exam.examquestion.false1') if booleananswer.answer==false
                     
                     /MCQ final ANSWER
                     - if question.questiontype=="MCQ"
@@ -123,8 +129,10 @@
                         
                     /answer field for other than MCQ & SEQ 
                     - if !(question.questiontype=="MCQ" || question.questiontype=="SEQ")
+                      - if question.questiontype=="ACQ" 
+                        %br
                       =(t 'exam.examquestion.answer')+" : "
-                      =h question.answer  
+                      =h question.answer
                     
                     - unless question.questiontype=="SEQ"
                       %br

@@ -216,7 +216,13 @@ table.ogma {
     tr.search_row {input {font-size:0.9em !important;}
       .search_row {display:none;}}
   }
+  table.examquestion{
+    border:collapse; border-spacing:0;border:0;
+    td.item{padding: 0; border: 0; width: 20px; height: 20px; font-size:1.2em;}
+    td.desc{padding: 0; border: 0; height: 20px;font-size:1.2em;}
+  }
 }
+
 
 /* shows */
 
