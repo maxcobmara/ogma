@@ -32,21 +32,25 @@
     %tr
       %td
         /=raw sanitize(simple_format(examquestion.question), :tags => %w(br) )
-        = simple_format(examquestion.question)
+        /= simple_format(examquestion.question)
+        =examquestion.question.html_safe
 
         /MCQ Question:answerchoices & examanswers - start
         - if examquestion.questiontype=="MCQ"
           //if not exist at all OR exist but 1st item has no value-start (upto answerchoice.description)
           - if examquestion.answerchoices.count != 0 && examquestion.answerchoices[0].description!=""
-            - for answerchoice in examquestion.answerchoices.sort_by{|x|x.item}
-              = answerchoice.item
-              = answerchoice.description
-              %br
+            %table
+              - for answerchoice in examquestion.answerchoices.sort_by{|x|x.item}
+                %tr
+                  %td{style: 'width: 25px; vertical-align: top;'}= answerchoice.item+"."
+                  %td= answerchoice.description
             %br
-          - for examanswer in examquestion.examanswers.sort_by{|y|y.item}
-            = examanswer.item
-            = examanswer.answer_desc
-            %br
+          %table
+            - for examanswer in examquestion.examanswers.sort_by{|y|y.item}
+              %tr
+                %td{style: 'width: 20px; vertical-align: top;'}= examanswer.item+"."
+                %td= examanswer.answer_desc
+          %br
           /MCQ Question:answerchoices & examanswers - end
 
           /SEQ Question:shortessay (subquestions, submarks, subanswer) - start

@@ -146,7 +146,12 @@ module ApplicationHelper
     ActionView::Base.full_sanitizer.sanitize(string, :tags => %w(img br p span), :attributes => %w(src style)).gsub!("&nbsp;", " ")
   end
   
-  #8-10Feb2017 : NOTE - for use in exam_paper.pdf
+  # NOTE -  Usages :
+  #(i) when para styling (eg. <p style="text-align:right">') exist, 
+  #     - split question by para styling using '4) hash_para_styling', for returned array ->use '1) text_editor_pdf'+'3) pdf_question_height_perline' to display question
+  #(ii) otherwise, - use '1) texteditor_pdf'+'2) pdf_question_height' to display question
+
+  #1) 8-13Feb2017 : NOTE - for use in exam_paper.pdf
   def texteditor_pdf(string)
     #allowed in prawn pdf - <b>, <i>, <u>, <strikethrough>, <sub>, <sup>, <font>, <color> and <link>
     str=""
@@ -165,41 +170,10 @@ module ApplicationHelper
     c=replace_strong(b)
   end
   
-  def replace_para_newline(string)
-    str=""
-    if string.include?("<p>") && string.include?("</p>")
-      w_para=string.split("<p>")
-      for para in w_para
-        if para.include?("</p>")
-	  aaa=para.gsub!("</p>", "\n")
-	  unless aaa.nil?
-            str+=aaa
-	  end
-	else
-	  str+=para
-	end
-      end
-    else
-      str=string
-    end
-    str
-  end
-  
-  def replace_strong(string)
-    str=""
-    if string.include?("<strong>") && string.include?("</strong>")
-      aaa=string.gsub!("<strong>", "<b>").gsub!("</strong>", "</b>")
-      str+=aaa unless aaa.nil?
-    else
-      str=string
-    end
-    str
-  end
-  
-  # NOTE: CKEditor - shall convert Word html data to simpler format 
+  #a) NOTE: CKEditor - shall convert Word html data to simpler format 
   #for eg. "NI" - extracted from Ms Word doc: Letter Head TPSB.docx
   #NicEditor - saved data as : "</p><p lang="en-MY" align="left" style="line-height: 100%"><font face="Liberation Serif, serif"><font style="font-size: 12pt"><font color="#000080"><font face="Arial Black, serif"><font style="font-size: 18pt"><b>NI</b></font></font></font></font></font></p></div>"
-  #CKEditor - saved data as : <span style="font-size:medium"><span style="color:#000080"><span style="font-size:x-large"><strong>NI</strong></span></span></span>
+  #CKEditor - saved data as : <span style="font-size:medium"><span style="color:#000080"><span style="font-size:x-large"><strong>NI</strong></</p>")span></span></span>
   def replace_span(string)
     span_arr=string.split("</span>")
     ####
@@ -253,12 +227,41 @@ module ApplicationHelper
     test_full
   end
   
-  #calculate total height required for ea question in exam_paper.pdf
+  #b) for any string, replace para with RETURN (Enter)
+  def replace_para_newline(string)
+    str=""
+    if string.include?("<p>") && string.include?("</p>")
+      w_para=string.split("<p>")
+      for para in w_para
+        if para.include?("</p>")
+	  aaa=para.gsub!("</p>", "\r")
+	  unless aaa.nil?
+            str+=aaa
+	  end
+	else
+	  str+=para
+	end
+      end
+    else
+      str=string
+    end
+    str
+  end
+  
+  #c) bold style to support inline format (pdf)
+  def replace_strong(string)
+    if string.include?("<strong>") && string.include?("</strong>")
+      string.gsub!("<strong>", "<b>").gsub!("</strong>", "</b>")
+    end
+    string
+  end
+  
+  #2)NOTE-calculate total height required for ea question in exam_paper.pdf
   def pdf_question_height(string)
     question_paras=texteditor_pdf(string).split("\n")
-    question_height=10
+    question_height=0
     for question_para in question_paras
-      question_height+=10 #basic per line
+      question_height+=10 #basic per para
       if question_para.size > 1 #eliminate ENTER
 	  para_length=strip_tags(question_para).size
 	  para_lines=strip_tags(question_para).size/89
@@ -297,12 +300,72 @@ module ApplicationHelper
 	      question_height+=10
 	    else
 	      question_height+=10*para_lines
+	      question_height+=10
 	    end
 	  end
 	  #------------------------------------------------
       end
     end
     question_height
+  end
+  
+  #3)NOTE-calculate total height required for A PARA in a question of exam_paper.pdf --> contains align left, right or center
+  def pdf_question_height_perline(string)
+    question_lines=texteditor_pdf(string).split("\n")
+    question_height=0
+    for question_line in question_lines
+      question_height+=5 #basic per line (gap, "\r")
+      if question_line.size > 1 #eliminate ENTER ("\r")
+	  #to collect all font sizes in EA LINE of a PARA
+	  oneline_fosz=[]
+	  pars=question_line.split("<font si")      
+	  for fontsize in pars                                 
+	    if fontsize.include?("ze")
+	      sz=fontsize[/ze="(.*?)"/,1]
+	      if sz=="small"
+	        oneline_fosz << 10
+	      elsif sz=="medium"
+	        oneline_fosz << 14
+	      elsif sz=="large"
+	        oneline_fosz << 16
+	      elsif sz=="x-large"
+	        oneline_fosz << 18
+	      else
+	        oneline_fosz << sz.to_i
+	      end
+            end
+	  end
+	  if oneline_fosz.count > 0
+            max_height=oneline_fosz.max
+	  else
+	    max_height=10
+	  end
+	  question_height+=max_height
+	  #------------------------------------------------
+      end
+    end
+    question_height
+  end
+  
+  #4) NOTE-replace text align styling (<p style="text-align:center">testing</p>.., left, right, justify) with array hashes ([{"center" => "testing"}, {"justify" => "test2"}])
+  #Usage: exam_paper(Pdf) - to be applied to EACH para in q.question -> when any of above styling exist, before use of 'texteditor_pdf' (per para)
+  def hash_para_styling(string)
+     arr=[]
+     bypara=string.split("</p>")
+     for bp in bypara
+       if bp.include?('style="text-align')
+         aligntype=bp[/text-align:(.*?)\"/,1]                                                                   #replace <p style="text-align:center">testing</p>,.. left, right, justify with return (Enter)
+         str = bp.gsub!(/<p(.*?)">/,"")+"\r"
+         arr << {"#{aligntype}" => str}
+       elsif bp.include?("<p>")                                                                                   #replace <p>testing</p> with "\n" (new line)
+         str = bp.gsub!("<p>", "")+"\n"
+         arr << {"justify"=> str}
+       else
+         str = bp+"\r"
+         arr << {"justify"=> str}                                                                                  #add return (Enter) to line without para formatting
+       end
+     end
+     arr
   end
   
 end

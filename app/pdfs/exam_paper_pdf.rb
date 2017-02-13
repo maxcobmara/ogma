@@ -1,6 +1,6 @@
 class Exam_paperPdf < Prawn::Document 
   def initialize(exam, view, college)
-    super({top_margin: 30, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 30, right_margin: 49, page_size: 'A4', page_layout: :portrait })
     @exam = exam
     @view = view
     @college = college
@@ -75,6 +75,8 @@ class Exam_paperPdf < Prawn::Document
       @mcq_seqpages=page_number
       @before_meq=page_number
       meq_part if @exam.examquestions.meqq.count > 0
+      @mcq_seq_meqpages=page_number
+      acq_part if @exam.examquestions.acqq.count > 0
     end  
   end
   
@@ -388,14 +390,32 @@ class Exam_paperPdf < Prawn::Document
 
       #display question
       ## NOTE: 10Feb2017: OPTION 1 - using this require langkau to be define in the correct (max) font size
-      text_box q_string, :at => [30, cursor+8], :width => 450, :height => 10, :overflow => :expand, :align => :justify, :inline_format => true
-      move_down aa
+#       text_box q_string, :at => [30, cursor+8], :width => 450, :height => 10, :overflow => :expand, :align => :justify, :inline_format => true
+#       move_down aa
       ## NOTE: 10Feb2017: OPTION 2 - failed to start from x position = 31
       #text "cak mana keluar #{q_string}", :inline_format => true
 #       bounding_box([30, cursor+8], :width => 450) do
 #           formatted_text_box([{ :text => q_string, :align => :justify,  :width => 450, :height => 40,  :overflow => :expand}])
 #       end
-      
+
+      ####12-14Feb2017
+      if q.question.include?('<p style="text-align:right">') || q.question.include?('<p style="text-align:center">')
+	 arr_paras=@view.hash_para_styling(q.question)
+	 #text "#{arr_paras}"
+	 for arr_item in arr_paras
+	   arr_item.each do |k,v|
+	     #text @view.texteditor_pdf(v), :inline_format => true, :align => k.to_sym
+	     text_box @view.texteditor_pdf(v), :at => [30, cursor], :width => 480, :height => 10, :overflow => :expand, :align => k.to_sym, :inline_format => true
+	     ind_height=@view.pdf_question_height_perline(v)
+	     move_down ind_height
+	   end
+	 end
+	 move_down 20
+       else
+	 text_box q_string, :at => [30, cursor+8], :width => 480, :height => 10, :overflow => :expand, :align => :justify, :inline_format => true
+	 move_down aa
+       end
+      ####12Feb2017-end
  
       #display answerchoices(i, ii, ii, iv) & answers option(A, B, C, D)
       data_abcd_1234=[]
@@ -560,7 +580,7 @@ class Exam_paperPdf < Prawn::Document
            move_down 20 if lines > 0
            0.upto(empty_lines) do |cnt|
              move_down 20
-             draw_text  "#{'_'*80}", :at => [30, cursor]
+             draw_text  "#{'_'*73}", :at => [30, cursor]
            end
            move_down 30  
            subq_count+=1
@@ -698,6 +718,126 @@ class Exam_paperPdf < Prawn::Document
        end
      end #ENDING - @tosort_seqid.count-1
    end
+   
+  #12Feb2017
+  ##########@@@@@@@@@@@@@@@@@@@@@@@@@
+  def acq_part
+    start_new_page 
+    move_down 20
+    text "Bahagian ACQ. Jawab SEMUA soalan", :align => :left, :size => 12, :style => :bold
+    move_down 10
+    
+    #########
+    sequ = @exam.sequ.split(",")
+    @acq_questionid = [] 
+    hash_acqid = Hash.new
+    @tosort_acqid = Hash.new 
+    select_questionid = []  
+    count = 0
+    #START-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH
+    for examquestion in @exam.examquestions.acqq
+      if sequ[count] != "Select" 
+        hash_acqid = {sequ[count] => examquestion.id}
+        @tosort_acqid = @tosort_acqid.merge(hash_acqid)
+      else
+        select_questionid << examquestion.id
+      end
+      count+=1
+    end 
+    #for question with sequence-SORT by its' sequence
+    @tosort_acqid.sort_by{|k,v|k.to_i}.each do |x,y|   #to overcome this sort result:1,10,11,2,3,4,5,6,7,8,9
+      @acq_questionid << y 
+    end 
+    #########
+    pagenos=[]
+    0.upto(@tosort_acqid.count-1) do |count2|
+      move_down 5
+      q = Examquestion.find(@acq_questionid[count2])
+      #text q.question
+      
+      #check COMPLETE question set HEIGHT, set default as 180 if less than 180
+      q_string=@view.texteditor_pdf(q.question) 
+      aa=@view.pdf_question_height(q_string)
+      
+      ###
+      if q.diagram.exists? then
+         imageheight=130+5+20
+       else
+         imageheight=0
+       end
+       qset_height=20+10+aa+20+imageheight
+       qset_height=70 if qset_height < 70 && imageheight==0
+       qset_height=225 if qset_height < 225 && imageheight==155
+       #text "qset_height = #{qset_height}  y = #{y}"
+      
+       #move to next page if space is inadequate for COMPLETE question set
+       if qset_height > y
+         start_new_page
+         move_down 20
+         #text "sebab tak muat meq"
+       end
+       
+       if q.diagram.exists? then
+	 draw_text "#{count2+1})", :at => [10, cursor-8]
+         image "#{Rails.root}/public#{q.diagram.url.split("?")[0]}", :position => :center, :height => 130
+         move_down 5
+         text "#{q.diagram_caption}", :align => :center, :style => :italic, :size => 11
+       else
+	 draw_text "#{count2+1})", :at => [10, cursor-20]
+       end
+       move_down 20
+       
+       if q.question.include?('<p style="text-align:right">') || q.question.include?('<p style="text-align:center">')
+	 arr_paras=@view.hash_para_styling(q.question)
+	 #text "#{arr_paras}"
+	 cnt=0
+	 ind_height=0
+	 acc_height=0
+	 gap=0
+	 for arr_item in arr_paras
+	   arr_item.each do |k,v|
+	     text_box @view.texteditor_pdf(v), :at => [30, cursor], :width => 480, :height => 10, :overflow => :expand, :align => k.to_sym, :inline_format => true
+	     ind_height=@view.pdf_question_height_perline(v)
+	     move_down ind_height
+	     #text @view.texteditor_pdf(v) , :inline_format => true, :align => k.to_sym
+	     gap+=10
+	     cnt+=1
+	   end
+	 end
+	 marks_line=cursor-gap
+       else
+	 text_box q_string, :at => [30, cursor+8], :width => 480, :height => 40, :overflow => :expand, :align => :justify, :inline_format => true
+	 marks_line=cursor-60
+       end
+       #text "#{y} #{cursor} #{gap} #{}"
+       draw_text "("+q.marks.to_i.to_s+" markah)",  :at => [455, marks_line]
+       #draw_text "("+q.marks.to_i.to_s+" markah)",  :at => [455, y]
+       move_down (aa)+20
+       
+       if pagenos.include?(page_number-1)==false 
+         pagenos << page_number-1
+         draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
+         draw_text "SULIT", :at => [500,0], :size => 10
+	 
+         if [1, 4].include?(@exam.subject.root_id)
+           draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+         elsif @exam.subject.root_id==2
+           draw_text "muka surat #{page_number-1-@mcq_seq_meqpages}", :at => [230,0], :size => 10
+         else
+           #3-Kejururawatan - separate (2 covers) (MCQ+MEQ or MEQ/SEQ cover), 
+           #5-Radiografi - separate cover too, but checking not required here coz Radiografi has no MEQ at all (refer Struktur Penilaian)
+           if @exam.subject.root.id==3 #Kejururawatan - 2 covers :  MCQ cover + MEQ/SEQ cover   - sample record ID 19
+             draw_text "muka surat #{page_number-1-@meqpages}", :at => [230,0], :size => 10 
+           else
+             draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10  #when there's only 1 cover exist   - sample record ID 84 (Pos Basik Koronari)
+           end
+         end
+	 
+       end
+     end #ENDING - @tosort_acqid.count-1
+      ###
+  end
+  ##########@@@@@@@@@@@@@@@@@@@@@@@@@
    
   def checking_text_editor
     ##########checking section#############start########10Feb2017

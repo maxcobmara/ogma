@@ -11,7 +11,8 @@
       %table
         %tr
           %td
-            =h simple_format(@examquestion.question)
+            /=h simple_format(@examquestion.question)
+            =h @examquestion.question.html_safe
 
             /MCQ Question:answerchoices & examanswers - start
             - if @examquestion.questiontype=="MCQ"
@@ -72,7 +73,7 @@
       %dt=t 'exam.examquestion.answer' , :default => model_class.human_attribute_name(:answer) + ":"
       %dd=h @examquestion.answer  
 
-    /main2 - for all type of question	
+    /main2 - for all type of question
     %dt
       - if @examquestion.questiontype=="SEQ" 
         = t 'exam.examquestion.marks2' 
