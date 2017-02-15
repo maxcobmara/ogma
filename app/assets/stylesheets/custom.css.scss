@@ -261,6 +261,12 @@ ul.ui-autocomplete {
   }
 }
 
+/* shows & edit */
+table.question{
+  border:collapse; border-spacing:0;border:0;
+  td.item{padding: 0; border: 0; width: 25px; height: 20px; font-size:1.0em; vertical-align: top;}
+  td.desc{padding: 0; border: 0; height: 25px;font-size:1.0em;vertical-align: top;}
+}
 
 /* forms */
 .datepicker {z-index: 1151 !important;}

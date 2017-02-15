@@ -7,7 +7,7 @@
         = t 'exam.examquestion.question2' 
       - else
         = t 'exam.examquestion.question' 
-    %dd
+    %dd{style: 'padding-left: 70px;'}
       %table
         %tr
           %td
@@ -18,14 +18,17 @@
             - if @examquestion.questiontype=="MCQ"
               //if not exist at all OR exist but 1st item has no value-start (upto answerchoice.description)
               - if @examquestion.answerchoices.count != 0 && @examquestion.answerchoices[0].description!=""
-                - for answerchoice in @examquestion.answerchoices.sort_by{|x|x.item}
-                  = answerchoice.item
-                  = answerchoice.description
-                  %br
+                %table.table.question
+                  - for answerchoice in @examquestion.answerchoices.sort_by{|x|x.item}
+                    %tr
+                      %td.item= answerchoice.item+"."
+                      %td.desc= answerchoice.description
                 %br
-              - for examanswer in @examquestion.examanswers.sort_by{|y|y.item}
-                = examanswer.item
-                = examanswer.answer_desc
+              %table.table.question
+                - for examanswer in @examquestion.examanswers.sort_by{|y|y.item}
+                  %tr
+                    %td.item= examanswer.item+"."
+                    %td.desc= examanswer.answer_desc
                 %br
             /MCQ Question:answerchoices & examanswers - end
 
@@ -50,17 +53,21 @@
             - if @examquestion.questiontype=="TRUEFALSE"
               %u= t 'exam.examquestion.booleanchoices'
               %br
-              - for booleanchoice in @examquestion.booleanchoices.sort_by{|x|x.item}
-                = booleanchoice.item+". "
-                = booleanchoice.description
-                %br
+              %table.table.question
+                - for booleanchoice in @examquestion.booleanchoices.sort_by{|x|x.item}
+                  %tr
+                    %td.item= booleanchoice.item+". "
+                    %td.desc= booleanchoice.description
               %u= t 'exam.examquestion.booleananswers'
               %br
-              - for booleananswer in @examquestion.booleananswers.sort_by{|y|y.item}
-                = booleananswer.item+". "
-                = (t 'exam.examquestion.true1') if booleananswer.answer==true 
-                = (t 'exam.examquestion.false1') if booleananswer.answer==false
-                %br
+              %table.table.question
+                - for booleananswer in @examquestion.booleananswers.sort_by{|y|y.item}
+                  %tr
+                    %td.item= booleananswer.item+". "
+                    %td.desc
+                      = (t 'exam.examquestion.true1') if booleananswer.answer==true 
+                      = (t 'exam.examquestion.false1') if booleananswer.answer==false
+                
             /TRUEFALSE Question:boolean choices & boolean answers - end
 
     /MCQ final ANSWER

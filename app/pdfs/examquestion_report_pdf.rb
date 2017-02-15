@@ -46,6 +46,39 @@ class Examquestion_reportPdf < Prawn::Document
                   questionbytype.each do |question|
                       question_line << count
                       count+=1
+		      
+		        #@@@@@@@@@
+		        total_allowed_height=565
+                        answer_height=50
+                        header_height=240
+                        total_available_height= total_allowed_height - header_height - answer_height  #565-240-50
+ 
+                        qtext=""
+			qtext2=""
+                        acc_height=[]
+                        arr_paras=@view.hash_para_styling(question.question)
+                        for arr_item in arr_paras
+                          arr_item.each do |k,v|
+			    acc_height << @view.pdf_question_height_perline(v)
+
+			    if acc_height.sum < total_available_height     #within question space
+			      if acc_height.sum < total_available_height+answer_height  #within question+answer space
+				 @last_valid=acc_height.sum
+				 qtext+=@view.texteditor_pdf(v)
+			      else
+                                qtext2+=@view.texteditor_pdf(v)
+			      end
+			    else
+			      qtext2+=@view.texteditor_pdf(v)
+			    end
+			    
+                          end
+                        end
+		        if qtext2!=""
+			  question_line << count+=1
+			end
+		        #@@@@@@@@@
+		      
                   end
               end
           end #endof @groupbytopic.sort.each
@@ -98,9 +131,15 @@ class Examquestion_reportPdf < Prawn::Document
         unless prog.blank?
           body << [ {content: "#{I18n.t('exam.examquestion.programme_id')} : #{Programme.find(prog).name}", colspan: 8}, {content: I18n.t('exam.examquestion.conformity'), colspan: 3, rowspan: 2}, {content: I18n.t('exam.examquestion.accuracy'), colspan: 3, rowspan: 2}, {content: I18n.t('exam.examquestion.fit'), colspan: 3, rowspan: 2}]
         end
+	subject_cnt=0
         examquestions.group_by{|t|t.subject_details}.sort.each do |subject_details, examquestions| 
-          body << [ {content: "#{I18n.t('exam.examquestion.subject_id')} : #{subject_details}", colspan: 5}, {content: "#{I18n.t('exam.examquestion.total_questions')} = #{examquestions.count.to_s}", colspan: 3}] ###
-  
+	  subject_cnt+=1
+	  subject_line=[ {content: "#{I18n.t('exam.examquestion.subject_id')} : #{subject_details}", colspan: 5}, {content: "#{I18n.t('exam.examquestion.total_questions')} = #{examquestions.count.to_s}", colspan: 3}] ###
+	  if subject_cnt == 1
+          body << subject_line
+	  else
+	    body << subject_line+[{content: I18n.t('exam.examquestion.conformity'), colspan: 3}, {content: I18n.t('exam.examquestion.accuracy'), colspan: 3}, {content: I18n.t('exam.examquestion.fit'), colspan: 3}]
+	  end
           #--------------------------------------------------------------------
           @groupbytopic=examquestions.group_by{|x|x.topic_id} 
           @groupbytopic.sort.each do |topic, allquestions|
@@ -109,12 +148,64 @@ class Examquestion_reportPdf < Prawn::Document
               questions=allquestions.group_by{|t|t.questiontype}
               questions.each do |questiontype,questionbytype|            
                   questionbytype.each do |question|
+		    
+		    #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+		    
+		    #if question.questiontype=="ACQ"
+                        total_allowed_height=565
+                        answer_height=50           ###### TODO - different height based on diff question type
+                        header_height=240
+                        total_available_height= total_allowed_height - header_height - answer_height  #565-240-50
+          
+                      #end
+			
                       #START - question
-                      if question.question.include?('span')==false
-                        qtext=question.question
-                      else
-                        qtext=@view.texteditor_content(question.question)
-                      end
+                      #if question.question.include?('span')==false
+                      #  qtext=question.question
+                      #else
+                      #  qtext=@view.texteditor_content(question.question)
+                      #end
+
+#                       if question.question.include?('<p style="text-align:right">') || question.question.include?('<p style="text-align:center">')
+                        qtext=""
+			qtext2=""
+                        acc_height=[]
+                        arr_paras=@view.hash_para_styling(question.question)
+                        for arr_item in arr_paras
+                          arr_item.each do |k,v|
+			    acc_height << @view.pdf_question_height_perline(v)
+
+			    if acc_height.sum < total_available_height     #within question space
+			      if acc_height.sum < total_available_height+answer_height  #within question+answer space
+				 @last_valid=acc_height.sum
+				 qtext+=@view.texteditor_pdf(v)
+			      else
+                                qtext2+=@view.texteditor_pdf(v)
+			      end
+			    else
+			      qtext2+=@view.texteditor_pdf(v)
+			    end
+			    
+                          end
+                        end
+			
+			if qtext2!=""
+			  if @last_valid <= total_available_height
+			    dd=answer_height/10
+			    0.upto(dd-1).each do |ct|
+			      qtext+="\n"
+			    end
+		          end
+			end
+
+#                       else
+#                         qtext=@view.texteditor_pdf(question.question)
+#                         aa=@view.pdf_question_height(qtext)
+#                       end
+
+                      #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+                  
+                     # text "#{acc_height} #{acc_height.sum} ~~~~#{diff}"
 
                       #START - answer===========================
 		      qanswer=""
@@ -125,13 +216,13 @@ class Examquestion_reportPdf < Prawn::Document
                         qanswer+="<br>"
                         if question.answerchoices.count != 0 && question.answerchoices[0].description!=""
                           for answerchoice in question.answerchoices.sort_by{|x|x.item}
-                            qanswer+="#{answerchoice.item}"
+                            qanswer+="#{answerchoice.item}. "
                             qanswer+=" #{answerchoice.description}<br>"
                           end  
                           qanswer+="<br>"
 			end
                         for examanswer in question.examanswers.sort_by{|y|y.item}
-                          qanswer+="#{examanswer.item}"
+                          qanswer+="#{examanswer.item}. "
                           qanswer+=" #{examanswer.answer_desc}<br>"
 			end
                       elsif question.questiontype=="SEQ" 
@@ -176,14 +267,29 @@ class Examquestion_reportPdf < Prawn::Document
 		      end
                       #END - answer=============================
 		      
-		      qtext+=qanswer
+		      if qtext2==""
+		        qtext+=qanswer
 		      
-		      unless question.questiontype=="SEQ"
-                        qtext+="<br>"
-                      end
-		      qtext+="<br><b>#{I18n.t('exam.examquestion.usage_frequency')}:</b> #{Examquestion.joins(:exams).where(id: question.id).count}"
-
+		        unless question.questiontype=="SEQ"
+                          qtext+="<br>"
+                        end
+		        qtext+="<br><b>#{I18n.t('exam.examquestion.usage_frequency')}:</b> #{Examquestion.joins(:exams).where(id: question.id).count}"
+		      else
+			qtext2+=qanswer
+		      
+		        unless question.questiontype=="SEQ"
+                          qtext2+="<br>"
+                        end
+		        qtext2+="<br><b>#{I18n.t('exam.examquestion.usage_frequency')}:</b> #{Examquestion.joins(:exams).where(id: question.id).count}"
+		      end
+		      
                       body << ["#{counter+=1}", question.questiontype, qtext, question.marks, question.category,   question.render_difficulty, question.qstatus, question.creator_details, "#{question.conform_curriculum? ? '/' : 'X'}", "#{question.conform_specification? ? '/' : 'X'}", "#{question.conform_opportunity? ? '/' : 'X'}", "#{question.accuracy_construct? ? '/' : 'X'}", "#{question.accuracy_topic? ? '/' : 'X'}", "#{question.accuracy_component? ? '/' : 'X'}", "#{question.fit_difficulty? ? '/' : 'X'}", "#{question.fit_important? ? '/' : 'X'}", "#{question.fit_fairness? ? '/' : 'X'}"]
+		      
+		      if qtext2!=""
+                        #body << [{content: "", colspan: 17}]
+			#body << [{content: "", colspan: 17}]
+                        body << ["", "", qtext2, question.marks, question.category,   question.render_difficulty, question.qstatus, question.creator_details, "#{question.conform_curriculum? ? '/' : 'X'}", "#{question.conform_specification? ? '/' : 'X'}", "#{question.conform_opportunity? ? '/' : 'X'}", "#{question.accuracy_construct? ? '/' : 'X'}", "#{question.accuracy_topic? ? '/' : 'X'}", "#{question.accuracy_component? ? '/' : 'X'}", "#{question.fit_difficulty? ? '/' : 'X'}", "#{question.fit_important? ? '/' : 'X'}", "#{question.fit_fairness? ? '/' : 'X'}"]
+		      end
 
                   end
               end
