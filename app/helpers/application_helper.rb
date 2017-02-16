@@ -264,7 +264,7 @@ module ApplicationHelper
       question_height+=10 #basic per para
       if question_para.size > 1 #eliminate ENTER
 	  para_length=strip_tags(question_para).size
-	  para_lines=strip_tags(question_para).size/89
+	  para_lines=strip_tags(question_para).size/57
 	  #-------------------------------------------------
 	  #to collect all font sizes in ALL one liner para (max size in each para : in one line/para) 
 	  #OR collect all font sizes in multiple liner para (max size in each para : in multiple line para)
