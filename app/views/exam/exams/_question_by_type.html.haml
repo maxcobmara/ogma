@@ -12,18 +12,18 @@
   /=simple_format(item.question)
   = item.question.html_safe
   - if item.answerchoices.count != 0 && item.answerchoices[0].description!=""
-    %table
+    %table.table.question
       - for answerchoice in item.answerchoices.sort_by{|x|x.item}
         %tr
-          %td{style: 'width: 25px; vertical-align: top;'}= answerchoice.item+"."
-          %td= answerchoice.description
+          %td.item= answerchoice.item+"."
+          %td.desc= answerchoice.description
     %br
   - if item.examanswers.count != 0 && item.examanswers[0].answer_desc!=""
-    %table
+    %table.table.question
       - for examanswer in item.examanswers.sort_by{|y|y.item}
         %tr
-          %td{style: 'width: 20px; vertical-align: top;'}= examanswer.item+"."
-          %td= examanswer.answer_desc
+          %td.item= examanswer.item+"."
+          %td.desc= examanswer.answer_desc
       %br
     %b Answer : 
     =h item.answer.to_s
@@ -51,20 +51,23 @@
   = item.question.html_safe
   %u= t 'exam.examquestion.booleanchoices'
   %br
-  - for booleanchoice in item.booleanchoices.sort_by{|x|x.item}
-    = booleanchoice.item+". "
-    = booleanchoice.description
-    %br
+  %table.table.question
+    - for booleanchoice in item.booleanchoices.sort_by{|x|x.item}
+      %tr
+        %td.item= booleanchoice.item+". "
+        %td.desc= booleanchoice.description
   %u= t 'exam.examquestion.booleananswers'
   %br
-  - for booleananswer in item.booleananswers.sort_by{|y|y.item}
-    = booleananswer.item+". "
-    = booleananswer.answer
+  %table.table.question
+    - for booleananswer in item.booleananswers.sort_by{|y|y.item}
+      %tr
+        %td.item= booleananswer.item+". "
+        %td.desc= booleananswer.answer
     %br
          
 - else
-  %b Question :
+  %b=(t 'exam.examquestion.question')+" : "
   /= simple_format(item.question)
   = item.question.html_safe
-  %b Answer : 
+  %b=(t 'exam.examquestion.answer')+" : "
   %br=h item.answer
