@@ -141,6 +141,30 @@ module ApplicationHelper
     a[0, a.size-2] if a.size > 0
   end
   
+  #manual
+#   def decimal_to_hexadecimal(string)
+#     a=string.to_i
+#     result=a/16
+#     remainder=a%16
+#     final=remainder.to_s
+#     while result > 0
+#       remainder=result%16
+#       final+=remainder.to_s
+#       result=result/16
+#     end
+#     "00"+final.reverse
+#   end
+ 
+  #Usage : 'text_editor_pdf' method in exam_paper_pdf.rb & examquestion_report_pdf.rb
+  #http://stackoverflow.com/questions/10476467/ruby-unicode-character-decimal-value-to-uxxxx-conversion-ord-method-not-work
+  #   cc="%.4x" % 39.ord
+  #   text [cc.to_i(16)].pack('U') 
+  # eg. Question containing aphostophe (') --> will be saved in decimal format "&#39;". To display in PDF - replace with encoded(\u) hexadecimal ("\u0027")
+  def convert_symbols_pdf(string)
+    str=string[/&#(.*?);/,1]
+    string.gsub!(/&#(.*?);/, [("%.4x" % str.to_i.ord).to_i(16)].pack('U'))
+  end
+  
   def texteditor_content(string)
     #http://stackoverflow.com/questions/7414267/strip-html-from-string-ruby-on-rails
     ActionView::Base.full_sanitizer.sanitize(string, :tags => %w(img br p span), :attributes => %w(src style)).gsub!("&nbsp;", " ")
@@ -151,7 +175,7 @@ module ApplicationHelper
   #     - split question by para styling using '4) hash_para_styling', for returned array ->use '1) text_editor_pdf'+'3) pdf_question_height_perline' to display question
   #(ii) otherwise, - use '1) texteditor_pdf'+'2) pdf_question_height' to display question
 
-  #1) 8-13Feb2017 : NOTE - for use in exam_paper.pdf
+  #1) 8-17Feb2017 : NOTE - for use in exam_paper_pdf.rb & examquestion_report_pdf.rb
   def texteditor_pdf(string)
     #allowed in prawn pdf - <b>, <i>, <u>, <strikethrough>, <sub>, <sup>, <font>, <color> and <link>
     str=""
@@ -165,7 +189,12 @@ module ApplicationHelper
     else
       str2=str
     end
-    a=replace_span(str2)
+    if str2.scan(/&#(.*?);/)!=[] 
+      strg=convert_symbols_pdf(str2)
+    else
+      strg=str2
+    end
+    a=replace_span(strg)
     b=replace_para_newline(a)
     c=replace_strong(b)
   end

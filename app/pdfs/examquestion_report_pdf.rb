@@ -18,6 +18,13 @@ class Examquestion_reportPdf < Prawn::Document
       go_to_page(i+1)
       footer
     end
+    
+    #http://stackoverflow.com/questions/10476467/ruby-unicode-character-decimal-value-to-uxxxx-conversion-ord-method-not-work
+    #text "TESTING \u0027"
+    #cc="%.4x" % 39.ord
+    #text [cc.to_i(16)].pack('U')  
+    #text @view.convert_symbols_pdf("&#39;")
+   
   end
 
   def record
@@ -193,7 +200,7 @@ class Examquestion_reportPdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header = [[{content: " #{I18n.t('exam.examquestion.list').upcase}<br> #{@college.name.upcase}", colspan: 17}],
+    header = [[{content: "#{I18n.t('exam.examquestion.list').upcase}<br> #{@college.name.upcase}", colspan: 17}],
               [ {content: 'No', rowspan: 2}, {content: "#{I18n.t('exam.examquestion.questiontype')}", rowspan:2}, {content: "#{ I18n.t('exam.examquestion.question')} & #{I18n.t('exam.examquestion.answer')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.marks')}", rowspan: 2} , {content: "#{I18n.t('exam.examquestion.category')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.difficulty')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.qstatus')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.creator_id')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.edit_details')} / #{I18n.t('exam.examquestion.quality_control')}", colspan: 9}], ["1", "2", "3", "4", "5", "6", "7", "8", "9"]]
     body=[]
     @programme_exams.each do |prog, examquestions|
