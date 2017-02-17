@@ -197,6 +197,7 @@ module ApplicationHelper
     a=replace_span(strg)
     b=replace_para_newline(a)
     c=replace_strong(b)
+    d=replace_strikethrough(c)
   end
   
   #a) NOTE: CKEditor - shall convert Word html data to simpler format 
@@ -284,6 +285,14 @@ module ApplicationHelper
   def replace_strong(string)
     if string.include?("<strong>") && string.include?("</strong>")
       string.gsub!("<strong>", "<b>").gsub!("</strong>", "</b>")
+    end
+    string
+  end
+  
+  #d) <strikethrough></strikethrough> to support inline format (pdf)
+  def replace_strikethrough(string)
+    if string.include?("<s>") && string.include?("</s>")
+      string.gsub!("<s>", "<strikethrough>").gsub!("</s>", "</strikethrough>")
     end
     string
   end
