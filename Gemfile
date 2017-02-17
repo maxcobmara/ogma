@@ -89,6 +89,7 @@ group :production do
   gem 'unicorn'
   gem 'capistrano'
   gem 'capistrano-rails', '~> 1.1'
+  gem 'capistrano-faster-assets', '~> 1.0'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
 end
