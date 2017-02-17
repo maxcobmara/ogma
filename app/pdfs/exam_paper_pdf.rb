@@ -355,7 +355,7 @@ class Exam_paperPdf < Prawn::Document
 #       #bigger font size require bigger height (+20+16+18)
       
       #Replace above question HEIGHT --> aa
-      aa=@view.pdf_question_height(q_string)
+      aa=@view.pdf_question_height(q_string, 89)     #89 - max char per line
       
       if q.diagram.exists? then
         imageheight=130+5+10 #image caption line(5+10)
@@ -488,11 +488,19 @@ class Exam_paperPdf < Prawn::Document
  
        #reactivate this part to DISPLAY Main SEQ question in remaining space of Previous SEQ question set - start- En Iz (29Dec2015)
        ##check COMPLETE Main SEQ question set HEIGHT (main question+diagram[if any]), set default as 180 if less than 180
-       q_string=q.question
-       lines=q_string.size/89
-       mod_lines=q_string.size%89
-       aa= (lines*20) if mod_lines==0
-       aa= ((lines+1)*20) if mod_lines>0
+       
+       #START-working one - before 14-17Feb2017
+#        q_string=q.question
+#        lines=q_string.size/89
+#        mod_lines=q_string.size%89
+#        aa= (lines*20) if mod_lines==0
+#        aa= ((lines+1)*20) if mod_lines>0
+       #END-working one - before 14-17Feb2017
+       
+       #working one replace with below - 17Feb2017
+       q_string=@view.texteditor_pdf(q.question) 
+       aa=@view.pdf_question_height(q_string, 89)     #89 - max char per line
+       
        #if q.diagram.exists? then
        #  imageheight=130+5+10
        #else
@@ -532,14 +540,36 @@ class Exam_paperPdf < Prawn::Document
        move_down 20
        
        #display MAIN SEQ question
-       if q.question
-         q_string=q.question 
-         #draw_text "#{indx+1}", :at => [10, cursor]
-         text_box q_string, :at => [30, cursor+8], :width => 450, :height => 40, :overflow => :expand, :align => :justify, :inline_format => true
-         lines=q_string.size/89
-         mod_lines=q_string.size%89
-         move_down aa
+       #START - working one - before 17Feb2017
+#        if q.question
+#          q_string=q.question 
+#          #draw_text "#{indx+1}", :at => [10, cursor]
+#          text_box q_string, :at => [30, cursor+8], :width => 450, :height => 40, :overflow => :expand, :align => :justify, :inline_format => true
+#          lines=q_string.size/89
+#          mod_lines=q_string.size%89
+#          move_down aa
+#        end
+       #END - working one - before 17Feb2017
+       
+       #START - replacing above working one - 17Feb2017--------
+       if q.question.include?('<p style="text-align:right">') || q.question.include?('<p style="text-align:center">')
+	 arr_paras=@view.hash_para_styling(q.question)
+	 #text "#{arr_paras}"
+	 for arr_item in arr_paras
+	   arr_item.each do |k,v|
+	     #text @view.texteditor_pdf(v), :inline_format => true, :align => k.to_sym
+	     text_box @view.texteditor_pdf(v), :at => [30, cursor], :width => 480, :height => 10, :overflow => :expand, :align => k.to_sym, :inline_format => true
+	     ind_height=@view.pdf_question_height_perline(v)
+	     move_down ind_height
+	   end
+	 end
+	 move_down 20
+       else
+	 text_box q_string, :at => [30, cursor+8], :width => 480, :height => 10, :overflow => :expand, :align => :justify, :inline_format => true
+	 move_down aa+20
        end
+      #END - replacing above working one - 17Feb2017--------
+       
        total_valid=0
        q.shortessays.each{|x|total_valid+=1 unless x.subquestion.blank? && x.subquestion.size==0}
        subq_count=0
@@ -651,21 +681,29 @@ class Exam_paperPdf < Prawn::Document
      0.upto(@tosort_seqid.count-1) do |indx|
        q = Examquestion.find(@seq_questionid[indx])
 
+       #START - working one - before 17Feb2017
        #check COMPLETE question set HEIGHT, set default as 180 if less than 180
-       q_string=q.question
-       lines=q_string.size/100
-       mod_lines=q_string.size%100
-       #aa= (lines*20) if mod_lines==0
-       #aa= (lines*20+10) if mod_lines>0
-       if mod_lines>0
-         aa= ((lines+1)*20) 
-       else
-         if  lines > 0
-           aa= (lines*20)
-         else
-           aa=20
-         end
-       end
+#        q_string=q.question
+#        lines=q_string.size/100
+#        mod_lines=q_string.size%100
+#        #aa= (lines*20) if mod_lines==0
+#        #aa= (lines*20+10) if mod_lines>0
+#        if mod_lines>0
+#          aa= ((lines+1)*20) 
+#        else
+#          if  lines > 0
+#            aa= (lines*20)
+#          else
+#            aa=20
+#          end
+#        end
+       #END - working one - before 17Feb2017
+       
+       #START - replacing above working one 17Feb2017
+       q_string=@view.texteditor_pdf(q.question) 
+       aa=@view.pdf_question_height(q_string, 89)     #89 - max char per line
+       #END - replacing above working one 17Feb2017
+       
        if q.diagram.exists? then
          imageheight=130+5+20
        else
@@ -692,12 +730,34 @@ class Exam_paperPdf < Prawn::Document
          draw_text "#{indx+1})", :at => [10, cursor-20]
        end
        move_down 20
-       q_string=q.question 
-       #draw_text "#{indx+1}", :at => [10, cursor]
-       text_box q_string, :at => [30, cursor+8], :width => 480, :height => 40, :overflow => :expand, :align => :justify, :inline_format => true
-       draw_text "("+q.marks.to_i.to_s+" markah)",  :at => [455, cursor-(aa)]
-       move_down (aa)+20
- 
+       
+       #START - working one before 17Feb2017
+#        q_string=q.question 
+#        #draw_text "#{indx+1}", :at => [10, cursor]
+#        text_box q_string, :at => [30, cursor+8], :width => 480, :height => 40, :overflow => :expand, :align => :justify, :inline_format => true
+#        draw_text "("+q.marks.to_i.to_s+" markah)",  :at => [455, cursor-(aa)]
+#        move_down (aa)+20
+       #END - working one before 17Feb2017
+              
+       #START - replacing above working one - 17Feb2017--------
+       if q.question.include?('<p style="text-align:right">') || q.question.include?('<p style="text-align:center">')
+	 arr_paras=@view.hash_para_styling(q.question)
+	 #text "#{arr_paras}"
+	 for arr_item in arr_paras
+	   arr_item.each do |k,v|
+	     #text @view.texteditor_pdf(v), :inline_format => true, :align => k.to_sym
+	     text_box @view.texteditor_pdf(v), :at => [30, cursor], :width => 480, :height => 10, :overflow => :expand, :align => k.to_sym, :inline_format => true
+	     ind_height=@view.pdf_question_height_perline(v)
+	     move_down ind_height
+	   end
+	 end
+	 move_down 20
+       else
+	 text_box q_string, :at => [30, cursor+8], :width => 480, :height => 10, :overflow => :expand, :align => :justify, :inline_format => true
+	 move_down aa+20
+       end
+      #END - replacing above working one - 17Feb2017--------
+       
        if pagenos.include?(page_number-1)==false 
          pagenos << page_number-1
          draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
@@ -757,7 +817,7 @@ class Exam_paperPdf < Prawn::Document
       
       #check COMPLETE question set HEIGHT, set default as 180 if less than 180
       q_string=@view.texteditor_pdf(q.question) 
-      aa=@view.pdf_question_height(q_string)
+      aa=@view.pdf_question_height(q_string, 89)     #89 - max char per line
       
       ###
       if q.diagram.exists? then

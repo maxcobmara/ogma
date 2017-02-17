@@ -52,9 +52,9 @@ class Examquestion_reportPdf < Prawn::Document
                   questionbytype.each do |question|
                       question_line << count
                       count+=1
-		      
-		        #@@@@@@@@@
-		        #Part 1: answer_height------------------------------------------------
+  
+                      #START - Allocationg Heights
+                      #Part 1: answer_height------------------------------------------------
                       if question.questiontype=="MCQ"
                         answer_height=20                                                                                                            #before & after answer choices options
                         if question.answerchoices.count != 0 && question.answerchoices[0].description!="" 
@@ -66,9 +66,9 @@ class Examquestion_reportPdf < Prawn::Document
                           answer_height+=@view.pdf_question_height_perline(examanswer.answer_desc)
                         end
                       elsif question.questiontype=="SEQ"
-                        answer_height=30#120                                               #by default 3 sets of (subquestion+keyword+answer title line) + starting line+gap (90+10+20)
+                        answer_height=30#120                                                                                                    #starting line+gap (10+20)
                         for shortessay in question.shortessays.sort_by{|x|x.item}
-			  #####*******************
+                          #####*******************
 			  #given a html format string, calculate height based on styling+\n
 			  seq_acc_height=[]
 			  arr_paras1=@view.hash_para_styling(shortessay.subquestion)
@@ -90,54 +90,53 @@ class Examquestion_reportPdf < Prawn::Document
 			    end
 		          end
 			  #####*******************
-                           #@view.pdf_question_height_perline(shortessay.subquestion)+@view.pdf_question_height_perline(shortessay.keyword)+@view.pdf_question_height_perline(shortessay.subanswer)
                           answer_height+=seq_acc_height.sum
                         end
                       elsif question.questiontype=="TRUEFALSE"
                         answer_height=120                                                                                                         #by default 5 boolean choices+5 boolean answers
                       else #ACQ, MEQ
-                        answer_height=30  #acq total -> workable one 50 (inc usage_frequency)
+                        answer_height=30                                                                                                           #acq total -> workable one 50 (inc usage_frequency)
                       end
 
-                     #Part 2: usage_frequency height---------------------
-                     if question.questiontype=="SEQ"
-                       answer_height+=10
-                     else
-                       answer_height+=20
-                     end
-		     
-		     #Part 3: Header height------------------------------------
-                     header_height=160+programme_height+subject_height+topic_height   #30, 30, 30 - refer above
+                      #Part 2: usage_frequency height---------------------
+                      if question.questiontype=="SEQ"
+                        answer_height+=10
+                      else
+                        answer_height+=20
+                      end
+    
+                     #Part 3: Header height------------------------------------
+                     header_height=160+programme_height+subject_height+topic_height                            #prev: 280 #240
 
                      #Part 4: Final heights---------------------------------------
                       total_allowed_height=565
-                        #header_height=280 #240
-                      total_available_height= total_allowed_height - header_height #- answer_height  #565-240-50
-		      
-                      #END - Table cells related heights=============
-                        #@@@@@@@@@
-			 qtext=""
+                      total_available_height= total_allowed_height - header_height                                          #- answer_height  #565-240-50
+                      #END - Allocationg heights=============
+                      
+                      #START - Identifying additional row (qtext2) for question(part of) or it's answer exceeding available space at current page
+                      #eg.1 :  [qtext=>question (part 1) + qtext2=>question (part 2)+answer]
+                      #eg.2 :  [qtext=>question + qtext2=>answer]
+                      #qtext=""
                       qtext2=""
                       acc_height=[]
                       arr_paras=@view.hash_para_styling(question.question)
-		      
 
                       for arr_item in arr_paras
                         arr_item.each do |k,v|
   			  if v.count("\p") > 0
-                             acc_height << @view.pdf_question_height(v)
+                            acc_height << @view.pdf_question_height(v, 57)                                                     #57 - max char per line
  			  else
 			    acc_height << @view.pdf_question_height_perline(v)
 			  end
-			  if acc_height.sum < total_available_height   #as long as there's adequate space for question
-			    qtext+=@view.texteditor_pdf(v)
+			  if acc_height.sum < total_available_height                                                                 #as long as there's adequate space for question
+			    #qtext+=@view.texteditor_pdf(v)
 			    @last_valid=acc_height.sum
 			    ##########--remark below if problem arise
-			    if answer_height >= total_available_height-header_height+100#-@last_valid #min answer height 30 
+			    if answer_height >= total_available_height-header_height+100                              #-@last_valid #min answer height 30 
 			      qtext2+="\r"
 			    end
 			    ##########
-			  else                                                              #otherwise - next cell/page
+			  else                                                                                                                            #otherwise - next cell/page
 			    qtext2+=@view.texteditor_pdf(v)
 			  end
                         end
@@ -147,8 +146,8 @@ class Examquestion_reportPdf < Prawn::Document
                         question_line << count
 			count+=1
 		      end
-		        #@@@@@@@@@
-		      #@qtext2=qtext 
+                      #END - Identifying additional row for question or answer exceeding available space at current page
+
                   end
 		  topic_height=0
               end
@@ -194,14 +193,9 @@ class Examquestion_reportPdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    ##{@qtext2}
     header = [[{content: " #{I18n.t('exam.examquestion.list').upcase}<br> #{@college.name.upcase}", colspan: 17}],
               [ {content: 'No', rowspan: 2}, {content: "#{I18n.t('exam.examquestion.questiontype')}", rowspan:2}, {content: "#{ I18n.t('exam.examquestion.question')} & #{I18n.t('exam.examquestion.answer')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.marks')}", rowspan: 2} , {content: "#{I18n.t('exam.examquestion.category')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.difficulty')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.qstatus')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.creator_id')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.edit_details')} / #{I18n.t('exam.examquestion.quality_control')}", colspan: 9}], ["1", "2", "3", "4", "5", "6", "7", "8", "9"]]
     body=[]
-    yo2=page_number-1
-    programme_height=0
-    subject_height=0
-    topic_height=0
     @programme_exams.each do |prog, examquestions|
       if @progg[@ccc]==prog
         ###
@@ -230,7 +224,7 @@ class Examquestion_reportPdf < Prawn::Document
               questions.each do |questiontype,questionbytype|            
                   questionbytype.each do |question|
 
-                      #START - Table cells related heights============
+                      #START - Allocating heights============
                       #Part 1: answer_height------------------------------------------------
                       if question.questiontype=="MCQ"
                         answer_height=20                                                                                                            #before & after answer choices options
@@ -243,7 +237,7 @@ class Examquestion_reportPdf < Prawn::Document
                           answer_height+=@view.pdf_question_height_perline(examanswer.answer_desc)
                         end
                       elsif question.questiontype=="SEQ"
-                        answer_height=30#120                                               #by default 3 sets of (subquestion+keyword+answer title line) + starting line+gap (90+10+20)
+                        answer_height=30#120                                                                                                    #starting line+gap (10+20)
                         for shortessay in question.shortessays.sort_by{|x|x.item}
 			  #####*******************
 			  #given a html format string, calculate height based on styling+\n
@@ -273,55 +267,55 @@ class Examquestion_reportPdf < Prawn::Document
                       elsif question.questiontype=="TRUEFALSE"
                         answer_height=120                                                                                                         #by default 5 boolean choices+5 boolean answers
                       else #ACQ, MEQ
-                        answer_height=30  #acq total -> workable one 50 (inc usage_frequency)
+                        answer_height=30                                                                                                           #acq total -> workable one 50 (inc usage_frequency)
                       end
 
-                     #Part 2: usage_frequency height---------------------
-                     if question.questiontype=="SEQ"
-                       answer_height+=10
-                     else
-                       answer_height+=20
-                     end
-		     
-		     #Part 3: Header height------------------------------------
-                     header_height=160+programme_height+subject_height+topic_height   #30, 30, 30 - refer above
+                      #Part 2: usage_frequency height---------------------
+                      if question.questiontype=="SEQ"
+                        answer_height+=10
+                      else
+                        answer_height+=20
+                      end
 
-                     #Part 4: Final heights---------------------------------------
+                      #Part 3: Header height------------------------------------
+                      header_height=160+programme_height+subject_height+topic_height                           #prev: 280 #240
+
+                      #Part 4: Final heights---------------------------------------
                       total_allowed_height=565
-                        #header_height=280 #240
-                      total_available_height= total_allowed_height - header_height #- answer_height  #565-240-50
-		      
-                      #END - Table cells related heights=============
+                      total_available_height= total_allowed_height - header_height                                          #- answer_height  #565-240-50
+                      #END - Allocating heights=============
+
+                      # NOTE - 15-17 Feb 2017 : Usage of qtext2 --> to cater long question which exceed maximum length of available 'question space'/height
 
                       #START - question=======================
+                      #include the use of qtext2 for question(part of - remaining) or it's answer exceeding available space at current page
+                      #eg.1a & b :  [qtext=>question (part 1) + qtext2=>question (part 2)+answer]
+                      #eg.2 :  [qtext=>question + qtext2=>answer]
                       qtext=""
                       qtext2=""
                       acc_height=[]
                       arr_paras=@view.hash_para_styling(question.question)
-		      
 
                       for arr_item in arr_paras
                         arr_item.each do |k,v|
   			  if v.count("\p") > 0
-                             acc_height << @view.pdf_question_height(v)
+                             acc_height << @view.pdf_question_height(v, 57)                                                     #57 - max char per line
  			  else
 			    acc_height << @view.pdf_question_height_perline(v)
 			  end
-			  if acc_height.sum < total_available_height   #as long as there's adequate space for question
+			  if acc_height.sum < total_available_height                                                                  #1a) as long as there's adequate space for question, use qtext
 			    qtext+=@view.texteditor_pdf(v)
 			    @last_valid=acc_height.sum
 			    ##########--remark below if problem arise
-			    if answer_height >= total_available_height-header_height+100#-@last_valid #min answer height 30 
-			      qtext2+="\r"
-			    end
+			    if answer_height >= total_available_height-header_height+100                              #-@last_valid #min answer height 30 
+			      qtext2+="\r"                                                                                                            #2) Prepare 'qtext2' for answer assignment when qtext already contains,
+			    end                                                                                                                           #complete set of question
 			    ##########
-			  else                                                              #otherwise - next cell/page
-			    qtext2+=@view.texteditor_pdf(v)
+			  else                                                                                                                            #1b) otherwise (no more space left for question), use qtext2 (new row)
+			    qtext2+=@view.texteditor_pdf(v)                                                                              #to assign remaining question text
 			  end
                         end
                       end
-
-                      # NOTE - 15-16 Feb 2017 : Usage of qtext2 --> to cater long question which exceed maximum length of available 'question space'/height
 
 #                       if qtext2!=""
 #                          if @last_valid <= total_available_height
@@ -331,14 +325,9 @@ class Examquestion_reportPdf < Prawn::Document
 #                           end
 #                          end
 #                       end
-		      
-		      
-# 		      if @last_valid >= total_available_height-answer_height #min answer height 30 
-# 			qtext2+="\r"
-# 		      end
                       #END - question===========================
                   
-                      # text "#{acc_height} #{acc_height.sum} #{@last_valid} #{answer_height}"
+                      # text "#{acc_height} #{acc_height.sum} #{@last_valid} #{answer_height}"          #DO not remove this line - For checking purpose
 
                       #START - answer===========================
 		      qanswer=""
@@ -417,16 +406,13 @@ class Examquestion_reportPdf < Prawn::Document
                       #END - usage_frequency=======================
 
                       #START - assign question & answer into table cells=======
-                      body << ["#{header_height} #{counter+=1} #{answer_height} #{@last_valid} ?? #{acc_height.sum}#{acc_height} #{total_available_height+answer_height} ", question.questiontype, qtext, question.marks, question.category,   question.render_difficulty, question.qstatus, question.creator_details, "#{question.conform_curriculum? ? '/' : 'X'}", "#{question.conform_specification? ? '/' : 'X'}", "#{question.conform_opportunity? ? '/' : 'X'}", "#{question.accuracy_construct? ? '/' : 'X'}", "#{question.accuracy_topic? ? '/' : 'X'}", "#{question.accuracy_component? ? '/' : 'X'}", "#{question.fit_difficulty? ? '/' : 'X'}", "#{question.fit_important? ? '/' : 'X'}", "#{question.fit_fairness? ? '/' : 'X'}"]
+                      body << ["#{counter+=1}", question.questiontype, qtext, question.marks, question.category,   question.render_difficulty, question.qstatus, question.creator_details, "#{question.conform_curriculum? ? '/' : 'X'}", "#{question.conform_specification? ? '/' : 'X'}", "#{question.conform_opportunity? ? '/' : 'X'}", "#{question.accuracy_construct? ? '/' : 'X'}", "#{question.accuracy_topic? ? '/' : 'X'}", "#{question.accuracy_component? ? '/' : 'X'}", "#{question.fit_difficulty? ? '/' : 'X'}", "#{question.fit_important? ? '/' : 'X'}", "#{question.fit_fairness? ? '/' : 'X'}"]
 
                       #Below shall add ONE table row to display remaining data of above (question+answer+usage_frequency) set
                       if qtext2!=""
                         body << ["", "", qtext2, question.marks, question.category,   question.render_difficulty, question.qstatus, question.creator_details, "#{question.conform_curriculum? ? '/' : 'X'}", "#{question.conform_specification? ? '/' : 'X'}", "#{question.conform_opportunity? ? '/' : 'X'}", "#{question.accuracy_construct? ? '/' : 'X'}", "#{question.accuracy_topic? ? '/' : 'X'}", "#{question.accuracy_component? ? '/' : 'X'}", "#{question.fit_difficulty? ? '/' : 'X'}", "#{question.fit_important? ? '/' : 'X'}", "#{question.fit_fairness? ? '/' : 'X'}"]
                       end
                       #END - assign question & answer into table cells========
-
-                    
-                    #header_height=150 #restart default@@@@@@@@@@@@@@@@@@@@@@
 
                   end #by question
 		  topic_height=0

@@ -211,10 +211,13 @@ module ApplicationHelper
 	extcolor=spn.scan('<span style="color:')
 	color_str=size_str
 	if extcolor !=[]
-	  color_codes='#'+color_str[/#(.*?)"/,1]
-	  if color_codes!=[]
-            #text "kod warna je #{color_codes}"   -- fr pdf
-	    color_str=color_str.gsub!(/<span style=\"color:#{color_codes}\">/, '<color rgb="'+color_codes+'">')+'</color>'
+	  aa=color_str[/#(.*?)"/,1]
+	  unless aa==nil
+	    color_codes='#'+aa
+	    if color_codes!=[]
+              #text "kod warna je #{color_codes}"   -- fr pdf
+	      color_str=color_str.gsub!(/<span style=\"color:#{color_codes}\">/, '<color rgb="'+color_codes+'">')+'</color>'
+	    end
 	  end
 	end
 	####color######
@@ -256,15 +259,15 @@ module ApplicationHelper
     string
   end
   
-  #2)NOTE-calculate total height required for ea question in exam_paper.pdf
-  def pdf_question_height(string)
+  #2)NOTE-calculate total height required for ea question in (i)exam_paper_pdf.rb->perline=89 OR (ii)examquestion_report_pdf.rb-> perline=57
+  def pdf_question_height(string, perline)
     question_paras=texteditor_pdf(string).split("\n")
     question_height=0
     for question_para in question_paras
       question_height+=10 #basic per para
       if question_para.size > 1 #eliminate ENTER
 	  para_length=strip_tags(question_para).size
-	  para_lines=strip_tags(question_para).size/57
+	  para_lines=strip_tags(question_para).size/perline
 	  #-------------------------------------------------
 	  #to collect all font sizes in ALL one liner para (max size in each para : in one line/para) 
 	  #OR collect all font sizes in multiple liner para (max size in each para : in multiple line para)

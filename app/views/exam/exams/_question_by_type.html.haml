@@ -66,8 +66,8 @@
     %br
          
 - else
-  %b=(t 'exam.examquestion.question') :
+  %b=(t 'exam.examquestion.question')+" : "
   /= simple_format(item.question)
   = item.question.html_safe
-  %b=(t 'exam.examquestion.answer') : 
+  %b=(t 'exam.examquestion.answer')+" : "
   %br=h item.answer
