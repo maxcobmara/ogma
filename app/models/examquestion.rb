@@ -353,13 +353,61 @@ class Examquestion < ActiveRecord::Base
                       qbytype_count=0
                       questionbytype.each do |q|
                           csv << [] if qbytype_count > 0
-                          if q.question.include?('span')==false
-                              qtext=ActionView::Base.full_sanitizer.sanitize(q.question, :tags => %w(img br p), :attributes => %w(src style))
-                          else
-                              qtext=(ActionView::Base.full_sanitizer.sanitize(q.question, :tags => %w(img br p span), :attributes => %w(src style)) ).gsub!("&nbsp;", " ")
+                          qtext_raw=q.question
+			  
+                          #remove non-break, replace &hellip; convert symbols/special char into hexadecimal for display
+			  if q.question.include?("&nbsp;")
+                            qtext_raw=q.question.gsub!("&nbsp;", " ")
                           end
+                          if qtext_raw.include?("&hellip;")
+                            qtext_raw=qtext_raw.gsub!("&hellip;", "...")
+                          end
+			  str=qtext_raw[/&#(.*?);/,1]
+			  if str
+                            qtext_raw=qtext_raw.gsub!(/&#(.*?);/, [("%.4x" % str.to_i.ord).to_i(16)].pack('U'))
+			  end
+			  
+                          # NOTE - when /<p(.*?)>/) exist, split question into separate rows - 1st para: qtext_main & remaining paras: qtext_rema (array)
+			  ############1) split question --> main(1st para) & subsequent para
+		          if qtext_raw && qtext_raw.scan(/<p(.*?)>/)!=[]
+			    qtext_rev=qtext_raw.split("</p>")
+			    nos=0
+			    qtext_rema=[]
+			    for qtext_part in qtext_rev
+		               if qtext_part.include?("<p")
+			         if nos==0
+			           qtext_main=qtext_part
+				   nos+=1
+				 else
+				   qtext_rema << qtext_part.split(/<p(.*?)>/).last 
+			         end
+			       end
+			     end
+			  else
+ 			    qtext_main=qtext_raw
+			  end
+			  ############
+			  
+                          if qtext_main.include?('span')==false
+                              qtext=ActionView::Base.full_sanitizer.sanitize(qtext_main, :tags => %w(img br p), :attributes => %w(src style))
+                          else
+                              qtext=(ActionView::Base.full_sanitizer.sanitize(qtext_main, :tags => %w(img br p span), :attributes => %w(src style)) )
+                          end
+
+                          #when /<p(.*?)>/) exist, assign 1st para to this 1st row, otherwise assign the whole question accordingly to this one & only row
                           csv << [cnt+=1, q.questiontype, qtext, q.marks, q.category.blank? ? "\'\'" : q.category, q.render_difficulty, q.qstatus, q.creator_details, "#{q.conform_curriculum? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.conform_specification? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.conform_opportunity? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.accuracy_construct? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.accuracy_topic? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.accuracy_component? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.fit_difficulty? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.fit_important? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.fit_fairness? ? I18n.t('yes2') : I18n.t('no2')} "] 
 
+                          #2) assign remaining paras to subsequent rows
+                          if qtext_rema && qtext_rema.count > 0
+                            for paragraph in qtext_rema
+                              if paragraph.include?('span')==false
+                                para=ActionView::Base.full_sanitizer.sanitize(paragraph, :tags => %w(img br p), :attributes => %w(src style))
+                              else
+                                para=(ActionView::Base.full_sanitizer.sanitize(paragraph, :tags => %w(img br p span), :attributes => %w(src style)) )
+                              end
+                              csv << ["\'\'", "\'\'", para]
+                            end
+                          end
                           ######ANSWER - start
                           csv << []
                           csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.answer').upcase+" : "]
