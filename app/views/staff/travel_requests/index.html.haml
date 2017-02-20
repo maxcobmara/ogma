@@ -68,7 +68,8 @@
     - if @is_admin
       %tr
         %td{:colspan=>"8",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'staff.travel_request.others_unrelated_travel_request'
-      - @other_travelrequests.sort_by{|x|[x.applicant.rank_id, x.applicant.name, x.depart_at]}.each do |travel_request|
+      /- @other_travelrequests.sort_by{|x|[x.applicant.rank_id, x.applicant.name, x.depart_at]}.each do |travel_request|
+      - @other_travelrequests.sort_by{|x|[x.applicant.staff_with_rank, x.depart_at]}.each do |travel_request|
         %tr
         %td=h travel_request.try(:document).try(:refno)
         %td
