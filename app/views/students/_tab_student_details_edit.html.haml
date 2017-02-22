@@ -2,7 +2,7 @@
   .form-group
     .col-sm-2.control-label
       - if current_user.college.code=="amsas"
-        = f.label "Body No", for: :matrixno
+        = f.label t 'student.students.apmmno', for: :apmmno
       - else
         = f.label t 'student.students.matrixno', for: :matrixno
     .col-md-2

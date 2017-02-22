@@ -2755,7 +2755,7 @@ en:
       formatted_mykad: MyKad No
       name: Name
       matrixno: Matrix No
-      bodyno: Body No
+      apmmno: APMM No
       rank_id: Rank
       position: Position
       department: Unit /  Department / Branch

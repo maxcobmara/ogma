@@ -32,7 +32,7 @@
 		  
           %dt
             - if current_user.college.code=="amsas"
-              Body No
+              =  t 'student.students.apmmno'
             - else
               = t 'student.students.matrixno' , :default => model_class.human_attribute_name(:title) + ":"
           %dd= @student.matrixno
