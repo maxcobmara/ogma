@@ -4,7 +4,7 @@
 = t'training.weeklytimetable_detail.topic'
 %font{:color=>"blue"}*
 - if current_user.college.code=="amsas"
-  - prompt_text=(t 'helpers.prompt.select_subject_topic')
+  - prompt_text=(t 'helpers.prompt.select_module_subject')
 - else
   - prompt_text=(t 'helpers.prompt.select_sem_subject_topic')
 =select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][topic]", options_from_collection_for_select(@semester_subject_topic_list, :id,:semester_subject_topic), :prompt=>prompt_text
