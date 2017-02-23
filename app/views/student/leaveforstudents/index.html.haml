@@ -13,57 +13,60 @@
         %b.caret
       %ul.dropdown-menu
         %li= link_to  (fa_icon "file-pdf-o", text: (t 'document.generate_report')),  studentleave_report_student_leaveforstudents_path(params.merge(format: 'pdf' ))
-  
-.row
-  %table.table-striped.table-hover.ogma
-    %thead
-      %tr
-        %th{width: '10%'}= sort_link(@search, :student_name, (t 'student.leaveforstudent.student_id'))
-        %th{width: '10%'}= sort_link(@search, :student_course_name, (t 'student.students.course_id'))
-        %th{width: '5%'}= sort_link(@search, :student_tenants_location, (t 'student.students.intake_id'))
-        %th{width: '5%'}= sort_link(@search, :student_intake, (t 'student.leaveforstudent.hostel_block'))
-        %th{width: '10%'}= sort_link(@search, :leavetype, (t 'student.leaveforstudent.leavetype'))
-        %th{width: '10%'}= sort_link(@search, :requestdate, (t 'student.leaveforstudent.requestdate'))
-        %th{width: '10%'}= sort_link(@search, :leave_startdate, (t 'student.leaveforstudent.leaves_date'))
-        %th{width: '10%'}= sort_link(@search, :studentsubmit, (t 'student.leaveforstudent.studentsubmit'))
-        - if current_user.college.code=="kskbjb"
-          %th{width: '10%'}= sort_link(@search, :staff_name, (t 'student.leaveforstudent.coordinator'))
-          %th{width: '5%'}= sort_link(@search, :coordinator_search, (t 'student.leaveforstudent.approved'))
-        %th{width: '10%'}= sort_link(@search, :second_approver_name, (t 'student.leaveforstudent.approver'))
-        %th{width: '5%'}= sort_link(@search, :warden_search, (t 'student.leaveforstudent.approved'))
-    %tbody
-    = render "index_search"
-    - @leaveforstudent.each do |leaveforstudent|
-      %tr
-        %td
-          - if current_user.college.code=="amsas"
-            = link_to leaveforstudent.student.student_with_rank, student_leaveforstudent_path(leaveforstudent)
-          - else
-            = link_to leaveforstudent.student_details, student_leaveforstudent_path(leaveforstudent)
-        %td
-          - programmes=Programme.roots.where(college_id: current_user.college_id)
-          - pnames=programmes.pluck(:name)
-          = pnames.count==pnames.uniq.count ? leaveforstudent.student.course.name :  leaveforstudent.student.course.programme_list
-        %td.centre=h leaveforstudent.student.intake.try(:strftime, '%b %Y')
-        %td.centre=h leaveforstudent.student.tenants.last.location.root.code if !leaveforstudent.student.tenants.nil? && leaveforstudent.student.tenants.count > 0 
-        %td=h ((DropDown::STUDENTLEAVETYPE.find_all{|disp, value| value ==leaveforstudent.leavetype }).map {|disp, value| disp}).first
-        %td=h leaveforstudent.requestdate.try(:strftime, '%d %b %y')
-        %td.centre
-          =h leaveforstudent.leave_startdate.try(:strftime, '%d %b %y')+" - "
-          %br=h leaveforstudent.leave_enddate.try(:strftime, '%d %b %y')
-        %td.centre=h leaveforstudent.studentsubmit? ? fa_icon("check") : fa_icon("times")
-        %td=h leaveforstudent.staff_id? ? leaveforstudent.approver_details : ""
-        %td.centre
-          - unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved==nil 
-            =h leaveforstudent.approved? ? fa_icon("check") : fa_icon("times")
-          - else
-            %font{:color =>"red"}=t('student.leaveforstudent.expired') if leaveforstudent.studentsubmit==true
-        - if current_user.college.code=="icmskskb"
-          %td=h leaveforstudent.staff_id2? ? leaveforstudent.approver_details2 : ""
-          %td.centre
-            - unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved2==nil 
-              =h leaveforstudent.approved2? ? fa_icon("check") : fa_icon("times")
-            - else
-              %font{:color=>"red"}=t('student.leaveforstudent.expired') if leaveforstudent.studentsubmit==true
 
-        
+= render :partial => "student/leaveforstudents/#{current_user.college.code}/index", :locals =>{:leaveforstudents=> @leaveforstudent}
+/ .row
+/   %table.table-striped.table-hover.ogma
+/     %thead
+/       %tr
+/         %th{width: '10%'}= sort_link(@search, :student_name, (t 'student.leaveforstudent.student_id'))
+/         %th{width: '10%'}= sort_link(@search, :student_course_name, (t 'student.students.course_id'))
+/         %th{width: '5%'}= sort_link(@search, :student_tenants_location, (t 'student.students.intake_id'))
+/         %th{width: '5%'}= sort_link(@search, :student_intake, (t 'student.leaveforstudent.hostel_block'))
+/         %th{width: '10%'}= sort_link(@search, :leavetype, (t 'student.leaveforstudent.leavetype'))
+/         %th{width: '7%'}= sort_link(@search, :requestdate, (t 'student.leaveforstudent.requestdate'))
+/         %th{width: '13%'}= sort_link(@search, :leave_startdate, (t 'student.leaveforstudent.leaves_date'))
+/         %th{width: '10%'}= sort_link(@search, :studentsubmit, (t 'student.leaveforstudent.studentsubmit'))
+/         - if current_user.college.code=="kskbjb"
+/           %th{width: '10%'}= sort_link(@search, :staff_name, (t 'student.leaveforstudent.coordinator'))
+/           %th{width: '5%'}= sort_link(@search, :coordinator_search, (t 'student.leaveforstudent.approved'))
+/         %th{width: '10%'}= sort_link(@search, :second_approver_name, (t 'student.leaveforstudent.approver'))
+/         %th{width: '5%'}= sort_link(@search, :warden_search, (t 'student.leaveforstudent.approved'))
+/     %tbody
+/     = render "index_search"
+/     - @leaveforstudent.each do |leaveforstudent|
+/       %tr
+/         %td
+/           - if current_user.college.code=="amsas"
+/             = link_to leaveforstudent.student.student_with_rank, student_leaveforstudent_path(leaveforstudent)
+/           - else
+/             = link_to leaveforstudent.student_details, student_leaveforstudent_path(leaveforstudent)
+/         %td
+/           - programmes=Programme.roots.where(college_id: current_user.college_id)
+/           - pnames=programmes.pluck(:name)
+/           = pnames.count==pnames.uniq.count ? leaveforstudent.student.course.name :  leaveforstudent.student.course.programme_list
+/         %td.centre
+/           - if current_user.college.code=='amsas'
+/             =h leaveforstudent.student.intakestudent.siri_name
+/           - else
+/             =h leaveforstudent.student.intake_id==nil? ? leaveforstudent.student.intake.try(:strftime, '%b %Y') : leaveforstudent.student.intakestudent.monthyear_intake.try(:strftime, '%b %Y')
+/         %td.centre=h leaveforstudent.student.tenants.last.location.root.code if !leaveforstudent.student.tenants.nil? && leaveforstudent.student.tenants.count > 0 
+/         %td=h ((DropDown::STUDENTLEAVETYPE.find_all{|disp, value| value ==leaveforstudent.leavetype }).map {|disp, value| disp}).first
+/         %td=h leaveforstudent.requestdate.try(:strftime, '%d %b %y')
+/         %td.centre
+/           =h leaveforstudent.leave_startdate.try(:strftime, '%d %b %y')+" - "
+/           %br=h leaveforstudent.leave_enddate.try(:strftime, '%d %b %y')
+/         %td.centre=h leaveforstudent.studentsubmit? ? fa_icon("check") : fa_icon("times")
+/         %td=h leaveforstudent.staff_id? ? leaveforstudent.approver_details : ""
+/         %td.centre
+/           - unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved==nil 
+/             =h leaveforstudent.approved? ? fa_icon("check") : fa_icon("times")
+/           - else
+/             %font{:color =>"red"}=t('student.leaveforstudent.expired') if leaveforstudent.studentsubmit==true
+/         - if current_user.college.code=="icmskskb"
+/           %td=h leaveforstudent.staff_id2? ? leaveforstudent.approver_details2 : ""
+/           %td.centre
+/             - unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved2==nil 
+/               =h leaveforstudent.approved2? ? fa_icon("check") : fa_icon("times")
+/             - else
+/               %font{:color=>"red"}=t('student.leaveforstudent.expired') if leaveforstudent.studentsubmit==true

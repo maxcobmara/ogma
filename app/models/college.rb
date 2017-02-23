@@ -19,6 +19,7 @@ class College < ActiveRecord::Base
   has_many :student_discipline_cases
   has_many :student_counseling_sessions
   has_many :student_attendances
+  has_many :leaveforstudents
   has_many :documents
   has_many :circulations
   has_many :examquestions
