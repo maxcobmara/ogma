@@ -77,10 +77,13 @@
               - courseid=Student.where("id = ?", stuid ).select(:course_id).pluck(:course_id).first
               = Programme.find(courseid).name unless courseid.blank?
             %td.centre
-              - intake=Student.where("id = ?", stuid ).select(:intake).pluck(:intake).first
+              /- intake=Student.where("id = ?", stuid ).select(:intake).pluck(:intake).first
+              - intake=Student.where("id = ?", stuid ).first.intakestudent.monthyear_intake
               - intake2=intake.beginning_of_month
               =Intake.where(monthyear_intake: intake2, programme_id: courseid).first.try(:description) if !intake2.blank? && !courseid.blank?
-            %td=Student.find(stuid).year_and_sem unless stuid==0
+            %td
+              - if current_user.college.code!='amsas'
+                =Student.find(stuid).year_and_sem unless stuid==0 
             %td.centre= "#{visits}"
 
   .col-md-3
