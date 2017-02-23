@@ -15,22 +15,36 @@
     
     - if current_user.college.code=="kskbjb"
       %td=f.text_field :staff_name_cont, size: 2, :class => "form-control", :placeholder => (t 'student.leaveforstudent.staff_id')
-    - else
-      %td=f.text_field :second_approver_name_cont, size: 2, :class => "form-control", :placeholder => (t 'student.leaveforstudent.staff_id')
+      %td= select_tag('q[coordinator_search]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),'1'],[(t 'actions.not_approved'),'0'], [(t 'student.leaveforstudent.expired'), 'expired'],[(t 'student.leaveforstudent.valid'), 'valid']]),class: 'selectpicker',"data-width"=>'100px')
+      
+    %td=f.text_field :second_approver_name_cont, size: 2, :class => "form-control", :placeholder => (t 'student.leaveforstudent.staff_id')
     %td
       .input-group
-        - if current_user.college.code=="kskbjb"
-          %td= select_tag('q[coordinator_search]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),'1'],[(t 'actions.not_approved'),'0'], [(t 'student.leaveforstudent.expired'), 'expired'],[(t 'student.leaveforstudent.valid'), 'valid']]),class: 'selectpicker',"data-width"=>'100px')
-    
-          /%td= select_tag('q[approved_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),true],[(t 'actions.not_approved'),false]]),class: 'selectpicker',"data-width"=>'100px')
-
-        - else
-          = select_tag('q[warden_search]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),'1'],[(t 'actions.not_approved'),'0'], [(t 'student.leaveforstudent.expired'), 'expired'],[(t 'student.leaveforstudent.valid'), 'valid']]),class: 'selectpicker',"data-width"=>'100px')
-          /= select_tag('q[approved2_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),true],[(t 'actions.not_approved'),false]]),class: 'selectpicker',"data-width"=>'100px')
-
+        = select_tag('q[warden_search]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),'1'],[(t 'actions.not_approved'),'0'], [(t 'student.leaveforstudent.expired'), 'expired'],[(t 'student.leaveforstudent.valid'), 'valid']]),class: 'selectpicker',"data-width"=>'100px')
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw
+
+    
+/     - if current_user.college.code=="kskbjb"
+/       %td=f.text_field :staff_name_cont, size: 2, :class => "form-control", :placeholder => (t 'student.leaveforstudent.staff_id')
+/     - else
+/       %td=f.text_field :second_approver_name_cont, size: 2, :class => "form-control", :placeholder => (t 'student.leaveforstudent.staff_id')
+/       
+/     %td
+/       .input-group
+/         - if current_user.college.code=="kskbjb"
+/           %td= select_tag('q[coordinator_search]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),'1'],[(t 'actions.not_approved'),'0'], [(t 'student.leaveforstudent.expired'), 'expired'],[(t 'student.leaveforstudent.valid'), 'valid']]),class: 'selectpicker',"data-width"=>'100px')
+/     
+/           /%td= select_tag('q[approved_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),true],[(t 'actions.not_approved'),false]]),class: 'selectpicker',"data-width"=>'100px')
+/ 
+/         - else
+/           = select_tag('q[warden_search]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),'1'],[(t 'actions.not_approved'),'0'], [(t 'student.leaveforstudent.expired'), 'expired'],[(t 'student.leaveforstudent.valid'), 'valid']]),class: 'selectpicker',"data-width"=>'100px')
+/           /= select_tag('q[approved2_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),true],[(t 'actions.not_approved'),false]]),class: 'selectpicker',"data-width"=>'100px')
+/ 
+/         %span.input-group-btn
+/           %button.btn.btn-sm.btn-default.right{:type => "submit"}
+/             %i.fa.fa-search.fa-fw
 
             
 

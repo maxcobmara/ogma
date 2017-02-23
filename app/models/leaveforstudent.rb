@@ -1,5 +1,6 @@
 class Leaveforstudent < ActiveRecord::Base
   
+  belongs_to :college
   belongs_to :student
   belongs_to :staff
   belongs_to :second_approver, :class_name=>"Staff", :foreign_key=>"staff_id2"
@@ -145,7 +146,12 @@ class Leaveforstudent < ActiveRecord::Base
      if student_intake
        student_intake.group_with_intake_name
      else
-       " - ("+I18n.t('student.leaveforstudent.intake')+" : "+student.intake.strftime('%b %Y').to_s+")"
+       unless student.intake_id==nil
+	 a=student.intakestudent.monthyear_intake.strftime('%b %Y').to_s+")"
+       else
+	 a=student.intake.strftime('%b %Y').to_s+")"
+       end
+       " - ("+I18n.t('student.leaveforstudent.intake')+" : "+a
      end
   end
   

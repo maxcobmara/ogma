@@ -1,0 +1,37 @@
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th{width: '13%'}= sort_link(@search, :student_name, (t 'student.leaveforstudent.student_id'))
+        %th{width: '14%'}= sort_link(@search, :student_course_name, (t 'student.students.course_id'))
+        %th{width: '8%'}= sort_link(@search, :student_tenants_location, (t 'student.students.intake_id'))
+        %th{width: '5%'}= sort_link(@search, :student_intake, (t 'student.leaveforstudent.hostel_block'))
+        %th{width: '10%'}= sort_link(@search, :leavetype, (t 'student.leaveforstudent.leavetype'))
+        %th{width: '5%'}= sort_link(@search, :requestdate, (t 'student.leaveforstudent.requestdate'))
+        %th{width: '10%'}= sort_link(@search, :leave_startdate, (t 'student.leaveforstudent.leaves_date'))
+        %th{width: '5%'}= sort_link(@search, :studentsubmit, (t 'student.leaveforstudent.studentsubmit'))
+        %th{width: '10%'}= sort_link(@search, :second_approver_name, (t 'student.leaveforstudent.approver'))
+        %th{width: '5%'}= sort_link(@search, :warden_search, (t 'student.leaveforstudent.approved'))
+    %tbody
+    = render "index_search"
+    - leaveforstudents.each do |leaveforstudent|
+      %tr
+        %td= link_to leaveforstudent.student.student_with_rank, student_leaveforstudent_path(leaveforstudent)
+        %td
+          - programmes=Programme.roots.where(college_id: current_user.college_id)
+          - pnames=programmes.pluck(:name)
+          = pnames.count==pnames.uniq.count ? leaveforstudent.student.course.name :  leaveforstudent.student.course.programme_list
+        %td.centre=h leaveforstudent.student.intakestudent.siri_name
+        %td.centre=h leaveforstudent.student.tenants.last.location.root.code if !leaveforstudent.student.tenants.nil? && leaveforstudent.student.tenants.count > 0 
+        %td=h ((DropDown::STUDENTLEAVETYPE.find_all{|disp, value| value ==leaveforstudent.leavetype }).map {|disp, value| disp}).first
+        %td=h leaveforstudent.requestdate.try(:strftime, '%d/%m/%Y')
+        %td.centre=h leaveforstudent.leave_startdate.try(:strftime, '%d/%m/%Y')+" - "+leaveforstudent.leave_enddate.try(:strftime, '%d/%m/%Y')
+        %td.centre=h leaveforstudent.studentsubmit? ? fa_icon("check") : fa_icon("times")
+        %td=h leaveforstudent.staff_id? ? leaveforstudent.approver_details : ""
+        %td.centre
+          - unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved==nil 
+            =h leaveforstudent.approved? ? fa_icon("check") : fa_icon("times")
+          - else
+            %font{:color =>"red"}=t('student.leaveforstudent.expired') if leaveforstudent.studentsubmit==true
+
+        
