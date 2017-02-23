@@ -913,7 +913,7 @@ authorization do
         if_attribute :id => is {user.userable.id}
       end
       has_permission_on :student_leaveforstudents, :to =>[:menu, :create]
-      has_permission_on :student_leaveforstudents, :to => [:read, :slip_pengesahan_cuti_pelajar] do
+      has_permission_on :student_leaveforstudents, :to => [:read, :slip_pengesahan_cuti_pelajar, :studentleave_report] do
         if_attribute :student_id => is {user.userable.id}
       end
       has_permission_on :student_leaveforstudents, :to => :update do

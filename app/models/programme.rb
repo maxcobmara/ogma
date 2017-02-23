@@ -92,7 +92,7 @@ class Programme < ActiveRecord::Base
   
   def semester_subject_topic
     if ancestry_depth == 2
-      if parent.course_type=="Subject"
+      if parent.course_type=="Module"
         #amsas only
         "#{root.programme_list} | #{parent.code} #{parent.name} > #{name}"
       end

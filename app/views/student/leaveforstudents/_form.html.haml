@@ -26,7 +26,7 @@
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.requestdate', for: :requestdate
     .col-md-2 
-      = f.text_field :requestdate, class: 'date_picker_reverse form-control'
+      = f.text_field :requestdate, value: Date.today.strftime('%d-%m-%Y'), class: 'date_picker_reverse form-control'
   
   .form-group
     .col-sm-2.control-label
@@ -38,13 +38,13 @@
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.address', for: :address
     .col-md-4
-      = f.text_area :address, class: 'form-control mandatory'
+      = f.text_area :address, value: Student.where(id: current_user.userable_id).first.try(:address), class: 'form-control mandatory'
   
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.telno', for: :phone_no
     .col-md-4
-      = f.text_field :telno, class: 'form-control mandatory'
+      = f.text_field :telno, value: Student.where(id: current_user.userable_id).first.try(:stelno), class: 'form-control mandatory'
   
   .form-group
     .col-sm-2.control-label

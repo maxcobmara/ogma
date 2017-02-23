@@ -4750,7 +4750,7 @@ en:
       select_format: Select Timetable Format
       select_lecture_method: Select Lecture Method
       select_sem_subject_topic: Select Sem-Subject|Topic
-      select_subject_topic: Select Subject > Topic / Subtopic
+      select_module_subject: Select Module > Subject
       select_location: Select Location
       select_lecturer: Select Lecturer
       select_hod: "Select HOD / Approver"
