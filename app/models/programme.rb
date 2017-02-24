@@ -51,15 +51,15 @@ class Programme < ActiveRecord::Base
   end
   
   def subject_list
-      "#{code}" + " " + "#{name.titleize}"   
+      "#{code} #{name.titleize}"   
   end
   
   def subject_list2
-      "#{combo_code}" + " " + "#{name.titleize}"   
+      "#{combo_code} #{name.titleize}"   
   end
   
   def programme_list
-    prog="#{course_type}" + " " + "#{name}"   
+    prog="#{course_type} #{name}"   
     if is_root?
       prog+=" ("+level.upcase+")" unless level.blank?
     else
@@ -166,6 +166,10 @@ class Programme < ActiveRecord::Base
     else
       "#{root.programme_list} #{module_subject_list}"
     end
+  end
+  
+  def module_subject
+    "#{parent.subject_list}<br> > #{subject_list}"
   end
   
   def self.programme_names
