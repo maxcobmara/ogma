@@ -20,7 +20,12 @@
               .col-sm-2.control-label
                 = f.label t 'exam.exam_template.title', for: :exam_template
               .col-md-2
-                = f.collection_select :topic_id, ExamTemplate.search2(@exam.subject.root_id).order(name: :asc), :id, :name, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+                - roles=current_user.roles.pluck(:authname)
+                - if is_admin? || is_developer? || roles.include?("exam_templates_module_admin")|| roles.include?("exam_templates_module_user")
+                  - search='0'
+                - else
+                  - search=@exam.subject.root_id
+                = f.collection_select :topic_id, ExamTemplate.search2(search).order(name: :asc), :id, :name, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
                      
           - if @exam.examtemplates && @exam.examtemplates.count > 0 && @exam.exam_template.nil?
             .col-md-8.col-md-offset-1

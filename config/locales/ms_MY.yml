@@ -2749,6 +2749,7 @@ ms_MY:
       field: Medan
       description: Deskripsi
       column: Lajur Excel
+      removal: "Anda pasti? Kesemua rekod berkaitan pelajar akan dipadam dari ICMS."
       
       icno_must_unique2: "No Mykad mestilah UNIK dalam format '999999999999'. Sila gunakan format sel 'Number - General'"
       name_must_not_blank2: "Medan ini tidak boleh dikosongkan"

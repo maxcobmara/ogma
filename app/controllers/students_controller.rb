@@ -184,11 +184,17 @@ class StudentsController < ApplicationController
 
   def destroy
     @student = Student.find(params[:id])
-    @student.destroy
 
     respond_to do |format|
-      format.html { redirect_to(students_url) }
-      format.xml  { head :ok }
+      if @student.destroy
+        format.html { redirect_to(students_url) }
+        format.xml  { head :ok }
+      else
+        errors_line=""
+        @student.errors.each{|k,v| errors_line+="<li>#{v}</li>"}
+        format.html { redirect_to student_path(@student), notice: ("<span style='color: red;'>"+ I18n.t('activerecord.errors.invalid_removal')+"<ol>"+errors_line+"</ol></span>").html_safe}
+        format.json { head :no_content }
+      end
     end
   end
 

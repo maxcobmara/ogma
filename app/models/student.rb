@@ -2,6 +2,8 @@ class Student < ActiveRecord::Base
   include StudentsHelper
   
   before_save  :titleize_name, :amsas_intake_update_course, :remove_group_id
+  before_destroy :valid_for_removal
+  
   validates_presence_of     :icno, :name, :sstatus, :stelno,  :gender, :sbirthdt, :mrtlstatuscd, :intake_id, :end_training #, :semail   #:intake
   validates_presence_of :birthplace, :religion, :if => :college_is_amsas?
   validates_presence_of :ssponsor, :course_id, :if => :college_is_not_amsas?
@@ -16,41 +18,39 @@ class Student < ActiveRecord::Base
   validates_attachment_size :photo, :less_than => 5.megabytes
   validates_attachment_content_type :photo, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
   
-  has_many :users, as: :userable
-  #has_and_belongs_to_many :klasses          #has_and_belongs_to_many :programmes
-
-  belongs_to :course,         :class_name => 'Programme', :foreign_key => 'course_id'       #Link to Programme
-  belongs_to :intakestudent,  :class_name => 'Intake',    :foreign_key => 'intake_id'       #Link to Model intake
-  belongs_to :rank, :foreign_key => 'rank_id'
-  belongs_to :college, :foreign_key => 'college_id'
-
-  #has_one   :user,              :dependent => :destroy                                      #Link to Model user
-  has_many  :leaveforstudents,  :dependent => :destroy                                      #Link to LeaveStudent
-  has_many  :student_counseling_sessions                                                    #Link to Counselling
-
-  has_many  :studentgrade,    :class_name => 'Grade',     :foreign_key => 'student_id'      #Link to Model Grade
-  has_many  :student_discipline_cases,         :class_name => 'Sdicipline',:foreign_key => 'student_id'      #Link to Model Sdicipline
-  has_many  :studentevaluate, :class_name => 'Courseevaluation', :foreign_key => 'student_id'#Link to Model CourseEvaluation
-  has_many  :student_residences,         :class_name => 'Residence', :foreign_key => 'student_id'      #Link to Model residence
-  has_many  :tenants, :dependent => :destroy
-
-  has_many  :librarytransactions                                                            #Link to LibraryTransactions
-  #has_many :studentattendances
-  has_many :student_attendances
-  has_many :timetables, :through => :studentattendances
-
-  has_many :exammarks                                                                       #11Apr2013-Link to Model Exammark
-
-  #has_many :sdiciplines, :foreign_key => 'student_id'
-  #has_many :std, :class_name => 'Sdicipline', :foreign_key => 'student_id'
+  belongs_to :college
+  belongs_to :course,            :class_name => 'Programme', :foreign_key => 'course_id'     # TODO - kskbjb : follow amsas one, refer Intake
+  belongs_to :intakestudent, :class_name => 'Intake',         :foreign_key => 'intake_id'
+  belongs_to :rank
   
-  has_many          :kins, :dependent => :destroy
-  accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
-  
-  has_one :student, foreign_key: 'student_id'
-  
+  has_many  :users, as: :userable
   has_one :mentee
-# 
+  
+  #repeating fields - Student Info---
+  has_many :kins, :dependent => :destroy
+  accepts_nested_attributes_for :kins, :allow_destroy => true, :reject_if => lambda { |a| a[:kintype_id].blank? }
+  validates_associated :kins
+  
+  has_many :qualifications, :dependent => :destroy
+  accepts_nested_attributes_for :qualifications, :allow_destroy => true, :reject_if => lambda { |a| a[:level_id].blank? }
+  
+  has_many :spmresults, :dependent => :destroy
+  accepts_nested_attributes_for :spmresults, :allow_destroy => true, :reject_if => lambda { |a| a[:spm_subject].blank? }
+  #---
+
+  has_many  :leaveforstudents,                     :dependent => :destroy
+  has_many  :student_counseling_sessions, :dependent => :destroy
+  has_many  :student_discipline_cases
+  
+  has_many  :exammarks
+  has_many  :studentgrade,     :class_name => 'Grade',                 :foreign_key => 'student_id', :dependent => :destroy
+  has_many  :result_slip,           :class_name => 'Resultline',           :foreign_key => 'student_id', :dependent => :destroy
+  has_many  :studentevaluate, :class_name => 'EvaluateCourse', :foreign_key => 'student_id', :dependent => :destroy
+
+  has_many  :tenants
+  has_many  :librarytransactions                                           
+  has_many  :student_attendances, :dependent => :destroy
+
 #   def self.course_search(query)
 #     programme_ids = Programme.roots.where('name ILIKE(?) or course_type ILIKE(?) or level ILIKE(?)', "%#{query}%", "%#{query}%", "%#{query.downcase}%").pluck(:id)
 #     where(course_id: programme_ids)
@@ -507,17 +507,6 @@ class Student < ActiveRecord::Base
      return all_students
    end
 
-# ------------------------------code for repeating field qualification---------------------------------------------------
- has_many :qualifications, :dependent => :destroy
- accepts_nested_attributes_for :qualifications, :allow_destroy => true, :reject_if => lambda { |a| a[:level_id].blank? }
-
- has_many :kins, :dependent => :destroy
- accepts_nested_attributes_for :kins, :allow_destroy => true, :reject_if => lambda { |a| a[:kintype_id].blank? }
- validates_associated :kins
-
- has_many :spmresults, :dependent => :destroy
- accepts_nested_attributes_for :spmresults, :allow_destroy => true, :reject_if => lambda { |a| a[:spm_subject].blank? }
-
  #export excel section ---
  #ref : "\'"+student.display_stelno+"\'"
   def self.to_csv2(options = {})
@@ -776,7 +765,32 @@ STATECD = [
        [ "Others",   4 ],
  ]
 
-
+  private
+  
+    def valid_for_removal
+      exmrkcnt=exammarks.count
+      libcnt=librarytransactions.count
+      dispcnt=student_discipline_cases.count
+      tentcnt=tenants.count
+      if exmrkcnt > 0
+        errors.add(:base, "#{I18n.t('exam.exammark.title')} : #{exmrkcnt} #{I18n.t('actions.records')}")
+      end
+      if libcnt > 0
+        errors.add(:base, "#{I18n.t('library.transaction.title')} : #{libcnt} #{I18n.t('actions.records')}")
+      end
+      if dispcnt > 0
+        errors.add(:base, "#{I18n.t('student.discipline.title')} : #{dispcnt} #{I18n.t('actions.records')}")
+      end
+       if tentcnt > 0
+        errors.add(:base, "#{I18n.t('student.tenant.title')} : #{tentcnt} #{I18n.t('actions.records')}")
+      end
+      if exmrkcnt > 0 || libcnt > 0 || dispcnt > 0 || tentcnt > 0
+        return false
+      else
+        return true
+      end
+    end
+    
 end
 
 # == Schema Information
