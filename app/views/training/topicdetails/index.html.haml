@@ -6,7 +6,7 @@
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_training_topicdetail_path
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  topicdetail_report_training_topicdetails_path(params.merge(format: 'pdf' ))
 
 .row.filter{style: "display:none;"}
@@ -16,7 +16,10 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th{width: '30%'}=(t 'training.topicdetail.programme')+" | "+(t 'training.topicdetail.subject')
+        %th{width: '30%'}
+          =(t 'training.topicdetail.programme')+" | "
+          = current_user.college.code=='amsas' ? (t 'training.programme.module')+" > " : ""
+          =(t 'training.topicdetail.subject')
         %th{width: '20%'}= sort_link(@search, :topic_code, (t 'training.topicdetail.topic_code'))
         %th{width: '5%'}= t 'training.topicdetail.version_no'
         %th{width: '10%'}= t 'training.topicdetail.duration'
@@ -34,12 +37,15 @@
         /subject column
         %td
           =topicdetail.subject_topic.root.programme_list+" | "
-          - if topicdetail.subject_topic.ancestry_depth == 3
-            = topicdetail.subject_topic.parent.code
-          - elsif topicdetail.subject_topic.ancestry_depth == 4
-            = topicdetail.subject_topic.parent.parent.code
-          - else 
-            = topicdetail.subject_topic.ancestors.where(course_type: "Subject").first.subject_list
+          - if current_user.college.code=='kskbjb'
+            - if topicdetail.subject_topic.ancestry_depth == 3
+              = topicdetail.subject_topic.parent.code
+            - elsif topicdetail.subject_topic.ancestry_depth == 4
+              = topicdetail.subject_topic.parent.parent.code
+            - else 
+              = topicdetail.subject_topic.ancestors.where(course_type: "Subject").first.subject_list
+          - else
+            = (topicdetail.subject_topic.module_subject).html_safe
 
         /topic @ subtopic column
         %td
@@ -48,7 +54,7 @@
           - elsif topicdetail.subject_topic.ancestry_depth == 4
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             =topicdetail.subject_topic.code+" - "   
-          =h link_to topicdetail.subject_topic.name, training_topicdetail_path(topicdetail)
+          =h link_to topicdetail.subject_topic.name.titleize, training_topicdetail_path(topicdetail)
 
         %td=h topicdetail.version_no
         %td=h topicdetail.subject_topic.try(:total_duration)
@@ -60,10 +66,4 @@
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @topicdetails, :theme => 'twitter-bootstrap-3'
 
-:javascript
-$(document).ready(function(){
-  $('.toga').click(function() {
-    $('.search_row').toggle(); 
-  });
-})
 

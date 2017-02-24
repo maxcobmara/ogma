@@ -499,7 +499,7 @@ en:
             hod_accept_on: Head of Department Accepted Date
             own_car_notes: Reason
             
-        invalid_removal: "Record removal are not allowed.<br>Please remove dependant records first, before proceed."
+        invalid_removal: "Record removal is not allowed.<br>Please remove dependant records first, before proceed."
             
   #common
   search:  Search
