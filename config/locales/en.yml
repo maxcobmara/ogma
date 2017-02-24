@@ -2876,6 +2876,7 @@ en:
       birthplace_accordingly2: "Use No for 'Tempat Lahir' according to following list :"
       religion_accordingly2: "Use No for 'Agama' according to following list :"
       remark: Remark
+      removal: "Are you sure? Destroying student will remove all student related records from ICMS."
       
     leaveforstudent:
       title: Student Leave

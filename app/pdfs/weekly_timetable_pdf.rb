@@ -28,7 +28,11 @@ class Weekly_timetablePdf < Prawn::Document
       bounding_box([200, 520], :width => 400, :height => 75) do |y2|
         move_down 10
         text "PPL APMM", :align => :center, :style => :bold, :size => 10
-        text "NO. DOKUMEN: BK-LAT-RAN-01-01", :align => :center, :style => :bold, :size => 10
+	if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT-RAN')
+          text "NO. DOKUMEN: BK-LAT-RAN-01-01", :align => :center, :style => :bold, :size => 10
+	else
+	  text "NO. DOKUMEN: BK-LAT-URK-01-01", :align => :center, :style => :bold, :size => 10
+	end
         text "RANCANGAN LATIHAN MINGGUAN", :align => :center, :style => :bold, :size => 10
       end
     end
