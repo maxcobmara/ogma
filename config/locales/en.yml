@@ -3679,6 +3679,7 @@ en:
       new: New Examination Grade
       edit: Edit Examination Grade
       multiple_edit: Grades Multiple Edit
+      intake: Intake
       student_id: Student
       subject_id: Subject
       programme: Programme
