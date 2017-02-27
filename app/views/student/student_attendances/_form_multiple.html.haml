@@ -80,11 +80,11 @@
                   /  = check_box_tag "attends[#{no+@next}]", true
                   
                 /By default display details for not attend, otherwise - refer EACH -> of attends[] is checked
-                %td{:style=>"padding-left: 15px; width: 80px;", :id => "span_select_#{no+@next}"}= t('select')+" :"
-                %td{:style=>"padding-left: 5px; width: 115px;", :id => "span_reason_#{no+@next}"}= select_tag("reasons[#{no+@next}]", options_for_select([[(t 'student.attendance.reason'),'0']]+DropDown::ABSENT_REASON, studentattendance.reason), {class: 'selectpicker', "data-width"=>"100px"})
-                %td{:style=>"padding-left: 5px; width: 165px;", :id => "span_action_taken_#{no+@next}"}= select_tag("actions[#{no+@next}]", options_for_select([[(t 'student.attendance.action_taken'),'0']]+DropDown::ABSENT_ACTION, studentattendance.action), {class: 'selectpicker', "data-width"=>"150px"})
-                %td{:style=>"padding-left: 5px; width: 165px;", :id => "span_action_close_#{no+@next}"}=select_tag("statuss[#{no+@next}]", options_for_select([[(t 'student.attendance.action_close'),'0'],[(t 'student.attendance.complete'),'Yes'],[(t 'student.attendance.incomplete'),'No']], studentattendance.status), {class: 'selectpicker', "data-width"=>"150px"})
-                %td{:style=>"padding-left: 5px; width: 100px;", :id => "span_remark_#{no+@next}"}= text_field_tag "remarks[#{no+@next}]", studentattendance.remark, class: 'form-control', placeholder: t('student.attendance.remark')
+                %td{:style=>"padding-left: 15px; width: 80px; display: none;", :id => "span_select_#{no+@next}"}= t('select')+" :"
+                %td{:style=>"padding-left: 5px; width: 115px; display: none;", :id => "span_reason_#{no+@next}"}= select_tag("reasons[#{no+@next}]", options_for_select([[(t 'student.attendance.reason'),'0']]+DropDown::ABSENT_REASON, studentattendance.reason), {class: 'selectpicker', "data-width"=>"100px"})
+                %td{:style=>"padding-left: 5px; width: 165px; display: none;", :id => "span_action_taken_#{no+@next}"}= select_tag("actions[#{no+@next}]", options_for_select([[(t 'student.attendance.action_taken'),'0']]+DropDown::ABSENT_ACTION, studentattendance.action), {class: 'selectpicker', "data-width"=>"150px"})
+                %td{:style=>"padding-left: 5px; width: 165px; display: none;", :id => "span_action_close_#{no+@next}"}=select_tag("statuss[#{no+@next}]", options_for_select([[(t 'student.attendance.action_close'),'0'],[(t 'student.attendance.complete'),'Yes'],[(t 'student.attendance.incomplete'),'No']], studentattendance.status), {class: 'selectpicker', "data-width"=>"150px"})
+                %td{:style=>"padding-left: 5px; width: 100px; display: none;", :id => "span_remark_#{no+@next}"}= text_field_tag "remarks[#{no+@next}]", studentattendance.remark, class: 'form-control', placeholder: t('student.attendance.remark')
                
               - if no == one_student_atts_count-1 
                 - @next = @next+no+1
@@ -100,30 +100,33 @@
 :javascript
 $(document).ready(function(){
   var checkbox =$("input:checkbox");
-  
+  var i=0;
+  var j=0;
   
   $('.check').each(function(){
     if ($(this).is(':checked')) {
-      /*$(this).val() = "checked";*/
       $(this).checked=true;
+       i++;
+    }else
+    {
+      $('#span_select_'+j).show();
+      $('#span_reason_'+j).show();
+      $('#span_action_taken_'+j).show();
+      $('#span_action_close_'+j).show();
+      $('#span_remark_'+j).show();
     }
-
-    var attend_check = document.getElementsByClassName('check'); 
-    for(i=0; i < checkbox.length-1; i++){
-      if (attend_check[i].checked==true) 
-      { 
-        $('#span_select_'+i).hide();
-        $('#span_reason_'+i).hide();
-        $('#span_action_taken_'+i).hide();
-        $('#span_action_close_'+i).hide();
-        $('#span_remark_'+i).hide();
-      }
+    /*checkbox included check_all*/
+    if (i==checkbox.length-2)
+    {
+      var allcheck=document.getElementById('check_all');
+      allcheck.checked=true;
     }
-
+    j++;
   });
   
   $('.check').click(function(){
     var attend_check_clk = document.getElementsByClassName('check'); 
+    var j=0;
     for(i=0; i < checkbox.length-1; i++){
       if (attend_check_clk[i].checked==true) 
       { 
@@ -132,6 +135,7 @@ $(document).ready(function(){
         $('#span_action_taken_'+i).hide();
         $('#span_action_close_'+i).hide();
         $('#span_remark_'+i).hide();
+        j++;
       }
       else
       {
@@ -142,7 +146,17 @@ $(document).ready(function(){
         $('#span_remark_'+i).show();
       }
     }
-   
+    /*checkbox excluded check_all*/
+    if (j==checkbox.length-1)
+    {
+      var allcheck=document.getElementById('check_all');
+      allcheck.checked=true;
+    }
+    else
+    {
+      var allcheck=document.getElementById('check_all');
+      allcheck.checked=false;
+    }
   });
 
   $("input[id='check_all']").click(function() {  
@@ -169,23 +183,6 @@ $(document).ready(function(){
     }
   });
 
-  $("input[id='check_all']").each(function() {  
-    var attend_check = document.getElementsByClassName('check'); 
-    if($('#check_all').is(':checked')) { 
-      for (var j=0; j<checkbox.length-1; j++) {
-        attend_check[j].checked=true;
-        $('#span_select_'+j).hide();
-        $('#span_reason_'+j).hide();
-        $('#span_action_taken_'+j).hide();
-        $('#span_action_close_'+j).hide();
-        $('#span_remark_'+j).hide();
-      }
-    }else{
-      for (var j=0; j<checkbox.length-1; j++) {
-        attend_check[j].checked=false;
-      }
-    }
-  });
-
 });
+
 

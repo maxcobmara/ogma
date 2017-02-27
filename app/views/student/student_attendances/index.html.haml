@@ -42,16 +42,19 @@
   - if is_developer? || current_roles.include?('administration') || current_roles.include?('student_attendances_module_admin') 
     - permitted_to? :new_multiple_intake, :student_student_attendances do
       .col-md-6
-        = form_tag new_multiple_intake_student_student_attendances_path, :method => :put , :id => "form2" do
-          = hidden_field_tag( "new_type","3" )
-          .form-group
-            .col-md-6
-              .input-group
-                .input-group-addon
-                  = t 'student.attendance.intake'
-                = select_tag('intake', options_from_collection_for_select(@intake_list2,:intake_course, :intake_acryn_prog), class: "form-control", width: "50px;") 
-            .col-md-4
-              = submit_tag t('student.attendance.new_multiple_intake'), :subject_id => nil, class: "btn btn-default"
+        /NOTE - start - hide this - not required by AMSAS - instead - attendance record should be take twice daily (morning & afternoon sessions)
+        - unless current_user.college.code=='amsas'
+          = form_tag new_multiple_intake_student_student_attendances_path, :method => :put , :id => "form2" do
+            = hidden_field_tag( "new_type","3" )
+            .form-group
+              .col-md-6
+                .input-group
+                  .input-group-addon
+                    = t 'student.attendance.intake'
+                  = select_tag('intake', options_from_collection_for_select(@intake_list2,:intake_course, :intake_acryn_prog), class: "form-control", width: "50px;") 
+              .col-md-4
+                = submit_tag t('student.attendance.new_multiple_intake'), :subject_id => nil, class: "btn btn-default"
+        /NOTE - end - hide this - not required by AMSAS - instead - attendance record should be take twice daily (morning & afternoon sessions)
 
   - permitted_to? :new_multiple_intake, :student_student_attendances do
     .col-md-6
@@ -94,7 +97,10 @@
               - if classes_schedule[0] != nil 
                 %tr
                   %td.group{:colspan => "6"} 
-                    =t('student.attendance.subject')+WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.full_parent+" | "+t('student.attendance.topic')+ WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.subject_list
+                    - if current_user.college.code=='amsas'
+                      =t('student.attendance.subject')+WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_subject.full_parent+" | "+t('student.attendance.subject')+ WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_subject.subject_list
+                    - else
+                      =t('student.attendance.subject')+WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.full_parent+" | "+t('student.attendance.topic')+ WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.subject_list
                     %br
                     =t('student.attendance.date')+WeeklytimetableDetail.find(classes_schedule[0]).get_date_day_of_schedule+" | "+t('student.attendance.time')
                     =WeeklytimetableDetail.find(classes_schedule[0]).get_time_slot

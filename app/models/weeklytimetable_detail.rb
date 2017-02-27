@@ -5,6 +5,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
 
    before_destroy :check_student_attendance, :check_lesson_plan
    
+   belongs_to :college
    belongs_to :weeklytimetable,     :foreign_key => 'weeklytimetable_id'
    belongs_to :weeklytimetable_subject,   :class_name => 'Programme',   :foreign_key => 'subject' #starting 25March2013-no longer use
    belongs_to :weeklytimetable_topic,     :class_name => 'Programme',   :foreign_key => 'topic'
@@ -116,7 +117,12 @@ class WeeklytimetableDetail < ActiveRecord::Base
    end
    
    def day_time_slot
-      "#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"+" | "+"#{Programme.find(topic).subject_with_topic}"
+     if college.code=='amsas'
+       a="#{Programme.find(subject).subject_with_topic}"
+     else
+       a="#{Programme.find(topic).subject_with_topic}"
+     end
+      "#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"+" | "+a
    end
    
    def day_time_slot2
@@ -133,12 +139,20 @@ class WeeklytimetableDetail < ActiveRecord::Base
    end
    
    def subject_day_time
-      "#{Programme.find(topic).parent.code}"+" | "+"#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
+     if college.code=='amsas'
+       "#{Programme.find(subject).parent.code}"+" | "+"#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
+     else
+       "#{Programme.find(topic).parent.code}"+" | "+"#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
+     end
    end
    
    def subject_topic
      #{}"#{Programme.find(topic).subject_with_topic}"
-     "#{Programme.find(topic).parent.code}"+" : "+"#{Programme.find(topic).subject_list}"
+     if college.code=='amsas'
+       "#{Programme.find(subject).parent.code}"+" : "+"#{Programme.find(subject).subject_list}"
+     else
+       "#{Programme.find(topic).parent.code}"+" : "+"#{Programme.find(topic).subject_list}"
+     end
    end
    
    def render_class_method

@@ -3104,6 +3104,7 @@ en:
       tick_attend: " Tick if attend"
       class_schedule: "Class / Schedule"
       student_intake: "Student Intake : "
+      module: Module
       subject: Subject
       topic: Topic
       date: Date

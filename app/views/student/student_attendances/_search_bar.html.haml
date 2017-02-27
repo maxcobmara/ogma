@@ -4,7 +4,8 @@
     %td
       .col-md-4= f.text_field :student_search, size: 2, class: 'form-control', placeholder: (t 'student.attendance.student_id')
       .col-md-3= select_tag('q[weeklytimetable_detail_id_eq]', options_for_select([[(t 'student.attendance.all_class'),'']]+@exist_timetable_attendances), class: 'selectpicker',"data-width"=>"200px")
-      .col-md-2=select_tag('q[intake_search]', options_for_select([[(t 'student.attendance.all_intakes'),'']]+@intake_list3), class: 'selectpicker', "data-width"=>"150px")
+      - unless current_user.college.code=='amsas'
+        .col-md-2=select_tag('q[intake_search]', options_for_select([[(t 'student.attendance.all_intakes'),'']]+@intake_list3), class: 'selectpicker', "data-width"=>"150px")
     %td= select_tag('q[attend_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'student.attendance.attend2'),true],[(t 'student.attendance.absent'),false]]), class: 'selectpicker',"data-width"=>"150px")
     %td= select_tag('q[reason_eq]', options_for_select([[(t 'actions.all_records'),'']]+DropDown::ABSENT_REASON), {class: 'selectpicker', "data-width"=>"150px"})
     %td= select_tag('q[action_eq]', options_for_select([[(t 'actions.all_records'),'']]+DropDown::ABSENT_ACTION), {class: 'selectpicker', "data-width"=>"150px"})
