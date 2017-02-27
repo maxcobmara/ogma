@@ -102,6 +102,6 @@ class WeeklytimetableDetailsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def weeklytimetable_detail_params
-      params.require(:weeklytimetable_detail).permit(:topic, :subject, :time_slot, :lecturer_id, :weeklytimetable_id, :day2, :is_friday, :time_slot2, :location, :lecture_method, :location_desc)
+      params.require(:weeklytimetable_detail).permit(:topic, :subject, :time_slot, :lecturer_id, :weeklytimetable_id, :day2, :is_friday, :time_slot2, :location, :lecture_method, :location_desc, :college_id, {:data => []})
     end
 end

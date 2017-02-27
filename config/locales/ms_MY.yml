@@ -2993,6 +2993,7 @@ ms_MY:
       tick_attend: " Pilih jika hadir"
       class_schedule: "Kelas / Jadual Waktu"
       student_intake: "Ambilan Pelajar : "
+      module: Modul
       subject: Subjek
       topic: Topik
       date: Tarikh

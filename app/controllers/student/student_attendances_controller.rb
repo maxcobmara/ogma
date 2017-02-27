@@ -25,12 +25,20 @@ class Student::StudentAttendancesController < ApplicationController
       else
         # NOTE - system
         if is_admin==true
-          topics_ids_this_prog=WeeklytimetableDetail.pluck(:topic)
+          if current_user.college.code=='amsas'
+            topics_ids_this_prog=WeeklytimetableDetail.pluck(:subject)
+          else
+            topics_ids_this_prog=WeeklytimetableDetail.pluck(:topic)
+          end
           programme_list_ids=Programme.where(id: topics_ids_this_prog).map(&:root_programme).uniq
         else
           #Amsas: also use this part - based on logged in lecturer
           #additional-start - to limit programme list therein subject-topic taught by current lecturer/jurulatih 
-          topics_ids_this_prog=WeeklytimetableDetail.where(lecturer_id: current_user.userable_id).pluck(:topic)
+          if current_user.college.code=='amsas'
+            topics_ids_this_prog=WeeklytimetableDetail.where(lecturer_id: current_user.userable_id).pluck(:subject)
+          else
+            topics_ids_this_prog=WeeklytimetableDetail.where(lecturer_id: current_user.userable_id).pluck(:topic)
+          end
           programme_list_ids=Programme.where(id: topics_ids_this_prog).map(&:root_programme).uniq
           #additional-end
         end
@@ -44,7 +52,11 @@ class Student::StudentAttendancesController < ApplicationController
       intake_id_of_exist_classes=Weeklytimetable.joins(:weeklytimetable_details).where('weeklytimetable_details.id IN(?)', exist_classes).pluck(:intake_id)
       #LIST (1)classes & (2)intakes -> that attendance NOT yet created - NEW Attendance (by class & by intake)
       #LIST (3)classes & (4)intakes -> attendance (already exist) - SEARCH existing attendance (by class & by intake)
-      @schedule_list = WeeklytimetableDetail.where('topic IN(?)',topics_ids_this_prog).where.not(id: exist_classes).order(:topic)
+      if current_user.college.code=='amsas'
+        @schedule_list = WeeklytimetableDetail.where('subject IN(?)',topics_ids_this_prog).where.not(id: exist_classes).order(:subject)
+      else
+        @schedule_list = WeeklytimetableDetail.where('topic IN(?)',topics_ids_this_prog).where.not(id: exist_classes).order(:topic)
+      end
       @intake_list2=@intake_list2.where.not(intake_id: intake_id_of_exist_classes)
       if is_admin==true
         @exist_timetable_attendances=WeeklytimetableDetail.where(id: exist_classes).map(&:subject_details)
@@ -142,8 +154,13 @@ class Student::StudentAttendancesController < ApplicationController
     @student_attendances = Array.new(5) { StudentAttendance.new }
     #view data accordingly - new_multiple.html.haml 
     @selected_class = WeeklytimetableDetail.find(@classid)
-    @subject_name = @selected_class.weeklytimetable_topic.parent.name 
-    @programmeid = @selected_class.weeklytimetable_topic.root.id 
+    if current_user.college.code=='amsas'
+      @subject_name = @selected_class.weeklytimetable_subject.name 
+      @programmeid = @selected_class.weeklytimetable_subject.root.id 
+    else
+      @subject_name = @selected_class.weeklytimetable_topic.parent.name 
+      @programmeid = @selected_class.weeklytimetable_topic.root.id 
+    end
     @iii = @selected_class.weeklytimetable.schedule_intake.monthyear_intake
     intake_id=@selected_class.weeklytimetable.intake_id
     #@student_intake = Student.where('course_id=? AND intake>=? AND intake <?',@programmeid,@iii,@iii.to_date+1.day)

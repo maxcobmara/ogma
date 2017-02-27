@@ -9,6 +9,7 @@ class College < ActiveRecord::Base
   has_many :timetables
   has_many :timetable_periods
   has_many :weeklytimetables
+  has_many :weeklytimetable_details
   has_many :intakes
   has_many :lesson_plans
   has_many :lessonplan_methodologies

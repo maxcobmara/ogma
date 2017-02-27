@@ -114,7 +114,11 @@ class Student_attendan_formPdf < Prawn::Document
   end
   
   def footer
-    draw_text "#{page_number} #{I18n.t('instructor_appraisal.from')} 3",  :size => 8, :at => [240,-5]
+    if @college.code=='amsas'
+      draw_text "#{page_number}",  :size => 8, :at => [250,-5]
+    else
+      draw_text "#{page_number} #{I18n.t('instructor_appraisal.from')} 3",  :size => 8, :at => [240,-5]
+    end
   end
   
 end

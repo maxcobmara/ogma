@@ -4,8 +4,8 @@
   %th{:colspan=>6, style: 'text-align: center;'}= t 'student.attendance.class_schedule_details'
 %tr
   %th No
-  %th=t('student.attendance.subject')
-  %th=t('student.attendance.topic')
+  %th=current_user.college.code=='amsas' ? t('student.attendance.module') : t('student.attendance.subject')
+  %th=current_user.college.code=='amsas' ? t('student.attendance.subject') : t('student.attendance.topic')
   %th=t('student.attendance.date')
   %th=t('student.attendance.time')
   - if lecturer_count > 1
@@ -16,8 +16,8 @@
     %td
       =ind+=1
       /=sa.weeklytimetable_details_id
-    %td=sa.weeklytimetable_detail.weeklytimetable_topic.full_parent
-    %td=sa.weeklytimetable_detail.weeklytimetable_topic.subject_list
+    %td=current_user.college.code=='amsas' ? sa.weeklytimetable_detail.weeklytimetable_subject.full_parent : sa.weeklytimetable_detail.weeklytimetable_topic.full_parent
+    %td=current_user.college.code=='amsas' ? sa.weeklytimetable_detail.weeklytimetable_subject.subject_list : sa.weeklytimetable_detail.weeklytimetable_topic.subject_list
     %td=sa.weeklytimetable_detail.get_date_day_of_schedule+" "
     %td=sa.weeklytimetable_detail.get_time_slot
     - if lecturer_count > 1
