@@ -1,13 +1,17 @@
-- if xx.weeklytimetable_topic.ancestry_depth == 4 
-  .text-left
-    /= xx.weeklytimetable_topic.parent.parent.code
-    = xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase
-  %br= xx.weeklytimetable_topic.parent.name
+- if current_user.college.code=='amsas'
+  = xx.weeklytimetable_subject.name
 - else
-  .text-left
-    /= xx.weeklytimetable_topic.parent.code
-    = xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase
-  %br= xx.weeklytimetable_topic.name
+  - if xx.weeklytimetable_topic.ancestry_depth == 4 
+    .text-left
+      /= xx.weeklytimetable_topic.parent.parent.code
+      = xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase
+    %br= xx.weeklytimetable_topic.parent.name
+  - else
+    .text-left
+      /= xx.weeklytimetable_topic.parent.code
+      = xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase
+    %br= xx.weeklytimetable_topic.name
+  
 /= xx.weeklytimetable_location.try(:name)
 = xx.location_desc
 = "(K)" if xx.lecture_method == 1

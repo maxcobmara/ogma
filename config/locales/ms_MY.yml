@@ -4010,6 +4010,7 @@ ms_MY:
 
     weeklytimetable_detail:
       topic: Topik
+      subject: Subjek
       lecturer_id: Pengajar      
       location: Lokasi
       lecture_method: Kaedah

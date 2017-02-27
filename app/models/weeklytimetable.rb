@@ -17,7 +17,7 @@ class Weeklytimetable < ActiveRecord::Base
   belongs_to :college, :foreign_key => 'college_id'
   
   has_many :weeklytimetable_details, :dependent => :destroy
-  accepts_nested_attributes_for :weeklytimetable_details, :reject_if => proc {|a|a['topic'].blank? || a['lecturer_id'].blank? || a['lecture_method'].blank?} 
+  accepts_nested_attributes_for :weeklytimetable_details, :reject_if => proc {|a|(a['topic'].blank? && a['subject'].blank?) || a['lecturer_id'].blank? || a['lecture_method'].blank?} 
 
   # TODO 
   #2) give wt creator - ability to amend title of completed WT
