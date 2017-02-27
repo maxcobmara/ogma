@@ -1,13 +1,17 @@
 =render "sstab_timeslot_edit", {:rowno=>rowno, :colno=>colno}
 
 /topic (sem-subject-topic)
-= t'training.weeklytimetable_detail.topic'
+- if current_user.college.code=="amsas"
+  = t 'training.weeklytimetable_detail.subject'
+- else
+  = t 'training.weeklytimetable_detail.topic'
 %font{:color=>"blue"}*
 - if current_user.college.code=="amsas"
   - prompt_text=(t 'helpers.prompt.select_module_subject')
+  =select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][subject]", options_from_collection_for_select(@semester_subject_topic_list, :id,:semester_subject_topic), :prompt=>prompt_text
 - else
   - prompt_text=(t 'helpers.prompt.select_sem_subject_topic')
-=select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][topic]", options_from_collection_for_select(@semester_subject_topic_list, :id,:semester_subject_topic), :prompt=>prompt_text
+  =select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][topic]", options_from_collection_for_select(@semester_subject_topic_list, :id,:semester_subject_topic), :prompt=>prompt_text
 
 /lecturer_id
 = t 'training.weeklytimetable_detail.lecturer_id'

@@ -1,9 +1,17 @@
 =render "sstab_timeslot_edit", {:rowno=>rowno, :colno=>colno}
 
 /topic (sem-subject-topic)
-%font{:color => "green"}= t 'training.weeklytimetable_detail.topic'
+%font{:color => "green"}
+  - if current_user.college.code=="amsas"
+    = t 'training.weeklytimetable_detail.subject'
+  - else
+    = t 'training.weeklytimetable_detail.topic'
 %font{:color=>"blue"}*
-=select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][topic]",content_tag(:option,'select one',:value=>"0")+options_from_collection_for_select(@semester_subject_topic_list, :id,:semester_subject_topic, xx.topic)
+- if current_user.college.code=="amsas"
+  =select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][subject]",content_tag(:option,'select one',:value=>"0")+options_from_collection_for_select(@semester_subject_topic_list, :id,:semester_subject_topic, xx.subject)
+  sini kan
+- else
+  =select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][topic]",content_tag(:option,'select one',:value=>"0")+options_from_collection_for_select(@semester_subject_topic_list, :id,:semester_subject_topic, xx.topic)
 /:prompt=>(t 'helpers.prompt.select_sem_subject_topic')
 
 /lecturer_id
@@ -28,7 +36,10 @@
 - unless xx.id.nil?|| xx.id.blank?
   /destroy?
   %font{:color => "red"}=t 'training.weeklytimetable_detail.remove'
-  = select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][subject]", content_tag(:option,"#{t'helpers.prompt.maintain'}",:value=>'0')+options_for_select([["#{t'helpers.prompt.remove'}", '1']])
+  - if current_user.college.code=='amsas'
+    = select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][topic]", content_tag(:option,"#{t'helpers.prompt.maintain'}",:value=>'0')+options_for_select([["#{t'helpers.prompt.remove'}", '1']])
+  - else
+    = select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][subject]", content_tag(:option,"#{t'helpers.prompt.maintain'}",:value=>'0')+options_for_select([["#{t'helpers.prompt.remove'}", '1']])
 
   /weeklytimetable_details ID
   =hidden_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][id]",xx.id
