@@ -21,21 +21,17 @@
               .col-md-8.col-md-offset-1
                 %dl.dl-horizontal
                   %dt= t 'student.attendance.programme'
-                  %dd=current_user.college.code=='amsas' ? @selected_class.weeklytimetable_subject.programme_coursetype_name : @selected_class.weeklytimetable_topic.programme_coursetype_name
+                  %dd{style: 'padding-left: 70px;'}=current_user.college.code=='amsas' ? @selected_class.weeklytimetable_subject.programme_coursetype_name : @selected_class.weeklytimetable_topic.programme_coursetype_name
                   
                   %dt= t 'student.attendance.class_schedule'
-                  %dd=@selected_class.day_time_slot
+                  %dd{style: 'padding-left: 70px;'}=@selected_class.day_time_slot
                   
                   %dt= t 'training.weeklytimetable_detail.lecture_method'
                   %dd=(DropDown::CLASS_METHOD.find_all{|disp, value| value == @selected_class.lecture_method}).map {|disp, value| disp}.first
                   
                   %dt= t 'student.attendance.intake'
                   %dd
-                    - if current_user.college.code=='amsas'
-                      Siri 
-                      =intake_name=@iii.try(:strftime, '%m/%Y')
-                    - else
-                      =intake_name=@iii.try(:strftime,'%b %Y')
+                    =intake_name=@iii
                     - if @student_intake.count==0
                       %font{:style=>"color: red;"}=(t 'student.attendance.student_not_exist')
                     - else
@@ -88,7 +84,7 @@
                               =t 'student.attendance.absent'
                           %td
                             - if current_user.college.code=='amsas'
-                              - @iii2=student_a.student.intake.try(:strftime, '%m/%Y')
+                              - @iii2=student_a.student.intake.siri_name
                             - else
                               - @iii2=student_a.student.intake.try(:strftime, '%b %Y')
                             - if @iii2!=intake_name

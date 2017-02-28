@@ -162,7 +162,11 @@ class Student::StudentAttendancesController < ApplicationController
         @subject_name = @selected_class.weeklytimetable_topic.parent.name 
         @programmeid = @selected_class.weeklytimetable_topic.root.id 
       end
-      @iii = @selected_class.weeklytimetable.schedule_intake.monthyear_intake
+      if current_user.college.code=='amsas'
+        @iii=@selected_class.weeklytimetable.schedule_intake.siri_name
+      else
+        @iii = @selected_class.weeklytimetable.schedule_intake.monthyear_intake.strftime('%b %Y')
+      end
       intake_id=@selected_class.weeklytimetable.intake_id
       #@student_intake = Student.where('course_id=? AND intake>=? AND intake <?',@programmeid,@iii,@iii.to_date+1.day)
       @student_intake=Student.where(course_id: @programmeid, intake_id: intake_id)
