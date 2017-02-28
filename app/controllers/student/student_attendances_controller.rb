@@ -151,28 +151,33 @@ class Student::StudentAttendancesController < ApplicationController
   def new_multiple
     @create_type = params[:new_submit]
     @classid = params["classid"]
-    @student_attendances = Array.new(5) { StudentAttendance.new }
-    #view data accordingly - new_multiple.html.haml 
-    @selected_class = WeeklytimetableDetail.find(@classid)
-    if current_user.college.code=='amsas'
-      @subject_name = @selected_class.weeklytimetable_subject.name 
-      @programmeid = @selected_class.weeklytimetable_subject.root.id 
+    unless @classid.blank?
+      @student_attendances = Array.new(5) { StudentAttendance.new }
+      #view data accordingly - new_multiple.html.haml 
+      @selected_class = WeeklytimetableDetail.find(@classid)
+      if current_user.college.code=='amsas'
+        @subject_name = @selected_class.weeklytimetable_subject.name 
+        @programmeid = @selected_class.weeklytimetable_subject.root.id 
+      else
+        @subject_name = @selected_class.weeklytimetable_topic.parent.name 
+        @programmeid = @selected_class.weeklytimetable_topic.root.id 
+      end
+      @iii = @selected_class.weeklytimetable.schedule_intake.monthyear_intake
+      intake_id=@selected_class.weeklytimetable.intake_id
+      #@student_intake = Student.where('course_id=? AND intake>=? AND intake <?',@programmeid,@iii,@iii.to_date+1.day)
+      @student_intake=Student.where(course_id: @programmeid, intake_id: intake_id)
+      @student_att_exist = StudentAttendance.where('weeklytimetable_details_id=?', @classid)
+      @student_ids_att_exist = @student_att_exist.pluck(:student_id)
+      #by intake column
+      #@student_list = Student.where('course_id=? AND intake>=? AND intake <? and id NOT IN(?)',@programmeid,@iii,@iii.to_date+1.day, @student_ids_att_exist)
+      #by intake_id column
+      @student_list = Student.where(course_id: @programme_id.to_i, intake_id: intake_id)
+      @student_listing = @student_list if @student_list.count > 0
+      @student_listing = @student_intake if @student_list.count==0 && @student_ids_att_exist.count ==0 && @student_intake.count>0 
     else
-      @subject_name = @selected_class.weeklytimetable_topic.parent.name 
-      @programmeid = @selected_class.weeklytimetable_topic.root.id 
+      flash[:notice] = t('student.attendance.select_class')
+      redirect_to student_student_attendances_path
     end
-    @iii = @selected_class.weeklytimetable.schedule_intake.monthyear_intake
-    intake_id=@selected_class.weeklytimetable.intake_id
-    #@student_intake = Student.where('course_id=? AND intake>=? AND intake <?',@programmeid,@iii,@iii.to_date+1.day)
-    @student_intake=Student.where(course_id: @programmeid, intake_id: intake_id)
-    @student_att_exist = StudentAttendance.where('weeklytimetable_details_id=?', @classid)
-    @student_ids_att_exist = @student_att_exist.pluck(:student_id)
-    #by intake column
-    #@student_list = Student.where('course_id=? AND intake>=? AND intake <? and id NOT IN(?)',@programmeid,@iii,@iii.to_date+1.day, @student_ids_att_exist)
-    #by intake_id column
-    @student_list = Student.where(course_id: @programme_id.to_i, intake_id: intake_id)
-    @student_listing = @student_list if @student_list.count > 0
-    @student_listing = @student_intake if @student_list.count==0 && @student_ids_att_exist.count ==0 && @student_intake.count>0 
   end
   
   def new_multiple_intake

@@ -42,16 +42,16 @@
                       %font{:style=>"color: blue;"}=" ("+@student_intake.count.to_s+" "+t('student.attendance.student_id')+") "
               
               #attendance_details.tab-pane.active 
-                .col-md-8.col-md-offset-1
+                .col-md-9.col-md-offset-1
                   
                   /display new form if attendance not created yet (within this intake only)
                   - if @student_list.count > 0 || (@student_list.count==0 && @student_ids_att_exist.count ==0 && @student_intake.count>0)
                     %BR
-                    %table.table.table-bordered
+                    %table.table
                       %tr
                         %th{:style => "width: 50px;"} No
                         %th{:style => "width: 400px;"}= t 'student.attendance.student_id'
-                        %th= t 'student.attendance.title2' 
+                        %th{colspan: "6"}= t 'student.attendance.title2' 
                       - @student_listing.each_with_index do |student, nos| 
                         = hidden_field "student_attendances[#{nos}]",:student_id, :value=>student.id 
                         = hidden_field "student_attendances[#{nos}]",:weeklytimetable_details_id, :value=> @classid 
@@ -59,7 +59,14 @@
                         %tr
                           %td=nos+1
                           %td= student.matrix_name 
-                          %td= check_box_tag "student_attendances[#{nos}][attend]", true 
+                          %td= check_box_tag "student_attendances[#{nos}][attend]", true, true, class: "check" 
+                          
+                          /By default display details for not attend, otherwise - refer EACH -> of attends[] is checked
+                          %td{:style=>"padding-left: 15px; width: 80px;", :id => "span_select_#{nos}"}= t('select')+" :"
+                          %td{:style=>"padding-left: 5px; width: 115px;", :id => "span_reason_#{nos}"}= select_tag("student_attendances[#{nos}][reason]", options_for_select([[(t 'student.attendance.reason'),'0']]+DropDown::ABSENT_REASON), {class: 'selectpicker', "data-width"=>"100px"})
+                          %td{:style=>"padding-left: 5px; width: 165px; ", :id => "span_action_taken_#{nos}"}= select_tag("student_attendances[#{nos}][action]", options_for_select([[(t 'student.attendance.action_taken'),'0']]+DropDown::ABSENT_ACTION), {class: 'selectpicker', "data-width"=>"150px"})
+                          %td{:style=>"padding-left: 5px; width: 165px; ", :id => "span_action_close_#{nos}"}=select_tag("student_attendances[#{nos}][status]", options_for_select([[(t 'student.attendance.action_close'),'0'],[(t 'student.attendance.complete'),'Yes'],[(t 'student.attendance.incomplete'),'No']]), {class: 'selectpicker', "data-width"=>"150px"})
+                          %td{:style=>"padding-left: 5px; width: 100px; ", :id => "span_remark_#{nos}"}= text_field_tag "student_attendances[#{nos}][remark]", "",  :class => 'form-control'
                     
                   /display existing attendance, all (including those from other intake)
                   - if @student_ids_att_exist.count>0
@@ -124,29 +131,54 @@ $(document).ready(function(){
 
   $("input[id='check_all']").change(function() {  
     if($('#check_all').is(':checked')) { 
-      for (var j=0; j<checkbox.length; j++) {
+      for (var j=0; j<checkbox.length-1; j++) {
         var cc = document.getElementById('student_attendances_'+j+'_attend')
         cc.checked = true;
+        $('#span_select_'+j).hide();
+        $('#span_reason_'+j).hide();
+        $('#span_action_taken_'+j).hide();
+        $('#span_action_close_'+j).hide();
+        $('#span_remark_'+j).hide();
       }
 
     }else{
-      for (var j=0; j<checkbox.length; j++) {
+      for (var j=0; j<checkbox.length-1; j++) {
         var cc = document.getElementById('student_attendances_'+j+'_attend')
         cc.checked = false;
+        $('#span_select_'+j).show();
+        $('#span_reason_'+j).show();
+        $('#span_action_taken_'+j).show();
+        $('#span_action_close_'+j).show();
+        $('#span_remark_'+j).show();
       }
     }
   });
 
   $("input[id='check_all']").each(function() {  
-    if($('#check_all').is(':checked')) { 
-      for (var j=0; j<checkbox.length; j++) {
-        var cc = document.getElementById('student_attendances_'+j+'_attend')
-        cc.checked = true;
+    for (var j=0; j<checkbox.length-1; j++) {
+      var cc = document.getElementById('student_attendances_'+j+'_attend')
+      cc.checked = false;
+    }
+  });
+ 
+  $('.check').click(function(){
+    for (var k=0; k<checkbox.length-1; k++){
+      var dd = document.getElementById('student_attendances_'+k+'_attend');
+      if (dd.checked==true)
+      {
+        $('#span_select_'+k).hide();
+        $('#span_reason_'+k).hide();
+        $('#span_action_taken_'+k).hide();
+        $('#span_action_close_'+k).hide();
+        $('#span_remark_'+k).hide();
       }
-    }else{
-      for (var j=0; j<checkbox.length; j++) {
-        var cc = document.getElementById('student_attendances_'+j+'_attend')
-        cc.checked = false;
+      else
+      {
+        $('#span_select_'+k).show();
+        $('#span_reason_'+k).show();
+        $('#span_action_taken_'+k).show();
+        $('#span_action_close_'+k).show();
+        $('#span_remark_'+k).show();
       }
     }
   });
