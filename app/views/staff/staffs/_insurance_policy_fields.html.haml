@@ -1,0 +1,24 @@
+%fieldset
+  .row
+    .col-sm-4.col-sm-offset-2
+      = f.hidden_field :_destroy
+      / TODO 1March2017- DISPLAY insurance type according to selected main_type, refer Exam-Course Evaluation(checkbox) OR Exampaper(select)
+      / TODO 1March2017 - to include DISPLAY in pdf as well
+      = f.select :insurance_main_type, DropDown::MAIN_TYPE, {prompt: (t 'select')}, {class: 'form-control selectpicker', "data-width"=>"auto"}
+      = f.select :insurance_type, DropDown::INSURANCE_TYPE, {prompt: (t 'select')}, {class: 'form-control selectpicker', "data-width"=>"auto"}
+    .col-sm-2=f.text_field :policy_no,  class: 'form-control'
+    /.col-sm-2= f.select :account_type, DropDown::BANKTYPE, {prompt: (t 'select')}, {class: 'form-control selectpicker', "data-width"=>"240px"}
+    .col-sm-3= f.collection_select :company_id, InsuranceCompany.all, :id, :long_name, {prompt: (t 'select')}, {class: 'form-control selectpicker', "data-width"=>"240px"}
+    .col-sm-1= link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
+    
+  :javascript
+    $('.selectpicker').selectpicker('render');
+        
+    $('.removing_fields').click(function(){
+      var fieldset=$(this).parent().parent().parent();
+      var row=$(this).parent().parent();
+      var all_fields=row.children().children();
+      var destroyer=all_fields[0];
+      destroyer.value=true;    
+      fieldset.hide();
+    });

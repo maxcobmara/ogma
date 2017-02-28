@@ -1,5 +1,6 @@
 class Bank < ActiveRecord::Base
   has_many :bankaccounts
+  belongs_to :college
   validates_uniqueness_of :long_name
 end
 

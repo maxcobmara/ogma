@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Insurance type:</strong>
+  <%= @insurance_policy.insurance_type %>
+</p>
+
+<p>
+  <strong>Company:</strong>
+  <%= @insurance_policy.company_id %>
+</p>
+
+<p>
+  <strong>Policy no:</strong>
+  <%= @insurance_policy.policy_no %>
+</p>
+
+<p>
+  <strong>College:</strong>
+  <%= @insurance_policy.college_id %>
+</p>
+
+<p>
+  <strong>Data:</strong>
+  <%= @insurance_policy.data %>
+</p>
+
+<%= link_to 'Edit', edit_insurance_policy_path(@insurance_policy) %> |
+<%= link_to 'Back', insurance_policies_path %>

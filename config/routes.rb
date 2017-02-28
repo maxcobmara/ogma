@@ -1,5 +1,7 @@
 Ogma::Application.routes.draw do
 
+  resources :insurance_policies
+
   mount Ckeditor::Engine => '/ckeditor'
   namespace :staff do
     resources :staffs, as: :infos do
@@ -582,6 +584,7 @@ Ogma::Application.routes.draw do
   resources :logins
   resources :roles
   resources :banks
+  resources :insurance_companies
   
   
   # mailbox folder routes

@@ -17,3 +17,15 @@
 
       %dt= t('staff.banks.bankacctype') + ":"
       %dd= (DropDown::BANKTYPE.find_all{|disp, value| value == bankaccount.account_type }).map {|disp, value| disp}[0]
+
+    - for policy in @staff.insurance_policies
+      %hr
+      %dt= t('staff.insurance_policies.company') + ":"
+      %dd
+        %strong= policy.insurance_company.try(:long_name)
+
+      %dt= t('staff.insurance_policies.policy_no') + ":"
+      %dd= policy.policy_no
+
+      %dt= t('staff.insurance_policies.insurance_type') + ":"
+      %dd= (DropDown::INSURANCE_TYPE.find_all{|disp, value| value == policy.insurance_type }).map {|disp, value| disp}[0]

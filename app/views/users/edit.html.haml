@@ -657,7 +657,7 @@ $(function(){
     var esupportmg = document.getElementsByClassName('supportmanage');
     var esupportrd = document.getElementsByClassName('supportread');
     
-    for(i=0; i<11; i++)
+    for(i=0; i<12; i++)
     {
       if(supportmg[i].checked) {
         esupportmg[i].checked=true;
@@ -934,7 +934,7 @@ $(function(){
     var esupportmg = document.getElementsByClassName('supportmanage');
     var esupportrd = document.getElementsByClassName('supportread');
     
-    for(i=0; i<11; i++){
+    for(i=0; i<12; i++){
       if(supportmg[i].checked)
       {  esupportmg[i].checked=true;}
       else if(supportrd[i].checked)
@@ -946,7 +946,7 @@ $(function(){
     }
     
     /*disable this main checkbox if no support tables module selected*/
-    for(i=0; i<11; i++){
+    for(i=0; i<12; i++){
       if ((esupportmg[i].checked==false) && (esupportrd[i].checked==false) ){
         esupportmn[i].disabled=true;
       }
@@ -993,7 +993,7 @@ $(function(){
         a_staffown[i].disabled=true;
         ea_staffmn[i].disabled=true;
       }
-      /* when Staff Admin is selected, disable Bank, Staff Title & Staff Shifts, plus employgrades & postinofs - support tables*/
+      /* when Staff Admin is selected, disable Bank, Staff Title & Staff Shifts, plus Insurance Companies, employgrades & postinofs - support tables*/
       supportmg[1].disabled=true;
       supportmg[1].checked=false;
       supportmg[2].disabled=true;
@@ -1006,6 +1006,8 @@ $(function(){
       supportmg[9].checked=false;
       supportmg[10].disabled=true;
       supportmg[10].checked=false;
+      supportmg[11].disabled=true;
+      supportmg[11].checked=false;
       
       supportrd[1].disabled=true;
       supportrd[1].checked=false;
@@ -1019,6 +1021,8 @@ $(function(){
       supportrd[9].checked=false;
       supportrd[10].disabled=true;
       supportrd[10].checked=false;
+      supportrd[11].disabled=true;
+      supportrd[11].checked=false;
       
       esupportmn[1].disabled=true;
       esupportmn[2].disabled=true;
@@ -1026,6 +1030,7 @@ $(function(){
       esupportmn[8].disabled=true;
       esupportmn[9].disabled=true;
       esupportmn[10].disabled=true;
+      esupportmn[11].disabled=true;
     }
     
     /*disable this main checkbox if no file module selected*/
@@ -2039,13 +2044,14 @@ $(function(){
         ea_staffm[i].checked=false;
         ea_staffm[i].disabled=true;
       }
-      /* when Staff Admin is selected, disable Banks, Staff Title & Staff Shifts, plus Employgrades & Postinfos too - support tables*/
+      /* when Staff Admin is selected, disable Banks, Staff Title & Staff Shifts, plus Insurance Companies, Employgrades & Postinfos too - support tables*/
       supportmg[1].checked=false;
       supportmg[2].checked=false;
       supportmg[3].checked=false;
       supportmg[8].checked=false;
       supportmg[9].checked=false;
       supportmg[10].checked=false;
+      supportmg[11].checked=false;
       
       supportmg[1].disabled=true;
       supportmg[2].disabled=true;
@@ -2053,6 +2059,7 @@ $(function(){
       supportmg[8].disabled=true;
       supportmg[9].disabled=true;
       supportmg[10].disabled=true;
+      supportmg[11].disabled=true;
       
       supportrd[1].checked=false;
       supportrd[2].checked=false;
@@ -2060,6 +2067,7 @@ $(function(){
       supportrd[8].checked=false;
       supportrd[9].checked=false;
       supportrd[10].checked=false; 
+      supportrd[11].checked=false; 
       
       supportrd[1].disabled=true;
       supportrd[2].disabled=true;
@@ -2067,6 +2075,7 @@ $(function(){
       supportrd[8].disabled=true;
       supportrd[9].disabled=true;
       supportrd[10].disabled=true;
+      supportrd[11].disabled=true;
       
       esupportm[1].disabled=true;
       esupportm[2].disabled=true;
@@ -2074,6 +2083,7 @@ $(function(){
       esupportm[8].disabled=true;
       esupportm[9].disabled=true;
       esupportm[10].disabled=true;
+      esupportm[11].disabled=true;
       
       esupportm[1].checked=false;
       esupportm[2].checked=false;
@@ -2081,6 +2091,7 @@ $(function(){
       esupportm[8].checked=false;
       esupportm[9].checked=false;
       esupportm[10].checked=false;
+      esupportm[11].checked=false;
     } 
     else
     {
@@ -2112,25 +2123,28 @@ $(function(){
       a_staffown[3].disabled=false;
       ea_staffm[3].disabled=false;
       
-      /* when Staff Admin is NOT selected, re/-enable Bank, Staff Title & Staff Shifts, plus Employgrades & Postinfos too - support tables*/
+      /* when Staff Admin is NOT selected, re/-enable Bank, Staff Title & Staff Shifts, plus Insurance Companies, Employgrades & Postinfos too - support tables*/
       supportmg[1].disabled=false;
       supportmg[2].disabled=false;
       supportmg[3].disabled=false;
       supportmg[8].disabled=false;
       supportmg[9].disabled=false;
       supportmg[10].disabled=false;
+      supportmg[11].disabled=false;
       supportrd[1].disabled=false;
       supportrd[2].disabled=false;
       supportrd[3].disabled=false;
       supportrd[8].disabled=false;
       supportrd[9].disabled=false;
       supportrd[10].disabled=false;
+      supportrd[11].disabled=false;
       esupportm[1].disabled=false;
       esupportm[2].disabled=false;
       esupportm[3].disabled=false;
       esupportm[8].disabled=false;
       esupportm[9].disabled=false;
       esupportm[10].disabled=false;
+      esupportm[11].disabled=false;
     }
         
     /* 5) Staff part 2 : Travel Requests & Travel Claims & part 3 : Training Budget, Training Courses, Training Schedule, Training Attendances */
@@ -2648,8 +2662,8 @@ $(function(){
     
     
     
-    /* 12) Admin & support tables when UNCHECK , all training main is false*/
-    for(i=0; i < 11; i++){
+    /***************************************** 12) Admin & support tables when UNCHECK , all training main is false********************/
+    for(i=0; i < 12; i++){
       if (esupportm[i].checked==false) {
         supportmg[i].checked=false;
         supportrd[i].checked=false;

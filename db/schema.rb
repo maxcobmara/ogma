@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170208112107) do
+ActiveRecord::Schema.define(version: 20170228150855) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1304,6 +1304,27 @@ ActiveRecord::Schema.define(version: 20170208112107) do
     t.datetime "updated_at"
     t.integer  "college_id"
     t.text     "data"
+  end
+
+  create_table "insurance_companies", force: true do |t|
+    t.string   "short_name"
+    t.string   "long_name"
+    t.boolean  "active"
+    t.integer  "college_id"
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "insurance_policies", force: true do |t|
+    t.integer  "insurance_type"
+    t.integer  "company_id"
+    t.string   "policy_no"
+    t.integer  "college_id"
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "staff_id"
   end
 
   create_table "intakes", force: true do |t|

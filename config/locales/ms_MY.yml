@@ -678,6 +678,18 @@ ms_MY:
     edit: Sunting Bank
     new_flash: "Bank baru berjaya dicipta."
     update_flash: "Bank berjaya dikemaskini."
+  
+  insurance_companies:
+    title: Syarikat Insurans
+    list: Senarai Syarikat Insurans
+    short_name: Nama Ringkas
+    long_name: Nama Penuh
+    active: Aktif
+    details: Maklumat Syarikat Insurans
+    new: Syarikat Insurans Baru
+    edit: Sunting Syarikat Insurans
+    new_flash: "Syarikat insurans baru berjaya dicipta."
+    update_flash: "Syarikat insurans berjaya dikemaskini."
       
   user:
     title: Akaun Pengguna
@@ -918,8 +930,10 @@ ms_MY:
     
     #Admin / Support Table Parts
     banks_module_admin: Pentadbir Modul Bank
+    insurance_companies_module_admin: Pentadbir Modul Syarikat Insurans
     address_book_module_admin: Pentadbir Modul Buku Alamat
     banks_module_viewer: Paparan Modul Bank
+    insurance_companies_module_viewer: Paparan Modul Syarikat Insurans
     address_book_module_viewer: Paparan Modul Buku Alamat
     messaging_groups_module_admin: Pentadbir Modul Kumpulan Pemesejan
     messaging_groups_module_viewer: Paparan Modul Kumpulan Pemesejan
@@ -928,6 +942,7 @@ ms_MY:
     #banks_module_member: Pemilik Modul Bank
     #address_book_module_member: Pemilik Modul Buku Alamat
     banks: Bank
+    insurance_companies: Syarikat Insurans
     address_book: Buku Alamat
     messaging_groups: Kumpulan Pemesejan
     
@@ -1298,6 +1313,12 @@ ms_MY:
       bankname: Bank
       bankaccno: No Akaun 
       bankacctype: Jenis Akaun
+      
+    insurance_policies:
+      title: Butiran Polisi Insurans
+      insurance_type: Jenis Insurans
+      company_id: Syarikat Insurans
+      policy_no: No Polisi
 
     contacts: 
       emergency: Maklumat Waris Terdekat

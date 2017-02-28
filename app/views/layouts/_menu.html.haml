@@ -391,6 +391,8 @@
                 %ul
                   - permitted_to? :read, :banks do
                     %li= link_to t('banks.list'), banks_path
+                  - permitted_to? :read, :insurance_companies do
+                    %li= link_to t('insurance_companies.list'), insurance_companies_path
                   - permitted_to? :read, :staff_titles do
                     %li= link_to t('staff.titles.title'), staff_titles_path
                   - permitted_to? :read, :staff_staff_shifts do

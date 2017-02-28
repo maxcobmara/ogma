@@ -491,7 +491,33 @@
             = render 'bankaccount_fields', :f => builder
           .col-sm-offset-2.col-sm-2
             = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :bankaccounts, "", t('addmore')
+          %br
+          .row
+            %hr{width: '70%'}
+           
+        %BR
+        .row
+          .col-md-offset-1
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'staff.insurance_policies.title'            
 
+        .row
+          .col-sm-offset-2.col-sm-4= t 'staff.insurance_policies.insurance_type'
+          .col-sm-2= t 'staff.insurance_policies.policy_no'
+          .col-sm-3= t 'staff.insurance_policies.company'
+          .row 
+            %hr{width: '70%'}
+        
+        .row
+          = f.fields_for :insurance_policies do |builder|
+            = render 'insurance_policy_fields', :f => builder
+          .col-sm-offset-2.col-sm-2
+            = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :insurance_policies, "", t('addmore')
+          %br
+          .row
+            %hr{width: '70%'}
+           
       #loans.tab-pane
         .row
           .col-sm-offset-1.col-sm-1= t 'staff.loans.ltype'
