@@ -1208,6 +1208,8 @@ en:
     icno: MyKad No
     name: Name
     code: Staff Code
+    account: Akaun
+    no_account: "This staff did not have any ICMS account."
     thumb: Thumb ID
     shift: Staff Shift
     shift_start: " starting "
@@ -1266,6 +1268,7 @@ en:
     uniformstat: Uniform Status
     position_id: Position
     reports_to: Reports To 
+    messages: Messages
     search:
       ic_no: Staff Search
 
@@ -4406,6 +4409,12 @@ en:
     untrash: Untrash
     move_to_trash: Move to trash
     allowed_format: "Allowed Size & File Format - Maximum : 5 Megabytes & Format : Pdf,  Ms Office(doc, docx, xls, xlsx), Open Office(ods, odt), images(png, jpg, jpeg,gif)"
+    message: "message(s)"
+    sent_messages: Sent Messages
+    received_messages: Received Messages
+    sender: sender
+    sent_to: to
+    from: from
   
   group:
     groups: "Group : "

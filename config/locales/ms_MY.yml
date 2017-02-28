@@ -1163,7 +1163,7 @@ ms_MY:
     icno: "No MyKad"
     name: "Nama"
     coemail: "Emel"
-    code: "Kod Staf"
+    #code: "Kod Staf"
     fileno: "No Fail"
     position: "Jawatan"
     cobirthdt: Tarikh Lahir
@@ -1178,6 +1178,8 @@ ms_MY:
 
     personal_details: Butir Peribadi
     code: Kod Kakitangan
+    account: Akaun
+    no_account: Staf ini tidak mempunyai akaun ICMS
     thumb: Thumb ID
     shift: Waktu Anjal
     shift_start: " bermula "
@@ -1235,6 +1237,7 @@ ms_MY:
     uniformstat: Status Pakaian Seragam
     position_id: Jawatan
     reports_to: Melapor Kepada
+    messages: Pemesejan
     search:
       ic_no: Carian Kakitangan
     
@@ -4323,6 +4326,12 @@ ms_MY:
     untrash: Kembalikan
     move_to_trash: Buang
     allowed_format: "Saiz & Format fail dibenarkan - Maksima : 5 Megabytes & Format : Pdf,  Ms Office(doc, docx, xls, xlsx), Open Office(ods, odt), imej(png, jpg, jpeg,gif)"
+    message: mesej
+    sent_messages: Mesej dihantar
+    received_messages: Mesej diterima
+    sender: penghantar
+    sent_to: kepada
+    from: daripada
     
   group:
     groups: "Kumpulan : "

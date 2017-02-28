@@ -1,0 +1,22 @@
+- model_class = Staff
+- usr_accts=User.where(userable_type: 'Staff').where(userable_id: @staff.id)
+- usr_acct=usr_accts.first
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t 'staff.account', :default => model_class.human_attribute_name(:account) + ":"
+    %dd=usr_accts.count > 0 ? usr_acct.email : (t 'staff.no_account')
+    
+    - if usr_accts.count > 0
+      %dt=t 'conversation.sent_messages'
+      %dd
+        - outgoings=Mailboxer::Notification.where(sender_id: usr_acct.id)
+        - notification_ids=outgoings.pluck(:id)
+        - distinct_receiver=Mailboxer::Receipt.where(notification_id: notification_ids).where(mailbox_type: 'inbox').pluck(:receiver_id).uniq.count
+        ="#{outgoings.count} #{(t 'conversation.message')} #{(t 'conversation.sent_to')} #{distinct_receiver} #{t('conversation.recipients').downcase}"
+
+      %dt=t 'conversation.received_messages'
+      %dd
+        - incomings=Mailboxer::Receipt.where(receiver_id: usr_acct.id).where(mailbox_type: 'inbox')
+        - notification_ids=incomings.pluck(:notification_id)
+        - distinct_sender=Mailboxer::Receipt.where(notification_id: notification_ids).where(mailbox_type: 'sentbox').pluck(:receiver_id).uniq.count
+        ="#{incomings.count} #{(t 'conversation.message')} #{(t 'conversation.from').downcase} #{distinct_sender} #{t('conversation.sender')}"
