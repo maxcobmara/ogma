@@ -12,13 +12,13 @@ class Student_attendan_formPdf < Prawn::Document
       text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 12, :style => :bold
       text "BORANG KEHADIRAN PELATIH", :align => :center, :size => 12, :style => :bold
     elsif college.code=="amsas"
-      bounding_box([10,770], :width => 400, :height => 60) do |y2|
+      bounding_box([10,780], :width => 400, :height => 60) do |y2|
         image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.65#  :width =>97.2, :height =>77.76
       end
-      bounding_box([440,770], :width => 400, :height => 60) do |y2|
+      bounding_box([440,780], :width => 400, :height => 60) do |y2|
         image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
       end
-      bounding_box([90,760], :width => 350, :height => 60) do |y2|
+      bounding_box([90,770], :width => 350, :height => 60) do |y2|
         text "PPL APMM", :style => :bold, :align => :center
         text "BORANG KEHADIRAN PELATIH", :align => :center, :size => 12, :style => :bold
       end
@@ -37,11 +37,11 @@ class Student_attendan_formPdf < Prawn::Document
   
   def table_attendance
     if @college.code=="kskbjb"
-      table(line_item_rows,  :header => true, :column_widths => [40, 80, 150 , 90, 90, 90], :cell_style => { :size => 10}) do
+      table(line_item_rows,  :header => true, :column_widths => [40, 80, 150 , 90, 90, 90], :cell_style => { :size => 9}) do
       self.width = 540
       end
     elsif @college.code=="amsas"
-      table(line_item_rows,  :header => 2, :column_widths => [40, 180, 50, 250], :cell_style => { :size => 10}) do
+      table(line_item_rows,  :header => 2, :column_widths => [40, 180, 50, 250], :cell_style => { :size => 9}) do
           self.width=520
           row(0..1).background_color = 'FFE34D'
           column(3).style :align => :center
@@ -109,15 +109,15 @@ class Student_attendan_formPdf < Prawn::Document
       end
     end
     move_down 5
-    text "Nota :", :align => :left, :size => 11, :style => :bold
-    text "Setiap pelatih perlu menandatangani borang kehadiran", :align => :left, :size => 11, :style => :bold
+    draw_text "Nota :", :size => 10, :style => :bold, :at => [0, 10]
+    draw_text "Setiap pelatih perlu menandatangani borang kehadiran", :size => 10, :style => :bold, :at => [0,0]
   end
   
   def footer
     if @college.code=='amsas'
-      draw_text "#{page_number}",  :size => 8, :at => [250,-5]
+      draw_text "#{page_number}",  :size => 8, :at => [260,-15]
     else
-      draw_text "#{page_number} #{I18n.t('instructor_appraisal.from')} 3",  :size => 8, :at => [240,-5]
+      draw_text "#{page_number} #{I18n.t('instructor_appraisal.from')} 3",  :size => 8, :at => [240,-15]
     end
   end
   

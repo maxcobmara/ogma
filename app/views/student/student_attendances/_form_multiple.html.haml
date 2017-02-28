@@ -79,7 +79,7 @@
                   /- else
                   /  = check_box_tag "attends[#{no+@next}]", true
                   
-                /By default display details for not attend, otherwise - refer EACH -> of attends[] is checked
+                /By default DO NOT display details for not attend, otherwise - refer EACH -> of attends[] is checked
                 %td{:style=>"padding-left: 15px; width: 80px; display: none;", :id => "span_select_#{no+@next}"}= t('select')+" :"
                 %td{:style=>"padding-left: 5px; width: 115px; display: none;", :id => "span_reason_#{no+@next}"}= select_tag("reasons[#{no+@next}]", options_for_select([[(t 'student.attendance.reason'),'0']]+DropDown::ABSENT_REASON, studentattendance.reason), {class: 'selectpicker', "data-width"=>"100px"})
                 %td{:style=>"padding-left: 5px; width: 165px; display: none;", :id => "span_action_taken_#{no+@next}"}= select_tag("actions[#{no+@next}]", options_for_select([[(t 'student.attendance.action_taken'),'0']]+DropDown::ABSENT_ACTION, studentattendance.action), {class: 'selectpicker', "data-width"=>"150px"})
