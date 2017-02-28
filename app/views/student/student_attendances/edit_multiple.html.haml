@@ -26,7 +26,7 @@
                 %dd=@studentattendances[0].weeklytimetable_detail.weeklytimetable_lecturer.staff_with_rank
                 
               %dt= t 'student.attendance.intake'
-              %dd=@studentattendances[0].college.code=='amsas' ? "Siri "+@studentattendances[0].student.intakestudent.monthyear_intake.try(:strftime, '%m/%Y') : @studentattendances[0].student.intakestudent.monthyear_intake.try(:strftime, '%b %Y')
+              %dd=@studentattendances[0].college.code=='amsas' ? @studentattendances[0].student.intakestudent.siri_name : @studentattendances[0].student.intakestudent.monthyear_intake.try(:strftime, '%b %Y')
             %br
             
             %table.table.table-bordered.table-condensed
