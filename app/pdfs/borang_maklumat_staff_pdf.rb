@@ -92,7 +92,7 @@ class Borang_maklumat_staffPdf < Prawn::Document
             
                  table(data, :column_widths => [150, 250], :cell_style => { :size => 11})  do
                    a = 0
-                   b = 23
+                   b = 25
                    row(0).font_style = :bold
                    row(0).background_color = 'FFE34D'
                    while a < b do
@@ -166,6 +166,13 @@ class Borang_maklumat_staffPdf < Prawn::Document
                 data =[["Butiran Kewangan", ""],
                       ["52. EPF No", ": #{@staff.kwspcode}"],
                       ["53. Tax No", ": #{@staff.taxcode}"]]
+
+                if @staff.insurance_policies.count > 0
+                  data << [{content: "#{I18n.t('staff.insurance_policies.title')}", colspan: 2}]
+                  for policy in @staff.insurance_policies
+                    data << [{content: "#{policy.render_insurance_type} : #{policy.policy_no} (#{policy.insurance_company.try(:long_name)})", colspan: 2}]
+                  end
+                end
             
                       table(data, :column_widths => [150, 250], :cell_style => { :size => 11})  do
                         a = 0
@@ -175,6 +182,7 @@ class Borang_maklumat_staffPdf < Prawn::Document
                         while a < b do
                         row(a).borders = []
                         a += 1
+                        row(3).height=35;
                       end
                    
                       end

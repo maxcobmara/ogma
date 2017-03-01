@@ -1351,6 +1351,7 @@ en:
       insurance_type: Insurance Type
       company_id: Insurance Company
       policy_no: Policy No
+      tick_for_type: Tick checkbox for Life Insurance list, or untick for General Insurance list
 
     contacts: 
       emergency: Emergency Contact Information

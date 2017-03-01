@@ -28,4 +28,4 @@
       %dd= policy.policy_no
 
       %dt= t('staff.insurance_policies.insurance_type') + ":"
-      %dd= (DropDown::INSURANCE_TYPE.find_all{|disp, value| value == policy.insurance_type }).map {|disp, value| disp}[0]
+      %dd= policy.render_insurance_type

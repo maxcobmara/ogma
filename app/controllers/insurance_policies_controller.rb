@@ -27,6 +27,7 @@ class InsurancePoliciesController < ApplicationController
   end
 
   def update
+    raise params.inspect
     @insurance_policy.update(insurance_policy_params)
     respond_with(@insurance_policy)
   end

@@ -30,14 +30,14 @@
         - else
           %img{:src => "http://placekitten.com/150/200"}/ 
       .col-md-8
-        /.col-md-offset-1
-        %dl.dl-horizontal
-          %dt= t 'staff.icno', :default => model_class.human_attribute_name(:icno) + ":"
-          %dd= @staff.icno
-          %dt= t 'staff.name', :default => model_class.human_attribute_name(:name) + ":"
-          %dd
-            = @staff.title.try(:name)
-            = @staff.name
+        .col-md-offset-1
+          %dl.dl-horizontal
+            %dt= t 'staff.icno', :default => model_class.human_attribute_name(:icno) + ":"
+            %dd= @staff.icno
+            %dt= t 'staff.name', :default => model_class.human_attribute_name(:name) + ":"
+            %dd
+              = @staff.title.try(:name)
+              = @staff.name
       #info.tab-pane.active
         %br
         = render 'tab_info'

@@ -41,17 +41,15 @@ module DropDown
         [ "Simpanan Tetap",4 ],
   ]
   
-  MAIN_TYPE=[
+  HAYAT_TYPE=[
         # Displayed          stored in db
-        ["Insurans Hayat", 1],
-        ["Insurans Am", 2]
-  ]
-  
-  INSURANCE_TYPE=[
-       # Displayed          stored in db          #1-3 (Insurans Hayat), 4-7 (Insurans Am)
         [ "Insurans Hayat Seumur Hidup", 1],
         [ "Insurans Endownmen", 2],
-        [ "Insurans Hayat Sementara", 3],
+        [ "Insurans Hayat Sementara", 3]
+  ]
+  
+  AM_TYPE=[
+       # Displayed          stored in db    
         [ "Insurans Kemalangan", 4],
         [ "Insurans Kebakaran", 5],
         [ "Insurans Marin/Penerbangan", 6],
