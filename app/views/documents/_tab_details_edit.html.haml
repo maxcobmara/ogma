@@ -23,7 +23,19 @@
       = f.label t 'document.category'  , for: :category
     .col-md-4
       = f.select :category, DropDown::DOCUMENT_CATEGORY, {:prompt => "Select"}, class: 'selectpicker mandatory'
-		  
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.distribution_type', for: :distribution_type
+    .col-md-7
+      .form-inline
+        .form-group
+          = t 'document.internal'
+          = f.radio_button :distribution_type, 1
+        .form-group
+          = t 'document.external'
+          = f.radio_button :distribution_type, 2
+
   .form-group
     .col-sm-2.control-label
       = f.label t 'document.letterdt' , for: :letterdt
@@ -32,13 +44,15 @@
 
   .form-group
     .col-sm-2.control-label
-      = f.label t 'document.letterxdt'  , for: :letterxdt
+      .internal{style: 'display: none;'}= f.label t 'document.letterxdt_recv'  , for: :letterxdt
+      .external{style: 'display: none;'}= f.label t 'document.letterxdt_sent'  , for: :letterxdt
     .col-md-3
       = f.text_field :letterxdt, class: 'form-control date_picker_reverse', value: @document.letterxdt.try(:strftime, '%d-%m-%Y')
 
   .form-group
     .col-sm-2.control-label
-      = f.label t 'document.from'   , for: :from
+      .internal{style: 'display: none;'}= f.label t 'document.from'   , for: :from
+      .external{style: 'display: none;'}= f.label t 'document.to'   , for: :from
     .col-md-5
       = f.text_field :from, :size => '60', class: 'form-control mandatory' 
 
@@ -71,11 +85,43 @@
         \#{link_to (t 'document.download'), @document.data.url}
       - else
         =t 'document.no_attachment'
-        / TODO - check this - to remove '3'- output: 'Tiada fail dilampirkan 3'
 
   .form-group
     .col-sm-2.control-label
       = f.label t 'document.upload_change_file', for: :data
     .col-md-4
       = f.file_field :data, class: 'form-control'
-	
+      
+:javascript
+  var int=document.getElementById('document_distribution_type_1')
+  var ext=document.getElementById('document_distribution_type_2')
+  if (int.checked==false && ext.checked==false) 
+  { int.checked=true;  }
+  
+  $("#document_distribution_type_1").each(function(){
+    if (int.checked) {
+      $(".internal").show();
+      $(".external").hide();
+    }
+  });
+  
+  $("#document_distribution_type_2").each(function(){
+    if (ext.checked) {
+      $(".internal").hide();
+      $(".external").show();
+    }
+  });
+  
+  $("#document_distribution_type_1").click(function(){
+    if (int.checked) {
+      $(".internal").show();
+      $(".external").hide();
+    }
+  });
+  
+  $("#document_distribution_type_2").click(function(){
+    if (ext.checked) {
+      $(".internal").hide();
+      $(".external").show();
+    }
+  });

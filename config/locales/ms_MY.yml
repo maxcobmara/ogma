@@ -398,6 +398,7 @@ ms_MY:
         refno: No rujukan
         category: Kategori
         title: Tajuk
+        distribution_type: Jenis Agihan
         from: Daripada / kepada
         cc1date: Tarikh Edaran / Minit
         cc2date: Tarikh Edaran / Minit
@@ -3322,9 +3323,14 @@ ms_MY:
     ref_no: No Rujukan
     category: Kategori
     title2: Tajuk
-    letter_date: Tarikh Surat
+    letter_date: Tarikh Dokumen
+    distribution_type: Jenis Agihan
+    internal: Dalaman (Masuk)
+    external: Luaran (Keluar)
     received_date: "Tarikh Terima / Hantar"
-    from: "Daripada / Kepada"
+    from2: "Daripada / Kepada"
+    from: Daripada
+    to: Kepada
     circulate_to: Diedarkan Kepada
     action_notifications: "Tindakan / Makluman"
     closed: Ditutup
@@ -3336,8 +3342,10 @@ ms_MY:
     minit_tindakan: "(Minit Tindakan)"
     stafffiled_id: Diisi Oleh
     prepared_by: Disediakan Oleh
-    letterdt: Tarikh Surat
-    letterxdt: "Tarikh Terima / Hantar"
+    letterdt: Tarikh Dokumen
+    #letterxdt: "Tarikh Terima / Hantar"
+    letterxdt_recv: Tarikh Terima
+    letterxdt_sent: Tarikh Hantar
     circulation_date: Tarikh Edaran
     uploaded: Fail dimuatnaik 
     upload_change_file: "Memuatnaik/Tukar Fail"

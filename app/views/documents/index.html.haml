@@ -17,8 +17,9 @@
 .row
   %table.table-striped.table-hover.ogma
     %thead
-      %tr
-        %th{style: "width:4%;"}= sort_link(@search, :serialno, (t 'document.serial_no'))
+      %tr 
+        %th{style: "width:2%;"}
+        %th{style: "width:7%;"}= sort_link(@search, :serialno, (t 'document.serial_no'))
         %th{style: "width:14%;"}= sort_link(@search, :refno, (t 'document.ref_no'))
         %th{style: "width:5%;"}= sort_link(@search, :category, (t 'document.category'))
         %th{style: "width:18%;"}= sort_link(@search, :title, (t 'document.title2'))
@@ -33,10 +34,15 @@
     = render "index_search"
     - @documents.group_by { |t| t.filedocer }.each do |filedocer, documents|
       %tr
-        %td.group{:colspan => "10"}
+        %td.group{:colspan => "11"}
           %span= filedocer [0]
       - for document in documents.sort_by{|x|x.letterxdt}.reverse
         %tr
+          %td
+            - if document.distribution_type==1 
+              = fa_icon("envelope-o") 
+            - elsif document.distribution_type==2
+              = fa_icon("send-o")
           %td= document.serialno
           %td= link_to document.refno, document_path(document)
           %td.centre= document.render_document
@@ -62,7 +68,8 @@
             - else
               = total_recipient==User.where(userable_type: 'Staff').count ? "All staffs " : ""
               = " (Replies = #{document.circulations.where(action_closed: true).count} / #{total_recipient})"
-          %td.centre= document.closed? ? fa_icon("check", :border => 0) : ""
+          %td.centre
+            = document.closed? ? fa_icon("check", :border => 0) : ""
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @documents_pagi, :theme => 'twitter-bootstrap-3'
   

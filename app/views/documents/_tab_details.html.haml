@@ -4,14 +4,17 @@
 
     %dt= t 'document.category' , :default => model_class.human_attribute_name(:category) + ":"
     %dd= @document.render_document
+    
+    %dt= t 'document.distribution_type', :default => model_class.human_attribute_name(:distribution_type) + ":"
+    %dd= @document.distribution_type==1 ? (t 'document.internal') : (t 'document.external')
 
     %dt= t 'document.letterdt' , :default => model_class.human_attribute_name(:letterdt) + ":"
     %dd= @document.letterdt.try(:strftime, "%d %b %Y" )
-		  
-    %dt= t 'document.letterxdt' , :default => model_class.human_attribute_name(:letterxdt) + ":"
+  
+    %dt=@document.distribution_type==1 ? (t 'document.letterxdt_recv') : (t 'document.letterxdt_sent')
     %dd= @document.letterxdt.try(:strftime, "%d %b %Y" )
     
-    %dt= t 'document.from' , :default => model_class.human_attribute_name(:from) + ":"
+    %dt= @document.distribution_type==1 ? (t 'document.from') : (t 'document.to')
     %dd= @document.from
 
     %dt= t 'document.stafffiled_id' , :default => model_class.human_attribute_name(:stafffiled_id) + ":"
