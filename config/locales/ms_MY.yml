@@ -666,6 +666,7 @@ ms_MY:
     event_upcoming: Akan Datang
     no_events_today: Tiada acara pada hari ini
     no_events_recent: Tiada acara sejak minggu lepas
+    no_upcoming_events: Tiada acara akan datang
     
   banks:
     title: Bank

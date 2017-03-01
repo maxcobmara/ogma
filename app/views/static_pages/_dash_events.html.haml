@@ -7,13 +7,30 @@
         / Nav tabs
         %ul.nav.nav-tabs.nav-justified{:role => "tablist"}
           %li{:role => "presentation"}
-            %a{"aria-controls" => "home", "data-toggle" => "tab", :href => "#recent", :role => "tab"}=t('dashboard.event_recent')
+            %a{"aria-controls" => "home", "data-toggle" => "tab", :href => "#recent", :role => "tab", :id=> "get_recent"}=t('dashboard.event_recent')
           %li.active{:role => "presentation"}
-            %a{"aria-controls" => "profile", "data-toggle" => "tab", :href => "#today", :role => "tab"}=t('dashboard.event_today')
+            %a{"aria-controls" => "profile", "data-toggle" => "tab", :href => "#today", :role => "tab", :id=> "get_today"}=t('dashboard.event_today')
           %li{:role => "presentation"}
-            %a{"aria-controls" => "messages", "data-toggle" => "tab", :href => "#upcoming", :role => "tab"}=t('dashboard.event_upcoming')
+            %a{"aria-controls" => "messages", "data-toggle" => "tab", :href => "#upcoming", :role => "tab",  :id=> "get_upcoming"}=t('dashboard.event_upcoming')
         / Tab panes
         .tab-content#event_bar
+          #recent.tab-pane{:role => "tabpanel"}
+            - if current_user.college.code=='amsas'
+              - past_events = Event.where("end_at < ? AND end_at >= ? ", Time.now, 1.days.ago.beginning_of_day).order(:end_at).reverse_order.limit(6)
+            - else
+              - past_events = Event.where("end_at < ? AND end_at >= ? ", Time.now, 7.days.ago.beginning_of_day).order(:end_at).reverse_order.limit(6)
+
+            - if past_events == []
+              %h5{style: "padding-top:25px; text-align: center;"}=t('dashboard.no_events_recent')
+            - else
+              - past_events.each do |e|
+                %div{:class => "sidebar_event_item#{cycle("0", "1")}"}
+                  %h5= link_to e.eventname, event_path(e)
+                  %p
+                    =  e.start_at.try(:strftime, '%a, %e %b')
+                    \ -
+                    = e.end_at.try(:strftime, '%a, %e %b')
+                    
           #today.tab-pane.active{:role => "tabpanel"}
             - todays_events = Event.where("start_at <= ? AND end_at >= ?", Time.now,  Time.now).order(:end_at).reverse_order.limit(6)
             - if todays_events == []
@@ -32,7 +49,7 @@
           #upcoming.tab-pane{:role => "tabpanel"}
             - future_events = Event.where("start_at > ? ", Time.now.end_of_day).order(:start_at).reverse_order.limit(6)
             - if future_events == []
-              %h5{style: "padding-top:25px; text-align: center;"} Nothing
+              %h5{style: "padding-top:25px; text-align: center;"}=t('dashboard.no_upcoming_events')
             - else
               - future_events.each do |e|
                 %div{:class => "sidebar_event_item#{cycle("0", "1")}"}
@@ -42,15 +59,32 @@
                     \ -
                     = e.end_at.try(:strftime, '%a, %e %b')
 
-          #recent.tab-pane{:role => "tabpanel"}
-            - past_events = Event.where("end_at < ? AND end_at >= ? ", Time.now, 7.days.ago.beginning_of_day).order(:end_at).reverse_order.limit(6)
-            - if past_events == []
-              %h5{style: "padding-top:25px; text-align: center;"}=t('dashboard.no_events_recent')
-            - else
-              - past_events.each do |e|
-                %div{:class => "sidebar_event_item#{cycle("0", "1")}"}
-                  %h5= link_to e.eventname, event_path(e)
-                  %p
-                    =  e.start_at.try(:strftime, '%a, %e %b')
-                    \ -
-                    = e.end_at.try(:strftime, '%a, %e %b')
+:javascript
+  $(document).ready(function(){
+    $("#recent").each(function(){
+      $(this).hide();
+    });
+    $("#upcoming").each(function(){
+      $(this).hide();
+    });
+    $("#today").each(function(){
+      $(this).show();
+    });
+    
+    $("#get_recent").click(function(){
+      $("#recent").show();
+      $("#upcoming").hide();
+      $("#today").hide();
+    });
+    $("#get_upcoming").click(function(){
+      $("#recent").hide();
+      $("#upcoming").show();
+      $("#today").hide();
+    });
+    $("#get_today").click(function(){
+      $("#recent").hide();
+      $("#upcoming").hide();
+      $("#today").show();
+    });
+  });
+  

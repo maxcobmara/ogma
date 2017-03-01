@@ -56,8 +56,11 @@
     .col-sm-2.control-label
       =f.label t 'student.students.race', for: :race2
     .col-md-2 
-      = f.select :race2, Student::RACE, {:include_blank =>t('helpers.prompt.select_race')} , {class: 'form-control'}
-      %font{:color => "blue"} Previous race entered: #{@student.race.blank? ? "" : @student.race}
+      - if current_user.college.code=='amsas'
+        = f.select :race2, Student::RACE_AMSAS, {:include_blank =>t('helpers.prompt.select_race')} , {class: 'form-control'}
+      - else
+        = f.select :race2, Student::RACE, {:include_blank =>t('helpers.prompt.select_race')} , {class: 'form-control'}
+        %font{:color => "blue"} Previous race entered: #{@student.race.blank? ? "" : @student.race}
 
   .form-group
     .col-sm-2.control-label
