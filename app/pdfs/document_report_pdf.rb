@@ -32,7 +32,11 @@ class Document_reportPdf < Prawn::Document
       @circulation_details << circulation_details
     end
     counter = counter || 0
-    header = [[{content: "REKOD MASUK SURAT-SURAT RASMI #{@college.name.upcase}", colspan: 7}],[ 'No', 'Tarikh', 'Daripada', 'No Rujukan', 'Tarikh Surat', 'Perkara', 'Tindakan/Makluman']]
+    if @college.code=='amsas'
+       header = [[{content: "REKOD KELUAR-MASUK SURAT RASMI #{@college.name.upcase}", colspan: 7}],[ 'No', 'Tarikh', I18n.t('document.from2'), 'No Rujukan', 'Tarikh Surat', 'Perkara', 'Tindakan/Makluman']]
+    else
+      header = [[{content: "REKOD MASUK SURAT-SURAT RASMI #{@college.name.upcase}", colspan: 7}],[ 'No', 'Tarikh', 'Daripada', 'No Rujukan', 'Tarikh Surat', 'Perkara', 'Tindakan/Makluman']]
+    end
     header +
       @documents.map do |document|
       ["#{counter += 1}", "#{document.letterxdt.try(:strftime, "%d/%m/%y")}", "#{document.from} " , "#{document.refno}"," #{document.letterdt.try(:strftime, "%d/%m/%y")}", "#{document.title}",  "#{@circulation_details[counter-1]}"]

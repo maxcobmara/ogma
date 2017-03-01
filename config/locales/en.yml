@@ -415,6 +415,7 @@ en:
         refno: Ref no
         category: Category
         title: Title
+        distribution_type: Distribution type
         from: From / to
         cc1date: Circulation/Minute date
         cc2date: Circulation/Minute date
@@ -3431,9 +3432,14 @@ en:
     ref_no: Ref No
     category: Category
     title2: Title
-    letter_date: Letter Date
+    letter_date: Document Date
+    distribution_type: Distribution Type
+    internal: Internal
+    external: External
     received_date: "Received / Sent Date"
-    from: "From / To"
+    from2: "From / To"
+    from: From
+    to: To
     circulate_to: Circulate To
     action_notifications: "Actions/Notifications"
     closed: Closed
@@ -3445,8 +3451,10 @@ en:
     minit_tindakan: "(Minutes of Action)"
     stafffiled_id: Filled By
     prepared_by: Prepared By
-    letterdt: Letter Date
-    letterxdt: "Received / Sent Date"
+    letterdt: Document Date
+    #letterxdt: "Received / Sent Date"
+    letterxdt_recv: Tarikh Terima
+    letterxdt_sent: Tarikh Hantar
     circulation_date: Circulation Date
     uploaded: Uploaded File
     upload_change_file: "Upload/Change File"

@@ -177,7 +177,7 @@ class DocumentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def document_params
-      params.require(:document).permit(:id, :serialno, :refno, :title, :category, :letterdt, :letterxdt, :from, :stafffiled_id, :file_id, :otherinfo, :cc1staff_id, :cc1date, :cc1closed, :cc2closed, :cctype_id, :cc2date, :closed, :data, :college_id, circulations_attributes: [:id, :_destroy, :document_id, :staff_id, :action_date, :action_taken, :action_closed, :action_remarks, :action], recipients:[]) 
+      params.require(:document).permit(:id, :serialno, :refno, :title, :distribution_type, :category, :letterdt, :letterxdt, :from, :stafffiled_id, :file_id, :otherinfo, :cc1staff_id, :cc1date, :cc1closed, :cc2closed, :cctype_id, :cc2date, :closed, :data, :college_id, circulations_attributes: [:id, :_destroy, :document_id, :staff_id, :action_date, :action_taken, :action_closed, :action_remarks, :action], recipients:[]) 
     end
 
 end

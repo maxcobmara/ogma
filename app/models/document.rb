@@ -26,7 +26,7 @@ class Document < ActiveRecord::Base
                                     :message => "Invalid File Format" 
                                 
   validates_attachment_size :data, :less_than => 5.megabytes
-  validates_presence_of :serialno, :refno, :category, :title, :from, :stafffiled_id#,:letterdt, :letterxdt, :sender,
+  validates_presence_of :serialno, :refno, :category, :title, :from, :stafffiled_id, :distribution_type #,:letterdt, :letterxdt, :sender,
   validates :cc1date, :circulations, presence: true, :if => :creator_action_is_closed?
   validates :cc2date, :circulations, presence: true, :if => :director_action_is_closed?
   
