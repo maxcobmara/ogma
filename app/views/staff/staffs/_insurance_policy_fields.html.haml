@@ -1,14 +1,12 @@
 %fieldset
-  - all=[]
-  - all=[["Insurans Hayat", DropDown::HAYAT_TYPE], ["Insurans Am", DropDown::AM_TYPE]]
   .row
     .col-sm-2.col-sm-offset-2
       = f.hidden_field :_destroy     
       = check_box_tag :check_hayat, true, "", :class => 'ins_hayat'
       = hidden_field_tag :selected_type, f.object.insurance_type, :class => 'selectedone'
-      = f.select :insurance_type, all, {}, {class: 'form-control'}
-    .col-sm-2=f.text_field :policy_no,  class: 'form-control'
-    .col-sm-3= f.collection_select :company_id, InsuranceCompany.all, :id, :long_name, {prompt: (t 'select')}, {class: 'form-control selectpicker', "data-width"=>"auto"}
+      = f.select :insurance_type, [["Insurans Hayat", DropDown::HAYAT_TYPE], ["Insurans Am", DropDown::AM_TYPE]], {include_blank: (t 'select')}, {class: 'form-control'}
+    .col-sm-2=f.text_field :policy_no, placeholder: (t 'staff.insurance_policies.policy_no'), class: 'form-control'
+    .col-sm-3= f.collection_select :company_id, InsuranceCompany.all, :id, :long_name, {include_blank: (t 'select')}, {class: 'form-control selectpicker', "data-width"=>"auto"}
     .col-sm-1= link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
     
   :javascript

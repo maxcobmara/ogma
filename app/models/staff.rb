@@ -74,7 +74,7 @@ class Staff < ActiveRecord::Base
   accepts_nested_attributes_for :bankaccounts, :reject_if => lambda { |a| a[:account_no].blank? }
 
   has_many          :insurance_policies, :dependent => :destroy
-  accepts_nested_attributes_for :insurance_policies, :reject_if => lambda { |a| a[:policy_no].blank? || a[:company_id].blank? }
+  accepts_nested_attributes_for :insurance_policies, :allow_destroy => true, :reject_if => lambda { |a| a[:policy_no].blank? || a[:company_id].blank? }
 
   has_many          :kins, :dependent => :destroy
   accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
