@@ -687,6 +687,7 @@ en:
     event_upcoming: Upcoming
     no_events_today:  No events today
     no_events_recent: No events since last week
+    no_upcoming_events: No upcoming events
     
   banks:
     title: Banks

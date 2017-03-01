@@ -87,7 +87,11 @@ class Student < ActiveRecord::Base
   end
 
   def render_race
-     (Student::RACE.find_all{|disp, value| value == race2.to_i}).map {|disp, value| disp} [0]
+    if college.code=='amsas'
+      (Student::RACE_AMSAS.find_all{|disp, value| value == race2.to_i}).map {|disp, value| disp} [0]
+    else
+      (Student::RACE.find_all{|disp, value| value == race2.to_i}).map {|disp, value| disp} [0]
+    end
   end
   
   def render_status
@@ -698,6 +702,34 @@ RACE = [
         [ "Dusun",20],
         [ "Lain-Lain",21]
 ]
+
+RACE_AMSAS=[
+        #  Displayed       stored in db
+        [ "Melayu", 1 ],
+        [ "Cina", 2],
+        [ "India", 3],
+        [ "Pribumi", 4],
+        [ "Bajau", 5],
+        [ "Murut",6],
+        [ "Brunei",7],
+        [ "Bisaya",8],
+        [ "Kadazan",9],
+        [ "Suluk",10],
+        [ "Kedayan",11],
+        [ "Iban",12],
+        [ "Kadazan Dusun",13],
+        [ "Sungal",14],
+        [ "Siam",15],
+        [ "Melanau",16],
+        [ "Bugis",17],
+        [ "Bidayuh",18],
+        [ "Momogun Rungus",19],
+        [ "Dusun",20],
+        [ "Telugu", 21],
+        [ "Tidung", 22],
+        [ "Lain-Lain",23]
+]
+
 
 SESSION = [
         #  Displayed       stored in db
