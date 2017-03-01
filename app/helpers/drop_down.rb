@@ -40,6 +40,21 @@ module DropDown
         [ "Semasa",3 ],
         [ "Simpanan Tetap",4 ],
   ]
+  
+  HAYAT_TYPE=[
+        # Displayed          stored in db
+        [ "Insurans Hayat Seumur Hidup", 1],
+        [ "Insurans Endownmen", 2],
+        [ "Insurans Hayat Sementara", 3]
+  ]
+  
+  AM_TYPE=[
+       # Displayed          stored in db    
+        [ "Insurans Kemalangan", 4],
+        [ "Insurans Kebakaran", 5],
+        [ "Insurans Marin/Penerbangan", 6],
+        [ "Insurans Lain", 7]
+  ]
        
   STATECD = [
     #  Displayed       stored in db

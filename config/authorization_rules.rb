@@ -105,6 +105,7 @@ authorization do
    includes :files_module_admin 
    includes :documents_module_admin 
    includes :banks_module_admin 
+   includes :insurance_companies_module_admin
    includes :address_book_module_admin
    includes :titles_module_admin
    includes :staff_shifts_module_admin
@@ -545,6 +546,7 @@ authorization do
      has_permission_on :staff_titles, :to => :manage
      has_permission_on :staff_positions, :to =>[:manage, :maklumat_perjawatan, :organisation_chart]
      has_permission_on :banks, :to => :manage
+     has_permission_on :insurance_companies, :to => :manage
      has_permission_on :staff_employgrades, :to => [:manage, :employgrade_list]
      has_permission_on :staff_postinfos, :to => :manage
      ###restricted as of in Staff role
@@ -2366,6 +2368,14 @@ authorization do
   end
   role :banks_module_viewer do
      has_permission_on :banks, :to => :read
+  end
+  
+  #58-OK-28Feb2017
+  role :insurance_companies_module_admin do
+     has_permission_on :insurance_companies, :to => :manage
+  end
+  role :insurance_companies_module_viewer do
+     has_permission_on :insurance_companies, :to => :read
   end
   
   #49-OK

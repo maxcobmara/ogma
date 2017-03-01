@@ -428,7 +428,7 @@
               /%th.centre{width: "12%"} 
           %body
             - cnt=0
-            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Address Book", "Banks", "Messaging Groups","Titles", "Staff Shifts", "Travel Claims Transport Groups", "Travel Claim Mileage Rates", "Asset Categories", "Ranks", "Employgrades", "Postinfos"]).order(id: :asc)
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Address Book", "Banks", "Insurance Companies", "Messaging Groups","Titles", "Staff Shifts", "Travel Claims Transport Groups", "Travel Claim Mileage Rates", "Asset Categories", "Ranks", "Employgrades", "Postinfos"]).order(id: :asc)
               - read=Role.where('id !=?', role.id).where(description: role.description).first
               /- user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
               /- owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
@@ -443,7 +443,7 @@
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "supportmain"
                 %td.left
-                  - if ["address_book", "banks", "messaging_groups", "asset_categories", "titles", "staff_shifts", "travel_claims_transport_groups", "travel_claim_mileage_rates", "staff_ranks", "staff_employgrades", "staff_postinfos"].include?(rolename1)
+                  - if ["address_book", "banks", "insurance_companies", "messaging_groups", "asset_categories", "titles", "staff_shifts", "travel_claims_transport_groups", "travel_claim_mileage_rates", "staff_ranks", "staff_employgrades", "staff_postinfos"].include?(rolename1)
                     =rolename
                   - else
                     %font{style: 'color: grey;'}=rolename

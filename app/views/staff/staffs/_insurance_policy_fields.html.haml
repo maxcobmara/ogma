@@ -1,0 +1,98 @@
+%fieldset
+  - all=[]
+  - all=[["Insurans Hayat", DropDown::HAYAT_TYPE], ["Insurans Am", DropDown::AM_TYPE]]
+  .row
+    .col-sm-2.col-sm-offset-2
+      = f.hidden_field :_destroy     
+      = check_box_tag :check_hayat, true, "", :class => 'ins_hayat'
+      = hidden_field_tag :selected_type, f.object.insurance_type, :class => 'selectedone'
+      = f.select :insurance_type, all, {}, {class: 'form-control'}
+    .col-sm-2=f.text_field :policy_no,  class: 'form-control'
+    .col-sm-3= f.collection_select :company_id, InsuranceCompany.all, :id, :long_name, {prompt: (t 'select')}, {class: 'form-control selectpicker', "data-width"=>"auto"}
+    .col-sm-1= link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
+    
+  :javascript
+    $('.selectpicker').selectpicker('render');
+        
+    $('.removing_fields').click(function(){
+      var fieldset=$(this).parent().parent().parent();
+      var row=$(this).parent().parent();
+      var all_fields=row.children().children();
+      var destroyer=all_fields[0];
+      destroyer.value=true;    
+      fieldset.hide();
+    });
+    
+    /*on load, assign checkbox value based on saved item*/
+    $('.selectedone').each(function(){
+      var checkbb=$(this).parent().children()[1];
+      if ($(this).val() < 4)
+      { checkbb.checked=true;}
+      else
+      { checkbb.checked=false;}
+    });
+    
+    /*on load, assign selected value of saved insurance type & display insurance type list based on optgroup of saved insurance type*/
+    $('.ins_hayat').each(function(){
+      var row=$(this).parent().parent();
+      var selecttype=$(this).parent().children()[3];
+      
+      if ($(this).is(':checked'))
+      {  
+        $(selecttype).children('optgroup[label="Insurans Hayat"]').show();
+        $(selecttype).children('optgroup[label="Insurans Am"]').hide();
+        
+        var selected1=$(selecttype).val();
+        var optgroup=$(selecttype).children('optgroup[label="Insurans Hayat"]');
+        var option = optgroup.find('option[value="'+selected1+'"]');
+        
+        option.attr('selected', true);
+      }
+      else
+      {
+        $(selecttype).children('optgroup[label="Insurans Am"]').show();
+        $(selecttype).children('optgroup[label="Insurans Hayat"]').hide();
+        
+        var selected1=$(selecttype).val();
+        var optgroup=$(selecttype).children('optgroup[label="Insurans Am"]');
+        var option = optgroup.find('option[value="'+selected1+'"]');
+        
+        option.attr('selected', true);
+      }
+    });
+      
+    /*on click, assign current selected value of insurance type & display insurance type list based on optgroup of current selected insurance type*/
+    $('.ins_hayat').click(function(){
+      var row=$(this).parent().parent();
+      var selecttype=$(this).parent().children()[3];
+      
+      if ($(this).is(':checked'))
+      {  
+        /*alert(selecttype);*/
+        /*alert($(selecttype).val());*/
+        /*alert($(selecttype).children('optgroup[label="hayat"]'));*/     /*obj*/
+        
+        $(selecttype).children('optgroup[label="Insurans Hayat"]').show();
+        $(selecttype).children('optgroup[label="Insurans Am"]').hide();
+        
+        var selected1=$(selecttype).val();
+        var optgroup=$(selecttype).children('optgroup[label="Insurans Hayat"]');
+        var option = optgroup.find('option[value="'+selected1+'"]');
+        
+        option.attr('selected', true);
+      }
+      else
+      {
+        
+        $(selecttype).children('optgroup[label="Insurans Am"]').show();
+        $(selecttype).children('optgroup[label="Insurans Hayat"]').hide();
+        
+        var selected1=$(selecttype).val();
+        var optgroup=$(selecttype).children('optgroup[label="Insurans Am"]');
+        var option = optgroup.find('option[value="'+selected1+'"]');
+        
+        option.attr('selected', true);
+      }
+    });
+
+ 

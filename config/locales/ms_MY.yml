@@ -678,6 +678,18 @@ ms_MY:
     edit: Sunting Bank
     new_flash: "Bank baru berjaya dicipta."
     update_flash: "Bank berjaya dikemaskini."
+  
+  insurance_companies:
+    title: Syarikat Insurans
+    list: Senarai Syarikat Insurans
+    short_name: Nama Ringkas
+    long_name: Nama Penuh
+    active: Aktif
+    details: Maklumat Syarikat Insurans
+    new: Syarikat Insurans Baru
+    edit: Sunting Syarikat Insurans
+    new_flash: "Syarikat insurans baru berjaya dicipta."
+    update_flash: "Syarikat insurans berjaya dikemaskini."
       
   user:
     title: Akaun Pengguna
@@ -918,8 +930,10 @@ ms_MY:
     
     #Admin / Support Table Parts
     banks_module_admin: Pentadbir Modul Bank
+    insurance_companies_module_admin: Pentadbir Modul Syarikat Insurans
     address_book_module_admin: Pentadbir Modul Buku Alamat
     banks_module_viewer: Paparan Modul Bank
+    insurance_companies_module_viewer: Paparan Modul Syarikat Insurans
     address_book_module_viewer: Paparan Modul Buku Alamat
     messaging_groups_module_admin: Pentadbir Modul Kumpulan Pemesejan
     messaging_groups_module_viewer: Paparan Modul Kumpulan Pemesejan
@@ -928,6 +942,7 @@ ms_MY:
     #banks_module_member: Pemilik Modul Bank
     #address_book_module_member: Pemilik Modul Buku Alamat
     banks: Bank
+    insurance_companies: Syarikat Insurans
     address_book: Buku Alamat
     messaging_groups: Kumpulan Pemesejan
     
@@ -1163,7 +1178,7 @@ ms_MY:
     icno: "No MyKad"
     name: "Nama"
     coemail: "Emel"
-    code: "Kod Staf"
+    #code: "Kod Staf"
     fileno: "No Fail"
     position: "Jawatan"
     cobirthdt: Tarikh Lahir
@@ -1178,6 +1193,8 @@ ms_MY:
 
     personal_details: Butir Peribadi
     code: Kod Kakitangan
+    account: Akaun
+    no_account: Staf ini tidak mempunyai akaun ICMS
     thumb: Thumb ID
     shift: Waktu Anjal
     shift_start: " bermula "
@@ -1235,6 +1252,7 @@ ms_MY:
     uniformstat: Status Pakaian Seragam
     position_id: Jawatan
     reports_to: Melapor Kepada
+    messages: Pemesejan
     search:
       ic_no: Carian Kakitangan
     
@@ -1295,6 +1313,13 @@ ms_MY:
       bankname: Bank
       bankaccno: No Akaun 
       bankacctype: Jenis Akaun
+      
+    insurance_policies:
+      title: Butiran Polisi Insurans
+      insurance_type: Jenis Insurans
+      company_id: Syarikat Insurans
+      policy_no: No Polisi
+      tick_for_type: Pilih kotak semak untuk senarai Insurans Hayat, sebaliknya abaikan untuk senarai Insurans Am
 
     contacts: 
       emergency: Maklumat Waris Terdekat
@@ -4323,6 +4348,12 @@ ms_MY:
     untrash: Kembalikan
     move_to_trash: Buang
     allowed_format: "Saiz & Format fail dibenarkan - Maksima : 5 Megabytes & Format : Pdf,  Ms Office(doc, docx, xls, xlsx), Open Office(ods, odt), imej(png, jpg, jpeg,gif)"
+    message: mesej
+    sent_messages: Mesej dihantar
+    received_messages: Mesej diterima
+    sender: penghantar
+    sent_to: kepada
+    from: daripada
     
   group:
     groups: "Kumpulan : "
