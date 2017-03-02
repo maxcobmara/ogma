@@ -29,10 +29,14 @@
         %th{width: '20%'}= sort_link(@search, :title,(t 'library.book.title'))
         %th{width: '10%'}= sort_link(@search, :author, (t 'library.book.author'))
         %th{width: '10%'}= sort_link(@search, :isbn, (t 'library.book.isbn'))
-        %th{width: '6%'}= t 'library.book.quantity'
-        %th{width: '10%'}= sort_link(@search, :accessionno, (t 'library.book.accessionno'))
+        - if current_user.college.code=='kskbjb'
+          %th{width: '6%'}= t 'library.book.quantity'
+          %th{width: '10%'}= sort_link(@search, :accessionno, (t 'library.book.accessionno'))
         %th{width: '10%'}= sort_link(@search, :classlcc, (t 'library.book.classlcc'))
         %th{width: '10%'}= sort_link(@search, :location, (t 'library.book.location'))
+        - if current_user.college.code=='amsas'
+          %th{width: '6%'}= t 'library.book.quantity'
+          %th{width: '10%'}= sort_link(@search, :accessionno, (t 'library.book.accessionno'))
         %th{width: '10%'}= sort_link(@search, :status, (t 'library.book.status'))
         %th{width: '5%'}= t 'library.book.require_update'
         /%th{:style=>"width: 10px;"}= t 'library.book.require_update'

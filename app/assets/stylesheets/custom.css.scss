@@ -221,6 +221,11 @@ table.ogma {
     td.item{padding: 0; border: 0; width: 20px; height: 20px; font-size:1.2em;}
     td.desc{padding: 0; border: 0; height: 20px;font-size:1.2em;}
   }
+  table.book{
+    border:collapse; border-spacing:0;border:0;
+    td.status{padding: 0; border-top:0; border-left:0; border-right:0; border-bottom:1px solid #E2E2E2; font-size:1.2em;width:50%;height:22px;vertical-align:middle;}
+    td.reserve{padding: 0; border-top:0; border-left:0; border-right:0; border-bottom:1px solid #E2E2E2;width:50%;vertical-align:middle;text-align:right;height:19px;}
+  }
 }
 
 

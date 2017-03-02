@@ -1228,6 +1228,7 @@ en:
     edit: Edit Staff
     personal_details: Personal Details
     icno: MyKad No
+    passportno: " (or passport no for non-citizens)"
     name: Name
     code: Staff Code
     account: Akaun

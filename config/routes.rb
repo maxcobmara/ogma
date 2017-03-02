@@ -474,6 +474,9 @@ Ogma::Application.routes.draw do
       end
     end
     resources :books do
+      member do
+        get :reservation
+      end
       collection do
 	post 'import'
 	get 'import_excel', to: "books#import_excel"
@@ -481,6 +484,11 @@ Ogma::Application.routes.draw do
         post 'check_availability'
 	get :stock_listing
 	get :book_summary
+      end
+    end
+    resources :accessions do
+      member do
+	get :reservation
       end
     end
   end

@@ -1183,6 +1183,7 @@ ms_MY:
     new: Staf Baru
     edit: Sunting Staf
     icno: "No MyKad"
+    passportno: " (atau no passport bagi bukan warganegara)"
     name: "Nama"
     coemail: "Emel"
     #code: "Kod Staf"

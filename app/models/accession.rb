@@ -1,4 +1,6 @@
 class Accession < ActiveRecord::Base
+  serialize :data, Hash
+  
   has_many :librarytransactions
   belongs_to :book
   
@@ -6,6 +8,14 @@ class Accession < ActiveRecord::Base
   
   def acc_book
     "#{accession_no} - #{book.title}"
+  end
+  
+  def reservations=(value)
+    data[:reservations] = value
+  end
+  
+  def reservations
+    data[:reservations]
   end
   
 end

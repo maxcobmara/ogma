@@ -1882,12 +1882,14 @@ authorization do
   #30-OK
   role :library_books_module_admin do
      has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import, :stock_listing, :book_summary]
+     has_permission_on :library_accessions, :to => :reservations
   end
   role :library_books_module_viewer do
      has_permission_on :library_books, :to => [:read, :stock_listing, :book_summary]
   end
   role :library_books_module_user do
     has_permission_on :library_books, :to => [:read, :update, :stock_listing, :book_summary]
+    has_permission_on :library_accessions, :to => :reservations
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - lbrary[0].disabled=true as the only owner of this module requires 'Librarian' role
 #   role :library_books_module_member do
