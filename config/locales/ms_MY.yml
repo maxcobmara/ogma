@@ -164,10 +164,14 @@ ms_MY:
         skt_pyd_report: Laporan oleh PYD
         evaluation_year: Tahun Penilaian
       staff:
+        icno: No Mykad
+        name: Nama
         mycpds: "Jumlah Mata Kumulatif (MyCPD)"
         code: Kod Kakitangan
         appointdt: Tarikh Lantikan Pertama
         current_salary: Gaji Semasa
+        coemail: Emel
+        country_cd: Kewarganegaraan
       mycpds:
         cpd_year: Tahun
         cpd_value: Jumlah Mata Kumulatif
@@ -436,6 +440,7 @@ ms_MY:
             blank: "tidak boleh dikosongkan"
             not_a_number: "ialah bukan nombor"
             too_short: "ialah sangat pendek (minimum ialah {{count}} huruf)"
+            wrong_length: " - panjang adalah salah (sepatutnya ialah 12 nombor)"
             taken: "sudah digunakan"
             illegal_char: mengandungi aksara yang tidak sah
             invalid: adalah tidak sah  

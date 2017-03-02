@@ -48,6 +48,7 @@ class Staff::StaffsController < ApplicationController
       format.html { redirect_to staff_infos_path, notice: (t 'staff.title')+(t 'actions.created')}
       format.json { render action: 'show', status: :created, location: @info }
     else
+      @info.vehicles.build if (@info.vehicles && @info.vehicles.count==0) || @info.vehicles[0].nil?
       format.html { render action: 'new' }
       format.json { render json: @info.errors, status: :unprocessable_entity }
     end
