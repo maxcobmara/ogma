@@ -182,10 +182,14 @@ en:
         skt_pyd_report: Report by PYD
         evaluation_year: Evaluation year
       staff:
+        icno: Mykad No
+        name: Name
         mycpds: "Accumulative CPD points (MyCPD)"
         code: Staff Code
         appointdt: Appointment Date
         current_salary: Current Salary
+        coemail: Email
+        country_cd: Nationality
       mycpd:
         cpd_year: Year
         cpd_value: CPD value
@@ -452,6 +456,7 @@ en:
             blank: "can't be blank"
             not_a_number: "is not number"
             too_short: "is too short (minimum is {{count}} characters)"
+            wrong_length: "is the wrong length (should be 12 characters)"
             taken: "must be unique"
             illegal_char: contains illegal characters
             invalid: is invalid
@@ -3453,8 +3458,8 @@ en:
     prepared_by: Prepared By
     letterdt: Document Date
     #letterxdt: "Received / Sent Date"
-    letterxdt_recv: Tarikh Terima
-    letterxdt_sent: Tarikh Hantar
+    letterxdt_recv: Received Date
+    letterxdt_sent: Sent Date
     circulation_date: Circulation Date
     uploaded: Uploaded File
     upload_change_file: "Upload/Change File"

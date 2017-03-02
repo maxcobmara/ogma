@@ -200,7 +200,7 @@
               = f.label t 'staff.country_cd', for: :country_cd
             .col-md-2
               //= country_select("vehicle_manufacturer", "country", [ "Malaysia", "Korea", "Germany" ])
-              = f.select :country_cd, DropDown::NATIONALITY, {prompt:  t('select')}, {class: 'selectpicker', "data-width"=>"autos"}
+              = f.select :country_cd, DropDown::NATIONALITY, {prompt:  t('select')}, {class: 'selectpicker mandatory', "data-width"=>"autos"}
 
           .form-group
             .col-sm-2.control-label
@@ -590,3 +590,49 @@
       document.getElementById("uploadPreview").src = oFREvent.target.result;
     };
   };
+  
+  $("#staff_cobirthdt").click(function(){
+    var selected_nation=$('#staff_country_cd').val();
+    var mykadno=$("#staff_icno").val();
+    var dob_field=document.getElementById("staff_cobirthdt");
+    
+    /*other than bkn warganegara, including null, blank*/
+    if ((selected_nation!=2) && mykadno!='' && mykadno.length==12)
+    {
+      if (Number.isInteger(mykadno*1)==true)
+      {
+        y=mykadno.slice(0,2);
+        m=mykadno.slice(2,4);
+        d=mykadno.slice(4,6);
+        
+        var today=new Date();
+        var yyyy=today.getFullYear();
+        if ((y*1+2000) > yyyy)
+        {  
+          suggested_year=y*1+1900
+        }
+        else
+        {
+          suggested_year=y*1+2000
+        }
+        dob=new Date(suggested_year, m*1-1,d*1);
+        suggested_dob=dob.getDate()+"-"+(dob.getMonth()+1)+"-"+dob.getFullYear();
+
+        dob_field.value=suggested_dob;
+      }
+    }
+  });
+  
+/  
+  
+  
+  
+/         
+/         var dt=new Date(y*1+2000, m*1-1,d*1);
+/         if (dt > new Date())
+/         { suggest_year=dt.setYear(y+1900);}
+/         else
+/         { suggest_year=dt.setYear(y+2000);}
+/         alert(suggest_year);
+/         alert(dt);
+        

@@ -2,8 +2,10 @@ class Staff < ActiveRecord::Base
 
   paginates_per 13
   
-  validates :icno, presence: true#, numericality: true, length: { is: 12 }, uniqueness: true
-  validates_presence_of     :name, :coemail, :code, :appointdt, :current_salary #appointment date must exist be4 can apply leave, salary - for transport class
+  #validates :icno, presence: true, numericality: true, length: { is: 12 }, uniqueness: true
+  validates :icno, presence: true, uniqueness: true
+  validates :icno, numericality: true, length: { is: 12 }, :if => :mykad_holder
+  validates_presence_of     :name, :coemail, :code, :appointdt, :current_salary, :country_cd #appointment date must exist be4 can apply leave, salary - for transport class
 
   before_save :remove_whitespace_begin_end
   before_destroy :valid_for_removal, :remove_from_groups, :update_document_when_last_circulation
@@ -146,7 +148,10 @@ class Staff < ActiveRecord::Base
   #validate :coemail, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :message => I18n.t('activerecord.errors.messages.invalid') }		#temp remark-staff attendance-5Aug2014
 
   #--------------------Declerations----------------------------------------------------
-  
+   def mykad_holder
+     country_cd==1 || country_cd==3
+   end
+   
    def remove_whitespace_begin_end
      self.name=name.strip
    end 

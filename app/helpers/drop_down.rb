@@ -74,14 +74,14 @@ module DropDown
     [ "Wilayah Persekutuan Kuala Lumpur", 14 ],
     [ "Wilayah Persekutuan Labuan", 15 ],
     [ "Wilayah Persekutuan Putrajaya", 16 ],
-    [ "Luar Negara", 98 ],       
+    [ "Luar Negara", 98 ]
   ]
 
   NATIONALITY = [
    #  Displayed       stored in db
    [ "Warganegara",1],
    [ "Bukan Warganegara",2],
-   [ "Penduduk Tetap", 3],
+   [ "Penduduk Tetap", 3]
   ]
 
   STAFF_STATUS = [
