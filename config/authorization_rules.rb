@@ -471,6 +471,7 @@ authorization do
    
    #library rules r/a
    has_permission_on :library_books, :to => :read                                                                # A staff can view all books
+   has_permission_on :library_accessions, :to =>[:index, :reservation, :update]                              # A staff can reserve a book
    has_permission_on :library_librarytransactions, :to => [:analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext] 
                                                                                                                                              # A staff can read all - Transaction Analysis & Resource Statistics
    #local messaging & group for local messaging
@@ -898,6 +899,7 @@ authorization do
 
   role :librarian do
     has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import, :check_availability, :stock_listing, :book_summary]
+    has_permission_on :library_accessions, :to =>[:index, :reservation, :update]
     has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext]
     has_permission_on :students, :to => [:read, :borang_maklumat_pelajar]
     has_permission_on :campus_pages, :to => :update do
@@ -925,6 +927,7 @@ authorization do
       has_permission_on :campus_pages, :to => :flexipage
       has_permission_on :staff_mentors, :to => :read
       has_permission_on :library_books, :to => :read
+      has_permission_on :library_accessions, :to =>[:index, :reservation, :update]
       has_permission_on :exam_examresults, :to => [:menu, :index2, :show2, :examination_slip, :examination_transcript] do
 	if_attribute :id => is_in {user.userable.resultlines.pluck(:examresult_id)}
       end
@@ -1882,14 +1885,12 @@ authorization do
   #30-OK
   role :library_books_module_admin do
      has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import, :stock_listing, :book_summary]
-     has_permission_on :library_accessions, :to => :reservations
   end
   role :library_books_module_viewer do
      has_permission_on :library_books, :to => [:read, :stock_listing, :book_summary]
   end
   role :library_books_module_user do
     has_permission_on :library_books, :to => [:read, :update, :stock_listing, :book_summary]
-    has_permission_on :library_accessions, :to => :reservations
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - lbrary[0].disabled=true as the only owner of this module requires 'Librarian' role
 #   role :library_books_module_member do

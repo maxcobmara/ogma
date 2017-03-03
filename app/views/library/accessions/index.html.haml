@@ -1,0 +1,60 @@
+- model_class = Accession
+.page-header
+  %h1= t('library.reservation.list')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li=link_to content_tag(:li, fa_icon("th-list", text: (t 'library.book.list'))), library_books_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: 'index_search_bar'
+    /%li= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  academicsession_report_training_academic_sessions_path(params.merge(format: 'pdf' ))
+
+.row.filter{style: "display:none;"}
+  .col-md-2
+    
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th{width: '23%'}=sort_link(@search, :book_title, (t 'library.book.title'))
+        %th{width: '9%'}=sort_link(@search, :accession_no, (t 'library.reservation.accession_no'))
+        %th{width: '16%'}= t 'library.reservation.borrowed_by'
+        %th{width: '4%'}=(t 'library.reservation.staff')+" / "+(t 'library.reservation.student')
+        %th{width: '6%'}= t 'library.reservation.returnduedate'
+        %th{width: '16%'}= t 'library.reservation.reserved_by'
+        %th{width: '4%'}=(t 'library.reservation.staff')+" / "+(t 'library.reservation.student')
+        %th{width: '15%'}=(t 'library.reservation.email')
+        %th{width: '7%'}= t 'library.reservation.reservation_date'
+
+    %tbody
+    = render "index_search"
+    - @accessions.each do |accession| 
+      - count=0
+      - for reserve in accession.reservations.values
+        - loan=Librarytransaction.where(accession_id: accession.id).last
+        - if loan.ru_staff==true
+          - borrower=loan.staff.staff_with_rank
+          - usrtype=(t 'library.reservation.staff')
+        - elsif loan.ru_staff==false
+          - borrower=loan.student.student_with_rank
+          - usrtype=(t 'library.reservation.student')
+        %tr
+          - if count==0
+            %td{rowspan: "#{accession.reservations.values.count}"}=h accession.book.title
+            %td{rowspan: "#{accession.reservations.values.count}"}=h accession.accession_no
+            %td{rowspan: "#{accession.reservations.values.count}"}=borrower
+            %td{rowspan: "#{accession.reservations.values.count}"}=usrtype
+            %td{rowspan: "#{accession.reservations.values.count}"}=loan.returnduedate.strftime('%d-%m-%Y')
+          - user_rec=User.find(reserve["reserved_by"].to_i)
+          - if user_rec.userable_type=="Staff"
+            %td="#{count+1}) "+user_rec.userable.staff_with_rank
+            %td.centre=t 'library.reservation.staff'
+            %td=user_rec.userable.coemail
+          - else
+            %td="#{count+1}) "+user_rec.userable.student_with_rank
+            %td.centre=t 'library.reservation.student'
+            %td=user_rec.userable.semail
+          %td=reserve["reservation_date"]
+        - count+=1
+
+  .right{style:"padding:0 30px; margin:0;"}= paginate @accessions, :theme => 'twitter-bootstrap-3'

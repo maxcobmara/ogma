@@ -1,0 +1,15 @@
+= search_form_for @search, url: library_accessions_path,  class: "form-inline" do |f|
+  %tr.search_row{style: 'display: none;'}
+    %td= f.text_field :book_title_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :accession_no_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :borrowed_by_search, size: 2,  :class => "form-control"
+    %td
+    %td= f.text_field :returnduedate_search, size: 2,  :class => "form-control date_picker_reverse"
+    %td= f.text_field :reserved_by_search, size: 2,  :class => "form-control"
+    %td
+    %td
+    %td.input-group
+      =f.text_field :reservation_date_search, size: 2,  :class => "form-control date_picker_reverse"
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw

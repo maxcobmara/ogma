@@ -37,12 +37,18 @@
             - if book_status=="On-loan"
               %td.status=h book_status
               %td.reserve
-                - if !acc.reservations.blank? && acc.reservations.count==3
-                  %div.btn.btn-default.btn-xs{:type => "button", "data-toggle" => "tooltip", title: "Reservation full"}
-                    = link_to content_tag(:li, fa_icon("bookmark")), "#"
+                - loan=Librarytransaction.where(accession_id: acc.id).order(checkoutdate: :asc).last
+                - unless loan.ru_staff.nil? 
+                  - if !acc.reservations.blank? && acc.reservations.count==3
+                    %div.btn.btn-default.btn-xs{:type => "button", "data-toggle" => "tooltip", title: "Reservation full"}
+                      = link_to content_tag(:li, fa_icon("bookmark")), reservation_library_accession_path(id: acc.id, book_id: book.id)
+                  - else
+                    %div.btn.btn-default.btn-xs{:type => "button", "data-toggle" => "tooltip", title: "Reserve"}
+                      = link_to content_tag(:li, fa_icon("bookmark-o")), reservation_library_accession_path(id: acc.id, book_id: book.id)
                 - else
-                  %div.btn.btn-default.btn-xs{:type => "button", "data-toggle" => "tooltip", title: "Reserve"}
-                    = link_to content_tag(:li, fa_icon("bookmark-o")), reservation_library_accession_path(id: acc.id, book_id: book.id)
+                  %div.btn.btn-default.btn-xs{:type => "button", "data-toggle" => "tooltip", title: "Invalid last transaction"}
+                    = link_to content_tag(:li, fa_icon("warning")), "#"
+                      
                   /queue list?
             - else
               %td.status=h book_status

@@ -9,12 +9,20 @@ class Library::AccessionsController < ApplicationController
     #@available_autocomplete = Accession.joins(:librarytransactions).where("librarytransactions.returneddate IS ?", nil).order(:accession_no)
   end
   
-  def reservation
-    #@book = Book.find(params[:book_id])
-    @accession=Accession.find(params[:id])
+  def index
+    roles = current_user.roles.pluck(:authname)
+    @is_admin = roles.include?("developer") || roles.include?("administration") || roles.include?("librarian") || roles.include?("library_books_module_admin") || roles.include?("library_books_module_user")
+    if @is_admin
+      @search=Accession.where.not(data: nil).search(params[:q])
+    else
+      @search = Accession.where.not(data: nil).search2(current_user.id).search(params[:q])
+    end 
+    @accessions=@search.result
+    @accessions=@accessions.page(params[:page]||1) 
   end
   
-  def index
+  def reservation
+    @accession=Accession.find(params[:id])
   end
   
   def update
@@ -22,10 +30,12 @@ class Library::AccessionsController < ApplicationController
 
     respond_to do |format|
       if @accession.update(accession_params)
-        format.html { redirect_to library_book_path(@accession.book) , notice: "yea book da"}
+        format.html { redirect_to library_accessions_path, notice: (t 'library.reservation.successful_reservation')}
         format.xml  { head :ok }
       else
-        format.html { render :action => "reservation" }
+	@errors_line=""
+	@accession.errors.each{|k,v| errors_line+="<li>#{v}</li>"}
+        format.html { render :action => "reservation", notice: ("<span style='color: red;'>"+"<ol>"+errors_line+"</ol></span>").html_safe}
         format.xml  { render :xml => @accession.errors, :status => :unprocessable_entity }
       end
     end

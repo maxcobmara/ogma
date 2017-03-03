@@ -9,7 +9,9 @@
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_library_book_path
   %ul.nav.navbar-nav
     - permitted_to? :create, :library_books do
-      %li= link_to content_tag(:li, fa_icon("file-excel-o", text: (t 'actions.import_excel'))), import_excel_library_books_path     
+      %li= link_to content_tag(:li, fa_icon("file-excel-o", text: (t 'actions.import_excel'))), import_excel_library_books_path
+  %ul.nav.navbar-nav
+    %li=link_to content_tag(:li, fa_icon("th-list", text: (t 'library.reservation.list'))), library_accessions_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: 'index_search_bar'
     %li.dropdown

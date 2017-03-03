@@ -3310,6 +3310,31 @@ ms_MY:
       range: Julat
       physical_description: Deskripsi Fizikal
       starting_with: Bermula dengan
+      
+    reservation:
+      list: Senarai Tempahan Buku
+      current_list: "Senarai Tempahan Semasa"
+      title: Tempahan Baru (Buku)
+      borrowed_by: "Sedang dipinjam oleh "
+      returnduedate: Tarikh Luput
+      reserve: Tempah
+      reserved_by: Penempah
+      reservation_date: Tarikh Tempahan
+      accession_no: No. Perolehan
+      no_reservation: Tiada tempahan
+      queue_no: No giliran
+      max_reservation: "Catatan : Maksima 3 tempahan dibenarkan bagi setiap buku"
+      #ready_for_collection: Buku yang ditempah telah sedia untuk dipinjam bermula 
+      #valid_reservation: Tempahan anda akan luput selepas 3 hari
+      staff: Staf
+      student: Pelajar
+      quota_exceed: "Kuota tempahan telah dipenuhi. Tiada tempahan dibenarkan."
+      reserving: "Anda dalam proses untuk menempah buku ini. No giliran anda adalah "
+      click_reserve: "Klik butang 'Tempah' untuk meneruskan."
+      successful_reservation: "Tempahan anda telah berjaya disimpan."
+      reserve_once: "Anda hanya boleh menempah buku ini sekali sahaja!"
+      email: Emel
+      reservation_prohibited: "Anda tidak dibenarkan menempah buku yang sedang anda pinjam."
 
   buletin:
     list: Senarai Buletin
