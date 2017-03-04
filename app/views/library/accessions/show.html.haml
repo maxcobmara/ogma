@@ -1,0 +1,66 @@
+- model_class = Accession
+.page-header
+  %h1= t 'library.reservation.details'
+
+= render 'shared/flashes'
+
+.row
+  .row
+    .col-md-8.col-md-offset-3
+      %dl.dl-horizontal
+        %dt= t 'library.book.title'
+        %dd=@accession.book.title
+          
+        %dt=t 'library.reservation.accession_no'
+        %dd=@accession.accession_no
+          
+        - loan=Librarytransaction.where(accession_id: @accession.id).last
+        - if loan.ru_staff==true 
+          - str="#{loan.staff.staff_with_rank} (#{t 'library.reservation.staff'})"
+          - email=loan.staff.coemail
+          - borrower=loan.staff_id
+        - elsif loan.ru_staff==false
+          - str="#{loan.student.student_with_rank} (#{(t 'library.reservation.student')})"
+          - email=loan.student.semail
+          - borrower=loan.student_id
+              
+        %dt=t 'library.reservation.borrowed_by'
+        %dd=email.blank? ? str : "#{str} - #{email}"
+          
+        %dt=t 'library.reservation.returnduedate'
+        %dd=loan.returnduedate.strftime('%d-%m-%Y')
+          
+        /- last= @accession.reservations.count rescue 0
+  
+        %dt= t 'library.reservation.current_list'
+        %dd
+          
+        .row
+          .col-md-8
+            %br
+            .small=t 'library.reservation.max_reservation'
+            
+            /1) display heading once
+            %table.table.table-bordered.table-sm
+              %tr
+                %th.bg-info=t 'library.reservation.queue_no'
+                %th.bg-info=t 'library.reservation.reserved_by'
+                %th.bg-info=t 'library.reservation.reservation_date'
+                %th.bg-info=t 'library.reservation.email'
+   
+              - @accession.reservations.values.each_with_index do |reserve, cnt|
+                %tr
+                  %td.centre=cnt+1
+                  - reserver=User.find(reserve['reserved_by'])
+                  - reserver_type=reserver.userable_type
+                  %td=reserver_type=='Staff' ? reserver.userable.staff_with_rank : reserver.userable.student_with_rank
+                  %td=reserve['reservation_date']
+                  %td=reserver_type=='Staff' ? reserver.userable.coemail : reserver.userable.semail
+
+    %br   
+    .row
+      .form-group
+        .col-md-1.col-md-offset-4
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), library_accessions_path, :class => 'btn btn-default'
+
+

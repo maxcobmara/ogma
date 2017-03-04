@@ -3424,6 +3424,7 @@ en:
       list: Book Reservation List
       current_list: "Current Reservation List"
       title: New Book Reservation
+      details: Book Reservation Details
       borrowed_by: "Currently borrower by "
       returnduedate: Return Due Date
       reserve: Reserve

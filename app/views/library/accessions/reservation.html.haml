@@ -58,7 +58,7 @@
                     = f.fields_for :reservations do |builder|
                       - if cnt < last
                         %tr
-                          %td=cnt+1
+                          %td.centre=cnt+1
                           %td
                             - reserver=User.find(@accession.reservations[cnt.to_s]['reserved_by'])
                             - reserver_type=reserver.userable_type

@@ -10,8 +10,17 @@ class Accession < ActiveRecord::Base
   
   def self.search2(query)
     acc_ids=[]
-    for acc in Accession.all
-      acc.reservations.values{|y|acc_ids << acc.id if x["reserved_by"].to_i==query}
+    #as reserver
+    Accession.where.not(data: nil).each do |reserve|
+      acc_ids << reserve.id if reserve.reserver_ids.include?(query)
+    end
+    #as borrower of reserved book
+    curr_usrable_id=User.find(query).userable_id
+    Accession.where.not(data: nil).each do |reserve|
+      loan=reserve.librarytransactions.last
+      brwtype=loan.ru_staff
+      acc_ids << reserve.id if brwtype==true && curr_usrable_id==loan.staff_id
+      acc_ids << reserve.id if brwtype==false && curr_usrable_id==loan.student_id
     end
     where(id: acc_ids)
   end

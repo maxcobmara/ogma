@@ -3315,6 +3315,7 @@ ms_MY:
       list: Senarai Tempahan Buku
       current_list: "Senarai Tempahan Semasa"
       title: Tempahan Baru (Buku)
+      details: Butiran Tempahan Buku
       borrowed_by: "Sedang dipinjam oleh "
       returnduedate: Tarikh Luput
       reserve: Tempah
