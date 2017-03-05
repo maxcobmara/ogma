@@ -19,6 +19,7 @@ class Library::AccessionsController < ApplicationController
     end 
     @accessions=@search.result
     @accessions=@accessions.page(params[:page]||1) 
+    @librarytransaction=Librarytransaction.new
   end
   
   def reservation
@@ -30,7 +31,7 @@ class Library::AccessionsController < ApplicationController
 
     respond_to do |format|
       if @accession.update(accession_params)
-        format.html { redirect_to library_accessions_path, notice: (t 'library.reservation.successful_reservation')}
+        format.html { redirect_to library_accession_path(@accession), notice: (t 'library.reservation.successful_reservation')}
         format.xml  { head :ok }
       else
 	@errors_line=""

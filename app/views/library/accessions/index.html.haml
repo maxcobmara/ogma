@@ -20,8 +20,8 @@
         %th{width: '8%'}= t 'library.reservation.returnduedate'
         %th{width: '7%'}=(t 'library.reservation.staff')+" / "+(t 'library.reservation.student')
         %th{width: '20%'}= t 'library.reservation.reserved_by'
-        /%th{width: '15%'}=(t 'library.reservation.email')
-        %th{width: '9%'}= t 'library.reservation.reservation_date'
+        %th{width: '8%'}= (t 'library.reservation.reservation_date')+(t 'library.reservation.expired_reservation')
+        %th{width: '1%'}
 
     %tbody
     = render "index_search"
@@ -29,6 +29,7 @@
       - count=0
       - unless accession.reservations.blank?
         - for reserve in accession.reservations.values
+          /borrower section
           - loan=Librarytransaction.where(accession_id: accession.id).last
           - if loan.ru_staff==true
             - borrower=loan.staff.staff_with_rank
@@ -36,22 +37,69 @@
           - elsif loan.ru_staff==false
             - borrower=loan.student.student_with_rank
             - usrtype=(t 'library.reservation.student')
+          /reserver section
+          - user_rec=User.find(reserve["reserved_by"].to_i)
+          - if user_rec.userable_type=="Staff"
+            - reserver=user_rec.userable.staff_with_rank
+            - reservertype=(t 'library.reservation.staff')
+          - elsif user_rec.userable_type=="Student"
+            - reserver=user_rec.userable.student_with_rank
+            - reservertype=(t 'library.reservation.student')
+            
           %tr
             - rspan=accession.reservations.values.count
             - if count==0
+              /1st line only (per accession)
               %td{rowspan: "#{rspan}"}=h accession.book.title
               %td{rowspan: "#{rspan}"}=link_to accession.accession_no, library_accession_path(accession)
-              %td.centre{rowspan: "#{rspan}"}=usrtype
-              %td{rowspan: "#{rspan}"}=borrower
-              %td{rowspan: "#{rspan}"}=loan.returnduedate.strftime('%d-%m-%Y')
-            - user_rec=User.find(reserve["reserved_by"].to_i)
-            - if user_rec.userable_type=="Staff"
-              %td.centre=t 'library.reservation.staff'
-              %td="#{count+1}) "+user_rec.userable.staff_with_rank
+              %td.centre{rowspan: "#{rspan}"}= loan.returned==true ? "-" : usrtype
+              %td{rowspan: "#{rspan}"}= loan.returned==true ? "-" : borrower
+              - if loan.returnduedate < Date.today
+                %td.text-red{rowspan: "#{rspan}"}= loan.returned==true ? "-" : loan.returnduedate.strftime('%d-%m-%Y')
+              - else
+                %td{rowspan: "#{rspan}"}= loan.returned==true ? "-" : loan.returnduedate.strftime('%d-%m-%Y')
+            /1st & subsequent lines
+            - if loan.returned==true && count==0
+              %td.centre.text-blue=reservertype
+              %td
+                .text-blue="#{count+1}) "+reserver
+                .text-blue=(t 'library.reservation.expired_date')
+              %td
+                .text-blue.centre=reserve["reservation_date"]
+                .red-white.centre=(loan.returneddate+3.days).strftime('%d-%m-%Y')
+              %td
+                /New librarytransaction form here----
+                = form_for [:library, @librarytransaction] do |f| 
+                  = f.hidden_field :accession_id, value: accession.id
+                  - if user_rec.userable_type=="Staff"
+                    =f.hidden_field :staff_id, value: user_rec.userable_id
+                    =f.hidden_field :ru_staff, value: true
+                    =f.hidden_field :returnduedate, value: Date.today+30.days
+                  - else
+                    =f.hidden_field :student_id, value: user_rec.userable_id
+                    =f.hidden_field :ru_staff, value: false
+                    =f.hidden_field :returnduedate, value: Date.today+14.days
+                  =f.hidden_field :checkoutdate, value: Date.today
+
+                  //
+                  = hidden_field_tag "librarytransaction[reservations][0[reserved_by]]", reserve["reserved_by"]
+                  = hidden_field_tag "librarytransaction[reservations][0[reservation_date]]", reserve["reservation_date"]
+                  =f.hidden_field :libcheckout_by, value: current_user.userable_id
+                  
+                  /= f.fields_for :reservations do |builder|
+                  /  = builder.hidden_field "#{cnt}[reserved_by]", value: (@accession.reservations[cnt.to_s]['reserved_by'] rescue nil)
+                  /  = builder.hidden_field "#{cnt}[reservation_date]", value: (@accession.reservations[cnt.to_s]['reservation_date'] rescue nil)
+                  //
+                  /= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), library_books_path, :class => 'btn btn-default'
+                  /= link_to content_tag(:i, "", :class => "fa fa-plus-circle "), :type => 'submit'
+                  =f.submit
+                  /=fa_icon("plus-circle")
+                /New librarytransaction form here----
             - else
-              %td.centre=t 'library.reservation.student'
-              %td="#{count+1}) "+user_rec.userable.student_with_rank
-            %td=reserve["reservation_date"]
+              %td.centre=reservertype
+              %td="#{count+1}) "+reserver
+              %td.centre=reserve["reservation_date"]
+              %td
           - count+=1
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @accessions, :theme => 'twitter-bootstrap-3'

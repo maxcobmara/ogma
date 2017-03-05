@@ -3428,14 +3428,19 @@ en:
       borrowed_by: "Currently borrower by "
       returnduedate: Return Due Date
       reserve: Reserve
+      reserved: Reserved
       reserved_by: Reserved by
       reservation_date: Reservation Date
       accession_no: Accession No
       no_reservation: No existing reservation
       queue_no: Queue No
       max_reservation: "Remarks : Maximum 3 reservations allowed for each book"
-      #ready_for_collection: Your reserved book available for loan starting from 
-      #valid_reservation: Your reservation shall expire after 3 days
+      attention: "Attention: "
+      expired_date: "Ready for loan. Reservation expired date : "
+      expired_reservation: " /Expired Reservation"
+      ready_for_collection: "Your reserved book available for loan starting from "
+      valid_reservation: Please collect your reserved book within 3 days
+      expiring:  Your reservation shall expire after
       staff: Staff
       student: Student
       quota_exceed: "Reservation quota exceeded. No reservation allowed."

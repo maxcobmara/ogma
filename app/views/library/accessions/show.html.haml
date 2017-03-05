@@ -3,6 +3,7 @@
   %h1= t 'library.reservation.details'
 
 = render 'shared/flashes'
+- loan=Librarytransaction.where(accession_id: @accession.id).last
 
 .row
   .row
@@ -13,30 +14,25 @@
           
         %dt=t 'library.reservation.accession_no'
         %dd=@accession.accession_no
-          
-        - loan=Librarytransaction.where(accession_id: @accession.id).last
-        - if loan.ru_staff==true 
-          - str="#{loan.staff.staff_with_rank} (#{t 'library.reservation.staff'})"
-          - email=loan.staff.coemail
-          - borrower=loan.staff_id
-        - elsif loan.ru_staff==false
-          - str="#{loan.student.student_with_rank} (#{(t 'library.reservation.student')})"
-          - email=loan.student.semail
-          - borrower=loan.student_id
-              
+
         %dt=t 'library.reservation.borrowed_by'
-        %dd=email.blank? ? str : "#{str} - #{email}"
+        %dd= loan.returned==true ? "-" : @accession.borrower_details
           
         %dt=t 'library.reservation.returnduedate'
-        %dd=loan.returnduedate.strftime('%d-%m-%Y')
-          
-        /- last= @accession.reservations.count rescue 0
+        %dd
+          - if loan.returned==true
+            ="-"
+          - else
+            - if loan.returnduedate < Date.today
+              .text-red=loan.returnduedate.strftime('%d-%m-%Y')
+            - else
+              =loan.returnduedate.strftime('%d-%m-%Y')
   
         %dt= t 'library.reservation.current_list'
         %dd
           
         .row
-          .col-md-8
+          .col-md-9
             %br
             .small=t 'library.reservation.max_reservation'
             
@@ -48,13 +44,31 @@
                 %th.bg-info=t 'library.reservation.reservation_date'
                 %th.bg-info=t 'library.reservation.email'
    
+              /2) display all reservers
               - @accession.reservations.values.each_with_index do |reserve, cnt|
                 %tr
                   %td.centre=cnt+1
                   - reserver=User.find(reserve['reserved_by'])
                   - reserver_type=reserver.userable_type
-                  %td=reserver_type=='Staff' ? reserver.userable.staff_with_rank : reserver.userable.student_with_rank
-                  %td=reserve['reservation_date']
+                  %td
+                    /display notice when book is available for loan
+                    - if loan.returned==true && cnt==0
+                      .text-blue 
+                        =t 'library.reservation.attention'
+                        %b= reserver_type=='Staff' ? reserver.userable.staff_with_rank : reserver.userable.student_with_rank
+                    - else
+                      = reserver_type=='Staff' ? reserver.userable.staff_with_rank : reserver.userable.student_with_rank
+                            
+                    - if loan.returned==true && cnt==0
+                      .text-blue
+                        = (t 'library.reservation.ready_for_collection')+loan.returneddate.strftime('%d-%m-%Y')
+                        %br 
+                        = t 'library.reservation.valid_reservation'
+                      .text-red
+                        = t 'library.reservation.expiring'
+                        %b=(loan.returneddate+3.days).strftime('%d-%m-%Y')
+
+                  %td.centre=reserve['reservation_date']
                   %td=reserver_type=='Staff' ? reserver.userable.coemail : reserver.userable.semail
 
     %br   
@@ -62,5 +76,4 @@
       .form-group
         .col-md-1.col-md-offset-4
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), library_accessions_path, :class => 'btn btn-default'
-
 

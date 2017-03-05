@@ -3319,14 +3319,19 @@ ms_MY:
       borrowed_by: "Sedang dipinjam oleh "
       returnduedate: Tarikh Luput
       reserve: Tempah
+      reserved: Ditempah
       reserved_by: Penempah
       reservation_date: Tarikh Tempahan
       accession_no: No. Perolehan
       no_reservation: Tiada tempahan
       queue_no: No giliran
       max_reservation: "Catatan : Maksima 3 tempahan dibenarkan bagi setiap buku"
-      #ready_for_collection: Buku yang ditempah telah sedia untuk dipinjam bermula 
-      #valid_reservation: Tempahan anda akan luput selepas 3 hari
+      attention: "Perhatian: "
+      expired_date: "Sedia dipinjam. Tarikh luput tempahan : "
+      expired_reservation: " /Luput Tempahan"
+      ready_for_collection: "Buku yang ditempah telah sedia untuk dipinjam bermula "
+      valid_reservation: Sila ambil tempahan anda dalam masa 3 hari
+      expiring: Tempahan anda akan luput selepas
       staff: Staf
       student: Pelajar
       quota_exceed: "Kuota tempahan telah dipenuhi. Tiada tempahan dibenarkan."

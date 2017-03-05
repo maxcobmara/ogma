@@ -25,6 +25,14 @@ class Accession < ActiveRecord::Base
     where(id: acc_ids)
   end
   
+  def self.existing_reservations
+    acc_ids=[]
+    Accession.where.not(data: nil).each do |reserve|
+      acc_ids << reserve.id if !reserve.reservations.blank?
+    end
+    acc_ids
+  end
+  
   #define scope
   def self.reserved_by_search(query)
     staff_ids=Staff.where('name ILIKE(?)', "%#{query}%").pluck(:id)
@@ -92,12 +100,30 @@ class Accession < ActiveRecord::Base
     ree
   end
   
+#   def staff_ids
+#     User.where(id: reserver_ids, userable_type: 'Staff').pluck(:userable_id)
+#   end
+#   
+#   def student_ids
+#     User.where(id: reserver_ids, userable_type: 'Student').pluck(:userable_id)
+#   end
+  
   def reservation_dates
     ree=[]
     unless reservations.blank?
       reservations.values.each{|x|ree << x["reservation_date"]}
     end
     ree
+  end
+  
+  def borrower_details
+    loan=Librarytransaction.where(accession_id: id).last
+    if loan.ru_staff==true 
+      str="#{loan.staff.staff_with_rank} (#{I18n.t 'library.reservation.staff'}) - #{loan.staff.try(:coemail)}" 
+    elsif loan.ru_staff==false
+      str="#{loan.student.student_with_rank} (#{(I18n.t 'library.reservation.student')}) - #{loan.student.try(:semail)}"
+    end 
+    str      
   end
   
 #   def one_reservation_per_copy
