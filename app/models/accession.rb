@@ -27,9 +27,7 @@ class Accession < ActiveRecord::Base
   
   def self.existing_reservations
     acc_ids=[]
-    Accession.where.not(data: nil).each do |reserve|
-      acc_ids << reserve.id if !reserve.reservations.blank?
-    end
+    Accession.where.not(data: nil).each{|reserve|acc_ids << reserve.id if !reserve.reservations.blank?}
     acc_ids
   end
   

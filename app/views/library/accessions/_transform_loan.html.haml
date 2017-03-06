@@ -1,0 +1,26 @@
+= form_for [:library, @librarytransaction] do |f| 
+  =f.hidden_field :accession_id, value: accession.id
+  =f.hidden_field :checkoutdate, value: Date.today
+  =f.hidden_field :libcheckout_by, value: current_user.userable_id
+  - if user_rec.userable_type=="Staff"
+    =f.hidden_field :staff_id, value: user_rec.userable_id
+    =f.hidden_field :ru_staff, value: true
+    =f.hidden_field :returnduedate, value: Date.today+30.days
+  - else
+    =f.hidden_field :student_id, value: user_rec.userable_id
+    =f.hidden_field :ru_staff, value: false
+    =f.hidden_field :returnduedate, value: Date.today+14.days
+  
+  /copy current reservation into this new librarytransaction
+  = hidden_field_tag "librarytransaction[reservations][0[reserved_by]]", reserve["reserved_by"]
+  = hidden_field_tag "librarytransaction[reservations][0[reservation_date]]", reserve["reservation_date"]
+
+  - if job_type=='index'
+    /%button.btn.btn-sm.btn-default.right{:type => "submit"}
+    %button.right{:type => "submit", :title => (t 'library.reservation.proceed_loan')}
+      %i.fa.fa-plus-circle.fa-fw
+  - elsif job_type=='show'
+    %button{:type => "submit"}
+      %i.fa.fa-plus-circle.fa-fw
+      =t 'library.reservation.proceed_loan'
+      

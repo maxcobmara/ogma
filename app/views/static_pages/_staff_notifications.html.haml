@@ -87,7 +87,11 @@
   
  - if borrower_staff_late_library_books > 0
   %li=link_to content_tag(:span, "#{borrower_staff_late_library_books}", class: "badge") +((t 'notifications.late_return_book')+ "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+(t 'notifications.check_email')).html_safe, "#"
-  
+ 
+ #6March2017
+ - if reserver_book_now_available > 0
+  %li=link_to content_tag(:span, "#{reserver_book_now_available}", class: "badge") + (t 'notifications.ready_for_collection2'), library_accessions_path 
+ 
  #1Nov2016
  - if tenancy_admin_staff_late_keys_return > 0
   %li=link_to content_tag(:span, "#{tenancy_admin_staff_late_keys_return}", class: "badge") +(t 'notifications.late_return_keys_staff'), index_staff_student_tenants_path

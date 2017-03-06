@@ -474,9 +474,6 @@ Ogma::Application.routes.draw do
       end
     end
     resources :books do
-      member do
-        get :reservation
-      end
       collection do
 	post 'import'
 	get 'import_excel', to: "books#import_excel"

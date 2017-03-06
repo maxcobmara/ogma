@@ -48,16 +48,16 @@
               - @accession.reservations.values.each_with_index do |reserve, cnt|
                 %tr
                   %td.centre=cnt+1
-                  - reserver=User.find(reserve['reserved_by'])
-                  - reserver_type=reserver.userable_type
+                  - user_rec=User.find(reserve['reserved_by'])
+                  - reserver_type=user_rec.userable_type
                   %td
                     /display notice when book is available for loan
                     - if loan.returned==true && cnt==0
                       .text-blue 
                         =t 'library.reservation.attention'
-                        %b= reserver_type=='Staff' ? reserver.userable.staff_with_rank : reserver.userable.student_with_rank
+                        %b= reserver_type=='Staff' ? user_rec.userable.staff_with_rank : user_rec.userable.student_with_rank
                     - else
-                      = reserver_type=='Staff' ? reserver.userable.staff_with_rank : reserver.userable.student_with_rank
+                      = reserver_type=='Staff' ? user_rec.userable.staff_with_rank : user_rec.userable.student_with_rank
                             
                     - if loan.returned==true && cnt==0
                       .text-blue
@@ -69,11 +69,19 @@
                         %b=(loan.returneddate+3.days).strftime('%d-%m-%Y')
 
                   %td.centre=reserve['reservation_date']
-                  %td=reserver_type=='Staff' ? reserver.userable.coemail : reserver.userable.semail
-
+                  %td
+                    =reserver_type=='Staff' ? user_rec.userable.coemail : user_rec.userable.semail
+                    - if loan.returned==true && cnt==0
+                      %BR
+                      /New librarytransaction form here----
+                      - permitted_to? :manage, :library_librarytransactions do
+                        = render partial: "transform_loan", locals: {user_rec: user_rec, accession: @accession, reserve: reserve, job_type: 'show'} 
     %br   
     .row
       .form-group
         .col-md-1.col-md-offset-4
-          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), library_accessions_path, :class => 'btn btn-default'
+          - permitted_to? :manage, :library_librarytransactions do
+            = link_to content_tag(:i, "", :class => "fa fa-list") + " " + t('.back', :default => t("library.reservation.transactions")), library_librarytransactions_path, :class => 'btn btn-default'
+        .col-md-1
+          = link_to content_tag(:i, "", :class => "fa fa-list ") + " " + t('.back', :default => t("library.reservation.reservations")), library_accessions_path, :class => 'btn btn-default'
 

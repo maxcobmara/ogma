@@ -3436,7 +3436,7 @@ en:
       queue_no: Queue No
       max_reservation: "Remarks : Maximum 3 reservations allowed for each book"
       attention: "Attention: "
-      expired_date: "Ready for loan. Reservation expired date : "
+      expired_date: "Ready for loan. Reservation expiry date : "
       expired_reservation: " /Expired Reservation"
       ready_for_collection: "Your reserved book available for loan starting from "
       valid_reservation: Please collect your reserved book within 3 days
@@ -3450,6 +3450,9 @@ en:
       reserve_once:  "Reservation of this item can only be done once!"
       email: Email
       reservation_prohibited: "You are not allowed to reserve the book that you borrowed."
+      proceed_loan: Proceed with loan
+      transactions: Transactions
+      reservations: Reservations
    
   buletin:
     list: List of Bulletins
@@ -4509,6 +4512,7 @@ en:
     late_book_staff: " Late return of library book (staff)"
     late_book_student: " Late return of library book (student)"
     late_return_book: " Late return of library book"
+    ready_for_collection2: " reserved book(s) are ready for loan"
     check_email: (Please check your email)
     late_return_keys_staff: " Late return of staff resindence keys "
     late_return_keys_student: " Late return of student residence keys"

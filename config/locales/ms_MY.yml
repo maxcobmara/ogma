@@ -3341,6 +3341,9 @@ ms_MY:
       reserve_once: "Anda hanya boleh menempah buku ini sekali sahaja!"
       email: Emel
       reservation_prohibited: "Anda tidak dibenarkan menempah buku yang sedang anda pinjam."
+      proceed_loan: Teruskan pinjaman
+      transactions: Transaksi
+      reservations: Tempahan
 
   buletin:
     list: Senarai Buletin
@@ -4426,6 +4429,7 @@ ms_MY:
     late_book_staff: " Buku perpustakaan lewat/belum dipulangkan (staf)"
     late_book_student: " Buku perpustakaan lewat/belum dipulangkan (pelajar)"
     late_return_book: " Buku perpustakaan lewat/belum dipulangkan"
+    ready_for_collection2: " Buku yang ditempah telah sedia dipinjam"
     check_email: (Sila semak emel anda)
     late_return_keys_staff: " Kediaman Staf belum dipulangkan kunci"
     late_return_keys_student: " Kediaman Pelajar belum dipulangkan kunci"

@@ -21,7 +21,8 @@
         %th{width: '7%'}=(t 'library.reservation.staff')+" / "+(t 'library.reservation.student')
         %th{width: '20%'}= t 'library.reservation.reserved_by'
         %th{width: '8%'}= (t 'library.reservation.reservation_date')+(t 'library.reservation.expired_reservation')
-        %th{width: '1%'}
+        - permitted_to? :manage, :library_librarytransactions do
+          %th{width: '1%'}
 
     %tbody
     = render "index_search"
@@ -67,39 +68,16 @@
               %td
                 .text-blue.centre=reserve["reservation_date"]
                 .red-white.centre=(loan.returneddate+3.days).strftime('%d-%m-%Y')
-              %td
-                /New librarytransaction form here----
-                = form_for [:library, @librarytransaction] do |f| 
-                  = f.hidden_field :accession_id, value: accession.id
-                  - if user_rec.userable_type=="Staff"
-                    =f.hidden_field :staff_id, value: user_rec.userable_id
-                    =f.hidden_field :ru_staff, value: true
-                    =f.hidden_field :returnduedate, value: Date.today+30.days
-                  - else
-                    =f.hidden_field :student_id, value: user_rec.userable_id
-                    =f.hidden_field :ru_staff, value: false
-                    =f.hidden_field :returnduedate, value: Date.today+14.days
-                  =f.hidden_field :checkoutdate, value: Date.today
-
-                  //
-                  = hidden_field_tag "librarytransaction[reservations][0[reserved_by]]", reserve["reserved_by"]
-                  = hidden_field_tag "librarytransaction[reservations][0[reservation_date]]", reserve["reservation_date"]
-                  =f.hidden_field :libcheckout_by, value: current_user.userable_id
-                  
-                  /= f.fields_for :reservations do |builder|
-                  /  = builder.hidden_field "#{cnt}[reserved_by]", value: (@accession.reservations[cnt.to_s]['reserved_by'] rescue nil)
-                  /  = builder.hidden_field "#{cnt}[reservation_date]", value: (@accession.reservations[cnt.to_s]['reservation_date'] rescue nil)
-                  //
-                  /= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), library_books_path, :class => 'btn btn-default'
-                  /= link_to content_tag(:i, "", :class => "fa fa-plus-circle "), :type => 'submit'
-                  =f.submit
-                  /=fa_icon("plus-circle")
-                /New librarytransaction form here----
+              - permitted_to? :manage, :library_librarytransactions do
+                %td
+                  /New librarytransaction form here----
+                  = render partial: "transform_loan", locals: {user_rec: user_rec, accession: accession, reserve: reserve, job_type: 'index'}
             - else
               %td.centre=reservertype
               %td="#{count+1}) "+reserver
               %td.centre=reserve["reservation_date"]
-              %td
+              - permitted_to? :manage, :library_librarytransactions do
+                %td
           - count+=1
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @accessions, :theme => 'twitter-bootstrap-3'

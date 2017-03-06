@@ -43,6 +43,7 @@ class Library::AccessionsController < ApplicationController
   end
   
   def show
+    @librarytransaction=Librarytransaction.new
   end
   
   private
