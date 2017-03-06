@@ -98,14 +98,6 @@ class Accession < ActiveRecord::Base
     ree
   end
   
-#   def staff_ids
-#     User.where(id: reserver_ids, userable_type: 'Staff').pluck(:userable_id)
-#   end
-#   
-#   def student_ids
-#     User.where(id: reserver_ids, userable_type: 'Student').pluck(:userable_id)
-#   end
-  
   def reservation_dates
     ree=[]
     unless reservations.blank?
