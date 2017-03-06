@@ -16,7 +16,7 @@
           %dd=@librarytransaction.accession.try(:acc_book)
 
           %dt=t 'library.transaction.borrower'
-          %dd=@librarytransaction.ru_staff==true ?  (t 'library.transaction.staff')+": "+@librarytransaction.staff.name :  (t 'library.transaction.student')+": "+ @librarytransaction.student.name
+          %dd=@librarytransaction.ru_staff==true ?  (t 'library.transaction.staff')+": "+@librarytransaction.staff.staff_with_rank :  (t 'library.transaction.student')+": "+ @librarytransaction.student.student_with_rank
           
           %dt=t 'library.transaction.checkoutdate'
           %dd=@librarytransaction.checkoutdate.try(:strftime, '%d %b %Y')+" ("+@librarytransaction.libcheckoutby.try(:name)+")"

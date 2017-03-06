@@ -1,4 +1,5 @@
 class Librarytransaction < ActiveRecord::Base
+  serialize :data, Hash
 
   belongs_to :accession
   belongs_to :staff
@@ -8,7 +9,7 @@ class Librarytransaction < ActiveRecord::Base
   belongs_to :libreturnby, :class_name => 'Staff', :foreign_key => 'libreturned_by'
 
   before_save :set_fine_paid_value_exist, :set_default_finepaydate, :set_default_checkoutdate_returnduedate, :set_returneddate_for_single_return
-  after_save :update_book_status
+  after_save :update_book_status, :remove_reservation_fr_accs
   before_destroy :update_book_status2
   
   attr_accessor :booktitle, :staf_who, :student_who, :newduedate, :late_days_count
@@ -33,9 +34,23 @@ class Librarytransaction < ActiveRecord::Base
   
   #validates :accession_id , presence: true
   #validates :checkoutdate, :returnduedate, presence: true
-  validates :accession_id, inclusion: {in: Accession.where('id NOT IN(?)', Librarytransaction.borrowed.pluck(:accession_id)).pluck(:id)}
+  validates :accession_id, inclusion: {in: Accession.where('id NOT IN(?)', Librarytransaction.borrowed.pluck(:accession_id)).pluck(:id)+Accession.existing_reservations}, :unless => :returning_or_extending_or_loan_of_reserve
   validate :validate_due_date_before_checkout_date
 
+  #shall record reserver becoming borrower
+   def reservations=(value)
+     data[:reservations] = value
+   end
+   
+   def reservations
+     data[:reservations]
+   end
+  
+  #check valid accession_id only for new loan (excluded reserved one)
+  def returning_or_extending_or_loan_of_reserve
+    returned==true || extended==true || !reservations.blank? #==false #check against successful reservations (reservations of librarytransaction) #accession.reservations.blank==false
+  end
+  
   def update_book_status
     acc_to_update=Accession.find(accession_id)
     if returned==true
@@ -44,6 +59,22 @@ class Librarytransaction < ActiveRecord::Base
       acc_to_update.status=2 #on loan
     end
     acc_to_update.save!
+  end
+  
+  def remove_reservation_fr_accs
+    unless reservations.blank?
+      acc_to_update=accession#Accession.find(accession_id)
+      ab=Hash.new
+      acc_to_update.reservations.values.each_with_index do |x, index|
+        if index > 0
+	  ab=ab.merge!({(index-1).to_s => x})                              #reservations (x={"0"=>"reserved_by"=>"57", "reservation_date"=>"03-03-2017"}), 
+	                                                                                           #reservations.values(x={"reserved_by"=>"57", "reservation_date"=>"03-03-2017"}})
+	end
+      end
+      #acc_to_update.reservations=nil
+      acc_to_update.reservations=ab                                           #abc.reservations={"0"=>b,"1"=>c}
+      acc_to_update.save!
+    end
   end
   
   def update_book_status2

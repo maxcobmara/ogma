@@ -12,20 +12,52 @@
     %td=h link_to book.title, library_book_path(book)
     %td=book.try(:author)
     %td=book.try(:isbn)
+    %td=h book.classlcc
+    %td=h book.location
     %td
       =h book.book_quantity 
       /if index2 == 0 && !@search.accessionno_search
       = 1 if @search.accessionno_search
+    /accession nos
     %td
-      - acc3.each_with_index do |acc,index2|
-        =h acc.accession_no 
-        %br
-    %td=h book.classlcc
-    %td=h book.location
+      %table.table.book
+        - acc3.each_with_index do |acc,index2|
+          - book_status=(DropDown::STATUS.find_all{|disp, value| value == acc.status}).map {|disp, value| disp}[0]
+          %tr
+            - if book_status=="On-loan"
+              %td.status=h acc.accession_no 
+            - else
+              %td.status=h acc.accession_no 
+    /status
     %td
-      - acc3.each_with_index do |acc,index2|
-        =h (DropDown::STATUS.find_all{|disp, value| value == acc.status}).map {|disp, value| disp}[0]
-        %br
+      %table.table.book
+        - acc3.each_with_index do |acc,index2|
+          - book_status=(DropDown::STATUS.find_all{|disp, value| value == acc.status}).map {|disp, value| disp}[0]
+          %tr
+            - if book_status=="On-loan" || (book_status=="Available" && acc.reservations && !acc.reservations.blank?)
+              %td.status
+                - if book_status=="On-loan"
+                  =h book_status 
+                - else
+                  .text-blue=h book_status
+              %td.reserve
+                - loan=Librarytransaction.where(accession_id: acc.id).order(checkoutdate: :asc).last
+                - unless loan.ru_staff.nil? 
+                  - if !acc.reservations.blank? && acc.reservations.count==3
+                    %div.btn.btn-default.btn-xs{:type => "button", "data-toggle" => "tooltip", title: "Reservation full"}
+                      = link_to content_tag(:li, fa_icon("bookmark")), reservation_library_accession_path(id: acc.id, book_id: book.id)
+                  - else
+                    %div.btn.btn-default.btn-xs{:type => "button", "data-toggle" => "tooltip", title: "Reserve"}
+                      = link_to content_tag(:li, fa_icon("bookmark-o")), reservation_library_accession_path(id: acc.id, book_id: book.id)
+                - else
+                  %div.btn.btn-default.btn-xs{:type => "button", "data-toggle" => "tooltip", title: "Invalid last transaction"}
+                    = link_to content_tag(:li, fa_icon("warning")), "#"
+                      
+                  /queue list?
+            - else
+              %td.status=h book_status
+              %td.reserve
+
     %td
       - if book.roman != nil 
         - if book.roman.include?(';') || book.roman.include?(':') || book.roman.include?(',')

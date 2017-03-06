@@ -5,15 +5,24 @@
     %td{width: '20%'}= f.text_field :title_cont, size: 2,  :class => "form-control", placeholder: (t 'library.book.title')
     %td{width: '10%'}= f.text_field :author_cont, size: 2,  :class => "form-control", placeholder: (t 'library.book.author')
     %td{width: '10%'}= f.text_field :isbn_cont, size: 2,  :class => "form-control", placeholder: (t 'library.book.isbn')
-    %td{width: '6%'} &nbsp;
-    %td{width: '10%'}
+    - if current_user.college.code=='kskbjb'
+      %td{width: '6%'} &nbsp;
+      %td{width: '10%'}
       
-      =f.text_field :accessionno_search, size: 2, :class => "form-control", placeholder: (t 'library.book.accessionno')
-      =f.text_field :accessionno_from, size: 2, :class => "form-control", :placeholder => t('from')
-      =f.text_field :accessionno_to, size: 2, :class => "form-control", :placeholder => t('to')
-      /= params[:q].count if params[:q]
+        =f.text_field :accessionno_search, size: 2, :class => "form-control", placeholder: (t 'library.book.accessionno')
+        =f.text_field :accessionno_from, size: 2, :class => "form-control", :placeholder => t('from')
+        =f.text_field :accessionno_to, size: 2, :class => "form-control", :placeholder => t('to')
+        /= params[:q].count if params[:q]
     %td{width: '10%'}= f.text_field :classlcc_cont, size: 2, :class => "form-control", :placeholder => t('library.book.starting_with')
     %td{width: '10%'}= f.text_field :location_cont, size: 2, :class => "form-control", placeholder: (t 'library.book.location')
+    - if current_user.college.code=='amsas'
+      %td{width: '6%'} &nbsp;
+      %td{width: '10%'}
+      
+        =f.text_field :accessionno_search, size: 2, :class => "form-control", placeholder: (t 'library.book.accessionno')
+        =f.text_field :accessionno_from, size: 2, :class => "form-control", :placeholder => t('from')
+        =f.text_field :accessionno_to, size: 2, :class => "form-control", :placeholder => t('to')
+        /= params[:q].count if params[:q]
     %td{width: '10%'}= select_tag('q[status_search]',options_for_select(DropDown::STATUS),:prompt=>t("helpers.prompt.select_status"), class: 'selectpicker')
     
     %td.input-group{width: '5%'}

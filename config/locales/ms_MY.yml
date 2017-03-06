@@ -1183,6 +1183,7 @@ ms_MY:
     new: Staf Baru
     edit: Sunting Staf
     icno: "No MyKad"
+    passportno: " (atau no passport bagi bukan warganegara)"
     name: "Nama"
     coemail: "Emel"
     #code: "Kod Staf"
@@ -3309,6 +3310,40 @@ ms_MY:
       range: Julat
       physical_description: Deskripsi Fizikal
       starting_with: Bermula dengan
+      
+    reservation:
+      list: Senarai Tempahan Buku
+      current_list: "Senarai Tempahan Semasa"
+      title: Tempahan Baru (Buku)
+      details: Butiran Tempahan Buku
+      borrowed_by: "Sedang dipinjam oleh "
+      returnduedate: Tarikh Luput
+      reserve: Tempah
+      reserved: Ditempah
+      reserved_by: Penempah
+      reservation_date: Tarikh Tempahan
+      accession_no: No. Perolehan
+      no_reservation: Tiada tempahan
+      queue_no: No giliran
+      max_reservation: "Catatan : Maksima 3 tempahan dibenarkan bagi setiap buku"
+      attention: "Perhatian: "
+      expired_date: "Sedia dipinjam. Tarikh luput tempahan : "
+      expired_reservation: " /Luput Tempahan"
+      ready_for_collection: "Buku yang ditempah telah sedia untuk dipinjam bermula "
+      valid_reservation: Sila ambil tempahan anda dalam masa 3 hari
+      expiring: Tempahan anda akan luput selepas
+      staff: Staf
+      student: Pelajar
+      quota_exceed: "Kuota tempahan telah dipenuhi. Tiada tempahan dibenarkan."
+      reserving: "Anda dalam proses untuk menempah buku ini. No giliran anda adalah "
+      click_reserve: "Klik butang 'Tempah' untuk meneruskan."
+      successful_reservation: "Tempahan anda telah berjaya disimpan."
+      reserve_once: "Anda hanya boleh menempah buku ini sekali sahaja!"
+      email: Emel
+      reservation_prohibited: "Anda tidak dibenarkan menempah buku yang sedang anda pinjam."
+      proceed_loan: Teruskan pinjaman
+      transactions: Transaksi
+      reservations: Tempahan
 
   buletin:
     list: Senarai Buletin
@@ -4394,6 +4429,7 @@ ms_MY:
     late_book_staff: " Buku perpustakaan lewat/belum dipulangkan (staf)"
     late_book_student: " Buku perpustakaan lewat/belum dipulangkan (pelajar)"
     late_return_book: " Buku perpustakaan lewat/belum dipulangkan"
+    ready_for_collection2: " Buku yang ditempah telah sedia dipinjam"
     check_email: (Sila semak emel anda)
     late_return_keys_staff: " Kediaman Staf belum dipulangkan kunci"
     late_return_keys_student: " Kediaman Pelajar belum dipulangkan kunci"

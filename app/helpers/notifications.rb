@@ -203,6 +203,25 @@ module Notifications
       0
     end
   end
+  
+  def reserver_book_now_available
+    acc_success_reservation=[]
+    accs_with_reservations=Accession.where(id: Accession.existing_reservations)
+    accs_with_reservations.each do |acc|
+      loan=Librarytransaction.where(accession_id: acc.id).last
+      if loan.returned==true                                                                                                                                                  #ready for new loan
+        potential_borrower=Accession.find(acc.id).reservations["0"]["reserved_by"]                                                               #user_id
+        if current_user.id==potential_borrower.to_i
+          acc_success_reservation << acc.id
+	end
+      end
+    end
+    if acc_success_reservation.count > 0
+      acc_success_reservation.count
+    else
+      0
+    end
+  end
 
   def tenancy_admin_staff_late_keys_return
     location_ids=Location.where(staffadmin_id: current_staff_id).pluck(:id)

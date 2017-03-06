@@ -1,0 +1,130 @@
+- model_class = Accession
+.page-header
+  %h1= t 'library.reservation.title'
+
+= render 'shared/flashes'
+
+.row
+  = form_for [:library, @accession], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    .row
+      .col-md-8.col-md-offset-3
+        %dl.dl-horizontal
+          %dt= t 'library.book.title'
+          %dd=@accession.book.title
+          
+          %dt=t 'library.reservation.accession_no'
+          %dd=@accession.accession_no
+          
+          /retrieve borrower (userable_id)
+          - loan=Librarytransaction.where(accession_id: @accession.id).last
+          - if loan.ru_staff==true 
+            - borrower=loan.staff_id
+          - elsif loan.ru_staff==false
+            - borrower=loan.student_id
+
+          /reservation - last record
+          - last= @accession.reservations.count rescue 0
+              
+          %dt=t 'library.reservation.borrowed_by'
+          %dd= loan.returned==true ? "-" : @accession.borrower_details
+         
+          %dt=t 'library.reservation.returnduedate'
+          %dd
+            - if loan.returned==true
+              ="-"
+            - else
+              - if loan.returnduedate < Date.today
+                .text-red=loan.returnduedate.strftime('%d-%m-%Y')
+              - else
+                =loan.returnduedate.strftime('%d-%m-%Y')
+          
+          %dt= t 'library.reservation.current_list'
+          %dd= t 'library.reservation.no_reservation' if last==0
+          
+          .row
+            .col-md-9
+              %br
+              .small=t 'library.reservation.max_reservation'
+
+              /1) display heading once
+              %table.table.table-bordered.table-sm
+                - if last > 0
+                  %tr
+                    %th.bg-info=t 'library.reservation.queue_no'
+                    %th.bg-info=t 'library.reservation.reserved_by'
+                    %th.bg-info=t 'library.reservation.reservation_date'
+                    %th.bg-info=t 'library.reservation.email'
+                - 0.upto(last).each do |cnt|
+                  - if last <=3
+                  
+                    = f.fields_for :reservations do |builder|
+                    
+                      /2a) display existing book reserver
+                      - if cnt < last
+                        %tr
+                          %td.centre=cnt+1
+                          %td
+                            - reserver=User.find(@accession.reservations[cnt.to_s]['reserved_by'])
+                            - reserver_type=reserver.userable_type
+                            
+                            - if loan.returned==true && cnt==0
+                              .text-blue 
+                                =t 'library.reservation.attention'
+                                %b= reserver_type=='Staff' ? reserver.userable.staff_with_rank : reserver.userable.student_with_rank
+                            - else
+                              = reserver_type=='Staff' ? reserver.userable.staff_with_rank : reserver.userable.student_with_rank
+                            
+                            - if loan.returned==true && cnt==0
+                              .text-blue
+                                = (t 'library.reservation.ready_for_collection')+loan.returneddate.strftime('%d-%m-%Y')
+                                %br 
+                                = t 'library.reservation.valid_reservation'
+                              .text-red
+                                = t 'library.reservation.expiring'
+                                %b=(loan.returneddate+3.days).strftime('%d-%m-%Y')
+                              
+                            /(t 'library.reservation.book_returned')
+                            /=loan.returneddate.strftime('%d-%m-%Y')
+                            
+                          %td.centre=@accession.reservations[cnt.to_s]['reservation_date'] rescue nil
+                          %td=reserver_type=='Staff' ? reserver.userable.coemail : reserver.userable.semail
+
+                        = builder.hidden_field "#{cnt}[reserved_by]", value: (@accession.reservations[cnt.to_s]['reserved_by'] rescue nil)
+                        = builder.hidden_field "#{cnt}[reservation_date]", value: (@accession.reservations[cnt.to_s]['reservation_date'] rescue nil)
+                    
+                      - else
+                        /2b) make reservation - allow only when current_user HAVEn't reserve this item yet!
+                        - if @accession.reserver_ids.include?(current_user.id)==false
+                          - if borrower==current_user.userable_id
+                          - else
+                            = builder.hidden_field "#{cnt}[reserved_by]", value: current_user.id
+                            = builder.hidden_field "#{cnt}[reservation_date]", value: Date.today.strftime("%d-%m-%Y")
+                
+              /3) display reservation notice (quota exceed, prohibit borrower fr reserving,  reservation once per item) 
+              - reserving_text=("#{t 'library.reservation.reserving'} <strong>#{last+1}</strong>. <br>#{t 'library.reservation.click_reserve'}").html_safe
+              .centre
+                - if last==3 
+                  .text-red=(t 'library.reservation.quota_exceed')
+                - else
+                  - if @accession.reserver_ids.include?(current_user.id)==false
+                    - if borrower==current_user.userable_id
+                      .text-red=t 'library.reservation.reservation_prohibited'
+                    - else
+                      .text-blue=reserving_text
+                  - else
+                    .text-red=t 'library.reservation.reserve_once'
+
+    %br   
+    .row
+      .form-group
+        .col-md-1.col-md-offset-4
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), library_books_path, :class => 'btn btn-default'
+        .col-md-2
+          - unless last==3 
+            - if @accession.reserver_ids.include?(current_user.id)==false
+              - unless borrower==current_user.userable_id
+                .div{style: "margin-left:20px;"}
+                  = f.submit t('library.reservation.reserve'), class: "btn btn-primary"
+
+

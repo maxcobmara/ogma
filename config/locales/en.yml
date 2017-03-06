@@ -1228,6 +1228,7 @@ en:
     edit: Edit Staff
     personal_details: Personal Details
     icno: MyKad No
+    passportno: " (or passport no for non-citizens)"
     name: Name
     code: Staff Code
     account: Akaun
@@ -3419,6 +3420,40 @@ en:
       physical_description: Physical Description
       starting_with: Starting with
       
+    reservation:
+      list: Book Reservation List
+      current_list: "Current Reservation List"
+      title: New Book Reservation
+      details: Book Reservation Details
+      borrowed_by: "Currently borrower by "
+      returnduedate: Return Due Date
+      reserve: Reserve
+      reserved: Reserved
+      reserved_by: Reserved by
+      reservation_date: Reservation Date
+      accession_no: Accession No
+      no_reservation: No existing reservation
+      queue_no: Queue No
+      max_reservation: "Remarks : Maximum 3 reservations allowed for each book"
+      attention: "Attention: "
+      expired_date: "Ready for loan. Reservation expiry date : "
+      expired_reservation: " /Expired Reservation"
+      ready_for_collection: "Your reserved book available for loan starting from "
+      valid_reservation: Please collect your reserved book within 3 days
+      expiring:  Your reservation shall expire after
+      staff: Staff
+      student: Student
+      quota_exceed: "Reservation quota exceeded. No reservation allowed."
+      reserving: "You are about to reserve this book. Your queue no is "
+      click_reserve: "Click 'Reserve' button to proceed."
+      successful_reservation: "Your reservation was successfully created."
+      reserve_once:  "Reservation of this item can only be done once!"
+      email: Email
+      reservation_prohibited: "You are not allowed to reserve the book that you borrowed."
+      proceed_loan: Proceed with loan
+      transactions: Transactions
+      reservations: Reservations
+   
   buletin:
     list: List of Bulletins
     title: Bulletin Board
@@ -4477,6 +4512,7 @@ en:
     late_book_staff: " Late return of library book (staff)"
     late_book_student: " Late return of library book (student)"
     late_return_book: " Late return of library book"
+    ready_for_collection2: " reserved book(s) are ready for loan"
     check_email: (Please check your email)
     late_return_keys_staff: " Late return of staff resindence keys "
     late_return_keys_student: " Late return of student residence keys"

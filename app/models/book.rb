@@ -90,7 +90,8 @@ class Book < ActiveRecord::Base
   
   # define scope status
   def self.status_search(query)
-    where(status: query.to_i)
+    book_ids=Accession.where(status: query.to_i).pluck(:book_id)
+    where(id: book_ids)
   end
   
   #define scope accessionno

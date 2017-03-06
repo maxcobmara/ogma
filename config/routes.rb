@@ -483,6 +483,11 @@ Ogma::Application.routes.draw do
 	get :book_summary
       end
     end
+    resources :accessions do
+      member do
+	get :reservation
+      end
+    end
   end
 
   match '/public/excel_format/book_import.xls', to: 'library/books#download_excel_format', via: 'get', target: '_self'
