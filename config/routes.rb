@@ -487,6 +487,9 @@ Ogma::Application.routes.draw do
       member do
 	get :reservation
       end
+      collection do
+        get :reservation_list
+      end
     end
   end
 

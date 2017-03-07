@@ -1,8 +1,9 @@
 class Library::AccessionsController < ApplicationController
   
-  filter_access_to :index, :new, :create, :reservation, :attribute_check => false
+  filter_access_to :index, :new, :create, :reservation, :reservation_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy,  :attribute_check => true
   
+  before_action :set_list_data, only: [:index, :reservation_list]
   before_action :set_accession, only: [:show, :edit, :update, :destroy]
   
   def available_autocomplete
@@ -10,13 +11,6 @@ class Library::AccessionsController < ApplicationController
   end
   
   def index
-    roles = current_user.roles.pluck(:authname)
-    @is_admin = roles.include?("developer") || roles.include?("administration") || roles.include?("librarian") || roles.include?("library_books_module_admin") || roles.include?("library_books_module_user")
-    if @is_admin
-      @search=Accession.where.not(data: nil).search(params[:q])
-    else
-      @search = Accession.where.not(data: nil).search2(current_user.id).search(params[:q])
-    end 
     @accessions=@search.result
     @accessions=@accessions.page(params[:page]||1) 
     @librarytransaction=Librarytransaction.new
@@ -46,10 +40,32 @@ class Library::AccessionsController < ApplicationController
     @librarytransaction=Librarytransaction.new
   end
   
+  def reservation_list
+    @accessions=@search.result
+    respond_to do |format|
+      format.pdf do
+        pdf = Reservation_listPdf.new(@accessions, view_context, current_user.college)
+        send_data pdf.render, filename: "reservation_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_accession
       @accession = Accession.find(params[:id])
+    end
+    
+    def set_list_data
+      roles = current_user.roles.pluck(:authname)
+      @is_admin = roles.include?("developer") || roles.include?("administration") || roles.include?("librarian") || roles.include?("library_books_module_admin") || roles.include?("library_books_module_user")
+      if @is_admin
+        @search=Accession.where.not(data: nil).search(params[:q])
+      else
+        @search = Accession.where.not(data: nil).search2(current_user.id).search(params[:q])
+      end 
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

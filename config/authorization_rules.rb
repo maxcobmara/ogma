@@ -471,7 +471,7 @@ authorization do
    
    #library rules r/a
    has_permission_on :library_books, :to => :read                                                                # A staff can view all books
-   has_permission_on :library_accessions, :to =>[:read, :reservation, :update]                     # A staff can reserve a book
+   has_permission_on :library_accessions, :to =>[:read, :reservation, :update, :reservation_list] # A staff can reserve a book
    has_permission_on :library_librarytransactions, :to => [:analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext] 
                                                                                                                                              # A staff can read all - Transaction Analysis & Resource Statistics
    #local messaging & group for local messaging
@@ -899,7 +899,7 @@ authorization do
 
   role :librarian do
     has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import, :check_availability, :stock_listing, :book_summary]
-    has_permission_on :library_accessions, :to =>[:read, :reservation, :update]
+    has_permission_on :library_accessions, :to =>[:read, :reservation, :update, :reservation_list]
     has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext]
     has_permission_on :students, :to => [:read, :borang_maklumat_pelajar]
     has_permission_on :campus_pages, :to => :update do
@@ -927,7 +927,7 @@ authorization do
       has_permission_on :campus_pages, :to => :flexipage
       has_permission_on :staff_mentors, :to => :read
       has_permission_on :library_books, :to => :read
-      has_permission_on :library_accessions, :to =>[:read, :reservation, :update]
+      has_permission_on :library_accessions, :to =>[:read, :reservation, :update, :reservation_list]
       has_permission_on :exam_examresults, :to => [:menu, :index2, :show2, :examination_slip, :examination_transcript] do
 	if_attribute :id => is_in {user.userable.resultlines.pluck(:examresult_id)}
       end

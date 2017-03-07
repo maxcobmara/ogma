@@ -7,7 +7,7 @@
     %li=link_to content_tag(:li, fa_icon("th-list", text: (t 'library.book.list'))), library_books_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: 'index_search_bar'
-    /%li= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  academicsession_report_training_academic_sessions_path(params.merge(format: 'pdf' ))
+    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')), reservation_list_library_accessions_path(params.merge(format: 'pdf' ))
 
 .row
   %table.table-striped.table-hover.ogma
