@@ -59,19 +59,39 @@
                 %td.text-red{rowspan: "#{rspan}"}= loan.returned==true ? "-" : loan.returnduedate.strftime('%d-%m-%Y')
               - else
                 %td{rowspan: "#{rspan}"}= loan.returned==true ? "-" : loan.returnduedate.strftime('%d-%m-%Y')
+
             /1st & subsequent lines
             - if loan.returned==true && count==0
-              %td.centre.text-blue=reservertype
+              - if accession.activate_date.blank?
+                - activation_date=loan.returneddate
+              - else
+                - activation_date=accession.activate_date.to_date
               %td
-                .text-blue="#{count+1}) "+reserver
-                .text-blue=(t 'library.reservation.expired_date')
+                - if Date.today >=activation_date+3.days
+                  .text-grey.centre=reservertype
+                - else
+                  .text-blue.centre=reservertype
               %td
-                .text-blue.centre=reserve["reservation_date"]
-                .red-white.centre=(loan.returneddate+3.days).strftime('%d-%m-%Y')
+                - if Date.today >=activation_date+3.days
+                  .text-grey="#{count+1}) #{reserver}<br>#{(t 'library.reservation.expired_date')}".html_safe
+                - else
+                  .text-blue="#{count+1}) #{reserver}<br>#{(t 'library.reservation.expired_date')}".html_safe
+              %td
+                - if Date.today >=activation_date+3.days
+                  .text-grey.centre=reserve["reservation_date"]
+                  .yellow-grey.centre=(activation_date+3.days).strftime('%d-%m-%Y')
+                - else  
+                  .text-blue.centre=reserve["reservation_date"]
+                  .red-white.centre=(activation_date+3.days).strftime('%d-%m-%Y')
               - permitted_to? :manage, :library_librarytransactions do
                 %td
-                  /New librarytransaction form here----
-                  = render partial: "transform_loan", locals: {user_rec: user_rec, accession: accession, reserve: reserve, job_type: 'index'}
+                  - if Date.today >=activation_date+3.days
+                    /NOTE - Upon expiry date, path to show - to manage -- either to 1st reserver fr list, or to allow loan
+                    %button= link_to content_tag(:i, "", :class => "fa fa-gear"), library_accession_path(accession)
+                  - else
+                    /NOTE - valid reservation (ready for collection) - given express button here!
+                    /New librarytransaction form here----
+                    = render partial: "transform_loan", locals: {user_rec: user_rec, accession: accession, reserve: reserve, job_type: 'index'}
             - else
               %td.centre=reservertype
               %td="#{count+1}) "+reserver

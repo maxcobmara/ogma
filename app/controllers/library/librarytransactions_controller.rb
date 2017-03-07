@@ -62,7 +62,7 @@ class Library::LibrarytransactionsController < ApplicationController
   def create
     @librarytransaction = Librarytransaction.create!(librarytransaction_params)
     respond_to do |format|
-      format.html { redirect_to library_accessions_path }
+      format.html { redirect_to library_librarytransactions_path, notice: (t 'library.reservation.loan_via_reservation') }
       if [nil, false].include?(@librarytransaction.reportlost)
         format.js { render :create }
       elsif @librarytransaction.reportlost==true

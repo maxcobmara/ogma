@@ -55,6 +55,9 @@ class Librarytransaction < ActiveRecord::Base
     acc_to_update=Accession.find(accession_id)
     if returned==true
       acc_to_update.status=1 #available
+      unless acc_to_update.reservations.blank?
+        acc_to_update.activate_date=returneddate
+      end
     else
       acc_to_update.status=2 #on loan
     end
@@ -71,7 +74,6 @@ class Librarytransaction < ActiveRecord::Base
 	                                                                                           #reservations.values(x={"reserved_by"=>"57", "reservation_date"=>"03-03-2017"}})
 	end
       end
-      #acc_to_update.reservations=nil
       acc_to_update.reservations=ab                                           #abc.reservations={"0"=>b,"1"=>c}
       acc_to_update.save!
     end
