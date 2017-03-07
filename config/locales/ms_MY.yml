@@ -3331,13 +3331,15 @@ ms_MY:
       expired_reservation: " /Luput Tempahan"
       ready_for_collection: "Buku yang ditempah telah sedia untuk dipinjam bermula "
       valid_reservation: Sila ambil tempahan anda dalam masa 3 hari
-      expiring: Tempahan anda akan luput selepas
+      expiring: Tempahan anda luput pada
       staff: Staf
       student: Pelajar
       quota_exceed: "Kuota tempahan telah dipenuhi. Tiada tempahan dibenarkan."
       reserving: "Anda dalam proses untuk menempah buku ini. No giliran anda adalah "
       click_reserve: "Klik butang 'Tempah' untuk meneruskan."
       successful_reservation: "Tempahan anda telah berjaya disimpan."
+      successful_reservation_removal: "Tempahan telah berjaya dipadam."
+      loan_via_reservation: "Pinjaman (melalui tempahan) telah berjaya disimpan."
       reserve_once: "Anda hanya boleh menempah buku ini sekali sahaja!"
       email: Emel
       reservation_prohibited: "Anda tidak dibenarkan menempah buku yang sedang anda pinjam."
@@ -3345,6 +3347,7 @@ ms_MY:
       transactions: Transaksi
       reservations: Tempahan
       books: Buku
+      remove_reservation: Padam tempahan
 
   buletin:
     list: Senarai Buletin

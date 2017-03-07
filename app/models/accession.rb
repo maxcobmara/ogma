@@ -90,6 +90,16 @@ class Accession < ActiveRecord::Base
     data[:reservations]
   end
   
+  #### TODO - activate date
+   def activate_date=(value)
+    data[:activate_date] = value
+  end
+  
+  def activate_date
+    data[:activate_date]
+  end
+  ####
+  
   def reserver_ids
     ree=[]
     unless reservations.blank?

@@ -7,6 +7,8 @@
 .row
   = form_for [:library, @accession], html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
+    = f.hidden_field :activate_date
+    
     .row
       .col-md-8.col-md-offset-3
         %dl.dl-horizontal
@@ -55,9 +57,10 @@
                     %th.bg-info=t 'library.reservation.reserved_by'
                     %th.bg-info=t 'library.reservation.reservation_date'
                     %th.bg-info=t 'library.reservation.email'
+
                 - 0.upto(last).each do |cnt|
                   - if last <=3
-                  
+                    
                     = f.fields_for :reservations do |builder|
                     
                       /2a) display existing book reserver
@@ -96,7 +99,7 @@
                       - else
                         /2b) make reservation - allow only when current_user HAVEn't reserve this item yet!
                         - if @accession.reserver_ids.include?(current_user.id)==false
-                          - if borrower==current_user.userable_id
+                          - if borrower==current_user.userable_id && loan.returned!=true
                           - else
                             = builder.hidden_field "#{cnt}[reserved_by]", value: current_user.id
                             = builder.hidden_field "#{cnt}[reservation_date]", value: Date.today.strftime("%d-%m-%Y")
@@ -108,12 +111,13 @@
                   .text-red=(t 'library.reservation.quota_exceed')
                 - else
                   - if @accession.reserver_ids.include?(current_user.id)==false
-                    - if borrower==current_user.userable_id
+                    - if borrower==current_user.userable_id && loan.returned!=true
                       .text-red=t 'library.reservation.reservation_prohibited'
                     - else
                       .text-blue=reserving_text
                   - else
                     .text-red=t 'library.reservation.reserve_once'
+                    
 
     %br   
     .row
@@ -123,7 +127,8 @@
         .col-md-2
           - unless last==3 
             - if @accession.reserver_ids.include?(current_user.id)==false
-              - unless borrower==current_user.userable_id
+              - if borrower==current_user.userable_id && loan.returned!=true
+              - else
                 .div{style: "margin-left:20px;"}
                   = f.submit t('library.reservation.reserve'), class: "btn btn-primary"
 

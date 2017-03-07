@@ -1,0 +1,17 @@
+= form_for [:library, @accession] do |f| 
+  =f.hidden_field :id, value: accession.id
+
+  /maintain other than the 1st reserver, as his queue has fortified
+  
+  =f.hidden_field :activate_date, value: Date.today.strftime('%d-%m-%Y')
+  - if @accession.reservations.count > 1
+    - 1.upto(@accession.reservations.count-1).each do |cnt|
+      = hidden_field_tag "accession[reservations][#{cnt-1}[reserved_by]]", (@accession.reservations[cnt.to_s]['reserved_by'] rescue nil)
+      = hidden_field_tag "accession[reservations][#{cnt-1}[reservation_date]]", (@accession.reservations[cnt.to_s]['reservation_date'] rescue nil)
+  - else
+    - @accession.reservations=nil
+
+  .text-red
+    %button.right{:type => "submit", :title => (t 'library.reservation.remove_reservation')}
+      %i.fa.fa-minus-circle.fa-fw
+      =t 'library.reservation.remove_reservation'

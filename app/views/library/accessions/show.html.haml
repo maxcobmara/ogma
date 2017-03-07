@@ -29,54 +29,69 @@
               =loan.returnduedate.strftime('%d-%m-%Y')
   
         %dt= t 'library.reservation.current_list'
-        %dd
-          
+        %dd= t 'library.reservation.no_reservation' if @accession.reservations.blank?
+
         .row
           .col-md-9
             %br
             .small=t 'library.reservation.max_reservation'
             
-            /1) display heading once
-            %table.table.table-bordered.table-sm
-              %tr
-                %th.bg-info=t 'library.reservation.queue_no'
-                %th.bg-info=t 'library.reservation.reserved_by'
-                %th.bg-info=t 'library.reservation.reservation_date'
-                %th.bg-info=t 'library.reservation.email'
-   
-              /2) display all reservers
-              - @accession.reservations.values.each_with_index do |reserve, cnt|
+            - if @accession.reservations.blank?
+              %BR
+            - else
+              /1) display heading once
+              %table.table.table-bordered.table-sm
                 %tr
-                  %td.centre=cnt+1
-                  - user_rec=User.find(reserve['reserved_by'])
-                  - reserver_type=user_rec.userable_type
-                  %td
-                    /display notice when book is available for loan
-                    - if loan.returned==true && cnt==0
-                      .text-blue 
-                        =t 'library.reservation.attention'
-                        %b= reserver_type=='Staff' ? user_rec.userable.staff_with_rank : user_rec.userable.student_with_rank
-                    - else
-                      = reserver_type=='Staff' ? user_rec.userable.staff_with_rank : user_rec.userable.student_with_rank
+                  %th.bg-info=t 'library.reservation.queue_no'
+                  %th.bg-info=t 'library.reservation.reserved_by'
+                  %th.bg-info=t 'library.reservation.reservation_date'
+                  %th.bg-info=t 'library.reservation.email'
+   
+                /2) display all reservers
+                - @accession.reservations.values.each_with_index do |reserve, cnt|
+                  %tr
+                    %td.centre=cnt+1
+                    - user_rec=User.find(reserve['reserved_by'])
+                    - reserver_type=user_rec.userable_type
+                    %td
+                      /display notice when book is available for loan
+                      - if loan.returned==true && cnt==0
+                        .text-blue 
+                          =t 'library.reservation.attention'
+                          %b= reserver_type=='Staff' ? user_rec.userable.staff_with_rank : user_rec.userable.student_with_rank
+                      - else
+                        = reserver_type=='Staff' ? user_rec.userable.staff_with_rank : user_rec.userable.student_with_rank
                             
-                    - if loan.returned==true && cnt==0
-                      .text-blue
-                        = (t 'library.reservation.ready_for_collection')+loan.returneddate.strftime('%d-%m-%Y')
-                        %br 
-                        = t 'library.reservation.valid_reservation'
-                      .text-red
-                        = t 'library.reservation.expiring'
-                        %b=(loan.returneddate+3.days).strftime('%d-%m-%Y')
+                      - if loan.returned==true && cnt==0
+                        - if @accession.activate_date.blank?
+                          - activation_date=loan.returneddate
+                        - else
+                          - activation_date=@accession.activate_date.to_date
+                        .text-blue
+                          = (t 'library.reservation.ready_for_collection')+activation_date.strftime('%d-%m-%Y') 
+                          %br 
+                          = t 'library.reservation.valid_reservation'
+                        .text-red
+                          = t 'library.reservation.expiring'
+                          %b=(activation_date+3.days).strftime('%d-%m-%Y')
 
-                  %td.centre=reserve['reservation_date']
-                  %td
-                    =reserver_type=='Staff' ? user_rec.userable.coemail : user_rec.userable.semail
-                    - if loan.returned==true && cnt==0
-                      %BR
-                      /New librarytransaction form here----
-                      - permitted_to? :manage, :library_librarytransactions do
-                        = render partial: "transform_loan", locals: {user_rec: user_rec, accession: @accession, reserve: reserve, job_type: 'show'} 
-    %br   
+                    %td.centre=reserve['reservation_date']
+                    %td
+                      =reserver_type=='Staff' ? user_rec.userable.coemail : user_rec.userable.semail
+                      - if loan.returned==true && cnt==0
+                        %BR
+                        /New librarytransaction form here----
+                        - permitted_to? :manage, :library_librarytransactions do
+                          /NOTE - Upon expiry date, librarian may remove reservation & upon removal, next (2nd) reservation shall become the first priority
+                          - if Date.today >=activation_date+3.days
+                            = render partial: "remove_reserve", locals: {user_rec: user_rec, accession: @accession, reserve: reserve}
+                            %br
+                            %b.right=t('or').upcase
+                            %br
+                          /NOTE - given options either to remove or to continue with loan
+                          = render partial: "transform_loan", locals: {user_rec: user_rec, accession: @accession, reserve: reserve, job_type: 'show'} 
+
+    %br
     .row
       .form-group
         .col-md-1.col-md-offset-4

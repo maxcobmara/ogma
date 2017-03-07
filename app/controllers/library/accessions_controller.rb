@@ -25,14 +25,22 @@ class Library::AccessionsController < ApplicationController
 
     respond_to do |format|
       if @accession.update(accession_params)
-        format.html { redirect_to library_accession_path(@accession), notice: (t 'library.reservation.successful_reservation')}
-        format.xml  { head :ok }
+        if @accession.activate_date==Date.today.strftime('%d-%m-%Y') 
+          #remove reservation
+          format.html { redirect_to library_accession_path(@accession), notice: (t 'library.reservation.successful_reservation_removal')}
+          format.xml  { head :ok }
+        else
+          #new reservation
+          format.html { redirect_to library_accession_path(@accession), notice: (t 'library.reservation.successful_reservation')}
+          format.xml  { head :ok }
+        end
       else
 	@errors_line=""
 	@accession.errors.each{|k,v| errors_line+="<li>#{v}</li>"}
         format.html { render :action => "reservation", notice: ("<span style='color: red;'>"+"<ol>"+errors_line+"</ol></span>").html_safe}
         format.xml  { render :xml => @accession.errors, :status => :unprocessable_entity }
       end
+      format.js
     end
   end
   
@@ -72,6 +80,7 @@ class Library::AccessionsController < ApplicationController
     def accession_params
       params.require(:accession).permit(:book_id, :accession_no, :order_no, :purchase_price, :received, :received_by, :supplied_by, :college_id, :status, { :data=>[]}).tap do |whitelisted|
         whitelisted[:reservations]=params[:accession][:reservations]
+	whitelisted[:activate_date]=params[:accession][:activate_date]
       end# <-- insert editable fields here inside here e.g (:date, :name)
     end
   

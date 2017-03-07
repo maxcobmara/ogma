@@ -3440,13 +3440,15 @@ en:
       expired_reservation: " /Expired Reservation"
       ready_for_collection: "Your reserved book available for loan starting from "
       valid_reservation: Please collect your reserved book within 3 days
-      expiring:  Your reservation shall expire after
+      expiring:  Your reservation expire on
       staff: Staff
       student: Student
       quota_exceed: "Reservation quota exceeded. No reservation allowed."
       reserving: "You are about to reserve this book. Your queue no is "
       click_reserve: "Click 'Reserve' button to proceed."
       successful_reservation: "Your reservation was successfully created."
+      successful_reservation_removal: "Reservation was successfully removed."
+      loan_via_reservation: "Loan (via reservation) was successfully created."
       reserve_once:  "Reservation of this item can only be done once!"
       email: Email
       reservation_prohibited: "You are not allowed to reserve the book that you borrowed."
@@ -3454,6 +3456,7 @@ en:
       transactions: Transactions
       reservations: Reservations
       books: Books
+      remove_reservation: Remove reservation
    
   buletin:
     list: List of Bulletins
