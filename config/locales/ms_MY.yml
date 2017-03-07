@@ -3344,6 +3344,7 @@ ms_MY:
       proceed_loan: Teruskan pinjaman
       transactions: Transaksi
       reservations: Tempahan
+      books: Buku
 
   buletin:
     list: Senarai Buletin
