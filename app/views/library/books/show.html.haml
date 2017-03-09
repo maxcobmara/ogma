@@ -53,7 +53,7 @@
                     %tr
                       %td= accession.accession_no
                       %td= accession.order_no
-                      %td= (DropDown::STATUS.find_all{|disp, value| value==accession.status}).map{|disp, value|disp}.first
+                      %td= accession.render_book_status
         
       - permitted_to? :manage, :library_books do 
         #purchase_details.tab-pane

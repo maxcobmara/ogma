@@ -2,6 +2,7 @@ class Book < ActiveRecord::Base
   
   before_save :update_tag_no, :extract_roman_into_size_pages
   
+  belongs_to :college
   belongs_to :staff, :foreign_key => 'receiver_id'
   belongs_to :addbook, :class_name => 'AddressBook', :foreign_key => 'supplier_id'
   has_many  :accessions, :dependent => :destroy
@@ -142,6 +143,26 @@ class Book < ActiveRecord::Base
     c
   end
   
+  STATUS = [
+          #  Displayed       stored in db
+          [ I18n.t('library.book.available'),1 ],
+          [ I18n.t('library.book.on_loan'),2 ],
+          [ I18n.t('library.book.fixed'), 3 ],
+          [ I18n.t('library.book.disposed'), 4 ]
+  ] 
+  
+  STATUS_AMSAS = [
+          #  Displayed       stored in db
+          [ I18n.t('library.book.available'),1 ],
+          [ I18n.t('library.book.on_loan'),2 ],
+          [ I18n.t('library.book.weeding'), 4 ],
+          [ I18n.t('library.book.reference'), 3 ]
+  ] 
+  
+#   1) Available / Ada
+#     2) On loan / Pinjam
+#     3) Weeding / Hapuskira
+#     4) Reference / Rujukan
 end
 
 # == Schema Information

@@ -445,6 +445,10 @@ en:
       postinfo:
         details: Details
         staffgrade_id: Grade
+      book:
+        isbn: ISBN
+        title: Title
+        language: Language
 
     errors:
         template:
@@ -3380,6 +3384,8 @@ en:
       on_loan: "On-loan"
       fixed: Fixed
       disposed: Disposed
+      weeding: Weeding
+      reference: Reference
       image: Image
       require_update: "Physical Description (Require Update?)"
       excel_format: Excel Format (Sample)

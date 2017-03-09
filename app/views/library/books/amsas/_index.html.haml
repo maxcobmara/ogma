@@ -22,7 +22,7 @@
     %td
       %table.table.book
         - acc3.each_with_index do |acc,index2|
-          - book_status=(DropDown::STATUS.find_all{|disp, value| value == acc.status}).map {|disp, value| disp}[0]
+          - book_status=(Book::STATUS_AMSAS.find_all{|disp, value| value == acc.status}).map {|disp, value| disp}[0]
           %tr
             - if book_status=="On-loan"
               %td.status=h acc.accession_no 
@@ -32,7 +32,7 @@
     %td
       %table.table.book
         - acc3.each_with_index do |acc,index2|
-          - book_status=(DropDown::STATUS.find_all{|disp, value| value == acc.status}).map {|disp, value| disp}[0]
+          - book_status=(Book::STATUS_AMSAS.find_all{|disp, value| value == acc.status}).map {|disp, value| disp}[0]
           %tr
             - if book_status=="On-loan" || (book_status=="Available" && acc.reservations && !acc.reservations.blank?)
               %td.status

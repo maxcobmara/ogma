@@ -428,6 +428,10 @@ ms_MY:
       postinfo:
         details: Butiran
         staffgrade_id: Gred
+      book:
+        isbn: ISBN
+        title: Tajuk
+        language: Bahasa
         
         
     errors:
@@ -3271,6 +3275,8 @@ ms_MY:
       on_loan: Dipinjam
       fixed: Dibaiki
       disposed: Dilupus
+      weeding: Hapuskira
+      reference: Rujukan
       image: Imej
       require_update: "Deskripsi Fizikal (Perlu Dikemaskini?)"
       excel_format: Sampel Format Excel

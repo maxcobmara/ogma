@@ -124,6 +124,15 @@ class Accession < ActiveRecord::Base
     str      
   end
   
+  def render_book_status
+    if book.college.code=='amsas'
+      book_status=Book::STATUS_AMSAS
+    else
+      book_status=Book::STATUS 
+    end
+    (book_status.find_all{|disp, value| value==status}).map{|disp, value|disp}.first
+  end
+  
 #   def one_reservation_per_copy
 #     unless reservations.blank?
 #       ree=[]

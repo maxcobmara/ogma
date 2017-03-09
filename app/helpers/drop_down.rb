@@ -509,14 +509,7 @@ module DropDown
          [ "DVD", 3 ],
          [ "CD", 4]
   ]
-  
-  STATUS = [
-          #  Displayed       stored in db
-          [ I18n.t('library.book.available'),1 ],
-          [ I18n.t('library.book.on_loan'),2 ],
-          [ I18n.t('library.book.fixed'), 3 ],
-          [ I18n.t('library.book.disposed'), 4 ]
-] 
+
   CATSOURCE = [
           #  Displayed       stored in db
           [ "Perustakaan Negara",1 ],
