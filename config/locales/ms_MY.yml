@@ -3132,6 +3132,7 @@ ms_MY:
       loanedtotype: Dipinjam oleh Staf?
       late_by: lewat 
       fine_rate: " hari x RM 1.00 / sehari"
+      fine_rate2: " hari x RM 0.20 / sehari"
       fine: Denda Perlu Dibayar
       finepay: Bayar?
       finepay2: Denda dibayar

@@ -9,6 +9,7 @@
     = render 'shared/error_messages', object: f.object
     = hidden_field_tag :redirect_location, library_librarytransactions_path 
     = f.hidden_field :libreturned_by, :value => @current_user.userable_id
+    = f.hidden_field :college_id
     .row
       .col-md-8.col-md-offset-3
         %dl.dl-horizontal
@@ -58,7 +59,7 @@
                 %tr
                   %td=t 'library.transaction.late_by'
                   %td=f.text_field :late_days_count, size: "1px", class: 'form-control', readonly: 'readonly'
-                  %td=t 'library.transaction.fine_rate'
+                  %td=@librarytransaction.college.code=='kskbjb' ? (t 'library.transaction.fine_rate') : (t 'library.transaction.fine_rate2')
 
           .form-group
             .col-sm-2.control-label
@@ -124,6 +125,7 @@ $(document).ready(function(){
   $("input[id='librarytransaction_returneddate']").change(function(){
     var returndate=document.getElementById("librarytransaction_returneddate").value;
     var duedate=document.getElementById("librarytransaction_returnduedate").value;
+    var collegeid=document.getElementById("librarytransaction_college_id").value;
     var yearreturn=returndate.slice(6,10);
     var monthreturn=returndate.slice(3,5);
     var dayreturn=returndate.slice(0,2);
@@ -134,7 +136,10 @@ $(document).ready(function(){
     var latedays=document.getElementById("librarytransaction_late_days_count");
     if (jsreturndate > jsduedate){
       var extra_days=dateDiffInDays(jsduedate, jsreturndate);
-      finetopay.value=extra_days*1.0;
+      if (collegeid=='1')
+      {  finetopay.value=extra_days*1.0;}
+      else if (collegeid=='2')
+      {  finetopay.value=extra_days*0.2;}
       latedays.value=extra_days;
       latedays.style.color="red";
       $('.span_late').show("highlight");
@@ -149,6 +154,7 @@ $(document).ready(function(){
   $("input[id='librarytransaction_returneddate']").each(function(){
     var returndate=document.getElementById("librarytransaction_returneddate").value;
     var duedate=document.getElementById("librarytransaction_returnduedate").value;
+    var collegeid=document.getElementById("librarytransaction_college_id").value;
     var yearreturn=returndate.slice(6,10);
     var monthreturn=returndate.slice(3,5);
     var dayreturn=returndate.slice(0,2);
@@ -163,7 +169,11 @@ $(document).ready(function(){
     
     if (jsreturndate > jsduedate){
       var extra_days=dateDiffInDays(jsduedate, jsreturndate);
-      topay=extra_days*1.0;
+      if (collegeid=='1')
+      {  topay=extra_days*1.0;}
+      else if (collegeid=='2')
+      {  topay=extra_days*0.2;}
+      /*topay=extra_days*1.0;*/
       if (actualpaid!=topay)
       {  
         finetopay.value=actualpaid; 

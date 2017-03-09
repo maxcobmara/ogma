@@ -1,6 +1,7 @@
 class Librarytransaction < ActiveRecord::Base
   serialize :data, Hash
 
+  belongs_to :college
   belongs_to :accession
   belongs_to :staff
   belongs_to :student

@@ -42,6 +42,7 @@ class College < ActiveRecord::Base
   has_many :average_courses
   has_many :banks
   has_many :insurance_companies
+  has_many :librarytransactions
   # staffs
   
   serialize :data, Hash
