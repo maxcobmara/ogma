@@ -169,7 +169,11 @@ $(document).ready(function(){
     
     if (jsreturndate > jsduedate){
       var extra_days=dateDiffInDays(jsduedate, jsreturndate);
-      topay=extra_days*1.0;
+      if (collegeid=='1')
+      {  topay=extra_days*1.0;}
+      else if (collegeid=='2')
+      {  topay=extra_days*0.2;}
+      /*topay=extra_days*1.0;*/
       if (actualpaid!=topay)
       {  
         finetopay.value=actualpaid; 
