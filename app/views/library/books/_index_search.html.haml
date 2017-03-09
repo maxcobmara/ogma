@@ -23,7 +23,11 @@
         =f.text_field :accessionno_from, size: 2, :class => "form-control", :placeholder => t('from')
         =f.text_field :accessionno_to, size: 2, :class => "form-control", :placeholder => t('to')
         /= params[:q].count if params[:q]
-    %td{width: '10%'}= select_tag('q[status_search]',options_for_select(DropDown::STATUS),:prompt=>t("helpers.prompt.select_status"), class: 'selectpicker')
+    - if current_user.college.code=='amsas'
+      - book_status=Book::STATUS_AMSAS
+    - else
+      - book_status=Book::STATUS
+    %td{width: '10%'}= select_tag('q[status_search]',options_for_select(book_status),:prompt=>t("helpers.prompt.select_status"), class: 'selectpicker')
     
     %td.input-group{width: '5%'}
       %span.input-group-btn

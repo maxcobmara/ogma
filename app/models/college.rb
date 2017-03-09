@@ -43,6 +43,7 @@ class College < ActiveRecord::Base
   has_many :banks
   has_many :insurance_companies
   has_many :librarytransactions
+  has_many :books
   # staffs
   
   serialize :data, Hash

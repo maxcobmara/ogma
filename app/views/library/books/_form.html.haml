@@ -30,7 +30,7 @@
           %br
           .row
             .col-sm-2.col-md-offset-2= t 'library.book.accessionno'
-            .col-sm-2=t 'book.location'
+            .col-sm-2=t 'library.book.location'
             .col-sm-2 Status
 
             %hr
@@ -39,7 +39,8 @@
           %br
           .row
             /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :travel_claim_logs
-            = link_to_add_fields t('.add_more'), f, :accessions, "",  ""
+            /= link_to_add_fields t('.add_more'), f, :accessions, "",  ""
+            = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :accessions, "", t('addmore')
           %br
 
       #purchase_details_edit.tab-pane

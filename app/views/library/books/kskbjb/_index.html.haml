@@ -35,7 +35,7 @@
         %td=h acc.accession_no
         %td=h acc.book.classlcc
         %td=h acc.book.location
-        %td=h (DropDown::STATUS.find_all{|disp, value| value == acc.book.status}).map {|disp, value| disp}[0]
+        %td=h (Book::STATUS.find_all{|disp, value| value == acc.book.status}).map {|disp, value| disp}[0]
         %td
           - if acc.book.roman != nil 
             - if acc.book.roman.include?(';') || acc.book.roman.include?(':') || acc.book.roman.include?(',')
