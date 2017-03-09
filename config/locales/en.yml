@@ -3901,8 +3901,11 @@ en:
     
     evaluate_course:
       title: "Course Evaluation (Lecturer)"
+      title2: "Invitation Lecturer Evaluation"
       new: "New Course Evaluation (Lecturer)"
+      new2: New Invitation Lecturer Evaluation
       edit: "Edit Course Evaluation (Lecturer)"
+      edit2: Edit Invitation Lecturer Evaluation
       student_id: Student
       staff_id: Lecturer
       staff_id2: Lecturer Name
@@ -4378,7 +4381,26 @@ en:
       phone: Phone No.
       fax: Fax No
       mail: Email
-      web: Web 
+      web: Web
+      
+    visitors:
+      title: Visitor
+      list: Visitors List
+      new: New Visitor
+      edit: Edit Visitor
+      details: Visitor Details
+      name: Name
+      icno: MyKad No
+      rank_id: Rank
+      title_id: Title
+      phoneno: Office Phone No
+      hpno: H/P No
+      email: Email
+      expertise: Expertise / Qualification
+      corporate: Corporate
+      department: Department / Agency
+      address_book_id: Organization
+      department_organization: Department / Agency / Organization
     
     pages:
       title: Pages (Editable)

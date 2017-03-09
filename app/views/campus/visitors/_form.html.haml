@@ -1,0 +1,57 @@
+.row.fluid
+  = form_for [:campus, @visitor], :html => { :class => 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    .col-md-offset-2
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'campus.visitors.name', for: :name
+        .col-md-4
+          .input-group
+            = f.collection_select :title_id, Title.all, :id, :name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"80px"}
+            = f.text_field :name, class: 'form-control mandatory'
+          
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'campus.visitors.icno', for: :icno
+        .col-md-3
+          = f.text_field :icno, class: 'form-control mandatory', maxlength: 12
+          .help-block.small Format:79XXXXXXXXXX
+
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'campus.visitors.rank_id', for: :rank_id
+        .col-md-3
+          = f.collection_select :rank_id, Rank.order(id: :asc), :id, :short_full_name, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'campus.visitors.phoneno', for: :phoneno
+        .col-md-3
+          = f.text_field :phoneno, class: 'form-control'
+
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'campus.visitors.hpno', for: :hpno
+        .col-md-3
+          = f.text_field :hpno, class: 'form-control'
+          
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'campus.visitors.email', for: :email
+        .col-md-3
+          = f.text_field :email, class: 'form-control'
+          
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'campus.visitors.expertise', for: :expertise
+        .col-md-3
+          = f.text_field :expertise, class: 'form-control'
+
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'campus.visitors.department', for: :department
+        .col-md-1
+          =f.check_box :corporate
+        .col-md-3
+          = f.text_field :department, class: 'form-control'
+          = f.collection_select :address_book_id, AddressBook.all, :id, :name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width" => "auto"}
+      
+      .form-group
+        .col-sm-offset-2.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), campus_visitors_path, :class => 'btn btn-default'
+        .col-md-2
+          = f.submit t('update'), class: "btn btn-primary"
+
+          

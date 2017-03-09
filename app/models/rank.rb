@@ -3,6 +3,7 @@ class Rank < ActiveRecord::Base
   has_many :staffs
   belongs_to :staffgrade, class_name: 'Employgrade',  foreign_key: 'employgrade_id'
   has_many :students
+  has_many :visitors
   
   validates :employgrade_id, uniqueness: true, allow_nil: true
   

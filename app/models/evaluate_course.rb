@@ -4,6 +4,7 @@ class EvaluateCourse < ActiveRecord::Base
   belongs_to :stucourse,         :class_name => 'Programme', :foreign_key => 'course_id'
   belongs_to :subjectevaluate,   :class_name => 'Programme',   :foreign_key => 'subject_id'
   belongs_to :staffevaluate,     :class_name => 'Staff',     :foreign_key => 'staff_id'
+  belongs_to :visitor
   
   validates_presence_of :evaluate_date, :course_id, :ev_obj, :ev_knowledge, :ev_deliver, :ev_content, :ev_tool, :ev_topic, :ev_work, :ev_note, :ev_assessment, :student_id
   validate :validate_staff_or_invitation_lecturer_must_exist
@@ -12,7 +13,7 @@ class EvaluateCourse < ActiveRecord::Base
   validates_uniqueness_of :staff_id, :scope =>[:subject_id, :student_id], :message => I18n.t("exam.evaluate_course.evaluation_once")
   
   attr_accessor :is_staff 
-
+  
   # define scope
   def self.programme_subject_search(query) 
     prog_ids=Programme.where('name ILIKE (?) and ancestry_depth=?', "%#{query}%", 0).pluck(:id)

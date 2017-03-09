@@ -1,0 +1,10 @@
+= search_form_for [:visitors, @search], url: campus_visitors_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td= f.text_field :icno_cont, size: 8,  :class => "form-control"
+    %td= f.text_field :name_cont, size: 8,  :class => "form-control" 
+    %td.input-group
+      = f.text_field :department_cont, size: 8,  :class => "form-control"
+      /= select_tag('q[approval2_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'yes2'),true],[(t 'no2'),false]]),class: 'selectpicker')
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw

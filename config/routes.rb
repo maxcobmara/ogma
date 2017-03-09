@@ -249,6 +249,7 @@ Ogma::Application.routes.draw do
       end
     end
     resources :address_books
+    resources :visitors
     resources :pages do
       member do
         get :flexipage
