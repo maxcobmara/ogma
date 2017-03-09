@@ -3241,6 +3241,7 @@ en:
       loanedtotype: Member is Staff?
       late_by:  late by 
       fine_rate: " days x RM 1.00 / day"
+      fine_rate2: " days x RM 0.20 / day"
       fine: Fine to be Paid
       finepay: Fine Paid?
       finepay2: Pay Fine?
