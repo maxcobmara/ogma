@@ -3906,6 +3906,7 @@ en:
       new2: New Invitation Lecturer Evaluation
       edit: "Edit Course Evaluation (Lecturer)"
       edit2: Edit Invitation Lecturer Evaluation
+      select_subject_topic: Tick to select module / subject OR untick to insert topic
       student_id: Student
       staff_id: Lecturer
       staff_id2: Lecturer Name

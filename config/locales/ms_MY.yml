@@ -3824,6 +3824,7 @@ ms_MY:
       new2: Penilaian Baru Pensyarah Jemputan
       edit: "Sunting Penilaian Program (Pengajar)"
       edit2: Sunting Penilaian Pensyarah Jemputan
+      select_subject_topic: Pilih kotak semak untuk pilih modul / subjek ATAU nyahpilih untuk masukkan topik
       student_id: Pelajar
       staff_id: Pengajar
       staff_id2: Nama Pensyarah

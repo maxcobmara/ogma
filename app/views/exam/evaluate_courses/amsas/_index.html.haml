@@ -28,12 +28,19 @@
         %tr
           %td.group{colspan: 2}=(t 'exam.evaluate_course.invite_lec')+": #{lecturer.visitor_with_title_rank} (#{I18n.t('campus.visitors.department_organisation')}: #{lecturer.organisation_details})"
           - all_evaluations.group_by(&:subject_id).each do |subject_id, evaluations|
+            - analysis=AverageCourse.where(subject_id: subject_id).where(visitor_id: visitor_id)
             %tr
-              %td.group{colspan: 2}=Programme.find(subject_id).subject_list
+              %td.group{colspan: 2}
+                =Programme.find(subject_id).subject_list
+                |
+                - if analysis.count==0
+                  = link_to (t 'exam.average_course.analyse_average_data'), new_exam_average_course_path(subject_id: subject_id, visitor_id: visitor_id)
+                - else
+                  = link_to (t 'exam.average_course.view_analysis_data'), exam_average_course_path(analysis.first)
+
             - for evaluate_course in evaluations
               %tr
                 %td=link_to evaluate_course.studentevaluate.student_with_rank, exam_evaluate_course_path(evaluate_course)
-                /%td=link_to evaluate_course.subjectevaluate.module_subject_list2, exam_evaluate_course_path(evaluate_course)
                 %td=evaluate_course.evaluate_date.strftime('%d-%m-%Y')
  
     - if current_user.userable_type=='Student' 

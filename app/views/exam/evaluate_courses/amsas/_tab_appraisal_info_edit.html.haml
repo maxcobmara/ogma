@@ -1,0 +1,84 @@
+.col-md-offset-2 
+  - if @current_user.userable_type=="Student"
+    = f.hidden_field :student_id, :value=> @current_user.userable_id 
+  - else
+    /this part only available to Administration & Programme Manager (as assigned in Tasks & Responsibilities)
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'exam.evaluate_course.student_id', for: :student_id
+      .col-md-6
+        = f.collection_select :student_id, @student_list.order(rank_id: :asc, name: :asc), :id, :student_with_rank,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'350px'}
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.evaluate_course.course_id', for: :course_id
+    .col-md-6
+      - if @evaluate_course.new_record?
+        = f.collection_select :course_id, @programme_list, :id, :programme_list,{:include_blank =>t('select'),:selected =>@preselect_prog},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+      - else 
+        = f.collection_select :course_id, @programme_list, :id, :programme_list, {:include_blank =>t('select'),:selected =>@evaluate_course.course_id},{class: 'selectpicker mandatory', "data-width"=>'350px'}   
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.evaluate_course.invite_lec', for: :invite_lec
+    .col-md-6
+      = f.collection_select :visitor_id, Visitor.all, :id, :visitor_with_title_rank, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'auto'}
+
+  .form-group
+    .col-sm-2.control-label
+      .span_staff{:style=>"display: block;"}
+        = f.label t 'exam.evaluate_course.subject_id', for: :subject_id
+      .span_invited{:style=>"display: none;"}
+        = f.label t 'exam.evaluate_course.invite_lec_topic', for: :invite_lec_topic
+    .col-md-8
+      - if @evaluate_course.new_record?
+        - isstaff="checked"
+      - else
+        - unless @evaluate_course.staff_id.blank?
+          - isstaff="checked"
+        - else
+          - isstaff="unchecked"
+      = f.check_box :is_staff, :checked => isstaff, :id => 'is_staff'
+      .small= t('exam.evaluate_course.select_subject_topic')
+      .span_staff{:style=>"display: block;"}
+        - if current_user.userable_type=='Student'
+          = f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :module_subject_list, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'auto'}
+        - else
+          = f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :programmelist_module_subject, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'auto'}
+      .span_invited{:style=>"display: none;"}
+        = f.text_field :invite_lec_topic, class: 'form-control mandatory'
+      
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.evaluate_course.comment', for: :comment
+    .col-md-8
+      = f.text_field :comment, class: 'form-control'  
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.evaluate_course.evaluate_date', for: :evaluate_date
+    .col-md-3
+      = f.text_field :evaluate_date, class: 'date_picker_after_reverse2 form-control mandatory', value: @evaluate_course.try(:evaluate_date).try(:strftime, '%d-%m-%Y')
+%BR
+
+:javascript
+  $(document).ready(function(){
+    $("input[id='is_staff']").change(function() {  
+      if($('#is_staff').is(':checked')) { 
+        $(".span_invited").hide(""); 
+        $(".span_staff").show("highlight"); 
+      }else{
+        $(".span_invited").show("highlight"); 
+        $(".span_staff").hide(""); 
+      }
+    });
+
+    $("input[id='is_staff']").each(function() {  
+      if($('#is_staff').is(':checked')) { 
+        $(".span_invited").hide(""); 
+        $(".span_staff").show("highlight"); 
+      }else{
+        $(".span_invited").show("highlight"); 
+        $(".span_staff").hide(""); 
+      }
+    });
+  });

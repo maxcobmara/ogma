@@ -85,17 +85,23 @@ class CourseevaluationPdf < Prawn::Document
     if @college.code=='amsas' 
       a=I18n.t('exam.evaluate_course.subject_id2')
       b=I18n.t('exam.evaluate_course.staff_id2')
-      unless @evaluate_course.staff_id.blank?
+      unless @evaluate_course.subject_id.blank?                                            #unless @evaluate_course.staff_id.blank?
         c=@evaluate_course.subjectevaluate.module_subject_list2 
       end
+      d=@evaluate_course.visitor.visitor_with_title_rank
     else
       a=I18n.t('exam.evaluate_course.subject_id')
       b=I18n.t('exam.evaluate_course.staff_id')
       c=@evaluate_course.subjectevaluate.subject_list
+      unless @evaluate_course.staff_id.blank?
+        d=@evaluate_course.staffevaluate.try(:staff_with_rank) 
+      else
+        d=@evaluate_course.invite_lec
+      end
     end
     data=[["#{@college.code=='amsas' ? I18n.t('exam.evaluate_course.course_id2') : I18n.t('exam.evaluate_course.course_id')} :","#{@evaluate_course.stucourse.programme_list}","",""],
           ["#{a unless @evaluate_course.subject_id.blank? } #{I18n.t('exam.evaluate_course.invite_lec_topic') unless @evaluate_course.invite_lec.blank?} :","#{c unless @evaluate_course.subject_id.blank?} #{@evaluate_course.invite_lec_topic unless @evaluate_course.invite_lec.blank?}","#{I18n.t('exam.evaluate_course.evaluate_date2')} : ","#{@evaluate_course.evaluate_date.try(:strftime, '%d/%m/%Y')}"],
-          ["#{b unless @evaluate_course.staff_id.blank?} #{I18n.t('exam.evaluate_course.invite_lec') unless @evaluate_course.invite_lec.blank?} : ","#{@evaluate_course.staff_id? ? @evaluate_course.staffevaluate.try(:staff_with_rank) : @evaluate_course.invite_lec}","",""]]
+          ["#{b unless @evaluate_course.subject_id.blank?} #{I18n.t('exam.evaluate_course.invite_lec') unless @evaluate_course.invite_lec.blank?} : ","#{d}","",""]]
     table(data, :column_widths => [150, 200, 70, 70], :cell_style => { :size => 10})  do
               a = 0
               b = 3

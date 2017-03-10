@@ -1,0 +1,28 @@
+%dl.dl-horizontal
+  - if @position_exist
+    %dt= t 'exam.evaluate_course.student_id'
+    %dd=h evaluate_course.studentevaluate.student_with_rank
+    
+  %dt= t 'exam.evaluate_course.course_id'
+  %dd=h evaluate_course.stucourse.programme_list
+
+  %dt= t 'exam.evaluate_course.invite_lec'
+  %dd=h "#{evaluate_course.visitor.visitor_with_title_rank} (#{evaluate_course.visitor.organisation_details})"
+
+  %dt
+    - unless evaluate_course.subject_id.blank? 
+      = t 'exam.evaluate_course.subject_id'
+    - else
+      = t 'exam.evaluate_course.invite_lec_topic'
+  %dd{style: 'padding-left: 70px;'}
+    - unless evaluate_course.subject_id.blank? 
+      =h evaluate_course.subjectevaluate.module_subject_list2
+    - else
+      =h evaluate_course.invite_lec_topic
+ 
+  %dt= t 'exam.evaluate_course.comment'
+  %dd{style: 'padding-left: 70px;'}=h evaluate_course.comment
+  
+  %dt= t 'exam.evaluate_course.evaluate_date'
+  %dd= evaluate_course.evaluate_date.try(:strftime, '%d %b %Y')
+  %BR

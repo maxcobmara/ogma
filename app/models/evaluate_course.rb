@@ -12,7 +12,7 @@ class EvaluateCourse < ActiveRecord::Base
   validates_presence_of :invite_lec_topic, :if => :trainer_invited?
   validates_uniqueness_of :staff_id, :scope =>[:subject_id, :student_id], :message => I18n.t("exam.evaluate_course.evaluation_once")
   
-  attr_accessor :is_staff 
+  attr_accessor :is_staff    #kskbjb - staff vs invitation lecturer, amsas - module/subject select OR topic entered manually
   
   # define scope
   def self.programme_subject_search(query) 
