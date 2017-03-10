@@ -1,5 +1,6 @@
 class Campus::AddressBooksController < ApplicationController
-  filter_resource_access
+  filter_access_to :index, :new, :create, :address_list, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_address_book, only: [:show, :edit, :update, :destroy]
   
   def index
@@ -29,6 +30,10 @@ class Campus::AddressBooksController < ApplicationController
         format.json { render json: @address_book.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+  def address_list
+    # TODO - pdf page
   end
 
 

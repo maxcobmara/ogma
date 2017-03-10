@@ -1,5 +1,6 @@
 class Title < ActiveRecord::Base
   has_many :staffs
+  has_many :visitors
   validates :titlecode, :name, presence: true
 end
 

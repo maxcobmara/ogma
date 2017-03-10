@@ -77,7 +77,7 @@ class Campus::BookingfacilitiesController < ApplicationController
   def destroy
     @bookingfacility.destroy
     respond_to do |format|
-      format.html { redirect_to bookingfacilities_url }
+      format.html { redirect_to campus_bookingfacilities_path }
       format.json { head :no_content }
     end
   end

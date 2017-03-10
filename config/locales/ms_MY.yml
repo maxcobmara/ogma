@@ -3819,8 +3819,11 @@ ms_MY:
     
     evaluate_course:
       title: "Penilaian Program (Pengajar)"
+      title2: Penilaian Pensyarah Jemputan
       new: "Penilaian Baru Program (Pengajar)"
+      new2: Penilaian Baru Pensyarah Jemputan
       edit: "Sunting Penilaian Program (Pengajar)"
+      edit2: Sunting Penilaian Pensyarah Jemputan
       student_id: Pelajar
       staff_id: Pengajar
       staff_id2: Nama Pensyarah
@@ -4296,6 +4299,27 @@ ms_MY:
       fax: Fax No
       mail: Email
       web: Web 
+
+    visitors:
+      title: Pelawat
+      list: Senarai Pelawat
+      new: Pelawat Baru
+      edit: Sunting Pelawat
+      details: Butiran Pelawat
+      name: Nama
+      icno: No MyKad
+      rank_id: Pangkat
+      title_id: Gelaran
+      phoneno: No Tel Pejabat
+      hpno: No Tel Bimbit
+      email: Emel
+      expertise: Kepakaran / Kelayakan
+      corporate: Korporat
+      department: Jabatan / Agensi
+      address_book_id: Organisasi
+      department_organisation: Jabatan / Agensi / Organisasi
+      select_addbook: Pilih kotak semak untuk memilih dari Buku Alamat
+      department_or_address_must_exist: Sila masukkan jabatan / agensi ATAU pilih daripada buku alamat.
 
     pages:
       title: Laman Boleh Ubah

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170302163204) do
+ActiveRecord::Schema.define(version: 20170310023532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -501,6 +501,7 @@ ActiveRecord::Schema.define(version: 20170302163204) do
     t.text     "support_justify"
     t.integer  "college_id"
     t.text     "data"
+    t.integer  "visitor_id"
   end
 
   create_table "average_instructors", force: true do |t|
@@ -951,6 +952,7 @@ ActiveRecord::Schema.define(version: 20170302163204) do
     t.integer  "ev_assessment"
     t.integer  "college_id"
     t.string   "data"
+    t.integer  "visitor_id"
   end
 
   create_table "evaluatecoursesearches", force: true do |t|
@@ -2653,6 +2655,7 @@ ActiveRecord::Schema.define(version: 20170302163204) do
     t.integer  "total_keys"
     t.decimal  "deposit"
     t.boolean  "meal_requirement"
+    t.integer  "visitor_id"
   end
 
   add_index "tenants", ["id"], name: "index_tenants_on_id", using: :btree
@@ -2983,6 +2986,24 @@ ActiveRecord::Schema.define(version: 20170302163204) do
     t.integer "staff_id"
     t.integer "college_id"
     t.string  "data"
+  end
+
+  create_table "visitors", force: true do |t|
+    t.string   "name"
+    t.string   "icno"
+    t.integer  "rank_id"
+    t.integer  "title_id"
+    t.string   "phoneno"
+    t.string   "hpno"
+    t.string   "email"
+    t.string   "expertise"
+    t.boolean  "corporate"
+    t.string   "department"
+    t.integer  "address_book_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "college_id"
+    t.text     "data"
   end
 
   create_table "weeklytimetable_details", force: true do |t|

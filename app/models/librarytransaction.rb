@@ -5,6 +5,7 @@ class Librarytransaction < ActiveRecord::Base
   belongs_to :accession
   belongs_to :staff
   belongs_to :student
+  belongs_to :visitor
   belongs_to :libcheckoutby, :class_name => 'Staff', :foreign_key => 'libcheckout_by'
   belongs_to :libextendby, :class_name => 'Staff', :foreign_key => 'libextended_by'
   belongs_to :libreturnby, :class_name => 'Staff', :foreign_key => 'libreturned_by'
