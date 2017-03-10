@@ -4400,7 +4400,9 @@ en:
       corporate: Corporate
       department: Department / Agency
       address_book_id: Organization
-      department_organization: Department / Agency / Organization
+      department_organisation: Department / Agency / Organisation
+      select_addbook: Tick to select from address book
+      department_or_address_must_exist: Please insert department / agency OR select one from address book
     
     pages:
       title: Pages (Editable)

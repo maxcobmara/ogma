@@ -4317,7 +4317,9 @@ ms_MY:
       corporate: Korporat
       department: Jabatan / Agensi
       address_book_id: Organisasi
-      department_organization: Jabatan / Agensi / Organisasi
+      department_organisation: Jabatan / Agensi / Organisasi
+      select_addbook: Pilih kotak semak untuk memilih dari Buku Alamat
+      department_or_address_must_exist: Sila masukkan jabatan / agensi ATAU pilih daripada buku alamat.
 
     pages:
       title: Laman Boleh Ubah

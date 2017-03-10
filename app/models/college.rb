@@ -44,6 +44,7 @@ class College < ActiveRecord::Base
   has_many :insurance_companies
   has_many :librarytransactions
   has_many :books
+  has_many :visitors
   # staffs
   
   serialize :data, Hash

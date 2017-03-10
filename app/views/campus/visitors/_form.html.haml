@@ -1,6 +1,7 @@
 .row.fluid
   = form_for [:campus, @visitor], :html => { :class => 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
+    = f.hidden_field :college_id, value: current_user.college_id
     .col-md-offset-2
       .form-group
         %label.col-sm-2.control-label= f.label t 'campus.visitors.name', for: :name
@@ -42,16 +43,47 @@
 
       .form-group
         %label.col-sm-2.control-label= f.label t 'campus.visitors.department', for: :department
-        .col-md-1
-          =f.check_box :corporate
-        .col-md-3
-          = f.text_field :department, class: 'form-control'
-          = f.collection_select :address_book_id, AddressBook.all, :id, :name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width" => "auto"}
+        .col-md-4
+          .col-md-1=f.check_box :corporate
+          .help-block.small=t 'campus.visitors.select_addbook'
+          #span_department= f.text_field :department, class: 'mandatory form-control'
+          #span_company{style: 'display: none'}= f.collection_select :address_book_id, AddressBook.all, :id, :name, {:include_blank => (t 'select')}, {class: 'mandatory selectpicker', "data-width" => "auto"}
       
       .form-group
         .col-sm-offset-2.col-sm-1
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), campus_visitors_path, :class => 'btn btn-default'
         .col-md-2
-          = f.submit t('update'), class: "btn btn-primary"
+          %div{style: 'padding-left: 20px;'}
+            = f.submit t('update'), class: "btn btn-primary"
+          
+:javascript
+
+  $(document).ready(function(){
+    $("#visitor_corporate").click(function(){
+      if($('#visitor_corporate').is(':checked'))
+      {
+        $("#span_department").hide();
+        $("#span_company").show();
+      }
+      else
+      {
+        $("#span_department").show();
+        $("#span_company").hide();
+      }
+    });
+    $("#visitor_corporate").each(function(){
+      if($('#visitor_corporate').is(':checked'))
+      {
+        $("#span_department").hide();
+        $("#span_company").show();
+      }
+      else
+      {
+        $("#span_department").show();
+        $("#span_company").hide();
+      }
+    });
+  
+  });
 
           

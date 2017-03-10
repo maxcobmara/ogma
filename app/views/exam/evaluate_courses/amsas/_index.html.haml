@@ -2,62 +2,87 @@
   %thead
     %tr
       - if current_user.userable_type=='Student'
-        %th{width: '70%'}= (t 'exam.evaluate_course.subject_id')
+        %th{width: '30%'}= (t 'exam.evaluate_course.subject_id')
+        %th{width: '40%'}= (t 'exam.evaluate_course.subject_id')
         %th{width: '30%'}= sort_link(@search, :evaluate_date_eq, (t 'exam.evaluate_course.evaluate_date'))
       - else
-        %th{width: '20%'}=sort_link(@search, :studentevaluate_name_cont, (t 'exam.evaluate_course.student_id'))
-        %th{width: '30%'}= (t 'exam.evaluate_course.staff_id')+" - "+(t 'exam.evaluate_course.subject_id')
+        %th{width: '50%'}=sort_link(@search, :studentevaluate_name_cont, (t 'exam.evaluate_course.student_id'))
         %th{width: '50%'}= sort_link(@search, :evaluate_date_eq, (t 'exam.evaluate_course.evaluate_date'))
      
   %tbody
     = render "search_bar"
-    - if current_user.userable_type=='Student'
-      /amsas lecturer
-      - evaluate_courses.where.not(staff_id: nil).group_by(&:staff_id).sort.each do |lecturer, evaluations|
-        %tr
-          %td.group{colspan: 2}=Staff.find(lecturer).try(:staff_with_rank)
-        - for evaluate_course in evaluations
+
+    /Invitation Lecturer only 
+    - if current_user.userable_type=='Student' 
+      - evaluate_courses.where.not(visitor_id: nil).group_by(&:visitor_id).each do |visitor_id, all_evaluations|
+        - lecturer=Visitor.find(visitor_id)
+        - for evaluate_course in all_evaluations
           %tr
-            %td= link_to evaluate_course.subjectevaluate.module_subject_list2, exam_evaluate_course_path(evaluate_course)
-            %td=evaluate_course.evaluate_date.strftime('%d-%m-%Y')
+            %td=lecturer.visitor_with_title_rank
+            %td=link_to Programme.find(evaluate_course.subject_id).subject_list, exam_evaluate_course_path(evaluate_course)
+            %td=evaluate_course.evaluate_date.strftime('%d-%m-%Y')   
+
+    - else
+      - evaluate_courses.where.not(visitor_id: nil).group_by(&:visitor_id).each do |visitor_id, all_evaluations|
+        - lecturer=Visitor.find(visitor_id)
+        %tr
+          %td.group{colspan: 2}=(t 'exam.evaluate_course.invite_lec')+": #{lecturer.visitor_with_title_rank} (#{I18n.t('campus.visitors.department_organisation')}: #{lecturer.organisation_details})"
+          - all_evaluations.group_by(&:subject_id).each do |subject_id, evaluations|
+            %tr
+              %td.group{colspan: 2}=Programme.find(subject_id).subject_list
+            - for evaluate_course in evaluations
+              %tr
+                %td=link_to evaluate_course.studentevaluate.student_with_rank, exam_evaluate_course_path(evaluate_course)
+                /%td=link_to evaluate_course.subjectevaluate.module_subject_list2, exam_evaluate_course_path(evaluate_course)
+                %td=evaluate_course.evaluate_date.strftime('%d-%m-%Y')
+ 
+    - if current_user.userable_type=='Student' 
+      /amsas lecturer
+      /- evaluate_courses.where.not(staff_id: nil).group_by(&:staff_id).sort.each do |lecturer, evaluations|
+      /  %tr
+      /    %td.group{colspan: 2}=Staff.find(lecturer).try(:staff_with_rank)
+      /  - for evaluate_course in evaluations
+      /    %tr
+      /      %td= link_to evaluate_course.subjectevaluate.module_subject_list2, exam_evaluate_course_path(evaluate_course)
+      /      %td=evaluate_course.evaluate_date.strftime('%d-%m-%Y')
 
       /invitation lecturer
-      - evaluate_courses.group_by(&:invite_lec).each do |invite_lec, evaluations|
-        - if invite_lec!=""
-          %tr
-            %td.group{colspan: 2}=(t 'exam.evaluate_course.invite_lec')+": "+invite_lec
-          - for evaluate_course in evaluations
-            %tr
-              %td= link_to evaluate_course.invite_lec_topic, exam_evaluate_course_path(evaluate_course)
-              %td=evaluate_course.evaluate_date.strftime('%d-%m-%Y')
+      /- evaluate_courses.group_by(&:invite_lec).each do |invite_lec, evaluations|
+      /  - if invite_lec!=""
+      /    %tr
+      /      %td.group{colspan: 2}=(t 'exam.evaluate_course.invite_lec')+": "+invite_lec
+      /    - for evaluate_course in evaluations
+      /      %tr
+      /        %td= link_to evaluate_course.invite_lec_topic, exam_evaluate_course_path(evaluate_course)
+      /        %td=evaluate_course.evaluate_date.strftime('%d-%m-%Y')
         
     - else
       /amsas lecturer
-      - evaluate_courses.where.not(staff_id: nil).group_by(&:subject_id).each do |subject, all_evaluations|  
-        - all_evaluations.group_by(&:staff_id).sort.each do |lecturer, evaluations|
-          %tr
-            %td.group{colspan: 3}
-              =Staff.find(lecturer).try(:staff_with_rank)+" | "+(evaluations.first.stucourse.programme_list+" - " +(evaluations.first.subject_id.blank? ? (t 'exam.evaluate_course.invite_lec_topic')+" : "+evaluations.first.invite_lec_topic : evaluations.first.subjectevaluate.subject_list))
-              - analysis=AverageCourse.where(subject_id: evaluations.first.subject_id).where(lecturer_id: lecturer)
-              |
-              - if analysis.count==0
-                = link_to (t 'exam.average_course.analyse_average_data'), new_exam_average_course_path(subject_id: evaluations.first.subject_id, lecturer_id: lecturer)
-              - else
-                = link_to (t 'exam.average_course.view_analysis_data'), exam_average_course_path(analysis.first)
+      /- evaluate_courses.where.not(staff_id: nil).group_by(&:subject_id).each do |subject, all_evaluations|  
+      /  - all_evaluations.group_by(&:staff_id).sort.each do |lecturer, evaluations|
+      /    %tr
+      /      %td.group{colspan: 3}
+      /        =Staff.find(lecturer).try(:staff_with_rank)+" | "+(evaluations.first.stucourse.programme_list+" - " +(evaluations.first.subject_id.blank? ? (t 'exam.evaluate_course.invite_lec_topic')+" : "+evaluations.first.invite_lec_topic : evaluations.first.subjectevaluate.subject_list))
+      /        - analysis=AverageCourse.where(subject_id: evaluations.first.subject_id).where(lecturer_id: lecturer)
+      /        |
+      /        - if analysis.count==0
+      /          = link_to (t 'exam.average_course.analyse_average_data'), new_exam_average_course_path(subject_id: evaluations.first.subject_id, lecturer_id: lecturer)
+      /        - else
+      /          = link_to (t 'exam.average_course.view_analysis_data'), exam_average_course_path(analysis.first)
 
-          - for evaluate_course in evaluations
-            %tr
-              %td{colspan: 2}= link_to evaluate_course.studentevaluate.try(:student_with_rank), exam_evaluate_course_path(evaluate_course)
-              %td=evaluate_course.evaluate_date.strftime('%d-%m-%Y')
+      /    - for evaluate_course in evaluations
+      /      %tr
+      /        %td{colspan: 2}= link_to evaluate_course.studentevaluate.try(:student_with_rank), exam_evaluate_course_path(evaluate_course)
+      /        %td=evaluate_course.evaluate_date.strftime('%d-%m-%Y')
 
       /invitation lecturer  
-      - evaluate_courses.group_by(&:invite_lec_topic).each do |topic, all_evaluations|
-        - all_evaluations.group_by(&:invite_lec).each do |invite_lec, evaluations|
-          - if invite_lec!=""
-            %tr
-              / TODO - 15Aug2016 - average score for invitation lecturer - require registration of lecturer & topic? to ensure precise data selection?
-              %td.group{colspan: 3}=(t 'exam.evaluate_course.invite_lec')+": "+invite_lec+" | "+topic
-            - for evaluate_course in evaluations
-              %tr
-                %td{colspan: 2}=link_to evaluate_course.studentevaluate.try(:student_with_rank), exam_evaluate_course_path(evaluate_course)
-                %td=evaluate_course.evaluate_date.strftime('%d-%m-%Y')
+      /- evaluate_courses.group_by(&:invite_lec_topic).each do |topic, all_evaluations|
+      /  - all_evaluations.group_by(&:invite_lec).each do |invite_lec, evaluations|
+      /    - if invite_lec!=""
+      /      %tr
+      /        / TODO - 15Aug2016 - average score for invitation lecturer - require registration of lecturer & topic? to ensure precise data selection?
+      /        %td.group{colspan: 3}=(t 'exam.evaluate_course.invite_lec')+": "+invite_lec+" | "+topic
+      /      - for evaluate_course in evaluations
+      /        %tr
+      /          %td{colspan: 2}=link_to evaluate_course.studentevaluate.try(:student_with_rank), exam_evaluate_course_path(evaluate_course)
+      /          %td=evaluate_course.evaluate_date.strftime('%d-%m-%Y')
