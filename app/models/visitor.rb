@@ -8,10 +8,10 @@ class Visitor < ActiveRecord::Base
   belongs_to :rank
   belongs_to :title
   
-  validates :name, :icno, :hpno, presence: true
-  validate :department_or_address_must_exist
+  validates :name, :icno, :hpno, :expertise, presence: true
+  validate :department_or_address_must_exist, :position_must_exist_when_no_rank
   
-  before_save :set_department_or_addressbook
+  before_save :set_department_or_addressbook, :set_expertise_when_blank
 
   def visitor_with_title_rank
     unless rank_id.blank?
@@ -32,15 +32,27 @@ class Visitor < ActiveRecord::Base
   
   def set_department_or_addressbook
     if corporate==true
-      department=nil
+      self.department=nil
     else
-      address_book_id=nil
+      self.address_book_id=nil
+    end
+  end
+  
+  def set_expertise_when_blank
+    if expertise.blank?
+      self.expertise=""
     end
   end
   
   def department_or_address_must_exist
     if department.blank? && address_book_id.blank?
       errors.add(:base, "#{I18n.t('campus.visitors.department_or_address_must_exist')}")
+    end
+  end
+  
+  def position_must_exist_when_no_rank
+    if rank_id.blank? && position.blank?
+      errors.add(:base, "#{I18n.t('campus.visitors.position_must_exist_when_no_rank')}")
     end
   end
   

@@ -8,6 +8,7 @@ class EvaluateCourse < ActiveRecord::Base
   
   validates_presence_of :evaluate_date, :course_id, :ev_obj, :ev_knowledge, :ev_deliver, :ev_content, :ev_tool, :ev_topic, :ev_work, :ev_note, :ev_assessment, :student_id
   validate :validate_staff_or_invitation_lecturer_must_exist
+  validate :subject_or_topic_must_exist
   validates_presence_of :subject_id, :if => :trainer_is_staff?
   validates_presence_of :invite_lec_topic, :if => :trainer_invited?
   validates_uniqueness_of :staff_id, :scope =>[:subject_id, :student_id], :message => I18n.t("exam.evaluate_course.evaluation_once")
@@ -32,11 +33,11 @@ class EvaluateCourse < ActiveRecord::Base
   end  
   
   def trainer_is_staff?
-    !staff_id.blank?
+    !staff_id.blank?  #no longer use for amsas
   end
   
-  def trainer_invited?
-    !invite_lec.blank?
+  def trainer_invited?  
+    !invite_lec.blank?  #no longer use for amsas
   end
   
   def lecturer_subject_evaluate
@@ -134,9 +135,23 @@ class EvaluateCourse < ActiveRecord::Base
   
   private
     def validate_staff_or_invitation_lecturer_must_exist
-      if (staff_id.nil? || staff_id.blank?) && (invite_lec.nil? || invite_lec.blank?)
-        errors.add(I18n.t('exam.evaluate_course.staff_id'), I18n.t('exam.evaluate_course.staff_invitation_must_exist')) 
+      if !college.blank? && college.code=='kskbjb'
+	if ((staff_id.nil? || staff_id.blank?) && (invite_lec.nil? || invite_lec.blank?))
+          errors.add(I18n.t('exam.evaluate_course.staff_id'), I18n.t('exam.evaluate_course.staff_invitation_must_exist')) 
+	end
+      elsif !college.blank? && college.code=='amsas'
+	errors.add(I18n.t('exam.evaluate_course.invite_lec'), I18n.t('activerecord.errors.messages.blank'))
       end 
+    end
+    
+    def subject_or_topic_must_exist
+      unless college.blank?
+	if college.code=='amsas'
+	  if subject_id.blank? && invite_lec_topic.blank?
+	    errors.add(:base, I18n.t('exam.evaluate_course.select_module_subject_topic'))
+	  end
+	end
+      end
     end
   
   

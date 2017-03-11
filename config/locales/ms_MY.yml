@@ -3879,6 +3879,7 @@ ms_MY:
       full_name: Nama Penuh
       rank_id: Pangkat
       mykad_no: "No K/Pengenalan  "
+      select_module_subject_topic: "Select Module / Subject OR insert a topic"
       
     average_course:
       title: Data Analisa Skor Purata Penilaian Pensyarah
@@ -4314,13 +4315,15 @@ ms_MY:
       phoneno: No Tel Pejabat
       hpno: No Tel Bimbit
       email: Emel
+      position: Jawatan
       expertise: Kepakaran / Kelayakan
       corporate: Korporat
       department: Jabatan / Agensi
       address_book_id: Organisasi
       department_organisation: Jabatan / Agensi / Organisasi
       select_addbook: Pilih kotak semak untuk memilih dari Buku Alamat
-      department_or_address_must_exist: Sila masukkan jabatan / agensi ATAU pilih daripada buku alamat.
+      department_or_address_must_exist: Sila masukkan jabatan / agensi ATAU pilih daripada buku alamat
+      position_must_exist_when_no_rank: Jika tiada pangkat, jawatan mesti diisi
 
     pages:
       title: Laman Boleh Ubah

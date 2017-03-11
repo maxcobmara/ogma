@@ -12,6 +12,9 @@
       %dt=t 'campus.visitors.icno'
       %dd=formatted_mykad(@visitor.icno)
       
+      %dt=t 'campus.visitors.position'
+      %dd=@visitor.try(:position)
+
       %dt=t 'campus.visitors.phoneno'
       %dd=@visitor.phoneno
       

@@ -1,21 +1,9 @@
 = search_form_for [:evaluate_course, @search], url: exam_evaluate_courses_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
-    - if (current_user.college.code=="amsas" && current_user.userable_type!='Student') || current_user.college.code!="amsas"
+  
+    - if current_user.college.code!="amsas"
       %td= f.text_field :studentevaluate_name_cont, size: 2, :placeholder=>(t 'exam.evaluate_course.student_id'), class: 'form-control'
-    %td
-      - if current_user.college.code=="amsas" 
-        .col-md-5= f.text_field :evaluated_search, size: 8, :placeholder=>(t 'exam.evaluate_course.staff_id'), class: 'form-control'
-      .col-md-6= f.text_field :programme_subject_search, size: 2, :placeholder=>(t 'exam.evaluate_course.programme_or_subject'), class: 'form-control'
-    - if current_user.college.code=='amsas'
-      %td
-        .input-group
-          /= f.text_field :staffevaluate_name_cont, size: 8,  class: 'form-control'
-          .col-md-6= f.text_field :evaluate_date_gteq, class: 'date_picker_reverse form-control', size: 2
-          .col-md-6= f.text_field :evaluate_date_lteq, class: 'date_picker_reverse form-control', size: 2
-          %span.input-group-btn
-            %button.btn.btn-sm.btn-default.right{:type => "submit"}
-              %i.fa.fa-search.fa-fw
-    - else
+      %td.col-md-6= f.text_field :programme_subject_search, size: 2, :placeholder=>(t 'exam.evaluate_course.programme_or_subject'), class: 'form-control'
       %td
         .col-md-6= f.text_field :evaluate_date_gteq, class: 'date_picker_reverse form-control', size: 2
         .col-md-6= f.text_field :evaluate_date_lteq, class: 'date_picker_reverse form-control', size: 2
@@ -25,5 +13,58 @@
           %span.input-group-btn
             %button.btn.btn-sm.btn-default.right{:type => "submit"}
               %i.fa.fa-search.fa-fw
+    
+    - if (current_user.college.code=="amsas") 
+      %td
+        - if current_user.userable_type!='Student'
+          .col-md-5= f.text_field :studentevaluate_name_cont, size: 2, :placeholder=>(t 'exam.evaluate_course.student_id'), class: 'form-control'
+          .col-md-6= f.text_field :programme_subject_search, size: 2, :placeholder=>(t 'exam.evaluate_course.programme_or_subject'), class: 'form-control'
+        - else
+          = f.text_field :visitor_name_cont, size: 8, :placeholder => (t 'exam.evaluate_course.invite_lec'), class: 'form-control'
+      - if current_user.userable_type!='Student'
+        %td
+          .input-group
+            .col-md-4= f.text_field :visitor_name_cont, size: 8, :placeholder => (t 'exam.evaluate_course.invite_lec'), class: 'form-control'
+            .col-md-4= f.text_field :evaluate_date_gteq, class: 'date_picker_reverse form-control', placeholder: (t 'from')
+            .col-md-4= f.text_field :evaluate_date_lteq, class: 'date_picker_reverse form-control', placeholder: (t 'to')
+            %span.input-group-btn
+              %button.btn.btn-sm.btn-default.right{:type => "submit"}
+                %i.fa.fa-search.fa-fw
+      - else
+        %td= f.text_field :programme_subject_search, size: 2, :placeholder=>(t 'exam.evaluate_course.programme_or_subject'), class: 'form-control'
+        %td
+          .input-group
+            .col-md-4= f.text_field :evaluate_date_gteq, class: 'date_picker_reverse form-control', placeholder: (t 'from')
+            .col-md-4= f.text_field :evaluate_date_lteq, class: 'date_picker_reverse form-control', placeholder: (t 'to')
+            %span.input-group-btn
+              %button.btn.btn-sm.btn-default.right{:type => "submit"}
+                %i.fa.fa-search.fa-fw
+
+    //////////////////
+    /- if (current_user.college.code=="amsas" && current_user.userable_type!='Student') || current_user.college.code!="amsas"
+    /  %td= f.text_field :studentevaluate_name_cont, size: 2, :placeholder=>(t 'exam.evaluate_course.student_id'), class: 'form-control'
+    /%td
+    /  - if current_user.college.code=="amsas" 
+    /    .col-md-5= f.text_field :evaluated_search, size: 8, :placeholder=>(t 'exam.evaluate_course.staff_id'), class: 'form-control'
+    /  .col-md-6= f.text_field :programme_subject_search, size: 2, :placeholder=>(t 'exam.evaluate_course.programme_or_subject'), class: 'form-control'
+    /- if current_user.college.code=='amsas'
+    /  %td
+    /    .input-group
+    /      /= f.text_field :staffevaluate_name_cont, size: 8,  class: 'form-control'
+    /      .col-md-6= f.text_field :evaluate_date_gteq, class: 'date_picker_reverse form-control', size: 2
+    /      .col-md-6= f.text_field :evaluate_date_lteq, class: 'date_picker_reverse form-control', size: 2
+    /      %span.input-group-btn
+    /        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+    /          %i.fa.fa-search.fa-fw
+    /- else
+    /  %td
+    /    .col-md-6= f.text_field :evaluate_date_gteq, class: 'date_picker_reverse form-control', size: 2
+    /    .col-md-6= f.text_field :evaluate_date_lteq, class: 'date_picker_reverse form-control', size: 2
+    /  %td
+    /    .input-group
+    /      .col-md-5= f.text_field :evaluated_search, size: 8, :placeholder=>(t 'exam.evaluate_course.staff_id'), class: 'form-control'
+    /      %span.input-group-btn
+    /        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+    /          %i.fa.fa-search.fa-fw
               
               

@@ -3960,7 +3960,8 @@ en:
       signatory: "Signatory     "
       full_name: "Full Name    "
       rank_id: "Rank     "
-      mykad_no: Identification/C No
+      mykad_no: Identification/IC No
+      select_module_subject_topic: "Select Module / Subject OR insert a topic"
     
     average_course:
       title: Analysis Data for Average Score of Evaluation for Lecturer
@@ -4397,6 +4398,7 @@ en:
       phoneno: Office Phone No
       hpno: H/P No
       email: Email
+      position: Position
       expertise: Expertise / Qualification
       corporate: Corporate
       department: Department / Agency
@@ -4404,6 +4406,7 @@ en:
       department_organisation: Department / Agency / Organisation
       select_addbook: Tick to select from address book
       department_or_address_must_exist: Please insert department / agency OR select one from address book
+      position_must_exist_when_no_rank: Position is compulsory, when rank not selected
     
     pages:
       title: Pages (Editable)

@@ -2,7 +2,7 @@
   %thead
     %tr
       - if current_user.userable_type=='Student'
-        %th{width: '30%'}= (t 'exam.evaluate_course.subject_id')
+        %th{width: '30%'}= (t 'exam.evaluate_course.invite_lec')
         %th{width: '40%'}= (t 'exam.evaluate_course.subject_id')
         %th{width: '30%'}= sort_link(@search, :evaluate_date_eq, (t 'exam.evaluate_course.evaluate_date'))
       - else

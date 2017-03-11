@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170310023532) do
+ActiveRecord::Schema.define(version: 20170311153309) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -493,8 +493,6 @@ ActiveRecord::Schema.define(version: 20170310023532) do
     t.integer  "lecturer_knowledge"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "organisation"
-    t.string   "expertise_qualification"
     t.boolean  "evaluation_category"
     t.text     "dissatisfaction"
     t.text     "recommend_for_improvement"
@@ -3004,6 +3002,7 @@ ActiveRecord::Schema.define(version: 20170310023532) do
     t.datetime "updated_at"
     t.integer  "college_id"
     t.text     "data"
+    t.string   "position"
   end
 
   create_table "weeklytimetable_details", force: true do |t|

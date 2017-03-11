@@ -46,7 +46,7 @@ class Campus::VisitorsController < ApplicationController
         format.html { redirect_to campus_visitor_path(@visitor), notice:  (t 'campus.visitors.title')+(t 'actions.updated')}
         format.json { render action: 'show', status: :created, location: @visitor }
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'edit' }
         format.json { render json: @visitor.errors, status: :unprocessable_entity }
       end
     end
@@ -70,6 +70,6 @@ class Campus::VisitorsController < ApplicationController
     end
       
     def visitor_params
-      params.require(:visitor).permit(:name, :icno, :rank_id, :title_id, :phoneno, :hpno, :email, :expertise, :corporate, :department, :address_book_id)
+      params.require(:visitor).permit(:name, :icno, :rank_id, :position, :title_id, :phoneno, :hpno, :email, :expertise, :corporate, :department, :address_book_id)
     end
 end

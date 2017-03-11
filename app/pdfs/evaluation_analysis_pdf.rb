@@ -5,9 +5,9 @@ class Evaluation_analysisPdf < Prawn::Document
     @view = view
     @evs_int = evs_int
     @evaluator_count=evaluator
-    topic_ids=Programme.find(@average_course.subject_id).descendants.where(course_type: ['Topic', 'Subtopic']).pluck(:id)
-    lecturer_classes=WeeklytimetableDetail.where(lecturer_id: @average_course.lecturer_id, topic: topic_ids).pluck(:id)
-    @total_student==StudentAttendance.where(weeklytimetable_details_id: lecturer_classes).pluck(:student_id).uniq.count
+    #topic_ids=Programme.find(@average_course.subject_id).descendants.where(course_type: ['Topic', 'Subtopic']).pluck(:id)
+    #lecturer_classes=WeeklytimetableDetail.where(lecturer_id: @average_course.lecturer_id, topic: topic_ids).pluck(:id)
+    #@total_student==StudentAttendance.where(weeklytimetable_details_id: lecturer_classes).pluck(:student_id).uniq.count
     font "Helvetica"
     if college.code=="kskbjb"
       move_down 10
@@ -105,14 +105,14 @@ class Evaluation_analysisPdf < Prawn::Document
   
   def table_detailing
     data=[[{content: "<u>#{I18n.t('exam.average_course.lecturer_data').upcase}</u>", colspan: 9}],
-          [{content: "1.  #{I18n.t('exam.average_course.lecturer_id')} : #{@average_course.lecturer.try(:staff_with_rank) }", colspan: 9}],
-          [{content: "2.  #{I18n.t('exam.average_course.icno')} : #{@average_course.lecturer.try(:formatted_mykad) }", colspan: 3}, {content: " #{I18n.t('exam.average_course.rank_position')} : #{@average_course.lecturer.try(:rank).try(:name)}/#{@average_course.lecturer.try(:positions).try(:first).name}", colspan: 6}],
-          [{content: "3.  #{I18n.t('exam.average_course.organisation')} : #{@average_course.organisation}", colspan: 9}], 
-          [{content: "4.  #{I18n.t('exam.average_course.expertise_qualification')} : #{@average_course.expertise_qualification}", colspan: 9}],[{content: "", colspan: 9}],
+          [{content: "1.  #{I18n.t('exam.average_course.lecturer_id')} : #{@average_course.visitor.visitor_with_title_rank }", colspan: 9}],
+          [{content: "2.  #{I18n.t('exam.average_course.icno')} : #{@view.formatted_mykad(@average_course.visitor.icno)}", colspan: 3}, {content: " #{I18n.t('exam.average_course.rank_position')} : #{@average_course.visitor.rank_id.blank? ? '-' : @average_course.visitor.rank.name} / #{@average_course.visitor.position.blank? ? '-' : @average_course.visitor.position}", colspan: 6}],
+          [{content: "3.  #{I18n.t('exam.average_course.organisation')} :  #{@average_course.visitor.corporate==true ? @average_course.visitor.address_book.name : @average_course.visitor.department}", colspan: 9}], 
+          [{content: "4.  #{I18n.t('exam.average_course.expertise_qualification')} : #{@average_course.visitor.try(:expertise)}", colspan: 9}],[{content: "", colspan: 9}],
           [{content: "<u>#{I18n.t('exam.average_course.course_data').upcase}</u>", colspan: 9}],
           [{content: "5.  #{@average_course.college.code=='amsas' ? I18n.t('exam.evaluate_course.course_form') :  I18n.t('exam.evaluate_course.course_id')} : #{@average_course.subject.root.name}", colspan: 9}],
           ["6.  #{I18n.t('exam.average_course.course_type')} : ","","","#{@average_course.subject.root.course_type=='Asas' ? '/' : ' '}","Asas", "#{@average_course.subject.root.course_type=='Pertengahan' ? 'BBB' : ' '}","Pertengahan", "#{@average_course.subject.root.course_type=='Lanjutan' ? 'CCC' : ' '}", "Lanjutan"],
-          [{content: "7.  #{I18n.t('exam.average_course.total_students')} :  #{@evaluator_count} / #{@total_student}", colspan: 9}],
+          [{content: "7.  #{I18n.t('exam.average_course.total_students')} :  #{@evaluator_count}", colspan: 9}],
           [{content: "8.  #{I18n.t('training.programme.level')} :  ", colspan: 2},"PEG","#{@average_course.subject.root.level=='peg' ? '/' : ''}","LLP","#{@average_course.subject.root.level=='llp' ? '/' : '' }", {content: "", colspan: 3}],[{content: "", colspan: 9}],
           [{content: "<u>#{I18n.t('exam.average_course.evaluation_analysis_data').upcase}</u>", colspan: 9}],
           [{content: "9.  #{I18n.t('exam.average_course.subject_id') } : #{@average_course.subject.subject_list}", colspan: 9}],
@@ -214,10 +214,10 @@ class Evaluation_analysisPdf < Prawn::Document
       horizontal_line 0, 490, :at => 321
       horizontal_line 0, 490, :at => 308
       horizontal_line 0, 490, :at => 296
-      horizontal_line 72, 280, :at => 180 #signatory 
-      horizontal_line 72, 280, :at => 157 #full name
-      horizontal_line 49, 280, :at => 137 #rank
-      horizontal_line 37, 280, :at => 117 #date
+      horizontal_line 72, 330, :at => 180 #signatory 
+      horizontal_line 72, 330, :at => 157 #full name
+      horizontal_line 49, 330, :at => 137 #rank
+      horizontal_line 37, 330, :at => 117 #date
     end
   end
   
