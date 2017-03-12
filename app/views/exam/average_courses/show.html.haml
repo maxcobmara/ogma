@@ -13,7 +13,7 @@
       .col-md-8.col-md-offset-1
         %dl.dl-horizontal
           %dt= t 'exam.evaluate_course.invite_lec'
-          %dd="#{formatted_mykad(@average_course.visitor.icno)} #{@average_course.visitor.visitor_with_title_rank}"
+          %dd="#{formatted_mykad(@average_course.visitor.icno)} : #{@average_course.visitor.visitor_with_title_rank}"
           
           %dt=t 'campus.visitors.position'
           %dd=@average_course.visitor.try(:position)
@@ -26,10 +26,10 @@
           %hr
           
           %dt=t 'exam.average_course.programme_id'
-          %dd=@average_course.subject.root.name
+          %dd=@average_course.course.name
           
           %dt=t 'training.programme.course_type'
-          %dd=@average_course.subject.root.course_type
+          %dd=@average_course.course.course_type
           
           %dt=t 'exam.average_course.total_students' 
           %dd
@@ -41,10 +41,10 @@
             /= total_student=StudentAttendance.where(weeklytimetable_details_id: lecturer_classes).pluck(:student_id).uniq.count
           
           %dt=t 'training.programme.level'
-          %dd=@average_course.subject.root.level.upcase
+          %dd=@average_course.course.level.upcase
           
           %dt=t 'exam.average_course.subject_id'
-          %dd=@average_course.subject.subject_list
+          %dd=@average_course.subject_id.blank? ? @average_course.invite_lec_topic : @average_course.subject.subject_list
  
           = render 'average_scores'
         

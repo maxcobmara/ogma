@@ -13,6 +13,8 @@ class EvaluateCourse < ActiveRecord::Base
   validates_presence_of :invite_lec_topic, :if => :trainer_invited?
   validates_uniqueness_of :staff_id, :scope =>[:subject_id, :student_id], :message => I18n.t("exam.evaluate_course.evaluation_once")
   
+  before_save :set_entered_topic
+  
   attr_accessor :is_staff    #kskbjb - staff vs invitation lecturer, amsas - module/subject select OR topic entered manually
   
   # define scope
@@ -33,11 +35,15 @@ class EvaluateCourse < ActiveRecord::Base
   end  
   
   def trainer_is_staff?
-    !staff_id.blank?  #no longer use for amsas
+    if college.code!='amsas'
+      !staff_id.blank?
+    end
   end
   
   def trainer_invited?  
-    !invite_lec.blank?  #no longer use for amsas
+     if college.code!='amsas'
+      !invite_lec.blank?
+     end
   end
   
   def lecturer_subject_evaluate
@@ -133,15 +139,25 @@ class EvaluateCourse < ActiveRecord::Base
     @lecturer_list
   end
   
+  def set_entered_topic
+    unless invite_lec_topic.blank?
+      self.invite_lec_topic=invite_lec_topic.titleize.strip
+    end
+  end
+  
   private
     def validate_staff_or_invitation_lecturer_must_exist
-      if !college.blank? && college.code=='kskbjb'
-	if ((staff_id.nil? || staff_id.blank?) && (invite_lec.nil? || invite_lec.blank?))
-          errors.add(I18n.t('exam.evaluate_course.staff_id'), I18n.t('exam.evaluate_course.staff_invitation_must_exist')) 
-	end
-      elsif !college.blank? && college.code=='amsas'
-	errors.add(I18n.t('exam.evaluate_course.invite_lec'), I18n.t('activerecord.errors.messages.blank'))
-      end 
+      unless college.blank?
+        if college.code=='kskbjb'
+          if ((staff_id.nil? || staff_id.blank?) && (invite_lec.nil? || invite_lec.blank?))
+            errors.add(I18n.t('exam.evaluate_course.staff_id'), I18n.t('exam.evaluate_course.staff_invitation_must_exist')) 
+          end
+        elsif college.code=='amsas'
+          if visitor_id.blank?
+            errors.add(I18n.t('exam.evaluate_course.invite_lec'), I18n.t('activerecord.errors.messages.blank'))
+          end
+        end 
+      end
     end
     
     def subject_or_topic_must_exist

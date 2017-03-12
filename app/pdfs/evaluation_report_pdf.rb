@@ -1,14 +1,19 @@
 class Evaluation_reportPdf < Prawn::Document
   def initialize(evaluate_courses, view, college)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 40, page_size: 'A4', page_layout: :portrait })
     @evaluate_courses = evaluate_courses
     @evaluate_courses_g=@evaluate_courses.group_by(&:subject_id)
     @view = view
-    font "Times-Roman"
+    @college=college
+    font "Helvetica"
     move_down 10
     text "#{college.name.upcase}", :align => :center, :size => 12, :style => :bold
-    text (I18n.t 'exam.evaluate_course.title'), :align => :center, :size => 12, :style => :bold
-    move_down 20
+    if @college.code=='amsas'
+      title=(I18n.t 'exam.evaluate_course.title2')
+    else
+      title=(I18n.t 'exam.evaluate_course.title')
+    end
+    text title, :align => :center, :size => 12, :style => :bold
     record
   end
   
@@ -17,7 +22,12 @@ class Evaluation_reportPdf < Prawn::Document
     empty_line=[]
     totallines=0
     @evaluate_courses_g.each do |subject, all_evaluate_courses|
-      all_evaluate_courses.group_by(&:staff_id).each do |staff, evaluate_courses|  #separate by lecturer
+      if @college.code=='amsas'
+        aaa=all_evaluate_courses.group_by(&:visitor_id)
+      else
+        aaa=all_evaluate_courses.group_by(&:staff_id)
+      end
+      aaa.each do |staff, evaluate_courses|  #separate by lecturer
         if totallines==0
           totallines += 2+evaluate_courses.count+2
         else
@@ -57,7 +67,12 @@ class Evaluation_reportPdf < Prawn::Document
     @acc_total_score=[]
     @avg_total_score=[]
     @evaluate_courses_g.each do |subject, all_evaluate_courses|
-      all_evaluate_courses.group_by(&:staff_id).each do |staff, evaluate_courses|   #separate by lecturer
+       if @college.code=='amsas'
+        aaa=all_evaluate_courses.group_by(&:visitor_id)
+      else
+        aaa=all_evaluate_courses.group_by(&:staff_id)
+      end
+      aaa.each do |staff, evaluate_courses|   #separate by lecturer
           one=evaluate_courses.sum(&:ev_obj)
           two=evaluate_courses.sum(&:ev_knowledge)
           three=evaluate_courses.sum(&:ev_deliver)
@@ -89,16 +104,27 @@ class Evaluation_reportPdf < Prawn::Document
     counter = counter || 0
     no=0
     eval_content = []
+    
     @evaluate_courses_g.each do |subject_id, all_evaluate_courses|
-        all_evaluate_courses.group_by(&:staff_id).each do |staff_id, evaluate_courses|  #separate by lecturer
-            eval_content << [{content: evaluate_courses.first.stucourse.programme_list , colspan: 5},{content: "#{subject_id.blank? ? evaluate_courses.first.invite_lec_topic : evaluate_courses.first.subjectevaluate.subject_list}", colspan: 8} ]
+        if @college.code=='amsas'
+          aaa=all_evaluate_courses.group_by(&:visitor_id)
+        else
+          aaa=all_evaluate_courses.group_by(&:staff_id)
+        end
+        aaa.each do |staff_id, evaluate_courses|  #separate by lecturer
+            eval_content << [{content: evaluate_courses.first.stucourse.programme_list , colspan: 5},{content: "#{subject_id.blank? ? evaluate_courses.first.invite_lec_topic : evaluate_courses.first.subjectevaluate.module_subject_list2}", colspan: 8} ]
             eval_content << [ 'No', "#{I18n.t('exam.evaluate_course.evaluate_date')}",  "#{I18n.t('exam.evaluate_course.staff_id')}", 	
                      "#{I18n.t('exam.evaluate_course.question')}1","#{I18n.t('exam.evaluate_course.question')}2","#{I18n.t('exam.evaluate_course.question')}3",
                      "#{I18n.t('exam.evaluate_course.question')}4","#{I18n.t('exam.evaluate_course.question')}5","#{I18n.t('exam.evaluate_course.question')}6",
                      "#{I18n.t('exam.evaluate_course.question')}7","#{I18n.t('exam.evaluate_course.question')}8","#{I18n.t('exam.evaluate_course.question')}9", "#{I18n.t('exam.evaluate_course.total')}"]
             evaluate_courses.each do |ec|
+                if @college.code=='amsas'
+                  lecturer_details=ec.visitor.visitor_with_title_rank
+                else
+                  lecturer_details=ec.staffevaluate.try(:staff_with_rank)  #"#{ec.staff_id.blank? ? ec.invite_lec : ec.staffevaluate.try(:staff_with_rank)}"
+                end
                 eval_content << ["#{counter += 1}","#{ec.evaluate_date.strftime('%d/%m/%Y')}<br><i><a href='http://#{@view.request.host}:3003/exam/evaluate_courses/#{ec.id}/courseevaluation.pdf?locale=ms_MY'> >#{I18n.t('view')}</a></i>",
-                                              "#{ec.staff_id.blank? ? ec.invite_lec : ec.staffevaluate.try(:staff_with_rank)}",ec.ev_obj, ec.ev_knowledge, ec.ev_deliver, ec.ev_content, ec.ev_tool, ec.ev_topic, ec.ev_work, ec.ev_note, ec.ev_assessment, @total_line[counter-1] ]
+                                              lecturer_details, ec.ev_obj, ec.ev_knowledge, ec.ev_deliver, ec.ev_content, ec.ev_tool, ec.ev_topic, ec.ev_work, ec.ev_note, ec.ev_assessment, @total_line[counter-1] ]
            end 
            eval_content << [{content: "#{I18n.t('exam.evaluate_course.total_scores')}", colspan: 3}, @sum_obj[no], @sum_knowledge[no],                       
                                       @sum_deliver[no], @sum_content[no], @sum_tool[no], @sum_topic[no], @sum_work[no], 
@@ -106,14 +132,28 @@ class Evaluation_reportPdf < Prawn::Document
            eval_content << [{content: "#{I18n.t('exam.evaluate_course.average_scores')}", colspan: 3},   
                                      "#{(@sum_obj[no].to_f/@eval_counts[no]).to_i if (@sum_obj[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_obj[no].to_f/@eval_counts[no]) if (@sum_obj[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_knowledge[no].to_f/@eval_counts[no]).to_i if (@sum_knowledge[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_knowledge[no].to_f/@eval_counts[no]) if (@sum_knowledge[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_deliver[no].to_f/@eval_counts[no]).to_i if (@sum_deliver[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_deliver[no].to_f/@eval_counts[no]) if (@sum_deliver[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_content[no].to_f/@eval_counts[no]).to_i if (@sum_content[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_content[no].to_f/@eval_counts[no]) if (@sum_content[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_tool[no].to_f/@eval_counts[no]).to_i if (@sum_tool[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_tool[no].to_f/@eval_counts[no]) if (@sum_tool[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_topic[no].to_f/@eval_counts[no]).to_i if (@sum_topic[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_topic[no].to_f/@eval_counts[no]) if (@sum_topic[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_work[no].to_f/@eval_counts[no]).to_i if (@sum_work[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_work[no].to_f/@eval_counts[no]) if (@sum_work[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_note[no].to_f/@eval_counts[no]).to_i if (@sum_note[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_note[no].to_f/@eval_counts[no]) if (@sum_note[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_assessment[no].to_f/@eval_counts[no]).to_i if (@sum_assessment[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_assessment[no].to_f/@eval_counts[no]) if (@sum_assessment[no].to_f/@eval_counts[no]) % 1!=0}", "#{@avg_total_score[no].to_i if @avg_total_score[no]%1==0}#{@view.pukka(@avg_total_score[no]) if @avg_total_score[no] % 1!=0}"]
 
-           @average_course_rec=AverageCourse.where(subject_id: subject_id, lecturer_id: staff_id)
+	   if @college.code=='amsas'
+             @average_course_rec=AverageCourse.where(subject_id: subject_id, visitor_id: staff_id)
+	   else
+	     @average_course_rec=AverageCourse.where(subject_id: subject_id, lecturer_id: staff_id) 
+	   end
            if @average_course_rec.count > 0
-               eval_content << [{content: "<i><a href='http://#{@view.request.host}:3003/exam/average_courses/#{@average_course_rec.first.id }/evaluation_analysis.pdf?locale=ms_MY'><b>#{I18n.t('exam.average_course.view_analysis_data')}</b> #{I18n.t('for')}: <b>#{evaluate_courses.first.staffevaluate.try(:staff_with_rank)}</b>, #{I18n.t('exam.average_course.of_subject')}: <b>#{evaluate_courses.first.subjectevaluate.subject_list}.</b></a><br> #{I18n.t('exam.average_course.score_rounded')}</i>", colspan: 11},"","#{}"]
+               if @college.code=='amsas'
+                 lecturer_details2=evaluate_courses.first.visitor.visitor_with_title_rank
+               else
+                 lecturer_details2=evaluate_courses.first.staffevaluate.try(:staff_with_rank)
+	       end
+               eval_content << [{content: "<i><a href='http://#{@view.request.host}:3003/exam/average_courses/#{@average_course_rec.first.id }/evaluation_analysis.pdf?locale=ms_MY'><b>#{I18n.t('exam.average_course.view_analysis_data')}</b> #{I18n.t('for')}: <b>#{lecturer_details2}</b>, #{I18n.t('exam.average_course.of_subject')}: <b>#{evaluate_courses.first.subjectevaluate.subject_list unless evaluate_courses.first.subject_id.blank? }#{evaluate_courses.first.invite_lec_topic if evaluate_courses.first.subject_id.blank? }.</b></a><br> #{I18n.t('exam.average_course.score_rounded')}</i>", colspan: 11},"","#{}"]
            else
-             if evaluate_courses.first.invite_lec!=""
-               eval_content << [{content: "<i>(#{I18n.t('exam.evaluate_course.invite_lec')})</i>", colspan:11}] 
+             if @college.code=='amsas'
+               # NOTE - Analysis not yet done - go to index to analyse!
+	       eval_content <<  [{content: "", colspan:11}] 
              else
-               eval_content <<  [{content: "", colspan:11}] 
+               if evaluate_courses.first.invite_lec!=""
+                 eval_content << [{content: "<i>(#{I18n.t('exam.evaluate_course.invite_lec')})</i>", colspan:11}] 
+               else
+                 eval_content <<  [{content: "", colspan:11}] 
+               end
              end
            end
            no+=1

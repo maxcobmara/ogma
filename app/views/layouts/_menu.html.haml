@@ -339,7 +339,11 @@
 
             /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'
             - permitted_to? :read, :exam_evaluate_courses do
-              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.evaluate_course.title"), exam_evaluate_courses_path
+              - if current_user.college.code=='amsas'
+                - course_evaluation=(t "exam.evaluate_course.title2")
+              - else
+                -course_evaluation=(t "exam.evaluate_course.title")
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + course_evaluation, exam_evaluate_courses_path
             - permitted_to? :menu, :exam_examanalyses do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examanalysis.title"), exam_examanalyses_path
 

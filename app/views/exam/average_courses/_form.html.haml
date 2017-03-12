@@ -7,11 +7,21 @@
     .tab-content{style:"padding-top:1em"}
       .col-md-8.col-md-offset-1
         - if @average_course.new_record?
-          - subject_rec=Programme.find(params[:subject_id])
+          /- subject_rec=Programme.find(params[:subject_id])
+          - programme=Programme.find(params[:programme_id])
           - lecturer_rec=Visitor.find(params[:visitor_id])
+          - unless params[:invite_lec_topic].nil?
+            - subject_topic=params[:subject_id]
+          - else
+            - subject_topic=params[:invite_lec_topic]
         - else
-          - subject_rec=@average_course.subject 
+          /- subject_rec=@average_course.subject 
+          - programme=@average_course.course
           - lecturer_rec=@average_course.visitor
+          - if @average_course.invite_lec_topic.nil?
+            - subject_topic=@average_course.subject.subject_list
+          - else
+            - subject_topic=@average_course.invite_lec_topic
 
         %dl.dl-horizontal
           %dt= t 'exam.evaluate_course.invite_lec'
@@ -28,10 +38,10 @@
           %hr
         
           %dt=t 'exam.average_course.programme_id'
-          %dd=subject_rec.root.name
+          %dd=programme.name
           
           %dt=t 'training.programme.course_type'
-          %dd=subject_rec.root.course_type
+          %dd=programme.course_type
           
           %dt=t 'exam.average_course.total_students'
           %dd
@@ -43,10 +53,10 @@
             /= total_student=StudentAttendance.where(weeklytimetable_details_id: lecturer_classes).pluck(:student_id).uniq.count
           
           %dt=t 'training.programme.level'
-          %dd=subject_rec.root.level.upcase
+          %dd=programme.level.upcase
           
           %dt=t 'exam.average_course.subject_id'
-          %dd=subject_rec.subject_list
+          %dd=subject_topic
  
           = render 'average_scores'
           
