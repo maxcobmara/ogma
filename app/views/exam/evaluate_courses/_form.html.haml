@@ -6,8 +6,9 @@
       
     .tab-content{style:"padding-top:1em"}
       .col-md-8.col-md-offset-1
-        = render 'tab_appraisal_info_edit', :f => f
-    
+        /= render 'tab_appraisal_info_edit', :f => f
+        = render :partial =>"exam/evaluate_courses/#{current_user.college.code}/tab_appraisal_info_edit", :locals => {:f => f}
+        
       #appraisal_details.tab-pane.active
         %br
         .col-md-8.col-md-offset-1

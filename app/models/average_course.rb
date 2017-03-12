@@ -3,8 +3,9 @@ class AverageCourse < ActiveRecord::Base
   belongs_to :lecturer, class_name: 'Staff', foreign_key: 'lecturer_id'
   belongs_to :verifier, class_name: 'Staff', foreign_key: 'principal_id'
   belongs_to :subject, class_name: 'Programme', foreign_key: 'subject_id'
+  belongs_to :course, class_name: 'Programme', foreign_key: 'programme_id'
   belongs_to :visitor
-       
+
   def self.avg_int(evs)
     evs_int=[]
     eval_count=evs.count

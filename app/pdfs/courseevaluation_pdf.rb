@@ -85,17 +85,33 @@ class CourseevaluationPdf < Prawn::Document
     if @college.code=='amsas' 
       a=I18n.t('exam.evaluate_course.subject_id2')
       b=I18n.t('exam.evaluate_course.staff_id2')
-      unless @evaluate_course.staff_id.blank?
+      unless @evaluate_course.subject_id.blank?
         c=@evaluate_course.subjectevaluate.module_subject_list2 
+      else
+        c=@evaluate_course.invite_lec_topic
       end
+      d=@evaluate_course.visitor.visitor_with_title_rank
     else
-      a=I18n.t('exam.evaluate_course.subject_id')
+      unless @evaluate_course.subject_id.blank?
+        a=I18n.t('exam.evaluate_course.subject_id')
+      else
+	a=I18n.t('exam.evaluate_course.invite_lec_topic') 
+      end
       b=I18n.t('exam.evaluate_course.staff_id')
-      c=@evaluate_course.subjectevaluate.subject_list
+      unless @evaluate_course.subject_id.blank?
+        c=@evaluate_course.subjectevaluate.subject_list
+      else
+	c=@evaluate_course.invite_lec_topic
+      end
+      unless @evaluate_course.staff_id.blank?
+        d=@evaluate_course.staffevaluate.try(:staff_with_rank) 
+      else
+        d=@evaluate_course.invite_lec
+      end
     end
     data=[["#{@college.code=='amsas' ? I18n.t('exam.evaluate_course.course_id2') : I18n.t('exam.evaluate_course.course_id')} :","#{@evaluate_course.stucourse.programme_list}","",""],
-          ["#{a unless @evaluate_course.subject_id.blank? } #{I18n.t('exam.evaluate_course.invite_lec_topic') unless @evaluate_course.invite_lec.blank?} :","#{c unless @evaluate_course.subject_id.blank?} #{@evaluate_course.invite_lec_topic unless @evaluate_course.invite_lec.blank?}","#{I18n.t('exam.evaluate_course.evaluate_date2')} : ","#{@evaluate_course.evaluate_date.try(:strftime, '%d/%m/%Y')}"],
-          ["#{b unless @evaluate_course.staff_id.blank?} #{I18n.t('exam.evaluate_course.invite_lec') unless @evaluate_course.invite_lec.blank?} : ","#{@evaluate_course.staff_id? ? @evaluate_course.staffevaluate.try(:staff_with_rank) : @evaluate_course.invite_lec}","",""]]
+          ["#{a} : ","#{c}","#{I18n.t('exam.evaluate_course.evaluate_date2')} :","#{@evaluate_course.evaluate_date.try(:strftime, '%d/%m/%Y')}"],
+          ["#{b} : ","#{d}","",""]]
     table(data, :column_widths => [150, 200, 70, 70], :cell_style => { :size => 10})  do
               a = 0
               b = 3
@@ -166,14 +182,14 @@ class CourseevaluationPdf < Prawn::Document
   
   def table_signatory
     stroke do
-      horizontal_line 86, 300, :at => 121
-      horizontal_line 84, 300, :at => 101
-      horizontal_line 115, 300, :at => 81
+      horizontal_line 86, 300, :at => 143
+      horizontal_line 84, 300, :at => 124
+      horizontal_line 115, 300, :at => 105
     end
     data=[ ["#{I18n.t('exam.evaluate_course.student_verification').upcase}:", ""],
            ["#{I18n.t('exam.evaluate_course.signatory')}: ", ""],
            ["#{I18n.t('exam.evaluate_course.full_name')}: #{@evaluate_course.student_id? ? @evaluate_course.studentevaluate.student_with_rank : '' }", ""],
-           ["#{I18n.t('exam.evaluate_course.mykad_no')}: #{@evaluate_course.student_id? ? @view.formatted_mykad(@evaluate_course.studentevaluate.icno) : '' }", "#{I18n.t('exam.evaluate_course.evaluate_date2')} : <u>#{Date.today.try(:strftime, '%d %b %Y')}</u>"]]
+           ["#{I18n.t('exam.evaluate_course.mykad_no')}:  #{@evaluate_course.student_id? ? @view.formatted_mykad(@evaluate_course.studentevaluate.icno) : '' }", "#{I18n.t('exam.evaluate_course.evaluate_date2')} : <u>#{Date.today.try(:strftime, '%d %b %Y')}</u>"]]
     table(data, :column_widths => [340,140], :cell_style => {:inline_format => :true, :size=>10, :borders => [], :padding=>[7,0,0,20]}) do
       a = 0
       b = 1

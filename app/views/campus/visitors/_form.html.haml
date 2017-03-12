@@ -22,6 +22,11 @@
           = f.collection_select :rank_id, Rank.order(id: :asc), :id, :short_full_name, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
       .form-group
+        %label.col-sm-2.control-label= f.label t 'campus.visitors.position', for: :position
+        .col-md-3
+          = f.text_field :position, class: 'form-control'
+
+      .form-group
         %label.col-sm-2.control-label= f.label t 'campus.visitors.phoneno', for: :phoneno
         .col-md-3
           = f.text_field :phoneno, class: 'form-control'

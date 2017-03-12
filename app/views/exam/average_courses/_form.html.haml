@@ -7,55 +7,62 @@
     .tab-content{style:"padding-top:1em"}
       .col-md-8.col-md-offset-1
         - if @average_course.new_record?
-          - subject_rec=Programme.find(params[:subject_id])
-          - lecturer_rec=Staff.find(params[:lecturer_id])
+          /- subject_rec=Programme.find(params[:subject_id])
+          - programme=Programme.find(params[:programme_id])
+          - lecturer_rec=Visitor.find(params[:visitor_id])
+          - unless params[:invite_lec_topic].nil?
+            - subject_topic=params[:subject_id]
+          - else
+            - subject_topic=params[:invite_lec_topic]
         - else
-          - subject_rec=@average_course.subject 
-          - lecturer_rec=@average_course.lecturer
+          /- subject_rec=@average_course.subject 
+          - programme=@average_course.course
+          - lecturer_rec=@average_course.visitor
+          - if @average_course.invite_lec_topic.nil?
+            - subject_topic=@average_course.subject.subject_list
+          - else
+            - subject_topic=@average_course.invite_lec_topic
+
         %dl.dl-horizontal
-          %dt=t 'exam.average_course.lecturer_id'
-          %dd=lecturer_rec.try(:staff_with_rank)
+          %dt= t 'exam.evaluate_course.invite_lec'
+          %dd="#{formatted_mykad(lecturer_rec.icno)} #{lecturer_rec.visitor_with_title_rank}"
+
+          %dt=t 'campus.visitors.position'
+          %dd=lecturer_rec.try(:position)
+
+          %dt=t 'campus.visitors.department_organisation'
+          %dd=lecturer_rec.corporate==true ? lecturer_rec.address_book.name : lecturer_rec.department
           
-          %dt=t 'exam.average_course.icno'
-          %dd=lecturer_rec.try(:formatted_mykad)
-   
+          %dt=t 'campus.visitors.expertise'
+          %dd=lecturer_rec.expertise
+          %hr
+        
           %dt=t 'exam.average_course.programme_id'
-          %dd=subject_rec.root.name
+          %dd=programme.name
           
           %dt=t 'training.programme.course_type'
-          %dd=subject_rec.root.course_type
+          %dd=programme.course_type
           
           %dt=t 'exam.average_course.total_students'
           %dd
-            =@total_eval.to_s+" / "
+            =@total_eval.to_s
+            /+" / "
             /=Student.where(course_id: subject_rec.root_id).count.to_s
-            - topic_ids=subject_rec.descendants.where(course_type: ['Topic', 'Subtopic']).pluck(:id)
-            - lecturer_classes=WeeklytimetableDetail.where(lecturer_id: params[:lecturer_id], topic: topic_ids).pluck(:id)
-            = total_student=StudentAttendance.where(weeklytimetable_details_id: lecturer_classes).pluck(:student_id).uniq.count
+            /- topic_ids=subject_rec.descendants.where(course_type: ['Topic', 'Subtopic']).pluck(:id)
+            /- lecturer_classes=WeeklytimetableDetail.where(lecturer_id: params[:lecturer_id], topic: topic_ids).pluck(:id)
+            /= total_student=StudentAttendance.where(weeklytimetable_details_id: lecturer_classes).pluck(:student_id).uniq.count
           
           %dt=t 'training.programme.level'
-          %dd=subject_rec.root.level.upcase
+          %dd=programme.level.upcase
           
           %dt=t 'exam.average_course.subject_id'
-          %dd=subject_rec.subject_list
+          %dd=subject_topic
  
           = render 'average_scores'
           
       #appraisal_details.tab-pane.active
         %br
         .col-md-8.col-md-offset-2
-          .form-group
-            .col-sm-2.control-label
-              = f.label (t 'exam.average_course.organisation')
-            .col-md-6
-              = f.text_field :organisation, class: 'form-control'
-
-          .form-group
-            .col-sm-2.control-label
-              = f.label (t 'exam.average_course.expertise_qualification')
-            .col-md-6
-              = f.text_field :expertise_qualification, class: 'form-control'
-
           .form-group
             .col-sm-2.control-label
               = f.label (t 'exam.average_course.dissatisfaction')
@@ -111,11 +118,11 @@
             .col-sm-2.control-label
               =f.label (t 'exam.average_course.principal_id')
             .col-md-6
-              =f.collection_select :principal_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"280px"}
+              =f.collection_select :principal_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
           .form-group
             .col-sm-2.control-label
               =f.label (t 'exam.average_course.principal_date')
             .col-md-2
-              =f.text_field :principal_date, class: 'date_picker_reverse form-control'
+              =f.text_field :principal_date, class: 'date_picker_reverse form-control', value: @average_course.principal_date.try(:strftime,'%d-%m-%Y')
           %br
    

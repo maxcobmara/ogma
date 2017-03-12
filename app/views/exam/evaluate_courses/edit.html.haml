@@ -1,6 +1,6 @@
 - model_class = EvaluateCourse
 .page-header
-  %h1= t 'exam.evaluate_course.edit'
+  %h1=current_user.college.code=='amsas' ? (t 'exam.evaluate_course.edit2') : (t 'exam.evaluate_course.edit') 
 = render 'shared/flashes'
 
 .row

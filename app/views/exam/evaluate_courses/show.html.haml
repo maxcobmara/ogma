@@ -1,6 +1,6 @@
 - model_class = EvaluateCourse
 .page-header
-  %h1=t 'exam.evaluate_course.title'
+  %h1=current_user.college.code=='amsas' ? (t 'exam.evaluate_course.title2') : (t 'exam.evaluate_course.title')
 = render 'shared/flashes'
 
 .row
@@ -10,8 +10,8 @@
       %li.active= link_to (t 'exam.evaluate_course.appraisal_details'),"#appraisal_details", "data-toggle" => "tab"
     .tab-content{style:"padding-top:1em"}
       .col-md-8.col-md-offset-1
-        = render 'tab_appraisal_info'
-        
+        = render :partial =>"exam/evaluate_courses/#{current_user.college.code}/tab_appraisal_info", :locals => { :evaluate_course => @evaluate_course}
+
       #appraisal_details.tab-pane.active
         %br
         .col-md-8.col-md-offset-1

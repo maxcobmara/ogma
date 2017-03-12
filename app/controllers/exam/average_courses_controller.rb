@@ -1,15 +1,15 @@
 class Exam::AverageCoursesController < ApplicationController
-  #filter_resource_access
   filter_access_to :index, :new, :create, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :evaluation_analysis, :attribute_check => true
   before_action :set_average_course, only: [:show, :edit, :update, :destroy] 
 
   def new
     @average_course = AverageCourse.new
-    #@subject_id=params[:subject_id]
-    #@lecturer_id=params[:lecturer_id]
-    
-    evals=EvaluateCourse.where(staff_id: params[:lecturer_id]).where(subject_id: params[:subject_id])
+    if params[:invite_lec_topic].blank?
+      evals=EvaluateCourse.where(visitor_id: params[:visitor_id]).where(subject_id: params[:subject_id])
+    else
+      evals=EvaluateCourse.where(visitor_id: params[:visitor_id]).where(invite_lec_topic: params[:invite_lec_topic])  
+    end
     @evs_int=AverageCourse.avg_int(evals)
     @evs_act=AverageCourse.avg_actual(evals)
     @total_eval=evals.count
@@ -17,7 +17,11 @@ class Exam::AverageCoursesController < ApplicationController
   
   def create
     @average_course = AverageCourse.new(average_course_params)
-    evals=EvaluateCourse.where(staff_id: params[:lecturer_id]).where(subject_id: params[:subject_id])
+    if params[:average_course][:invite_lec_topic].blank?
+      evals=EvaluateCourse.where(visitor_id: params[:average_course][:visitor_id].to_i).where(subject_id: params[:average_course][:subject_id].to_i)
+    else
+      evals=EvaluateCourse.where(visitor_id: params[:average_course][:visitor_id].to_i).where(invite_lec_topic: params[:average_course][:invite_lec_topic])  
+    end
     @evs_int=AverageCourse.avg_int(evals)
     @evs_act=AverageCourse.avg_actual(evals)
     @total_eval=evals.count
@@ -35,7 +39,11 @@ class Exam::AverageCoursesController < ApplicationController
   
   def edit
     @average_course = AverageCourse.find(params[:id])
-    evals=EvaluateCourse.where(staff_id: @average_course.lecturer_id).where(subject_id: @average_course.subject_id)
+    if @average_course.invite_lec_topic.blank?
+      evals=EvaluateCourse.where(visitor_id: @average_course.visitor_id).where(subject_id: @average_course.subject_id)
+    else
+      evals=EvaluateCourse.where(visitor_id: @average_course.visitor_id).where(invite_lec_topic: @average_course.invite_lec_topic)
+    end
     @evs_int=AverageCourse.avg_int(evals)
     @evs_act=AverageCourse.avg_actual(evals)
     @total_eval=evals.count
@@ -58,7 +66,8 @@ class Exam::AverageCoursesController < ApplicationController
   
   def show
     @average_course = AverageCourse.find(params[:id])
-    evals=EvaluateCourse.where(staff_id: @average_course.lecturer_id).where(subject_id: @average_course.subject_id)
+    #evals=EvaluateCourse.where(staff_id: @average_course.lecturer_id).where(subject_id: @average_course.subject_id)
+    evals=EvaluateCourse.where(visitor_id: @average_course.visitor_id).where(subject_id: @average_course.subject_id)
     @evs_int=AverageCourse.avg_int(evals)
     @evs_act=AverageCourse.avg_actual(evals)
     @total_eval=evals.count
@@ -66,7 +75,7 @@ class Exam::AverageCoursesController < ApplicationController
   
    def evaluation_analysis
      @average_course=AverageCourse.find(params[:id])
-     evals=EvaluateCourse.where(staff_id: @average_course.lecturer_id).where(subject_id: @average_course.subject_id)
+     evals=EvaluateCourse.where(visitor_id: @average_course.visitor_id).where(subject_id: @average_course.subject_id)
  
      respond_to do |format|
         format.pdf do
@@ -86,7 +95,7 @@ class Exam::AverageCoursesController < ApplicationController
     
     # Never trust parameters from the scary internet, only allow the white list through.
     def average_course_params
-      params.require(:average_course).permit(:lecturer_id, :programme_id, :dissatisfaction, :recommend_for_improvement, :lesson_content, :evaluation_category, :support_justify, :principal_id, :principal_date, :subject_id, :delivery_quality, :lecturer_knowledge, :organisation, :expertise_qualification, :college_id, {:data => []})
+      params.require(:average_course).permit(:lecturer_id, :programme_id, :dissatisfaction, :recommend_for_improvement, :lesson_content, :evaluation_category, :support_justify, :principal_id, :principal_date, :subject_id, :delivery_quality, :lecturer_knowledge, :organisation, :expertise_qualification, :visitor_id, :invite_lec_topic, :college_id, {:data => []})
     end
     
 end
