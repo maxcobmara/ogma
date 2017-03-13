@@ -8,7 +8,7 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_campus_address_book_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), address_list_campus_address_books_path(params.merge(format: 'pdf'))
     
     
 %ul.nav.nav-tabs{role: "tablist"}
@@ -25,8 +25,8 @@
 %table.table-striped.table-hover.ogma
   %thead
     %tr
-      %th= t('campus.address.shortname')
       %th= t('campus.address.name')
+      %th= t('campus.address.shortname')
       %th= t('campus.address.address')
       %th= t('campus.address.internet')
   - @address_books.each do |contact|

@@ -151,6 +151,7 @@
               %li=t('user.rule18a')
               %li=t('user.rule18b')
               %li=t('user.rule18c')
+              %li=current_user.college.code!='amsas' ? (t 'user.rule18d') : (t 'user.rule18d2')
             
 .row{style: "padding-top:1em;"}
   /.col-md-3.col-md-offset-2
@@ -388,6 +389,7 @@
                 = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "courseevaluser"
                 = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "courseevalowner"
               - rolename1=role.authname.split("_module")[0].strip
+              - rolename1= rolename1+"2" if current_user.college.code=='amsas'
               - rolename= t('user.'+rolename1)
               - rolename2=rolename1.downcase
               %tr
@@ -428,7 +430,7 @@
               /%th.centre{width: "12%"} 
           %body
             - cnt=0
-            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Address Book", "Banks", "Insurance Companies", "Messaging Groups","Titles", "Staff Shifts", "Travel Claims Transport Groups", "Travel Claim Mileage Rates", "Asset Categories", "Ranks", "Employgrades", "Postinfos"]).order(id: :asc)
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Address Book", "Banks", "Insurance Companies", "Messaging Groups","Titles", "Staff Shifts", "Travel Claims Transport Groups", "Travel Claim Mileage Rates", "Asset Categories", "Ranks", "Employgrades", "Postinfos", "Visitors"]).order(id: :asc)
               - read=Role.where('id !=?', role.id).where(description: role.description).first
               /- user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
               /- owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
@@ -443,7 +445,7 @@
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "supportmain"
                 %td.left
-                  - if ["address_book", "banks", "insurance_companies", "messaging_groups", "asset_categories", "titles", "staff_shifts", "travel_claims_transport_groups", "travel_claim_mileage_rates", "staff_ranks", "staff_employgrades", "staff_postinfos"].include?(rolename1)
+                  - if ["address_book", "banks", "insurance_companies", "messaging_groups", "asset_categories", "titles", "staff_shifts", "travel_claims_transport_groups", "travel_claim_mileage_rates", "staff_ranks", "staff_employgrades", "staff_postinfos", "visitors"].include?(rolename1)
                     =rolename
                   - else
                     %font{style: 'color: grey;'}=rolename

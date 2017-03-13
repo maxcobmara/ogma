@@ -18,8 +18,7 @@ class Campus::AddressBooksController < ApplicationController
   end
 
   def create 
-  	@address_book = AddressBook.new(address_book_params)
-
+    @address_book = AddressBook.new(address_book_params)
     respond_to do |format|
       if @address_book.save
         flash[:notice] = 'Contact successfully created.'
@@ -33,7 +32,15 @@ class Campus::AddressBooksController < ApplicationController
   end
   
   def address_list
-    # TODO - pdf page
+    @address_books = AddressBook.where('name ILIKE ?', "#{params[:search]}%")
+    respond_to do |format|
+      format.pdf do
+        pdf = Address_listPdf.new(@address_books, view_context, current_user.college)
+        send_data pdf.render, filename: "address_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
   end
 
 

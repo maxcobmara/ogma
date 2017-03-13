@@ -830,7 +830,9 @@ en:
     rule18: "Support Tables :"
     rule18a: "Activate 'Banks', 'Titles', 'Staff Shifts', 'Ranks', 'Employment Grades' & Post Information' in addition to access by Staffs modules."
     rule18b: "Activate 'Travel Claims Transport Groups' & 'Travel Claim Mileage Rates'in addition to access by Travel Claims modules."
-    rule18c: "Activate 'Asset Categories' in addition to access by Asset List modules."
+    rule18c: "Activate 'Asset Categories' in addition to access by 'Asset List' modules."
+    rule18d: "Activate 'Visitors' in addition to access by 'Course Evaluation (Programme)' modules."
+    rule18d2: "Activate 'Visitors' in addition to access by 'Invitation Lecturer Evaluation' modules."
     rule19: "Weeklytimetable Module (Member) only applicable to creator of Weeklytimetable (Penyelaras) and Weeklytimetable time slot owner. For approval of weeklytimetable, please use 'Programme Manager' role."
     rule19_amsas:  "Weeklytimetable Module (Member) applicable to creator of Weeklytimetable (Penyelaras), Weeklytimetable time slot owner and Weeklytimetable approver."
     rule21: "Average Instructor Module (Member) access for updating records are limited to Evaluator, while evaluated Instructor can only view his records."
@@ -884,7 +886,7 @@ en:
     exam_analysis_module_admin: Examination Analysis Module Admin
     exampaper_module_admin: Examination Paper Module Admin
     examquestions_module_admin: Examquestions Module Admin
-    course_evaluation_module_admin: Course Evaluation Module Admin
+    course_evaluation_module_admin: Lecturer Evaluation Module Admin
     course_average_module_admin: Analysis Data for Average Score of Evaluation for Lecturer Module Admin
     exam_templates_module_viewer: Examination Templates Module Viewer
     examresults_module_viewer: Examination Result Module Viewer
@@ -893,7 +895,7 @@ en:
     exam_analysis_module_viewer: Examination Analysis Module Viewer
     exampaper_module_viewer: Examination Paper Module Viewer
     examquestions_module_viewer: Examquestions Module Viewer
-    course_evaluation_module_viewer: Course Evaluation Module Viewer
+    course_evaluation_module_viewer: Lecturer Evaluation Module Viewer
     course_average_module_viewer: Analysis Data for Average Score of Evaluation for Lecturer Module Viewer
     exam_templates_module_user: Examination Templates Module User
     examresults_module_user: Examination Result Module User
@@ -902,7 +904,7 @@ en:
     exam_analysis_module_user: Examination Analysis Module User
     exampaper_module_user: Examination Paper Module User
     examquestions_module_user: Examquestions Module User
-    course_evaluation_module_user: Course Evaluation Module User
+    course_evaluation_module_user: Lecturer Evaluation Module User
     course_average_module_user: Analysis Data for Average Score of Evaluation for Lecturer Module User
     exam_templates_module_member: Examination Templates Module  Member
     examresults_module_member: Examination Result Module Member
@@ -911,7 +913,7 @@ en:
     exam_analysis: Examination Analysis Module Member
     exampaper_module_member: Examination Paper Module Member
     examquestions_module_member: Examquestions Module Member
-    course_evaluation_module_member: Course Evaluation Module Member
+    course_evaluation_module_member: Lecturer Evaluation Module Member
     course_average_module_member: Analysis Data for Average Score of Evaluation for Lecturer Module Member
     exam_templates: Examination Templates
     examresults: Examination Result
@@ -921,8 +923,10 @@ en:
     exampaper: Examination Paper
     examquestions: Examquestions
     course_evaluation: Course Evaluation(Lecturer)
-    course_average: Analysis Data for Average Score of Evaluation for Lecturer Module Admin
-    
+    course_evaluation2: Invitation Lecturer Evaluation
+    course_average: Analysis Data for Average Score of Evaluation for Lecturer
+    course_average2: Analysis Data for Average Score of Evaluation for Invitation Lecturer
+     
     #Training Parts
     training_notes_module_admin: Training Notes Module Admin
     academic_session_module_admin: Academic Session Module Admin
@@ -969,9 +973,11 @@ en:
     banks_module_admin: Banks Module Admin
     insurance_companies_module_admin: Insurance Companies Module Admin
     address_book_module_admin: Address Book Module Admin
+    visitors_module_admin: Visitors Module Admin
     banks_module_viewer: Banks Module Viewer
     insurance_companies_module_viewer: Insurance Companies Module Viewer
     address_book_module_viewer: Address Book Module Viewer
+    visitors_module_viewer: Visitors Module Viewer
     messaging_groups_module_admin: Messaging Groups Module Admin
     messaging_groups_module_viewer: Messaging Groups Module Viewer
     #banks_module_user: Banks Module User
@@ -981,6 +987,7 @@ en:
     banks: Banks
     insurance_companies: Insurance Companies
     address_book: Address Book
+    visitors: Visitors
     messaging_groups: Messaging Groups
     
     titles_module_admin: Titles Module Admin

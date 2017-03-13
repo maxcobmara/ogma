@@ -810,7 +810,9 @@ ms_MY:
     rule18: "Data Sokongan :"
     rule18a: "Aktifkan modul 'Bank', 'Gelaran', 'Jadual Waktu Anjal', 'Pangkat', 'Gred Perkhidmatan' & 'Butiran Perjawatan' untuk digunakan bersama modul 'Staf'."
     rule18b: "Aktifkan modul 'Kumpulan Kenderaan' & 'Kadar Batuan' untuk digunakan bersama modul 'Tuntutan Perjalanan'."
-    rule18c: "Aktifkan modul 'Kategori Aset' untuk digunakan bersama modul Senarai Aset."
+    rule18c: "Aktifkan modul 'Kategori Aset' untuk digunakan bersama modul 'Senarai Aset'."
+    rule18d: "Aktifkan modul 'Pelawat' untuk digunakan bersama modul 'Penilaian Kursus (Program)'."
+    rule18d2: "Aktifkan modul 'Pelawat' untuk digunakan bersama modul 'Penilaian Pensyarah Jemputan'."
     rule19: "Modul Jadual Waktu Mingguan (Pemilik) hanya berfungsi untuk penyedia jadual (Penyelaras) dan pemilik slot - slot masa dalam jadual. Bagi fungsian kelulusan jadual, sila gunakan peranan 'Ketua Program'. Sila aktifkan sekurang-kurangnya modul Nota Latihan(Paparan) bagi mendapatkan akses kepada menu Latihan yang berkenaan."
     rule19_amsas: "Modul Jadual Waktu Mingguan (Pemilik) berfungsi untuk penyedia jadual (Rancang Latihan) dan pemilik slot - slot masa dalam jadual dan pelulus jadual.  Sila aktifkan sekurang-kurangnya modul Nota Latihan(Paparan) bagi mendapatkan akses kepada menu Latihan yang berkenaan."
     rule21: "Akses Modul Penilaian & Analisa Skor Purata Jurulatih(Pemilik) untuk mengemaskini rekod adalah terhad kepada Pegawai Penilai sahaja, manakala Jurulatih yang dinilai hanya boleh membuat semakan."
@@ -864,7 +866,7 @@ ms_MY:
     exam_analysis_module_admin: Pentadbir Modul Analisis Peperiksaan
     exampaper_module_admin: Pentadbir Modul Kertas Peperiksaan
     examquestions_module_admin: Pentadbir Modul Soalan Peperiksaan
-    course_evaluation_module_admin: Pentadbir Modul Penilaian Program(Pensyarah)
+    course_evaluation_module_admin: Pentadbir Modul Penilaian Pensyarah
     course_average_module_admin: Pentadbir Modul Data Analisa Skor Purata Penilaian Pensyarah
     exam_templates_module_viewer: Paparan Modul Template Peperiksaan
     examresults_module_viewer: Paparan Modul Keputusan Peperiksaan
@@ -873,7 +875,7 @@ ms_MY:
     exam_analysis_module_viewer: Paparan Modul Analisis Peperiksaan
     exampaper_module_viewer: Paparan Modul Kertas Peperiksaan
     examquestions_module_viewer: Paparan Modul Soalan Peperiksaan
-    course_evaluation_module_viewer: Paparan Modul Penilaian Kursus(Pensyarah)
+    course_evaluation_module_viewer: Paparan Modul Penilaian Pensyarah
     course_average_module_viewer: Paparan Modul Data Analisa Skor Purata Penilaian Pensyarah
     exam_templates_module_user: Pengguna Modul Template Peperiksaan
     examresults_module_user: Pengguna Modul Keputusan Peperiksaan
@@ -882,7 +884,7 @@ ms_MY:
     exam_analysis_module_user: Pengguna Modul Analisis Peperiksaan
     exampaper_module_user: Pengguna Modul Kertas Peperiksaan
     examquestions_module_user: Pengguna Modul Soalan Peperiksaan
-    course_evaluation_module_user: Pengguna Modul Penilaian Kursus(Pensyarah)
+    course_evaluation_module_user: Pengguna Modul Penilaian Pensyarah
     course_average_module_user: Pengguna Modul Data Analisa Skor Purata Penilaian Pensyarah
     exam_templates_module_member: Pemilik Modul Template Peperiksaan
     examresults_module_member: Pemilik Modul Keputusan Peperiksaan
@@ -891,7 +893,7 @@ ms_MY:
     exam_analysis_module_member: Pemilik Modul Analisis Peperiksaan
     exampaper_module_member: Pemilik Modul Kertas Peperiksaan
     examquestions_module_member: Pemilik Modul Soalan Peperiksaan
-    course_evaluation_module_member: Pemilik Modul Penilaian Kursus(Pensyarah)
+    course_evaluation_module_member: Pemilik Modul Penilaian Pensyarah
     course_average_module_member: Pemilik Modul Data Analisa Skor Purata Penilaian Pensyarah
     exam_templates: Template Peperiksaan
     examresults: Keputusan Peperiksaan
@@ -901,7 +903,9 @@ ms_MY:
     exampaper: Kertas Peperiksaan
     examquestions: Soalan Peperiksaan
     course_evaluation: Penilaian Kursus(Pensyarah)
+    course_evaluation2: Penilaian Pensyarah Jemputan
     course_average: Data Analisa Skor Purata Penilaian Pensyarah
+    course_average2: Data Analisa Skor Purata Penilaian Pensyarah Jemputan
     
     #Training Parts
     training_notes_module_admin: Pentadbir Modul Nota Latihan
@@ -949,9 +953,11 @@ ms_MY:
     banks_module_admin: Pentadbir Modul Bank
     insurance_companies_module_admin: Pentadbir Modul Syarikat Insurans
     address_book_module_admin: Pentadbir Modul Buku Alamat
+    visitors_module_admin: Pentadbir Modul Pelawat
     banks_module_viewer: Paparan Modul Bank
     insurance_companies_module_viewer: Paparan Modul Syarikat Insurans
     address_book_module_viewer: Paparan Modul Buku Alamat
+    visitors_module_viewer: Paparan Modul Pelawat
     messaging_groups_module_admin: Pentadbir Modul Kumpulan Pemesejan
     messaging_groups_module_viewer: Paparan Modul Kumpulan Pemesejan
     #banks_module_user: Pengguna Modul Bank
@@ -961,6 +967,7 @@ ms_MY:
     banks: Bank
     insurance_companies: Syarikat Insurans
     address_book: Buku Alamat
+    visitors: Pelawat
     messaging_groups: Kumpulan Pemesejan
     
     titles_module_admin: Pentadbir Modul Gelaran

@@ -248,8 +248,16 @@ Ogma::Application.routes.draw do
         get :index_staff
       end
     end
-    resources :address_books
-    resources :visitors
+    resources :address_books do
+      collection do
+	get :address_list
+      end
+    end
+    resources :visitors do
+      collection do
+	get :visitor_list
+      end
+    end
     resources :pages do
       member do
         get :flexipage
