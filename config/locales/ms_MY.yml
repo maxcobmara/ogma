@@ -54,6 +54,7 @@ ms_MY:
       lesson_plan: Pelan Pengajaran
       topic_detail: Butiran Topik
       trainingnote: Nota Latihan
+      visitor: Pelawat
     attributes:
       asset:
         assignedto_id: Pegawai Bertanggungjawab
@@ -432,6 +433,11 @@ ms_MY:
         isbn: ISBN
         title: Tajuk
         language: Bahasa
+      visitor: 
+        name: Nama
+        icno: No mykad
+        hpno: No tel bimbit
+        expertise: Kepakaran / kelayakan
         
         
     errors:
@@ -3879,7 +3885,7 @@ ms_MY:
       full_name: Nama Penuh
       rank_id: Pangkat
       mykad_no: "No K/Pengenalan  "
-      select_module_subject_topic: "Select Module / Subject OR insert a topic"
+      select_module_subject_topic: "Pilih Modul / Subjct OR masukkan topik"
       
     average_course:
       title: Data Analisa Skor Purata Penilaian Pensyarah
