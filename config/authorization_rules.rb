@@ -107,6 +107,7 @@ authorization do
    includes :banks_module_admin 
    includes :insurance_companies_module_admin
    includes :address_book_module_admin
+   includes :visitors_module_admin
    includes :titles_module_admin
    includes :staff_shifts_module_admin
    includes :travel_claims_transport_groups_module_admin
@@ -2383,10 +2384,10 @@ authorization do
   
   #49-OK
   role :address_book_module_admin do
-     has_permission_on :campus_address_books, :to => :manage
+     has_permission_on :campus_address_books, :to => [:manage, :address_list]
   end
   role :address_book_module_viewer do
-     has_permission_on :campus_address_books, :to => :read
+     has_permission_on :campus_address_books, :to => [:read, :address_list]
   end
   
   #50 - OK 7-8Sept2016--NOTE-- In roles table(name & authname -> asset_categories....), but model/controller (asset_assetcategories)
@@ -2399,12 +2400,20 @@ authorization do
   
   #51-OK 8Sept2016
   role :titles_module_admin do
-    has_permission_on :staff_titles, :to => :manage
+    has_permission_on :staff_titles, :to => [:manage, :visitor_list]
   end
   role :titles_module_viewer do
-    has_permission_on :staff_titles, :to => :read
+    has_permission_on :staff_titles, :to =>[:read, :visitor_list]
   end
     
+  #58 - 13March2017
+  role :visitors_module_admin do
+    has_permission_on :campus_visitors, :to => :manage
+  end
+  role :visitors_module_viewer do
+    has_permission_on :campus_visitors, :to => :read
+  end
+  
   #52-OK 8 Sept2016
   role :staff_shifts_module_admin do
     has_permission_on :staff_staff_shifts, :to => :manage

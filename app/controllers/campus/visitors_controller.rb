@@ -61,7 +61,16 @@ class Campus::VisitorsController < ApplicationController
   end
   
   def visitor_list
-    # TODO - pdf page
+    @search = Visitor.search(params[:q])
+    @visitors = @search.result
+    respond_to do |format|
+      format.pdf do
+        pdf = Visitor_listPdf.new(@visitors, view_context, current_user.college)
+        send_data pdf.render, filename: "visitor_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
   end
 
   private

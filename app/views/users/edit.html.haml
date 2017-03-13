@@ -614,7 +614,7 @@ $(function(){
     var ecourseevalusr = document.getElementsByClassName('courseevaluser');
     var ecourseevalown = document.getElementsByClassName('courseevalowner');
     
-    for(i=0; i<1; i++)
+    for(i=0; i<2; i++)
     {
       if(courseevalmg[i].checked) {
         ecourseevalmg[i].checked=true;
@@ -657,7 +657,7 @@ $(function(){
     var esupportmg = document.getElementsByClassName('supportmanage');
     var esupportrd = document.getElementsByClassName('supportread');
     
-    for(i=0; i<12; i++)
+    for(i=0; i<13; i++)
     {
       if(supportmg[i].checked) {
         esupportmg[i].checked=true;
@@ -934,7 +934,7 @@ $(function(){
     var esupportmg = document.getElementsByClassName('supportmanage');
     var esupportrd = document.getElementsByClassName('supportread');
     
-    for(i=0; i<12; i++){
+    for(i=0; i<13; i++){
       if(supportmg[i].checked)
       {  esupportmg[i].checked=true;}
       else if(supportrd[i].checked)
@@ -946,7 +946,7 @@ $(function(){
     }
     
     /*disable this main checkbox if no support tables module selected*/
-    for(i=0; i<12; i++){
+    for(i=0; i<13; i++){
       if ((esupportmg[i].checked==false) && (esupportrd[i].checked==false) ){
         esupportmn[i].disabled=true;
       }
@@ -1467,7 +1467,7 @@ $(function(){
     var ecourseevalusr = document.getElementsByClassName('courseevaluser');
     var ecourseevalown = document.getElementsByClassName('courseevalowner');
     
-    for(i=0; i<1; i++){
+    for(i=0; i<2; i++){
       if(courseevalmg[i].checked)
       {  ecourseevalmg[i].checked=true;}
       else if(courseevalrd[i].checked)
@@ -2643,7 +2643,7 @@ $(function(){
     var ecourseevalm = document.getElementsByClassName('courseevalmain');
     
     /* 12) Exam - COURSE EVALUATION when UNCHECK , all training main is false*/
-    for(i=0; i < 1; i++){
+    for(i=0; i < 2; i++){
       if (ecourseevalm[i].checked==false) {
         courseevalmg[i].checked=false;
         courseevalrd[i].checked=false;
@@ -2663,7 +2663,7 @@ $(function(){
     
     
     /***************************************** 12) Admin & support tables when UNCHECK , all training main is false********************/
-    for(i=0; i < 12; i++){
+    for(i=0; i < 13; i++){
       if (esupportm[i].checked==false) {
         supportmg[i].checked=false;
         supportrd[i].checked=false;
