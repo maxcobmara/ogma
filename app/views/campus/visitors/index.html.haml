@@ -25,7 +25,7 @@
       - @visitors.each do |visitor|
         %tr
           %td=link_to formatted_mykad(visitor.icno), campus_visitor_path(visitor)
-          %td=visitor.name
+          %td=visitor.visitor_with_title_rank
           %td=visitor.address_book_id.blank? ? visitor.department : visitor.address_book.name
      
   .right{style:"padding:0 30px; margin:0;"}= paginate @visitors, :theme => 'twitter-bootstrap-3'    

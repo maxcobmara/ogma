@@ -8,7 +8,7 @@ class Visitor < ActiveRecord::Base
   belongs_to :rank
   belongs_to :title
   
-  validates :name, :icno, :hpno, :expertise, presence: true
+  validates :name, :icno, :hpno, presence: true
   validate :department_or_address_must_exist, :position_must_exist_when_no_rank
   
   before_save :set_department_or_addressbook, :set_expertise_when_blank
