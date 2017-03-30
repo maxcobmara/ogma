@@ -43,26 +43,29 @@ class Reservation_listPdf < Prawn::Document
         usrtype=I18n.t('library.reservation.student')
       end
       count=0
+ 
+      unless accession.reservations.blank?
+        for reserve in accession.reservations.values
+          #reserver section
+          user_rec=User.find(reserve["reserved_by"].to_i)
+          if user_rec.userable_type=="Staff"
+            reserver=user_rec.userable.staff_with_rank
+            reservertype=I18n.t('library.reservation.staff')
+          elsif user_rec.userable_type=="Student"
+            reserver=user_rec.userable.student_with_rank
+            reservertype=I18n.t('library.reservation.student')
+          end
 
-      for reserve in accession.reservations.values
-        #reserver section
-        user_rec=User.find(reserve["reserved_by"].to_i)
-        if user_rec.userable_type=="Staff"
-          reserver=user_rec.userable.staff_with_rank
-          reservertype=I18n.t('library.reservation.staff')
-        elsif user_rec.userable_type=="Student"
-          reserver=user_rec.userable.student_with_rank
-          reservertype=I18n.t('library.reservation.student')
+          rspan=accession.reservations.values.count
+          if count==0
+              body << [{content: "#{counter += 1}", rowspan: rspan}, {content: "#{accession.book.title}", rowspan: rspan}, {content: "#{accession.accession_no}", rowspan: rspan},{content: "#{usrtype}", rowspan: rspan},{content: "#{borrower}", rowspan: rspan},{content: "#{loan.returned==true ? "-" : loan.returnduedate.strftime('%d-%m-%Y')}", rowspan: rspan} ,reservertype, "#{count+1}) #{reserver} <br> #{I18n.t('library.reservation.expired_date') if loan.returned==true}", "#{reserve["reservation_date"]}<br><br> #{(loan.returneddate+3.days).strftime('%d-%m-%Y') if loan.returned==true}"]
+          else
+              body << [reservertype, "#{count+1}) #{reserver}", reserve["reservation_date"]]
+          end
+          count+=1
         end
-
-        rspan=accession.reservations.values.count
-        if count==0
-            body << [{content: "#{counter += 1}", rowspan: rspan}, {content: "#{accession.book.title}", rowspan: rspan}, {content: "#{accession.accession_no}", rowspan: rspan},{content: "#{usrtype}", rowspan: rspan},{content: "#{borrower}", rowspan: rspan},{content: "#{loan.returned==true ? "-" : loan.returnduedate.strftime('%d-%m-%Y')}", rowspan: rspan} ,reservertype, "#{count+1}) #{reserver} <br> #{I18n.t('library.reservation.expired_date') if loan.returned==true}", "#{reserve["reservation_date"]}<br><br> #{(loan.returneddate+3.days).strftime('%d-%m-%Y') if loan.returned==true}"]
-        else
-            body << [reservertype, "#{count+1}) #{reserver}", reserve["reservation_date"]]
-        end
-        count+=1
       end
+
     end
     header+body
   end
