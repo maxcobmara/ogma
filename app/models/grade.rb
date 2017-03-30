@@ -7,7 +7,7 @@ class Grade < ActiveRecord::Base
   #validates :exam1marks, :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
       
  # validates_presence_of :sent_date, :if => :sent_to_BPL?
-  validate :formative_allowed, :total_weightage_allowed, :exam1marks_allowed #, :check_formative_valid,
+  validate :formative_allowed, :total_weightage_allowed, :exam1marks_allowed, :if => :examweight_exist #, :check_formative_valid,
   
   belongs_to :college, :foreign_key => 'college_id'
   belongs_to :studentgrade, :class_name => 'Student', :foreign_key => 'student_id'  #Link to Model student
@@ -363,20 +363,26 @@ class Grade < ActiveRecord::Base
 #        end
 #     end
 #     end
+  
+    def examweight_exist
+      examweight > 0
+    end
     
     def formative_allowed
       if id
-      exceed=0
-      scores.each{|m|exceed+=1 if m.marks > m.weightage }
-      total_formative=0
-      scores.each{|m| total_formative+=m.marks}
-      total_weightage_formative=0
-      scores.each{|m|total_weightage_formative+=m.weightage}
-      #if scores && (scores.map(&:marks).sum > scores.sum(:weightage))
-      if scores && ((total_formative > total_weightage_formative) || (total_weightage_formative != (100-examweight)) || exceed > 0)
-        #errors.add(:base, I18n.t('exam.grade.formative_exceed_maximum')+scores.sum(:weightage).to_s)
-        errors.add(:base, I18n.t('exam.grade.formative_exceed_maximum')+total_formative.to_s+"~"+total_weightage_formative.to_s+"~"+examweight.to_s)
-      end
+        exceed=0
+        scores.each{|m|exceed+=1 if m.marks > m.weightage  }
+        total_formative=0
+        scores.each{|m| total_formative+=m.marks}
+        total_weightage_formative=0
+        scores.each{|m|total_weightage_formative+=m.weightage}
+        #if scores && (scores.map(&:marks).sum > scores.sum(:weightage))
+        if scores && ((total_formative > total_weightage_formative) || exceed > 0)
+          #errors.add(:base, I18n.t('exam.grade.formative_exceed_maximum')+scores.sum(:weightage).to_s)
+          errors.add(:base, I18n.t('exam.grade.formative_exceed_maximum')+total_formative.to_s+"~"+total_weightage_formative.to_s+"~"+examweight.to_s)
+	elsif scores && (total_weightage_formative != (100-examweight))
+          errors.add(:base, I18n.t('exam.grade.total_weight'))
+        end
       end
     end
     
