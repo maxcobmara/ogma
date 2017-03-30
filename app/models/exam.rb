@@ -8,6 +8,7 @@ class Exam < ActiveRecord::Base
   has_many :exammarks   #11Apr2013
   has_many :examtemplates, :dependent => :destroy #10June2013
   accepts_nested_attributes_for :examtemplates, :reject_if => lambda { |a| a[:quantity].blank? }
+  has_one :examanalysis, :dependent => :destroy
   
   before_save :set_sequence, :set_duration, :set_full_marks, :remove_unused_sequence, :set_paper_type, :set_subject_for_repeat #, :set_examtemplates
   before_destroy :valid_for_removal

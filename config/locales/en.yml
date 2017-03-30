@@ -316,6 +316,8 @@ en:
         starttime: Start time
         endtime: End time
         description: Repeat for
+        programme_id: Programme
+        topic_id: Topic
       exammark:
         mark: "Marks : "
         student_id: Student
@@ -330,6 +332,8 @@ en:
         examweight: "Weightage (Summative)"
         exam1marks: "Marks "
         finalscore: Total Marks
+        student_id: Student
+        subject_id: Subject
       examanalysis:
         exam_id: Final Exam
       exam_template:
@@ -3849,6 +3853,7 @@ en:
       student_same_grade: Please select students grade of the same Subject for multiple edit.
       summative_exceed_maximum: "Summative Marks must not exceed examination paper full marks."
       summative_exceed_hundred: "Summative Marks must less than or equal to 100%."
+      summative_compulsory: "Summative Marks is compulsory."
       subject_already_taken: This student has already taken this subject
     
     examresult:

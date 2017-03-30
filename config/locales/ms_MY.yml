@@ -299,6 +299,8 @@ ms_MY:
         starttime: Masa mula
         endtime: Masa tamat
         description: Ulangan bagi
+        programme_id: Program
+        topic_id: Topik
       exammark:
         mark: "Markah : "
         student_id: Pelajar
@@ -313,6 +315,8 @@ ms_MY:
         examweight: "Wajaran (Sumatif)"
         exam1marks: "Markah "
         finalscore: Jumlah Akhir
+        student_id: Pelajar
+        subject_id: Subjek
       examanalysis:
         exam_id: Peperiksaan Akhir
       exam_template:
@@ -3767,6 +3771,7 @@ ms_MY:
       student_same_subject: Hanya gred pelajar bagi Subjek yang sama dibenarkan untuk suntingan secara pukal.
       summative_exceed_maximum: "Markah Sumatif tidak boleh melebihi markah penuh kertas peperiksaan."
       summative_exceed_hundred: "Markah Sumatif tidak boleh melebihi 100%."
+      summative_compulsory: "Markah Sumatif perlu dimasukkan."
       subject_already_taken: Pelajar bagi ambilan yang dipilih telah mengambil subjek ini
       
     examresult:
@@ -4573,19 +4578,19 @@ ms_MY:
         editdt: Tarikh Semakan
         diagram_caption: Tajuk Diagram
       exams:
-        name: Examination Name 
-        description: Description
-        created_by: Creator
-        course_id: Programme
-        subject_id: Subject
-        klass_id: Class
-        exam_on: Date
-        duration: Duration
-        full_marks: Full Marks
-        starttime: Start Time
-        endtime: End Time
-        topic_id: Topic
-        sequ: Sequence
+        name: Nama Peperiksaan
+        description: Deskripsi
+        created_by: Penyedia
+        course_id: Program
+        subject_id: Subjek
+        klass_id: Kelas
+        exam_on: Tarikh
+        duration: Jangka Masa
+        full_marks: Markah Penuh
+        starttime: Masa Mula
+        endtime: Masa Tamat
+        topic_id: Topik
+        sequ: Susunan
       intake:
         name: "Bulan & Tahun"
         description: Kumpulan

@@ -392,12 +392,15 @@ class Grade < ActiveRecord::Base
     end
     
     def exam1marks_allowed
-      exam_ids_curr_student=Exammark.where(student_id: student_id).pluck(:exam_id)  
-      paper=Exam.where(subject_id: subject_id).where(id: exam_ids_curr_student).where(name: 'F')
-      if (paper && paper.count > 0) && exam1marks > paper.first.total_marks  #100 or full_marks
-        errors.add(:base, I18n.t('exam.grade.summative_exceed_maximum'))
-      elsif (paper && paper.count==0 && exam1marks && exam1marks > 100)
-        errors.add(:base, I18n.t('exam.grade.summative_exceed_hundred'))
+      # TODO - check this part [amsas update] (temporary - check only when exam1marks exist) - 30March2017
+      if exam1marks
+        exam_ids_curr_student=Exammark.where(student_id: student_id).pluck(:exam_id)  
+        paper=Exam.where(subject_id: subject_id).where(id: exam_ids_curr_student).where(name: 'F')
+        if (paper && paper.count > 0) && exam1marks > paper.first.total_marks  #100 or full_marks
+          errors.add(:base, I18n.t('exam.grade.summative_exceed_maximum'))
+        elsif (paper && paper.count==0 && exam1marks && exam1marks > 100)
+          errors.add(:base, I18n.t('exam.grade.summative_exceed_hundred'))
+        end
       end
     end
     
