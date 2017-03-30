@@ -19,6 +19,8 @@
             = f.collection_select :exam_id, @exams, :id, :exam_name_subject_date, {:include_blank => t('select')}, {class: 'selectpicker mandatory', "data-width"=>"450px"}
           - else
             = f.collection_select :exam_id, @exams, :id, :exam_name_subject_date2, {:include_blank => t('select')}, {class: 'selectpicker mandatory', "data-width"=>"500px"}
+      %br
+        .small=t 'exam.examanalysis.remark'
 
     .row
       .col-md-10.col-md-offset-1

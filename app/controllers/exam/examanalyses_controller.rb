@@ -22,7 +22,7 @@ class Exam::ExamanalysesController < ApplicationController
     exist=Examanalysis.pluck(:exam_id)
     grades_subject_ids=Grade.where(subject_id: @subject_ids).pluck(:subject_id)
     exist_exammark=Exammark.pluck(:exam_id)
-    @exams=Exam.where(name: "F").where(id: exist_exammark).where(subject_id: grades_subject_ids).where.not(id: exist)
+    @exams=Exam.where(name: "F").where(id: exist_exammark).where(subject_id: grades_subject_ids).where.not(id: exist).where(klass_id: 1)
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @examanalysis }
