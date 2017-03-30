@@ -55,7 +55,7 @@ class Evaluation_analysisPdf < Prawn::Document
     table_score
     move_down 2
     if actual_scores!=@evs_int
-      text "#{I18n.t('exam.average_course.score_rounded_actual')} : #{actual_scores.split(',').join(', ').to_s}", :size => 8
+      text "#{I18n.t('exam.average_course.score_rounded_actual')} : #{actual_scores.split(',').join(', ').to_s})", :size => 8
     end
     start_new_page
     stroke_details2
@@ -110,16 +110,16 @@ class Evaluation_analysisPdf < Prawn::Document
           [{content: "3.  #{I18n.t('exam.average_course.organisation')} :  #{@average_course.visitor.corporate==true ? @average_course.visitor.address_book.name : @average_course.visitor.department}", colspan: 9}], 
           [{content: "4.  #{I18n.t('exam.average_course.expertise_qualification')} : #{@average_course.visitor.try(:expertise)}", colspan: 9}],[{content: "", colspan: 9}],
           [{content: "<u>#{I18n.t('exam.average_course.course_data').upcase}</u>", colspan: 9}],
-          [{content: "5.  #{@average_course.college.code=='amsas' ? I18n.t('exam.evaluate_course.course_form') :  I18n.t('exam.evaluate_course.course_id')} : #{@average_course.subject.root.name}", colspan: 9}],
-          ["6.  #{I18n.t('exam.average_course.course_type')} : ","","","#{@average_course.subject.root.course_type=='Asas' ? '/' : ' '}","Asas", "#{@average_course.subject.root.course_type=='Pertengahan' ? 'BBB' : ' '}","Pertengahan", "#{@average_course.subject.root.course_type=='Lanjutan' ? 'CCC' : ' '}", "Lanjutan"],
+          [{content: "5.  #{@average_course.college.code=='amsas' ? I18n.t('exam.evaluate_course.course_form') :  I18n.t('exam.evaluate_course.course_id')} : #{@average_course.course.name}", colspan: 9}],
+          ["6.  #{I18n.t('exam.average_course.course_type')} : ","","","#{@average_course.course.course_type=='Asas' ? '/' : ' '}","Asas", "#{@average_course.course.course_type=='Pertengahan' ? '/' : ' '}","Pertengahan", "#{@average_course.course.course_type=='Lanjutan' ? '/' : ' '}", "Lanjutan"],
           [{content: "7.  #{I18n.t('exam.average_course.total_students')} :  #{@evaluator_count}", colspan: 9}],
-          [{content: "8.  #{I18n.t('training.programme.level')} :  ", colspan: 2},"PEG","#{@average_course.subject.root.level=='peg' ? '/' : ''}","LLP","#{@average_course.subject.root.level=='llp' ? '/' : '' }", {content: "", colspan: 3}],[{content: "", colspan: 9}],
+          [{content: "8.  #{I18n.t('training.programme.level')} :  ", colspan: 2},"PEG","#{@average_course.course.level=='peg' ? '/' : ''}","LLP","#{@average_course.course.level=='llp' ? '/' : '' }", {content: "", colspan: 3}],[{content: "", colspan: 9}],
           [{content: "<u>#{I18n.t('exam.average_course.evaluation_analysis_data').upcase}</u>", colspan: 9}],
-          [{content: "9.  #{I18n.t('exam.average_course.subject_id') } : #{@average_course.subject.subject_list}", colspan: 9}],
+          [{content: "9.  #{I18n.t('exam.average_course.subject_id') } : #{@average_course.subject.blank? ? @average_course.invite_lec_topic : @average_course.subject.subject_list}", colspan: 9}],
           [{content: "10.  #{I18n.t('exam.evaluate_course.average_scores')} : ", colspan: 9}], [{content: "", colspan: 9}]
           ]
-          ##{@average_course.subject.root.course_type=='Asas' ? '<b>Asas</b>' : 'Asas'}  #{@average_course.subject.root.course_type=='Pertengahan' ? '<b>Pertengahan</b>' : 'Pertengahan'}  #{@average_course.subject.root.course_type=='Lanjutan' ? '<b>Lanjutan</b>' : 'Lanjutan'}
-          ##{@average_course.subject.root.level=='peg' ? '<b>PEG</b>' : 'PEG'}  #{@average_course.subject.root.level=='llp' ? '<b>LLP</b>' : 'LLP'}
+          ##{@average_course.course.course_type=='Asas' ? '<b>Asas</b>' : 'Asas'}  #{@average_course.course.course_type=='Pertengahan' ? '<b>Pertengahan</b>' : 'Pertengahan'}  #{@average_course.course.course_type=='Lanjutan' ? '<b>Lanjutan</b>' : 'Lanjutan'}
+          ##{@average_course.course.level=='peg' ? '<b>PEG</b>' : 'PEG'}  #{@average_course.course.level=='llp' ? '<b>LLP</b>' : 'LLP'}
     #350
     table(data, :column_widths => [120, 30,30, 30, 40, 30, 80, 30, 70], :cell_style => { :size => 11, :inline_format => true, :padding => [0, 0, 0, 0]})  do 
       rows(0..2).borders=[]
