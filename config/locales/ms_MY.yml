@@ -3979,6 +3979,7 @@ ms_MY:
       question_no: No Soalan
       checked_by: Nama Pemeriksa
       other_format: Analisa mengikut Soalan
+      remark : "Catatan : Analisis Peperiksaan tersedia hanya untuk Kertas Peperiksaan Akhir (beserta soalan)."
 
     exam_template:
       title: Template Kertas Peperiksaan

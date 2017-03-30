@@ -4061,6 +4061,7 @@ en:
       question_no: Question No
       checked_by: Checked by
       other_format: Analysis by Question
+      remark : "Remark : Examanalysis available only for Final Examination Paper (c/w questions)."
 
     exam_template:
       title: Exampaper Template
