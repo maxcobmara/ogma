@@ -3853,7 +3853,6 @@ en:
       student_same_grade: Please select students grade of the same Subject for multiple edit.
       summative_exceed_maximum: "Summative Marks must not exceed examination paper full marks."
       summative_exceed_hundred: "Summative Marks must less than or equal to 100%."
-      summative_compulsory: "Summative Marks is compulsory."
       subject_already_taken: This student has already taken this subject
     
     examresult:
