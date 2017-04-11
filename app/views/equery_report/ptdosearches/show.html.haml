@@ -1,0 +1,74 @@
+- model_class = Ptdosearch
+.page-header
+  %h1=t('equery.ptdo.search')
+= render 'shared/flashes'
+
+- if @ptdosearch.staff_name.blank? && @ptdosearch.schedulestart_start.blank? && @ptdosearch.schedulestart_end.blank?
+  - disp=(t 'equery.ptdo.list_all')
+- else
+  - disp=(t 'equery.result')
+
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to disp,"#search", "data-toggle" => "tab"
+
+    / display 
+    .tab-content{style:"padding-top:1em"}
+      #search_details.tab-pane.active  
+            
+        /additional heading
+        .col-md-8.col-md-offset-2
+          %dl.dl-horizontal
+            - unless @ptdosearch.staff_name.blank? || @ptdosearch.icno.blank?
+              %dt=(t 'equery.ptdo.staff')
+              %dd=formatted_mykad(@ptdosearch.icno)+" "+@ptdosearch.staff_name
+              
+            - if !@ptdosearch.schedulestart_start.blank? || !@ptdosearch.schedulestart_end.blank?
+              %dt=(t 'equery.ptdo.schedule_date')
+              %dd
+                - start_training_date=@ptdosearch.schedulestart_start.try(:strftime, "%d-%m-%Y") 
+                - startend_training_date=@ptdosearch.schedulestart_end.try(:strftime, "%d-%m-%Y")
+                =(t 'from')+" "
+                = !@ptdosearch.schedulestart_start.blank? ? start_training_date : startend_training_date
+                =(t 'to')+" "
+                = !@ptdosearch.schedulestart_end.blank? ? startend_training_date : Date.today.strftime("%d-%m-%Y")
+           
+            %dt=(t'equery.ptdo.total')
+            %dd=@ptdosearch.ptdos.group_by{|x|x.staff_id}.count
+
+        /display result
+        .col-md-8.col-md-offset-1
+          %br
+          - if @ptdosearch.ptdos.count > 0
+            %table.table.table-bordered.table-condensed
+              %head
+                %tr.bg-grey
+                  %th{width: '5%'} No
+                  %th{width: '33%'}=t('equery.ptdo.staff')
+                  %th{width: '15%'}=t('equery.ptdo.icno')
+                  %th{width: '20%'}=t('equery.ptdo.department')
+                  %th{width: '22%'}=t('equery.ptdo.position')
+                  %th{width: '10%'}=t('equery.ptdo.total_days')
+                  %th{width: '5%'}=t('ptdos.download')
+              %body
+                - nos=0
+                - @ptdosearch.ptdos.sort_by{|y|y.staff.name}.group_by{|x|x.staff_id}.each do |staffid, attended_trainings| 
+                  - curr_staff=Staff.find(staffid)
+                  %tr
+                    %td=nos+=1
+                    %td=curr_staff.staff_with_rank
+                    %td=formatted_mykad(curr_staff.icno)
+                    %td=Ptdo.staff_unit(curr_staff)
+                    %td=curr_staff.try(:position).try(:name)
+                    %td.centre=Ptdo.staff_total_days(attended_trainings.map(&:id)) 
+                    %td.centre=link_to (fa_icon "file-pdf-o"), "http://#{request.host}:3003/staff_training/ptdos/training_report.pdf?locale=ms_MY&q[staff_id] =#{staffid}&q[ptschedule_start_gteq]=#{start_training_date}&q[ptschedule_start_lteq]=#{startend_training_date}"
+
+.row
+  .col-md-6.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('staff.title')}", "/equery_reports?query_module=1", class: 'btn btn-primary'
+      %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_ptdosearch_path(searchptdotype: 1),  :class => 'btn btn-default'
+

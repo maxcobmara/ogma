@@ -27,4 +27,10 @@ class StaticPagesController < ApplicationController
       redirect_to("http://#{request.host}:3003", notice: (t 'user.sign_in_required')) 
     end
   end
+  
+  def equery_reports
+    unless params[:query_module].blank?
+      @query_module=params[:query_module]
+    end
+  end
 end

@@ -626,6 +626,14 @@ Ogma::Application.routes.draw do
 
   resources :groups
   resources :colleges 
+  
+  namespace :equery_report do
+    resources :staffsearch2s 
+    resources :staffattendancesearches
+    resources :ptdosearches
+    resources :booksearches
+    resources :librarytransactionsearches
+  end
 
   #refer 1)lib/Subdomain.rb & 2)config/application.rb (auto loader for lib files)
   #ref: http://stackoverflow.com/questions/4027736/add-constraint-to-route-to-exclude-certain-keyword
@@ -647,6 +655,7 @@ Ogma::Application.routes.draw do
   match '/asset_report', to: 'static_pages#asset_report', via: 'get'
   match '/fetch_items', to: 'exam/exams#question_selection', via: 'get'
   #match '/rules_regulations', to: 'static_pages#rules_regulations', via: 'get'
+  match '/equery_reports', to: 'static_pages#equery_reports', via: 'get'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

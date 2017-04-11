@@ -1,0 +1,159 @@
+- model_class = Librarytransactionsearch
+.page-header
+  %h1=t('equery.library_transaction.search')
+= render 'shared/flashes'
+
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'equery.library_transaction.search_data'), "#search", "data-toggle" => "tab"
+
+    / display 
+    .tab-content{style:"padding-top:1em"}
+      #search_details.tab-pane.active
+        
+        /additional heading
+        .col-md-8.col-md-offset-2
+          %dl.dl-horizontal
+            %dt=(t 'time.years').titleize
+            %dd=h @librarytransactionsearch.yearstat.year 
+            
+            %dt=t('equery.library_transaction.total')
+            %dd=h @librarytransactionsearch.librarytransactions.where.not(ru_staff: nil).count 
+
+        .col-md-10.col-md-offset-1
+          %br
+          
+          - if @librarytransactionsearch.accumbookloan == 1
+            %b=t('equery.library_transaction.accumulated_loan')
+            
+            /FOR TRANSACTION DETAILS USE & MONTHLY ACCUMULATED BOOK ON LOAN
+            - @checkout_months=Hash[[1,2,3,4,5,6,7,8,9,10,11,12].map{|x|[x, Hash["staff" => 0, "student" => 0]]}]
+            - @librarytransactionsearch.librarytransactions.where(ru_staff: true).group_by{|y|y.checkoutdate.month}.each do |checkout_month, transactions|
+              - @checkout_months[checkout_month]["staff"]=transactions.count
+            - @librarytransactionsearch.librarytransactions.where(ru_staff: false).group_by{|y|y.checkoutdate.month}.each do |checkout_month, transactions|
+              - @checkout_months[checkout_month]["student"]=transactions.count
+              
+            - acc_staff=[]
+            - acc_student=[]
+            - amt_stu=0
+            - amt_stf=0
+            - @checkout_months.each do |k, v|
+              - acc_staff << amt_stf+=v["staff"]
+              - acc_student << amt_stu+=v["student"]
+              
+            %table.table.table-bordered.table-condensed
+              %head 
+                %tr
+                  %th.bg-grey.centre{width: '6%'}=(t 'time.months').upcase
+                  - 1.upto(12) do |no|
+                    %th.bg-grey.centre{width: '6%'}= t(:'date.month_names')[no] 
+                  %th.bg-grey.centre{width: '6%'}=(t 'equery.total').upcase
+                %tr
+                  %th.bg-grey=t('equery.library_transaction.staff')
+                  - 0.upto(11) do |no|
+                    %td.centre=acc_staff[no]
+                  %th.bg-grey.centre=acc_staff.last
+                %tr
+                  %th.bg-grey=t('equery.library_transaction.student')
+                  - 0.upto(11) do |no|
+                    %td.centre=acc_student[no]
+                  %th.bg-grey.centre=acc_student.last
+                %tr
+                  %td{colspan: 13}
+                  %th.bg-grey.centre=acc_student.last+acc_staff.last
+
+          - if @librarytransactionsearch.programme == 1 
+            %b=t('equery.library_transaction.borrower_programme')
+            
+            - @count_programmes=Hash[Programme.roots.pluck(:id).map{|x|[x, 0]}]
+            - @librarytransactionsearch.librarytransactions.where(ru_staff: false).group_by{|x|x.student.course_id}.each do |courseid, transactions|
+              - @count_programmes[courseid]+=transactions.count
+           
+            - Programme.roots.group_by(&:course_type).each do |course_type, programmes|
+              %b= ": "+course_type.upcase
+              %table.table.table-bordered.table-condensed
+                %tr
+                  %th.bg-grey=(t 'equery.library_transaction.programme').upcase
+                  - for programme in programmes
+                    %th.centre.bg-grey=(programme.programme_list+"<br>(#{programme.id})").html_safe
+                  %th.centre.bg-grey=t('equery.total')
+                %tr
+                  %th.bg-grey=t('equery.library_transaction.student')
+                  - total=0
+                  - for programme in programmes
+                    %th.centre=@count_programmes[programme.id]
+                    - total+=@count_programmes[programme.id]
+                  %th.centre.bg-grey=total
+         
+        .col-md-11
+          - if @librarytransactionsearch.fines == 1
+            %b=t('equery.library_transaction.accumulated_fine_collected')
+            
+            - monthly_fines=[0,0,0,0,0,0,0,0,0,0,0,0]
+            - accu_fines=[]
+            - @librarytransactionsearch.librarytransactions.where.not(ru_staff: nil).where.not(fine: nil).group_by{|x|x.checkoutdate.month}.each do |checkout_month, transactions|
+              - monthly_fines[checkout_month-1]=transactions.map(&:fine).sum.to_f
+            - acc_fine=0
+            - monthly_fines.each_with_index do |y, ind|
+              - accu_fines << acc_fine+=monthly_fines[ind]
+            
+            %table.table.table-bordered.table-condensed
+              %head 
+                %tr
+                  %th.bg-grey.centre{width: '6%'}=(t 'time.months').upcase
+                  - 1.upto(12) do |no|
+                    %th.bg-grey.centre{width: '6%'}= t(:'date.month_names')[no] 
+                  %th.bg-grey.centre{width: '6%'}=(t 'equery.total').upcase
+                %tr
+                  %th=t('equery.library_transaction.fines')
+                  - 0.upto(11) do |no|
+                    %td.centre=ringgols(accu_fines[no])
+                  %th.centre=ringgols(accu_fines.last)
+              
+          - if @librarytransactionsearch.bookloans == 1 
+            - if current_user.college.code=='kskbjb'
+              - kskbjb_classes=Hash[["w","wa", "wb", "wc", "wd", "we", "wf", "wg", "wh", "wi", "wj", "wk", "wl", "wm", "wn", "wo", "wp", "wp", "wq", "wr", "ws", "wt", "wu", "wv", "ww", "wx", "wy", "wz", "qs", "qt", "qu", "qv", "qw", "qx", "qy", "qz", "others"].map{|x|[x, 0]}]
+              
+            - else
+              /- @checkout_months=Hash[[1,2,3,4,5,6,7,8,9,10,11,12].map{|x|[x, Hash["staff" => 0, "student" => 0]]}]
+              
+              - amsas_arr=["000", "100", "200", "300", "400", "500", "600", "700", "800", "900", "none"]
+              - amsas_classes=Hash[amsas_arr.map{|x|[x, 0]}]
+              
+              /- class_list=Book.pluck(:classlcc, :classddc).flatten.compact-[""]
+              /"111"[/[0-9]+/]=="111"
+              = amsas_classes
+              - arr=[]
+              - arr2=[]
+              - @librarytransactionsearch.librarytransactions.each do |x| 
+                - classfrdb=x.accession.book.classlcc.blank? ? x.accession.book.classddc : x.accession.book.classlcc
+                - arr << classfrdb
+                - if classfrdb.include?(".")
+                  /- nom=classfrdb.split(".")[0]
+                  - nom=classfrdb.split(".")[0]
+                  - if nom.include?(" ")
+                    - nom=nom.split(" ")[1]
+                  - arr2 << nom
+                  - if all_digits(nom)==true
+                    - amsas_arr.each_with_index do |amm, ind|
+                      /- if ind > 0
+                      - if ind < amsas_arr.count-1
+                        - nom2=nom.to_i
+                        /- arr2 << nom2
+                        /- if nom2 >=amsas_arr[ind-1].to_i && nom2 < amm.to_i
+                        - if nom2 >=amm.to_i&& nom2 < amsas_arr[ind+1].to_i 
+                          - amsas_classes[amm]+=1
+                - else
+              %br= arr
+              %br=arr2
+              %br= amsas_classes
+              
+              
+.row
+  .col-md-6.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('library.title')}", "/equery_reports?query_module=7", class: 'btn btn-primary'
+      %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_librarytransactionsearch_path(searchlibrarytransactiontype: 1),  :class => 'btn btn-default'

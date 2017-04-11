@@ -409,4 +409,15 @@ module ApplicationHelper
      arr
   end
   
+  #usage - librarytransactionsearch
+  def all_digits(str)
+    str[/[0-9]+/] == str
+  end
+  
+  def all_letters(str)
+    # Use 'str[/[a-zA-Z]*/] == str' to let all_letters
+    # yield true for the empty string
+    str[/[a-zA-Z]+/] == str
+  end
+  
 end

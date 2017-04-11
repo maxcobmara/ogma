@@ -424,3 +424,16 @@
           - permitted_to? :show, :colleges do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('college.title'), college_path(current_user.college_id)
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Release Notes", '#'
+
+
+    %li.icon.icon-left
+      = link_to content_tag(:i, "", :class => "icon-numb") + t('equery.title'), '#'
+      .mp-level
+        %h2.icon= t('equery.title')
+        %a.mp-back{:href => "#"}=t('back')
+        %ul
+          /%li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.reportdownload"), "/equery_reports"
+          - if (permitted_to? :read, :staffsearch2s) || (permitted_to? :read, :staffattendancesearches) || (permitted_to? :read, :ptdosearches)
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'staff.title'), "/equery_reports?query_module=1"
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'library.title'), "/equery_reports?query_module=7"
+          

@@ -43,7 +43,7 @@ jQuery ->
 $('#librarytransaction_accession_acc_book').autocomplete
   minLength: 2
   source: $('#librarytransaction_accession_acc_book').data('autocomplete-source')
+
   
-  
-  
+ 
   
