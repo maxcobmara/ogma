@@ -4540,7 +4540,8 @@ ms_MY:
     #to_includes: untuk sertakan
     #in_search_results: "dalam keputusan peperiksaan."
     total: Jumlah
-    #not_defined: Tidak ditentukan
+    not_defined: Tidak ditentukan
+    not_related: Tidak berkaitan
     #select_method: 'Sila pilih sekurang-kurangnya satu kaedah carian'
     #document:
       #search: Carian Dokumen
@@ -4835,16 +4836,17 @@ ms_MY:
       accumulated_loan: Jumlah Terkumpul Buku Dipinjam 
       borrower_programme: Peminjam Mengikut Program
       accumulated_fine_collected: Jumlah Terkumpul Denda yang Dipungut
-      total_loan: Jumlah Buku Sedang Dipinjam
+      total_loan: Jumlah Pinjaman Buku Mengikut Klasifikasi 
       details: Butiran Transaksi
       tick_checkbox: Pilih kotak semak
       total: "Jumlah Transaksi / Pinjaman Buku"
-      #by_nlm: mengikut Klasifikasi NLM
+      by_nlm: "Jumlah pinjaman buku mengikut klasifikasi - 'National Library of Medicine' (NLM)"
+      by_ddc: "Jumlah pinjaman buku mengikut klasifikasi - 'Dewey Decimal Classification' (DDC)"
       programme: Program
       student: Pelajar
       staff: Kakitangan
-      #classification: Klasifikasi
-      #fines: Denda
+      classification: Klasifikasi
+      fines: Denda
     #stationery:
       #search_by: Carian Mengikut
       #report: "Laporan Kedudukan Stok Tahunan (KEWPS 13)"

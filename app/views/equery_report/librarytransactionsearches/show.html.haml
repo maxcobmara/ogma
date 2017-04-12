@@ -22,24 +22,24 @@
             %dt=t('equery.library_transaction.total')
             %dd=h @librarytransactionsearch.librarytransactions.where.not(ru_staff: nil).count 
 
+        /A. Jumlah Terkumpul Buku Dipinjam
         .col-md-10.col-md-offset-1
           %br
           
           - if @librarytransactionsearch.accumbookloan == 1
             %b=t('equery.library_transaction.accumulated_loan')
             
-            /FOR TRANSACTION DETAILS USE & MONTHLY ACCUMULATED BOOK ON LOAN
-            - @checkout_months=Hash[[1,2,3,4,5,6,7,8,9,10,11,12].map{|x|[x, Hash["staff" => 0, "student" => 0]]}]
+            - checkout_months=Hash[[1,2,3,4,5,6,7,8,9,10,11,12].map{|x|[x, Hash["staff" => 0, "student" => 0]]}]
             - @librarytransactionsearch.librarytransactions.where(ru_staff: true).group_by{|y|y.checkoutdate.month}.each do |checkout_month, transactions|
-              - @checkout_months[checkout_month]["staff"]=transactions.count
+              - checkout_months[checkout_month]["staff"]=transactions.count
             - @librarytransactionsearch.librarytransactions.where(ru_staff: false).group_by{|y|y.checkoutdate.month}.each do |checkout_month, transactions|
-              - @checkout_months[checkout_month]["student"]=transactions.count
+              - checkout_months[checkout_month]["student"]=transactions.count
               
             - acc_staff=[]
             - acc_student=[]
             - amt_stu=0
             - amt_stf=0
-            - @checkout_months.each do |k, v|
+            - checkout_months.each do |k, v|
               - acc_staff << amt_stf+=v["staff"]
               - acc_student << amt_stu+=v["student"]
               
@@ -64,6 +64,8 @@
                   %td{colspan: 13}
                   %th.bg-grey.centre=acc_student.last+acc_staff.last
 
+        /B. Peminjam Mengikut Program
+        .col-md-10.col-md-offset-1
           - if @librarytransactionsearch.programme == 1 
             %b=t('equery.library_transaction.borrower_programme')
             
@@ -87,6 +89,7 @@
                     - total+=@count_programmes[programme.id]
                   %th.centre.bg-grey=total
          
+        /C. Jumlah Terkumpul Denda yang Dipungut
         .col-md-11
           - if @librarytransactionsearch.fines == 1
             %b=t('equery.library_transaction.accumulated_fine_collected')
@@ -111,46 +114,92 @@
                   - 0.upto(11) do |no|
                     %td.centre=ringgols(accu_fines[no])
                   %th.centre=ringgols(accu_fines.last)
-              
+          
+        /D. Jumlah Pinjaman Buku Mengikut Klasifikasi - 'National Library of Medicine' (NLM) / 'Dewey Decimal Classification' (DDC)
+        .col-md-11
           - if @librarytransactionsearch.bookloans == 1 
+            /NOTE - international book classifications : 
+            /1) Call No @ LC No - Library of Congress (LC) Classification System - http://www.lib.sfu.ca/find/what-call-number
+            /2) NLM classification - National Library of Medicine - https://www.nlm.nih.gov/class/ - sample : WY150BAR
+            /3) DDC Classification - Dewey Decimal Classification - https://en.wikipedia.org/wiki/Dewey_Decimal_Classification - sample :
+
             - if current_user.college.code=='kskbjb'
-              - kskbjb_classes=Hash[["w","wa", "wb", "wc", "wd", "we", "wf", "wg", "wh", "wi", "wj", "wk", "wl", "wm", "wn", "wo", "wp", "wp", "wq", "wr", "ws", "wt", "wu", "wv", "ww", "wx", "wy", "wz", "qs", "qt", "qu", "qv", "qw", "qx", "qy", "qz", "others"].map{|x|[x, 0]}]
+              /NLM classification is use - field : classlcc
+              - nlm_subjects=Book.nlm_subjects
+              - classification=Hash[nlm_subjects.map{|x|[x, 0]}]
+              - fullcodes=@librarytransactionsearch.librarytransactions.where.not(ru_staff: nil).joins(:accession).map{|x|x.accession.book.classlcc}
               
-            - else
-              /- @checkout_months=Hash[[1,2,3,4,5,6,7,8,9,10,11,12].map{|x|[x, Hash["staff" => 0, "student" => 0]]}]
-              
-              - amsas_arr=["000", "100", "200", "300", "400", "500", "600", "700", "800", "900", "none"]
-              - amsas_classes=Hash[amsas_arr.map{|x|[x, 0]}]
-              
-              /- class_list=Book.pluck(:classlcc, :classddc).flatten.compact-[""]
-              /"111"[/[0-9]+/]=="111"
-              = amsas_classes
-              - arr=[]
-              - arr2=[]
-              - @librarytransactionsearch.librarytransactions.each do |x| 
-                - classfrdb=x.accession.book.classlcc.blank? ? x.accession.book.classddc : x.accession.book.classlcc
-                - arr << classfrdb
-                - if classfrdb.include?(".")
-                  /- nom=classfrdb.split(".")[0]
-                  - nom=classfrdb.split(".")[0]
-                  - if nom.include?(" ")
-                    - nom=nom.split(" ")[1]
-                  - arr2 << nom
-                  - if all_digits(nom)==true
-                    - amsas_arr.each_with_index do |amm, ind|
-                      /- if ind > 0
-                      - if ind < amsas_arr.count-1
-                        - nom2=nom.to_i
-                        /- arr2 << nom2
-                        /- if nom2 >=amsas_arr[ind-1].to_i && nom2 < amm.to_i
-                        - if nom2 >=amm.to_i&& nom2 < amsas_arr[ind+1].to_i 
-                          - amsas_classes[amm]+=1
+              - for fullcode in fullcodes
+                - unless fullcode.blank?
+                  /first occurance of letter set - sample : "ahhh666uuuiii"[/[a-zA-Z]+/] - ahhh
+                  - extract=fullcode[/[a-zA-Z]+/]
+                  - unless extract.nil?
+                    - ext=extract.size > 2 ? extract[0,2] : extract
+                    - if nlm_subjects.include?(ext.downcase)
+                      - for nlm_subject in nlm_subjects
+                        - if ext.downcase==nlm_subject
+                          - classification[nlm_subject]+=1
+                    - else
+                      - classification["others"]+=1
                 - else
-              %br= arr
-              %br=arr2
-              %br= amsas_classes
+                  /No LCC data - classlcc field is blank
+                  - classification["others"]+=1
               
+              /
               
+            - elsif current_user.college.code=='amsas'
+              /DDC classification is use - field : classddc
+              
+              - ddc_subjects=Book.ddc_subjects
+              - classification=Hash[ddc_subjects.map{|x|[x, 0]}]
+              - fullcodes=@librarytransactionsearch.librarytransactions.where.not(ru_staff: nil).joins(:accession).map{|x|x.accession.book.classddc}
+                            
+              - for fullcode in fullcodes
+                - unless fullcode.blank?
+                  - subject=fullcode.split(".")[0]
+                  - if all_digits(subject)==true
+                    - subject=subject.to_i
+                    - ddc_subjects.each_with_index do |ddc_subject, ind|
+                      - if ind < ddc_subjects.count-1
+                        - if subject >=ddc_subject.to_i && subject < ddc_subjects[ind+1].to_i 
+                          - classification[ddc_subject]+=1      
+                - else
+                  /No DDC data - classddc field is blank
+                  - classification["none"]+=1
+            
+            - if current_user.college.code=='kskbjb'
+              %b=(t 'equery.library_transaction.by_nlm')
+              = render partial: 'display_classification', locals: {classification: classification}
+            - else
+              .col-md-8.col-md-offset-1
+                %b=(t 'equery.library_transaction.by_ddc')
+                = render partial: 'display_classification', locals: {classification: classification}
+
+        /E. Butiran Transaksi
+        .col-md-10.col-md-offset-1
+          - if @librarytransactionsearch.details == 1
+            
+            %b=t('equery.library_transaction.details')
+            %table.table.table-bordered.table-condensed
+              %head
+                %tr
+                  %th.bg-grey No
+                  %th.bg-grey=t('library.book.title')
+                  %th.bg-grey=t('library.book.accessionno')
+                  %th.bg-grey=t('equery.library_transaction.classification')
+                  %th.centre.bg-grey=t('library.transaction.checkoutdate')
+                  %th.centre.bg-grey=t('equery.library_transaction.programme')
+              %body
+                - no=0
+                - for transaction in @librarytransactionsearch.librarytransactions.where.not(ru_staff: nil).order(checkoutdate: :asc)
+                  %tr
+                    %td=no+=1
+                    %td=transaction.accession.book.title
+                    %td=transaction.accession.accession_no
+                    %td=current_user.college.code=='kskbjb' ? transaction.accession.book.classlcc : transaction.accession.book.classddc
+                    %td.centre=transaction.checkoutdate.try(:strftime, "%d-%m-%Y")
+                    %td.centre=transaction.ru_staff==false ? "(#{transaction.student.course_id})" : (t 'equery.not_related')
+          
 .row
   .col-md-6.col-md-offset-3
     %hr

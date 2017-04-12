@@ -36,6 +36,7 @@
                 %label.radio-inline
                   = f.check_box :bookloans,:checked=>"unchecked", :id=> 'bookloans_checker'
                 =t('equery.library_transaction.total_loan')
+                =current_user.college.code=='kskbjb' ? " - 'National Library of Medicine' (NLM)" : " - 'Dewey Decimal Classification' (DDC)"
             .row
               .col-md-offset-2
                 %label.radio-inline

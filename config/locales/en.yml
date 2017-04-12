@@ -4625,7 +4625,8 @@ en:
     #to_includes: to includes
     #in_search_results: "in search results."
     total: Total
-    #not_defined: Not defined
+    not_defined: Not defined
+    not_related: Not related
     #select_method: 'Please select at least one method of searching'
     #document:
       #search: Document Search
@@ -4921,16 +4922,17 @@ en:
       accumulated_loan: Accumulated Books On Loan
       borrower_programme: Borrower by Programme
       accumulated_fine_collected: Accumulated Fines Collected
-      total_loan: Total Books on Loan
+      total_loan: Total Loaned Books by Classification
       details: Transaction Details
       tick_checkbox: Tick checkbox
       total: "Total Transaction / Book Loan"
-      #by_nlm: by NLM Classification
+      by_nlm: "Total loaned books by 'National Library of Medicine' classification (NLM)"
+      by_ddc: "Total loaned books loaned by 'Dewey Decimal Classification' (DDC)"
       programme: Programme
       student: Student
       staff: Staff
-      #classification: Classification
-      #fines: Denda
+      classification: Classification
+      fines: Denda
     #stationery:
       #search_by: Search by
       #report: "Yearly Stock Report (KEWPS 13)"
