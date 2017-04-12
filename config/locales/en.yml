@@ -459,6 +459,8 @@ en:
         icno: MyKad No
         hpno: H/p No
         expertise: Expertise / qualification
+      librarytransactionsearch:
+        yearstat: Year
 
     errors:
         template:
@@ -4933,6 +4935,7 @@ en:
       staff: Staff
       classification: Classification
       fines: Denda
+      select_criteria: Please select statistic data type to be displayed
     #stationery:
       #search_by: Search by
       #report: "Yearly Stock Report (KEWPS 13)"

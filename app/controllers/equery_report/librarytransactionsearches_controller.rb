@@ -5,22 +5,8 @@ class EqueryReport::LibrarytransactionsearchesController < ApplicationController
   end
 
   def create
-    #raise params.inspect
     @searchlibrarytransactiontype = params[:method]
-    if @searchlibrarytransactiontype == '1' || @searchlibrarytransactiontype == 1
-        @librarytransactionsearch = Librarytransactionsearch.new(librarytransactionsearch_params)
-#         #--yearstat---
-#         @aa=params[:yearstat][:"(1i)"] 
-#         @bb=params[:yearstat][:"(2i)"]
-#         @cc=params[:yearstat][:"(3i)"]
-#         if @aa!=''    #&& @bb!='' && @cc!=''
-#             @dadidu=@aa+'-'+'01'+'-'+'01'        #@bb+'-'+@cc  
-#         else
-#             @dadidu=''
-#         end
-#         @librarytransactionsearch.yearstat = @dadidu
-#         #--yearstat---
-    end 
+    @librarytransactionsearch = Librarytransactionsearch.new(librarytransactionsearch_params)
     if @librarytransactionsearch.save
       redirect_to equery_report_librarytransactionsearch_path(@librarytransactionsearch)
     else

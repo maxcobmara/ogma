@@ -442,6 +442,8 @@ ms_MY:
         icno: No mykad
         hpno: No tel bimbit
         expertise: Kepakaran / kelayakan
+      librarytransactionsearch:
+        yearstat: Tahun
         
         
     errors:
@@ -4847,6 +4849,7 @@ ms_MY:
       staff: Kakitangan
       classification: Klasifikasi
       fines: Denda
+      select_criteria: Sila pilih jenis data statistik yang ingin dipaparkan
     #stationery:
       #search_by: Carian Mengikut
       #report: "Laporan Kedudukan Stok Tahunan (KEWPS 13)"

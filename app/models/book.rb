@@ -163,15 +163,6 @@ class Book < ActiveRecord::Base
 #     2) On loan / Pinjam
 #     3) Weeding / Hapuskira
 #     4) Reference / Rujukan
-  
-  def self.nlm_subjects
-    ["w","wa", "wb", "wc", "wd", "we", "wf", "wg", "wh", "wi", "wj", "wk", "wl", "wm", "wn", "wo", "wp", "wp", "wq", "wr", "ws", "wt", "wu", "wv", "ww", "wx", "wy", "wz", "qs", "qt", "qu", "qv", "qw", "qx", "qy", "qz", "others"]
-  end
-  
-  def self.ddc_subjects
-    ["000", "100", "200", "300", "400", "500", "600", "700", "800", "900", "none"]
-  end
-  
 end
 
 # == Schema Information

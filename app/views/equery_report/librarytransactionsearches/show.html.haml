@@ -121,22 +121,22 @@
             /NOTE - international book classifications : 
             /1) Call No @ LC No - Library of Congress (LC) Classification System - http://www.lib.sfu.ca/find/what-call-number
             /2) NLM classification - National Library of Medicine - https://www.nlm.nih.gov/class/ - sample : WY150BAR
-            /3) DDC Classification - Dewey Decimal Classification - https://en.wikipedia.org/wiki/Dewey_Decimal_Classification - sample :
-
+            /3) DDC Classification - Dewey Decimal Classification - https://en.wikipedia.org/wiki/Dewey_Decimal_Classification - sample : 899.2333 NAZ M
+            / i) NLM & LC No - 'classlcc' field
+            / ii) DDC No - 'classddc' field
+            
             - if current_user.college.code=='kskbjb'
-              /NLM classification is use - field : classlcc
-              - nlm_subjects=Book.nlm_subjects
-              - classification=Hash[nlm_subjects.map{|x|[x, 0]}]
-              - fullcodes=@librarytransactionsearch.librarytransactions.where.not(ru_staff: nil).joins(:accession).map{|x|x.accession.book.classlcc}
-              
-              - for fullcode in fullcodes
+              - subjects=["w","wa", "wb", "wc", "wd", "we", "wf", "wg", "wh", "wi", "wj", "wk", "wl", "wm", "wn", "wo", "wp", "wp", "wq", "wr", "ws", "wt", "wu", "wv", "ww", "wx", "wy", "wz", "qs", "qt", "qu", "qv", "qw", "qx", "qy", "qz", "others"]
+              - classification=Hash[subjects.map{|x|[x, 0]}]
+
+              - for fullcode in @librarytransactionsearch.librarytransactions.where.not(ru_staff: nil).joins(:accession).map{|x|x.accession.book.classlcc}
                 - unless fullcode.blank?
                   /first occurance of letter set - sample : "ahhh666uuuiii"[/[a-zA-Z]+/] - ahhh
                   - extract=fullcode[/[a-zA-Z]+/]
                   - unless extract.nil?
                     - ext=extract.size > 2 ? extract[0,2] : extract
-                    - if nlm_subjects.include?(ext.downcase)
-                      - for nlm_subject in nlm_subjects
+                    - if classification.keys.include?(ext.downcase)
+                      - for nlm_subject in classification.keys
                         - if ext.downcase==nlm_subject
                           - classification[nlm_subject]+=1
                     - else
@@ -144,33 +144,26 @@
                 - else
                   /No LCC data - classlcc field is blank
                   - classification["others"]+=1
-              
-              /
+
+              %b=(t 'equery.library_transaction.by_nlm')
+              = render partial: 'display_classification', locals: {classification: classification}
               
             - elsif current_user.college.code=='amsas'
-              /DDC classification is use - field : classddc
               
-              - ddc_subjects=Book.ddc_subjects
-              - classification=Hash[ddc_subjects.map{|x|[x, 0]}]
-              - fullcodes=@librarytransactionsearch.librarytransactions.where.not(ru_staff: nil).joins(:accession).map{|x|x.accession.book.classddc}
-                            
-              - for fullcode in fullcodes
+              - classification=Hash[["000", "100", "200", "300", "400", "500", "600", "700", "800", "900", "none"].map{|x|[x, 0]}]
+              - for fullcode in @librarytransactionsearch.librarytransactions.where.not(ru_staff: nil).joins(:accession).map{|x|x.accession.book.classddc}
                 - unless fullcode.blank?
                   - subject=fullcode.split(".")[0]
                   - if all_digits(subject)==true
                     - subject=subject.to_i
-                    - ddc_subjects.each_with_index do |ddc_subject, ind|
-                      - if ind < ddc_subjects.count-1
-                        - if subject >=ddc_subject.to_i && subject < ddc_subjects[ind+1].to_i 
+                    - classification.keys.each_with_index do |ddc_subject, ind|
+                      - if ind < classification.keys.count-1
+                        - if subject >=ddc_subject.to_i && subject < classification.keys[ind+1].to_i 
                           - classification[ddc_subject]+=1      
                 - else
                   /No DDC data - classddc field is blank
                   - classification["none"]+=1
-            
-            - if current_user.college.code=='kskbjb'
-              %b=(t 'equery.library_transaction.by_nlm')
-              = render partial: 'display_classification', locals: {classification: classification}
-            - else
+                  
               .col-md-8.col-md-offset-1
                 %b=(t 'equery.library_transaction.by_ddc')
                 = render partial: 'display_classification', locals: {classification: classification}

@@ -1,6 +1,8 @@
 class Librarytransactionsearch < ActiveRecord::Base
-  #attr_accessible :accumbookloan , :programme, :fines, :bookloans, :yearstat, :details
   attr_accessor :method
+  
+  validates :yearstat, presence: true
+  validate :criteria_must_exist
   
   def librarytransactions
     @librarytransactions ||= find_librarytransactions
@@ -13,18 +15,8 @@ class Librarytransactionsearch < ActiveRecord::Base
   end
   
   def yearstat_conditions
-    #["checkoutdate>=? AND checkoutdate<=?","2017-01-01", "2017-12-31" ] unless yearstat.blank?    #if accumbookloan==1 
     ["checkoutdate>=? AND checkoutdate<=?",yearstat.beginning_of_year, yearstat.end_of_year ] unless yearstat.blank? 
   end
-  
-#   
-#   def accumbookloan_conditions
-#     ["accession_id IS NOT NULL"] if accumbookloan == 1
-#   end
-#   
-#   def programme_conditions
-#     ["staff_id IS NOT NULL AND student_id IS NOT NULL"] if programme == 1
-#   end
   
   def orders
      "id ASC"
@@ -44,5 +36,11 @@ class Librarytransactionsearch < ActiveRecord::Base
 
    def conditions_parts
      private_methods(false).grep(/_conditions$/).map { |m| send(m) }.compact
+   end
+   
+   def criteria_must_exist
+     if accumbookloan==0 && programme==0 && fines==0 && bookloans==0 && details==0
+       errors.add(:base, I18n.t('equery.library_transaction.select_criteria'))
+     end
    end
 end
