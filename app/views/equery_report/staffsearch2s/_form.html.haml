@@ -1,0 +1,15 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #search.tab-pane.active
+        %br
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'equery.ptdo.staff')
+            .col-md-5
+              = f.text_field :keywords, class: 'form-control', data: {autocomplete_source: Staff.order(:name).map(&:mykad_with_staff_name)}, placeholder: (t 'staff.name')+" "+(t 'or')+" "+(t 'equery.ptdo.icno')

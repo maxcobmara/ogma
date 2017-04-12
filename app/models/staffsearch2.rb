@@ -9,11 +9,15 @@ class Staffsearch2 < ActiveRecord::Base
   private
 
   def find_staffs
-    Staff.find(:all, :conditions => conditions,  :order => orders)    # :order => "staffgrade_id ASC "
+    Staff.where(conditions).order(orders)
   end
 
   def keyword_conditions
-    ["staffs.name ILIKE ?", "%#{keywords}%"] unless keywords.blank?   #["staffgrade.name ILIKE ?", "%#{keywords}%"] unless keywords.blank?#
+    unless keywords.blank?
+      icno_name=keywords.gsub("-","")
+      name=icno_name.gsub(/\d+/,"").strip
+      ["staffs.name ILIKE ?", "%#{name}%"]    #["staffgrade.name ILIKE ?", "%#{keywords}%"] unless keywords.blank?#
+    end
   end
   
   #Bersepadu (4)
@@ -22,22 +26,28 @@ class Staffsearch2 < ActiveRecord::Base
  
   #when ONE group selected
   def bersepadu
-    a='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=?', 4]).map(&:id).uniq.count!=0
-    0.upto(Employgrade.find(:all, :conditions=>['group_id=?', 4]).map(&:id).uniq.count-2) do |l|  
+    #a='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=?', 4]).map(&:id).uniq.count!=0
+    a='(staffgrade_id=? ' if  Employgrade.where('group_id=?', 4).map(&:id).uniq.count!=0
+    #0.upto(Employgrade.find(:all, :conditions=>['group_id=?', 4]).map(&:id).uniq.count-2) do |l|  
+    0.upto(Employgrade.where('group_id=?', 4).map(&:id).uniq.count-2) do |l|  
       a=a+'OR staffgrade_id=? '
     end
     a=a+')'
     return a if position==1 && position2==0 && position3==0
     
-    b='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=?', 2]).map(&:id).uniq.count!=0
-    0.upto(Employgrade.find(:all, :conditions=>['group_id=?', 2]).map(&:id).uniq.count-2) do |l|  
+    #b='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=?', 2]).map(&:id).uniq.count!=0
+    b='(staffgrade_id=? ' if  Employgrade.where('group_id=?', 2).map(&:id).uniq.count!=0
+    #0.upto(Employgrade.find(:all, :conditions=>['group_id=?', 2]).map(&:id).uniq.count-2) do |l|  
+    0.upto(Employgrade.where('group_id=?', 2).map(&:id).uniq.count-2) do |l|  
       b=b+'OR staffgrade_id=? '
     end
     b=b+')'
     return b if position==0 && position2==1 && position3==0
       
-    c='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=?', 1]).map(&:id).uniq.count!=0
-    0.upto(Employgrade.find(:all, :conditions=>['group_id=?', 1]).map(&:id).uniq.count-2) do |l|  
+    #c='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=?', 1]).map(&:id).uniq.count!=0
+    c='(staffgrade_id=? ' if  Employgrade.where('group_id=?', 1).map(&:id).uniq.count!=0
+    #0.upto(Employgrade.find(:all, :conditions=>['group_id=?', 1]).map(&:id).uniq.count-2) do |l|  
+    0.upto(Employgrade.where('group_id=?', 1).map(&:id).uniq.count-2) do |l|  
       c=c+'OR staffgrade_id=? '
     end
     c=c+')'
@@ -46,32 +56,41 @@ class Staffsearch2 < ActiveRecord::Base
   
   def position_conditions 
     if position==1 && position2==0 && position3==0
-      return [bersepadu, Employgrade.find(:all,:conditions=>['group_id=?', 4]).map(&:id) ]#unless position.blank? 
+      #return [bersepadu, Employgrade.find(:all,:conditions=>['group_id=?', 4]).map(&:id) ]#unless position.blank? 
+      return [bersepadu, Employgrade.where('group_id=?', 4).map(&:id) ]#unless position.blank? 
     elsif position==0 && position2==1 && position3==0
-      return [bersepadu, Employgrade.find(:all,:conditions=>['group_id=?', 2]).map(&:id) ]
+      #return [bersepadu, Employgrade.find(:all,:conditions=>['group_id=?', 2]).map(&:id) ]
+      return [bersepadu, Employgrade.where('group_id=?', 2).map(&:id) ]
     elsif position==0 && position2==0 && position3==1
-      return [bersepadu, Employgrade.find(:all,:conditions=>['group_id=?', 1]).map(&:id) ]
+      #return [bersepadu, Employgrade.find(:all,:conditions=>['group_id=?', 1]).map(&:id) ]
+      return [bersepadu, Employgrade.where('group_id=?', 1).map(&:id) ]
     end
   end 
  
   #when TWO groups selected
   def sokongan
-    a='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 4,2]).map(&:id).uniq.count!=0
-    0.upto(Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 4,2]).map(&:id).uniq.count-2) do |l|  
+    #a='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 4,2]).map(&:id).uniq.count!=0
+    a='(staffgrade_id=? ' if  Employgrade.where('group_id=? or group_id=?', 4,2).map(&:id).uniq.count!=0
+    #0.upto(Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 4,2]).map(&:id).uniq.count-2) do |l|  
+    0.upto(Employgrade.where('group_id=? or group_id=?', 4,2).map(&:id).uniq.count-2) do |l|  
       a=a+'OR staffgrade_id=? '
     end
     a=a+')'
     return a if position==1 && position2==1 && position3==0
       
-    b='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 4,1]).map(&:id).uniq.count!=0
-    0.upto(Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 4,1]).map(&:id).uniq.count-2) do |l|  
+    #b='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 4,1]).map(&:id).uniq.count!=0
+    b='(staffgrade_id=? ' if  Employgrade.where('group_id=? or group_id=?', 4,1).map(&:id).uniq.count!=0
+    #0.upto(Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 4,1]).map(&:id).uniq.count-2) do |l|  
+    0.upto(Employgrade.where('group_id=? or group_id=?', 4,1).map(&:id).uniq.count-2) do |l|  
       b=b+'OR staffgrade_id=? '
     end
     b=b+')'
     return b if position==1 && position2=0 && position3==1
       
-    c='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 2,1]).map(&:id).uniq.count!=0
-    0.upto(Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 2,1]).map(&:id).uniq.count-2) do |l|  
+    #c='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 2,1]).map(&:id).uniq.count!=0
+    c='(staffgrade_id=? ' if  Employgrade.where('group_id=? or group_id=?', 2,1).map(&:id).uniq.count!=0
+    #0.upto(Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 2,1]).map(&:id).uniq.count-2) do |l|  
+    0.upto(Employgrade.where('group_id=? or group_id=?', 2,1).map(&:id).uniq.count-2) do |l|  
       c=c+'OR staffgrade_id=? '
     end
     c=c+')'
@@ -80,18 +99,23 @@ class Staffsearch2 < ActiveRecord::Base
    
   def position2_conditions 
     if position==1 && position2==1 && position3==0
-       [sokongan, Employgrade.find(:all,:conditions=>['group_id=? or group_id=?', 4,2]).map(&:id) ] 
+       #[sokongan, Employgrade.find(:all,:conditions=>['group_id=? or group_id=?', 4,2]).map(&:id) ] 
+       [sokongan, Employgrade.where('group_id=? or group_id=?', 4,2).map(&:id) ] 
     elsif position==1 && position2==0 && position3==1
-       [sokongan, Employgrade.find(:all,:conditions=>['group_id=? or group_id=?', 4,1]).map(&:id) ] 
+       #[sokongan, Employgrade.find(:all,:conditions=>['group_id=? or group_id=?', 4,1]).map(&:id) ] 
+       [sokongan, Employgrade.where('group_id=? or group_id=?', 4,1).map(&:id) ] 
     elsif position==0 && position2==1 && position3==1
-       [sokongan, Employgrade.find(:all,:conditions=>['group_id=? or group_id=?', 2,1]).map(&:id) ] 
+       #[sokongan, Employgrade.find(:all,:conditions=>['group_id=? or group_id=?', 2,1]).map(&:id) ] 
+       [sokongan, Employgrade.where('group_id=? or group_id=?', 2,1).map(&:id) ] 
     end 
   end 
   
   #when THREE groups selected
   def pengurusan_profesional
-    a='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=? or group_id=? or group_id=?', 4,2,1]).map(&:id).uniq.count!=0
-    0.upto(Employgrade.find(:all, :conditions=>['group_id=? or group_id=? or group_id=?', 4,2,1]).map(&:id).uniq.count-2) do |l|  
+    #a='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=? or group_id=? or group_id=?', 4,2,1]).map(&:id).uniq.count!=0
+    a='(staffgrade_id=? ' if  Employgrade.where('group_id=? or group_id=? or group_id=?', 4,2,1).map(&:id).uniq.count!=0
+    #0.upto(Employgrade.find(:all, :conditions=>['group_id=? or group_id=? or group_id=?', 4,2,1]).map(&:id).uniq.count-2) do |l|  
+    0.upto(Employgrade.where('group_id=? or group_id=? or group_id=?', 4,2,1).map(&:id).uniq.count-2) do |l|
       a=a+'OR staffgrade_id=? '
     end
     a=a+')'
@@ -99,7 +123,8 @@ class Staffsearch2 < ActiveRecord::Base
   end 
    
   def position3_conditions 
-    [pengurusan_profesional, Employgrade.find(:all,:conditions=>['group_id=? or group_id=? or group_id=?', 4,2,1]).map(&:id) ] if position==1 && position2==1 && position3==1
+    #[pengurusan_profesional, Employgrade.find(:all,:conditions=>['group_id=? or group_id=? or group_id=?', 4,2,1]).map(&:id) ] if position==1 && position2==1 && position3==1
+    [pengurusan_profesional, Employgrade.where('group_id=? or group_id=? or group_id=?', 4,2,1).map(&:id) ] if position==1 && position2==1 && position3==1
   end 
 
 
