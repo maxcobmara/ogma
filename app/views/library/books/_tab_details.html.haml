@@ -3,10 +3,8 @@
     %dt= t 'library.book.catsource' 
     %dd=h (DropDown::CATSOURCE.find_all{|disp, value| value == @book.catsource.to_i}).map {|disp, value| disp}[0]
           
-    %dt
-      = t 'library.book.classno' 
-      (NLM) \/ (DDC)
-    %dd=h @book.classlcc 
+    %dt=@book.college.code=='kskbjb' ? (t 'library.book.classno')+" (LC) / (NLM)" : (t 'library.book.classno')+" (DDC)"
+    %dd=h @book.college.code=='kskbjb' ? @book.classlcc : @book.classddc
           
     %dt= t 'library.book.language' 
     %dd=h (DropDown::LANGUAGE.find_all{|disp, value| value == @book.language}).map {|disp, value| disp} [0]

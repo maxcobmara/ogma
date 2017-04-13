@@ -6,11 +6,14 @@
       = f.select :catsource, DropDown::CATSOURCE,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
   .form-group
     .col-sm-2.control-label
-      %b= (t 'library.book.classno')+" (LC) / (NLM)"
-      /+" (NLM) / (DDC)"
-     
+      %b=current_user.college.code=='kskbjb' ? (t 'library.book.classno')+" (LC) / (NLM)" : (t 'library.book.classno')+" (DDC)"
     .col-md-3
-      = f.text_field :classlcc, class:'form-control'
+      - if current_user.college.code=='kskbjb'
+        = f.text_field :classlcc, class:'form-control'
+      - else
+        = f.text_field :classddc, class:'form-control'
+      .small
+        = current_user.college.code=='kskbjb' ? ("LC - Library of Congress <br>NLM - National Library of Medicine").html_safe : "DDC - Dewey Decimal Classification"
   .form-group
     .col-sm-2.control-label
       = f.label t 'library.book.language', for: :book_language
