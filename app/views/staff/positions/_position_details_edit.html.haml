@@ -18,7 +18,7 @@
   .col-sm-2.control-label
     = f.label t 'position.grade_id', for: :grade_id
   .col-md-4
-    = f.collection_select :staffgrade_id, Employgrade.all.order(name: :asc), :id, :name_and_group, {:include_blank => t('select') },{class: 'selectpicker', "data-width"=>"auto"}
+    = f.collection_select :staffgrade_id, Employgrade.sorted_grades(Employgrade.all), :id, :name_and_group, {:include_blank => t('select') },{class: 'selectpicker', "data-width"=>"auto"}
   
 .form-group
   .col-sm-2.control-label

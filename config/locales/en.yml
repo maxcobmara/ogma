@@ -4929,7 +4929,7 @@ en:
       tick_checkbox: Tick checkbox
       total: "Total Transaction / Book Loan"
       by_nlm: "Total loaned books by 'National Library of Medicine' classification (NLM)"
-      by_ddc: "Total loaned books loaned by 'Dewey Decimal Classification' (DDC)"
+      by_ddc: "Total loaned books by 'Dewey Decimal Classification' (DDC)"
       programme: Programme
       student: Student
       staff: Staff

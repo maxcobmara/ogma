@@ -52,8 +52,8 @@ class Employgrade < ActiveRecord::Base
   
   def self.grade_legend
     #1) NOTE: Legend/formula - ...Home/Desktop/APMM Kuantan ICMS/[0] Format, Ref/Gred.pdf
-    maritim = [     24, 22, 20,  18,     16,  14, 13, 12, 10,   8,  [5,6],   nil,  4,    2,    1]             
-    non_maritim=[54, 52, 48, "46A", 44,  41, 41, 38, 36,  32,    29,   27,  22,  20,  17]
+    maritim = [     24, 22, 20,  18,     16,  14, 13, 12, 10,   8,  [5,6],   nil,  4,    2,    1, nil]             
+    non_maritim=[54, 52, 48, "46A", 44,  41, 41, 38, 36,  32,    29,   27,  22,  20,  17, 11]
     
     #2) combine above 2 arrays to become : 
     #{0=>[24, 54], 1=>[22, 52], 2=>[20, 48], 3=>[18, "46A"], 4=>[16, 44], 5=>[14, 41], 6=>[13, 41], 7=>[12, 38], 8=>[10, 36], 9=>[8, 32], 10=>[[5, 6], 29], 11=>[nil, 27], 12=>[4, 22], 13=>[2, 20], 14=>[1, 17]} 
@@ -111,6 +111,34 @@ class Employgrade < ActiveRecord::Base
     Employgrade.grade_legend.each do |k, v|
       for staff in staff_list.sort_by{|x|x.staffgrade.name}
 	    be4slash, afterslash=staff.staffgrade.name.split("/")
+            x=be4slash.gsub(/[^0-9]/, "").to_i
+            first_char=be4slash.lstrip[0,1]
+            if first_char.downcase=='x'            #maritime grade should start with letter 'x' of 'X'
+              if x==v[0]
+	        staffs_w_grades << staff
+	      end
+	      if k==10
+                  if v[0].include?(x)
+                      staffs_w_grades << staff
+                  end
+              end
+	    else
+	      if x==v[1]                                    #should list all staff with same employgrade
+                  staffs_w_grades << staff
+                  cnt+=1 if v[1]==41
+              end
+	    end
+      end
+    end
+    staffs_w_grades
+  end
+  
+  def self.sorted_postinfo_bygrade(postinfo_list)
+    cnt=0
+    staffs_w_grades=[]
+    Employgrade.grade_legend.each do |k, v|
+      for staff in postinfo_list.sort_by{|x|x.employgrade.name}#{|x|x.staffgrade.name}   #x.employgrade.gred_no
+	    be4slash, afterslash=staff.employgrade.name.split("/") #staff.staffgrade.name.split("/")
             x=be4slash.gsub(/[^0-9]/, "").to_i
             first_char=be4slash.lstrip[0,1]
             if first_char.downcase=='x'            #maritime grade should start with letter 'x' of 'X'
