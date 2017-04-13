@@ -7,8 +7,9 @@
   .form-group
     %label.col-sm-2.control-label= f.label t 'staff.training.course.training_classification', for: :name
     .col-md-3
-      = f.select :training_classification, DropDown::PROGRAMME_CLASSIFICATION, {:include_blank => t('select')}, class: 'selectpicker'
-  
+      /= f.select :training_classification, DropDown::PROGRAMME_CLASSIFICATION, {:include_blank => t('select')}, class: 'selectpicker'
+      = f.select :training_classification, programme_classification, {:include_blank => t('select')}, class: 'selectpicker'
+      
   .form-group.training_level
     %label.col-sm-2.control-label=f.label t 'staff.training.course.level', for: :level
     /.col-md-3
@@ -71,83 +72,135 @@
           
       .confront{:style=>"display: none;"}
         /bersemuka
-        %label.radio-inline
-          = f.radio_button :course_type, 7
-        =t('staff.training.course.learning_session')
-        %br
-        %label.radio-inline
-          = f.radio_button :course_type, 8 
-        =t('staff.training.course.monthly_assembly')
-        %br
-        %label.radio-inline
-          = f.radio_button :course_type, 9 
-        =t('staff.training.course.special_talk')
-        %br
-        %label.radio-inline
-          = f.radio_button :course_type, 10
-        =t('staff.training.course.celebration')
-        %br
-        %label.radio-inline
-          = f.radio_button :course_type, 11
-        =t('staff.training.course.presentation')
-        %br
-        %label.radio-inline
-          = f.radio_button :course_type, 11
-        =t('staff.training.course.speaker')
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 7
+        /=t('staff.training.course.learning_session')
+        /%br
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 8 
+        /=t('staff.training.course.monthly_assembly')
+        /%br
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 9 
+        /=t('staff.training.course.special_talk')
+        /%br
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 10
+        /=t('staff.training.course.celebration')
+        /%br
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 11
+        /=t('staff.training.course.presentation')
+        /%br
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 11
+        /=t('staff.training.course.speaker')
+        //
+        .row
+          .col-md-1=f.radio_button :course_type, 7
+          .col-md-9=t('staff.training.course.learning_session')
+        .row
+          .col-md-1= f.radio_button :course_type, 8 
+          .col-md-9=t('staff.training.course.monthly_assembly')
+        .row
+          .col-md-1= f.radio_button :course_type, 9 
+          .col-md-9=t('staff.training.course.special_talk')
+        .row
+          .col-md-1= f.radio_button :course_type, 10
+          .col-md-9=t('staff.training.course.celebration')
+        .row
+          .col-md-1= f.radio_button :course_type, 11
+          .col-md-9=t('staff.training.course.presentation')
+        .row
+          .col-md-1= f.radio_button :course_type, 11
+          .col-md-9=t('staff.training.course.speaker')
       .non_confront{:style=>"display: none;"}
         /tidak bersemuka
-        %label.radio-inline
-          = f.radio_button :course_type, 7
-        =t('staff.training.course.job_visit')
-        %br
-        %label.radio-inline
-          = f.radio_button :course_type, 8 
-        =t('staff.training.course.on_job_training')
-        %br
-        %label.radio-inline
-          = f.radio_button :course_type, 9 
-        =t('staff.training.course.attachment_training')
-        %br
-        %label.radio-inline
-          = f.radio_button :course_type, 10
-        =t('staff.training.course.simulation')
-        %br
-        %label.radio-inline
-          = f.radio_button :course_type, 11
-        =t('staff.training.course.others')
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 7
+        /=t('staff.training.course.job_visit')
+        /%br
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 8 
+        /=t('staff.training.course.on_job_training')
+        /%br
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 9 
+        /=t('staff.training.course.attachment_training')
+        /%br
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 10
+        /=t('staff.training.course.simulation')
+        /%br
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 11
+        /=t('staff.training.course.others')
+        //
+        .row
+          .col-md-1= f.radio_button :course_type, 7
+          .col-md-6=t('staff.training.course.job_visit')
+        .row
+          .col-md-1= f.radio_button :course_type, 8 
+          .col-md-6=t('staff.training.course.on_job_training')
+        .row
+          .col-md-1= f.radio_button :course_type, 9 
+          .col-md-6=t('staff.training.course.attachment_training')
+        .row
+          .col-md-1= f.radio_button :course_type, 10
+          .col-md-6=t('staff.training.course.simulation')
+        .row
+          .col-md-1= f.radio_button :course_type, 11
+          .col-md-6=t('staff.training.course.others')
       .self_training{:style=>"display: none;"}
         /pembelajaran kendiri
-        %label.radio-inline
-          = f.radio_button :course_type, 7
-        =t('staff.training.course.epsa_portal')
-        %br
-        %label.radio-inline
-          = f.radio_button :course_type, 8 
-        =t('staff.training.course.e_learning_portal')
-        %br
-        %label.radio-inline
-          = f.radio_button :course_type, 9 
-        =t('staff.training.course.hr_knowledge_repo')
-        %br
-        %label.radio-inline
-          = f.radio_button :course_type, 10
-        =t('staff.training.course.book_reading')
-        %br
-        %label.radio-inline
-          = f.radio_button :course_type, 11
-        =t('staff.training.course.jurnal_reading')
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 7
+        /=t('staff.training.course.epsa_portal')
+        /%br
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 8 
+        /=t('staff.training.course.e_learning_portal')
+        /%br
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 9 
+        /=t('staff.training.course.hr_knowledge_repo')
+        /%br
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 10
+        /=t('staff.training.course.book_reading')
+        /%br
+        /%label.radio-inline
+        /  = f.radio_button :course_type, 11
+        /=t('staff.training.course.jurnal_reading')
+        //
+        .row
+          .col-md-1= f.radio_button :course_type, 7
+          .col-md-9=t('staff.training.course.epsa_portal')
+        .row
+          .col-md-1= f.radio_button :course_type, 8 
+          .col-md-9=t('staff.training.course.e_learning_portal')
+        .row
+          .col-md-1= f.radio_button :course_type, 9 
+          .col-md-9=t('staff.training.course.hr_knowledge_repo')
+        .row
+          .col-md-1= f.radio_button :course_type, 10
+          .col-md-9=t('staff.training.course.book_reading')
+        .row
+          .col-md-1= f.radio_button :course_type, 11
+          .col-md-9=t('staff.training.course.jurnal_reading')
+
         
   .form-group
     %label.col-sm-2.control-label= f.label t 'staff.training.course.provider', for: :provider
     .col-md-5
-      = f.collection_select :provider_id, AddressBook.all, :id, :name, {:prompt => "Select" }, class: 'selectpicker'
+      = f.collection_select :provider_id, AddressBook.all, :id, :name, {:prompt => (t 'select') }, class: 'selectpicker'
       
   .form-group
     %label.col-sm-2.control-label= f.label t 'staff.training.course.duration', for: :duration
     .col-md-1
       = f.text_field :duration, class: 'form-control'
     .col-md-2
-      = f.select :duration_type, DropDown::DURATION_TYPE, {prompt: "Select"}, class: 'selectpicker'
+      = f.select :duration_type, DropDown::DURATION_TYPE, {prompt: (t 'select')}, class: 'selectpicker'
       
   .form-group
     %label.col-sm-2.control-label= f.label t 'staff.training.course.description', for: :name
