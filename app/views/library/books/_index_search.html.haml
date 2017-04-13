@@ -13,7 +13,9 @@
         =f.text_field :accessionno_from, size: 2, :class => "form-control", :placeholder => t('from')
         =f.text_field :accessionno_to, size: 2, :class => "form-control", :placeholder => t('to')
         /= params[:q].count if params[:q]
-    %td{width: '10%'}= f.text_field :classlcc_cont, size: 2, :class => "form-control", :placeholder => t('library.book.starting_with')
+      %td{width: '10%'}= f.text_field :classlcc_cont, size: 2, :class => "form-control", :placeholder => t('library.book.starting_with')
+    - else
+      %td{width: '10%'}= f.text_field :classddc_cont, size: 2, :class => "form-control", :placeholder => t('library.book.starting_with')
     %td{width: '10%'}= f.text_field :location_cont, size: 2, :class => "form-control", placeholder: (t 'library.book.location')
     - if current_user.college.code=='amsas'
       %td{width: '6%'} &nbsp;

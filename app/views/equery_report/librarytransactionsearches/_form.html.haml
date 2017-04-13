@@ -1,0 +1,44 @@
+.row
+  .col-md-10.col-md-offset-1
+    - if @searchlibrarytransactiontype=='1' || @searchlibrarytransactiontype==1 
+      = hidden_field_tag :method, 1
+      
+      / Nav tabs
+      %ul.nav.nav-tabs
+        %li.active= link_to (t 'equery.library_transaction.search_data'),"#search", "data-toggle" => "tab"
+
+      .tab-content{style:"padding-top:1em"}
+        #search.tab-pane.active
+          %br
+          .col-md-offset-2
+            .form-group
+              .col-sm-2.control-label
+                = f.label (t 'equery.library_transaction.select_year')
+              .col-md-2
+                = f.text_field :yearstat, class: 'form-control year_picker'
+            .row
+              .col-md-offset-2
+                %label.radio-inline
+                  = f.check_box :accumbookloan,:checked=>"unchecked", :id=> 'accumbookloan_checker'
+                =t('equery.library_transaction.accumulated_loan')
+            .row
+              .col-md-offset-2
+                %label.radio-inline
+                  = f.check_box :programme,:checked=>"unchecked", :id=> 'programme_checker'
+                =t('equery.library_transaction.borrower_programme')
+            .row
+              .col-md-offset-2
+                %label.radio-inline
+                  = f.check_box :fines,:checked=>"unchecked", :id=> 'fines_checker' 
+                =t('equery.library_transaction.accumulated_fine_collected')
+            .row
+              .col-md-offset-2
+                %label.radio-inline
+                  = f.check_box :bookloans,:checked=>"unchecked", :id=> 'bookloans_checker'
+                =t('equery.library_transaction.total_loan')
+                =current_user.college.code=='kskbjb' ? " - 'National Library of Medicine' (NLM)" : " - 'Dewey Decimal Classification' (DDC)"
+            .row
+              .col-md-offset-2
+                %label.radio-inline
+                  = f.check_box :details,:checked=>"unchecked", :id=> 'transactiondetails_checker'
+                =t('equery.library_transaction.details')

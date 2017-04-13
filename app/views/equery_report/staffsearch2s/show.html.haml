@@ -1,0 +1,68 @@
+- model_class = Staffsearch2
+.page-header
+  %h1=t('equery.staff.search')
+= render 'shared/flashes'
+
+- if @staffsearch2.keywords.blank? 
+  - disp=(t 'equery.staff.list_all')
+- else
+  - disp=(t 'equery.result')
+
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to disp,"#search", "data-toggle" => "tab"
+
+    / display 
+    .tab-content{style:"padding-top:1em"}
+      #search_details.tab-pane.active  
+            
+        /additional heading
+        .col-md-8.col-md-offset-2
+          %dl.dl-horizontal
+            - unless @staffsearch2.keywords.blank?
+              %dt=(t 'equery.ptdo.staff')
+              %dd=@staffsearch2.keywords
+            
+            %dt=(t'equery.ptdo.total')
+            %dd=@staffsearch2.staffs.count
+
+        /display result
+        .col-md-8.col-md-offset-1
+          %br
+          - if @staffsearch2.staffs.count > 0
+            %table.table.table-bordered.table-condensed
+              %head
+                %tr.bg-grey
+                  %th{width: '5%'} No
+                  %th=t 'staff.position'
+                  %th=t 'staff.staffgrade_id'
+                  %th=t 'staff.name'
+                  %th=t 'staff.icno'
+                  
+                  
+              %body
+                - no=0
+                - for staff in @staffsearch2.staffs
+                  %tr
+                    %td=no+=1
+                    %td
+                      - for position in staff.positions
+                        = position.name
+                        <BR>
+                    %td=staff.staffgrade.try(:name)
+                    %td=staff.staff_with_rank
+                    %td=staff.formatted_mykad
+                    
+// NOTE, above format is available at .../app/views/staffs/index.html.haml -- PDF           
+// TODO - USE FORMAT as of .../app/views/stafsearch2s/show.html.erb - 12Apr2017
+
+
+.row
+  .col-md-6.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('staff.title')}", "/equery_reports?query_module=1", class: 'btn btn-primary'
+      %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_staffsearch2_path,  :class => 'btn btn-default'
+

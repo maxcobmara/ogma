@@ -1,0 +1,74 @@
+- if booksearch.classno.blank? && booksearch.accessionno_start.blank? && booksearch.accessionno_end.blank?
+  - disp=" - #{t('equery.book.list_all')}"
+- else
+  - disp=""
+
+/ Nav tabs
+%ul.nav.nav-tabs
+  %li.active= link_to  (t 'library.book.stock_listing')+disp, "#search", "data-toggle" => "tab"
+
+/ display 
+.tab-content{style:"padding-top:1em"}
+  #search_details.tab-pane.active  
+        
+    /additional heading
+    .col-md-8.col-md-offset-2
+      - unless booksearch.classno.blank? || booksearch.accessionno_start.blank? || booksearch.accessionno_end.blank?
+        =(t 'equery.search_by')
+              
+      %dl.dl-horizontal
+        - unless booksearch.classno.blank?
+          %dt=(t 'library.book.classno')
+          %dd=booksearch.classno
+        
+        - unless booksearch.accessionno_start.blank? || booksearch.accessionno_end.blank?
+          %dt=(t 'library.book.accessionno')
+          %dd
+            - unless booksearch.accessionno_start.blank?
+              =booksearch.accessionno_start
+            - unless booksearch.accessionno_end.blank?
+              =" "+(t 'to')+" " if !booksearch.accessionno_start.blank?
+              =booksearch.accessionno_end
+        
+        %dt=(t 'equery.book.total')+" / "+(t 'library.book.title')
+        %dd=booksearch.sbooks.joins(:accessions).count.to_s+" / "+booksearch.sbooks.count.to_s
+
+    /display result
+    .col-md-8.col-md-offset-1
+      %br
+      - if booksearch.sbooks.count > 0
+        %table.table.table-bordered.table-condensed
+          - for book in booksearch.sbooks
+            %tr
+              %th{width: '22%'}= (t 'library.book.classno')+" (LC / NLM)"
+              %td{width: '23%'}=h book.classlcc.blank? ? book.classddc : book.classlcc
+              %th{width: '23%'}= t 'library.book.accessionno'
+              %td{width: '23%'}= book.accessionno
+              %td{width: '10%'}
+            %tr
+              %th{width: '22%'}ISBN / ISSN
+              %td{width: '23%'}=h book.isbn
+              %th{width: '22%'}=t('book.description')
+              %td{width: '23%'}=h book.roman 
+              %td.centre{width: '10%', rowspan: 3}
+                - if book.photo.exists? then
+                  = image_tag book.photo.url(:thumbnail)
+                - else 
+                  =t('equery.book.no_photo')
+                  %br=t('equery.book.available')
+            %tr
+              %th= t 'book.catsource'
+              %td=h (DropDown::CATSOURCE.find_all{|disp, value| value == book.catsource.to_i}).map {|disp, value| disp}[0]
+              %th= (t 'book.series')+" / "+(t 'book.edition')
+              %td
+                =book.series
+                ="/" if !book.series.blank? || !book.edition.blank?
+                =book.edition
+            %tr
+              %th Imprint
+              %td=book.publish_location+", "+book.publisher+","+book.publish_date
+              %th
+              %td
+            %tr
+              %td.bg-grey{height: '10px;', colspan: 5}
+              

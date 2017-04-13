@@ -211,6 +211,26 @@ class Ptdo < ActiveRecord::Base
     where('staff_id IN(?)', unit_members) ##use in ptdo.rb (controller - index)
   end
   
+  #used in Ptdosearches : Show
+  def self.staff_unit(curr_staff)
+    unit_staff=curr_staff.try(:position).try(:unit)
+    unit_staff=unit_staff.lstrip unless unit_staff.blank?
+    if unit_staff =='Pos Basik' || unit_staff == 'Pengkhususan' || unit_staff== 'Diploma Lanjutan'
+      @a_unit_staff=""
+      pos_basic_name = Programme.where('ancestry_depth=? AND (course_type=? OR course_type=? OR course_type=?)', 0, 'Diploma Lanjutan', 'Pos Basik', 'Pengkhususan').map(&:name) 
+      staff_tasks_main=curr_staff.try(:position).try(:tasks_main)
+      unless staff_tasks_main.blank?
+        pos_basic_name.each do |pb_name| 
+          @a_unit_staff=pb_name if staff_tasks_main.include?(pb_name)
+        end
+      end
+      dept=@a_unit_staff
+    else
+      dept=unit_staff if unit_staff!='' 
+    end
+    dept
+  end
+  
 end
 
 # == Schema Information

@@ -34,7 +34,9 @@
         - if current_user.college.code=='kskbjb'
           %th{width: '6%'}= t 'library.book.quantity'
           %th{width: '10%'}= sort_link(@search, :accessionno, (t 'library.book.accessionno'))
-        %th{width: '10%'}= sort_link(@search, :classlcc, (t 'library.book.classlcc'))
+          %th{width: '10%'}= sort_link(@search, :classlcc, (t 'library.book.classlcc'))
+        - else
+          %th{width: '10%'}= sort_link(@search, :classddc, (t 'library.book.classddc'))
         %th{width: '10%'}= sort_link(@search, :location, (t 'library.book.location'))
         - if current_user.college.code=='amsas'
           %th{width: '6%'}= t 'library.book.quantity'

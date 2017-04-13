@@ -1,0 +1,10 @@
+%table.table.table-bordered.table-condensed
+  %head
+    %tr
+      - for subject in classification.keys
+        %th.bg-grey.centre=all_digits(subject)==true ? subject : subject.upcase
+      %th.bg-grey.centre=(t 'equery.total').upcase
+    %tr
+      - for subject in classification.keys
+        %td.centre=classification[subject]
+      %th.bg-grey.centre=classification.values.sum
