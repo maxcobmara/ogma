@@ -61,9 +61,9 @@
               %th{width: "5%"}=t('equery.book.media_location')
           - count = 0
           %body
-            - booksearch.sbooks.each_with_index do |sbook, index2|
+            - booksearch.sbooks.sort.each_with_index do |sbook, index2|
               - if sbook.accessions.count != 0 
-                - sbook.accessions.each_with_index do |accession_item,index| 
+                - sbook.accessions.sort.each_with_index do |accession_item,index| 
                   %tr
                     %td.centre.bg-grey-yellowish=count+=1
                     %td.bg-grey-yellowish=accession_item.accession_no

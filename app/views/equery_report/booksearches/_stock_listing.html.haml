@@ -43,40 +43,42 @@
           - cnt=0
           %tr
             %td.bg-grey{height: '5px;', colspan: 6}
-          - for book in booksearch.sbooks
-            %tr
-              %th.centre{width: '5%', rowspan: 4}=cnt+=1
-              %th{width: '22%'}
-                = (t 'library.book.classno')
-                = booksearch.college.code=='kskbjb' ? " (LC / NLM)" : " (DDC)"
-              %td{width: '20%'}=h book.college.code=='kskbjb' ? book.classlcc : book.classddc
-              %th{width: '20%'}= t 'library.book.accessionno'
-              %td{width: '20%'}= book.accessionno
-              %td{width: '10%'}
-            %tr
-              %th{width: '22%'}ISBN / ISSN
-              %td{width: '20%'}=h book.isbn
-              %th{width: '20%'}=t('book.description')
-              %td{width: '20%'}=h book.roman 
-              %td.centre{width: '10%', rowspan: 3}
-                - if book.photo.exists? then
-                  = image_tag book.photo.url(:thumbnail)
-                - else 
-                  =t('equery.book.no_photo')
-                  %br=t('equery.book.available')
-            %tr
-              %th= t 'book.catsource'
-              %td=h (DropDown::CATSOURCE.find_all{|disp, value| value == book.catsource.to_i}).map {|disp, value| disp}[0]
-              %th= (t 'book.series')+" / "+(t 'book.edition')
-              %td
-                =book.series
-                ="/" if !book.series.blank? || !book.edition.blank?
-                =book.edition
-            %tr
-              %th Imprint
-              %td=book.publish_location+", "+book.publisher+","+book.publish_date
-              %th
-              %td
-            %tr
-              %td.bg-grey{height: '5px;', colspan: 6}
+          - for book in booksearch.sbooks.includes(:accessions).sort
+            - for acc in book.accessions.sort
+            
+              %tr
+                %th.centre{width: '5%', rowspan: 4}=cnt+=1
+                %th{width: '22%'}
+                  = (t 'library.book.classno')
+                  = booksearch.college.code=='kskbjb' ? " (LC / NLM)" : " (DDC)"
+                %td{width: '20%'}=h book.college.code=='kskbjb' ? book.classlcc : book.classddc
+                %th{width: '20%'}= t 'library.book.accessionno'
+                %td{width: '20%'}= acc.accession_no
+                %td{width: '10%'}
+              %tr
+                %th{width: '22%'}ISBN / ISSN
+                %td{width: '20%'}=h book.isbn
+                %th{width: '20%'}=t('book.description')
+                %td{width: '20%'}=h book.roman 
+                %td.centre{width: '10%', rowspan: 3}
+                  - if book.photo.exists? then
+                    = image_tag book.photo.url(:thumbnail)
+                  - else 
+                    =t('equery.book.no_photo')
+                    %br=t('equery.book.available')
+              %tr
+                %th= t 'book.catsource'
+                %td=h (DropDown::CATSOURCE.find_all{|disp, value| value == book.catsource.to_i}).map {|disp, value| disp}[0]
+                %th= (t 'book.series')+" / "+(t 'book.edition')
+                %td
+                  =book.series
+                  ="/" if !book.series.blank? || !book.edition.blank?
+                  =book.edition
+              %tr
+                %th Imprint
+                %td=book.publish_location+", "+book.publisher+","+book.publish_date
+                %th
+                %td
+              %tr
+                %td.bg-grey{height: '5px;', colspan: 6}
               

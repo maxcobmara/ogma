@@ -59,21 +59,28 @@ class Booksearch < ActiveRecord::Base
   end 
   
   def accessionno_start_conditions
-    if (accessionno_start.blank? == false && stock_summary == 2)||(accessionno_start.blank? == false && stock_summary == 3)
+    #if (accessionno_start.blank? == false && stock_summary == 2)||(accessionno_start.blank? == false && stock_summary == 3)
+    
+    if accessionno_start.blank? == false && accessionno_end.blank? == true && (stock_summary == 2 || stock_summary == 3)
       book_ids=Accession.where('accession_no>=?', accessionno_start).pluck(:book_id).uniq
-      if book_ids.count > 0
-        a="books.id=?" 
-        0.upto(book_ids.count-2) do |x|
-          a+=" OR books.id=? "
-        end
-        ["("+a+")", book_ids] 
-      end
+    elsif accessionno_start.blank? == false && accessionno_end.blank? == false && (stock_summary == 2 || stock_summary == 3)
+      book_ids=Accession.where('accession_no>=? and accession_no<=?', accessionno_start, accessionno_end).pluck(:book_id).uniq
     end
+    if book_ids.count > 0
+      a="books.id=?" 
+      0.upto(book_ids.count-2) do |x|
+        a+=" OR books.id=? "
+      end
+      ["("+a+")", book_ids] 
+    end
+    
     #['accessionno>=?', accessionno_start] if (accessionno_start.blank? == false && stock_summary == 2)||(accessionno_start.blank? == false && stock_summary == 3)
   end
   
   def accessionno_end_conditions
-    if (accessionno_end.blank? == false && stock_summary == 2)|(accessionno_end.blank? == false && stock_summary == 3)
+    #if (accessionno_end.blank? == false && stock_summary == 2)|(accessionno_end.blank? == false && stock_summary == 3)
+    
+    if accessionno_end.blank? ==false && accessionno_start.blank? ==true && (stock_summary==2 || stock_summary==3)
       book_ids=Accession.where('accession_no<=?', accessionno_end).pluck(:book_id).uniq
       if book_ids.count > 0
         a="books.id=?" 
@@ -83,6 +90,7 @@ class Booksearch < ActiveRecord::Base
         ["("+a+")", book_ids] 
       end
     end
+    
     #['accessionno<=?', accessionno_end] if (accessionno_end.blank? == false && stock_summary == 2)|(accessionno_end.blank? == false && stock_summary == 3)
   end
   
