@@ -84,7 +84,7 @@ class Training_reportPdf < Prawn::Document
     end
     aa=I18n.t('staff.training.mycpd.same_year2')
     aa=@ptdos[0].ptschedule.start.year.to_s if @startdates.uniq.count==1
-    [["Adalah disahkan bahawa #{'<u>'+'     '+Staff.find(@staffid).name+'    '+'</u>'}    No K/P : #{'<u>'+Staff.find(@staffid).formatted_mykad+'</u>'}"],
+    [["Adalah disahkan bahawa #{'<u>'+'     '+Staff.find(@staffid).staff_with_rank+'    '+'</u>'}    No K/P : #{'<u>'+Staff.find(@staffid).formatted_mykad+'</u>'}"],
      ["Gred Jawatan : #{'<u>'+Staff.find(@staffid).staffgrade.name+'</u>'}    Bahagian : #{'<u>'+Staff.find(@staffid).try(:positions).try(:first).try(:unit).to_s+'</u>'}"],
      ["Telah menghadiri #{'<u>'+Ptdo.staff_total_days(@ptdos.map(&:id))+'</u>'}  hari berkursus pada tahun   #{'<u> '+aa+' </u>'}"],
      [""],
