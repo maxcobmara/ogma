@@ -4637,8 +4637,9 @@ en:
       #list_all_documents: List All Documents
       #select_by_close: " to select document by (closed) status."
       #closed: Closed
-    #staff:
-      #search: "Staff Search : Positions Information"
+    staff:
+      search: "Staff Search : Positions Information"
+      list_all: Positions Information Listing
       #search_note: "Tick all (three) Service Group checkboxes to display all position records and / or search position information by staff Name and / or Staff Grade."
       #blank_post: "Tick this checkbox to include blank position(s) in search result"
     #staffattendance:

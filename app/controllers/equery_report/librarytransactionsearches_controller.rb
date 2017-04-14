@@ -1,4 +1,6 @@
 class EqueryReport::LibrarytransactionsearchesController < ApplicationController
+  filter_resource_access
+  
   def new
     @searchlibrarytransactiontype = params[:searchlibrarytransactiontype]
     @librarytransactionsearch = Librarytransactionsearch.new

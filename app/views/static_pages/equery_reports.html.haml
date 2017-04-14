@@ -14,9 +14,9 @@
         %body
           - no=0
           - if @query_module=='1'
-            - permitted_to? :read, :staffsearch2s do
-              %tr
-                %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'staff.title')
+            %tr
+              %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'staff.title')
+            - permitted_to? :create, :equery_report_staffsearch2s do
               %tr
                 %td.centre=no+=1
                 - if current_user.college.code=='amsas'
@@ -25,7 +25,7 @@
                 - else
                   /%td= link_to (t 'menu.maklumat_perjawatan'), {:controller => 'positions',:action => 'maklumat_perjawatan_LA'}
                   %td.centre= link_to (fa_icon "search"), "#", class: "bogus"
-            - permitted_to? :read, :staffattendancesearches do
+            - permitted_to? :create, :equery_report_staffattendancesearches do
               %tr
                 %td.centre=no+=1
                 %td
@@ -34,7 +34,7 @@
                   = link_to t('staff_attendance.report'), attendance_report_staff_staff_attendances_path
                 /%td.centre= link_to (fa_icon "search"), new_equery_report_staffattendancesearch_path(searchattendancetype: 1)
                 %td.centre= link_to (fa_icon "search"), "#", class: "bogus"
-            - permitted_to? :read, :ptdosearches do
+            - permitted_to? :create, :equery_report_ptdosearches do
               %tr
                 %td.centre=no+=1
                 %td= link_to (t 'staff.training.application_status.viewsummary'), show_total_days_staff_training_ptdos_path(:id=>current_user.userable_id)
@@ -47,17 +47,18 @@
               %td.centre=no+=1 
               %td= link_to (t 'library.book.list'), library_books_path
               %td.centre= link_to (fa_icon "search"), new_equery_report_booksearch_path(searchbooktype: 1)
-              - permitted_to? :read, :booksearches do
-                %tr
-                  %td.centre=no+=1
-                  %td= link_to (t 'library.book.stock_listing'), stock_listing_library_books_path(params.merge(format: 'pdf'))
-                  %td.centre= link_to (fa_icon "search"), new_equery_report_booksearch_path(searchbooktype: 2)
-                %tr
-                  %td.centre=no+=1 
-                  %td= link_to (t 'library.book.book_summary'), book_summary_library_books_path(params.merge(format: 'pdf'))
-                  %td.centre= link_to (fa_icon "search"), new_equery_report_booksearch_path(searchbooktype: 3)
 
-            - permitted_to? :read, :librarytransactionsearches do
+            - permitted_to? :create, :equery_report_librarytransactionsearches do
+              /booksearches part
+              %tr
+                %td.centre=no+=1
+                %td= link_to (t 'library.book.stock_listing'), stock_listing_library_books_path(params.merge(format: 'pdf'))
+                %td.centre= link_to (fa_icon "search"), new_equery_report_booksearch_path(searchbooktype: 2)
+              %tr
+                %td.centre=no+=1 
+                %td= link_to (t 'library.book.book_summary'), book_summary_library_books_path(params.merge(format: 'pdf'))
+                %td.centre= link_to (fa_icon "search"), new_equery_report_booksearch_path(searchbooktype: 3)
+              /librarytransactionsearches part
               %tr
                 %td.centre=no+=1
                 %td= link_to (t "library.transaction.analysis_statistic"), analysis_statistic_library_librarytransactions_path

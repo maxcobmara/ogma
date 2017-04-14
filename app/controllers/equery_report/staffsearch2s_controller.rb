@@ -1,8 +1,6 @@
 class EqueryReport::Staffsearch2sController < ApplicationController
   filter_resource_access
   before_action :set_staffsearch2, only: [:show]
-  # GET /titles
-  # GET /titles.xml
   
   def new
     @staffsearch2 = Staffsearch2.new

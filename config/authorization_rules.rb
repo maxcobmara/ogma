@@ -472,6 +472,10 @@ authorization do
    
    #library rules r/a
    has_permission_on :library_books, :to => :read                                                                # A staff can view all books
+   has_permission_on :equery_report_booksearches, :to => :new                                        # A staff can search for all books (New(direct link) to 2 & 3 still accessible)
+   has_permission_on :equery_report_booksearches, :to => [:create, :show] do                 # restrict here++(equery_librarytransaction_searches)
+     if_attribute :stock_summary => is_in {['1', 1]}
+   end
    has_permission_on :library_accessions, :to =>[:read, :reservation, :update, :reservation_list] # A staff can reserve a book
    has_permission_on :library_librarytransactions, :to => [:analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext] 
                                                                                                                                              # A staff can read all - Transaction Analysis & Resource Statistics
@@ -551,6 +555,8 @@ authorization do
      has_permission_on :insurance_companies, :to => :manage
      has_permission_on :staff_employgrades, :to => [:manage, :employgrade_list]
      has_permission_on :staff_postinfos, :to => :manage
+     has_permission_on :equery_report_staffsearch2s, :to => [:new, :create, :show]
+     has_permission_on :equery_report_staffattendancesearches, :to => [:new, :create, :show]
      ###restricted as of in Staff role
      #has_permission_on :staff_staff_appraisals, :to => [:manage, :appraisal_form]    # NOTE : restricted - PPP & PPK + marks by PPP & PPK become viewable 
      #has_permission_on :staff_leaveforstaffs, :to => :manage                                    # restricted - Penyokong & Pelulus                                
@@ -576,6 +582,7 @@ authorization do
     has_permission_on :staff_training_ptcourses, :to => [:manage, :ptcourse_list]
     has_permission_on :staff_training_ptschedules, :to => [:manage, :ptschedule_list, :participantexpenses_list]
     has_permission_on :staff_training_ptdos, :to =>[:approve, :ptdo_list]
+    has_permission_on :equery_report_ptdosearches, :to => [:new, :create, :show]
   end
  
   role :training_administration do
@@ -586,6 +593,7 @@ authorization do
     has_permission_on :staff_training_ptdos, :to => :update do
       if_attribute :final_approve => is_not {true}
     end
+    has_permission_on :equery_report_ptdosearches, :to => [:new, :create, :show]
   end
   
   #Group Assets  -------------------------------------------------------------------------------
@@ -906,6 +914,8 @@ authorization do
     has_permission_on :campus_pages, :to => :update do
       if_attribute :id => is_in {Page.where('(name ILIKE(?) or title ILIKE(?) or name ILIKE(?) or title ILIKE(?)) and admin=?', '%library%', '%library%', '%perpustakaan%', '%perpustakaan%', true).pluck(:id)}
     end
+    has_permission_on :equery_report_booksearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
   end
 
   #Group Student --------------------------------------------------------------------------------
@@ -928,6 +938,10 @@ authorization do
       has_permission_on :campus_pages, :to => :flexipage
       has_permission_on :staff_mentors, :to => :read
       has_permission_on :library_books, :to => :read
+      has_permission_on :equery_report_booksearches, :to => :new                                    # A student can search for all books (New(direct link) to 2 & 3 still accessible)
+      has_permission_on :equery_report_booksearches, :to => [:create, :show] do             # restrict here++(equery_librarytransaction_searches)
+        if_attribute :stock_summary => is_in {['1', 1]}
+      end
       has_permission_on :library_accessions, :to =>[:read, :reservation, :update, :reservation_list]
       has_permission_on :exam_examresults, :to => [:menu, :index2, :show2, :examination_slip, :examination_transcript] do
 	if_attribute :id => is_in {user.userable.resultlines.pluck(:examresult_id)}
@@ -1034,6 +1048,7 @@ authorization do
     has_permission_on :campus_pages, :to => :flexipage
     #has_permission_on :users, :to => :create
     #has_permission_on :library_books, :to => :read   
+    #has_permission_on :equery_report_booksearches, :to => [:new, :create, :show]
     #hide ALL modules from guest first --> 14 March 2015 & temporary add 3 items for permission for warden library_books, assets & students
     #coz roles assign for guest - accessible to user WITHOUT LOGIN due to firefox/Ie - unsupported version (old version)
   end
@@ -1056,16 +1071,19 @@ authorization do
     has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff, :staff_list] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
     has_permission_on :campus_pages, :to => :flexipage
     has_permission_on :repositories, :to => [:menu, :download]
+    has_permission_on :equery_report_staffsearch2s, :to => [:new, :create, :show]
   end
   role :staffs_module_viewer do
     has_permission_on :staff_staffs, :to => [:read, :borang_maklumat_staff, :staff_list]
     has_permission_on :campus_pages, :to => :flexipage
     has_permission_on :repositories, :to => [:menu, :download]
+    has_permission_on :equery_report_staffsearch2s, :to => [:new, :create, :show]
   end
   role :staffs_module_user do
     has_permission_on :staff_staffs, :to => [:read, :update, :borang_maklumat_staff, :staff_list]
     has_permission_on :campus_pages, :to => :flexipage
     has_permission_on :repositories, :to => [:menu, :download]
+    has_permission_on :equery_report_staffsearch2s, :to => [:new, :create, :show]
   end
   role :staffs_module_member do
     has_permission_on :staff_staffs, :to => [:read, :update, :borang_maklumat_staff] do
@@ -1091,17 +1109,20 @@ authorization do
     end
   end
   
-  #3)OK - all 4 - 4Feb2016
+  #3)OK - all 4 - 4Feb2016  
   #NOTE - a) Staff Attendance should come with Fingerprints, StaffShifts
   role :staff_attendances_module_admin do
     has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :manager_admin, :approval, :actionable, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details] 
+    has_permission_on :equery_report_staffattendancesearches, :to => [:new, :create, :show]
   end
   role :staff_attendances_module_viewer do
     #1) OK, but if READ only - can only read attendance list for all staff +manage own lateness/early (MANAGER) - as this is default for all staff UNLESS if MANAGE given.
     has_permission_on :staff_staff_attendances, :to => [:read, :manager, :manager_admin, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details]
+    has_permission_on :equery_report_staffattendancesearches, :to => [:new, :create, :show]
   end
   role :staff_attendances_module_user do 
     has_permission_on :staff_staff_attendances, :to => [:read, :update, :manager, :manager_admin, :approval, :actionable, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details]
+    has_permission_on :equery_report_staffattendancesearches, :to => [:new, :create, :show]
   end
   role :staff_attendances_module_member do
     #own records
@@ -1380,9 +1401,11 @@ authorization do
     has_permission_on :staff_training_ptdos, :to => :update, :join_by => :and do                        # act as a Unit Leader / Programme Manager
       if_attribute :unit_approve => is_not {true}
     end
+    has_permission_on :equery_report_ptdosearches, :to => [:new, :create, :show]
   end
   role :training_attendance_module_viewer do
      has_permission_on :staff_training_ptdos, :to => [:read, :show_total_days, :training_report, :ptdo_list]
+     has_permission_on :equery_report_ptdosearches, :to => [:new, :create, :show]
   end
   role :training_attendance_module_user do
     #same as Admin, except for CREATE & DELETE
@@ -1399,6 +1422,7 @@ authorization do
     has_permission_on :staff_training_ptdos, :to => :update, :join_by => :and do                        # act as a Unit Leader / Programme Manager
       if_attribute :unit_approve => is_not {true}
     end
+    has_permission_on :equery_report_ptdosearches, :to => [:new, :create, :show]
   end
    role :training_attendance_module_member do
     #own records 
@@ -1872,12 +1896,15 @@ authorization do
   #29 - 3/4 OK (Admin/Viewer/User)
   role :library_transactions_module_admin do
     has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext] 
+    has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
   end
   role :library_transactions_module_viewer do
     has_permission_on :library_librarytransactions, :to => [:read, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext] 
+    has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
   end
   role :library_transactions_module_user do
     has_permission_on :library_librarytransactions, :to => [:read, :update, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext]
+    has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - lbrary[0].disabled=true as the only owner of this module requires 'Librarian' role
 #   role :library_transactions_module_member do
@@ -1886,12 +1913,15 @@ authorization do
   #30-OK
   role :library_books_module_admin do
      has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import, :stock_listing, :book_summary]
+     has_permission_on :equery_report_booksearches, :to => [:new, :create, :show]
   end
   role :library_books_module_viewer do
      has_permission_on :library_books, :to => [:read, :stock_listing, :book_summary]
+     has_permission_on :equery_report_booksearches, :to => [:new, :create, :show]
   end
   role :library_books_module_user do
     has_permission_on :library_books, :to => [:read, :update, :stock_listing, :book_summary]
+    has_permission_on :equery_report_booksearches, :to => [:new, :create, :show]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - lbrary[0].disabled=true as the only owner of this module requires 'Librarian' role
 #   role :library_books_module_member do
