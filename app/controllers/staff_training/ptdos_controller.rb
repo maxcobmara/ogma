@@ -92,10 +92,15 @@ class StaffTraining::PtdosController < ApplicationController
   end
   
   def training_report
-    #who=params[:id]
-    #who=params[:q][:staff_id] if who.nil?
+    # NOTE - originated from 1) show_total_days (w/o staff_id), 2) equery_report/ptdosearches/show~> c/w (format: 'pdf', staff_id: xx)
+    if params[:staff_id]
+      who=params[:staff_id]
+    else
+      who=current_user.userable_id
+    end
     @search = Ptdo.search(params[:q])
-    @ptdos = @search.result.where('final_approve=? and staff_id=? and trainee_report is not null', true, current_user.userable_id)#who) 
+    @ptdos = @search.result.where('final_approve=? and staff_id=? and trainee_report is not null', true, who) 
+    #@ptdos = @search.result.where('final_approve=? and staff_id=? and trainee_report is not null', true, current_user.userable_id)#who) 
     domestic_courses_ids=Ptcourse.domestic.map(&:id)
     domestic_schedule_ids=Ptschedule.where(ptcourse_id: domestic_courses_ids).map(&:id)
     @domestic = @ptdos.where('ptschedule_id IN(?)', domestic_schedule_ids)
@@ -105,7 +110,7 @@ class StaffTraining::PtdosController < ApplicationController
     
      respond_to do |format|
        format.pdf do
-         pdf = Training_reportPdf.new(@ptdos, @domestic, @overseas, current_user.userable_id, view_context)
+         pdf = Training_reportPdf.new(@ptdos, @domestic, @overseas, who, view_context)
          send_data pdf.render, filename: "training_report-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"

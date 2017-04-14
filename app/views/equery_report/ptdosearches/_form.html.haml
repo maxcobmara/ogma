@@ -13,7 +13,7 @@
             .col-sm-2.control-label
               = f.label (t 'equery.ptdo.staff')
             .col-md-5
-              = f.text_field :staff_name, class: 'form-control', data: {autocomplete_source: Staff.order(:name).map(&:mykad_with_staff_name)}, placeholder: (t 'staff.name')+" "+(t 'or')+" "+(t 'equery.ptdo.icno')
+              = f.text_field :staff_name, class: 'form-control', data: {autocomplete_source: Staff.where(id: Ptdo.pluck(:staff_id)).order(:name).map(&:mykad_with_staff_name)}, placeholder: (t 'staff.name')+" "+(t 'or')+" "+(t 'equery.ptdo.icno')
           .form-group
             .col-sm-2.control-label
               = f.label  (t 'equery.ptdo.schedule_date')
