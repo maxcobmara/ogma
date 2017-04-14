@@ -12,7 +12,8 @@
     /Employgrade.where.not(group_id: nil).sort_by{|x|[x.gradegroup, x.gred_no]}
     /Employgrade.where.not(group_id: nil).sort_by{|x|[x.grade_group, x.gred_str, x.gred_no]
     /Employgrade.where.not(group_id: nil).sort_by{|x|[x.gred_no, x.gred_str, x.grade_group]}
-    = f.collection_select :staffgrade_id, Employgrade.where.not(group_id: nil).sort_by{|x|[x.grade_group, x.gred_no, x.gred_str]}, :id, :name_and_group,{ :include_blank => (t 'select')}, {class: 'selectpicker', "data-width" => "auto"}
+    /Employgrade.where.not(group_id: nil).sort_by{|x|[x.grade_group, x.gred_no, x.gred_str]}
+    = f.collection_select :staffgrade_id, Employgrade.sorted_grades(Employgrade.all), :id, :name_and_group,{ :include_blank => (t 'select')}, {class: 'selectpicker', "data-width" => "auto"}
 
 .form-group
   .col-sm-2.control-label

@@ -1373,7 +1373,7 @@ ms_MY:
         additional_budget: " (Tambahan)"
       course:
         title_course: Kursus Latihan
-        new: Kursus Staff Baru
+        new: Kursus Kakitangan (Baru)
         title: Kursus Kakitangan
         name: Kursus
         course_type: Jenis Aktiviti
@@ -2441,7 +2441,7 @@ ms_MY:
       how: "Bagaimana kehilangan berlaku?" 
       last: Kakitangan Terakhir Menggunakan
       case: "Kes perlu di buka?"
-      any_action: "Tindakan ke atas staff diperlukan?"
+      any_action: "Tindakan ke atas staf diperlukan?"
       police_report: Membuat Laporan Polis
       preventive_measures: Langkah Pencegahan
       new_measures: Langkah Pencegahan Baru

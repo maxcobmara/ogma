@@ -1,6 +1,6 @@
 class Staffsearch2 < ActiveRecord::Base
-  #attr_accessible :keywords, :position, :staff_grade, :position2, :position3, :blank_post
 
+  belongs_to :college
   
   def staffs
     @staffs ||= find_staffs

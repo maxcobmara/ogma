@@ -1,6 +1,6 @@
 class Staffattendancesearch < ActiveRecord::Base
-  #attr_accessible :department, :thumb_id, :logged_at
-  attr_accessor :method
+  
+  belongs_to :college
   
   def staffattendances
     @staffattendances ||= find_staffattendances

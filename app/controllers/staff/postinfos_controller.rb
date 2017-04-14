@@ -8,7 +8,7 @@ class Staff::PostinfosController < ApplicationController
   def index
     @search = Postinfo.search(params[:q])
     @postinfos = @search.result
-    @postinfos = @postinfos.page(params[:page]||1)
+    @postinfos = @postinfos.where.not('details ILIKE (?)', "%icms%").page(params[:page]||1)
     
     respond_to do |format|
       format.html # index.html.erb

@@ -19,7 +19,9 @@
       %dl.dl-horizontal
         - unless booksearch.classno.blank?
           %dt=(t 'library.book.classno')
-          %dd=booksearch.classno
+          %dd
+            =booksearch.classno
+            = booksearch.college.code=='kskbjb' ? " (LC / NLM)" : " (DDC)"
         
         - unless booksearch.accessionno_start.blank? || booksearch.accessionno_end.blank?
           %dt=(t 'library.book.accessionno')
@@ -42,7 +44,9 @@
             %tr.bg-grey
               %th{width: '5%'} No
               %th{width: "7%"}=t('library.book.accessionno')
-              %th{width: "5%"}=t('library.book.classno')
+              %th{width: "5%"}
+                =t('library.book.classno')
+                = booksearch.college.code=='kskbjb' ? " (LC / NLM)" : " (DDC)"
               %th{width: "8%"}=t('library.book.author')
               %th{width: "20%"}=t('library.book.title')
               %th{width: "8%"}ISBN
@@ -63,7 +67,7 @@
                   %tr
                     %td.centre.bg-grey-yellowish=count+=1
                     %td.bg-grey-yellowish=accession_item.accession_no
-                    %td.bg-grey-yellowish=h sbook.classlcc.blank? ? sbook.classddc : sbook.classlcc
+                    %td.bg-grey-yellowish=h sbook.college.code=='kskbjb' ? sbook.classlcc : sbook.classddc
                     - if index==0 
                       %td.bg-grey-yellowish{rowspan: "#{sbook.book_quantity}"}=sbook.author
                       %td.bg-grey-yellowish{rowspan: "#{sbook.book_quantity}"}=sbook.title

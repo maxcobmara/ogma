@@ -21,7 +21,7 @@
     %dd{style: 'padding-left: 70px'}=h @position.staffgrade_id.blank? ? "" : @position.staffgrade.name_and_group
     
     %dt= t 'position.unit' 
-    %dd=h @position.unit 
+    %dd{style: 'padding-left: 70px;'}=h @position.unit 
     
     %dt= t 'position.tasks_main' 
     %dd{style: 'padding-left: 70px'}=h @position.tasks_main

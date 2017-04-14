@@ -241,6 +241,14 @@ module DropDown
        [ I18n.t("staff.training.course.self_training"), 4]
   ]
   
+  def programme_classification
+    [#  Displayed       stored in db
+       [ I18n.t("staff.training.course.training"), 1],
+       [ I18n.t("staff.training.course.confront"), 2],
+       [ I18n.t("staff.training.course.non_confront"), 3],
+       [ I18n.t("staff.training.course.self_training"), 4]]
+  end
+  
   STAFF_COURSE_TYPE = [
        #  Displayed       stored in db
        [ I18n.t("staff.training.course.course"), 1],

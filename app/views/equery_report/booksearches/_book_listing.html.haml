@@ -17,30 +17,26 @@
         =(t 'equery.search_by')
               
       %dl.dl-horizontal
-        - unless booksearch.title.blank?
-          %dt=(t 'library.book.title')
-          %dd=booksearch.title.capitalize
-          /- @search_items=@search_items+"Title : '"+booksearch.title+"' "
+                   
+        - unless booksearch.accessionno.blank?
+          %dt=(t 'library.book.accessionno')+" - "+(t 'library.book.title') 
+          %dd=booksearch.accessionno.upcase+" - "+booksearch.title.capitalize
+
+        /- unless booksearch.title.blank?
+        /  %dt=(t 'library.book.title')
+        /  %dd=booksearch.title.capitalize
               
         - unless booksearch.author.blank?
           %dt=t('library.book.author')
           %dd=booksearch.author.capitalize
-          /- @search_items=@search_items+"Author : '"+booksearch.author+"' "
 
         - unless booksearch.isbn.blank?
           %dt ISBN
           %dd=booksearch.isbn
-          /- @search_items=@search_items+"ISBN : '"+booksearch.isbn+"' "
-              
-        - unless booksearch.accessionno.blank?
-          %dt=t('library.book.accessionno')
-          %dd=booksearch.accessionno.upcase
-          /- @search_items=@search_items+"Accession No : '"+booksearch.accessionno+"'" 
-                
+                   
         - unless booksearch.publisher.blank?
           %dt=t('library.book.publisher')
           %dd=booksearch.publisher 
-          /- @search_items=@search_items+"Publisher : '"+booksearch.publisher+"'" 
               
         %dt=(t 'equery.book.total')+" / "+(t 'library.book.title')
         %dd=booksearch.sbooks.joins(:accessions).count.to_s+" / "+booksearch.sbooks.count.to_s
@@ -57,7 +53,9 @@
               %th{width: "8%"}=t('library.book.author')
               %th{width: "5%"}=t('library.book.quantity')
               %th{width: "8%"}ISBN
-              %th{width: "5%"}=t('library.book.classno')
+              %th{width: "5%"}
+                =t('library.book.classno')
+                = booksearch.college.code=='kskbjb' ? " (LC / NLM)" : " (DDC)"
               %th{width: "7%"}=t('library.book.accessionno')
               %th{width: "7%"}=t('library.book.publisher')
               %th{width: "5%"}=t('library.book.publish_date')
@@ -79,7 +77,7 @@
                       %td{rowspan: "#{sbook.book_quantity}"}=sbook.author
                       %td.centre{rowspan: "#{sbook.book_quantity}"}=h sbook.book_quantity 
                     %td=h sbook.isbn
-                    %td=h sbook.classlcc.blank? ? sbook.classddc : sbook.classlcc
+                    %td=h sbook.college.code=='kskbjb' ? sbook.classlcc : sbook.classddc
                     %td=accession_item.accession_no
                     %td=h sbook.publisher
                     %td.centre=h sbook.publish_date
