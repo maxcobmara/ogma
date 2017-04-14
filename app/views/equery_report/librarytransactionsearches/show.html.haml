@@ -125,7 +125,7 @@
             / i) NLM & LC No - 'classlcc' field
             / ii) DDC No - 'classddc' field
             
-            - if current_user.college.code=='kskbjb'
+            - if @librarytransactionsearch.college.code=='kskbjb'
               - subjects=["w","wa", "wb", "wc", "wd", "we", "wf", "wg", "wh", "wi", "wj", "wk", "wl", "wm", "wn", "wo", "wp", "wp", "wq", "wr", "ws", "wt", "wu", "wv", "ww", "wx", "wy", "wz", "qs", "qt", "qu", "qv", "qw", "qx", "qy", "qz", "others"]
               - classification=Hash[subjects.map{|x|[x, 0]}]
 
@@ -148,7 +148,7 @@
               %b=(t 'equery.library_transaction.by_nlm')
               = render partial: 'display_classification', locals: {classification: classification}
               
-            - elsif current_user.college.code=='amsas'
+            - elsif @librarytransactionsearch.college.code=='amsas'
               
               - classification=Hash[["000", "100", "200", "300", "400", "500", "600", "700", "800", "900", "none"].map{|x|[x, 0]}]
               - for fullcode in @librarytransactionsearch.librarytransactions.where.not(ru_staff: nil).joins(:accession).map{|x|x.accession.book.classddc}
@@ -198,4 +198,4 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('library.title')}", "/equery_reports?query_module=7", class: 'btn btn-primary'
-      %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_librarytransactionsearch_path(searchlibrarytransactiontype: 1),  :class => 'btn btn-default'
+      %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_librarytransactionsearch_path,  :class => 'btn btn-default'

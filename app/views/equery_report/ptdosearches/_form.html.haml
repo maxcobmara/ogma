@@ -7,19 +7,18 @@
     .tab-content{style:"padding-top:1em"}
       #search.tab-pane.active
         %br
-        - if @searchptdotype=='1' || @searchptdotype==1 
-          = f.hidden_field :attended_courses, value: 1 
-          .col-md-offset-2
-            .form-group
-              .col-sm-2.control-label
-                = f.label (t 'equery.ptdo.staff')
-              .col-md-5
-                = f.text_field :staff_name, class: 'form-control', data: {autocomplete_source: Staff.order(:name).map(&:mykad_with_staff_name)}, placeholder: (t 'staff.name')+" "+(t 'or')+" "+(t 'equery.ptdo.icno')
-            .form-group
-              .col-sm-2.control-label
-                = f.label  (t 'equery.ptdo.schedule_date')
-              .col-md-4
-                .input-group
-                  = f.text_field :schedulestart_start, class: 'form-control date_picker_reverse'
-                  .input-group-addon=t('to')
-                  = f.text_field :schedulestart_end, class: 'form-control date_picker_reverse'
+        = f.hidden_field :attended_courses, value: 1 
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'equery.ptdo.staff')
+            .col-md-5
+              = f.text_field :staff_name, class: 'form-control', data: {autocomplete_source: Staff.order(:name).map(&:mykad_with_staff_name)}, placeholder: (t 'staff.name')+" "+(t 'or')+" "+(t 'equery.ptdo.icno')
+          .form-group
+            .col-sm-2.control-label
+              = f.label  (t 'equery.ptdo.schedule_date')
+            .col-md-4
+              .input-group
+                = f.text_field :schedulestart_start, class: 'form-control date_picker_reverse'
+                .input-group-addon=t('to')
+                = f.text_field :schedulestart_end, class: 'form-control date_picker_reverse'

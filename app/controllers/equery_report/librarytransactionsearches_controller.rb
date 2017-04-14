@@ -2,12 +2,10 @@ class EqueryReport::LibrarytransactionsearchesController < ApplicationController
   filter_resource_access
   
   def new
-    @searchlibrarytransactiontype = params[:searchlibrarytransactiontype]
     @librarytransactionsearch = Librarytransactionsearch.new
   end
 
   def create
-    @searchlibrarytransactiontype = params[:method]
     @librarytransactionsearch = Librarytransactionsearch.new(librarytransactionsearch_params)
     if @librarytransactionsearch.save
       redirect_to equery_report_librarytransactionsearch_path(@librarytransactionsearch)

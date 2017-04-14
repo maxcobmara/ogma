@@ -38,7 +38,7 @@
               %tr
                 %td.centre=no+=1
                 %td= link_to (t 'staff.training.application_status.viewsummary'), show_total_days_staff_training_ptdos_path(:id=>current_user.userable_id)
-                %td.centre= link_to (fa_icon "search"), new_equery_report_ptdosearch_path(searchptdotype: 1)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_ptdosearch_path
                 
           - elsif @query_module=='7'
             %tr
@@ -62,4 +62,4 @@
               %tr
                 %td.centre=no+=1
                 %td= link_to (t "library.transaction.analysis_statistic"), analysis_statistic_library_librarytransactions_path
-                %td.centre= link_to (fa_icon "search"), new_equery_report_librarytransactionsearch_path(searchlibrarytransactiontype: 1)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_librarytransactionsearch_path

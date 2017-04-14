@@ -7,7 +7,6 @@ class EqueryReport::BooksearchesController < ApplicationController
   end
 
   def create
-    @searchbooktype = params[:method]
     @booksearch = Booksearch.new(booksearch_params)
     if @booksearch.save
       redirect_to equery_report_booksearch_path(@booksearch)

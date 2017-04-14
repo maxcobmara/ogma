@@ -3,6 +3,8 @@ class Booksearch < ActiveRecord::Base
   
   belongs_to :college
   
+  attr_accessor :method                   #to cater college.code for use of 'classlcc' / 'classddc' field
+  
   def sbooks
     @sbooks ||= find_sbooks
   end
