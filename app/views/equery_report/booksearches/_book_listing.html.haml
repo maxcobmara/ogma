@@ -77,7 +77,7 @@
                       %td{rowspan: "#{sbook.book_quantity}"}=sbook.author
                       %td.centre{rowspan: "#{sbook.book_quantity}"}=h sbook.book_quantity 
                     %td=h sbook.isbn
-                    %td=h sbook.college.code=='kskbjb' ? sbook.classlcc : sbook.classddc
+                    %td=h booksearch.college.code=='kskbjb' ? sbook.classlcc : sbook.classddc
                     %td=accession_item.accession_no
                     %td=h sbook.publisher
                     %td.centre=h sbook.publish_date

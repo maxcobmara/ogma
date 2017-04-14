@@ -17,7 +17,8 @@
                 %b= (t 'library.book.accessionno')+" - "+(t 'library.book.title')
               .col-md-6
                 /= f.text_field :title, class: 'form-control', data: {autocomplete_source: Book.order(title: :asc).pluck(:title)}
-                =f.text_field :accessionno, class: 'form-control', data: {autocomplete_source: Accession.order(:accession_no).map(&:acc_book)}, placeholder:  (t 'library.book.accessionno')+" #{t('or')} "+(t 'library.book.title')
+                /Accession.order(:accession_no).map(&:acc_book)
+                =f.text_field :accessionno, class: 'form-control', data: {autocomplete_source: Accession.joins(:book).map(&:acc_book)}, placeholder:  (t 'library.book.accessionno')+" #{t('or')} "+(t 'library.book.title')
             .form-group
               .col-sm-2.control-label
                 = f.label (t 'library.book.author')
