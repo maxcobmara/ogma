@@ -1,6 +1,5 @@
 class Booksearch < ActiveRecord::Base
   before_save :set_stock_summary, :set_title_accessionno
-  attr_accessor :method
   
   belongs_to :college
   

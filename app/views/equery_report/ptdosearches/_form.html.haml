@@ -8,7 +8,6 @@
       #search.tab-pane.active
         %br
         - if @searchptdotype=='1' || @searchptdotype==1 
-          = hidden_field_tag :method, 1 
           = f.hidden_field :attended_courses, value: 1 
           .col-md-offset-2
             .form-group

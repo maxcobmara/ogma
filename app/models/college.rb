@@ -45,8 +45,11 @@ class College < ActiveRecord::Base
   has_many :librarytransactions
   has_many :books
   has_many :visitors
-  has_many :staffsearch2
+  has_many :staffsearch2s
+  has_many :staffattendancesearches
+  has_many :ptdosearches
   has_many :booksearches
+  has_many :librarytransactionsearches
   # staffs
   
   serialize :data, Hash

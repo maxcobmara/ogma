@@ -1,7 +1,6 @@
 .row
   .col-md-10.col-md-offset-1
     - if @searchbooktype=='1' || @searchbooktype==1 
-      /= hidden_field_tag :method, 1 
       = f.hidden_field :stock_summary, :value=> 1
       
       / Nav tabs
@@ -36,7 +35,6 @@
                 = f.text_field :publisher, class: 'form-control', data: {autocomplete_source: Book.order(title: :asc).pluck(:publisher).uniq}
                
     - elsif @searchbooktype=='2' || @searchbooktype==2 
-      = hidden_field_tag :method, current_user.college.code
       =f.hidden_field :stock_summary, :value=> 2
 
       / Nav tabs
@@ -72,7 +70,6 @@
                   = f.text_field :accessionno_end, :size=>10, class: 'form-control'
                   
     - elsif @searchbooktype=='3' || @searchbooktype==3
-      = hidden_field_tag :method, current_user.college.code
       =f.hidden_field :stock_summary, :value=> 3
 
       / Nav tabs

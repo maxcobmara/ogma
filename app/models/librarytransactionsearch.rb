@@ -1,5 +1,6 @@
 class Librarytransactionsearch < ActiveRecord::Base
-  attr_accessor :method
+
+  belongs_to :college
   
   validates :yearstat, presence: true
   validate :criteria_must_exist

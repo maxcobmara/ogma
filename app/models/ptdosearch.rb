@@ -2,8 +2,7 @@ class Ptdosearch < ActiveRecord::Base
   
   before_save :set_staff_data
   
-  #attr_accessible :attended_courses, :staff_name, :staff_id, :icno, :schedulestart_start , :schedulestart_end  #:department      WORKING : Department part - hide 29April2015
-  attr_accessor :method
+  belongs_to :college
   
   def ptdos
     @ptdos ||= find_ptdos
