@@ -24,7 +24,7 @@
     = render "index_search"
     /- @postinfos.sort_by{|x|[x.details_start, x.employgrade.gred_no]}.reverse.each do |postinfo|
     / NOTE 14Apr2017 - use below to sort postinfo according to maritime+non maritime grade
-    - Employgrade.sorted_postinfo_bygrade(@postinfos).each do |postinfo|
+    - Employgrade.sorted_postinfo_bygrade(@postinfos).uniq.each do |postinfo|
       %tr
         %td=link_to postinfo.details, edit_staff_postinfo_path(postinfo)
         %td
