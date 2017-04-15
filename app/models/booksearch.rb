@@ -2,9 +2,7 @@ class Booksearch < ActiveRecord::Base
   before_save :set_stock_summary, :set_title_accessionno
   
   belongs_to :college
-  
-  attr_accessor :method                   #to cater college.code for use of 'classlcc' / 'classddc' field
-  
+    
   def sbooks
     @sbooks ||= find_sbooks
   end
@@ -47,25 +45,23 @@ class Booksearch < ActiveRecord::Base
         ["books.id=?", book_id]
       end
     end
-#     ["accessionno ILIKE ?", "%#{accessionno}%" ] unless accessionno.blank?      
   end
   
   def classno_conditions
-    #["classlcc LIKE ?", "%#{classno}%"] if classno.blank? == false && stock_summary == 1
-    if (method=='kskbjb' && classno.blank? == false) && (stock_summary == 2 || stock_summary == 3)
-      ["classlcc ILIKE ?", "%#{classno}%"]
-    elsif (method=='amsas' && classno.blank? == false) && (stock_summary == 2 || stock_summary == 3)
-      ["classddc ILIKE ? ", "%#{classno}%"] 
+    unless classno.blank?
+      if college.code=='amsas'
+         ["classddc ILIKE ? ", "%#{classno}%"]
+      elsif college.code=='kskbjb'
+         ["classlcc ILIKE ?", "%#{classno}%"]
+      end
     end
-    #["classlcc ILIKE ? OR classddc ILIKE ? ", "%#{classno}%", "%#{classno}%"] if (classno.blank? == false && stock_summary == 2)||(classno.blank? == false && stock_summary == 3)
   end 
   
   def accessionno_start_conditions
-    if accessionno_start.blank? == false && (stock_summary == 2|| stock_summary == 3)
-    
-      if accessionno_start.blank? == false && accessionno_end.blank? == true && (stock_summary == 2 || stock_summary == 3)
+    unless accessionno_start.blank?
+      if accessionno_start.blank? == false && accessionno_end.blank? == true #&& (stock_summary == 2 || stock_summary == 3)
         book_ids=Accession.where('accession_no>=?', accessionno_start).pluck(:book_id).uniq
-      elsif accessionno_start.blank? == false && accessionno_end.blank? == false && (stock_summary == 2 || stock_summary == 3)
+      elsif accessionno_start.blank? == false && accessionno_end.blank? == false #&& (stock_summary == 2 || stock_summary == 3)
         book_ids=Accession.where('accession_no>=? and accession_no<=?', accessionno_start, accessionno_end).pluck(:book_id).uniq
       end
       if book_ids.count > 0
@@ -77,13 +73,11 @@ class Booksearch < ActiveRecord::Base
       end
     
     end
-    #['accessionno>=?', accessionno_start] if (accessionno_start.blank? == false && stock_summary == 2)||(accessionno_start.blank? == false && stock_summary == 3)
   end
   
   def accessionno_end_conditions
-    if accessionno_end.blank? == false && (stock_summary == 2 || stock_summary == 3)
-    
-      if accessionno_end.blank? ==false && accessionno_start.blank? ==true && (stock_summary==2 || stock_summary==3)
+    unless accessionno_end.blank?
+      if accessionno_end.blank? ==false && accessionno_start.blank? ==true #&& (stock_summary==2 || stock_summary==3)
         book_ids=Accession.where('accession_no<=?', accessionno_end).pluck(:book_id).uniq
         if book_ids.count > 0
           a="books.id=?" 
@@ -95,7 +89,6 @@ class Booksearch < ActiveRecord::Base
       end
     
     end
-    #['accessionno<=?', accessionno_end] if (accessionno_end.blank? == false && stock_summary == 2)|(accessionno_end.blank? == false && stock_summary == 3)
   end
   
   def publisher_conditions
