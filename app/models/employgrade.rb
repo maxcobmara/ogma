@@ -104,7 +104,8 @@ class Employgrade < ActiveRecord::Base
     egrades
   end
 
-  #Staffs Index : shall SORT staff list based on combine maritim & non_maritime employgrades
+  #Staffs Index : shall SORT staff list based on combine maritim & non_maritime employgrades 
+  #Equery - staffsearch (show) - SORT positions Information based on combine maritim & non_maritime employgrades 
   def self.sorted_staff_bygrade(staff_list)
     cnt=0
     staffs_w_grades=[]
@@ -133,6 +134,7 @@ class Employgrade < ActiveRecord::Base
     staffs_w_grades
   end
   
+  #usage - postinfo INDEX
   def self.sorted_postinfo_bygrade(postinfo_list)
     cnt=0
     staffs_w_grades=[]

@@ -4606,6 +4606,7 @@ en:
     reports: Reports
     advance_search: Advance Search
     module: Module
+    remark: Remark
     #tick: Tick
     #untick: Untick
     #leaves_other_blanks: " & leaves other fields 'blank' to display ALL record."
@@ -4640,6 +4641,9 @@ en:
     staff:
       search: "Staff Search : Positions Information"
       list_all: Positions Information Listing
+      warrant_exist: "Related 'Post warrant' must exist."
+      completed_grade_staff: "'Position grade' in 'Staff' module must be completed."
+      completed_position: "Minimum grade requirement, 'Staff' and 'Post warrant' in 'Position' module (Oranisation Chart) must be completed."
       #search_note: "Tick all (three) Service Group checkboxes to display all position records and / or search position information by staff Name and / or Staff Grade."
       #blank_post: "Tick this checkbox to include blank position(s) in search result"
     #staffattendance:

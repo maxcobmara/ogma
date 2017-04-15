@@ -4521,6 +4521,7 @@ ms_MY:
     reports: Laporan
     advance_search: Carian Lanjut
     module: Modul
+    remark: Catatan
     #tick: Pilih
     #untick: Nyahpilih
     #leaves_other_blanks: " & 'kosongkan' medan - medan lain untuk papar SEMUA rekod."
@@ -4555,6 +4556,9 @@ ms_MY:
     staff:
       search: "Carian Kakitangan : Maklumat Perjawatan"
       list_all: Senarai Penuh Maklumat Perjawatan
+      warrant_exist: "Rekod 'Waran perjawatan' berkaitan mesti diwujudkan."
+      completed_grade_staff: "Medan 'Gred jawatan' dalam modul 'Staf' mesti diisi."
+      completed_position: "Medan 'Gred minima diperlukan', 'Staf' dan 'Waran perjawatan' dalam modul Jawatan (Carta Organisasi) mesti diisi."
       #search_note: "Pilih ketiga-tiga Kumpulan Perkhidmatan untuk memaparkan semua rekod perjawatan dan / atau buat carian maklumat perjawatan menggunakan 'Nama' dan / atau 'Gred Jawatan' kakitangan. "
       #blank_post: "Pilih kotak semak ini untuk sertakan jawatan yang belum diisi dalam hasil carian"
     #staffattendance:

@@ -9,7 +9,8 @@ class Staffsearch2 < ActiveRecord::Base
   private
 
   def find_staffs
-    Staff.where(conditions).order(orders)
+    #Staff.where(conditions).order(orders)
+    Staff.joins(:positions).where('positions.staffgrade_id IS NOT NULL and staffs.name NOT ILIKE ?', "%icms%").where(conditions).order(orders)
   end
 
   def keyword_conditions
