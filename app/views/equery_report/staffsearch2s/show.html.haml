@@ -3,7 +3,7 @@
   %h1=t('equery.staff.search')
 = render 'shared/flashes'
 
-- if @staffsearch2.keywords.blank? 
+- if @staffsearch2.staffs.count >= Staff.all.count
   - disp=(t 'equery.staff.list_all')
 - else
   - disp=(t 'equery.result')
@@ -26,7 +26,16 @@
               %dd=@staffsearch2.keywords
             
             %dt=(t'equery.ptdo.total')
-            %dd=@staffsearch2.staffs.count
+            %dd
+              =@staffsearch2.staffs.count
+              =" (Jumlah staf : #{Staff.all.count})"
+          .row     
+            .small
+              =t 'equery.remark'
+              %ul
+                %li=t 'equery.staff.warrant_exist'
+                %li=t 'equery.staff.completed_grade_staff'
+                %li=t 'equery.staff.completed_position'
 
         /display result
         .col-md-11
@@ -86,10 +95,10 @@
               - positions_wo_grade=[] 
               - positions_w_grade=[]
               /either staffgrade_id/postinfo_id must exist (if butiran exist, grade definitely exist!) 
-              =@staffsearch2.staffs.count
-              =@staffsearch2.staffs.map(&:id)
-              = @positions.count
-              huhu
+              /=@staffsearch2.staffs.count
+              /=@staffsearch2.staffs.map(&:id)
+              /= @positions.count
+              /huhu
               - for position in @positions
                 - unless position.staffgrade.blank? && position.postinfo_id.blank?
                   /hide display of position if both butiran & grade not exist
@@ -117,8 +126,26 @@
                 -  just_a_counter = 0 
                 /START-part 1 (positions with staff grades)
                 = positions_w_grade.count
-                - positions_w_grade.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[1].to_i}.sort.reverse!.each do |staffgrade2, positions_of_grade_no|
-                  - positions_of_grade_no.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[0]}.sort.reverse!.each do |staffgrade, positions_by_grade| 
+                
+                /NOTE - sort AMSAS positions according to combined maritime+non maritime grades
+                - if @staffsearch2.college.code=='kskbjb'
+                  - posts=positions_w_grade.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[1].to_i}.sort.reverse!
+                - elsif @staffsearch2.college.code=='amsas'
+                  - posts=Employgrade.sorted_staff_bygrade(positions_w_grade).uniq.group_by{|x|x.staffgrade_id}
+
+                /- positions_w_grade.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[1].to_i}.sort.reverse!.each do |staffgrade2, positions_of_grade_no|
+                /- Employgrade.sorted_staff_bygrade(positions_w_grade).group_by{|x|x.staffgrade_id}.each do |staffgrade2, positions_of_grade_no|
+                - posts.each do |staffgrade2, positions_of_grade_no|
+                  /- positions_of_grade_no.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[0]}.sort.reverse!.each do |staffgrade, positions_by_grade| 
+                  /- Employgrade.sorted_staff_bygrade(positions_of_grade_no).group_by{|x|x.staffgrade_id}.each do |staffgrade, positions_by_grade| 
+                  
+                  /NOTE - sort AMSAS positions according to combined maritime+non maritime grades
+                  - if @staffsearch2.college.code=='kskbjb'
+                    - posts2=positions_of_grade_no.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[0]}.sort.reverse!
+                  - elsif @staffsearch2.college.code=='amsas'
+                    - posts2=Employgrade.sorted_staff_bygrade(positions_of_grade_no).uniq.group_by{|x|x.staffgrade_id}
+                  
+                  - posts2.each do |staffgrade, positions_by_grade| 
                     - positions_by_grade_w_butiran=[]
                     - positions_by_grade_wo_butiran=[]
                     - positions_by_grade.each do |position|
@@ -220,34 +247,34 @@
                           - status_kontrak = Position.where('postinfo_id=? AND status=? AND staff_id IS NOT NULL',position.postinfo_id, 2).count
                           - status_kup = Position.where('postinfo_id=? AND status=? AND staff_id IS NOT NULL',position.postinfo_id, 3).count
                           %tr
-                          %td.centre=just_a_counter
-                          - if index == 0 
-                            %td.centre{rowspan="#{positions.count}"}=butiran.blank? ? "-" : Postinfo.find(butiran.to_i).details
-                            %td.left=h position.name
-                            %td.centre{rowspan="#{positions.count}"}=h position.staffgrade.blank? ? "-" : position.staffgrade.name
-                            %td.centre{rowspan="#{positions.count}"}=butiran.blank? ? "-" : total_position
-                            %td.centre{rowspan="#{positions.count}"}=butiran.blank? ? "-" : occupied_position 
-                            %td.centre{rowspan="#{positions.count}"}=butiran.blank? ? "-" : status_hakiki
-                            %td.centre{rowspan="#{positions.count}"}=butiran.blank? ? "-" : status_kontrak
-                            %td.centre{rowspan="#{positions.count}"}=butiran.blank? ? "-" : status_kup
-                            %td.centre{rowspan="#{positions.count}"}=butiran.blank? ? "-" : available_position
-                          - else
-                            %td.left=h position.name
-                          %td.left=h position.staff.blank? ? "-" : position.staff.name
-                          %td.centre=h position.staff.blank? ? "-" : position.staff.formatted_mykad
-                          %td.centre
-                            - unless position.staff.blank?
-                              = position.staff.gender == 1 ? "L" : "P"
+                            %td.centre=just_a_counter
+                            - if index == 0 
+                              %td.centre{rowspan="#{positions.count}"}=butiran.blank? ? "-" : Postinfo.find(butiran.to_i).details
+                              %td.left=h position.name
+                              %td.centre{rowspan="#{positions.count}"}=h position.staffgrade.blank? ? "-" : position.staffgrade.name
+                              %td.centre{rowspan="#{positions.count}"}=butiran.blank? ? "-" : total_position
+                              %td.centre{rowspan="#{positions.count}"}=butiran.blank? ? "-" : occupied_position 
+                              %td.centre{rowspan="#{positions.count}"}=butiran.blank? ? "-" : status_hakiki
+                              %td.centre{rowspan="#{positions.count}"}=butiran.blank? ? "-" : status_kontrak
+                              %td.centre{rowspan="#{positions.count}"}=butiran.blank? ? "-" : status_kup
+                              %td.centre{rowspan="#{positions.count}"}=butiran.blank? ? "-" : available_position
                             - else
-                              &nbsp;
-                          %td.centre=" - "
-                          %td.centre=" - "
-                          %td &nbsp;
-                          %td &nbsp;
-                          %td &nbsp;
-                          %td &nbsp;
-                          %td &nbsp;
-                          %td &nbsp;
+                              %td.left=h position.name
+                            %td.left=h position.staff.blank? ? "-" : position.staff.name
+                            %td.centre=h position.staff.blank? ? "-" : position.staff.formatted_mykad
+                            %td.centre
+                              - unless position.staff.blank?
+                                = position.staff.gender == 1 ? "L" : "P"
+                              - else
+                                &nbsp;
+                            %td.centre=" - "
+                            %td.centre=" - "
+                            %td &nbsp;
+                            %td &nbsp;
+                            %td &nbsp;
+                            %td &nbsp;
+                            %td &nbsp;
+                            %td &nbsp;
 
                       - positions_by_grade_wo_butiran.group_by(&:postinfo_id).each do |butiran, positions|
                         - positions.sort_by(&:name).each_with_index do |position, index| 
@@ -281,6 +308,31 @@
                             %td &nbsp;
                             %td &nbsp;
                             %td &nbsp;
+
+                //
+                %tr
+                  %td{colspan: 3}JUMLAH
+                  %td &nbsp;
+                  %td.centre
+                    - positions_group=Position.where('postinfo_id IS NOT NULL and id IN(?)', @positions.map(&:id)).map(&:postinfo_id).uniq
+                    = positions_count=Postinfo.where(id: [9,4,3]).pluck(:post_count).sum
+                    
+                  %td.centre= positions_insert=Position.where('postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IS NOT NULL AND id IN(?)', @positions.map(&:id)).count 
+                  %td.centre= positions_hakiki=Position.where('postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IS NOT NULL AND status=? AND id IN(?)',1,@positions.map(&:id)).count 
+                  %td.centre= positions_kontrak=Position.where('postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IS NOT NULL AND status=? AND id IN(?)',2, @positions.map(&:id)).count
+                  %td.centre= positions_kup=Position.where('postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IS NOT NULL AND status=? AND id IN(?)',3, @positions.map(&:id)).count
+                  %td.centre=positions_available =  positions_count-positions_insert
+                  %td &nbsp;
+                  %td &nbsp;
+                  %td &nbsp;
+                  %td &nbsp;
+                  %td &nbsp;
+                  %td &nbsp;
+                  %td &nbsp;
+                  %td &nbsp;
+                  %td &nbsp;
+                  %td &nbsp;
+                  %td &nbsp;
 
                     
 // NOTE, above format is available at .../app/views/staffs/index.html.haml -- PDF           

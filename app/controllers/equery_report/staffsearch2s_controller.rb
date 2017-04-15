@@ -1,6 +1,5 @@
 class EqueryReport::Staffsearch2sController < ApplicationController
   filter_resource_access
-  before_action :set_staffsearch2, only: [:show]
   
   def new
     @staffsearch2 = Staffsearch2.new
@@ -47,11 +46,6 @@ class EqueryReport::Staffsearch2sController < ApplicationController
   end
 
    private
-   
-   # Use callbacks to share common setup or constraints between actions.
-    def set_staffsearch2
-      @title = Title.find(params[:id])
-    end
 
      # Never trust parameters from the scary internet, only allow the white list through.
      def staffsearch2_params
