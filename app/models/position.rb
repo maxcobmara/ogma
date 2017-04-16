@@ -3,7 +3,7 @@ class Position < ActiveRecord::Base
   before_save :set_combo_code, :titleize_name, :set_staff_if_staff_id2_exist
   has_ancestry :cache_depth => true
   
-  validates_uniqueness_of :combo_code
+  validates_uniqueness_of :combo_code, :staff_id
   validates_presence_of   :name
   
   belongs_to :college, :foreign_key => 'college_id'

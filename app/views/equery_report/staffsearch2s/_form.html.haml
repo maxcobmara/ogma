@@ -13,3 +13,50 @@
               = f.label (t 'equery.ptdo.staff')
             .col-md-5
               = f.text_field :keywords, class: 'form-control', data: {autocomplete_source: Staff.order(:name).map(&:mykad_with_staff_name)}, placeholder: (t 'staff.name')+" "+(t 'or')+" "+(t 'equery.ptdo.icno')
+          .form-group 
+            .col-sm-2.control-label
+              = f.label (t 'equery.staff.service_group')
+            .col-md-5
+              = f.check_box :position,:checked=>"checked", :id=> 'bersepadu'
+              &nbsp;
+              =DropDown::GROUP[2][0]
+              &nbsp;
+              = f.check_box :position2,:checked=>"checked", :id=> 'sokongan'
+              &nbsp;
+              =DropDown::GROUP[1][0]
+              &nbsp;
+              = f.check_box :position3,:checked=>"checked", :id=> 'pengurusan_profesional'
+              &nbsp;
+              =DropDown::GROUP[0][0]
+              
+          /TODO - bootstrap - above - checkbox label  
+            
+          /.form-group
+          /  .col-sm-2.control-label
+          /  .col-md-5
+          /    = f.check_box :position2,:checked=>"checked", :id=> 'sokongan'
+          /    &nbsp;
+          /    =DropDown::GROUP[1][0]
+          /.form-group
+          /  .col-sm-2.control-label
+          /  .col-md-5
+          /    = f.check_box :position3,:checked=>"checked", :id=> 'pengurusan_profesional'
+          /    &nbsp;
+          /    =DropDown::GROUP[0][0]
+              
+          /TODO -- start -- 16Apr2017
+          /.form-group
+          /  .col-sm-2.control-label
+          /    = f.label (t 'staff.staffgrade_id') 
+          /  .col-md-5
+          /    = f.collection_select :staff_grade, Employgrade.all.order(name: :asc), :id, :name_and_group,{ :include_blank=>(t 'select'), class: 'selectpicker'}
+          /TODO -- end    
+          
+          = f.check_box :blank_post,:checked=>"unchecked"
+          /, :id=> 'pengurusan_profesional'
+          &nbsp;
+          =t('equery.staff.blank_post')
+
+/Bersepadu (4)
+/Sokongan (2)
+/Pengurusan & Profesional (1)
