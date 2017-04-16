@@ -4559,8 +4559,10 @@ ms_MY:
       warrant_exist: "Rekod 'Waran perjawatan' berkaitan mesti diwujudkan."
       completed_grade_staff: "Medan 'Gred jawatan' dalam modul 'Staf' mesti diisi."
       completed_position: "Medan 'Gred minima diperlukan', 'Staf' dan 'Waran perjawatan' dalam modul Jawatan (Carta Organisasi) mesti diisi."
-      #search_note: "Pilih ketiga-tiga Kumpulan Perkhidmatan untuk memaparkan semua rekod perjawatan dan / atau buat carian maklumat perjawatan menggunakan 'Nama' dan / atau 'Gred Jawatan' kakitangan. "
-      #blank_post: "Pilih kotak semak ini untuk sertakan jawatan yang belum diisi dalam hasil carian"
+      total: Jumlah rekod 
+      service_group: Kumpulan Perkhidmatan
+      search_note: "Pilih ketiga-tiga Kumpulan Perkhidmatan untuk memaparkan semua rekod perjawatan dan / atau buat carian maklumat perjawatan menggunakan 'Nama' dan / atau 'Gred Jawatan' kakitangan. "
+      blank_post: "Pilih kotak semak ini untuk sertakan jawatan yang belum diisi dalam hasil carian"
     #staffattendance:
       #report: Laporan Kedatangan Kakitangan
       #search: "Carian Kedatangan Kakitangan (Format Kad Mencatat Waktu / Kad Perakam Waktu)"
