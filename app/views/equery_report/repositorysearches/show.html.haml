@@ -1,0 +1,103 @@
+- model_class = Repositorysearch
+.page-header
+  %h1=t('equery.repository.search2')
+= render 'shared/flashes'
+
+- if @repositorysearch.title.blank? && @repositorysearch.vessel.blank? && @repositorysearch.document_type.blank? && @repositorysearch.document_subtype.blank? && @repositorysearch.refno.blank? && @repositorysearch.publish_date.blank? && @repositorysearch.total_pages.blank? && @repositorysearch.copies.blank? && @repositorysearch.location.blank?
+  - disp=(t 'equery.repository.list_all')
+- else
+  - disp=(t 'equery.result')
+
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to disp,"#search", "data-toggle" => "tab"
+
+    / display 
+    .tab-content{style:"padding-top:1em"}
+      #search_details.tab-pane.active  
+            
+        /additional heading
+        .col-md-8.col-md-offset-2
+          =t 'equery.search_by'
+          %dl.dl-horizontal
+            - unless @repositorysearch.title.blank?
+              %dt=(t 'equery.repository.document_title')
+              %dd=@repositorysearch.title
+              
+            - unless @repositorysearch.vessel.blank?
+              %dt=(t 'equery.repository.vessel')
+              %dd=@repositorysearch.vessel
+               
+            - unless @repositorysearch.document_type.blank?
+              %dt=(t 'equery.repository.document_type')
+              %dd=@repositorysearch.document_type
+              
+            - unless @repositorysearch.document_subtype.blank?
+              %dt=(t 'equery.repository.document_subtype')
+              %dd=@repositorysearch.document_subtype
+              
+            - unless @repositorysearch.refno.blank?
+              %dt=(t 'equery.repository.refno')
+              %dd=@repositorysearch.refno
+              
+            - unless @repositorysearch.publish_date.blank?
+              %dt=(t 'equery.repository.publish_date')
+              %dd=@repositorysearch.publish_date
+              
+            - unless @repositorysearch.total_pages.blank?
+              %dt=(t 'equery.repository.total_pages')
+              %dd=@repositorysearch.total_pages
+              
+            - unless @repositorysearch.copies.blank?
+              %dt=(t 'equery.repository.copies')
+              %dd=@repositorysearch.copies
+              
+            - unless @repositorysearch.location.blank?
+              %dt=(t 'equery.repository.location')
+              %dd=@repositorysearch.location
+              
+            %dt=(t'equery.repository.total')
+            %dd=@repositorysearch.repositories.count
+
+        /display result
+        .col-md-11
+          %br
+          - if @repositorysearch.repositories.count > 0
+            %table.table.table-bordered.table-condensed
+              %head
+                %tr.bg-grey
+                  %th{width: '5%'} No
+                  %th{width: '5%'}=t 'equery.repository.document_type'
+                  %th{width: '12%'}=t 'equery.repository.document_subtype'
+                  %th{width: '12%'}=t 'equery.repository.vessel'
+                  %th{width: '20%'}=t 'equery.repository.document_title'
+                  %th{width: '15%'}=t 'equery.repository.refno'
+                  %th{width: '8%'}=t 'equery.repository.publish_date'
+                  %th{width: '12%'}=t 'equery.repository.location'
+                  %th{width: '6%'}= (t 'equery.repository.copies')+" / "+(t 'equery.repository.total_pages')
+                  %th{width: '4%'}=t 'equery.view'
+        
+              %body
+                - cnt=0
+                - for repository in @repositorysearch.repositories
+                  %tr
+                    %td.centre=cnt+=1
+                    %td=repository.render_document
+                    %td=repository.render_subdocument
+                    %td=repository.vessel
+                    %td= link_to repository.title, repository_path(repository)
+                    %td=repository.refno
+                    %td.centre=repository.publish_date
+                    %td=repository.location
+                    %td.centre=repository.copies.to_s+" / "+repository.total_pages.to_s
+                    %td.centre=link_to (fa_icon "file-pdf-o"), repository.uploaded.url 
+                    
+
+.row
+  .col-md-6.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('equery.repository.title')}", "/equery_reports?query_module=8", class: 'btn btn-primary'
+      %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_repositorysearch_path,  :class => 'btn btn-default'

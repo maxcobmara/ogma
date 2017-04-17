@@ -387,6 +387,7 @@
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('campus.visitors.list'), campus_visitors_path
           - permitted_to? :read, :repositories do
             %li=link_to content_tag(:i, "", :class => "icon-numb") + t('repositories.list'), repositories_path
+            %li=link_to content_tag(:i, "", :class => "icon-numb") + t('repositories.list2'), index2_repositories_path
 
           - if user_signed_in? && current_user.userable && current_user.userable_type=='Staff'
             %li.icon.icon-left
@@ -437,4 +438,5 @@
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'staff.title'), "/equery_reports?query_module=1"
           - permitted_to? :read, :library_books do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'library.title'), "/equery_reports?query_module=7"
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'repositories.list2'), "/equery_reports?query_module=8"
           

@@ -376,6 +376,11 @@ ms_MY:
         title: Tajuk
         category: Kategori
         uploaded: Nama Fail
+        staff_id: Dimuatnaik oleh
+        vessel: Nama Kapal
+        document_type: Jenis Dokumen
+        document_subtype: Dokumentasi Untuk
+        publish_date: Tarikh Terbitan
       bookingfacility:
         location_id: Kemudahan Ditempah
         staff_id: Ditempah Oleh
@@ -4413,14 +4418,42 @@ ms_MY:
     title: "Repositori Dokumen MS:ISO"
     list: "Senarai Repositori (Dokumen MS:ISO)"
     title2: "Tajuk dokumen"
+    title_digital: Dokumen Digital
     details: "Butiran Repositori Dokumen MS:ISO"
     new: "Repositori Baru Dokumen MS:ISO"
     edit: "Sunting Repositori Dokumen MS:ISO"
-    staff_id: Disediakan oleh
+    staff_id: Dimuatnaik oleh
     category: Kategori
     uploaded: Nama Fail
     current_file: Fail semasa
     remark: Sila rujuk modul berkaitan bagi akses ke proses / borang PDF yang diisi secara atas talian. 
+    
+    list2: Perpustakaan Digital
+    new2: Dokumen Digital Baru
+    edit2: Sunting Dokumen Digital
+    details2: Butiran Dokumen Digital
+    vessel: Nama Kapal
+    document_type: Jenis Dokumen
+    refno: No Rujukan
+    publish_date: Tarikh Terbitan
+    total_pages: Muka surat
+    copies: Salinan
+    location: Lokasi
+    book: Buku
+    drawing: Lukisan Kejuruteraan
+    test_trials: Pengujian & Percubaan
+    others: Lain - lain
+    total: Jumlah
+    document_subtype: Dokumentasi untuk
+    propulsion: Sistem Penggerak Utama
+    electrical: Sistem Kuasa Elektrik
+    weapon: Senjata dan Sistem Senjata
+    navigation: Sistem Navigasi
+    communication: Sistem Komunikasi
+    hull_fitting: Sistem Struktur Badan dan Kelengkapan Kapal
+    life_equipment: Sistem Peralatan Sokongan Hayat
+    damage_safety: Sistem Kawalan Kerosakan / Keselamatan
+    auxiliaries: Kelengkapan
 
   conversation:
     local_messaging: Pemesejan Dalaman
@@ -4517,11 +4550,13 @@ ms_MY:
     
   equery:
     title: Carian Lanjut / Laporan
+    title2: Carian Lanjut
     list: Carian Lanjut & Laporan Pengurusan
     reports: Laporan
     advance_search: Carian Lanjut
     module: Modul
     remark: Catatan
+    view: Papar
     #tick: Pilih
     #untick: Nyahpilih
     #leaves_other_blanks: " & 'kosongkan' medan - medan lain untuk papar SEMUA rekod."
@@ -4865,6 +4900,50 @@ ms_MY:
       #leaves_all_blank_all_records: "'Kosongkan'/nyahpilih SEMUA medan dan klik 'Cari' untuk papar SEMUA rekod keperluan pejabat."
       #leaves_fields_blank_all_corresponding: "'Kosongkan'/nyahpilih medan bertanda "
       #leaves_fields_blank_all_corresponding2: " dan klik 'Cari' untuk papar SEMUA butiran penerimaan/pengeluaran yang sepadan."
+    repository:
+      title: Repositori Dokumen
+      search: Carian Repositori
+      search2: Perpustakaan Digital - Carian Lanjut
+      document_title: Tajuk Dokumen
+      list_all: Senarai Penuh Dokumen Digital
+      total: Jumlah dokumen
+      #vessel
+      #drawing
+      #book 
+      
+      vessel: Nama Kapal
+      document_type: Jenis Dokumen
+      refno: No Rujukan
+      publish_date: Tarikh Terbitan
+      total_pages: Muka surat
+      copies: Salinan
+      location: Lokasi
+      book: Buku
+      drawing: Lukisan Kejuruteraan
+      test_trials: Pengujian & Percubaan
+      others: Lain - lain
+      total: Jumlah
+      document_subtype: Dokumentasi untuk
+      propulsion: Sistem Penggerak Utama
+      electrical: Sistem Kuasa Elektrik
+      weapon: Senjata dan Sistem Senjata
+      navigation: Sistem Navigasi
+      communication: Sistem Komunikasi
+      hull_fitting: Sistem Struktur Badan dan Kelengkapan Kapal
+      life_equipment: Sistem Peralatan Sokongan Hayat
+      damage_safety: Sistem Kawalan Kerosakan / Keselamatan
+      auxiliaries: Kelengkapan
+    
+      
+      #title2: "Tajuk dokumen"
+      #details: "Butiran Repositori Dokumen MS:ISO"
+      #new: "Repositori Baru Dokumen MS:ISO"
+      #edit: "Sunting Repositori Dokumen MS:ISO"
+      #staff_id: Disediakan oleh
+      #category: Kategori
+      #uploaded: Nama Fail
+      #current_file: Fail semasa
+      #remark: Sila rujuk modul berkaitan bagi akses ke proses / borang PDF yang diisi secara atas talian. 
     
   helpers:
     links:

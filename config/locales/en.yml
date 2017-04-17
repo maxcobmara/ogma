@@ -393,6 +393,11 @@ en:
         title: Title
         category: Category
         uploaded: File Name
+        staff_id: Uploaded by
+        vessel: Vessel Name
+        document_type: Document Type
+        document_subtype: Documentation For
+        publish_date: Publish Date
       bookingfacility:
         location_id: Booked Facility
         staff_id: Booking Staff
@@ -4496,14 +4501,42 @@ en:
     title: "MS:ISO Document Repository"
     list: "MS:ISO Document Repositories List"
     title2: Document Title
+    title_digital: Digital Document
     details: "MS:ISO Document Repository Details"
     new: "New MS:ISO Document Repository"
     edit: "Edit MS:ISO Document Repository"
-    staff_id: Prepared by
+    staff_id: Uploaded by
     category: Category
     uploaded: File Name
     current_file: Current file
     remark: Please refer to related modules for access to produce PDF format via online data entry.
+    
+    list2: Digital Library
+    new2: New Digital Document
+    edit2: Edit Digital Document
+    details2: Digital Document Details
+    vessel: Vessel Name
+    document_type: Document Type
+    refno: Reference No
+    publish_date: Publish Date
+    total_pages: Pages
+    copies: Copies
+    location: Location
+    book: Book
+    drawing: Drawing
+    test_trials: Tests & Trials
+    others: Others
+    total: Total
+    document_subtype: Documentation for
+    propulsion: Main Propulsion System
+    electrical: Electrical Power System
+    weapon: Weapon and Weapon System
+    navigation: Navigation System
+    communication: Communication System
+    hull_fitting: Hull Structure and Fitting System
+    life_equipment: Life Equipment Support System
+    damage_safety: Damage Control / Safety System
+    auxiliaries: Auxiliaries
     
   conversation:
     local_messaging: Local Messaging
@@ -4602,11 +4635,13 @@ en:
      
   equery:
     title: Equery / Reports
+    title2: Equery
     list: Electronic Query & Report Manager
     reports: Reports
     advance_search: Advance Search
     module: Module
     remark: Remark
+    view: View
     #tick: Tick
     #untick: Untick
     #leaves_other_blanks: " & leaves other fields 'blank' to display ALL record."
@@ -4951,7 +4986,36 @@ en:
       #leaves_all_blank_all_records: "Leaves ALL fields 'blank'/unselected and click 'Search' to display ALL record of office supplies."
       #leaves_fields_blank_all_corresponding: "Leaves fields marked with "
       #leaves_fields_blank_all_corresponding2: " 'blank'/unselected and click 'Search' to display ALL corresponding additions/deductions records."
-     
+    repository:
+      title: Document Repository
+      search: Repository Search
+      search2: Digital Library - Equery
+      document_title: Document Title
+      list_all: List of All Digital Documents
+      total: Total documents
+      
+      vessel: Vessel Name
+      document_type: Document Type
+      refno: Reference No
+      publish_date: Publish Date
+      total_pages: Pages
+      copies: Copies
+      location: Location
+      book: Book
+      drawing: Drawing
+      test_trials: Tests & Trials
+      others: Others
+      total: Total
+      document_subtype: Documentation for
+      propulsion: Main Propulsion System
+      electrical: Electrical Power System
+      weapon: Weapon and Weapon System
+      navigation: Navigation System
+      communication: Communication System
+      hull_fitting: Hull Structure and Fitting System
+      life_equipment: Life Equipment Support System
+      damage_safety: Damage Control / Safety System
+      auxiliaries: Auxiliaries
   
   
   ###########

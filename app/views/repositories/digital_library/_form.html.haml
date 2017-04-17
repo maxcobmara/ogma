@@ -1,0 +1,74 @@
+.row
+  .col-md-offset-3
+
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'repositories.document_type', for: :document_type
+      .col-md-5
+        =f.select :document_type, Repository.document, {include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
+
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'repositories.document_subtype', for: :document_subtype
+      .col-md-5
+        =f.select :document_subtype, Repository.subdocument, {include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
+
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'repositories.title2', for: :title
+      .col-md-5
+        = f.text_field :title, class: 'form-control mandatory'
+
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'repositories.vessel', for: :vessel
+      .col-md-4
+        = f.text_field :vessel, class: 'form-control mandatory'
+
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'repositories.refno', for: :refno
+      .col-md-4
+        = f.text_field :refno, class: 'form-control'
+
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'repositories.publish_date', for: :publish_date
+      .col-md-2
+        = f.text_field :publish_date, class: 'form-control date_picker_reverse mandatory'        
+
+    .form-group
+      .col-sm-2.control-label
+        = f.label (t 'repositories.total')
+      .col-md-4
+        .input-group
+          .input-group-addon= t 'repositories.copies'
+          = f.text_field :copies, class: 'form-control'
+          .input-group-addon=t 'repositories.total_pages'
+          = f.text_field :total_pages, class: 'form-control'     
+
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'repositories.location', for: :location
+      .col-md-4
+        = f.text_field :location, class: 'form-control'        
+
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'repositories.uploaded', for: :uploaded
+      .col-md-5
+        = f.file_field :uploaded, class: 'form-control mandatory'
+        .small 
+          - if @repository.uploaded.present?
+            = (t 'repositories.current_file')+": "+@repository.uploaded_file_name
+
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'repositories.staff_id', for: :staff_id
+      .col-md-5
+        = f.collection_select :staff_id, Staff.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
+
+%br
+    
+        
+        

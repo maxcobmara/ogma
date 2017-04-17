@@ -1,0 +1,60 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'library.book.list'),"#search", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #search.tab-pane.active
+        %br
+        .col-md-offset-2
+          =(t 'equery.search_by')
+
+          .form-group
+            .col-sm-2.control-label
+              =f.label (t 'equery.repository.document_title')
+            .col-md-6
+              =f.text_field :title, class: 'form-control', data: {autocomplete_source: Repository.digital_library.order(title: :asc).pluck(:title)}
+          .form-group
+            .col-sm-2.control-label
+              =f.label (t 'equery.repository.vessel')
+            .col-md-6
+              =f.text_field :vessel, class: 'form-control'
+          .form-group
+            .col-sm-2.control-label
+              =f.label (t 'equery.repository.document_type')
+            .col-md-6
+              =f.select :document_type, Repository.document, {include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
+          .form-group
+            .col-sm-2.control-label
+              =f.label (t 'equery.repository.document_subtype')
+            .col-md-6
+              =f.select :document_subtype, Repository.subdocument, {include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
+          .form-group
+            .col-sm-2.control-label
+              =f.label (t 'equery.repository.refno')
+            .col-md-6
+              =f.text_field :refno, class: 'form-control'
+          .form-group
+            .col-sm-2.control-label
+              =f.label (t 'equery.repository.publish_date')
+            .col-md-6
+              =f.text_field :publish_date, class: 'form-control date_picker_reverse mandatory'
+          .form-group
+            .col-sm-2.control-label
+              =f.label (t 'equery.repository.total_pages')
+            .col-md-6
+              =f.text_field :total_pages, class: 'form-control'
+          .form-group
+            .col-sm-2.control-label
+              =f.label (t 'equery.repository.copies')
+            .col-md-6
+              =f.text_field :copies, class: 'form-control'
+          .form-group
+            .col-sm-2.control-label
+              =f.label (t 'equery.repository.location')
+            .col-md-6
+              =f.text_field :location, class: 'form-control'
+              
+              
+              
