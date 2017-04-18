@@ -136,10 +136,22 @@ class Repository < ActiveRecord::Base
     Repository.digital_library.each{ |repo| ids << repo.id if repo.location.downcase.include?(query.downcase)}
     where(id: ids)
   end
+  
+  def self.document_type_search(query)
+    ids=[]
+    Repository.digital_library.each{ |repo| ids << repo.id if repo.document_type==query}
+    where(id: ids)
+  end
+  
+  def self.document_subtype_search(query)
+    ids=[]
+    Repository.digital_library.each{ |repo| ids << repo.id if repo.document_subtype==query}
+    where(id: ids)
+  end
 
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-    [:vessel_search, :refno_search, :publish_date_search, :location_search]
+    [:vessel_search, :refno_search, :publish_date_search, :location_search, :document_type_search, :document_subtype_search]
   end  
   
   def self.document
@@ -169,6 +181,32 @@ class Repository < ActiveRecord::Base
   
   def render_subdocument
     (Repository.subdocument.find_all{|disp, value| value == document_subtype }).map {|disp, value| disp}[0]
+  end
+  
+  def self.doctype_per_vessel
+    ab=[]
+    Repository.digital_library.group_by(&:vessel).each do |k,v|
+      a=[[I18n.t('select'), ""]]
+       v.each do |y|
+	 a << [y.render_document, y.document_type]
+       end
+      ab << [k, a.uniq]
+    end
+    ab
+  end
+  
+  def self.docsubtype_per_doctype
+    ab=[]
+    Repository.digital_library.group_by(&:vessel).each do |k,v|
+      v.group_by(&:document_type).each do |dt, rs|
+	  a=[[I18n.t('select'), ""]]
+	  rs.each do |r|
+            a << [r.render_subdocument, r.document_subtype]
+          end
+          ab << [k+": "+((Repository.document.find_all{|disp, value| value == dt }).map {|disp, value| disp}[0]), a.uniq]
+      end
+    end
+    ab
   end
   
 end

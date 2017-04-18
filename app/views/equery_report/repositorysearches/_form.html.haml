@@ -2,59 +2,81 @@
   .col-md-10.col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
-      %li.active= link_to (t 'library.book.list'),"#search", "data-toggle" => "tab"
+      %li.active= link_to (t 'equery.repository.search_form'),"#search", "data-toggle" => "tab"
 
     .tab-content{style:"padding-top:1em"}
       #search.tab-pane.active
         %br
-        .col-md-offset-2
-          =(t 'equery.search_by')
+        .col-md-offset-2   
+          .col-md-9
+            .panel.panel-default
+              .panel-heading
+                =(t 'equery.repository.method')+" 1"
+              .panel-body
+                .text-blue.centre.small=(t 'equery.repository.remark1').html_safe
+                /by document title
+                .form-group
+                  .col-sm-3.control-label
+                    =f.label (t 'equery.repository.document_title')
+                  .col-md-8
+                    =f.text_field :title, class: 'form-control', data: {autocomplete_source: Repository.digital_library.order(title: :asc).pluck(:title)}
 
-          .form-group
-            .col-sm-2.control-label
-              =f.label (t 'equery.repository.document_title')
-            .col-md-6
-              =f.text_field :title, class: 'form-control', data: {autocomplete_source: Repository.digital_library.order(title: :asc).pluck(:title)}
-          .form-group
-            .col-sm-2.control-label
-              =f.label (t 'equery.repository.vessel')
-            .col-md-6
-              =f.text_field :vessel, class: 'form-control'
-          .form-group
-            .col-sm-2.control-label
-              =f.label (t 'equery.repository.document_type')
-            .col-md-6
-              =f.select :document_type, Repository.document, {include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
-          .form-group
-            .col-sm-2.control-label
-              =f.label (t 'equery.repository.document_subtype')
-            .col-md-6
-              =f.select :document_subtype, Repository.subdocument, {include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
-          .form-group
-            .col-sm-2.control-label
-              =f.label (t 'equery.repository.refno')
-            .col-md-6
-              =f.text_field :refno, class: 'form-control'
-          .form-group
-            .col-sm-2.control-label
-              =f.label (t 'equery.repository.publish_date')
-            .col-md-6
-              =f.text_field :publish_date, class: 'form-control date_picker_reverse mandatory'
-          .form-group
-            .col-sm-2.control-label
-              =f.label (t 'equery.repository.total_pages')
-            .col-md-6
-              =f.text_field :total_pages, class: 'form-control'
-          .form-group
-            .col-sm-2.control-label
-              =f.label (t 'equery.repository.copies')
-            .col-md-6
-              =f.text_field :copies, class: 'form-control'
-          .form-group
-            .col-sm-2.control-label
-              =f.label (t 'equery.repository.location')
-            .col-md-6
-              =f.text_field :location, class: 'form-control'
-              
+                /by reference no
+                .form-group
+                  .col-sm-3.control-label
+                    =f.label (t 'equery.repository.refno')
+                  .col-md-6
+                    =f.text_field :refno, class: 'form-control', data: {autocomplete_source: Repository.digital_library.map(&:refno).sort-[""]}
+                  .col-md-3.text-red=(t 'or').upcase
+       
+          .col-md-9
+            .panel.panel-default
+              .panel-heading
+                =(t 'equery.repository.method')+" 2"
+              .panel-body
+                .text-blue.centre.small=(t 'equery.repository.remark2').html_safe
+                /by Vessel, Document Type, Document Subtype(system)
+                .form-group
+                  .col-sm-4.control-label
+                    =f.label (t 'equery.repository.vessel')
+                  .col-md-5
+                    /=f.text_field :vessel, class: 'form-control'
+                    =f.select :vessel, Repository.digital_library.map(&:vessel).uniq.sort, {include_blank: (t 'select')}, {class: 'form-control'}
+
+                .form-group
+                  .col-sm-4.control-label
+                    =f.label (t 'equery.repository.document_type')
+                  .col-md-3
+                    /=f.select :document_type, Repository.document, {},{class: 'selectpicker', "data-width"=>"auto"}
+                    =f.select :document_type, grouped_options_for_select(Repository.doctype_per_vessel), {:include_blank => (t 'select')}, {:class => 'form-control'}
+                
+                .form-group
+                  .col-sm-4.control-label
+                    =f.label (t 'equery.repository.document_subtype')
+                  .col-md-6
+                    /=f.select :document_subtype, Repository.subdocument, {include_blank: (t 'select')}, {class: 'form-control'}
+                    =f.select :document_subtype, grouped_options_for_select(Repository.docsubtype_per_doctype), {:include_blank => (t 'select')}, {:class => 'form-control'}
+                /.row
+                /  .text-blue.centre.small=(t 'equery.repository.remark2').html_safe
+                
+
+/ :javascript
+/   $("#repositorysearch_vessel").each(function(){
+/     $('#repositorysearch_document_type').empty
+/     $('#repositorysearch_document_type').parent().hide()
+/     $('#repositorysearch_document_subtype').empty
+/     $('#repositorysearch_document_subtype').parent().hide()
+/   });
+  
+/   alert("uhuk");
+/   
+/   $("#repositorysearch_document_type").change(function(){
+/     alert('alert changes!');
+/     /*aa=$(this).val();*/
+/     aa=$('#repositorysearch_document_type :selected').text();
+/     var bb=document.getElementById("repositorysearch_vessel");
+/     bb_v=bb.value;
+/     alert(bb_v+"~"+aa);
+/   });
               
               

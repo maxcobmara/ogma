@@ -1,6 +1,6 @@
 - model_class = Repositorysearch
 .page-header
-  %h1=t('equery.repository.search')
+  %h1=t('equery.repository.search2')
 
 = render 'shared/flashes'
 
@@ -13,12 +13,14 @@
     .col-sm-8.col-md-offset-1
       .row
         .col-sm-offset-3
-          .small=t('equery.leaves_all_blank_all_records')
-          %hr
+          .small="* "+t('equery.leaves_all_blank_all_records')
         .form-group
           .col-sm-offset-4.col-sm-1
-            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("list")), index2_repositories_path, :class => 'btn btn-default'
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("equery.repository.main_page")), index2_repositories_path, :class => 'btn btn-default'
           /.col-sm-1
           /  = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), "/equery_reports?query_module=8", :class => 'btn btn-default'
-          .col-sm-offset-1.col-sm-2
+          .col-sm-offset-2.col-sm-2
             = f.submit (t 'search') , class: "btn btn-primary"
+            
+            
+/ TODO - EQUERY - MS ISO: repository 

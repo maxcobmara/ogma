@@ -4901,12 +4901,19 @@ ms_MY:
       #leaves_fields_blank_all_corresponding: "'Kosongkan'/nyahpilih medan bertanda "
       #leaves_fields_blank_all_corresponding2: " dan klik 'Cari' untuk papar SEMUA butiran penerimaan/pengeluaran yang sepadan."
     repository:
+      main_page: Perpustakaan Digital
       title: Repositori Dokumen
+      title2: Dokumen Digital
       search: Carian Repositori
       search2: Perpustakaan Digital - Carian Lanjut
       document_title: Tajuk Dokumen
       list_all: Senarai Penuh Dokumen Digital
+      list: Senarai Dokumen Digital
       total: Jumlah dokumen
+      method: Kaedah
+      remark1: "Catatan : Masukkan dan <u>PILIH</u> <b>Tajuk Dokumen</b> ATAU <b>No Rujukan</b> berkenaan dan klik butang CARI."
+      remark2: "Catatan : Pilih <b>Nama Kapal</b> diikuti dengan <b>Jenis Dokumen</b> dan <b>Dokumentasi untuk</b> (jika perlu) dan klik butang CARI."
+      search_form: Borang Carian
       #vessel
       #drawing
       #book 

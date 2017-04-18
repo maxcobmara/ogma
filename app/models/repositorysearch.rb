@@ -44,38 +44,6 @@ class Repositorysearch < ActiveRecord::Base
     keyword[:refno]
   end
   
-  def publish_date=(value)
-    keyword[:publish_date] = value
-  end
-  
-  def publish_date
-    keyword[:publish_date]
-  end
-  
-  def total_pages=(value)
-    keyword[:total_pages] = value
-  end
-  
-  def total_pages
-    keyword[:total_pages]
-  end
-  
-  def copies=(value)
-    keyword[:copies] = value
-  end
-  
-  def copies
-    keyword[:copies]
-  end
-  
-  def location=(value)
-    keyword[:location] = value
-  end
-  
-  def location
-    keyword[:location]
-  end
-  
   def repositories
     @repositories ||= find_repositories
   end
@@ -100,29 +68,39 @@ class Repositorysearch < ActiveRecord::Base
       ["("+a+")", ids]
     end
   end
-  
-  # TODO -start
+
   def document_type_conditions
+    unless document_type.blank?
+      ids=Repository.document_type_search(document_type).pluck(:id)
+      a="id=?" if ids.count > 0
+      0.upto(ids.count-2) do |x|
+        a+=" OR id=? "
+      end
+      ["("+a+")", ids]
+    end
   end 
   
   def document_subtype_conditions
+    unless document_subtype.blank?
+      ids=Repository.document_subtype_search(document_subtype).pluck(:id)
+      a="id=?" if ids.count > 0
+      0.upto(ids.count-2) do |x|
+        a+=" OR id=? "
+      end
+      ["("+a+")", ids]
+    end
   end
   
   def refno_conditions
+    unless refno.blank?
+      ids=Repository.refno_search(refno).pluck(:id)
+      a="id=?" if ids.count > 0
+      0.upto(ids.count-2) do |x|
+        a+=" OR id=? "
+      end
+      ["("+a+")", ids]
+    end
   end
-  
-  def publish_date_conditions
-  end 
-  
-  def total_pages_conditions
-  end 
-  
-  def copies_conditions
-  end
-  
-  def location_conditions
-  end
-  # TODO -end
   
   def orders
    "title ASC"

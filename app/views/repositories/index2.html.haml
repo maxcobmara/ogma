@@ -8,8 +8,10 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new2_repositories_path
   %ul.nav.navbar-nav.navbar-right
     /%li= link_to (t 'equery.title'), "/equery_reports?query_module=8"
-    %li= link_to (t 'equery.title2'), new_equery_report_repositorysearch_path
+    %li= link_to content_tag(:li, fa_icon("search-plus", text: (t 'equery.title2'))), new_equery_report_repositorysearch_path
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    
+    / TODO - PDF format for Repository - Digital  Library + MS ISO docs (to inc links in equery show/result pg)
       
 .row
   /.col-md-12

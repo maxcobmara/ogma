@@ -4987,12 +4987,19 @@ en:
       #leaves_fields_blank_all_corresponding: "Leaves fields marked with "
       #leaves_fields_blank_all_corresponding2: " 'blank'/unselected and click 'Search' to display ALL corresponding additions/deductions records."
     repository:
+      main_page: Digital Library
       title: Document Repository
+      title2: Digital Document
       search: Repository Search
       search2: Digital Library - Equery
       document_title: Document Title
       list_all: List of All Digital Documents
+      list: Digital Documents List
       total: Total documents
+      method: Method
+      remark1: "Remark : Insert and <u>SELECT</u> appropiate <b>Title</b> OR <b>Reference no</b> and click SEARCH button to proceed."
+      remark2: "Remark : Select <b>Vessel name</b> followed by <b>Document type</b> and <b>Documentation for </b> (if required) and click SEARCH button."
+      search_form: Search Form
       
       vessel: Vessel Name
       document_type: Document Type
