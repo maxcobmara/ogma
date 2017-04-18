@@ -4417,8 +4417,7 @@ ms_MY:
   repositories:
     title: "Repositori Dokumen MS:ISO"
     list: "Senarai Repositori (Dokumen MS:ISO)"
-    title2: "Tajuk dokumen"
-    title_digital: Dokumen Digital
+    document_title: "Tajuk dokumen"
     details: "Butiran Repositori Dokumen MS:ISO"
     new: "Repositori Baru Dokumen MS:ISO"
     edit: "Sunting Repositori Dokumen MS:ISO"
@@ -4428,7 +4427,8 @@ ms_MY:
     current_file: Fail semasa
     remark: Sila rujuk modul berkaitan bagi akses ke proses / borang PDF yang diisi secara atas talian. 
     
-    list2: Perpustakaan Digital
+    title2: Repositori Dokumen Digital
+    list2: Senarai Repositori (Dokumen Digital)
     new2: Dokumen Digital Baru
     edit2: Sunting Dokumen Digital
     details2: Butiran Dokumen Digital

@@ -1,6 +1,6 @@
 class RepositoriesController < ApplicationController
   #filter_resource_access
-  filter_access_to :index, :new, :create, :index2, :new2, :attribute_check => false
+  filter_access_to :index, :new, :create, :index2, :new2, :repository_list, :repository_list2, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :download, :attribute_check => true
   before_action :set_repository, only: [:show, :edit, :update, :destroy, :download]
 
@@ -91,6 +91,33 @@ class RepositoriesController < ApplicationController
   def download
     #url=/assets/uploads/1/original/BK-KKM-01-01_BORANG_PENILAIAN_KURSUS.pdf?1474870599
     send_file("#{::Rails.root.to_s}/public#{@repository.uploaded.url.split("?").first}")
+  end
+  
+  
+  def repository_list
+    @search = Repository.search(params[:q])
+    @repositories = @search.result
+    respond_to do |format|
+      format.pdf do
+        pdf = Repository_listPdf.new(@repositories, view_context, current_user.college)
+        send_data pdf.render, filename: "repository_listt-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
+  def repository_list2
+    @search=Repository.digital_library.search(params[:q])
+    @repositories = @search.result
+    respond_to do |format|
+      format.pdf do
+        pdf = Repository_listPdf.new(@repositories, view_context, current_user.college)
+        send_data pdf.render, filename: "repository_listt-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
   end
 
   private

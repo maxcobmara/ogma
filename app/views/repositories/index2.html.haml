@@ -10,14 +10,8 @@
     /%li= link_to (t 'equery.title'), "/equery_reports?query_module=8"
     %li= link_to content_tag(:li, fa_icon("search-plus", text: (t 'equery.title2'))), new_equery_report_repositorysearch_path
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    
-    / TODO - PDF format for Repository - Digital  Library + MS ISO docs (to inc links in equery show/result pg)
-      
-.row
-  /.col-md-12
-  /  .alert.alert-warning
-  /    *
-  /    =t 'repositories.remark'
+    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')), repository_list2_repositories_path(params.merge(format: 'pdf' ))
+    / TODO - (to inc links in equery show/result pg)
 
   %table.table-striped.table-hover.ogma
     %thead

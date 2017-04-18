@@ -4499,9 +4499,8 @@ en:
 
   repositories:
     title: "MS:ISO Document Repository"
-    list: "MS:ISO Document Repositories List"
-    title2: Document Title
-    title_digital: Digital Document
+    list: "MS:ISO Document Repository List"
+    document_title: Document Title
     details: "MS:ISO Document Repository Details"
     new: "New MS:ISO Document Repository"
     edit: "Edit MS:ISO Document Repository"
@@ -4511,7 +4510,8 @@ en:
     current_file: Current file
     remark: Please refer to related modules for access to produce PDF format via online data entry.
     
-    list2: Digital Library
+    title2: Digital Document Repository
+    list2: Digital Document Repository List
     new2: New Digital Document
     edit2: Edit Digital Document
     details2: Digital Document Details

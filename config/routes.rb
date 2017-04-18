@@ -285,6 +285,8 @@ Ogma::Application.routes.draw do
       get :index2
       get :new2
       post :new2
+      get :repository_list
+      get :repository_list2
     end
   end
   resources :events do
