@@ -48,7 +48,7 @@ class RepositoriesController < ApplicationController
     
     respond_to do |format|
       if @repository.save
-        doc_title=@repository.data.blank? ? (t 'repositories.title') : (t 'repositories.title_digital')
+        doc_title=@repository.data.blank? ? (t 'repositories.title') : (t 'repositories.title2')
         format.html { redirect_to @repository, notice: doc_title+t('actions.created')}
         format.json { render action: 'show', status: :created, location: @repository}
       else
@@ -68,7 +68,7 @@ class RepositoriesController < ApplicationController
     @repository=Repository.find(params[:id])
     respond_to do |format|
       if @repository.update(repository_params)
-        doc_title=@repository.data.blank? ? (t 'repositories.title') : (t 'repositories.title_digital')
+        doc_title=@repository.data.blank? ? (t 'repositories.title') : (t 'repositories.title2')
         format.html { redirect_to @repository, notice: doc_title+t('actions.updated') }
         format.json { head :no_content }
       else
@@ -100,7 +100,7 @@ class RepositoriesController < ApplicationController
     respond_to do |format|
       format.pdf do
         pdf = Repository_listPdf.new(@repositories, view_context, current_user.college)
-        send_data pdf.render, filename: "repository_listt-{Date.today}",
+        send_data pdf.render, filename: "repository_list-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
       end
@@ -108,12 +108,16 @@ class RepositoriesController < ApplicationController
   end
   
   def repository_list2
-    @search=Repository.digital_library.search(params[:q])
-    @repositories = @search.result
+    if params[:ids]
+      @repositories=Repository.digital_library.where(id: params[:ids])
+    else
+      @search=Repository.digital_library.search(params[:q])
+      @repositories = @search.result
+    end
     respond_to do |format|
       format.pdf do
-        pdf = Repository_listPdf.new(@repositories, view_context, current_user.college)
-        send_data pdf.render, filename: "repository_listt-{Date.today}",
+        pdf = Repository_list2Pdf.new(@repositories, view_context, current_user.college)
+        send_data pdf.render, filename: "repository_list2-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
       end

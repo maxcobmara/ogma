@@ -8,7 +8,7 @@
     = render partial: "repositories/digital_library/show", locals: {repository: @repository}
   - else
     %dl.dl-horizontal
-      %dt= t 'repositories.title'
+      %dt= t 'repositories.document_title'
       %dd= @repository.title
     
       %dt= t 'repositories.category'

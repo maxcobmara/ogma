@@ -4417,7 +4417,7 @@ ms_MY:
   repositories:
     title: "Repositori Dokumen MS:ISO"
     list: "Senarai Repositori (Dokumen MS:ISO)"
-    document_title: "Tajuk dokumen"
+    document_title: Tajuk dokumen
     details: "Butiran Repositori Dokumen MS:ISO"
     new: "Repositori Baru Dokumen MS:ISO"
     edit: "Sunting Repositori Dokumen MS:ISO"
@@ -4569,8 +4569,9 @@ ms_MY:
     #listing: Senaraikan
     #links: Pautan
     #for_selected_date: "bagi tarikh dipilih."
-    search_by: Carian Mengikut
+    search_by: Kriteria Carian #Carian Mengikut
     result: Hasil Carian
+    print_result: Cetak Hasil Carian
     #data_not_available: Tiada data
     #same_as_above: Sama seperti di atas
     #dated: bertarikh
@@ -4901,11 +4902,11 @@ ms_MY:
       #leaves_fields_blank_all_corresponding: "'Kosongkan'/nyahpilih medan bertanda "
       #leaves_fields_blank_all_corresponding2: " dan klik 'Cari' untuk papar SEMUA butiran penerimaan/pengeluaran yang sepadan."
     repository:
-      main_page: Perpustakaan Digital
+      main_page: Senarai Repositori (Dokumen Digital)
       title: Repositori Dokumen
       title2: Dokumen Digital
       search: Carian Repositori
-      search2: Perpustakaan Digital - Carian Lanjut
+      search2: Carian Lanjut Dokumen Digital
       document_title: Tajuk Dokumen
       list_all: Senarai Penuh Dokumen Digital
       list: Senarai Dokumen Digital
@@ -5332,3 +5333,4 @@ ms_MY:
         precision: 2
         separator: '.'
         delimiter: ','
+

@@ -4656,6 +4656,7 @@ en:
     #for_selected_date: "for selected date."
     search_by: Search By
     result: Search Result
+    print_result: Print Search Result
     #data_not_available: Data not available
     #same_as_above: Same as above
     #dated: dated
@@ -4987,13 +4988,13 @@ en:
       #leaves_fields_blank_all_corresponding: "Leaves fields marked with "
       #leaves_fields_blank_all_corresponding2: " 'blank'/unselected and click 'Search' to display ALL corresponding additions/deductions records."
     repository:
-      main_page: Digital Library
+      main_page: Digital Document Repository List
       title: Document Repository
       title2: Digital Document
       search: Repository Search
-      search2: Digital Library - Equery
+      search2: Digital Document Equery
       document_title: Document Title
-      list_all: List of All Digital Documents
+      list_all: Listing All Digital Documents
       list: Digital Documents List
       total: Total documents
       method: Method

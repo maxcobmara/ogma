@@ -3,16 +3,11 @@
   %h1=t('equery.repository.search2')
 = render 'shared/flashes'
 
-- if @repositorysearch.title.blank? && @repositorysearch.vessel.blank? && @repositorysearch.document_type.blank? && @repositorysearch.document_subtype.blank? && @repositorysearch.refno.blank? 
-  - disp=(t 'equery.repository.list_all')
-- else
-  - disp=(t 'equery.result')
-
 .row
   .col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
-      %li.active= link_to disp,"#search", "data-toggle" => "tab"
+      %li.active= link_to (t 'equery.result'),"#search", "data-toggle" => "tab"
 
     / display 
     .tab-content{style:"padding-top:1em"}
@@ -20,11 +15,15 @@
             
         /additional heading
         .col-md-8.col-md-offset-2
-          - if @repositorysearch.title.blank? && @repositorysearch.vessel.blank? && @repositorysearch.document_type.blank? && @repositorysearch.document_subtype.blank? && @repositorysearch.document_type.blank?
-          - else
-            =t 'equery.search_by'
 
           %dl.dl-horizontal
+            - if @repositorysearch.title.blank? && @repositorysearch.vessel.blank? && @repositorysearch.document_type.blank? && @repositorysearch.document_subtype.blank? && @repositorysearch.document_type.blank?
+              %div{style: 'padding-left: 150px; text-decoration: underline; font-weight: bold;'}=t 'equery.repository.list_all'
+            - else
+              %div{style: 'padding-left: 200px; text-decoration: underline; font-weight: bold;'}=t 'equery.search_by'
+            
+            %br
+            
             - unless @repositorysearch.title.blank?
               %dt=(t 'equery.repository.document_title')
               %dd=@repositorysearch.title
@@ -44,17 +43,27 @@
             - unless @repositorysearch.refno.blank?
               %dt=(t 'equery.repository.refno')
               %dd=@repositorysearch.refno
-              
+            
+            - if @repositorysearch.title.blank? && @repositorysearch.vessel.blank? && @repositorysearch.document_type.blank? && @repositorysearch.document_subtype.blank? && @repositorysearch.document_type.blank?
+            - else
+              .col-md-12
+                .col-md-8
+                  %hr
+                
             %dt=(t'equery.repository.total')
-            %dd=@repositorysearch.repositories.count==0 ? @repositorysearch.repositories.count : @repositorysearch.repositories.count.to_s+" "+(t 'records')
+            %dd=@repositorysearch.repositories.count==0 ? @repositorysearch.repositories.count : @repositorysearch.repositories.count.to_s+" "+(t 'records')   
+            
+           
 
         /display result
         .col-md-11
           %br
           - if @repositorysearch.repositories.count > 0
-            %table.table.table-bordered.table-condensed
+
+            .right=link_to (fa_icon "print", text: (t 'equery.print_result')), repository_list2_repositories_path(format: 'pdf', ids: @repositorysearch.repositories.pluck(:id))
+            %table.table.table-bordered.table-condensed.table-hover
               %head
-                %tr.bg-grey
+                %tr.info
                   %th{width: '5%'} No
                   %th{width: '12%'}=t 'equery.repository.vessel'
                   %th{width: '5%'}=t 'equery.repository.document_type'
@@ -67,8 +76,12 @@
                   %th{width: '4%'}=t 'equery.view'
         
               %body
-                - cnt=0
-                - for repository in @repositorysearch.repositories
+                - if params[:page]
+                  - cnt=params[:page].to_i+1
+                - else
+                  - cnt=0
+                /- for repository in @repositorysearch.repositories
+                - for repository in @repositories.sort_by(&:vessel)
                   %tr
                     %td.centre=cnt+=1
                     %td=repository.vessel
@@ -79,11 +92,12 @@
                     %td.centre=repository.publish_date
                     %td=repository.location
                     %td.centre=repository.copies.to_s+" / "+repository.total_pages.to_s
-                    %td.centre=link_to (fa_icon "file-pdf-o"), repository.uploaded.url 
-                    
+                    %td.centre=link_to (fa_icon "file-pdf-o"), repository.uploaded.url
+
+          .right{style:"padding: 0 10px; margin:0;"}= paginate @repositories, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
 
 .row
-  .col-md-6.col-md-offset-4
+  .col-md-6.col-md-offset-3
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("equery.repository.main_page")), index2_repositories_path, :class => 'btn btn-default'
