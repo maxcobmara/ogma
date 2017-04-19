@@ -4508,6 +4508,7 @@ en:
     category: Category
     uploaded: File Name
     current_file: Current file
+    max_size: "Allowed maximum file size : 25 MB"
     remark: Please refer to related modules for access to produce PDF format via online data entry.
     
     title2: Digital Document Repository

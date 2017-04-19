@@ -61,6 +61,8 @@
         .small 
           - if @repository.uploaded.present?
             = (t 'repositories.current_file')+": "+@repository.uploaded_file_name
+            %br
+          =t 'repositories.max_size'
 
     .form-group
       .col-sm-2.control-label
