@@ -63,7 +63,7 @@ class Staff < ActiveRecord::Base
   has_many :leaves_supported, :class_name => 'Leaveforstaff', :foreign_key => 'approval1_id', :dependent => :nullify
   has_many :leaves_approved, :class_name => 'Leaveforstaff', :foreign_key =>  'approval2_id', :dependent => :nullify
   
-  has_many :topicdetails, :dependent => :nullify
+  has_many :topicdetails, :class_name => "Topicdetail", :foreign_key => :prepared_by, :dependent => :nullify
   has_many :trainingnotes, :class_name => 'Trainingnote', :dependent => :nullify
 
   has_many          :qualifications, :dependent => :destroy

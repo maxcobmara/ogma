@@ -30,7 +30,8 @@ authorization do
      if_attribute :id => is {user.college_id}
    end
    has_permission_on :campus_pages, :to =>[:manage, :page_list, :flexible]
-   has_permission_on :repositories, :to => [:manage, :download, :repository_list, :repository_list2]
+   has_permission_on :repositories, :to => [:manage, :download, :repository_list, :repository_list2, :index2, :new2]
+   has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
    has_permission_on :staff_mentors, :to => :manage
     
   #by existing roles?
@@ -486,7 +487,8 @@ authorization do
      if_attribute :id => is_in {user.members_of_msg_group}
    end
    has_permission_on :campus_pages, :to => :flexipage                                                      # A staff can view pages (ie. library rules & regulations)
-   has_permission_on :repositories, :to => [:read, :create, :download, :repository_list, :repository_list2]
+   has_permission_on :repositories, :to => [:read, :create, :download, :repository_list, :repository_list2, :index2, :new2]
+   has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
    has_permission_on :repositories, :to => :update do
      if_attribute :staff_id => is {user.userable.id}
    end
@@ -1070,19 +1072,22 @@ authorization do
   role :staffs_module_admin do
     has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff, :staff_list] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
     has_permission_on :campus_pages, :to => :flexipage
-    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2]
+    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2]
+    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
     has_permission_on :equery_report_staffsearch2s, :to => [:new, :create, :show]
   end
   role :staffs_module_viewer do
     has_permission_on :staff_staffs, :to => [:read, :borang_maklumat_staff, :staff_list]
     has_permission_on :campus_pages, :to => :flexipage
-    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2]
+    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2]
+    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
     has_permission_on :equery_report_staffsearch2s, :to => [:new, :create, :show]
   end
   role :staffs_module_user do
     has_permission_on :staff_staffs, :to => [:read, :update, :borang_maklumat_staff, :staff_list]
     has_permission_on :campus_pages, :to => :flexipage
-    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2]
+    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2]
+    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
     has_permission_on :equery_report_staffsearch2s, :to => [:new, :create, :show]
   end
   role :staffs_module_member do
@@ -1090,7 +1095,8 @@ authorization do
       if_attribute :id => is {user.userable.id}
     end
     has_permission_on :campus_pages, :to => :flexipage
-    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2]
+    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2]
+    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
   end
   
   #2)OK - all 4 - 4Feb2016
