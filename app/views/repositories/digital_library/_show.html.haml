@@ -1,0 +1,36 @@
+%dl.dl-horizontal 
+  %dt= t 'repositories.document_type'
+  %dd= repository.render_document
+  
+  %dt= t 'repositories.document_subtype'
+  %dd= repository.render_subdocument
+  
+  %dt= t 'repositories.document_title'
+  %dd= repository.title
+   
+  %dt= t 'repositories.vessel'
+  %dd= repository.vessel
+  
+  %dt= t 'repositories.refno'
+  %dd= repository.refno
+  
+  %dt= t 'repositories.publish_date'
+  %dd= repository.publish_date
+  
+  %dt= (t 'repositories.total')+" - "+(t 'repositories.copies')+" / "+(t 'repositories.total_pages')
+  %dd= repository.copies.to_s+" / "+repository.total_pages.to_s
+  
+  %dt= t 'repositories.location'
+  %dd= repository.location
+   
+  %dt= t 'repositories.uploaded'
+  %dd= repository.uploaded_file_name
+    
+  %dt= t 'helpers.links.links'
+  %dd
+    = link_to (t 'view')+' PDF', repository.uploaded.url 
+    ||
+    = link_to t('download'), download_repository_path(repository)
+      
+  %dt=t 'repositories.staff_id'
+  %dd= repository.creator.try(:staff_with_rank)

@@ -1,0 +1,14 @@
+= search_form_for @search, url: index2_repositories_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td &nbsp;
+    %td= f.text_field :vessel_search, size: 2,  :class => "form-control"
+    %td= f.text_field :title_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :refno_search, size: 2,  :class => "form-control"
+    %td= f.text_field :publish_date_search, size: 2,  :class => "form-control date_picker_reverse"
+    %td= f.text_field :location_search, size: 2,  :class => "form-control"
+    %td= f.text_field :uploaded_file_name_cont, size: 2,  :class => "form-control"
+    %td
+      .input-group
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw

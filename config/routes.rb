@@ -281,6 +281,13 @@ Ogma::Application.routes.draw do
     member do
       get :download
     end
+    collection do
+      get :index2
+      get :new2
+      post :new2
+      get :repository_list
+      get :repository_list2
+    end
   end
   resources :events do
     member do
@@ -633,6 +640,7 @@ Ogma::Application.routes.draw do
     resources :ptdosearches
     resources :booksearches
     resources :librarytransactionsearches
+    resources :repositorysearches
   end
 
   #refer 1)lib/Subdomain.rb & 2)config/application.rb (auto loader for lib files)

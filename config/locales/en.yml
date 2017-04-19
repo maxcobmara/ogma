@@ -393,6 +393,11 @@ en:
         title: Title
         category: Category
         uploaded: File Name
+        staff_id: Uploaded by
+        vessel: Vessel Name
+        document_type: Document Type
+        document_subtype: Documentation For
+        publish_date: Publish Date
       bookingfacility:
         location_id: Booked Facility
         staff_id: Booking Staff
@@ -4494,16 +4499,45 @@ en:
 
   repositories:
     title: "MS:ISO Document Repository"
-    list: "MS:ISO Document Repositories List"
-    title2: Document Title
+    list: "MS:ISO Document Repository List"
+    document_title: Document Title
     details: "MS:ISO Document Repository Details"
     new: "New MS:ISO Document Repository"
     edit: "Edit MS:ISO Document Repository"
-    staff_id: Prepared by
+    staff_id: Uploaded by
     category: Category
     uploaded: File Name
     current_file: Current file
+    max_size: "Allowed maximum file size : 25 MB"
     remark: Please refer to related modules for access to produce PDF format via online data entry.
+    
+    title2: Digital Document Repository
+    list2: Digital Document Repository List
+    new2: New Digital Document
+    edit2: Edit Digital Document
+    details2: Digital Document Details
+    vessel: Vessel Name
+    document_type: Document Type
+    refno: Reference No
+    publish_date: Publish Date
+    total_pages: Pages
+    copies: Copies
+    location: Location
+    book: Book
+    drawing: Drawing
+    test_trials: Tests & Trials
+    others: Others
+    total: Total
+    document_subtype: Documentation for
+    propulsion: Main Propulsion System
+    electrical: Electrical Power System
+    weapon: Weapon and Weapon System
+    navigation: Navigation System
+    communication: Communication System
+    hull_fitting: Hull Structure and Fitting System
+    life_equipment: Life Equipment Support System
+    damage_safety: Damage Control / Safety System
+    auxiliaries: Auxiliaries
     
   conversation:
     local_messaging: Local Messaging
@@ -4602,11 +4636,13 @@ en:
      
   equery:
     title: Equery / Reports
+    title2: Equery
     list: Electronic Query & Report Manager
     reports: Reports
     advance_search: Advance Search
     module: Module
     remark: Remark
+    view: View
     #tick: Tick
     #untick: Untick
     #leaves_other_blanks: " & leaves other fields 'blank' to display ALL record."
@@ -4621,6 +4657,7 @@ en:
     #for_selected_date: "for selected date."
     search_by: Search By
     result: Search Result
+    print_result: Print Search Result
     #data_not_available: Data not available
     #same_as_above: Same as above
     #dated: dated
@@ -4951,7 +4988,43 @@ en:
       #leaves_all_blank_all_records: "Leaves ALL fields 'blank'/unselected and click 'Search' to display ALL record of office supplies."
       #leaves_fields_blank_all_corresponding: "Leaves fields marked with "
       #leaves_fields_blank_all_corresponding2: " 'blank'/unselected and click 'Search' to display ALL corresponding additions/deductions records."
-     
+    repository:
+      main_page: Digital Document Repository List
+      title: Document Repository
+      title2: Digital Document
+      search: Repository Search
+      search2: Digital Document Equery
+      document_title: Document Title
+      list_all: Listing All Digital Documents
+      list: Digital Documents List
+      total: Total documents
+      method: Method
+      remark1: "Remark : Insert and <u>SELECT</u> appropiate <b>Title</b> OR <b>Reference no</b> and click SEARCH button to proceed."
+      remark2: "Remark : Select <b>Vessel name</b> followed by <b>Document type</b> and <b>Documentation for </b> (if required) and click SEARCH button."
+      search_form: Search Form
+      
+      vessel: Vessel Name
+      document_type: Document Type
+      refno: Reference No
+      publish_date: Publish Date
+      total_pages: Pages
+      copies: Copies
+      location: Location
+      book: Book
+      drawing: Drawing
+      test_trials: Tests & Trials
+      others: Others
+      total: Total
+      document_subtype: Documentation for
+      propulsion: Main Propulsion System
+      electrical: Electrical Power System
+      weapon: Weapon and Weapon System
+      navigation: Navigation System
+      communication: Communication System
+      hull_fitting: Hull Structure and Fitting System
+      life_equipment: Life Equipment Support System
+      damage_safety: Damage Control / Safety System
+      auxiliaries: Auxiliaries
   
   
   ###########

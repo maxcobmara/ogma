@@ -1,32 +1,38 @@
 - model_class = Repository
 .page-header
-  %h1= (t 'repositories.details')
+  %h1=@repository.data.blank? ? (t 'repositories.details') : (t 'repositories.details2')
 = render 'shared/flashes'
-  
+
 .tab-content.col-md-offset-3
-  %dl.dl-horizontal
-    %dt= t 'repositories.title'
-    %dd= @repository.title
+  - unless @repository.data.blank?
+    = render partial: "repositories/digital_library/show", locals: {repository: @repository}
+  - else
+    %dl.dl-horizontal
+      %dt= t 'repositories.document_title'
+      %dd= @repository.title
     
-    %dt= t 'repositories.category'
-    %dd= @repository.render_category
+      %dt= t 'repositories.category'
+      %dd= @repository.render_category
     
-    %dt= t 'repositories.uploaded'
-    %dd= @repository.uploaded_file_name
+      %dt= t 'repositories.uploaded'
+      %dd= @repository.uploaded_file_name
     
-    %dt= t 'helpers.links.links'
-    %dd
-      = link_to (t 'view')+' PDF', @repository.uploaded.url 
-      ||
-      = link_to t('download'), download_repository_path(@repository)
+      %dt= t 'helpers.links.links'
+      %dd
+        = link_to (t 'view')+' PDF', @repository.uploaded.url 
+        ||
+        = link_to t('download'), download_repository_path(@repository)
       
-    %dt=t 'repositories.staff_id'
-    %dd= @repository.creator.try(:staff_with_rank)
+      %dt=t 'repositories.staff_id'
+      %dd= @repository.creator.try(:staff_with_rank)
     
 .row
   .col-md-6.col-md-offset-4
     .form-actions
-      = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), repositories_path, class: 'btn btn-default'
+      - if @repository.data.blank?
+        = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), repositories_path, class: 'btn btn-default'
+      - else
+        = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), index2_repositories_path, class: 'btn btn-default'
       = link_to content_tag(:i, "", class: "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_repository_path(@repository), class: 'btn btn-primary'
       - permitted_to? :manage, :repositories do
         = link_to content_tag(:i, "", class: "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |

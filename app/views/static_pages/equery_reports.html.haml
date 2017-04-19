@@ -63,3 +63,9 @@
                 %td.centre=no+=1
                 %td= link_to (t "library.transaction.analysis_statistic"), analysis_statistic_library_librarytransactions_path
                 %td.centre= link_to (fa_icon "search"), new_equery_report_librarytransactionsearch_path
+
+          - elsif @query_module=='8'
+            %tr
+              %td.centre=no+=1
+              %td= link_to (t 'repositories.list2'), index2_repositories_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_repositorysearch_path

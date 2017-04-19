@@ -8,7 +8,8 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_repository_path
   %ul.nav.navbar-nav.navbar-right
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-      
+    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')), repository_list_repositories_path(params.merge(format: 'pdf' ))
+
 .row
   .col-md-12
     .alert.alert-warning
@@ -18,7 +19,7 @@
     %thead
       %tr
         %th{width: '2%'}
-        %th{width: '43%'}= sort_link(@search, :title, (t 'repositories.title2'))
+        %th{width: '43%'}= sort_link(@search, :title, (t 'repositories.document_title'))
         %th{width: '45%'}= sort_link(@search, :title, (t 'repositories.uploaded'))
         %th{width: '10%'}= (t 'download')
     %tbody
