@@ -3,6 +3,7 @@ class EqueryReport::RepositorysearchesController < ApplicationController
   
   def new
     @repositorysearch = Repositorysearch.new
+    @reposearch=params[:searchrepotype]
   end
   
   def create
@@ -22,7 +23,7 @@ class EqueryReport::RepositorysearchesController < ApplicationController
   private
    
     def repositorysearch_params
-      params.require(:repositorysearch).permit(:title, :vessel, :document_type, :document_subtype, :refno, :publish_date, :total_pages, :copies, :location, [:keyword =>{}], :college_id, [:data =>{}])
+      params.require(:repositorysearch).permit(:title, :vessel, :document_type, :document_subtype, :refno, :publish_date, :total_pages, :copies, :location, :repotype, [:keyword =>{}], :college_id, [:data =>{}])
     end
    
 end

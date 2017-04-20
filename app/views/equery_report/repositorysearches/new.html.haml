@@ -1,26 +1,38 @@
 - model_class = Repositorysearch
 .page-header
-  %h1=t('equery.repository.search2')
+  %h1=@reposearch=='1' ? (t 'equery.repository.search') : (t 'equery.repository.search2')
 
 = render 'shared/flashes'
 
 .row.fluid
   = form_for [:equery_report, @repositorysearch], html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
-    = render :partial => 'form', :locals => {:f => f}
     = f.hidden_field :college_id, value: current_user.college_id
+    
+    - if @reposearch=='1'
+      = f.hidden_field :repotype, value: '1'
+      = render partial: 'form', locals: {f: f}
+      
+    - elsif @reposearch=='2'
+      = f.hidden_field :repotype, value: '2'
+      = render partial: "equery_report/repositorysearches/digital_library/form", locals: {f: f}
 
     .col-sm-8.col-md-offset-1
       .row
         .col-sm-offset-3
           .small="* "+t('equery.leaves_all_blank_all_records')
+        %br
         .form-group
-          .col-sm-offset-4.col-sm-1
-            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("equery.repository.main_page")), index2_repositories_path, :class => 'btn btn-default'
-          /.col-sm-1
-          /  = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), "/equery_reports?query_module=8", :class => 'btn btn-default'
-          .col-sm-offset-3.col-sm-2
-            = f.submit (t 'search') , class: "btn btn-primary"
+          - if @reposearch=='1'
+            .col-sm-offset-5.col-sm-1
+              = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), "/equery_reports?query_module=8", :class => 'btn btn-default'
+            .col-sm-2
+              %span{style: 'padding-left: 100px;'}
+                = f.submit (t 'search') , class: "btn btn-primary"
+          - elsif @reposearch=='2'
+            .col-sm-offset-4.col-sm-1
+              = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("equery.repository.main_page2")), index2_repositories_path, :class => 'btn btn-default'
+            .col-sm-offset-3.col-sm-2
+              = f.submit (t 'search') , class: "btn btn-primary"
             
-            
-/ TODO - EQUERY - MS ISO: repository 
+ 

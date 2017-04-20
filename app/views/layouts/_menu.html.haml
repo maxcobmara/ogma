@@ -439,5 +439,6 @@
           - permitted_to? :read, :library_books do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'library.title'), "/equery_reports?query_module=7"
           - permitted_to? :read, :repositories do
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'repositories.list'), "/equery_reports?query_module=8"
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'repositories.list2'), "/equery_reports?query_module=8"
           

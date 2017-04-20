@@ -44,6 +44,14 @@ class Repositorysearch < ActiveRecord::Base
     keyword[:refno]
   end
   
+  def repotype=(value)
+    data[:repotype] = value
+  end
+  
+  def repotype
+    data[:repotype]
+  end
+  
   def repositories
     @repositories ||= find_repositories
   end
@@ -51,7 +59,11 @@ class Repositorysearch < ActiveRecord::Base
   private
 
   def find_repositories
-    Repository.digital_library.where(conditions).order(orders)
+    if repotype=='1'
+      Repository.where.not(category: nil).where(conditions).order(orders)
+    elsif repotype=='2'
+      Repository.digital_library.where(conditions).order(orders)
+    end
   end
   
   def title_conditions

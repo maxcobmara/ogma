@@ -67,5 +67,9 @@
           - elsif @query_module=='8'
             %tr
               %td.centre=no+=1
+              %td= link_to (t 'repositories.list'), repositories_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_repositorysearch_path(searchrepotype: '1')
+            %tr
+              %td.centre=no+=1
               %td= link_to (t 'repositories.list2'), index2_repositories_path
-              %td.centre= link_to (fa_icon "search"), new_equery_report_repositorysearch_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_repositorysearch_path(searchrepotype: '2')
