@@ -11,7 +11,8 @@ class Repository < ActiveRecord::Base
   validates_attachment_content_type :uploaded, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif", "application/pdf"]
   
   validates :category, :title, :uploaded, :staff_id, presence: true, :if => :data_not_present?
-  validates :vessel, :document_type, :document_subtype, :title, :publish_date, :uploaded, :staff_id, presence: true, :if => :data_is_present?
+  validates :vessel, :document_type, :document_subtype, :title, :uploaded, :staff_id, presence: true, :if => :data_is_present?  #:publish_date,
+  # TODO when validations failed, selected file is null, resubmission kalo still invalid --> upload hlang
   
   def render_category
     (Repository::CATEGORY.find_all{|disp, value| value == category }).map {|disp, value| disp}[0]

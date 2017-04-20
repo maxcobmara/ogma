@@ -19,7 +19,7 @@
         = f.file_field :uploaded, class: 'form-control mandatory'
         .small 
           - if @repository.uploaded.present?
-            = (t 'repositories.current_file')+": "+@repository.uploaded_file_name
+            = (t 'repositories.current_file')+": "+@repository.uploaded_file_name+" ("+number_to_human_size(@repository.uploaded_file_size)+")"
             %br
           =t 'repositories.max_size'
  

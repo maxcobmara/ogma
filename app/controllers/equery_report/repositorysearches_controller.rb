@@ -16,7 +16,7 @@ class EqueryReport::RepositorysearchesController < ApplicationController
   
   def show
     @repositorysearch = Repositorysearch.find(params[:id])
-    @repositories=@repositorysearch.repositories.page(params[:page]).per(3)
+    @repositories=@repositorysearch.repositories.page(params[:page]).per(10)
   end
  
   private

@@ -35,7 +35,7 @@
       .col-sm-2.control-label
         = f.label t 'repositories.publish_date', for: :publish_date
       .col-md-2
-        = f.text_field :publish_date, class: 'form-control date_picker_reverse mandatory'        
+        = f.text_field :publish_date, class: 'form-control date_picker_reverse'        
 
     .form-group
       .col-sm-2.control-label
@@ -58,9 +58,10 @@
         = f.label t 'repositories.uploaded', for: :uploaded
       .col-md-5
         = f.file_field :uploaded, class: 'form-control mandatory'
+        /= f.text_field :uploaded_cache, value: @aa
         .small 
           - if @repository.uploaded.present?
-            = (t 'repositories.current_file')+": "+@repository.uploaded_file_name
+            = (t 'repositories.current_file')+": "+@repository.uploaded_file_name+" ("+number_to_human_size(@repository.uploaded_file_size)+")"
             %br
           =t 'repositories.max_size'
 

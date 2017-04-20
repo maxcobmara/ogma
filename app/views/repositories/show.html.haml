@@ -22,6 +22,7 @@
         = link_to (t 'view')+' PDF', @repository.uploaded.url 
         ||
         = link_to t('download'), download_repository_path(@repository)
+        ="(#{number_to_human_size(@repository.uploaded_file_size)})"
       
       %dt=t 'repositories.staff_id'
       %dd= @repository.creator.try(:staff_with_rank)
