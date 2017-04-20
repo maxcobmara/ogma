@@ -13,7 +13,7 @@ class Repository_list2Pdf < Prawn::Document
   end
   
   def record
-    table(line_item_rows, :column_widths => [30, 65, 80, 80, 150, 80, 60, 60, 60, 100] , :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
+    table(line_item_rows, :column_widths => [30, 65, 80, 80, 150, 80, 60, 60, 50, 110] , :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=40
       row(0).style size: 11

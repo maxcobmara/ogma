@@ -65,9 +65,9 @@
               %head
                 %tr.info
                   %th{width: '5%'} No
-                  %th{width: '12%'}=t 'equery.repository.vessel'
                   %th{width: '5%'}=t 'equery.repository.document_type'
                   %th{width: '12%'}=t 'equery.repository.document_subtype'
+                  %th{width: '12%'}=t 'equery.repository.vessel'
                   %th{width: '20%'}=t 'equery.repository.document_title'
                   %th{width: '15%'}=t 'equery.repository.refno'
                   %th{width: '8%'}=t 'equery.repository.publish_date'
@@ -77,16 +77,16 @@
         
               %body
                 - if params[:page]
-                  - cnt=params[:page].to_i+1
+                  - cnt=(params[:page].to_i-1)*10
                 - else
                   - cnt=0
                 /- for repository in @repositorysearch.repositories
                 - for repository in @repositories.sort_by(&:vessel)
                   %tr
                     %td.centre=cnt+=1
-                    %td=repository.vessel
                     %td=repository.render_document
                     %td=repository.render_subdocument
+                    %td=repository.vessel
                     %td= link_to repository.title, repository_path(repository)
                     %td=repository.refno
                     %td.centre=repository.publish_date

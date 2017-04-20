@@ -52,12 +52,27 @@ class RepositoriesController < ApplicationController
         format.html { redirect_to @repository, notice: doc_title+t('actions.created')}
         format.json { render action: 'show', status: :created, location: @repository}
       else
-	if @repository.data.blank?
+
+        # NOTE - 20Apr2017 - workaround - to retrieve missing uploaded file when validation fails!  - start ####
+        unless params[:repository][:uploaded].blank?                 # File field (uploaded) contains data (submission done with file SELECTION)
+          upload_cache = AttachmentUploader.new                      # 1st submission -> save data in AttachmentUploader & set value for 'uploadcache' field
+          upload_cache.data = repository_params[:uploaded]      # subsequent submission -> use 'uploadcache' field in form.
+          if upload_cache.valid?
+            upload_cache.msgnotification_id=0
+            upload_cache.upload_for="repository"
+            upload_cache.save
+          end
+          @aa=upload_cache.id
+        end
+        ######## - workaround ends here - NOTE - to refer model/attachment_uploader.rb & repository.rb, plus repositories/_form
+
+        if @repository.data.blank?
           format.html { render action: 'new' }
           format.json { render json: @repository.errors, status: :unprocessable_entity }
-	else
-	  format.html { render action: 'new2' }
-	end
+        else
+          format.html { render action: 'new2'}
+        end
+
       end
     end
   end
@@ -132,6 +147,6 @@ class RepositoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def repository_params
-      params.require(:repository).permit(:id, :title, :staff_id, :category, :created_at, :updated_at, :uploaded, :uploaded_file_name, :uploaded_content_type, :uploaded_file_size, :uploaded_updated_at, :vessel, :document_type, :document_subtype, :refno, :publish_date, :total_pages, :copies, :location, :college_id, {:data => []})
+      params.require(:repository).permit(:id, :title, :staff_id, :category, :created_at, :updated_at, :uploaded, :uploaded_file_name, :uploaded_content_type, :uploaded_file_size, :uploadcache, :uploaded_updated_at, :vessel, :document_type, :document_subtype, :refno, :publish_date, :total_pages, :copies, :location, :college_id, {:data => []})
     end
 end

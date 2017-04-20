@@ -1,6 +1,9 @@
 class Repository < ActiveRecord::Base
   belongs_to :creator, class_name: 'Staff', foreign_key: 'staff_id'
   
+  before_validation :set_upload_when_present
+  after_save :remove_cache_upload
+  
   serialize :data, Hash
   
   has_attached_file :uploaded,
@@ -11,7 +14,24 @@ class Repository < ActiveRecord::Base
   validates_attachment_content_type :uploaded, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif", "application/pdf"]
   
   validates :category, :title, :uploaded, :staff_id, presence: true, :if => :data_not_present?
-  validates :vessel, :document_type, :document_subtype, :title, :publish_date, :uploaded, :staff_id, presence: true, :if => :data_is_present?
+  validates :vessel, :document_type, :document_subtype, :title, :uploaded, :staff_id, presence: true, :if => :data_is_present?  #:publish_date, 
+  
+  # NOTE - 20Apr2017 - workaround - to retrieve missing uploaded file when validation fails!  - start ####
+  attr_accessor :uploadcache
+  
+  def set_upload_when_present
+    unless uploadcache.blank?
+      self.uploaded=AttachmentUploader.find(uploadcache.to_i).data if uploaded.blank?
+    end
+  end
+  
+  def remove_cache_upload
+    unless uploadcache.blank?
+      cached=AttachmentUploader.find(uploadcache.to_i)
+      cached.destroy!
+    end
+  end
+  ######## - workaround ends here - NOTE - to refer above (line 4 & 5), model/attachment_uploader.rb, controller & form.
   
   def render_category
     (Repository::CATEGORY.find_all{|disp, value| value == category }).map {|disp, value| disp}[0]
