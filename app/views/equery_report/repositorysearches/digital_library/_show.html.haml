@@ -1,0 +1,81 @@
+/additional heading
+.col-md-8.col-md-offset-2
+  %dl.dl-horizontal
+    - if repositorysearch.title.blank? && repositorysearch.vessel.blank? && repositorysearch.document_type.blank? && repositorysearch.document_subtype.blank? && repositorysearch.document_type.blank?
+      %div{style: 'padding-left: 150px; text-decoration: underline; font-weight: bold;'}=t 'equery.repository.list_all'
+    - else
+      %div{style: 'padding-left: 200px; text-decoration: underline; font-weight: bold;'}=t 'equery.search_by'
+            
+    %br
+            
+    - unless repositorysearch.title.blank?
+      %dt=(t 'equery.repository.document_title')
+      %dd=repositorysearch.title
+              
+    - unless repositorysearch.vessel.blank?
+      %dt=(t 'equery.repository.vessel')
+      %dd=repositorysearch.vessel
+               
+    - unless repositorysearch.document_type.blank?
+      %dt=(t 'equery.repository.document_type')
+      %dd=repositorysearch.repositories.first.render_document
+                  
+    - unless repositorysearch.document_subtype.blank?
+      %dt=(t 'equery.repository.document_subtype')
+      %dd=repositorysearch.repositories.first.render_subdocument
+                  
+    - unless repositorysearch.refno.blank?
+      %dt=(t 'equery.repository.refno')
+      %dd=repositorysearch.refno
+            
+    - if repositorysearch.title.blank? && repositorysearch.vessel.blank? && repositorysearch.document_type.blank? && repositorysearch.document_subtype.blank? && repositorysearch.document_type.blank?
+    - else
+      .col-md-12
+        .col-md-8
+          %hr
+                
+    %dt=(t'equery.repository.total')
+    %dd=repositorysearch.repositories.count==0 ? repositorysearch.repositories.count : repositorysearch.repositories.count.to_s+" "+(t 'records')   
+            
+           
+
+/display result
+.col-md-11
+  %br
+  - if repositorysearch.repositories.count > 0
+
+    .right=link_to (fa_icon "print", text: (t 'equery.print_result')), repository_list2_repositories_path(format: 'pdf', ids: @repositorysearch.repositories.pluck(:id))
+    %table.table.table-bordered.table-condensed.table-hover
+      %head
+        %tr.info
+          %th{width: '5%'} No
+          %th{width: '5%'}=t 'equery.repository.document_type'
+          %th{width: '12%'}=t 'equery.repository.document_subtype'
+          %th{width: '12%'}=t 'equery.repository.vessel'
+          %th{width: '20%'}=t 'equery.repository.document_title'
+          %th{width: '15%'}=t 'equery.repository.refno'
+          %th{width: '8%'}=t 'equery.repository.publish_date'
+          %th{width: '12%'}=t 'equery.repository.location'
+          %th{width: '6%'}= (t 'equery.repository.copies')+" / "+(t 'equery.repository.total_pages')
+          %th{width: '4%'}=t 'equery.view'
+        
+      %body
+        - if params[:page]
+          - cnt=(params[:page].to_i-1)*10
+        - else
+          - cnt=0
+        /- for repository in @repositorysearch.repositories
+        - for repository in repositories.sort_by(&:vessel)
+          %tr
+            %td.centre=cnt+=1
+            %td=repository.render_document
+            %td=repository.render_subdocument
+            %td=repository.vessel
+            %td= link_to repository.title, repository_path(repository)
+            %td=repository.refno
+            %td.centre=repository.publish_date
+            %td=repository.location
+            %td.centre=repository.copies.to_s+" / "+repository.total_pages.to_s
+            %td.centre=link_to (fa_icon "file-pdf-o"), repository.uploaded.url
+
+  .right{style:"padding: 0 10px; margin:0;"}= paginate repositories, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

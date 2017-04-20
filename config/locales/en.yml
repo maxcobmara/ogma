@@ -4989,7 +4989,8 @@ en:
       #leaves_fields_blank_all_corresponding: "Leaves fields marked with "
       #leaves_fields_blank_all_corresponding2: " 'blank'/unselected and click 'Search' to display ALL corresponding additions/deductions records."
     repository:
-      main_page: Digital Document Repository List
+      main_page: "MS:ISO Document Repository List"
+      main_page2: Digital Document Repository List
       title: Document Repository
       title2: Digital Document
       search: Repository Search

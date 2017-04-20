@@ -7,7 +7,7 @@ class RepositoriesController < ApplicationController
   # GET /repositories
   # GET /repositories.xml
   def index
-    @search=Repository.search(params[:q])
+    @search=Repository.where.not(category: nil).search(params[:q])
     @repositories=@search.result.order(category: :asc)
     @repositories=@repositories.page(params[:page]||1)
     @exist_in_syst=Repository.where('title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) ', '%penilaian diri untuk jurulatih%', '%PENILAIAN ANALISA SKOR PURATA JURULATIH%', '%PENILAIAN PENSYARAH%', '%DATA ANALISA SKOR PURATA PENILAIAN PENSYARAH%', '%KEDIAMAN ASRAMA%', '%MAKLUMAT PERIBADI%')
@@ -96,9 +96,14 @@ class RepositoriesController < ApplicationController
   # DELETE /repositories/1
   # DELETE /repositories/1.xml
   def destroy
-    @repository.destroy
     respond_to do |format|
-      format.html { redirect_to repositories_url }
+      if @repository.data.blank?
+        @repository.destroy
+        format.html { redirect_to repositories_url }
+      else
+        @repository.destroy
+        format.html { redirect_to index2_repositories_url }
+      end
       format.json { head :no_content }
     end
   end
@@ -110,7 +115,7 @@ class RepositoriesController < ApplicationController
   
   
   def repository_list
-    @search = Repository.search(params[:q])
+    @search = Repository.where.not(category: nil).search(params[:q])
     @repositories = @search.result
     respond_to do |format|
       format.pdf do

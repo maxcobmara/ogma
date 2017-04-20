@@ -4903,10 +4903,11 @@ ms_MY:
       #leaves_fields_blank_all_corresponding: "'Kosongkan'/nyahpilih medan bertanda "
       #leaves_fields_blank_all_corresponding2: " dan klik 'Cari' untuk papar SEMUA butiran penerimaan/pengeluaran yang sepadan."
     repository:
-      main_page: Senarai Repositori (Dokumen Digital)
+      main_page: Senarai Repositori (Dokumen MS:ISO)
+      main_page2: Senarai Repositori (Dokumen Digital)
       title: Repositori Dokumen
       title2: Dokumen Digital
-      search: Carian Repositori
+      search: "Carian Lanjut Dokumen MS:ISO"
       search2: Carian Lanjut Dokumen Digital
       document_title: Tajuk Dokumen
       list_all: Senarai Penuh Dokumen Digital

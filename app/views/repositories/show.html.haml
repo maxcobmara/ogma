@@ -7,25 +7,7 @@
   - unless @repository.data.blank?
     = render partial: "repositories/digital_library/show", locals: {repository: @repository}
   - else
-    %dl.dl-horizontal
-      %dt= t 'repositories.document_title'
-      %dd= @repository.title
-    
-      %dt= t 'repositories.category'
-      %dd= @repository.render_category
-    
-      %dt= t 'repositories.uploaded'
-      %dd= @repository.uploaded_file_name
-    
-      %dt= t 'helpers.links.links'
-      %dd
-        = link_to (t 'view')+' PDF', @repository.uploaded.url 
-        ||
-        = link_to t('download'), download_repository_path(@repository)
-        ="(#{number_to_human_size(@repository.uploaded_file_size)})"
-      
-      %dt=t 'repositories.staff_id'
-      %dd= @repository.creator.try(:staff_with_rank)
+    = render partial: "repositories/iso/show", locals: {repository: @repository}
     
 .row
   .col-md-6.col-md-offset-4
