@@ -1,6 +1,6 @@
 - model_class = Repositorysearch
 .page-header
-  %h1=@reposearch=='1' ? (t 'equery.repository.search') : (t 'equery.repository.search2')
+  %h1=@repositorysearch.repotype=='1' ? (t 'equery.repository.search') : (t 'equery.repository.search2')
 = render 'shared/flashes'
 
 .row
@@ -14,7 +14,7 @@
       #search_details.tab-pane.active  
             
         - if @repositorysearch.repotype=='1'
-          = render partial: 'show', locals: {repositorysearch: @repositorysearch, repositories: @repositories}
+          = render partial: "equery_report/repositorysearches/iso/show", locals: {repositorysearch: @repositorysearch, repositories: @repositories}
         - elsif @repositorysearch.repotype=='2' ||  @repositorysearch.repotype==2
           = render partial: "equery_report/repositorysearches/digital_library/show", locals: {repositorysearch: @repositorysearch, repositories: @repositories}
          

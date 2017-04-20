@@ -1,0 +1,15 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'equery.repository.search_form'),"#search", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #search.tab-pane.active
+        %br
+        .col-md-offset-1
+          .form-group
+            .col-sm-3.control-label
+              =f.label (t 'equery.repository.document_title')
+            .col-md-6
+              =f.text_field :title, class: 'form-control', data: {autocomplete_source: Repository.where.not(category: nil).order(title: :asc).pluck(:title)}

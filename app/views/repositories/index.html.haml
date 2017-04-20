@@ -23,7 +23,7 @@
         %th{width: '45%'}= sort_link(@search, :title, (t 'repositories.uploaded'))
         %th{width: '10%'}= (t 'download')
     %tbody
-      = render "index_search"
+      = render "repositories/iso/index_search"
       - @repositories.group_by{|x|x.render_category}.each do |cat, repositories|
         %tr
           %td.group{colspan: 4}=cat

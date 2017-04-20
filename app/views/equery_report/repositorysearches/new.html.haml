@@ -11,7 +11,7 @@
     
     - if @reposearch=='1'
       = f.hidden_field :repotype, value: '1'
-      = render partial: 'form', locals: {f: f}
+      = render partial: "equery_report/repositorysearches/iso/form", locals: {f: f}
       
     - elsif @reposearch=='2'
       = f.hidden_field :repotype, value: '2'
@@ -25,10 +25,9 @@
         .form-group
           - if @reposearch=='1'
             .col-sm-offset-5.col-sm-1
-              = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), "/equery_reports?query_module=8", :class => 'btn btn-default'
-            .col-sm-2
-              %span{style: 'padding-left: 100px;'}
-                = f.submit (t 'search') , class: "btn btn-primary"
+              = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("equery.title")), "/equery_reports?query_module=8", :class => 'btn btn-default'
+            
+            .col-sm-2.col-sm-offset-2= f.submit (t 'search') , class: "btn btn-primary"
           - elsif @reposearch=='2'
             .col-sm-offset-4.col-sm-1
               = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("equery.repository.main_page2")), index2_repositories_path, :class => 'btn btn-default'

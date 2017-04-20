@@ -7,7 +7,7 @@
     = render 'shared/error_messages', object: f.object
     
     - if @repository.data.blank?
-      = render :partial => 'form', :locals => {:f => f}
+      = render :partial => 'repositories/iso/form', :locals => {:f => f}
     - else
       = render :partial => 'repositories/digital_library/form', :locals => {:f => f}
     
