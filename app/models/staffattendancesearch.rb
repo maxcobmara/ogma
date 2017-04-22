@@ -9,18 +9,18 @@ class Staffattendancesearch < ActiveRecord::Base
   private
 
   def find_staffattendances
-    StaffAttendance.find(:all, :conditions => conditions,  :order => orders)   
+    StaffAttendance.where(conditions).order(orders)   
   end
 
-   def thumb_id_conditions
+  def thumb_id_conditions
      ["thumb_id=?", thumb_id] #compulsory 
-   end
+  end
    
-   def logged_at_conditions
+  def logged_at_conditions
       logged_at2=logged_at+8.hours
       monthend = logged_at.end_of_month+8.hours
       ["logged_at>=? and logged_at<=?", logged_at2, monthend] unless logged_at.blank?
-    end
+  end
   
   def orders
     "logged_at ASC"

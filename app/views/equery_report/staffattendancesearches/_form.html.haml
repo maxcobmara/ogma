@@ -1,0 +1,30 @@
+.row
+  .col-md-10.col-md-offset-1
+    = hidden_field_tag :method,  1 
+      
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'library.book.list'),"#search", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #search.tab-pane.active
+        %br
+        .col-md-offset-2
+          =(t 'equery.staffattendance.search_by')
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'equery.staffattendance.department') 
+            .col-md-6
+              = f.select :department, Position.department_list(current_user.college.code), {:include_blank => (t 'select')}, {class: 'selectpicker'}
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'equery.staffattendance.staff')
+            .col-md-4
+              =f.select :thumb_id, grouped_options_for_select(Position.thumbids_per_department), {:include_blank => (t 'select')}, {:class => 'form-control'}
+         
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'equery.staffattendance.month_year')
+            .col-md-2
+              =f.text_field :logged_at, class: 'form-control monthyear_picker_reverse'

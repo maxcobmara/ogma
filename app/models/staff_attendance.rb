@@ -6,6 +6,7 @@ class StaffAttendance < ActiveRecord::Base
   
   before_save :update_trigger_isapproved
   
+  belongs_to :college
   belongs_to :attended, :class_name => 'Staff', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approved_by'
   
