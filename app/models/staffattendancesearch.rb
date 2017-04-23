@@ -17,8 +17,8 @@ class Staffattendancesearch < ActiveRecord::Base
   end
    
   def logged_at_conditions
-      logged_at2=logged_at+8.hours
-      monthend = logged_at.end_of_month+8.hours
+      logged_at2=logged_at#+8.hours
+      monthend = logged_at.end_of_month#+8.hours
       ["logged_at>=? and logged_at<=?", logged_at2, monthend] unless logged_at.blank?
   end
   

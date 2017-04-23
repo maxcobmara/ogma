@@ -1,6 +1,126 @@
 - if staffattendances.count > 0 
+  
+  /PAGE 1
   %span{style: 'align:left; width: 30%; float:left;'}    
-    %table.table-bordered{style: 'cellpadding: 7; cellspacing: 0; background-color: #FEFDBD;'}
+    %table.table.table-bordered{style: 'cellpadding: 7; cellspacing: 0; background-color: #FEFDBD;'}
+      %tr
+        %th.center{colspan: 7}KAD MENCATAT WAKTU
+      %tr
+        %th{colspan: 2} B No
+        %th{colspan: 5}
+          ="NAMA : #{Staff.find_by_thumb_id(staffattendances.first.thumb_id).staff_with_rank}"
+          - shift_id=Staff.where(thumb_id: staffattendances.first.thumb_id).first.staff_shift_id
+          - shift_start=StaffShift.find(shift_id).start_at 
+          - shift_end=StaffShift.find(shift_id).end_at
+      %tr
+        %td{colspan: 7}="<b>KEM / JAB : </b>#{staffattendances.first.college.name}".html_safe
+      %tr
+        %td{colspan: 7}="<b>BAHAGIAN / SEKSYEN : </b>#{staffattendancesearch.department}".html_safe
+      %tr 
+        %td{colspan: 7, style: 'height: 40px, valign: bottom;'}="<b>BULAN : </b>#{staffattendancesearch.logged_at.strftime("%B %Y")}".html_safe
+      %tr
+        %th HARI
+        %th MASUK
+        %th KELUAR
+        %th MASUK
+        %th KELUAR
+        %th KENYATAAN
+        %th T/T KETUA
+      /- first_rec=(@staffattendancesearch.staffattendances.first.logged_at-8.hours).strftime('%d').to_i
+      - first_rec=(@staffattendancesearch.staffattendances.first.logged_at).strftime('%d').to_i
+      /- last_rec=(@staffattendancesearch.staffattendances.last.logged_at-8.hours).strftime('%d').to_i
+      - last_rec=(@staffattendancesearch.staffattendances.last.logged_at).strftime('%d').to_i
+      - last_day=31
+      - @current_day=0 
+      
+      /Display all days from 1st - 15th
+      /- @staffattendancesearch.staffattendances.group_by{|x|(x.logged_at-8.hours).strftime('%d %b %Y')}.each do |dday, log_records|
+      - @staffattendancesearch.staffattendances.group_by{|x|(x.logged_at).strftime('%d %b %Y')}.each do |dday, log_records|
+        - @log_in=[] 
+        - @log_out=[] 
+        - log_records.each do |log_record| 
+          - @log_in << log_record if log_record.log_type=="I" || log_record.log_type=="i" && log_records.count 
+          - @log_out << log_record if log_record.log_type=="O" || log_record.log_type=="o" || log_record.log_type==0 
+          
+        /Days Absent @ not punch
+        - if dday[0,2].to_i > @current_day
+          - @current_day.upto(dday[0,2].to_i-1) do |day_wo_rec| 
+            - @current_day+=1 
+            - if @current_day!=dday[0,2].to_i && day_wo_rec < 15
+              %tr
+                %td.centre
+                  - if @current_day < 10 
+                    /="0"+@current_day.to_s
+                    ="0"+(day_wo_rec+1).to_s
+                  - else 
+                    /=@current_day 
+                    =day_wo_rec+1 
+                /Masuk, Keluar, Masuk, Keluar
+                %td.centre &nbsp;
+                %td.centre &nbsp;
+                %td.centre &nbsp;
+                %td.centre &nbsp;
+                /Kenyataan, Tandatangan
+                %td.centre &nbsp;
+                %td.centre &nbsp;
+
+        /Attended days
+        - if dday[0,2].to_i < 15
+          %tr
+            %td.centre=dday[0,2]
+            /Masuk, Keluar, Masuk, Keluar
+            %td.centre
+              - if @log_in.count > 0
+                /- if (@log_in[0].logged_at-8.hours).strftime('%H:%M') > shift_start.strftime('%H:%M')
+                - if (@log_in[0].logged_at).strftime('%H:%M') > shift_start.strftime('%H:%M')
+                  - fcolor='red'
+                - else
+                  - fcolor='grey'
+                /%span{style: "color: #{fcolor}"}=(@log_in[0].logged_at-8.hours).strftime('%H:%M') if @log_in.count > 0
+                %span{style: "color: #{fcolor}"}=(@log_in[0].logged_at).strftime('%H:%M') if @log_in.count > 0
+                &nbsp;
+            %td.centre
+              - if @log_out.count == 1
+                /- if (@log_out[0].logged_at-8.hours).strftime('%H:%M') < shift_end.strftime('%H:%M')
+                - if (@log_out[0].logged_at).strftime('%H:%M') < shift_end.strftime('%H:%M')
+                  - fcolor='red'
+                - else 
+                  - fcolor='grey'
+                /%span{style: "color: #{fcolor}"}=(@log_out[0].logged_at-8.hours).strftime('%H:%M') if @log_out.count > 0 
+                %span{style: "color: #{fcolor}"}=(@log_out[0].logged_at).strftime('%H:%M') if @log_out.count > 0 
+                &nbsp;
+            %td.centre
+              /=(@log_in[1].logged_at-8.hours).strftime('%H:%M') if @log_in.count > 1
+              =(@log_in[1].logged_at).strftime('%H:%M') if @log_in.count > 1
+              &nbsp;
+            %td.centre
+              - if @log_out.count == 2
+                /- if (@log_out[0].logged_at-8.hours).strftime('%H:%M') < shift_end.strftime('%H:%M')
+                - if (@log_out[0].logged_at).strftime('%H:%M') < shift_end.strftime('%H:%M')
+                  - fcolor='red'
+                - else
+                  - fcolor='grey'
+                /%span{style: "color: #{fcolor}"}=(@log_out[1].logged_at-8.hours).strftime('%H:%M') if @log_out.count > 1
+                %span{style: "color: #{fcolor}"}=(@log_out[1].logged_at).strftime('%H:%M') if @log_out.count > 1
+                &nbsp;
+            /Kenyataan, Tandatangan
+            %td.centre &nbsp;
+            %td.centre &nbsp;
+
+      /Footer
+      %tr
+        %td.centre{colspan: 7, style: 'height: 50px;'}
+          %BR
+          %u
+            %strong AMARAN
+          %br
+          Sesiapa yang didapati mengetik kad orang lain, 
+          %br tindakan tatatertib akan diambil ke atasnya.
+       
+
+  /PAGE 2
+  %span{style: 'align:left; width: 30%; float:left; padding-left: 300px;'}
+    %table.table.table-bordered{style: 'cellpadding: 7; cellspacing: 0; background-color: #FEFDBD;'}
       %tr
         %th.center{colspan: 7}KAD MENCATAT WAKTU
       %tr
@@ -28,210 +148,96 @@
       - last_rec=(@staffattendancesearch.staffattendances.last.logged_at-8.hours).strftime('%d').to_i
       - last_day=31
       - @current_day=0 
-  
-  
+      
+      /Display all days from 16th to 31st
+      /- @staffattendancesearch.staffattendances.group_by{|x|(x.logged_at-8.hours).strftime('%d %b %Y')}.each do |dday, log_records|
+      - @staffattendancesearch.staffattendances.group_by{|x|(x.logged_at).strftime('%d %b %Y')}.each do |dday, log_records|
+        - @log_in=[] 
+        - @log_out=[] 
+        - log_records.each do |log_record| 
+          - @log_in << log_record if log_record.log_type=="I" || log_record.log_type=="i" && log_records.count 
+          - @log_out << log_record if log_record.log_type=="O" || log_record.log_type=="o" || log_record.log_type==0 
+          
+        /Days Absent @ not punch
+        - if dday[0,2].to_i > @current_day
+          - @current_day.upto(dday[0,2].to_i-1) do |day_wo_rec| 
+            - @current_day+=1 
+            - if @current_day!=dday[0,2].to_i && day_wo_rec > 14
+              %tr
+                %td.centre
+                  =@current_day 
+                  /=day_wo_rec+1 
+                /Masuk, Keluar, Masuk, Keluar
+                %td.centre &nbsp;
+                %td.centre &nbsp;
+                %td.centre &nbsp;
+                %td.centre &nbsp;
+                /Kenyataan, Tandatangan
+                %td.centre &nbsp;
+                %td.centre &nbsp;
 
+        /Attended days
+        - if dday[0,2].to_i > 14     
+          %tr
+            %td.centre=dday[0,2]
+            /Masuk, Keluar, Masuk, Keluar
+            %td.centre
+              - if @log_in.count > 0
+                /- if (@log_in[0].logged_at-8.hours).strftime('%H:%M') > shift_start.strftime('%H:%M')
+                - if (@log_in[0].logged_at).strftime('%H:%M') > shift_start.strftime('%H:%M')
+                  - fcolor='red'
+                - else
+                  - fcolor='grey'
+                /%span{style: "color: #{fcolor}"}=(@log_in[0].logged_at-8.hours).strftime('%H:%M') if @log_in.count > 0
+                %span{style: "color: #{fcolor}"}=(@log_in[0].logged_at).strftime('%H:%M') if @log_in.count > 0
+                &nbsp;
+            %td.centre
+              - if @log_out.count == 1
+                /- if (@log_out[0].logged_at-8.hours).strftime('%H:%M') < shift_end.strftime('%H:%M')
+                - if (@log_out[0].logged_at).strftime('%H:%M') < shift_end.strftime('%H:%M')
+                  - fcolor='red'
+                - else 
+                  - fcolor='grey'
+                /%span{style: "color: #{fcolor}"}=(@log_out[0].logged_at-8.hours).strftime('%H:%M') if @log_out.count > 0 
+                %span{style: "color: #{fcolor}"}=(@log_out[0].logged_at).strftime('%H:%M') if @log_out.count > 0 
+                &nbsp;
+            %td.centre
+              /=(@log_in[1].logged_at-8.hours).strftime('%H:%M') if @log_in.count > 1
+              =(@log_in[1].logged_at).strftime('%H:%M') if @log_in.count > 1
+              &nbsp;
+            %td.centre
+              - if @log_out.count == 2
+                /- if (@log_out[0].logged_at-8.hours).strftime('%H:%M') < shift_end.strftime('%H:%M')
+                - if (@log_out[0].logged_at).strftime('%H:%M') < shift_end.strftime('%H:%M')
+                  - fcolor='red'
+                - else
+                  - fcolor='grey'
+                /%span{style: "color: #{fcolor}"}=(@log_out[1].logged_at-8.hours).strftime('%H:%M') if @log_out.count > 1
+                %span{style: "color: #{fcolor}"}=(@log_out[1].logged_at).strftime('%H:%M') if @log_out.count > 1
+                &nbsp;
+            /Kenyataan, Tandatangan
+            %td.centre &nbsp;
+            %td.centre &nbsp;
+       
+      /Display remaining rows when last punched day is not 31st
+      - if last_day !=@current_day
+        - (@current_day+1).upto(last_day) do |y|
+          %tr
+            %td.centre=y
+            /Masuk, Keluar, Masuk, Keluar
+            %td.centre &nbsp;
+            %td.centre &nbsp;
+            %td.centre &nbsp;
+            %td.centre &nbsp;
+            /Kenyataan, Tandatangan
+            %td.centre &nbsp;
+            %td.centre &nbsp;
 
-/ 				<table border=1 cellpadding=7 cellspacing=0 style="background-color:#FEFDBD">
-/ 				<tr><th colspan=7 align="center">KAD MENCATAT WAKTU</td></tr>
-/ 				<tr><td colspan=2><b>B No</b></td>
-/ 					<td colspan=5><b>NAMA :</b> <%=Staff.find(:first, :conditions => ['thumb_id=?',@staffattendancesearch.staffattendances.first.thumb_id]).name %>
-/ 					<% shift_id=Staff.find(:first, :conditions => ['thumb_id=?',@staffattendancesearch.staffattendances.first.thumb_id]).staff_shift_id %>
-/ 					<% shift_start=StaffShift.find(shift_id).start_at %>
-/ 					<% shift_end=StaffShift.find(shift_id).end_at %>
-/ 					</td></tr>
-/ 				<tr><td colspan=7><b>KEM / JAB :</b> Kolej Sains Kesihatan Bersekutu Johor Bahru</td></tr>
-/ 				<tr><td colspan=7><b>BAHAGIAN / SEKSYEN :</b> <%=@staffattendancesearch.department %></td></tr>
-/ 				<tr><td colspan=7 height=40px valign="bottom"><b>BULAN :</b> <u><%=@staffattendancesearch.staffattendances.first.logged_at.try(:strftime, '%B %Y') %></u></td></tr>
-/ 				<tr>
-/ 					<th>HARI</th>
-/ 					<th>MASUK</th>
-/ 					<th>KELUAR</th>
-/ 					<th>MASUK</th>
-/ 					<th>KELUAR</th>
-/ 					<th>KENYATAAN</th>
-/ 					<th>T/T KETUA</th>
-/ 				</tr>
-/ 			
-/ 				<% first_rec=(@staffattendancesearch.staffattendances.first.logged_at-8.hours).strftime('%d').to_i %>
-/ 				<% last_rec=(@staffattendancesearch.staffattendances.last.logged_at-8.hours).strftime('%d').to_i %>
-/ 				<%# last_day=(@staffattendancesearch.staffattendances.first.logged_at-8.hours).end_of_month.strftime('%d').to_i %>
-/ 				<% last_day=31 %>
-/ 				<% @current_day=0 %>
-			
-				<% @staffattendancesearch.staffattendances.group_by{|x|(x.logged_at-8.hours).strftime('%d %b %Y')}.each do |dday, log_records| %>
-					<% @log_in=[] %>
-					<% @log_out=[] %>
-					<% log_records.each do |log_record| %>
-						<% @log_in << log_record if log_record.log_type=="I" || log_record.log_type=="i" && log_records.count   %>
-						<% @log_out << log_record if log_record.log_type=="O" || log_record.log_type=="o" || log_record.log_type==0 %>
-					<% end %>
-				
-					<% if dday[0,2].to_i > @current_day %>
-						<% @current_day.upto(dday[0,2].to_i-1) do |day_wo_rec| %>
-							<% @current_day+=1 %>
-							<!--@@@@@@@@@@@@@@@@@@@@@@@--><%#=@current_day%>
-							<% if day_wo_rec==15 %>
-								<tr><td colspan=7 height=89px align=center>
-										<BR><BR><BR><u><b>AMARAN</b></u><br>Sesiapa yang didapati mengetik kad orang lain, 
-										<br>tindakan tatatertib akan diambil ke atasnya.
-									</td>
-								</tr>
-								</table></DIV><div style="float:left">&nbsp;&nbsp;&nbsp;</div><DIV style="float:left">
-								<table border=1 cellpadding=7 cellspacing=0 style="background-color:#FEFDBD">
-									<tr><th colspan=7 align="center">KAD MENCATAT WAKTU</td></tr>
-									<tr><td colspan=2><b>B No</b></td>
-										<td colspan=5><b>NAMA :</b> <%=Staff.find(:first, :conditions => ['thumb_id=?',@staffattendancesearch.staffattendances.first.thumb_id]).name %></td></tr>
-									<tr><td colspan=7><b>KEM / JAB :</b> Kolej Sains Kesihatan Bersekutu Johor Bahru</td></tr>
-									<tr><td colspan=7><b>BAHAGIAN / SEKSYEN :</b> <%=@staffattendancesearch.department %></td></tr>
-									<tr><td colspan=7 height=40px valign="bottom"><b>BULAN :</b> 				
-										<u><%=@staffattendancesearch.staffattendances.first.logged_at.try(:strftime, '%B %Y') %></u></td></tr>
-									<tr>
-										<th>HARI</th>
-										<th>MASUK</th>
-										<th>KELUAR</th>
-										<th>MASUK</th>
-										<th>KELUAR</th>
-										<th>KENYATAAN</th>
-										<th>T/T KETUA</th>
-									</tr>
-							<% end %>
-							<!--@@@@@@@@@@@@@@@@@@@@@@@-->
-							<% if @current_day!=dday[0,2].to_i %>
-								<tr>
-									<td align="center">
-										<% if @current_day < 10 %><%="0"+@current_day.to_s %>
-										<% else %><%=@current_day %>
-										<% end %>
-									</td>
-									<!--Masuk, Keluar, Masuk, Keluar-->
-									<td align="center">&nbsp;</td>
-									<td align="center">&nbsp;</td>
-									<td align="center">&nbsp;</td>
-									<td align="center">&nbsp;</td>
-									<!--Kenyataan, Tandatangan-->
-									<td align="center">&nbsp;</td>
-									<td align="center">&nbsp;</td>
-								</tr>
-							<% end %>
-						<% end %>
-					<% end %>
-					<tr>
-						<td align="center"><%=dday[0,2]%></td>
-						<!--Masuk, Keluar, Masuk, Keluar-->
-						<td align="center">
-							<% if @log_in.count > 0 %>
-								<% if (@log_in[0].logged_at-8.hours).strftime('%H:%M') > shift_start.strftime('%H:%M')%>
-									<font color="red">
-								<% else %><font>
-								<% end %>
-							<% end %>
-							<%=(@log_in[0].logged_at-8.hours).strftime('%H:%M') if @log_in.count > 0 %></font>&nbsp;
-						</td>
-						<td align="center">
-							 <% if @log_out.count == 1%>
-								<% if (@log_out[0].logged_at-8.hours).strftime('%H:%M') < shift_end.strftime('%H:%M')%>
-									<font color="red">
-								<% else %><font>
-								<% end %>
-							<% end %>
-							<%=(@log_out[0].logged_at-8.hours).strftime('%H:%M') if @log_out.count > 0 %></font>&nbsp;
-						</td>
-						<td align="center"><%=(@log_in[1].logged_at-8.hours).strftime('%H:%M') if @log_in.count > 1 %>&nbsp;</td>
-						<td align="center">
-							<% if @log_out.count == 2%>
-								<% if (@log_out[0].logged_at-8.hours).strftime('%H:%M') < shift_end.strftime('%H:%M')%>
-									<font color="red">
-								<% else %><font>
-								<% end %>
-							<% end %>
-							<%=(@log_out[1].logged_at-8.hours).strftime('%H:%M') if @log_out.count > 1 %></font>&nbsp;
-						</td>
-						<!--Kenyataan, Tandatangan-->
-						<td align="center">&nbsp;</td>
-						<td align="center">&nbsp;</td>
-					</tr>
-				<% end %>
-				
-				<!--START : additional for monthly attendance without records on the last day of work!!-->
-				<% if last_day!=last_rec %>
-					<% if last_rec < 16 %>
-						<% daycount1=last_rec %>
-						<% last_rec.upto(14) do |empty_line| %>
-							<%daycount1+=1%>
-							<tr>
-								<td align="center">
-									<% if daycount1 < 10 %><%="0"+daycount1.to_s %>
-									<% else %><%=daycount1 %>
-									<% end %>
-								</td>
-								<!--Masuk, Keluar, Masuk, Keluar-->
-								<td align="center">&nbsp;</td>
-								<td align="center">&nbsp;</td>
-								<td align="center">&nbsp;</td>
-								<td align="center">&nbsp;</td>
-								<!--Kenyataan, Tandatangan-->
-								<td align="center">&nbsp;</td>
-								<td align="center">&nbsp;</td>
-							</tr>
-						<% end %>
-					<% end %>
-					<!--permanent value in day box is 31, although last day in month varied between 28,29,30&31-->
-					<% if last_rec < last_day %>
-						<% if last_rec < 16 %>
-							<% daycount2=15 %>
-							<!--************************************************* Split pages accordingly-->
-							<tr><td colspan=7 height=89px align=center>
-									<BR><BR><BR><u><b>AMARAN</b></u><br>Sesiapa yang didapati mengetik kad orang lain, 
-									<br>tindakan tatatertib akan diambil ke atasnya.
-								</td>
-							</tr>
-							</table></DIV><div style="float:left">&nbsp;&nbsp;&nbsp;</div><DIV style="float:left">
-							<table border=1 cellpadding=7 cellspacing=0 style="background-color:#FEFDBD">
-								<tr><th colspan=7 align="center">KAD MENCATAT WAKTU</td></tr>
-								<tr><td colspan=2><b>B No</b></td>
-									<td colspan=5><b>NAMA :</b> <%=Staff.find(:first, :conditions => ['thumb_id=?',@staffattendancesearch.staffattendances.first.thumb_id]).name %></td></tr>
-								<tr><td colspan=7><b>KEM / JAB :</b> Kolej Sains Kesihatan Bersekutu Johor Bahru</td></tr>
-								<tr><td colspan=7><b>BAHAGIAN / SEKSYEN :</b> <%=@staffattendancesearch.department %></td></tr>
-								<tr><td colspan=7 height=40px valign="bottom"><b>BULAN :</b> 				
-									<u><%=@staffattendancesearch.staffattendances.first.logged_at.try(:strftime, '%B %Y') %></u></td></tr>
-								<tr>
-									<th>HARI</th>
-									<th>MASUK</th>
-									<th>KELUAR</th>
-									<th>MASUK</th>
-									<th>KELUAR</th>
-									<th>KENYATAAN</th>
-									<th>T/T KETUA</th>
-								</tr>
-							<!--*************************************************-->
-						<% else %>
-							<% daycount2=last_rec%><!--SPLIT pages already done above : @@@@@@-->
-						<% end %>
-						<% day_mid_start=daycount2 %>
-						<% day_mid_start.upto(30) do |empty_line| %>
-							<% daycount2+=1%>
-							<tr>
-								<td align="center"><%=daycount2 %></td>
-								<!--Masuk, Keluar, Masuk, Keluar-->
-								<td align="center">&nbsp;</td>
-								<td align="center">&nbsp;</td>
-								<td align="center">&nbsp;</td> 
-								<td align="center">&nbsp;</td>
-								<!--Kenyataan, Tandatangan-->
-								<td align="center">&nbsp;</td>
-								<td align="center">&nbsp;</td>
-							</tr>
-						<% end %>
-					<% end %>
-				<% end %>
-				<!--END : additional for monthly attendance without records on the last day of work!!-->
-				
-				<tr>
-					<td colspan=7 height=50px align=center><BR><u><b>AMARAN</b></u>
-					<br>Sesiapa yang didapati mengetik kad orang lain, <br>tindakan tatatertib akan diambil ke atasnya.</td>
-				</tr>
-				</table><BR><BR>
-			</DIV>
-		<!---->
-		<% end %>
+      /Footer
+      %tr
+        %td.centre{colspan: 7, style: 'height: 50px;'}
+          %u
+            %strong AMARAN
+          %br
+          Sesiapa yang didapati mengetik kad orang lain, 
+          %br tindakan tatatertib akan diambil ke atasnya.  
