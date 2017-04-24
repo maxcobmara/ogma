@@ -331,6 +331,34 @@ class Position < ActiveRecord::Base
   end
   #use in Weeklytimetables_controller.rb (Index - retrieve Programme ID for Pos Basik/Pengkhususan/Diploma Lanjutan) - END
   
+  #usage - views/staffattendancesearches/_form.html.haml
+  def self.department_list(college_code)
+    if college_code=='kskbjb'
+      programme_names=['Diploma', 'Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']
+      academic=Programme.roots.where(course_type: programme_names).order(name: :asc).map(&:name).uniq.compact
+      non_academic=Position.where('unit is not null and unit NOT IN (?)', programme_names).order(unit: :asc).map(&:unit).uniq.compact 
+      department_list=academic+non_academic
+    elsif college_code=='amsas'
+       department_list=Position.where('unit is not null and unit !=?', "").where.not('unit ILIKE ?', '%icms%').order(unit: :asc).map{|x|x.unit.strip}.uniq.compact
+    end
+    department_list
+  end
+  
+  #usage - views/staffattendancesearches/_form.html.haml
+  def self.thumbids_per_department
+    # NOTE - KSKBJB/AMSAS - staff name : 'ICMS Vendor Admin' / 'ICMS developer', 'ICMS tester', 'ICMS user'
+    staff_ids=Position.joins(:staff).where.not('staffs.name ILIKE ?','%icms%').where('staffs.staff_shift_id is not null and staffs.thumb_id is not null').map(&:staff_id)
+    a=[]
+    Position.where('unit is not null and unit !=?', "").where.not('unit ILIKE ?', '%icms%').group_by{|x|x.unit.strip}.sort.each do |unit_dept, posts|
+      b=[(I18n.t 'select')]
+      posts.each do |apost|
+        b << [apost.staff.staff_with_rank, apost.staff.thumb_id] if staff_ids.include?(apost.staff_id)
+      end
+      a << [unit_dept, b]
+    end
+    a
+  end
+
 end
 
 # == Schema Information

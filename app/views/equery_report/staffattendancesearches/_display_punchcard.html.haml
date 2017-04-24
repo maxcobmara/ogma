@@ -1,0 +1,33 @@
+- byday=staffattendancesearch.staffattendances.group_by{|x|(x.logged_at).strftime('%d %b %Y')}
+- shift=Staff.where(thumb_id: staffattendancesearch.thumb_id).first.staff_shift
+- shift_s=shift.start_at 
+- shift_e=shift.end_at
+          
+/4) Display front card
+%span{style: 'align:left; width: 30%; float:left;'}    
+  %table.table.table-bordered{style: 'cellpadding: 7; cellspacing: 0; background-color: #FEFDBD;'}
+    = render :partial => 'card_heading', locals: {staffattendancesearch: @staffattendancesearch}
+    = render :partial => 'attendance_rows', locals: {cardpage: StaffAttendance.punchcard(byday, 1), shift_start: shift_s, shift_end: shift_e}
+    /Footer
+    %tr
+      %td.centre{colspan: 7, style: 'height: 50px;'}
+        %BR
+        %u
+          %strong AMARAN
+        %br
+        Sesiapa yang didapati mengetik kad orang lain, 
+        %br tindakan tatatertib akan diambil ke atasnya.       
+            
+/5) Display back of the card
+%span{style: 'align:left; width: 30%; float:left; padding-left: 300px;'} 
+  %table.table.table-bordered{style: 'cellpadding: 7; cellspacing: 0; background-color: #FEFDBD;'}
+    = render :partial => 'card_heading', locals: {staffattendancesearch: @staffattendancesearch}
+    = render :partial => 'attendance_rows', locals: {cardpage: StaffAttendance.punchcard(byday, 2), shift_start: shift_s, shift_end: shift_e}
+    /Footer
+    %tr
+      %td.centre{colspan: 7, style: 'height: 50px;'}
+        %u
+          %strong AMARAN
+        %br
+        Sesiapa yang didapati mengetik kad orang lain, 
+        %br tindakan tatatertib akan diambil ke atasnya.

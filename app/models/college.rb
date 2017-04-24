@@ -46,6 +46,7 @@ class College < ActiveRecord::Base
   has_many :books
   has_many :visitors
   has_many :staffsearch2s
+  has_many :staff_attendances
   has_many :staffattendancesearches
   has_many :ptdosearches
   has_many :booksearches

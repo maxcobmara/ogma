@@ -6,6 +6,7 @@ class StaffAttendance < ActiveRecord::Base
   
   before_save :update_trigger_isapproved
   
+  belongs_to :college
   belongs_to :attended, :class_name => 'Staff', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approved_by'
   
@@ -837,4 +838,29 @@ class StaffAttendance < ActiveRecord::Base
          [ "Green",2 ],
          [ "Red",3 ]
    ]
+  
+  #usage - Staffattendancesearches/_display_punchcard.html.haml
+  def self.punchcard(recs, cardpage)
+    arr=cardpage==1 ? Array(1..15) : Array(16..31)
+    hash_empty=Hash[arr.map{|x|[x, Hash["in" => "", "out" => ""]]}]
+    hash_wa=Hash.new
+    recs.each do |dday, log_records|
+      if arr.include?(dday[0,2].to_i)
+        log_records.each do |log_record| 
+          if log_record.log_type=="I" || log_record.log_type=="i" && log_records.count 
+            @login=log_record.logged_at
+          end
+          if log_record.log_type=="O" || log_record.log_type=="o" || log_record.log_type==0  
+            @logout=log_record.logged_at
+          end
+        end
+        ahash={"in"=>@login, "out"=>@logout}
+        hash_wa[dday[0,2].to_i]=ahash
+        @login=""
+        @logout=""
+      end
+    end
+    hash_empty.merge(hash_wa)
+  end
+  
 end

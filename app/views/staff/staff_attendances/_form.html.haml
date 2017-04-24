@@ -12,7 +12,7 @@
             .col-sm-2.control-label
               = f.label :thumb_id 
             .col-md-3
-              = f.collection_select :thumb_id, Staff.joins(:positions).where("thumb_id is not null and thumb_id!=? and (positions.unit is not null or positions.unit=?) ",0,"").order(name: :asc), :thumb_id, :thumb_id_with_name_unit, { :prompt => t('helpers.prompt.select_thumb_id')}, {class: 'selectpicker', "data-width"=>"320px"}
+              = f.collection_select :thumb_id, Staff.joins(:positions).where("thumb_id is not null and thumb_id!=? and (positions.unit is not null or positions.unit=?) ",0,"").where.not('staffs.name ILIKE ?', '%icms%').order(name: :asc), :thumb_id, :thumb_id_with_name_unit, { :prompt => t('helpers.prompt.select_thumb_id')}, {class: 'selectpicker', "data-width"=>"320px"}
           .form-group
             .col-sm-2.control-label
               = f.label :logged_at

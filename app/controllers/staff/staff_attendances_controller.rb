@@ -458,6 +458,6 @@ class Staff::StaffAttendancesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def staff_attendance_params
-      params.require(:staff_attendance).permit(:thumb_id, :logged_at, :log_type, :reason, :trigger, :approved_by, :is_approved, :approved_on, :status, :review)
+      params.require(:staff_attendance).permit(:thumb_id, :logged_at, :log_type, :reason, :trigger, :approved_by, :is_approved, :approved_on, :status, :review, :college_id, {:data => []})
     end
 end
