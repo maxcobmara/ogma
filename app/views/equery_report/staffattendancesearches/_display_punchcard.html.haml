@@ -1,37 +1,39 @@
 - if staffattendances.count > 0 
-  ///try hash here - start 
+  ///Using HASH - start 
   
   /1) Create 'empty hashes' : 1st-15th, 16th-31st 
-  - daily_attendances_first=Hash[[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map{|x|[x, Hash["in" => "", "out" => ""]]}]
-  - daily_attendances_second=Hash[[16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31].map{|x|[x, Hash["in" => "", "out" => ""]]}]
+  /- hash_one=Hash[[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map{|x|[x, Hash["in" => "", "out" => ""]]}]
+  /- hash_two=Hash[[16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31].map{|x|[x, Hash["in" => "", "out" => ""]]}]
   
   /2) Create 'hash w attendance' records
-  - attendance_rec_first=Hash.new
-  - attendance_rec_second=Hash.new
-  - staffattendancesearch.staffattendances.group_by{|x|(x.logged_at).strftime('%d %b %Y')}.each do |dday, log_records|
-    - log_records.each do |log_record| 
-      - if log_record.log_type=="I" || log_record.log_type=="i" && log_records.count 
-        - @login=log_record.logged_at
-      - if log_record.log_type=="O" || log_record.log_type=="o" || log_record.log_type==0  
-        - @logout=log_record.logged_at
+  /- hash_first=Hash.new
+  /- hash_second=Hash.new
+  /- staffattendancesearch.staffattendances.group_by{|x|(x.logged_at).strftime('%d %b %Y')}.each do |dday, log_records|
+  /  - log_records.each do |log_record| 
+  /    - if log_record.log_type=="I" || log_record.log_type=="i" && log_records.count 
+  /      - @login=log_record.logged_at
+  /    - if log_record.log_type=="O" || log_record.log_type=="o" || log_record.log_type==0  
+  /      - @logout=log_record.logged_at
 
-    /2a) assign inner hash values
-    - ahash={"in"=>@login, "out"=>@logout}
-    - if dday[0,2].to_i < 16
-      - attendance_rec_first[dday[0,2].to_i]=ahash
-    - elsif dday[0,2].to_i > 15
-      - attendance_rec_second[dday[0,2].to_i]=ahash
+  /  /2a) assign inner hash values
+  /  - ahash={"in"=>@login, "out"=>@logout}
+  /  - if dday[0,2].to_i < 16
+  /    - hash_first[dday[0,2].to_i]=ahash
+  /  - elsif dday[0,2].to_i > 15
+  /    - hash_second[dday[0,2].to_i]=ahash
     
-    /2b) reset var for next/following day attendance(s)
-    - @login=""
-    - @logout=""
+  /  /2b) reset var for next/following day attendance(s)
+  /  - @login=""
+  /  - @logout=""
     
   /3) Merge 'empty hash' w 'hash w attendances'
-  - page_one=daily_attendances_first.merge(attendance_rec_first)
-  - page_two=daily_attendances_second.merge(attendance_rec_second)
+  /- page_one=hash_one.merge(hash_first)
+  /- page_two=hash_two.merge(hash_second)
+   
+  - byday=staffattendancesearch.staffattendances.group_by{|x|(x.logged_at).strftime('%d %b %Y')}
+  - page_one=StaffAttendance.punchcard(byday, 1)
+  - page_two=StaffAttendance.punchcard(byday, 2)
   
-  /- page_one=StaffAttendance.punchcard_front(staffattendancesearch.staffattendances.group_by{|x|(x.logged_at).strftime('%d %b %Y')})
-    
   - shift_id=Staff.where(thumb_id: staffattendances.first.thumb_id).first.staff_shift_id
   - shift_start=StaffShift.find(shift_id).start_at 
   - shift_end=StaffShift.find(shift_id).end_at
@@ -39,13 +41,9 @@
   /4) Display - PAGE 1 (retrieve first hash : 1st-15th)
   %span{style: 'align:left; width: 30%; float:left;'}    
     %table.table.table-bordered{style: 'cellpadding: 7; cellspacing: 0; background-color: #FEFDBD;'}
-      /4a) Heading
       = render :partial => 'card_heading', locals: {staffattendancesearch: @staffattendancesearch,staffattendances: @staffattendancesearch.staffattendances}
-        
-      /4b) Attendance rows
       = render :partial => 'attendance_rows', locals: {cardpage: page_one, shift_start: shift_start, shift_end: shift_end}
-          
-      /4c) Footer
+      /Footer
       %tr
         %td.centre{colspan: 7, style: 'height: 50px;'}
           %BR
@@ -58,21 +56,18 @@
   /5) Display - PAGE 2 (retrieve first hash : 16th-31th)
   %span{style: 'align:left; width: 30%; float:left; padding-left: 300px;'} 
     %table.table.table-bordered{style: 'cellpadding: 7; cellspacing: 0; background-color: #FEFDBD;'}
-      /5a) Heading
       = render :partial => 'card_heading', locals: {staffattendancesearch: @staffattendancesearch,staffattendances: @staffattendancesearch.staffattendances}
-        
-      /5b) Attendance rows
       = render :partial => 'attendance_rows', locals: {cardpage: page_two, shift_start: shift_start, shift_end: shift_end}
-          
-      /5c) Footer
+      /Footer
       %tr
         %td.centre{colspan: 7, style: 'height: 50px;'}
           %u
             %strong AMARAN
           %br
           Sesiapa yang didapati mengetik kad orang lain, 
-          %br tindakan tatatertib akan diambil ke atasnya.     
-  ///try hash here - end
+          %br tindakan tatatertib akan diambil ke atasnya.
+
+  ///Using HASH - end
   
 /   /PAGE 1
 /   %span{style: 'align:left; width: 30%; float:left;'}    

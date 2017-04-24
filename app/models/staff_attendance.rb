@@ -839,11 +839,13 @@ class StaffAttendance < ActiveRecord::Base
          [ "Red",3 ]
    ]
   
-  def self.punchcard_front(attrecs)
-    daily_attendances=Hash[[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map{|x|[x, Hash["in" => "", "out" => ""]]}]
-    attendance_rec=Hash.new
-    attrecs.each do |dday, log_records|
-      if dday[0,2].to_i < 16
+  #usage - Staffattendancesearches/_display_punchcard.html.haml
+  def self.punchcard(recs, cardpage)
+    arr=cardpage==1 ? Array(1..15) : Array(16..31)
+    hash_empty=Hash[arr.map{|x|[x, Hash["in" => "", "out" => ""]]}]
+    hash_wa=Hash.new
+    recs.each do |dday, log_records|
+      if arr.include?(dday[0,2].to_i)
         log_records.each do |log_record| 
           if log_record.log_type=="I" || log_record.log_type=="i" && log_records.count 
             @login=log_record.logged_at
@@ -852,18 +854,13 @@ class StaffAttendance < ActiveRecord::Base
             @logout=log_record.logged_at
           end
         end
-        #assign inner hash values
         ahash={"in"=>@login, "out"=>@logout}
-        attendance_rec[dday[0,2].to_i]=ahash
-        #reset var for next/following day attendance(s)
+        hash_wa[dday[0,2].to_i]=ahash
         @login=""
         @logout=""
       end
     end
-    daily_attendances.merge(attendance_rec)
-  end
-  
-  def self.punchcard_back
+    hash_empty.merge(hash_wa)
   end
   
 end
