@@ -1,0 +1,21 @@
+- cardpage.each do |day, log_recs|
+  %tr
+    %td.centre=day
+    /Masuk, Keluar, Masuk, Keluar
+    - if log_recs["in"]!="" 
+      - fcolor1=(log_recs["in"]).strftime('%H:%M') > shift_start.strftime('%H:%M') ? 'red' : 'grey'
+      - att_in=(log_recs["in"]).strftime('%H:%M')
+    - else
+      - att_in=""
+    - if log_recs["out"]!="" 
+      - fcolor2=(log_recs["out"]).strftime('%H:%M') < shift_end.strftime('%H:%M') ? 'red' : 'grey' 
+      - att_out=(log_recs["out"]).strftime('%H:%M')
+    - else
+      - att_out=""
+    %td.centre{style: "color: #{fcolor1}"}=att_in
+    %td.centre{style: "color: #{fcolor2}"}=att_out
+    %td.centre &nbsp;
+    %td.centre &nbsp;
+    /Kenyataan, Tandatangan
+    %td.centre &nbsp;
+    %td.centre &nbsp;

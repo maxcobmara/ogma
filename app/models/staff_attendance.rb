@@ -838,4 +838,32 @@ class StaffAttendance < ActiveRecord::Base
          [ "Green",2 ],
          [ "Red",3 ]
    ]
+  
+  def self.punchcard_front(attrecs)
+    daily_attendances=Hash[[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map{|x|[x, Hash["in" => "", "out" => ""]]}]
+    attendance_rec=Hash.new
+    attrecs.each do |dday, log_records|
+      if dday[0,2].to_i < 16
+        log_records.each do |log_record| 
+          if log_record.log_type=="I" || log_record.log_type=="i" && log_records.count 
+            @login=log_record.logged_at
+          end
+          if log_record.log_type=="O" || log_record.log_type=="o" || log_record.log_type==0  
+            @logout=log_record.logged_at
+          end
+        end
+        #assign inner hash values
+        ahash={"in"=>@login, "out"=>@logout}
+        attendance_rec[dday[0,2].to_i]=ahash
+        #reset var for next/following day attendance(s)
+        @login=""
+        @logout=""
+      end
+    end
+    daily_attendances.merge(attendance_rec)
+  end
+  
+  def self.punchcard_back
+  end
+  
 end
