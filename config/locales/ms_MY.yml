@@ -4601,16 +4601,13 @@ ms_MY:
       search_note: "Pilih ketiga-tiga Kumpulan Perkhidmatan untuk memaparkan semua rekod perjawatan dan / atau buat carian maklumat perjawatan menggunakan 'Nama' dan / atau 'Gred Jawatan' kakitangan. "
       blank_post: "Pilih kotak semak ini untuk sertakan jawatan yang belum diisi dalam hasil carian"
     staffattendance:
-      #report: Laporan Kedatangan Kakitangan
       search: "Carian Kedatangan Kakitangan (Format Kad Mencatat Waktu / Kad Perakam Waktu)"
       search_by: Carian rekod kedatangan mengikut
       department: "Jabatan / Unit"
       staff: Kakitangan
       month_year: "Bulan & Tahun"
       logged_at: Masa Log
-      #select_department_first: "Sila pilih Jabatan / Unit terlebih dahulu"
-      #select_staff_first: "Sila pilih kakitangan terlebih dahulu"
-      #total: Jumlah rekod kedatangan
+      total: Jumlah rekod kedatangan
       select_all_fields: "Sila pilih Jabatan / Unit, Kakitangan dan Bulan & Tahun kedatangan untuk carian"
     ptdo:
       search: Carian Jumlah Hari Menghadiri Latihan Bagi Kakitangan

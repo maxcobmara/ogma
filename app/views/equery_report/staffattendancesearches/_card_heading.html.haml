@@ -1,10 +1,10 @@
 %tr
-  %th.center{colspan: 7}KAD MENCATAT WAKTU
+  %th.centre{colspan: 7}KAD MENCATAT WAKTU
 %tr
   %th{colspan: 2} B No
-  %th{colspan: 5}="NAMA : #{Staff.find_by_thumb_id(staffattendances.first.thumb_id).staff_with_rank}"
+  %th{colspan: 5}="NAMA : #{Staff.find_by_thumb_id(staffattendancesearch.thumb_id).staff_with_rank}"
 %tr
-  %td{colspan: 7}="<b>KEM / JAB : </b>#{staffattendances.first.college.name}".html_safe
+  %td{colspan: 7}="<b>KEM / JAB : </b>#{staffattendancesearch.college.name}".html_safe
 %tr
   %td{colspan: 7}="<b>BAHAGIAN / SEKSYEN : </b>#{staffattendancesearch.department}".html_safe
 %tr 
