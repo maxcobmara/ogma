@@ -125,8 +125,8 @@ class Document < ActiveRecord::Base
   end
   
   def render_document
-     (DropDown::DOCUMENT_CATEGORY.find_all{|disp, value| value == category.to_s}).map {|disp, value| I18n.t("document."+disp.downcase)} [0]
-     #(DropDown::DOCUMENT_CATEGORY.find_all{|disp, value| value == category.to_s}).map {|disp, value| disp} [0]
+     #(DropDown::DOCUMENT_CATEGORY.find_all{|disp, value| value == category.to_s}).map {|disp, value| I18n.t("document."+disp.downcase)}[0] # - index & equery(show) err
+     (DropDown::DOCUMENT_CATEGORY.find_all{|disp, value| value == category.to_s}).map {|disp, value| disp} [0]
   end
  
 end

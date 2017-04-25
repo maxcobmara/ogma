@@ -641,6 +641,7 @@ Ogma::Application.routes.draw do
     resources :booksearches
     resources :librarytransactionsearches
     resources :repositorysearches
+    resources :documentsearches
   end
 
   #refer 1)lib/Subdomain.rb & 2)config/application.rb (auto loader for lib files)

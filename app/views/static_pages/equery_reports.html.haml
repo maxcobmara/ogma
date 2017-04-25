@@ -35,7 +35,15 @@
                 %td.centre=no+=1
                 %td= link_to (t 'staff.training.application_status.viewsummary'), show_total_days_staff_training_ptdos_path(:id=>current_user.userable_id)
                 %td.centre= link_to (fa_icon "search"), new_equery_report_ptdosearch_path
-                
+          
+          - elsif @query_module=='3'
+            %tr
+              %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'document.title')
+            %tr
+              %td.centre=no+=1 
+              %td= link_to (t 'document.title'), documents_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_documentsearch_path(searchdoctype: 1)
+          
           - elsif @query_module=='7'
             %tr
               %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'library.title')

@@ -3527,7 +3527,6 @@ en:
     stafffiled_id: Filled By
     prepared_by: Prepared By
     letterdt: Document Date
-    #letterxdt: "Received / Sent Date"
     letterxdt_recv: Received Date
     letterxdt_sent: Sent Date
     circulation_date: Circulation Date
@@ -4643,11 +4642,11 @@ en:
     module: Module
     remark: Remark
     view: View
-    #tick: Tick
-    #untick: Untick
-    #leaves_other_blanks: " & leaves other fields 'blank' to display ALL record."
+    tick: Tick
+    untick: Untick
+    leaves_other_blanks: " & leaves other fields 'blank' to display ALL record."
     #no_result: Search return no result
-    leaves_all_blank_all_records: "Leaves all fields 'blank' and click 'Search' to display ALL record."
+    leaves_all_blank_all_records: "Leaves all fields 'blank' and click 'Search' to display ALL records."
     #leaves_all_blank_all_records_tick: "Leaves all fields 'blank', 'tick / untick' checkbox and click 'Search' to display ALL record."
     #leaves_blank_unselected: "Leaves all fields 'blank' / 'unselected' to display ALL record."
     #select_record: Select record by
@@ -4668,13 +4667,19 @@ en:
     not_defined: Not defined
     not_related: Not related
     #select_method: 'Please select at least one method of searching'
-    #document:
-      #search: Document Search
-      #search_by: Search document by
-      #file_reference: File Reference
-      #list_all_documents: List All Documents
-      #select_by_close: " to select document by (closed) status."
-      #closed: Closed
+    document:
+      search: Document Search
+      search_by: Search document by
+      file_reference: File Reference
+      letterxdt: "Received / Sent Date"
+      list_all_documents: List All Documents
+      list_all: All records (document registry)
+      select_by_status: " to select document by status (open or closed)."
+      checkbox_unchecked: "Select status (open or closed) when choose not to display all records"
+      closed: Closed
+      open: Open
+      in: In
+      out: Out
     staff:
       search: "Staff Search : Positions Information"
       list_all: Positions Information Listing
