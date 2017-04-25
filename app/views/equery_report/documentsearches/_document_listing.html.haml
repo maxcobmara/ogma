@@ -33,14 +33,16 @@
         - unless documentsearch.letterdt.blank?
           %dt=(t 'document.letterdt')
           %dd
-            =documentsearch.letterdt
-            =documentsearch.letterdtend
+            =documentsearch.letterdt.to_date.strftime('%d-%m-%Y')
+            =" #{(t 'to').downcase} "
+            =documentsearch.letterdtend.to_date.strftime('%d-%m-%Y')
           
         - unless documentsearch.letterxdt.blank?
           %dt=t('equery.document.letterxdt')
           %dd
-            =documentsearch.letterxdt
-            =documentsearch.letterxdtend
+            =documentsearch.letterxdt.to_date.strftime('%d-%m-%Y')
+            =" #{(t 'to').downcase} "
+            =documentsearch.letterxdtend.to_date.strftime('%d-%m-%Y')
                    
         - unless documentsearch.sender.blank?
           %dt=t('document.from')
@@ -50,9 +52,13 @@
           %dt=t('document.file_id')
           %dd=documentsearch.file_id
           
-        - if documentsearch.from!='1'
+        - unless documentsearch.closed.blank?
           %dt=(t 'document.file_closed')
-          %dd=documentsearch.closed==true ? (t 'yes2') : (t 'no2')
+          %dd
+            - if documentsearch.closed==true
+              = (t 'yes2') 
+            - elsif documentsearch.closed==false
+              =(t 'no2')
         
         - if documentsearch.refno.blank? && documentsearch.category.blank? && documentsearch.title.blank? && documentsearch.letterdt.blank? && documentsearch.letterxdt.blank? && documentsearch.sender.blank? && documentsearch.file_id.blank?  && documentsearch.letterdtend.blank? && documentsearch.letterxdtend.blank? && documentsearch.from=='1'
         - else

@@ -12,13 +12,13 @@ class Documentsearch < ActiveRecord::Base
   end
   
   def set_status_nil_when_checkbox_checked
-    if from=='1' && (closed==true || closed==false)
+    if from=='1' && (closed==true || closed==false) 
       self.closed=nil
     end
   end
   
   def closed_must_present_when_checkbox_unchecked
-    if from=='0' && closed.blank?
+    if from=='0' && closed.blank? && (refno.blank? && title.blank?)
       errors.add(:base, I18n.t('equery.document.checkbox_unchecked'))
     end
   end
@@ -30,7 +30,7 @@ class Documentsearch < ActiveRecord::Base
   end
 
   def refno_conditions
-    ["refno=?", refno] unless refno.blank?      
+    ["refno ILIKE ?", "%#{refno}%"] unless refno.blank?      
   end
 
   def category_conditions

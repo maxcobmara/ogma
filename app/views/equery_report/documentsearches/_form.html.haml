@@ -12,19 +12,27 @@
           %br
           .col-md-offset-2
             .form-group
-              /.col-sm-2.control-label
-              /  %b= (t 'library.book.accessionno')+" - "+(t 'library.book.title')
-              /.col-md-6
-              /  /=f.text_field :accessionno, class: 'form-control', data: {autocomplete_source: Accession.joins(:book).map(&:acc_book)}, placeholder:  (t 'library.book.accessionno')+" #{t('or')} "+(t 'library.book.title')
               .col-sm-2.control-label
                 = f.label (t 'document.ref_no') 
               .col-md-4
-                = f.text_field :refno, class: 'form-control'
+                = f.text_field :refno, class: 'form-control', data: {autocomplete_source: Document.all.map(&:refno)}, placeholder: (t 'document.ref_no')
+
+            .row
+              .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
+
             .form-group
               .col-sm-2.control-label
                 = f.label (t 'document.title2') 
               .col-md-4
-                = f.text_field :title, class: 'form-control'
+                = f.text_field :title, class: 'form-control', data: {autocomplete_source: Document.all.map(&:title)}, placeholder: (t 'document.title2')
+
+            .row
+              .col-md-8
+                %hr
+                
+            .row
+              .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
+              
             .form-group
               .col-sm-2.control-label
                 = f.label (t 'document.from') 
@@ -34,17 +42,15 @@
               .col-sm-2.control-label
                 = f.label (t 'equery.document.file_reference') 
               .col-md-4
-                = f.collection_select :file_id, Cofile.where(id: Document.all.map(&:file_id)).order(cofileno: :asc), :id, :file_no_and_name, {include_blank: (t 'select')}, {class: 'selectpicker'}
+                = f.collection_select :file_id, Cofile.where(id: Document.all.map(&:file_id)).order(cofileno: :asc), :id, :file_no_and_name, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width" => "315px"}
             .form-group
               .col-sm-2.control-label
                 = f.label (t 'document.letterdt')
               .col-md-4
-                /= date_select :letterdt, params[:letterdt], :include_blank => true 
-                /= date_select :letterdtend, params[:letterdtend], :include_blank => true
                 .input-group
-                  = f.text_field :letterdt, class: 'datepicker_reverse form-control'
+                  = f.text_field :letterdt, class: 'date_picker_reverse form-control'
                   .input-group-addon=(t 'to')
-                  = f.text_field :letterdtend, class: 'datepicker_reverse form-control'
+                  = f.text_field :letterdtend, class: 'date_picker_reverse form-control'
             .form-group
               .col-sm-2.control-label
                 = f.label (t 'equery.document.letterxdt')
@@ -52,9 +58,9 @@
                 /= date_select :letterxdt, params[:letterxdt], :include_blank => true
                 /= date_select :letterxdtend, params[:letterxdtend], :include_blank => true 
                 .input-group
-                  = f.text_field :letterxdt, class: 'datepicker_reverse form-control'
+                  = f.text_field :letterxdt, class: 'date_picker_reverse form-control'
                   .input-group-addon=(t 'to')
-                  = f.text_field :letterxdtend, class: 'datepicker_reverse form-control'
+                  = f.text_field :letterxdtend, class: 'date_picker_reverse form-control'
 
             .form-group
               .col-sm-2.control-label
@@ -62,20 +68,23 @@
               .col-md-4
                 = f.select :category, DropDown::DOCUMENT_CATEGORY,{:include_blank => (t 'select')},{class: 'selectpicker'}
            
-            .form-group
+            .row
+              .col-md-8
+                %hr
+                
+            .form-group.text-blue
               .col-sm-2.control-label
                 = f.label (t 'equery.document.list_all_documents')
               .col-md-5.small
                 .checkbox
                   %label
-                    /= f.check_box :from,:checked=>"checked",:class => 'all_records', :id=> 'all_checker'
                     = f.check_box :from,:checked=>"unchecked",:class => 'all_records', :id=> 'all_checker'
                     ="<b>#{(t 'equery.tick')}</b> #{(t 'equery.leaves_other_blanks')} <b>#{(t 'equery.untick')}</b> #{(t 'equery.document.select_by_status')}".html_safe
             
-            .form-group.closed_item
+            .form-group.closed_item.text-blue
               /{style: "display: none;"}
               .col-sm-2.control-label
-                =f.label (t 'document.file_closed')+"( status)"
+                =f.label (t 'document.file_closed')+" (status)"
               .col-md-4
                 =f.select :closed, options_for_select([[(t 'equery.document.closed'), 'Yes'], [(t 'equery.document.open'), 'No']]),{:include_blank => (t 'select')},{class: 'selectpicker'}
          
@@ -83,20 +92,52 @@
 
   $("input[class='all_records']").change(function() {  
     if($('#all_checker').is(':checked')) 
-    { $(".closed_item").hide(); }
+    { $(".closed_item").hide('highlight'); }
     else
-    { $(".closed_item").show(); }
+    { $(".closed_item").show('highlight'); }
   });
   
   $("input[class='all_records']").each(function() {  
     if($('#all_checker').is(':checked')) 
-    { $(".closed_item").hide(); }
+    { $(".closed_item").hide('highlight'); }
     else
-    { $(".closed_item").show(); }
+    { $(".closed_item").show('highlight'); }
+  });
+  
+  $("#documentsearch_refno").keyup(function(){
+    var checkbox=document.getElementById("all_checker");
+    var title=document.getElementById("documentsearch_title");
+    if($(this).val()!="")
+    {  
+      checkbox.checked = true; 
+      $(".closed_item").hide('highlight');
+    }
+    else 
+    {  
+      if (title.value=="")
+      {
+        checkbox.checked = false; 
+        $(".closed_item").show('highlight');
+      }
+    }
+  });
+    
+  $("#documentsearch_title").keyup(function(){
+    var checkbox=document.getElementById("all_checker");
+    var refno=document.getElementById("documentsearch_refno");
+    if($(this).val()!="")
+    {  
+      checkbox.checked = true; 
+      $(".closed_item").hide('highlight');
+    }
+    else
+    {  
+      if(refno.value=="")
+      {
+        checkbox.checked = false; 
+        $(".closed_item").show('highlight');
+      }
+    }
   });
   
   
-/   $("input[class='all_records']").each(function() {  
-/     var aa=$("#all_checker").val();
-/     alert(aa);
-/   });
