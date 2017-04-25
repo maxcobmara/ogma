@@ -67,13 +67,17 @@ class DocumentsController < ApplicationController
    end
 
    def document_report
-    @search = Document.search(params[:q])
+     if params[:ids]
+       @search=Document.where(id: params[:ids]).search(params[:q])
+     else
+       @search = Document.search(params[:q])
+     end
     @documents = @search.result
      respond_to do |format|
        format.pdf do
          pdf = Document_reportPdf.new(@documents, view_context, current_user.college)
          send_data pdf.render, filename: "document_report-{Date.today}",
-                               type: "application/pdf",
+                              type: "application/pdf",
                                disposition: "inline"
        end
      end

@@ -436,6 +436,8 @@
           /%li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.reportdownload"), "/equery_reports"
           - if (permitted_to? :create, :equery_report_staffsearch2s) || (permitted_to? :create, :equery_report_staffattendancesearches) || (permitted_to? :create, :equery_report_ptdosearches)
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'staff.title'), "/equery_reports?query_module=1"
+          - permitted_to? :create, :equery_report_documentsearches do
+            %li= link_to content_tag(:i, "", :class => "icon-numb")+('E-Filing'), "/equery_reports?query_module=3"
           - permitted_to? :read, :library_books do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'library.title'), "/equery_reports?query_module=7"
           - permitted_to? :read, :repositories do

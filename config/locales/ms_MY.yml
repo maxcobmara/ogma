@@ -3418,7 +3418,6 @@ ms_MY:
     stafffiled_id: Diisi Oleh
     prepared_by: Disediakan Oleh
     letterdt: Tarikh Dokumen
-    #letterxdt: "Tarikh Terima / Hantar"
     letterxdt_recv: Tarikh Terima
     letterxdt_sent: Tarikh Hantar
     circulation_date: Tarikh Edaran
@@ -4558,9 +4557,9 @@ ms_MY:
     module: Modul
     remark: Catatan
     view: Papar
-    #tick: Pilih
-    #untick: Nyahpilih
-    #leaves_other_blanks: " & 'kosongkan' medan - medan lain untuk papar SEMUA rekod."
+    tick: Pilih
+    untick: Nyahpilih
+    leaves_other_blanks: " & 'kosongkan' medan - medan lain untuk papar SEMUA rekod."
     #no_result: Tiada data
     leaves_all_blank_all_records: "'Kosongkan' semua medan dan klik 'Cari' untuk papar SEMUA rekod."
     #leaves_all_blank_all_records_tick: "'Kosongkan' semua medan, pilih / nyahpilih kotak semak dan klik 'Cari' untuk papar SEMUA rekod."
@@ -4583,13 +4582,23 @@ ms_MY:
     not_defined: Tidak ditentukan
     not_related: Tidak berkaitan
     #select_method: 'Sila pilih sekurang-kurangnya satu kaedah carian'
-    #document:
-      #search: Carian Dokumen
-      #search_by: Cari dokumen mengikut
-      #file_reference: Rujukan Fail
-      #list_all_documents: Senaraikan Semua Dokumen
-      #select_by_close: " untuk pilih dokumen berdasarkan status (tutup)."
-      #closed: Tutup
+    onwards: sehingga kini
+    upto: "sehingga "
+    
+    document:
+      search: Carian Dokumen
+      search_by: Cari dokumen mengikut
+      file_reference: Rujukan Fail
+      letterxdt: "Tarikh Terima / Hantar"
+      list_all_documents: Senaraikan Semua Dokumen
+      list_all: Senarai penuh daftar dokumen
+      select_by_status: " untuk pilih dokumen berdasarkan status (buka atau tutup)."
+      checkbox_unchecked: "Pilih status (buka atau tutup) jika memilih untuk tidak papar semua rekod"
+      closed: Tutup
+      open: Buka
+      in: Masuk
+      out: Keluar
+      open_closed: "Semua dokumen (buka dan tutup)"
     staff:
       search: "Carian Kakitangan : Maklumat Perjawatan"
       list_all: Senarai Penuh Maklumat Perjawatan

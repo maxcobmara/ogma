@@ -1,0 +1,135 @@
+/NOTE - by default, search by from=='1' (whereby all document shall be displayed regardless of it's status), otherwise, if user untick from - 'closed' field will be displayed & user may choose to view 'open' or 'closed' status document
+/ Nav tabs
+%ul.nav.nav-tabs
+  %li.active= link_to  (t 'equery.result'), "#search", "data-toggle" => "tab"
+
+/ display 
+.tab-content{style:"padding-top:1em"}
+  #search_details.tab-pane.active  
+        
+    /additional heading
+    .col-md-8.col-md-offset-2
+      %dl.dl-horizontal
+      
+        - if documentsearch.refno.blank? && documentsearch.category.blank? && documentsearch.title.blank? && documentsearch.letterdt.blank? && documentsearch.letterxdt.blank? && documentsearch.sender.blank? && documentsearch.file_id.blank?  && documentsearch.letterdtend.blank? && documentsearch.letterxdtend.blank? && documentsearch.from=='1'
+          %div{style: 'padding-left: 150px; text-decoration: underline; font-weight: bold;'}=t 'equery.document.list_all'
+        - else
+          %div{style: 'padding-left: 200px; text-decoration: underline; font-weight: bold;'}=t 'equery.search_by'
+            
+        %br
+                   
+        - unless documentsearch.refno.blank?
+          %dt=(t 'document.ref_no')
+          %dd=documentsearch.refno
+
+        - unless documentsearch.title.blank?
+          %dt=(t 'document.title2')
+          %dd=documentsearch.title
+              
+        - unless documentsearch.category.blank?
+          %dt=t('document.category')
+          %dd=(DropDown::DOCUMENT_CATEGORY.find_all{|disp, value| value == documentsearch.category.to_s}).map{|disp, value| disp}[0]
+
+        - unless documentsearch.letterdt.blank?
+          %dt=(t 'document.letterdt')
+          %dd
+            =documentsearch.letterdt.to_date.strftime('%d-%m-%Y')
+            - unless documentsearch.letterdtend.blank?
+              =" #{(t 'to').downcase} "
+              =documentsearch.letterdtend.to_date.strftime('%d-%m-%Y')
+            - else
+              =t 'equery.onwards'
+        - else
+          - unless documentsearch.letterdtend.blank?
+            %dt=(t 'document.letterdt')
+            %dd=(t 'equery.upto')+documentsearch.letterdtend.to_date.strftime('%d-%m-%Y')
+         
+          
+        - unless documentsearch.letterxdt.blank?
+          %dt=t('equery.document.letterxdt')
+          %dd
+            =documentsearch.letterxdt.to_date.strftime('%d-%m-%Y')
+            - unless documentsearch.letterxdtend.blank?
+              =" #{(t 'to').downcase} "
+              =documentsearch.letterxdtend.to_date.strftime('%d-%m-%Y')
+            - else
+              =t 'equery.onwards'
+        - else
+          - unless documentsearch.letterxdtend.blank?
+            %dt=(t 'equery.document.letterxdt')
+            %dd=(t 'equery.upto')+documentsearch.letterxdtend.to_date.strftime('%d-%m-%Y')
+                   
+        - unless documentsearch.sender.blank?
+          %dt=t('document.from')
+          %dd=documentsearch.sender
+          
+        - unless documentsearch.file_id.blank?
+          %dt=t('equery.document.file_reference')
+          %dd=Cofile.where(id: documentsearch.file_id).first.file_no_and_name
+          
+        - if documentsearch.from=='0' 
+          - if [true, false].include?(documentsearch.closed) == true
+            %dt=(t 'document.file_closed')+" (status)"
+            %dd
+              - if documentsearch.closed==true
+                = (t 'yes2') 
+              - elsif documentsearch.closed==false
+                =(t 'no2')
+        - elsif documentsearch.from=='1'
+          %dt=(t 'document.file_closed')+" (status)"
+          %dd=t 'equery.document.open_closed'
+        
+        - if documentsearch.refno.blank? && documentsearch.category.blank? && documentsearch.title.blank? && documentsearch.letterdt.blank? && documentsearch.letterxdt.blank? && documentsearch.sender.blank? && documentsearch.file_id.blank?  && documentsearch.letterdtend.blank? && documentsearch.letterxdtend.blank? && documentsearch.from=='1'
+        - else
+          .col-md-12
+            .col-md-8
+              %hr
+          
+        %dt=(t 'equery.total')
+        %dd=documentsearch.documents.count==0 ? documentsearch.documents.count : documentsearch.documents.count.to_s+" "+(t 'records')
+        
+        
+    /display result
+    .col-md-11
+      %br
+      - if documentsearch.documents.count > 0
+        .right=link_to (fa_icon "print", text: (t 'equery.print_result')), document_report_documents_path(format: 'pdf', ids: @documentsearch.documents.pluck(:id))
+        %table.table.table-bordered.table-condensed.table-hover
+          %head
+            %tr.info
+              %th{width: '4%'} No
+              %th{colspan: 2}=(t 'document.category')
+              %th{width: '8%'}=(t 'document.received_date')
+              %th{width: '13%'}=(t 'document.from')+" / "+(t 'document.to')
+              %th{width: '13%'}=(t 'document.ref_no')
+              %th{width: '8%'}=(t 'document.letter_date')
+              %th{width: '20%'}=(t 'document.title2')
+              %th{width: '5%'}=(t 'document.file_closed')
+          %body
+            - if params[:page]
+              - cnt=(params[:page].to_i-1)*10
+            - else
+              - cnt=0
+            - documents.group_by{|x|x.filedocer}.each do |cofile, documents|
+              %tr
+                %td.centre.warning{colspan: 9}=cofile[0]
+              - for document in documents
+                %tr
+                  %td.centre=cnt+=1
+                  %td.warning{width: '5%'}=document.render_document
+                  %td.warning{width: '4%'}
+                    - if document.distribution_type==1 
+                      =t 'equery.document.in'
+                    - elsif document.distribution_type==2
+                      =t 'equery.document.out'
+                  %td=document.letterxdt.to_date.strftime('%d-%m-%Y')
+                  /NOTE - use 'sender' field in documentsearch table to retrieve 'from' field in document table.
+                  %td=document.from
+                  %td=link_to document.refno, document_path(document)
+                  %td=document.letterdt.to_date.strftime('%d-%m-%Y')
+                  %td=document.title
+                  %td=document.closed==true ? (t 'yes2') : (t 'no2')
+            
+      .right{style:"padding: 0 10px; margin:0;"}= paginate documents, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
+            
+            

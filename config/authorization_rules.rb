@@ -470,6 +470,7 @@ authorization do
      if_attribute :cc2closed => is {true}
      if_attribute :college_id => is {College.where(code: 'amsas').first.id}   
    end
+   has_permission_on :equery_report_documentsearches, :to => [:new, :create, :show]
    
    #library rules r/a
    has_permission_on :library_books, :to => :read                                                                # A staff can view all books
@@ -1043,6 +1044,7 @@ authorization do
   role :e_filing do
     has_permission_on :cofiles, :to => :manage
     has_permission_on :documents, :to => [:manage, :document_report]
+    has_permission_on :equery_report_documentsearches, :to => [:new, :create, :show]
   end
   
   role :guest do
@@ -2355,12 +2357,15 @@ authorization do
   #47-OK, but create 
   role :documents_module_admin do
     has_permission_on :documents, :to => [:manage, :document_report]
+    has_permission_on :equery_report_documentsearches, :to => [:new, :create, :show]
   end
   role :documents_module_viewer do
     has_permission_on :documents, :to => [:menu, :read, :document_report]
+    has_permission_on :equery_report_documentsearches, :to => [:new, :create, :show]
   end
   role :documents_module_user do
     has_permission_on :documents, :to => [:menu, :read, :update, :document_report]
+    has_permission_on :equery_report_documentsearches, :to => [:new, :create, :show]
   end
   role :documents_module_member do
     has_permission_on :documents, :to => [:menu, :create]                                                    # A staff can access Index, but listing restricted to roles / if recepients
@@ -2397,6 +2402,7 @@ authorization do
      if_attribute :cc2closed => is {true}
      if_attribute :college_id => is {College.where(code: 'amsas').first.id}   
    end
+   has_permission_on :equery_report_documentsearches, :to => [:new, :create, :show]
   end
   
   #OK until here 10Feb2016==============
