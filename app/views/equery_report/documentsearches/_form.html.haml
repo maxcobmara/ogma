@@ -86,7 +86,7 @@
               .col-sm-2.control-label
                 =f.label (t 'document.file_closed')+" (status)"
               .col-md-4
-                =f.select :closed, options_for_select([[(t 'equery.document.closed'), 'Yes'], [(t 'equery.document.open'), 'No']]),{:include_blank => (t 'select')},{class: 'selectpicker'}
+                =f.select :closed, options_for_select([[(t 'equery.document.closed'), true], [(t 'equery.document.open'), false]]),{:include_blank => (t 'select')},{class: 'selectpicker'}
          
 :javascript
 

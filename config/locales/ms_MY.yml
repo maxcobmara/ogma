@@ -4582,6 +4582,9 @@ ms_MY:
     not_defined: Tidak ditentukan
     not_related: Tidak berkaitan
     #select_method: 'Sila pilih sekurang-kurangnya satu kaedah carian'
+    onwards: sehingga kini
+    upto: "sehingga "
+    
     document:
       search: Carian Dokumen
       search_by: Cari dokumen mengikut
@@ -4595,6 +4598,7 @@ ms_MY:
       open: Buka
       in: Masuk
       out: Keluar
+      open_closed: "Semua dokumen (buka dan tutup)"
     staff:
       search: "Carian Kakitangan : Maklumat Perjawatan"
       list_all: Senarai Penuh Maklumat Perjawatan

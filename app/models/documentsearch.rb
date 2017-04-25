@@ -18,7 +18,7 @@ class Documentsearch < ActiveRecord::Base
   end
   
   def closed_must_present_when_checkbox_unchecked
-    if from=='0' && closed.blank? && (refno.blank? && title.blank?)
+    if from=='0' && [true, false].include?(closed) == false && (refno.blank? && title.blank?)
       errors.add(:base, I18n.t('equery.document.checkbox_unchecked'))
     end
   end
@@ -42,19 +42,19 @@ class Documentsearch < ActiveRecord::Base
   end
   
   def letterdt_conditions
-    #["letterdt=?", letterdt] unless letterdt.blank?
-    #["letterdt>=? AND letterdt<?", letterdt, letterdt+1.day] unless letterdt.blank?
     ["letterdt>=?" , letterdt] unless letterdt.blank?
   end
   
   def letterdtend_conditions
-    #["letterdt=?", letterdt] unless letterdt.blank?
     ["letterdt<?", letterdtend+1.day] unless letterdtend.blank?
   end
   
   def letterxdt_conditions
-    #["letterxdt=?", letterxdt] unless letterxdt.blank?
-    ["letterxdt>=? AND letterxdt<?", letterxdt, letterxdt+1.day] unless letterxdt.blank?
+    ["letterxdt>=?" , letterxdt] unless letterxdt.blank?
+  end
+  
+  def letterxdtend_conditions
+    ["letterxdt<?", letterxdtend+1.day] unless letterxdtend.blank?
   end
   
   def sender_conditions

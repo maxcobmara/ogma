@@ -4667,6 +4667,9 @@ en:
     not_defined: Not defined
     not_related: Not related
     #select_method: 'Please select at least one method of searching'
+    onwards: onwards
+    upto: "upto "
+    
     document:
       search: Document Search
       search_by: Search document by
@@ -4680,6 +4683,7 @@ en:
       open: Open
       in: In
       out: Out
+      open_closed: "All documents (open and closed)"
     staff:
       search: "Staff Search : Positions Information"
       list_all: Positions Information Listing

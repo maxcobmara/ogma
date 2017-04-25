@@ -34,31 +34,50 @@
           %dt=(t 'document.letterdt')
           %dd
             =documentsearch.letterdt.to_date.strftime('%d-%m-%Y')
-            =" #{(t 'to').downcase} "
-            =documentsearch.letterdtend.to_date.strftime('%d-%m-%Y')
+            - unless documentsearch.letterdtend.blank?
+              =" #{(t 'to').downcase} "
+              =documentsearch.letterdtend.to_date.strftime('%d-%m-%Y')
+            - else
+              =t 'equery.onwards'
+        - else
+          - unless documentsearch.letterdtend.blank?
+            %dt=(t 'document.letterdt')
+            %dd=(t 'equery.upto')+documentsearch.letterdtend.to_date.strftime('%d-%m-%Y')
+         
           
         - unless documentsearch.letterxdt.blank?
           %dt=t('equery.document.letterxdt')
           %dd
             =documentsearch.letterxdt.to_date.strftime('%d-%m-%Y')
-            =" #{(t 'to').downcase} "
-            =documentsearch.letterxdtend.to_date.strftime('%d-%m-%Y')
+            - unless documentsearch.letterxdtend.blank?
+              =" #{(t 'to').downcase} "
+              =documentsearch.letterxdtend.to_date.strftime('%d-%m-%Y')
+            - else
+              =t 'equery.onwards'
+        - else
+          - unless documentsearch.letterxdtend.blank?
+            %dt=(t 'equery.document.letterxdt')
+            %dd=(t 'equery.upto')+documentsearch.letterxdtend.to_date.strftime('%d-%m-%Y')
                    
         - unless documentsearch.sender.blank?
           %dt=t('document.from')
           %dd=documentsearch.sender
           
         - unless documentsearch.file_id.blank?
-          %dt=t('document.file_id')
-          %dd=documentsearch.file_id
+          %dt=t('equery.document.file_reference')
+          %dd=Cofile.where(id: documentsearch.file_id).first.file_no_and_name
           
-        - unless documentsearch.closed.blank?
-          %dt=(t 'document.file_closed')
-          %dd
-            - if documentsearch.closed==true
-              = (t 'yes2') 
-            - elsif documentsearch.closed==false
-              =(t 'no2')
+        - if documentsearch.from=='0' 
+          - if [true, false].include?(documentsearch.closed) == true
+            %dt=(t 'document.file_closed')+" (status)"
+            %dd
+              - if documentsearch.closed==true
+                = (t 'yes2') 
+              - elsif documentsearch.closed==false
+                =(t 'no2')
+        - elsif documentsearch.from=='1'
+          %dt=(t 'document.file_closed')+" (status)"
+          %dd=t 'equery.document.open_closed'
         
         - if documentsearch.refno.blank? && documentsearch.category.blank? && documentsearch.title.blank? && documentsearch.letterdt.blank? && documentsearch.letterxdt.blank? && documentsearch.sender.blank? && documentsearch.file_id.blank?  && documentsearch.letterdtend.blank? && documentsearch.letterxdtend.blank? && documentsearch.from=='1'
         - else
