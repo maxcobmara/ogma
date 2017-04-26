@@ -1,5 +1,5 @@
 class Studentdisciplinesearch < ActiveRecord::Base
-  attr_accessible :name, :programme, :intake, :matrixno, :icno
+#   attr_accessible :name, :programme, :intake, :matrixno, :icno
   
   attr_accessor :method
   

@@ -1,5 +1,5 @@
 class Studentcounselingsearch < ActiveRecord::Base
-  attr_accessible :matrixno, :case_id, :confirmed_at_start, :confirmed_at_end, :is_confirmed, :name
+#   attr_accessible :matrixno, :case_id, :confirmed_at_start, :confirmed_at_end, :is_confirmed, :name
   attr_accessor :method
   
   belongs_to :college
