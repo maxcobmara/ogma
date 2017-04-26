@@ -1,6 +1,4 @@
 class Studentsearch < ActiveRecord::Base
-  #attr_accessible :icno, :name, :matrixno, :sstatus, :ssponsor,   :course_id, :physical, :end_training, :intake, :gender, :race, :bloodtype#, :end_training2
-  #attr_accessible :mrtlstatuscd,
   attr_accessor :method
   
   belongs_to :college
@@ -74,19 +72,11 @@ class Studentsearch < ActiveRecord::Base
 
  def intake_conditions
    ["intake_id=?", intake] unless intake.blank?
-   #["intake=?", intake] unless intake.blank?
-   #["students.intake>=? AND intake<?", intake, intake+1.day] unless intake.blank?
  end
 
   def end_training_conditions
     ["end_training=? ", end_training] unless end_training.blank?
-    #["end_training>=? AND end_training<?", end_training, end_training+1.day] unless end_training.blank?
   end
-
-  #def end_training2_conditions
-   # ["end_training<?", end_training2] unless end_training2.blank?
-    ##["end_training>=? AND end_training<?", end_training, end_training+1.day] unless end_training.blank?
-  #end
 
   def orders
     "intake, matrixno ASC"
