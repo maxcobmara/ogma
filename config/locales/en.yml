@@ -3018,7 +3018,7 @@ en:
       comandant_id: Comandant
       file_id: File Reference
       location_id: Location
-      counselor_feedback: Counselor Feedback
+      #counselor_feedback: Counselor Feedback
       year: Year
       not_related: Not Related
       counseling: Counseling
@@ -3135,6 +3135,7 @@ en:
       counselor_feedback1: "Action by Counselor - Summary/"
       counselor_feedback2: "Feedback(FINAL) to referrer/TPHEP"
       counselor_feedback_amsas: "Feedback(FINAL) to referrer"
+      feedback_to: Feedback to referrer
       include_this: " (including this session)"
       personal: Personal
       academic: Academic
@@ -4770,12 +4771,14 @@ en:
       #defect_by_process: "Asset Defect - By Process"
       #disposal_discard: "Asset Disposal - Discard"
       #loss_writeoff: "Asset Loss & Write Off"
-    #student:
-      #search: Student Search
+    student:
+      search: Student Search
+      identification: Student Identification
+      list_all: List of All Students
       #search_by: Search Students By
       #total_student: Total number of student
-    #student_attendance:
-      #search: Student Attendance Search
+    student_attendance:
+      search: Student Attendance Search
       #search_by: Search Student Attendance By
       #schedule_class: "Schedule / Class "
       #student: Student
@@ -4791,8 +4794,8 @@ en:
       #class: Class
       #total_classes: Total number of classes
       #absent: Absent
-    #student_counseling:
-      #search: "Student Counseling Session Search (Referred Cases & Counselor's Feedback)"
+    student_counseling:
+      search: "Student Counseling Session Search (Referred Cases & Counselor's Feedback)"
       #search_by: "Search Counseling Session (for Referred Case c/w Counselor's Feedback) By"
       #reported_on: reported on
       #session_duration: Session Duration
@@ -4804,6 +4807,8 @@ en:
       #discipline_cases: "student discipline cases."
       #session_notes: Session Notes
       #feedback_referrer: Feedback to Referrer
+    student_discipline:
+      search: Student Discipline Cases Search
     #weeklytimetable:
       #search: Weekly Timetable Search
       #search_by: Search Weekly Timetable By

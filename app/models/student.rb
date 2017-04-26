@@ -79,11 +79,19 @@ class Student < ActiveRecord::Base
   end
   
   def student_list
-    "#{icno}"+" "+"#{name}"
+    "#{icno} #{name}"
+  end
+  
+  def student_list2
+    "#{icno} | #{name}"
   end
   
   def student_with_rank
     "#{rank.try(:shortname)} #{name}"
+  end
+  
+  def student_with_rank2
+    "#{rank.try(:shortname)} | #{name}"
   end
 
   def render_race
@@ -230,6 +238,10 @@ class Student < ActiveRecord::Base
 
   def matrix_name
     " #{matrixno} #{name}"
+  end
+  
+  def matrix_name2
+    " #{matrixno} | #{name}"
   end
   
   def matrix_name_programme

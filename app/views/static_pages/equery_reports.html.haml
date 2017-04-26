@@ -43,6 +43,32 @@
               %td.centre=no+=1 
               %td= link_to (t 'document.title'), documents_path
               %td.centre= link_to (fa_icon "search"), new_equery_report_documentsearch_path(searchdoctype: 1)
+              
+          
+          - elsif @query_module=='4'
+            - permitted_to? :read, :students do
+              %tr
+                %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'student.title')
+            - permitted_to? :create, :equery_report_studentsearches do
+              %tr
+                %td=no+=1 
+                %td= link_to 'Borang Maklumat Pelatih', students_path
+                %td.centre= link_to (fa_icon "search"), new_equery_report_studentsearch_path(searchstudenttype: 1)
+            - permitted_to? :read, :equery_report_studentattendancesearches do
+              %tr
+                %td=no+=1
+                %td= link_to 'Borang Kehadiran Pelatih', student_student_attendances_path
+                %td.centre= link_to (fa_icon "search"), new_equery_report_studentattendancesearch_path(searchstudentattendancetype: 1)
+            - permitted_to? :read, :equery_report_studentdisciplinesearches do
+              %tr
+                %td=no+=1
+                %td= link_to (t 'student.discipline.title')+" ("+(t 'student.discipline.counselor_feedback')+")", student_student_discipline_cases_path
+                %td.centre= link_to (fa_icon "search"), new_equery_report_studentdisciplinesearch_path(searchstudentdisciplinetype: 1)
+            - permitted_to? :read, :equery_report_studentcounselingsearches do
+              %tr
+                %td=no+=1
+                %td= link_to (t 'student.counseling.title')+" ("+(t 'student.counseling.feedback_to')+")", student_student_counseling_sessions_path
+                %td.centre= link_to (fa_icon "search"), new_equery_report_studentcounselingsearch_path(searchstudentcounselingtype: 1)
           
           - elsif @query_module=='7'
             %tr

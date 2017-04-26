@@ -312,6 +312,7 @@ Ogma::Application.routes.draw do
       get :students_quantity_sponsor
       get :students_quantity_report
       get :student_report
+      get :student_list
       get :kumpulan_etnik_main
       get :kumpulan_etnik_excel
       post :import
@@ -642,6 +643,10 @@ Ogma::Application.routes.draw do
     resources :librarytransactionsearches
     resources :repositorysearches
     resources :documentsearches
+    resources :studentsearches
+    resources :studentattendancesearches
+    resources :studentdisciplinesearches
+    resources :studentcounselingsearches
   end
 
   #refer 1)lib/Subdomain.rb & 2)config/application.rb (auto loader for lib files)

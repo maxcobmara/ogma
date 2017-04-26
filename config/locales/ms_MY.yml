@@ -2907,7 +2907,7 @@ ms_MY:
       comandant_id: Komandan
       file_id: Rujukan Fail
       location_id: Lokasi
-      counselor_feedback: Maklum Balas Kaunselor
+      #counselor_feedback: Maklum Balas Kaunselor
       year: Tahun
       not_related: Tidak Berkaitan
       counseling: Kaunseling
@@ -3025,6 +3025,7 @@ ms_MY:
       counselor_feedback1: "Tindakan kaunselor - Rumusan/"
       counselor_feedback2: "Maklumbalas kepada perujuk/TPHEP"
       counselor_feedback_amsas: Maklumbalas kepada perujuk
+      feedback_to: Maklumbalas kepada perujuk
       include_this: " (termasuk sesi kaunseling ini)"
       personal: Peribadi
       academic: Akademik
@@ -4686,12 +4687,14 @@ ms_MY:
       #defect_by_process: "Aset Rosak - Mengikut Proses"
       #disposal_discard: "Pelupusan Aset - Hapus"
       #loss_writeoff: "Kehilangan Aset & Hapus Kira"
-    #student:
-      #search: Carian Pelajar
+    student:
+      search: Carian Pelajar
+      identification: Pengenalan Pelajar
+      list_all: Senarai Penuh Pelajar
       #search_by: Carian Pelajar mengikut
       #total_student: Jumlah Pelajar
-    #student_attendance:
-      #search: Carian Kehadiran Pelajar
+    student_attendance:
+      search: Carian Kehadiran Pelajar
       #search_by: Carian Kehadiran Pelajar Mengikut
       #schedule_class: "Jadual Waktu / Kelas"
       #student: Pelajar
@@ -4707,8 +4710,8 @@ ms_MY:
       #class: Kelas
       #total_classes: Jumlah Kelas
       #absent: Tidak Hadir
-    #student_counseling:
-      #search: "Carian Sesi Kaunseling Pelajar (Kes Rujukan & Maklumbalas Kaunselor)"
+    student_counseling:
+      search: "Carian Sesi Kaunseling Pelajar (Kes Rujukan & Maklumbalas Kaunselor)"
       #search_by: "Carian Sesi Kaunseling Pelajar (Kes Rujukan beserta Maklumbalas Kaunselor)"
       #reported_on: dilaporkan pada
       #session_duration: Tempoh Sesi
@@ -4720,6 +4723,8 @@ ms_MY:
       #discipline_cases: "kes disiplin pelajar."
       #session_notes: Nota Sesi
       #feedback_referrer: Maklumbalas kepada perujuk
+    student_discipline:
+      search: Carian Kes Disiplin Pelajar
     #weeklytimetable:
       #search: Carian Jadual Waktu Mingguan
       #search_by: Carian Jadual Waktu Mingguan Mengikut
