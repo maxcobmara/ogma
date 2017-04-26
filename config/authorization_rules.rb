@@ -661,8 +661,10 @@ authorization do
     #revised - 17May2015-end
    
    has_permission_on :student_student_attendances, :to => [:manage, :new_multiple, :new_multiple_intake, :create_multiple, :edit_multiple, :update_multiple, :student_attendan_form]
+   has_permission_on :equery_report_studentattendancesearches, :to => [:new, :create, :show]
    
-   has_permission_on :students, :to => [:read, :borang_maklumat_pelajar] #9Feb2016
+   has_permission_on :students, :to => [:read, :borang_maklumat_pelajar, :student_list] #9Feb2016, 26Apr2017
+   has_permission_on :equery_report_studentsearches, :to => [:new, :create, :show]
    
    has_permission_on :training_programmes, :to => :read
    
@@ -913,7 +915,8 @@ authorization do
     has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import, :check_availability, :stock_listing, :book_summary]
     has_permission_on :library_accessions, :to =>[:read, :reservation, :update, :reservation_list]
     has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext]
-    has_permission_on :students, :to => [:read, :borang_maklumat_pelajar]
+    has_permission_on :students, :to => [:read, :borang_maklumat_pelajar, :student_list]
+    has_permission_on :equery_report_studentsearches, :to => [:new, :create, :show]
     has_permission_on :campus_pages, :to => :update do
       if_attribute :id => is_in {Page.where('(name ILIKE(?) or title ILIKE(?) or name ILIKE(?) or title ILIKE(?)) and admin=?', '%library%', '%library%', '%perpustakaan%', '%perpustakaan%', true).pluck(:id)}
     end
@@ -955,7 +958,8 @@ authorization do
   end
   
   role :student_administrator do
-     has_permission_on :students, :to => [:manage, :borang_maklumat_pelajar, :reports, :student_report, :ethnic_listing, :kumpulan_etnik, :kumpulan_etnik_main, :kumpulan_etnik_excel,:import, :import_excel, :download_excel_format, :students_quantity_sponsor, :students_quantity_report] 
+     has_permission_on :students, :to => [:manage, :borang_maklumat_pelajar, :reports, :student_report, :student_list, :ethnic_listing, :kumpulan_etnik, :kumpulan_etnik_main, :kumpulan_etnik_excel,:import, :import_excel, :download_excel_format, :students_quantity_sponsor, :students_quantity_report] 
+     has_permission_on :equery_report_studentsearches, :to => [:new, :create, :show]
   end
   
   role :disciplinary_officer do
@@ -966,12 +970,21 @@ authorization do
     has_permission_on :student_student_counseling_sessions, :to => :feedback_referrer do
       if_attribute :case_id =>  is_not {nil}
     end
-    has_permission_on [:students, :student_student_attendances], :to => :read
+    has_permission_on :student_student_attendances, :to => :read
+    has_permission_on :students, :to => [:read, :student_list]
+    has_permission_on :equery_report_studentsearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_studentattendancesearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_studentdisciplinesearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_studentcounselingsearches, :to => [:new, :create, :show]
   end
 
   role :student_counsellor do
     has_permission_on :student_student_counseling_sessions, :to => [:manage, :feedback_referrer]
-    has_permission_on [:students, :student_student_attendances], :to => :read
+    has_permission_on :student_student_attendances, :to => :read
+    has_permission_on :students, :to => [:read, :student_list]
+    has_permission_on :equery_report_studentsearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_studentattendancesearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_studentcounselingsearches, :to => [:new, :create, :show]
   end
   
   #Group Location --------------------------------------------------------------------------------
@@ -989,10 +1002,14 @@ authorization do
       if_attribute :studentsubmit => true
       if_attribute :college_id => is {College.where(code: 'kskbjb').first.id} #{user.userable.college_id}
     end
-    has_permission_on :students, :to => :read
+    has_permission_on :students, :to => [:read, :student_list]
     has_permission_on :student_student_attendances, :to => :read                                                     #lecturer role - shall override this rule
     has_permission_on :student_student_counseling_sessions, :to => [:read, :feedback_referrer] 
     has_permission_on :student_student_discipline_cases, :to => [:menu, :read]
+    has_permission_on :equery_report_studentsearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_studentattendancesearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_studentcounselingsearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_studentdisciplinesearches, :to => [:new, :create, :show]
   end
   
   role :unit_leader do
@@ -1483,12 +1500,15 @@ authorization do
   #14 - 3/4 OK (Admin, Viewer, User) OK - 8Feb2016
   role :student_attendances_module_admin do
     has_permission_on :student_student_attendances, :to =>[:manage, :student_attendan_form, :edit_multiple, :update_multiple]
+    has_permission_on :equery_report_studentattendancesearches, :to => [:new, :create, :show]
   end
   role :student_attendances_module_viewer do
     has_permission_on :student_student_attendances, :to =>[:read, :student_attendan_form]
+    has_permission_on :equery_report_studentattendancesearches, :to => [:new, :create, :show]
   end
   role :student_attendances_module_user do
     has_permission_on :student_student_attendances, :to =>[:read, :update, :edit_multiple, :update_multiple, :student_attendan_form]
+    has_permission_on :equery_report_studentattendancesearches, :to => [:new, :create, :show]
   end
 # NOTE - DISABLE(in EACH radio buttons - studentown[1].disabled=true) as the one & only owner of this module is Lecturer, use 'Lecturer' role instead.
 #   role :student_attendances_module_member do
@@ -1504,12 +1524,15 @@ authorization do
   #15 - 3/4 (Admin, Viewer, User) OK - 8Feb2016
   role :student_counseling_module_admin do
      has_permission_on :student_student_counseling_sessions, :to => [:manage, :feedback_referrer] 
+     has_permission_on :equery_report_studentcounselingsearches, :to => [:new, :create, :show]
   end
   role :student_counseling_module_viewer do
      has_permission_on :student_student_counseling_sessions, :to =>[:read, :feedback_referrer]
+     has_permission_on :equery_report_studentcounselingsearches, :to => [:new, :create, :show]
   end
   role :student_counseling_module_user do
      has_permission_on :student_student_counseling_sessions, :to =>[:read, :update, :feedback_referrer]
+     has_permission_on :equery_report_studentcounselingsearches, :to => [:new, :create, :show]
   end
 # NOTE - DISABLE(in EACH radio buttons - studentown[2].disabled=true) as the one & only owner of this module is Counsellor, use 'Student Counsellor' role instead.  
 #   role :student_counseling_module_member do
@@ -1520,12 +1543,15 @@ authorization do
   #4) NOTE - Refer to Comandant - has no assigned default value of user --> requires 'student_discipline_module_admin' access
   role :student_discipline_module_admin do
      has_permission_on :student_student_discipline_cases, :to => [:manage, :actiontaken, :referbpl, :refercomandant,:reports, :discipline_report, :anacdotal_report]
+     has_permission_on :equery_report_studentdisciplinesearches, :to => [:new, :create, :show]
   end
   role :student_discipline_module_viewer do
      has_permission_on :student_student_discipline_cases, :to => [:menu, :read, :reports, :discipline_report] 
+     has_permission_on :equery_report_studentdisciplinesearches, :to => [:new, :create, :show]
   end
   role :student_discipline_module_user do
      has_permission_on :student_student_discipline_cases, :to => [:menu, :read, :update, :actiontaken, :referbpl, :refercomandant, :reports, :discipline_report, :anacdotal_report] 
+     has_permission_on :equery_report_studentdisciplinesearches, :to => [:new, :create, :show]
   end
   # NOTE workable SELECTION of auth rules for members: (positions data must complete) 
   #1) Reporter, Programme Manager & TPHEP / KS, Mentor &Counselor - 'Staff' role / Student Discipline Module Member
@@ -1569,6 +1595,7 @@ authorization do
     has_permission_on :student_student_counseling_sessions, :to => :feedback_referrer do     # discipline case : reporter, KS/Prog Mgr, Mentor@Kaunselor 
       if_attribute :case_id =>  is_in {StudentDisciplineCase.sstaff2(user.userable_id).pluck(:id)} # /TPHEP & Comandant should hv access
     end
+    has_permission_on :equery_report_studentdisciplinesearches, :to => [:new, :create, :show]
   end
   
   #Modules : Tenants & Locations
@@ -1634,13 +1661,16 @@ authorization do
   #20-OK -  but note read/manage - xls links accessible via INDEX pg, when index accessible(index.xls)
   #kumpulan_etnik_main->kumpulan_etnik(PDF)==kumpulan_etnik_excel(xls)
   role :student_infos_module_admin do
-     has_permission_on :students, :to => [:manage, :borang_maklumat_pelajar, :import_excel, :import, :download_excel_format, :reports, :kumpulan_etnik_main, :kumpulan_etnik, :kumpulan_etnik_excel, :students_quantity_sponsor, :students_quantity_report] 
+     has_permission_on :students, :to => [:manage, :borang_maklumat_pelajar, :import_excel, :import, :download_excel_format, :reports, :kumpulan_etnik_main, :kumpulan_etnik, :kumpulan_etnik_excel, :students_quantity_sponsor, :students_quantity_report, :student_report, :student_list] 
+     has_permission_on :equery_report_studentsearches, :to => [:new, :create, :show]
   end
   role :student_infos_module_viewer do
-     has_permission_on :students, :to => [:read, :borang_maklumat_pelajar, :reports, :kumpulan_etnik_main, :kumpulan_etnik, :kumpulan_etnik_excel, :students_quantity_sponsor, :students_quantity_report]
+     has_permission_on :students, :to => [:read, :borang_maklumat_pelajar, :reports, :kumpulan_etnik_main, :kumpulan_etnik, :kumpulan_etnik_excel, :students_quantity_sponsor, :students_quantity_report, :student_report, :student_list]
+     has_permission_on :equery_report_studentsearches, :to => [:new, :create, :show]
   end
   role :student_infos_module_user do
-     has_permission_on :students, :to => [:read, :update, :borang_maklumat_pelajar, :reports, :kumpulan_etnik_main, :kumpulan_etnik, :kumpulan_etnik_excel, :students_quantity_sponsor, :students_quantity_report]
+     has_permission_on :students, :to => [:read, :update, :borang_maklumat_pelajar, :reports, :kumpulan_etnik_main, :kumpulan_etnik, :kumpulan_etnik_excel, :students_quantity_sponsor, :students_quantity_report, :student_report, :student_list]
+     has_permission_on :equery_report_studentsearches, :to => [:new, :create, :show]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - studentown[4].disabled=true as the owner of this module requires 'Student' or 'Student Administration'
 # Note too, most roles have at least READ access for this module

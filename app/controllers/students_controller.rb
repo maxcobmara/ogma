@@ -1,6 +1,6 @@
 class StudentsController < ApplicationController
   #filter_access_to :all
-  filter_access_to :index, :new, :create, :borang_maklumat_pelajar, :import_excel, :import, :download_excel_format, :report, :kumpulan_etnik, :kumpulan_etnik_main, :kumpulan_etnik_excel, :student_report, :students_quantity_sponsor, :students_quantity_report, :attribute_check => false
+  filter_access_to :index, :new, :create, :borang_maklumat_pelajar, :import_excel, :import, :download_excel_format, :report, :kumpulan_etnik, :kumpulan_etnik_main, :kumpulan_etnik_excel, :student_report,:student_list, :students_quantity_sponsor, :students_quantity_report, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_student, only: [:show, :edit, :update, :destroy]
 
@@ -223,6 +223,21 @@ class StudentsController < ApplicationController
     respond_to do |format|
       format.pdf do
         pdf = Student_reportPdf.new(@students, view_context, intake_programme_id, current_user.college)
+        send_data pdf.render, filename: "student-report-{Date.today}",
+        type: "application/pdf",
+        disposition: "inline"
+      end
+    end
+  end
+  
+  
+  def student_list
+    if params[:ids]
+     @students = Student.where(id: params[:ids]).order(intake: :asc, course_id: :asc)
+    end
+    respond_to do |format|
+      format.pdf do
+        pdf = Student_listPdf.new(@students, view_context, current_user.college)
         send_data pdf.render, filename: "student-list-{Date.today}",
         type: "application/pdf",
         disposition: "inline"

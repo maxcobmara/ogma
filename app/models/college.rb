@@ -52,6 +52,11 @@ class College < ActiveRecord::Base
   has_many :booksearches
   has_many :librarytransactionsearches
   has_many :repositorysearches
+  has_many :documentsearches
+  has_many :studentsearches
+  has_many :studentattendancesearches
+  has_many :studentdisciplinesearches
+  has_many :studentcounselingsearches
   # staffs
   
   serialize :data, Hash

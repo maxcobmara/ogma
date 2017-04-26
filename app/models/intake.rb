@@ -76,6 +76,15 @@ class Intake < ActiveRecord::Base
     intakeid
   end
   
+  #usage - studentsearch
+  def intake_details
+    if college.code=='amsas'
+      "#{siri_name}"
+    else
+      "#{monthyear_intake.strftime('%b %Y')}"
+    end
+  end
+  
   #usage - new multiple (exammarks & grades)
   def intake_list
     if college.code=='amsas'
@@ -100,6 +109,16 @@ class Intake < ActiveRecord::Base
       end
     end
     arr
+  end
+  
+  def self.programme_intake_list
+    a=[]
+    Programme.roots.where(id: Intake.pluck(:programme_id).uniq).order(course_type: :asc).each do |programme|
+      b=[[I18n.t('select'),""]]
+      programme.intakes.uniq.each{|int| b << [int.intake_details, int.id] unless int.intake_details.blank?}
+      a << [programme.programme_list, b]
+    end
+    a
   end
   
   private

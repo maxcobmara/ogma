@@ -1,0 +1,165 @@
+.row
+  .col-md-10.col-md-offset-1
+    - if @searchstudenttype=='1' || @searchstudenttype==1
+      = f.hidden_field :method, value: @searchstudenttype
+      
+      /:icno, :name, :matrixno, :ssponsor, :mrtlstatuscd, :course_id, :physical, :end_training, :intake, :gender, :race, :bloodtype, :sstatus, :end_training2,
+      
+      / Nav tabs
+      %ul.nav.nav-tabs
+        %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
+
+      .tab-content{style:"padding-top:1em"}
+        #search.tab-pane.active
+          %br
+          .col-md-offset-2
+            .form-group
+              .col-sm-2.control-label
+                = f.label (t 'student.students.course_id') 
+              .col-md-4
+                = f.collection_select :course_id, Programme.roots.where('id IN(?)', Student.all.map(&:course_id)).sort_by{|x|x.id}, :id, :programme_list, {:include_blank => (t 'select')}, {class: 'selectpicker'}
+            
+            .form-group
+              .col-sm-2.control-label.intake_label
+                = f.label (t 'student.students.intake_id') 
+              .col-md-4
+                =f.select :intake, grouped_options_for_select(Intake.programme_intake_list), {}, {:class => 'form-control'}
+           
+            .row  
+              .col-md-8
+                %hr
+                .left
+                  %u=t 'equery.student.identification'
+           
+            - label_icno=current_user.college.code=='kskbjb' ? (t 'student.students.icno')+" / "+(t 'student.students.name') : (t 'student.students.icno')
+            - label_matrix=current_user.college.code=="amsas" ? (t 'student.students.apmmno') : (t 'student.students.matrixno')
+            
+            .form-group
+              .col-sm-2.control-label
+                = f.label label_icno
+              .col-md-4
+                = f.text_field :icno, class: 'form-control', data: {autocomplete_source: Student.all.map(&:student_list2)}, placeholder: (t 'student.students.icno')+" "+(t 'or')+" "+(t 'student.students.name')
+              
+            ///////////////////////////////////////////////////////////////////////////////
+            //select rank+name - search by name using ILIKE - when a name hv multiple occurance, all students will be displayed, otherwise 1 result will be displayed
+            - if current_user.college.code=='amsas'
+              .row
+                .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
+              
+              .form-group
+                .col-sm-2.control-label
+                  = f.label (t 'student.students.rank_id')
+                .col-md-4
+                  = f.text_field :name, class: 'form-control', data: {autocomplete_source: Student.all.map(&:student_with_rank2)}, placeholder: (t 'student.students.rank_id')+" "+t('or')+" "+t('student.students.name')
+            ///////////////////////////////////////////////////////////////////////////////
+
+            .row
+              .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
+              
+            .form-group
+              .col-sm-2.control-label
+                = f.label label_matrix
+              .col-md-4
+                = f.text_field :matrixno, class: 'form-control', data: {autocomplete_source: Student.where.not(matrixno: [nil, ""]).map(&:matrix_name2)}, placeholder: label_matrix+" "+t('or')+" "+(t 'student.students.name')
+
+            .row  
+              .col-md-8
+                %hr
+
+            .form-group
+              .col-sm-2.control-label
+                = f.label (t 'student.students.end_training') 
+              .col-md-2
+                = f.text_field :end_training, class: 'date_picker_reverse form-control'
+
+            .form-group
+              .col-sm-2.control-label
+                = f.label (t 'student.students.ssponsor')
+              .col-md-4
+                - if current_user.college.code=='kskbjb'
+                  - sponsoring_body=Student::SPONSOR
+                - else 
+                  - sponsoring_body=Student::SPONSOR_AMSAS
+                = f.select :ssponsor, sponsoring_body, {:include_blank => (t 'select')}, {class: 'selectpicker'}
+            
+            .form-group
+              .col-sm-2.control-label
+                = f.label (t 'student.students.gender')
+              .col-md-4
+                = f.select :gender, Student::GENDER, {:include_blank => (t 'select')}, {class: 'selectpicker'}
+            
+            .form-group
+              .col-sm-2.control-label
+                = f.label (t 'student.students.race') 
+              .col-md-4
+                = f.select :race, Student::RACE, {:include_blank => (t 'select')}, {class: 'selectpicker'}
+            
+            .form-group
+              .col-sm-2.control-label
+                = f.label (t 'student.students.physical')
+              .col-md-4
+                = f.text_field :physical, class: 'form-control' 
+            
+            .form-group
+              .col-sm-2.control-label
+                = f.label (t 'student.students.bloodtype')
+              .col-md-4
+                = f.select :bloodtype, Student::BLOOD_TYPE, {:include_blank => (t 'select')}, {class: 'selectpicker'}
+
+           
+            
+            
+         
+:javascript
+
+  $("input[class='all_records']").change(function() {  
+    if($('#all_checker').is(':checked')) 
+    { $(".closed_item").hide('highlight'); }
+    else
+    { $(".closed_item").show('highlight'); }
+  });
+  
+  $("input[class='all_records']").each(function() {  
+    if($('#all_checker').is(':checked')) 
+    { $(".closed_item").hide('highlight'); }
+    else
+    { $(".closed_item").show('highlight'); }
+  });
+  
+  $("#documentsearch_refno").keyup(function(){
+    var checkbox=document.getElementById("all_checker");
+    var title=document.getElementById("documentsearch_title");
+    if($(this).val()!="")
+    {  
+      checkbox.checked = true; 
+      $(".closed_item").hide('highlight');
+    }
+    else 
+    {  
+      if (title.value=="")
+      {
+        checkbox.checked = false; 
+        $(".closed_item").show('highlight');
+      }
+    }
+  });
+    
+  $("#documentsearch_title").keyup(function(){
+    var checkbox=document.getElementById("all_checker");
+    var refno=document.getElementById("documentsearch_refno");
+    if($(this).val()!="")
+    {  
+      checkbox.checked = true; 
+      $(".closed_item").hide('highlight');
+    }
+    else
+    {  
+      if(refno.value=="")
+      {
+        checkbox.checked = false; 
+        $(".closed_item").show('highlight');
+      }
+    }
+  });
+  
+  
