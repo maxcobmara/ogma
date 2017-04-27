@@ -111,11 +111,24 @@ class Intake < ActiveRecord::Base
     arr
   end
   
+  #usage - studentsearch
   def self.programme_intake_list
     a=[]
     Programme.roots.where(id: Intake.pluck(:programme_id).uniq).order(course_type: :asc).each do |programme|
       b=[[I18n.t('select'),""]]
       programme.intakes.uniq.each{|int| b << [int.intake_details, int.id] unless int.intake_details.blank?}
+      a << [programme.programme_list, b]
+    end
+    a
+  end
+  
+  #usage - studentattendancesearch
+  def self.programme_intake_list_with_attendance_rec
+    intake_ids= WeeklytimetableDetail.attended_classes.joins(:weeklytimetable).pluck(:intake_id)
+    a=[]
+    Programme.roots.where(id: Intake.pluck(:programme_id).uniq).order(course_type: :asc).each do |programme|
+      b=[[I18n.t('select'),""]]
+      programme.intakes.uniq.each{|int| b << [int.intake_details, int.id] if int.intake_details.blank? == false && intake_ids.include?(int.id)==true }
       a << [programme.programme_list, b]
     end
     a

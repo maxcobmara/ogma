@@ -22,6 +22,8 @@ class WeeklytimetableDetail < ActiveRecord::Base
    
    serialize :data, Hash
    
+   scope :attended_classes, -> { where(id: StudentAttendance.all.pluck(:weeklytimetable_details_id).uniq) }
+   
    def set_day_time_slot_for_non_selected
        if is_friday == true
          self.day2 = 0

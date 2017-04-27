@@ -4691,13 +4691,11 @@ ms_MY:
       search: Carian Pelajar
       identification: Pengenalan Pelajar
       list_all: Senarai Penuh Pelajar
-      #search_by: Carian Pelajar mengikut
-      #total_student: Jumlah Pelajar
     student_attendance:
       search: Carian Kehadiran Pelajar
       #search_by: Carian Kehadiran Pelajar Mengikut
-      #schedule_class: "Jadual Waktu / Kelas"
-      #student: Pelajar
+      schedule_class: "Jadual Waktu / Kelas"
+      student: Pelajar
       #date: Tarikh
       #time: Masa
       #subject_topic: "Subjek : Topik"

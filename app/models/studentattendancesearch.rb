@@ -1,6 +1,6 @@
 class Studentattendancesearch < ActiveRecord::Base
 #   attr_accessible :schedule_id, :intake_id, :student_id
-  attr_accessor :method
+  attr_accessor :method, :course_id
   
   belongs_to :college
   
@@ -31,8 +31,12 @@ class Studentattendancesearch < ActiveRecord::Base
   end
   
   def student_id_conditions
+    if college.code=='amsas'
+      ["student_id=?", Student.where('icno ILIKE (?)', "%#{student_id}%")] unless student_id.blank?  #using autocomplete - to retrieve part of/full icno
+    elsif college.code=='kskbjb'
     ["student_id=?",Student.where('matrixno=?', student_id.to_s).first.id] unless student_id.blank?    #matrixno (in STUDENT table)
     #["student_id=?",student_id] unless student_id.blank?   #student_id (in STUDENT table)
+    end
   end
  
   def orders

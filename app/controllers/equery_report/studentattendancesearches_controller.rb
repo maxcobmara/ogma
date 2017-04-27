@@ -28,7 +28,7 @@ class EqueryReport::StudentattendancesearchesController < ApplicationController
   
   # Never trust parameters from the scary internet, only allow the white list through.
     def studentattendancesearch_params
-      params.require(:studentattendancesearch).permit(:schedule_id, :student_id, :intake_id, :college_id, [:data => {}])
+      params.require(:studentattendancesearch).permit(:schedule_id, :student_id, :intake_id, :course_id, :college_id, [:data => {}])
     end
     
 end

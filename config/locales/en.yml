@@ -4780,8 +4780,8 @@ en:
     student_attendance:
       search: Student Attendance Search
       #search_by: Search Student Attendance By
-      #schedule_class: "Schedule / Class "
-      #student: Student
+      schedule_class: "Schedule / Class "
+      student: Student
       #date: Date
       #time: Time
       #subject_topic: "Subject : Topic"
