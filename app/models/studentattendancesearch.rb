@@ -4,8 +4,14 @@ class Studentattendancesearch < ActiveRecord::Base
   
   belongs_to :college
   
+  validate :intake_id, presence: true, :if => :programme_is_selected
+  
   def studentattendances
     @studentattendances ||= find_studentattendances
+  end
+  
+  def programme_is_selected
+    course_id.blank? == false
   end
   
   private
@@ -18,16 +24,17 @@ class Studentattendancesearch < ActiveRecord::Base
     ["weeklytimetable_details_id=?", schedule_id] unless schedule_id.blank?      
   end
 
+  # TODO - kskbjb - replace usage of intake with intake_id first
   def intake_id_details
-      a='student_id=? ' if Student.where('intake=?', Intake.find(intake_id).monthyear_intake).map(&:id).uniq.count!=0
-      0.upto(Student.where('intake=?', Intake.find(intake_id).monthyear_intake).map(&:id).uniq.count-2) do |l|  
+      a='student_id=? ' if Student.where('intake_id=?', intake_id).count!=0
+      0.upto(Student.where('intake_id=?', intake_id).count-2) do |l|  
         a=a+'OR student_id=? '
       end 
       return a unless intake_id.blank?
   end  
   
   def intake_id_conditions
-    [intake_id_details, Student.where('intake=?', Intake.find(intake_id).monthyear_intake).map(&:id)] unless intake_id.blank?
+    [intake_id_details, Student.where('intake_id=?', intake_id)] unless intake_id.blank?
   end
   
   def student_id_conditions

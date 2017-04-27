@@ -13,7 +13,7 @@ class EqueryReport::StudentattendancesearchesController < ApplicationController
           @studentattendancesearch = Studentattendancesearch.new(params[:studentattendancesearch])
       end
       if @studentattendancesearch.save
-          redirect_to equery_report_studentattendansearch_path(@studentattendancesearch)
+          redirect_to equery_report_studentattendancesearch_path(@studentattendancesearch)
       else
           render :action => 'new'
       end

@@ -14,44 +14,20 @@
             .form-group
               .col-sm-2.control-label
                 = f.label (t 'student.students.course_id') 
-              .col-md-4
+              .col-md-5
                 = f.collection_select :course_id, Programme.roots.where('id IN(?)', Student.all.map(&:course_id)).sort_by{|x|x.id}, :id, :programme_list, {:include_blank => (t 'select')}, {class: 'selectpicker'}
             
-            .form-group
+            .form-group.intake_span
               .col-sm-2.control-label.intake_label
                 = f.label (t 'student.students.intake_id') 
-              .col-md-4
+              .col-md-5
                 =f.select :intake_id, grouped_options_for_select(Intake.programme_intake_list_with_attendance_rec), {}, {:class => 'form-control'}
             
-            .form-group
+            .form-group.schedule_span
               .col-sm-2.control-label
                 = f.label (t 'equery.student_attendance.schedule_class') 
-              .col-md-4
-                - a=[]
-                - intakes_w_att= Intake.where(id: WeeklytimetableDetail.attended_classes.joins(:weeklytimetable).pluck(:intake_id))
-                - intakes_w_att.each do |int|
-                  - b = [[I18n.t('select'), ""]]
-                  
-                  /this shall restrict display to attended classes only
-                  - wt_ids=WeeklytimetableDetail.attended_classes.pluck(:weeklytimetable_id)
-                  
-                  - int.weeklytimetables.where(id: wt_ids).each do |wt|
-                    - wt.weeklytimetable_details.each do |wtd|
-                      - b << [wtd.day_time_slot, wtd.id]
-                  - a << [int.intake_details, b]
-                  
-                //method 2 try
-                
-                - c=[]
-                - d = [[I18n.t('select'), ""]]
-                - WeeklytimetableDetail.attended_classes.group_by{|y|y.weeklytimetable.schedule_intake}.each do |int, wtds|
-                  - for wtd in wtds
-                    - d << [wtd.day_time_slot, wtd.id]
-                  - c << [int.intake_details, d]
-                  
-                 
-                  
-                =f.select :schedule_id, grouped_options_for_select(c), {}, {:class => 'form-control'}
+              .col-md-5
+                =f.select :schedule_id, grouped_options_for_select(WeeklytimetableDetail.intake_attended_classes), {}, {:class => 'form-control'}
             
             .row
               .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
@@ -59,9 +35,8 @@
             .form-group
               .col-sm-2.control-label
                 = f.label (t 'equery.student_attendance.student')
-              .col-md-4
-                - if current_user.college.code=='amsas'
-                  = f.text_field :student_id, class: 'form-control', data: {autocomplete_source: Student.all.map(&:student_list2)}, placeholder: (t 'student.students.icno')+" "+(t 'or')+" "+(t 'student.students.name')
+              .col-md-5
+                - student_list=current_user.college.code=='amsas' ? Student.all.map(&:student_list2) : Student.where.not(matrixno: [nil, ""]).map(&:matrix_name2)
+                - ph=current_user.college.code=='amsas' ? (t 'student.students.icno') : (t 'student.students.matrixno')
                   
-                - elsif current_user.college.code=='kskbjb'
-                  = f.text_field :student_id, class: 'form-control', data: {autocomplete_source: Student.where.not(matrixno: [nil, ""]).map(&:matrix_name2)}, placeholder: (t 'student.students.matrixno')+" "+t('or')+" "+(t 'student.students.name')
+                = f.text_field :student_id, class: 'form-control', data: {autocomplete_source: student_list}, placeholder: ph+" "+(t 'or')+" "+(t 'student.students.name')

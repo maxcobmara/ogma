@@ -10,122 +10,75 @@
     .col-md-8.col-md-offset-2
       %dl.dl-horizontal
 
-        - if studentsearch.course_id.blank? && studentsearch.intake.blank? && studentsearch.icno.blank? && studentsearch.name.blank? && studentsearch.matrixno.blank? && studentsearch.ssponsor.blank? && studentsearch.physical.blank? && studentsearch.end_training.blank? && studentsearch.gender.blank? && studentsearch.race.blank? && studentsearch.bloodtype.blank? 
-          %div{style: 'padding-left: 180px; text-decoration: underline; font-weight: bold;'}=t 'equery.student.list_all'
+        - if studentattendancesearch.intake_id.blank? && studentattendancesearch.schedule_id.blank? && studentattendancesearch.student_id.blank?
+          %div{style: 'padding-left: 180px; text-decoration: underline; font-weight: bold;'}=t 'equery.studentattendance.list_all'
         - else
           %div{style: 'padding-left: 200px; text-decoration: underline; font-weight: bold;'}=t 'equery.search_by'
             
         %br
-                   
-        - unless studentsearch.course_id.blank?
-          %dt=t('student.students.course_id')
-          %dd=Programme.find(studentsearch.course_id).programme_list
       
-        - unless studentsearch.intake.blank?
+        - unless studentattendancesearch.intake_id.blank?
+          %dt=t('student.students.course_id')
+          %dd=Intake.find(studentattendancesearch.intake_id).programme.programme_list
+          
           %dt=t('student.students.intake_id')
-          %dd=Intake.find(studentsearch.intake).intake_details
+          %dd=Intake.find(studentattendancesearch.intake_id).intake_details
           
-        - unless studentsearch.icno.blank?
-          %dt=t('student.students.icno')
-          %dd=formatted_mykad(studentsearch.icno.split(" |")[0])
+        - unless studentattendancesearch.schedule_id.blank?
+          %dt=t('equery.student_attendance.schedule_class')
+          %dd=WeeklytimetableDetail.where(id: studentattendancesearch.schedule_id).first.day_time_slot
 
-        - unless studentsearch.name.blank?
-          %dt=(t 'student.students.rank_id')+" | "+(t 'student.students.name')
-          %dd=studentsearch.name
-              
-        - unless studentsearch.matrixno.blank?
-          %dt=t('student.students.matrixno')
-          %dd=studentsearch.matrixno.split(" |")[0]
+        - unless studentattendancesearch.student_id.blank?
+          %dt=t('student.student_attendance.student')
+          %dd=studentsearch.student_id
         
-        - unless studentsearch.end_training.blank?
-          %dt=t('student.students.end_training')
-          %dd=studentsearch.end_training.to_date.strftime('%d-%m-%Y')
-          
-        - unless studentsearch.ssponsor.blank?
-          %dt=t('student.students.ssponsor')
-          %dd
-            - if studentsearch.college.code=='kskbjb'
-              = (Student::SPONSOR.find_all{|disp, value| value==studentsearch.ssponsor}).map {|disp, value| disp}[0]
-            - else
-              = (Student::SPONSOR_AMSAS.find_all{|disp, value| value==studentsearch.ssponsor}).map {|disp, value| disp}[0]
-
-        - unless studentsearch.gender.blank?
-          %dt=t('student.students.gender')
-          %dd= (Student::GENDER.find_all{|disp, value| value == studentsearch.gender.to_s}).map {|disp, value| disp} [0]
-          
-        - unless studentsearch.race.blank?
-          %dt=t('student.students.race')
-          %dd
-            - if studentsearch.college.code=='amsas'
-              = (Student::RACE_AMSAS.find_all{|disp, value| value == studentsearch.race.to_i}).map {|disp, value| disp} [0]
-            - else
-              = (Student::RACE.find_all{|disp, value| value == studentsearch.race.to_i}).map {|disp, value| disp} [0]
-       
-        - unless studentsearch.physical.blank?
-          %dt=t('student.students.physical')
-          %dd=studentsearch.physical
-          
-        - unless studentsearch.bloodtype.blank?
-          %dt=t('student.students.bloodtype')
-          %dd= (Student::BLOOD_TYPE.find_all{|disp, value| value == studentsearch.bloodtype.to_s}).map {|disp, value| disp} [0]
-          
-        /mrtlstatus, studentsearch.sstatus.blank? &&
-        
-        
-        - if studentsearch.course_id.blank? && studentsearch.intake.blank? && studentsearch.icno.blank? && studentsearch.name.blank? && studentsearch.matrixno.blank? && studentsearch.ssponsor.blank? && studentsearch.physical.blank? && studentsearch.end_training.blank? && studentsearch.gender.blank? && studentsearch.race.blank? && studentsearch.bloodtype.blank? 
+        - if studentattendancesearch.intake_id.blank? && studentattendancesearch.schedule_id.blank? && studentattendancesearch.student_id.blank?
         - else
           .col-md-12
             .col-md-8
               %hr
-          
+        
+        - schedule_classes=studentattendancesearch.studentattendances.group_by(&:weeklytimetable_detail)
+        
         %dt=(t 'equery.total')
-        %dd=studentsearch.students.count==0 ? studentsearch.students.count : studentsearch.students.count.to_s+" "+(t 'records')
+        %dd=studentattendancesearch.studentattendances.count==0 ? studentattendancesearch.studentattendances.count : studentattendancesearch.studentattendances.count.to_s+" #{(t 'records')} (#{(t 'for')} #{schedule_classes.count} #{(t 'equery.student_attendance.class')})"
         
         
     /display result
-    .col-md-11
+    .col-md-7.col-md-offset-2
       %br
-      - if studentsearch.students.count > 0
-        .right=link_to (fa_icon "print", text: (t 'equery.print_result')), student_list_students_path(format: 'pdf', ids: studentsearch.students.pluck(:id))
-        %table.table.table-bordered.table-condensed.table-hover
-          %head
-            %tr.info
-              %th{width: '4%'} No
-              %th{width: '10%'}=t('student.students.icno')
-              %th{width: '23%'}=t('student.students.name')
-              %th{width: '12%'}=studentsearch.college.code=='kskbjb' ? (t 'student.students.matrixno') : (t 'student.students.apmmno')
-              %th{width: '8%'}=t('student.students.end_training')
-              %th{width: '10%'}=t('student.students.ssponsor')
-              %th{width: '6%'}=t('student.students.gender')
-              %th{width: '12%'}=t('student.students.physical')
-              %th{width: '6%'}=t('student.students.race')
-              %th{width: '6%'}=t('student.students.bloodtype')
-              %th{width: '3%'}=t('equery.view')
-          %body
-            - if params[:page]
-              - cnt=(params[:page].to_i-1)*10
-            - else
-              - cnt=0
-            - students.group_by{|x|x.course}.each do |programme, students_programme|
-              %tr
-                %td.centre.bg-grey{colspan: 11}=programme.programme_list
-              - students_programme.group_by{|y|y.intakestudent}.each do |int, student_list|
+      - if studentattendancesearch.studentattendances.count > 0
+        
+        - schedule_classes.each do |schedule_class, sas|
+         
+          - total_student=sas.count
+          - attend=sas.map(&:attend).count(true)
+          - absent=sas.map(&:attend).count(false)
+          
+          /.right=link_to (fa_icon "print", text: (t 'equery.print_result')), student_list_students_path(format: 'pdf', ids: studentsearch.students.pluck(:id))
+          %table.table.table-bordered.table-condensed.table-hover
+            %head
+              %tr.info
+                %th.centre{colspan: 3}
+                  =schedule_class.subject_day_time
+                  %br
+                  =schedule_class.weeklytimetable_lecturer.name
+                  &nbsp;|&nbsp;
+                  =schedule_class.render_class_method[0]
+                %th=t('equery.student_attendance.attendance_percentage')
+                %th= number_with_precision(((total_student.to_i-absent.to_i) / total_student.to_i* 100).to_f, :precision=>2) 
+      
+            %body    
+              -  sas.sort_by{|x|x.student.name}.each_with_index do |sa,index|
                 %tr
-                  %td.centre.bg-grey{colspan: 11}=int.intake_details
-                - for student in student_list.sort_by{|u|u.name}
-                  %tr
-                    %td.centre=cnt+=1
-                    %td=formatted_mykad(student.icno)
-                    %td=student.name
-                    %td=student.matrixno
-                    %td.centre=student.end_training.try(:strftime, '%d-%m-%Y')
-                    %td=student.render_sponsor
-                    %td=student.render_gender
-                    %td=student.physical
-                    %td=h student.render_race
-                    %td.centre=h student.render_bloodtype
-                    %td.centre= link_to (fa_icon "file-pdf-o"), borang_maklumat_pelajar_student_path(student, format: "pdf")
-            
-      .right{style:"padding: 0 10px; margin:0;"}= paginate students, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
-            
-            
+                  %td{width: '5%'}=index+1
+                  %td.centre{width: '18%'}= formatted_mykad(sa.student.icno)
+                  %td{width: '20%'}= sa.student.matrixno
+                  %td{width: '47%'}= sa.student.name
+                  %td.centre{width: '10%'}
+                    - if sa.attend == true 
+                      &#10003;
+                    - else
+                      =t('equery.student_attendance.absent')
+  
+      .right{style:"padding: 0 10px; margin:0;"}= paginate studentattendances, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

@@ -4696,6 +4696,7 @@ ms_MY:
       #search_by: Carian Kehadiran Pelajar Mengikut
       schedule_class: "Jadual Waktu / Kelas"
       student: Pelajar
+      list_all: Senarai Penuh Kehadiran Pelajar
       #date: Tarikh
       #time: Masa
       #subject_topic: "Subjek : Topik"
@@ -4705,7 +4706,7 @@ ms_MY:
       #total_class_attended: Jumlah Kelas Dihadiri
       #attendance_percentage: Peratusan Kehadiran
       #matrixno_complete: "Carian mengikut No. Matrik - No. Matrik mestilah lengkap dan tepat."
-      #class: Kelas
+      class: Kelas
       #total_classes: Jumlah Kelas
       #absent: Tidak Hadir
     student_counseling:
