@@ -1,5 +1,5 @@
 class Studentattendancesearch < ActiveRecord::Base
-#   attr_accessible :schedule_id, :intake_id, :student_id
+
   attr_accessor :method, :course_id
   
   belongs_to :college
