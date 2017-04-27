@@ -1,0 +1,84 @@
+/ Nav tabs
+%ul.nav.nav-tabs
+  %li.active= link_to  (t 'equery.result'), "#search", "data-toggle" => "tab"
+
+/ display 
+.tab-content{style:"padding-top:1em"}
+  #search_details.tab-pane.active  
+        
+    /additional heading
+    .col-md-8.col-md-offset-2
+      %dl.dl-horizontal
+
+        - if studentattendancesearch.intake_id.blank? && studentattendancesearch.schedule_id.blank? && studentattendancesearch.student_id.blank?
+          %div{style: 'padding-left: 180px; text-decoration: underline; font-weight: bold;'}=t 'equery.studentattendance.list_all'
+        - else
+          %div{style: 'padding-left: 200px; text-decoration: underline; font-weight: bold;'}=t 'equery.search_by'
+            
+        %br
+      
+        - unless studentattendancesearch.intake_id.blank?
+          %dt=t('student.students.course_id')
+          %dd=Intake.find(studentattendancesearch.intake_id).programme.programme_list
+          
+          %dt=t('student.students.intake_id')
+          %dd=Intake.find(studentattendancesearch.intake_id).intake_details
+          
+        - unless studentattendancesearch.schedule_id.blank?
+          %dt=t('equery.student_attendance.schedule_class')
+          %dd=WeeklytimetableDetail.where(id: studentattendancesearch.schedule_id).first.day_time_slot
+
+        - unless studentattendancesearch.student_id.blank?
+          %dt=t('student.student_attendance.student')
+          %dd=studentsearch.student_id
+        
+        - if studentattendancesearch.intake_id.blank? && studentattendancesearch.schedule_id.blank? && studentattendancesearch.student_id.blank?
+        - else
+          .col-md-12
+            .col-md-8
+              %hr
+        
+        - schedule_classes=studentattendancesearch.studentattendances.group_by(&:weeklytimetable_detail)
+        
+        %dt=(t 'equery.total')
+        %dd=studentattendancesearch.studentattendances.count==0 ? studentattendancesearch.studentattendances.count : studentattendancesearch.studentattendances.count.to_s+" #{(t 'records')} (#{(t 'for')} #{schedule_classes.count} #{(t 'equery.student_attendance.class')})"
+        
+        
+    /display result
+    .col-md-7.col-md-offset-2
+      %br
+      - if studentattendancesearch.studentattendances.count > 0
+        
+        - schedule_classes.each do |schedule_class, sas|
+         
+          - total_student=sas.count
+          - attend=sas.map(&:attend).count(true)
+          - absent=sas.map(&:attend).count(false)
+          
+          /.right=link_to (fa_icon "print", text: (t 'equery.print_result')), student_list_students_path(format: 'pdf', ids: studentsearch.students.pluck(:id))
+          %table.table.table-bordered.table-condensed.table-hover
+            %head
+              %tr.info
+                %th.centre{colspan: 3}
+                  =schedule_class.subject_day_time
+                  %br
+                  =schedule_class.weeklytimetable_lecturer.name
+                  &nbsp;|&nbsp;
+                  =schedule_class.render_class_method[0]
+                %th=t('equery.student_attendance.attendance_percentage')
+                %th= number_with_precision(((total_student.to_i-absent.to_i) / total_student.to_i* 100).to_f, :precision=>2) 
+      
+            %body    
+              -  sas.sort_by{|x|x.student.name}.each_with_index do |sa,index|
+                %tr
+                  %td{width: '5%'}=index+1
+                  %td.centre{width: '18%'}= formatted_mykad(sa.student.icno)
+                  %td{width: '20%'}= sa.student.matrixno
+                  %td{width: '47%'}= sa.student.name
+                  %td.centre{width: '10%'}
+                    - if sa.attend == true 
+                      &#10003;
+                    - else
+                      =t('equery.student_attendance.absent')
+  
+      .right{style:"padding: 0 10px; margin:0;"}= paginate studentattendances, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

@@ -11,7 +11,7 @@
       %dl.dl-horizontal
 
         - if studentsearch.course_id.blank? && studentsearch.intake.blank? && studentsearch.icno.blank? && studentsearch.name.blank? && studentsearch.matrixno.blank? && studentsearch.ssponsor.blank? && studentsearch.physical.blank? && studentsearch.end_training.blank? && studentsearch.gender.blank? && studentsearch.race.blank? && studentsearch.bloodtype.blank? 
-          %div{style: 'padding-left: 150px; text-decoration: underline; font-weight: bold;'}=t 'equery.document.list_all'
+          %div{style: 'padding-left: 180px; text-decoration: underline; font-weight: bold;'}=t 'equery.student.list_all'
         - else
           %div{style: 'padding-left: 200px; text-decoration: underline; font-weight: bold;'}=t 'equery.search_by'
             

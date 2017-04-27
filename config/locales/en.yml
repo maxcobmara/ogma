@@ -4780,8 +4780,9 @@ en:
     student_attendance:
       search: Student Attendance Search
       #search_by: Search Student Attendance By
-      #schedule_class: "Schedule / Class "
-      #student: Student
+      schedule_class: "Schedule / Class "
+      student: Student
+      list all: List of All Student Attendances
       #date: Date
       #time: Time
       #subject_topic: "Subject : Topic"
@@ -4791,7 +4792,7 @@ en:
       #total_class_attended: Total Classes Attended
       #attendance_percentage: Attendance Percentage
       #matrixno_complete: "Search by Matrix No requires complete & correct Matrix No."
-      #class: Class
+      class: Class
       #total_classes: Total number of classes
       #absent: Absent
     student_counseling:

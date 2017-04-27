@@ -22,6 +22,8 @@ class WeeklytimetableDetail < ActiveRecord::Base
    
    serialize :data, Hash
    
+   scope :attended_classes, -> { where(id: StudentAttendance.all.pluck(:weeklytimetable_details_id).uniq) }
+   
    def set_day_time_slot_for_non_selected
        if is_friday == true
          self.day2 = 0
@@ -166,6 +168,19 @@ class WeeklytimetableDetail < ActiveRecord::Base
    def subject_details
       [subject_day_time, id]
    end
+   
+   def self.intake_attended_classes
+     a=[]
+     WeeklytimetableDetail.attended_classes.group_by{|y|y.weeklytimetable.schedule_intake}.each do |int, wtds|
+       b = [[I18n.t('select'), ""]]
+       for wtd in wtds
+         b << [wtd.day_time_slot, wtd.id]
+       end
+       a << [int.intake_details, b]
+     end
+     a
+   end
+     
      
      #25March2013==========
   private
