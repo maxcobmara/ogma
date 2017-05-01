@@ -21,7 +21,7 @@ class EqueryReport::StudentattendancesearchesController < ApplicationController
 
   def show
     @studentattendancesearch = Studentattendancesearch.find(params[:id])
-    @studentattendances=@studentattendancesearch.studentattendances.page(params[:page]).per(10)
+    @studentattendances=@studentattendancesearch.studentattendances.page(params[:page]).per(30)
   end
   
   private

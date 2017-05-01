@@ -4693,7 +4693,6 @@ ms_MY:
       list_all: Senarai Penuh Pelajar
     student_attendance:
       search: Carian Kehadiran Pelajar
-      #search_by: Carian Kehadiran Pelajar Mengikut
       schedule_class: "Jadual Waktu / Kelas"
       student: Pelajar
       list_all: Senarai Penuh Kehadiran Pelajar
@@ -4702,13 +4701,13 @@ ms_MY:
       #subject_topic: "Subjek : Topik"
       #lecturer: Pengajar
       #location: Lokasi
-      #attendance: Kehadiran
+      attendance: Kehadiran
       #total_class_attended: Jumlah Kelas Dihadiri
-      #attendance_percentage: Peratusan Kehadiran
+      attendance_percentage: Peratusan Kehadiran
       #matrixno_complete: "Carian mengikut No. Matrik - No. Matrik mestilah lengkap dan tepat."
       class: Kelas
       #total_classes: Jumlah Kelas
-      #absent: Tidak Hadir
+      absent: Tidak Hadir
     student_counseling:
       search: "Carian Sesi Kaunseling Pelajar (Kes Rujukan & Maklumbalas Kaunselor)"
       #search_by: "Carian Sesi Kaunseling Pelajar (Kes Rujukan beserta Maklumbalas Kaunselor)"
