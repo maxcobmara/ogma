@@ -4775,11 +4775,8 @@ en:
       search: Student Search
       identification: Student Identification
       list_all: List of All Students
-      #search_by: Search Students By
-      #total_student: Total number of student
     student_attendance:
       search: Student Attendance Search
-      #search_by: Search Student Attendance By
       schedule_class: "Schedule / Class "
       student: Student
       list all: List of All Student Attendances
@@ -4788,13 +4785,13 @@ en:
       #subject_topic: "Subject : Topic"
       #lecturer: Lecturer
       #location: Location
-      #attendance: Attendance
+      attendance: Attendance
       #total_class_attended: Total Classes Attended
       #attendance_percentage: Attendance Percentage
       #matrixno_complete: "Search by Matrix No requires complete & correct Matrix No."
       class: Class
       #total_classes: Total number of classes
-      #absent: Absent
+      absent: Absent
     student_counseling:
       search: "Student Counseling Session Search (Referred Cases & Counselor's Feedback)"
       #search_by: "Search Counseling Session (for Referred Case c/w Counselor's Feedback) By"

@@ -136,7 +136,11 @@ class Student::StudentAttendancesController < ApplicationController
   end
   
   def student_attendan_form
-    @student_attendances = StudentAttendance.where(id: params[:sas])#@search.result
+     if params[:ids]
+      @student_attendances=StudentAttendance.where(id: params[:ids]).sort_by{|x|x.student.name}
+    else
+      @student_attendances = StudentAttendance.where(id: params[:sas])#@search.result
+    end
     classes_count=@student_attendances.group_by(&:weeklytimetable_details_id).count
     respond_to do |format|
       format.pdf do
