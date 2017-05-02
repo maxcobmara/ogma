@@ -4511,33 +4511,38 @@ en:
     max_size: "Allowed maximum file size : 25 MB"
     remark: Please refer to related modules for access to produce PDF format via online data entry.
     
-    title2: Digital Document Repository
-    list2: Digital Document Repository List
+    title2: Digital Document #Repository
+    list2: Digital Library #Digital Document Repository List
     new2: New Digital Document
     edit2: Edit Digital Document
     details2: Digital Document Details
     vessel: Vessel Name
     document_type: Document Type
     refno: Reference No
+    refno2: Document Reference
     publish_date: Publish Date
     total_pages: Pages
     copies: Copies
     location: Location
-    book: Book
+    book: BR #Book
     drawing: Drawing
     test_trials: Tests & Trials
     others: Others
     total: Total
     document_subtype: Documentation for
-    propulsion: Main Propulsion System
-    electrical: Electrical Power System
-    weapon: Weapon and Weapon System
-    navigation: Navigation System
-    communication: Communication System
-    hull_fitting: Hull Structure and Fitting System
-    life_equipment: Life Equipment Support System
-    damage_safety: Damage Control / Safety System
+    propulsion: Propulsion Systems #Main Propulsion System
+    electrical: Power Generation & Distribution Systems #Electrical Power System
+    weapon: Weapon and Weapon Systems
+    navigation: Navigation Systems
+    communication: Communication Systems
+    hull_fitting: Hull Structure and Fittings
+    life_equipment: Life Equipment Support Systems
+    damage_safety: Damage Control / Safety Systems
     auxiliaries: Auxiliaries
+    classification: Classification
+    restricted: Restricted
+    confidential: Confidential
+    secret: Secret
     
   conversation:
     local_messaging: Local Messaging
@@ -5025,15 +5030,19 @@ en:
       others: Others
       total: Total
       document_subtype: Documentation for
-      propulsion: Main Propulsion System
-      electrical: Electrical Power System
-      weapon: Weapon and Weapon System
-      navigation: Navigation System
-      communication: Communication System
-      hull_fitting: Hull Structure and Fitting System
-      life_equipment: Life Equipment Support System
-      damage_safety: Damage Control / Safety System
+      propulsion: Propulsion Systems
+      electrical: Power Generation & Distribution Systems
+      weapon: Weapon and Weapon Systems
+      navigation: Navigation Systems
+      communication: Communication Systems
+      hull_fitting: Hull Structure and Fittings
+      life_equipment: Life Equipment Support Systems
+      damage_safety: Damage Control / Safety Systems
       auxiliaries: Auxiliaries
+      classification: Classification
+      restricted: Restricted
+      confidential: Confidential
+      secret: Secret
   
   
   ###########

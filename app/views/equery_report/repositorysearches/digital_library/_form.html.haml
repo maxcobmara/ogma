@@ -28,6 +28,14 @@
                   .col-md-6
                     =f.text_field :refno, class: 'form-control', data: {autocomplete_source: Repository.digital_library.map(&:refno).sort-[""]}
                   .col-md-3.text-red=(t 'or').upcase
+                  
+                /by classification
+                .form-group
+                  .col-sm-3.control-label
+                    =f.label (t 'equery.repository.classification')
+                  .col-md-6
+                    =f.select :classification, Repositorysearch.classification_selection, {include_blank: (t 'select')}, {class: 'form-control'}
+                  .col-md-3.text-red=(t 'or').upcase
        
           .col-md-9
             .panel.panel-default

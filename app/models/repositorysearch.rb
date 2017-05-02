@@ -52,6 +52,21 @@ class Repositorysearch < ActiveRecord::Base
     data[:repotype]
   end
   
+  def classification=(value)
+    data[:classification]=value
+  end
+  
+  def classification
+    data[:classification]
+  end
+  
+  def self.classification_selection
+    existing=(Repository.all.map(&:classification).compact-[""].uniq)   #["1"], ["Restricted", "1"], ["Confidential", "2"], ["Secret", "3"]] 
+    selection=[]
+    Repository.document_classification.each{|c| selection << c if existing.include?(c[1]) }
+    selection
+  end
+  
   def repositories
     @repositories ||= find_repositories
   end
@@ -111,6 +126,17 @@ class Repositorysearch < ActiveRecord::Base
         a+=" OR id=? "
       end
       ["("+a+")", ids]
+    end
+  end
+  
+  def classification_conditions
+    unless classification.blank?
+      ids=Repository.classification_search(classification).pluck(:id)
+      a="id=?" if ids.count > 0
+      0.upto(ids.count-2) do |x|
+        a+=" OR id=? "
+      end
+      ["("+a+")", ids] if ids.count > 0
     end
   end
   

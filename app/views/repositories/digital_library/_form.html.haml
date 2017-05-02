@@ -15,6 +15,12 @@
 
     .form-group
       .col-sm-2.control-label
+        =f.label t 'repositories.classification', for: :classification
+      .col-md-5
+        =f.select :classification, Repository.document_classification, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+        
+    .form-group
+      .col-sm-2.control-label
         = f.label t 'repositories.document_title', for: :title
       .col-md-5
         = f.text_field :title, class: 'form-control mandatory'
@@ -23,8 +29,8 @@
       .col-sm-2.control-label
         = f.label t 'repositories.vessel', for: :vessel
       .col-md-4
-        = f.text_field :vessel, class: 'form-control mandatory'
-
+        =f.text_field :vessel, class: 'form-control mandatory', data: {autocomplete_source: Repository.digital_library.map(&:vessel).uniq.sort}
+        
     .form-group
       .col-sm-2.control-label
         = f.label t 'repositories.refno', for: :refno
@@ -57,7 +63,7 @@
       .col-sm-2.control-label
         = f.label t 'repositories.uploaded', for: :uploaded
       .col-md-5
-        = f.file_field :uploaded, class: 'form-control mandatory'
+        = f.file_field :uploaded, class: 'form-control'
         
         /NOTE - 20Apr2017 - workaround - to retrieve missing uploaded file when validation fails!  - start ####
         /when "cache for uploaded"(AttachmentUploader record) exist, although uploaded field contains no data...

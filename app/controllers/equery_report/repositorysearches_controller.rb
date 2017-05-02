@@ -17,13 +17,13 @@ class EqueryReport::RepositorysearchesController < ApplicationController
   
   def show
     @repositorysearch = Repositorysearch.find(params[:id])
-    @repositories=@repositorysearch.repositories.page(params[:page]).per(10)
+    @repositories = Kaminari.paginate_array(@repositorysearch.repositories.sort_by{|x|[x.document_type, x.document_subtype, x.vessel]}).page(params[:page]).per(10)
   end
  
   private
    
     def repositorysearch_params
-      params.require(:repositorysearch).permit(:title, :vessel, :document_type, :document_subtype, :refno, :publish_date, :total_pages, :copies, :location, :repotype, [:keyword =>{}], :college_id, [:data =>{}])
+      params.require(:repositorysearch).permit(:title, :vessel, :document_type, :document_subtype, :refno, :publish_date, :total_pages, :copies, :location, :repotype, :classification, [:keyword =>{}], :college_id, [:data =>{}])
     end
    
 end

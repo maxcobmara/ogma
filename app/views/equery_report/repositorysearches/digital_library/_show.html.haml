@@ -55,8 +55,9 @@
           %th{width: '20%'}=t 'equery.repository.document_title'
           %th{width: '15%'}=t 'equery.repository.refno'
           %th{width: '8%'}=t 'equery.repository.publish_date'
-          %th{width: '12%'}=t 'equery.repository.location'
-          %th{width: '6%'}= (t 'equery.repository.copies')+" / "+(t 'equery.repository.total_pages')
+          %th{width: '10%'}=t 'equery.repository.location'
+          /%th{width: '6%'}= (t 'equery.repository.copies')+" / "+(t 'equery.repository.total_pages')
+          %th{width: '8%'}=t 'equery.repository.classification'
           %th{width: '4%'}=t 'equery.view'
         
       %body
@@ -64,8 +65,8 @@
           - cnt=(params[:page].to_i-1)*10
         - else
           - cnt=0
-        /- for repository in @repositorysearch.repositories
-        - for repository in repositories.sort_by(&:vessel)
+
+        - for repository in repositories
           %tr
             %td.centre=cnt+=1
             %td=repository.render_document
@@ -75,7 +76,12 @@
             %td=repository.refno
             %td.centre=repository.publish_date
             %td=repository.location
-            %td.centre=repository.copies.to_s+" / "+repository.total_pages.to_s
-            %td.centre=link_to (fa_icon "file-pdf-o"), repository.uploaded.url
+            %td.centre=repository.render_classification
+            /=repository.copies.to_s+" / "+repository.total_pages.to_s
+            %td.centre
+              - unless repository.uploaded.blank?
+                =link_to (fa_icon "file-pdf-o"), repository.uploaded.url
+              - else
+                = fa_icon("chain-broken")
 
   .right{style:"padding: 0 10px; margin:0;"}= paginate repositories, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

@@ -10,11 +10,11 @@ class Repository < ActiveRecord::Base
                     :url => "/assets/uploads/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/uploads/:id/:style/:basename.:extension" #,
                   #  :styles => { :original => "250x300>", :thumbnail => "50x60" } #default size of uploaded image
-  validates_attachment_size :uploaded, :less_than => 25.megabytes
+  validates_attachment_size :uploaded, :less_than => 50.megabytes
   validates_attachment_content_type :uploaded, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif", "application/pdf"]
   
   validates :category, :title, :uploaded, :staff_id, presence: true, :if => :data_not_present?
-  validates :vessel, :document_type, :document_subtype, :title, :uploaded, :staff_id, presence: true, :if => :data_is_present?  #:publish_date, 
+  validates :vessel, :document_type, :document_subtype, :title, :staff_id, presence: true, :if => :data_is_present?  #:publish_date,  :uploaded,
   
   # NOTE - 20Apr2017 - workaround - to retrieve missing uploaded file when validation fails!  - start ####
   attr_accessor :uploadcache
@@ -131,6 +131,14 @@ class Repository < ActiveRecord::Base
     data[:remark]
   end
   
+  def classification=(value)
+    data[:classification]=value
+  end
+  
+  def classification
+    data[:classification]
+  end
+  
   #Ransack - may also use 
   #define scope
   def self.vessel_search(query)
@@ -168,30 +176,42 @@ class Repository < ActiveRecord::Base
     Repository.digital_library.each{ |repo| ids << repo.id if repo.document_subtype==query}
     where(id: ids)
   end
+  
+  def self.classification_search(query)
+    ids=[]
+    Repository.digital_library.each{ |repo| ids << repo.id if repo.classification==query}
+    where(id: ids)
+  end
 
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-    [:vessel_search, :refno_search, :publish_date_search, :location_search, :document_type_search, :document_subtype_search]
+    [:vessel_search, :refno_search, :publish_date_search, :location_search, :document_type_search, :document_subtype_search, :classification_search]
   end  
   
   def self.document
    [[I18n.t('repositories.book'), '1'],
      [I18n.t('repositories.drawing'), '2'],
-     [I18n.t('repositories.test_trials'), '3'],
-     [I18n.t('repositories.others'), '4']
+     [I18n.t('repositories.test_trials'), '3']
     ]
   end
   
   def self.subdocument
     [[I18n.t('repositories.propulsion'), '1'],
+      [I18n.t('repositories.auxiliaries'), '9'],
      [I18n.t('repositories.electrical'), '2'],
      [I18n.t('repositories.weapon'), '3'],
      [I18n.t('repositories.navigation'), '4'],
      [I18n.t('repositories.communication'), '5'],
      [I18n.t('repositories.hull_fitting'), '6'],
      [I18n.t('repositories.life_equipment'), '7'],
-     [I18n.t('repositories.damage_safety'), '8'],
-     [I18n.t('repositories.auxiliaries'), '9']
+     [I18n.t('repositories.damage_safety'), '8']
+     ]
+  end
+  
+  def self.document_classification
+    [[I18n.t('repositories.restricted'), '1'],
+     [I18n.t('repositories.confidential'), '2'],
+     [I18n.t('repositories.secret'), '3']
      ]
   end
   
@@ -201,6 +221,10 @@ class Repository < ActiveRecord::Base
   
   def render_subdocument
     (Repository.subdocument.find_all{|disp, value| value == document_subtype }).map {|disp, value| disp}[0]
+  end
+  
+  def render_classification
+    (Repository.document_classification.find_all{|disp, value|value==classification}).map {|disp, value| disp}[0]
   end
   
   def self.doctype_per_vessel

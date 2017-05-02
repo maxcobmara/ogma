@@ -20,10 +20,11 @@
         %th{width: '5%'} No
         %th{width: '13%'}=sort_link(@search, :vessel, (t 'repositories.vessel'))
         %th{width: '25%'}= sort_link(@search, :title, (t 'repositories.document_title'))
-        %th{width: '17%'}= sort_link(@search, :refno, (t 'repositories.refno'))
+        %th{width: '17%'}= sort_link(@search, :refno, (t 'repositories.refno2'))
         %th{width: '9%'}= sort_link(@search, :publish_date, (t 'repositories.publish_date'))
         %th{width: '15%'}= sort_link(@search, :location, (t 'repositories.location'))
-        %th{width: '10%'}= (t 'repositories.copies')+" / "+(t 'repositories.total_pages')
+        /%th{width: '10%'}= (t 'repositories.copies')+" / "+(t 'repositories.total_pages')
+        %th{width: '10%'}=(t 'repositories.classification')
         %th{width: '6%'} &nbsp;
         
     %tbody
@@ -43,7 +44,12 @@
               %td=repository.refno
               %td.centre=repository.publish_date
               %td=repository.location
-              %td.centre=repository.copies.to_s+" / "+repository.total_pages.to_s
-              %td.centre=link_to (fa_icon "file-pdf-o"), repository.uploaded.url 
+              /%td.centre=repository.copies.to_s+" / "+repository.total_pages.to_s
+              %td.centre=repository.render_classification
+              %td.centre
+                - unless repository.uploaded.blank?
+                  =link_to (fa_icon "file-pdf-o"), repository.uploaded.url 
+                - else
+                  = fa_icon("chain-broken")
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @repositories, :theme => 'twitter-bootstrap-3'
