@@ -363,9 +363,14 @@
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.manager"), manager_library_librarytransactions_path
             - permitted_to? :read, :library_books do  
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.list"), library_books_path
+            /temporary for Digital Library
+            - permitted_to? :read, :repositories do
+              %li=link_to content_tag(:i, "", :class => "icon-numb") + t('repositories.list2'), index2_repositories_path
             - permitted_to? :analysis_statistic, :library_librarytransactions do 
               %li= link_to content_tag(:i, "", :class => "icon_numb") + (t "library.transaction.analysis_statistic"), analysis_statistic_library_librarytransactions_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.help"), flexipage_campus_page_path(80)
+   
+            
 
     /- permitted_to? :core, :roles do
     %li.icon.icon-left
@@ -387,7 +392,7 @@
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('campus.visitors.list'), campus_visitors_path
           - permitted_to? :read, :repositories do
             %li=link_to content_tag(:i, "", :class => "icon-numb") + t('repositories.list'), repositories_path
-            %li=link_to content_tag(:i, "", :class => "icon-numb") + t('repositories.list2'), index2_repositories_path
+            /%li=link_to content_tag(:i, "", :class => "icon-numb") + t('repositories.list2'), index2_repositories_path
 
           - if user_signed_in? && current_user.userable && current_user.userable_type=='Staff'
             %li.icon.icon-left

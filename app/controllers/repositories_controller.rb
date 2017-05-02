@@ -129,7 +129,7 @@ class RepositoriesController < ApplicationController
   
   def repository_list2
     if params[:ids]
-      @repositories=Repository.digital_library.where(id: params[:ids])
+      @repositories=Repository.digital_library.where(id: params[:ids]).sort_by{|x|[x.document_type, x.document_subtype, x.vessel]}
     else
       @search=Repository.digital_library.search(params[:q])
       @repositories = @search.result
@@ -152,6 +152,6 @@ class RepositoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def repository_params
-      params.require(:repository).permit(:id, :title, :staff_id, :category, :created_at, :updated_at, :uploaded, :uploaded_file_name, :uploaded_content_type, :uploaded_file_size, :uploadcache, :uploaded_updated_at, :vessel, :document_type, :document_subtype, :refno, :publish_date, :total_pages, :copies, :location, :college_id, {:data => []})
+      params.require(:repository).permit(:id, :title, :staff_id, :category, :created_at, :updated_at, :uploaded, :uploaded_file_name, :uploaded_content_type, :uploaded_file_size, :uploadcache, :uploaded_updated_at, :vessel, :document_type, :document_subtype, :refno, :publish_date, :total_pages, :copies, :location, :classification, :college_id, {:data => []})
     end
 end
