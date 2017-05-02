@@ -17,8 +17,8 @@ class RepositoriesController < ApplicationController
   
   def index2
     @search=Repository.digital_library.search(params[:q])
-    @repositories=@search.result
-    @repositories=@repositories.page(params[:page]||1)
+    @repositories=@search.result.sort_by{|x|[x.document_type, x.document_subtype, x.vessel]}
+    @repositories=Kaminari.paginate_array(@repositories).page(params[:page]||1)
   end
 
   # GET /repositories/1
@@ -129,11 +129,12 @@ class RepositoriesController < ApplicationController
   
   def repository_list2
     if params[:ids]
-      @repositories=Repository.digital_library.where(id: params[:ids]).sort_by{|x|[x.document_type, x.document_subtype, x.vessel]}
+      @repositories=Repository.digital_library.where(id: params[:ids])
     else
       @search=Repository.digital_library.search(params[:q])
       @repositories = @search.result
     end
+    @repositories=@repositories.sort_by{|x|[x.document_type, x.document_subtype, x.vessel]}
     respond_to do |format|
       format.pdf do
         pdf = Repository_list2Pdf.new(@repositories, view_context, current_user.college)

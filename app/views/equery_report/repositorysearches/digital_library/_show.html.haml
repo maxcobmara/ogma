@@ -81,7 +81,9 @@
             %td.centre
               - unless repository.uploaded.blank?
                 =link_to (fa_icon "file-pdf-o"), repository.uploaded.url
+                /="<iframe src=#{repository.uploaded.url} width='200'>".html_safe
               - else
-                = fa_icon("chain-broken")
+                = fa_icon("chain-broken")              
+
 
   .right{style:"padding: 0 10px; margin:0;"}= paginate repositories, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
