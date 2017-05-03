@@ -4,8 +4,8 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    /- permitted_to? :create, :repositories do
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new2_repositories_path
+    - permitted_to? :create, :repositories do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new2_repositories_path
   %ul.nav.navbar-nav.navbar-right
     /%li= link_to (t 'equery.title'), "/equery_reports?query_module=8"
     %li= link_to content_tag(:li, fa_icon("search-plus", text: (t 'equery.title2'))), new_equery_report_repositorysearch_path(searchrepotype: '2')
@@ -14,6 +14,11 @@
 
 .row
   .col-md-12
+    .alert.alert-warning
+      %strong=t 'repositories.remark'
+      %ol
+        %li=fa_icon("file-pdf-o")+" -  "+(t 'repositories.available')
+        %li=fa_icon("chain-broken")+" - "+(t 'repositories.not_available')
   %table.table-striped.table-hover.ogma
     %thead
       %tr
@@ -25,7 +30,7 @@
         %th{width: '15%'}= sort_link(@search, :location, (t 'repositories.location'))
         /%th{width: '10%'}= (t 'repositories.copies')+" / "+(t 'repositories.total_pages')
         %th{width: '10%'}=(t 'repositories.classification')
-        %th{width: '6%'} &nbsp;
+        %th{width: '6%'}=(t 'view')
         
     %tbody
       = render "repositories/digital_library/index_search"

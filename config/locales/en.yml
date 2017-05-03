@@ -4543,6 +4543,10 @@ en:
     restricted: Restricted
     confidential: Confidential
     secret: Secret
+    remark: Remark
+    available: PDF file available
+    not_available: PDF file not available
+    serial_no: Serial no
     
   conversation:
     local_messaging: Local Messaging

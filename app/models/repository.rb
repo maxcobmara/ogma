@@ -139,6 +139,14 @@ class Repository < ActiveRecord::Base
     data[:classification]
   end
   
+  def code=(value)
+    data[:code]=value
+  end
+  
+  def code
+    data[:code]
+  end
+  
   #Ransack - may also use 
   #define scope
   def self.vessel_search(query)
