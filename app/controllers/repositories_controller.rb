@@ -153,6 +153,6 @@ class RepositoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def repository_params
-      params.require(:repository).permit(:id, :title, :staff_id, :category, :created_at, :updated_at, :uploaded, :uploaded_file_name, :uploaded_content_type, :uploaded_file_size, :uploadcache, :uploaded_updated_at, :vessel, :document_type, :document_subtype, :refno, :publish_date, :total_pages, :copies, :location, :classification, :college_id, {:data => []})
+      params.require(:repository).permit(:id, :title, :staff_id, :category, :created_at, :updated_at, :uploaded, :uploaded_file_name, :uploaded_content_type, :uploaded_file_size, :uploadcache, :uploaded_updated_at, :vessel, :document_type, :document_subtype, :refno, :publish_date, :total_pages, :copies, :location, :classification, :code, :college_id, {:data => []})
     end
 end

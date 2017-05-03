@@ -4460,6 +4460,10 @@ ms_MY:
     restricted: Terhad
     confidential: Sulit
     secret: Rahsia
+    remark: Catatan
+    available: Fail PDF ada
+    not_available: Fail PDF tiada
+    serial_no: No siri
 
   conversation:
     local_messaging: Pemesejan Dalaman
