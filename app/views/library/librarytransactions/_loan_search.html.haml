@@ -1,0 +1,14 @@
+= search_form_for @search, url: repository_loan_library_librarytransactions_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display:none;"}  
+    %td  &nbsp;
+    %td= f.text_field :document_vessel_search, size: 2,  :class => "form-control"
+    %td= f.text_field :document_title_search, size: 2,  :class => "form-control"
+    %td= f.text_field :document_ref_serial_search, size: 2,  :class => "form-control"
+    %td= f.text_field :document_loaner_search, size: 2, :class => "form-control"
+    %td= f.text_field :returnduedate_eq, size: 2, :class => "form-control date_picker_reverse", value: @search.returnduedate_eq.try(:strftime, '%d-%m-%Y')
+    %td= select_tag('q[extended_search]', options_for_select([[(t 'library.transaction.extended'), '1'], [(t 'library.transaction.not_extended'), '2']]), :prompt => (t 'all_records'), :class => "selectpicker","data-width" =>"fit", "data-style" => "btn-sm")
+    %td= select_tag('q[borrowed_overdue_search]', options_for_select([[(t 'library.transaction.not_overdue'), '1'],[(t 'library.transaction.overdue'), '2']]), :prompt => (t 'all_records'),  :class => "selectpicker","data-width" =>"fit", "data-style" => "btn-sm") 
+    %td.input-group
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw 

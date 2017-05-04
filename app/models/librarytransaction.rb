@@ -26,7 +26,7 @@ class Librarytransaction < ActiveRecord::Base
   #scope :overdue,   lambda{where("returnduedate < ? AND returneddate IS ?", 1.day.ago, nil)}
   ##scope :overdue, lambda { |time| { :conditions => ["returnduedate < ? AND returneddate !=?", Time.now, nil] } }
   scope :overdue, lambda{where("returneddate > returnduedate")}
-  
+   
   FILTERS = [
     #{:scope => "all",        :label => "Semua transaksi"},   #All 
     {:scope => "borrowed",   :label => "Sedang dipinjam"},    #Borrowed
@@ -36,9 +36,28 @@ class Librarytransaction < ActiveRecord::Base
   
   #validates :accession_id , presence: true
   #validates :checkoutdate, :returnduedate, presence: true
-  validates :accession_id, inclusion: {in: Accession.where('id NOT IN(?)', Librarytransaction.borrowed.pluck(:accession_id)).pluck(:id)+Accession.existing_reservations}, :unless => :returning_or_extending_or_loan_of_reserve
+  validates :accession_id, inclusion: {in: Accession.where('id NOT IN(?)', Librarytransaction.borrowed.pluck(:accession_id).compact-[""]).pluck(:id)+Accession.existing_reservations}, :unless => :returning_or_extending_or_loan_of_reserve
   validate :validate_due_date_before_checkout_date
 
+  #scope transaction records for marine docs vs books - 4May2017
+  #usage - controller
+  def self.marine_docs_transactions
+    a=[]
+    Librarytransaction.all.each{ |lib| a << lib.id unless lib.digital_document.blank?}
+    where(id: a)
+  end
+   
+  def self.books_transactions
+    a=[]
+    Librarytransaction.all.each{ |lib| a << lib.id if lib.digital_document.blank?}
+    where(id: a)
+  end
+  
+  #usage - /repositories/index2, /repositorysearches/digital_library/_show, model/repository - 4May2017
+  def self.marine_loaned_serial
+    Librarytransaction.marine_docs_transactions.where(returned: [false, nil]).map(&:digital_document)
+  end
+  
   #shall record reserver becoming borrower
    def reservations=(value)
      data[:reservations] = value
@@ -47,27 +66,56 @@ class Librarytransaction < ActiveRecord::Base
    def reservations
      data[:reservations]
    end
+   
+   #loan for digital library? 3May2017
+   def digital_document=(value)
+     data[:digital_document] = value
+   end
+   
+   def digital_document
+     data[:digital_document]
+   end
+   
+   def loaner=(value)
+     data[:loaner] = value
+   end
+   
+   def loaner
+     data[:loaner]
+   end
+   
+   def reference=(value)
+     data[:reference]=value
+   end
+   
+   def reference
+     data[:reference]
+   end
   
   #check valid accession_id only for new loan (excluded reserved one)
   def returning_or_extending_or_loan_of_reserve
-    returned==true || extended==true || !reservations.blank? #==false #check against successful reservations (reservations of librarytransaction) #accession.reservations.blank==false
+    !digital_document.blank? || returned==true || extended==true || !reservations.blank? #==false #check against successful reservations (reservations of librarytransaction) #accession.reservations.blank==false
   end
   
   def update_book_status
-    acc_to_update=Accession.find(accession_id)
-    if returned==true
-      acc_to_update.status=1 #available
-      unless acc_to_update.reservations.blank?
-        acc_to_update.activate_date=returneddate
+    if digital_document.blank? && accession_id!=nil
+      
+      acc_to_update=Accession.find(accession_id)
+      if returned==true
+        acc_to_update.status=1 #available
+        unless acc_to_update.reservations.blank?
+          acc_to_update.activate_date=returneddate
+        end
+      else
+        acc_to_update.status=2 #on loan
       end
-    else
-      acc_to_update.status=2 #on loan
+      acc_to_update.save!
+    
     end
-    acc_to_update.save!
   end
   
   def remove_reservation_fr_accs
-    unless reservations.blank?
+    unless reservations.blank? 
       acc_to_update=accession#Accession.find(accession_id)
       ab=Hash.new
       acc_to_update.reservations.values.each_with_index do |x, index|
@@ -82,9 +130,11 @@ class Librarytransaction < ActiveRecord::Base
   end
   
   def update_book_status2
-    acc_to_update=Accession.find(accession_id)
-    acc_to_update.status=1 #available
-    acc_to_update.save!
+    if digital_document.blank? && accession_id!=nil
+      acc_to_update=Accession.find(accession_id)
+      acc_to_update.status=1 #available
+      acc_to_update.save!
+    end
   end
   
   #define scope
@@ -108,9 +158,51 @@ class Librarytransaction < ActiveRecord::Base
     end
   end
   
+  #digital library part - start - 4May2017 - usage - partial: loan_search
+  def self.document_vessel_search(query)
+    ids=[]
+    repo_codes=[]
+    Repository.digital_library.each{ |repo| repo_codes << repo.code if repo.vessel.downcase.include?(query.downcase)}
+    Librarytransaction.all.each{|x| ids << x.id if repo_codes.include?(x.digital_document)}
+    where(id: ids)
+  end
+    
+  def self.document_title_search(query)
+    ids=[]
+    repo_codes=Repository.digital_library.where('title ILIKE (?)', "%#{query}%").map(&:code)
+    Librarytransaction.all.each{|x| ids << x.id if repo_codes.include?(x.digital_document)}
+    where(id: ids)
+  end
+  
+  def self.document_ref_serial_search(query)
+    ids=[]
+    repo_codes=[]
+    Repository.digital_library.each{ |repo| repo_codes << repo.code if repo.refno.downcase.include?(query.downcase) || repo.code.include?(query) }
+    Librarytransaction.all.each{|x| ids << x.id if repo_codes.include?(x.digital_document)}
+    where(id: ids)
+  end
+  
+  def self.document_loaner_search(query)
+    ids=[]
+    loaner_ids=Visitor.where('name ILIKE (?)', "%#{query}%").pluck(:id)
+    Librarytransaction.all.each{|x| ids << x.id if loaner_ids.include?(x.loaner.to_i)}
+    where(id: ids)
+  end
+  
+  def self.extended_search(query)
+    if query=='1'
+      where(extended: true)
+    elsif query=='2'
+      where(extended: [nil, false])
+    else
+      where(extended: [true, nil, false])
+    end
+  end
+  #digital library part - end - 4May2017
+  
   #whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-    [:borrower_search, :callno_search, :borrowed_overdue_search]
+    [:borrower_search, :callno_search, :borrowed_overdue_search, :document_title_search, :document_ref_serial_search, :document_loaner_search, :document_vessel_search, :extended_search]
   end
   
   #return due books fr manager pg
@@ -132,9 +224,10 @@ class Librarytransaction < ActiveRecord::Base
       self.checkoutdate=Date.today
     end
     if returnduedate.blank?
+      #kskbjb
       if ru_staff==true
         self.returnduedate=Date.today+21.days
-      else
+      elsif ru_staff==false
         self.returnduedate=Date.today+14.days
       end
     end

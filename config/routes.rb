@@ -280,6 +280,8 @@ Ogma::Application.routes.draw do
   resources :repositories do
     member do
       get :download
+      get :loan
+      post :loan
     end
     collection do
       get :index2
@@ -473,6 +475,8 @@ Ogma::Application.routes.draw do
       member do
         get :extending
         get :returning
+        get :document_returning
+        get :document_extending
       end
       collection do
         get :check_status
@@ -488,6 +492,7 @@ Ogma::Application.routes.draw do
         post :analysis_statistic
         get :analysis_statistic_main
 	get :latereturn_report
+	get :repository_loan
       end
     end
     resources :books do

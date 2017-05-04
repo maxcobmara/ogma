@@ -30,7 +30,7 @@ authorization do
      if_attribute :id => is {user.college_id}
    end
    has_permission_on :campus_pages, :to =>[:manage, :page_list, :flexible]
-   has_permission_on :repositories, :to => [:manage, :download, :repository_list, :repository_list2, :index2, :new2]
+   has_permission_on :repositories, :to => [:manage, :download, :repository_list, :repository_list2, :index2, :new2, :loan]
    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
    has_permission_on :staff_mentors, :to => :manage
     
@@ -914,7 +914,7 @@ authorization do
   role :librarian do
     has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import, :check_availability, :stock_listing, :book_summary]
     has_permission_on :library_accessions, :to =>[:read, :reservation, :update, :reservation_list]
-    has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext]
+    has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :document_extending, :document_returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :repository_loan]
     has_permission_on :students, :to => [:read, :borang_maklumat_pelajar, :student_list]
     has_permission_on :equery_report_studentsearches, :to => [:new, :create, :show]
     has_permission_on :campus_pages, :to => :update do
@@ -922,6 +922,8 @@ authorization do
     end
     has_permission_on :equery_report_booksearches, :to => [:new, :create, :show]
     has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
+    ##additional roles for librarian --> making 'loan' for digital library (marine documentation) - 4May2017
+    has_permission_on :repositories, :to => [:manage, :download, :repository_list, :repository_list2, :index2, :new2, :loan]
   end
 
   #Group Student --------------------------------------------------------------------------------
@@ -1933,15 +1935,15 @@ authorization do
   #29-OK, extend, return completed
   #29 - 3/4 OK (Admin/Viewer/User)
   role :library_transactions_module_admin do
-    has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext] 
+    has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :document_extending, :document_returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :repository_loan] 
     has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
   end
   role :library_transactions_module_viewer do
-    has_permission_on :library_librarytransactions, :to => [:read, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext] 
+    has_permission_on :library_librarytransactions, :to => [:read, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :repository_loan] 
     has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
   end
   role :library_transactions_module_user do
-    has_permission_on :library_librarytransactions, :to => [:read, :update, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext]
+    has_permission_on :library_librarytransactions, :to => [:read, :update, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :repository_loan]
     has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - lbrary[0].disabled=true as the only owner of this module requires 'Librarian' role

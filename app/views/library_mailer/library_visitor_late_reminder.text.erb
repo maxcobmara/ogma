@@ -1,0 +1,16 @@
+You have late library marine documents pending return.
+
+<% @transactions.each_with_index do |transaction, ind| %>
+  <% repo_id=0 %>
+  <% Repository.digital_library.each{|u|repo_id=u.id if u.code==transaction.digital_document} %>
+  <%=ind+1%>) <%=document_title=Repository.find(repo_id).title %>    (Due date : <%=transaction.returnduedate.strftime('%d-%m-%Y')%>)
+<% end %>
+
+Please return as soon as possible.
+Thank You
+
+
+
+	
+	
+	

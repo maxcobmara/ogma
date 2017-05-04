@@ -144,6 +144,10 @@ class RepositoriesController < ApplicationController
       end
     end
   end
+  
+  def loan 
+    @librarytransaction=Librarytransaction.new
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -577,6 +577,7 @@ en:
   checked: Checked
   not_checked: Not Checked
   view: View
+  column: Column
   edit_checked: Edit Checked Records
   newrecord_type: Record Type
   single: Single Record
@@ -610,6 +611,7 @@ en:
   error: errors
   not_applicable: Not applicable
   none: None
+  proceed: Proceed
 
   actions:
     new: New
@@ -4512,7 +4514,7 @@ en:
     remark: Please refer to related modules for access to produce PDF format via online data entry.
     
     title2: Digital Document #Repository
-    list2: Digital Library #Digital Document Repository List
+    list2: Marine Documentation #Digital Library #Digital Document Repository List
     new2: New Digital Document
     edit2: Edit Digital Document
     details2: Digital Document Details
@@ -4524,6 +4526,7 @@ en:
     total_pages: Pages
     copies: Copies
     location: Location
+    marine_documentation: Marine Documentation #Engineering #Vessel
     book: BR #Book
     drawing: Drawing
     test_trials: Tests & Trials
@@ -4543,10 +4546,22 @@ en:
     restricted: Restricted
     confidential: Confidential
     secret: Secret
-    remark: Remark
-    available: PDF file available
-    not_available: PDF file not available
+    legend: Legend
+    e_document: E-document
+    available: Digital file available. Click to display.
+    not_available: Digital file not available
     serial_no: Serial no
+    physical_loaned: Document (hardcopy) released for loaned
+    physical: Hardcopy
+    loan_title: Document Loan (hardcopy)
+    loan_form: Loan Form
+    loan: Loan
+    loan_allowed: Loan allowed. Click to process loan.
+    loan_prohibited: Loan prohibited
+    on_loan: On loan
+    available2: Available
+    loaner: Borrower
+    reference: Loan approval reference
     
   conversation:
     local_messaging: Local Messaging
@@ -5007,7 +5022,7 @@ en:
       #leaves_fields_blank_all_corresponding2: " 'blank'/unselected and click 'Search' to display ALL corresponding additions/deductions records."
     repository:
       main_page: "MS:ISO Document Repository List"
-      main_page2: Digital Document Repository List
+      main_page2: Digital Library #Digital Document Repository List
       title: Document Repository
       title2: Digital Document
       search: Repository Search

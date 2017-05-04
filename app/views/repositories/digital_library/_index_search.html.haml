@@ -10,8 +10,10 @@
       = f.text_field :title_cont, size: 2,  :class => "form-control", :placeholder =>  (t 'repositories.document_title')
     %td= f.text_field :refno_search, size: 2,  :class => "form-control", :placeholder =>  (t 'repositories.refno')
     %td= f.text_field :publish_date_search, size: 2,  :class => "form-control date_picker_reverse", :placeholder =>  (t 'repositories.publish_date')
-    %td= f.text_field :location_search, size: 2,  :class => "form-control", :placeholder =>  (t 'repositories.location')
-    %td= f.select :classification_search, Repository.document_classification,{ include_blank: (t 'select')+" "+(t 'repositories.classification')},{ :class => "selectpicker","data-width" =>"fit", "data-style" => "btn-sm"}
+    /%td= f.text_field :location_search, size: 2,  :class => "form-control", :placeholder =>  (t 'repositories.location')
+    %td{colspan: 2}
+      = f.select :classification_search, Repository.document_classification,{ include_blank: (t 'select')+" "+(t 'repositories.classification')},{ :class => "selectpicker","data-width" =>"fit", "data-style" => "btn-sm"}
+      =f.select :status_search, [[(t 'repositories.available2'), "1"], [(t 'repositories.on_loan'), "2"]], { include_blank: (t 'select')+" Status"},{ :class => "selectpicker","data-width" =>"fit", "data-style" => "btn-sm"}
     %td
       .input-group
         %span.input-group-btn

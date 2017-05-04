@@ -1,0 +1,82 @@
+- model_class = Librarytransaction
+.page-header
+  %h1= t('library.transaction.title')+" (#{(t 'repositories.marine_documentation')})" #, :default => model_class.model_name.human.pluralize
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("th-list", text: (t 'repositories.list2'))), index2_repositories_path
+    /- permitted_to? :manage, :library_librarytransactions do
+    /  %li= link_to content_tag(:li, fa_icon("gear", text: (t 'library.transaction.manager'))), manager_library_librarytransactions_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'search'))), "#", class: "index_search_bar"
+    %li.dropdown
+      /%a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+      /  = fa_icon "print", text: (t 'actions.print')
+      /  %b.caret
+      /%ul.dropdown-menu
+      /  - Librarytransaction.overdue.group_by{|x|x.returnduedate.year}.each do |reportyear, transactions|
+      /    %li= link_to  (fa_icon "file-pdf-o", text: (t 'library.transaction.latereturn_report')+": "+reportyear.to_s),  latereturn_report_library_librarytransactions_path(report_year: reportyear, format: 'pdf')
+
+= render 'shared/flashes'
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th{width: '5%'} No
+        %th{width: '9%'}=t 'repositories.vessel'
+        %th{width: '20%'}=t 'repositories.document_title'
+        %th{width: '16%'}=t 'repositories.refno2'
+        %th{width: '20%'}= t 'library.transaction.borrower'
+        %th.date{width: '8%'}= t 'library.transaction.returnduedate'
+        %th.centre{width: '8%'}= t 'library.transaction.extend'
+        %th.date{width: '8%'}= t 'library.transaction.return'
+        %th.action{width: '6%'}= fa_icon "cogs"
+    
+    %tbody
+      = render "loan_search"
+      - nos=0
+      - @libtran_days.each do |checkoutdate, librarytransactions|
+        %tr
+          %td.group{colspan: '12'}= checkoutdate.strftime("%A, %v")
+        - for librarytransaction in librarytransactions
+          - repoid=0
+          - Repository.digital_library.each{|x| repoid=x.id if x.code==librarytransaction.digital_document}
+          - repo=Repository.find(repoid)
+          %tr
+            %td=nos+=1
+            %td=repo.vessel
+            %td=repo.title
+            %td
+              - if repo.refno.blank?
+                .text-grey=(t 'repositories.serial_no')+": "+repo.code 
+              - else
+                =repo.refno
+            %td=librarytransaction.loaner.blank? ? "" : Visitor.find(librarytransaction.loaner).name
+            %td.date
+              - if librarytransaction.returnduedate < Date.today.yesterday && librarytransaction.returneddate.blank?
+                %span{style: "color:red;"}= librarytransaction.returnduedate.strftime('%d %b %Y')
+              - else
+                %span= librarytransaction.returnduedate.strftime('%d %b %Y')
+            %td.centre
+              = fa_icon "check" if librarytransaction.extended?
+              - if librarytransaction.extended != true && librarytransaction.returned != true && librarytransaction.returnduedate <= Date.today.yesterday
+                %div.btn.btn-default{:type => "button", "data-toggle" => "tooltip", title: "Extend"}
+                  = link_to content_tag(:li, fa_icon("clock-o")), document_extending_library_librarytransaction_path(librarytransaction)
+                  
+            %td.date
+              = librarytransaction.returneddate.try(:strftime, '%d-%m-%Y')
+              - if librarytransaction.returned != true
+                %div.btn.btn-default{:type => "button", "data-toggle" => "tooltip", title: "Return"}
+                  = link_to content_tag(:li, fa_icon("inbox")), document_returning_library_librarytransaction_path(librarytransaction)
+            //= permitted_to? :manage, :librarytransactions do %>
+            %td.centre=link_to content_tag(:i, "", class: "fa fa-trash-o"), library_librarytransaction_path(:id => librarytransaction, :reportlost => true), :method => 'delete',:data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }
+
+                    
+
+                  
+                  
+
+
+.row
+  .centre= paginate @paginated_transaction

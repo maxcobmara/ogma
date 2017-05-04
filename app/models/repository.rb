@@ -191,9 +191,22 @@ class Repository < ActiveRecord::Base
     where(id: ids)
   end
 
+  def self.status_search(query)
+    ids=[]
+    loaned=Librarytransaction.marine_loaned_serial
+    Repository.digital_library.each do |repo| 
+      if query=="1"                                                               #available
+        ids << repo.id  if loaned.include?(repo.code)==false
+      elsif query=="2"                                                          #on loan
+       ids << repo.id  if loaned.include?(repo.code)==true
+      end
+    end
+    where(id: ids)
+  end
+
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-    [:vessel_search, :refno_search, :publish_date_search, :location_search, :document_type_search, :document_subtype_search, :classification_search]
+    [:vessel_search, :refno_search, :publish_date_search, :location_search, :document_type_search, :document_subtype_search, :classification_search, :status_search]
   end  
   
   def self.document

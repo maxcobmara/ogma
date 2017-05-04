@@ -12,4 +12,10 @@ class LibraryMailer < ActionMailer::Base
     @transactions = transactions
     mail(:to => email, subject: "Late Return of Library Books")
   end
+  
+  def library_visitor_late_reminder(email, transactions)
+    @transactions = transactions
+    mail(:to => email, subject: "Late Return of Library Marine Documentation")
+  end
+  
 end

@@ -2,8 +2,8 @@ class Library::LibrarytransactionsController < ApplicationController
 
   before_action :set_librarytransaction, only: [:show, :edit, :update, :destroy]
   filter_access_to :manager, :require => :manage,  :attribute_check => false
-  filter_access_to :show, :edit, :update, :destroy, :late_books, :extending, :returning, :attribute_check => true
-  filter_access_to :index, :new, :create, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext,:attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :late_books, :extending, :document_extending, :returning, :document_returning, :attribute_check => true
+  filter_access_to :index, :new, :create, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :repository_loan, :attribute_check => false
 
   def index
 #     @filters = Librarytransaction::FILTERS
@@ -14,16 +14,24 @@ class Library::LibrarytransactionsController < ApplicationController
 #     end
     #@librarytransactions=Librarytransaction.borrowed
     @search=Librarytransaction.borrowed.search(params[:q])
-    @librarytransactions=@search.result
-    @paginated_transaction = @librarytransactions.order(checkoutdate: :desc).page(params[:page]).per(15)
+    @librarytransactions=@search.result 
+    @librarytransactions = @librarytransactions.where(id: Librarytransaction.books_transactions).order(checkoutdate: :desc)
+    @paginated_transaction=@librarytransactions.page(params[:page]).per(15)
     @libtran_days = @paginated_transaction.group_by {|t| t.checkoutdate}
   end
-
+  
+  def repository_loan
+    @search=Librarytransaction.borrowed.search(params[:q])
+    @librarytransactions=@search.result
+    @librarytransactions= @librarytransactions.where(id: Librarytransaction.marine_docs_transactions).order(checkoutdate: :desc)
+    @paginated_transaction=@librarytransactions.page(params[:page]).per(15)
+    @libtran_days = @paginated_transaction.group_by {|t| t.checkoutdate}
+  end
 
   # GET /librarytransactions/new
   # GET /librarytransactions/new.xml
   def new
-    @checked_out = Librarytransaction.where("returneddate IS ?", nil).pluck(:accession_id)
+    @checked_out = Librarytransaction.where("returneddate IS ?", nil).pluck(:accession_id).compact-[""]
 
     @librarytransaction = Librarytransaction.new
     if @@selected_staff #|| params[:persontype]=='1'
@@ -62,7 +70,12 @@ class Library::LibrarytransactionsController < ApplicationController
   def create
     @librarytransaction = Librarytransaction.create!(librarytransaction_params)
     respond_to do |format|
-      format.html { redirect_to library_librarytransactions_path, notice: (t 'library.reservation.loan_via_reservation') }
+      unless @librarytransaction.digital_document.blank?
+	format.html { redirect_to repository_loan_library_librarytransactions_path, notice: t('repositories.physical_loaned') }
+      else
+	format.html { redirect_to library_librarytransactions_path, notice: t('library.reservation.loan_via_reservation') }
+      end
+      
       if [nil, false].include?(@librarytransaction.reportlost)
         format.js { render :create }
       elsif @librarytransaction.reportlost==true
@@ -72,9 +85,14 @@ class Library::LibrarytransactionsController < ApplicationController
   end
   
   def destroy
+    @a=Librarytransaction.find(params[:id]).digital_document
     @librarytransaction=Librarytransaction.destroy(params[:id])
     respond_to do |format|
-      format.html { redirect_to library_librarytransactions_path } #manager_library_librarytransactions_path
+      if @a.blank?
+        format.html { redirect_to library_librarytransactions_path } #manager_library_librarytransactions_path
+      else
+        format.html { redirect_to repository_loan_library_librarytransactions_path }
+      end
       format.js
     end
   end
@@ -83,7 +101,11 @@ class Library::LibrarytransactionsController < ApplicationController
     respond_to do |format|
       if @librarytransaction.update(librarytransaction_params)
         #format.html { redirect_to library_librarytransaction_path(@librarytransaction), notice: (t 'location.title')+(t 'actions.updated')  }
-        format.html {redirect_to library_librarytransactions_path}
+        unless @librarytransaction.digital_document.blank? && @librarytransaction.accession_id!=nil
+          format.html { redirect_to repository_loan_library_librarytransactions_path}
+        else
+          format.html {redirect_to library_librarytransactions_path}
+        end
         format.json { head :no_content }
         format.js
       else
@@ -137,7 +159,7 @@ class Library::LibrarytransactionsController < ApplicationController
 
   def check_status
     @librarytransactions = []
-    @checked_out = Librarytransaction.where("returneddate IS ?", nil).pluck(:accession_id)
+    @checked_out = Librarytransaction.where("returneddate IS ?", nil).pluck(:accession_id).compact-[""]
 
     if params[:search].present? && params[:search][:staff_name].present?
       @staff_name = params[:search][:staff_name]
@@ -183,13 +205,22 @@ class Library::LibrarytransactionsController < ApplicationController
       AND lt.returnduedate < current_date
       GROUP BY name, s.coemail, b.title;")
 
+    @visitor_late_marine_documents=Librarytransaction.marine_docs_transactions.where(returned: [false, nil]).where('returnduedate <?', Date.today.yesterday)
   end
 
   def extending
     @librarytransaction = Librarytransaction.find(params[:id])
   end
 
+  def document_extending
+    @librarytransaction = Librarytransaction.find(params[:id])
+  end
+  
   def returning
+    @librarytransaction = Librarytransaction.find(params[:id])
+  end
+  
+  def document_returning
     @librarytransaction = Librarytransaction.find(params[:id])
   end
   
@@ -315,6 +346,9 @@ class Library::LibrarytransactionsController < ApplicationController
     def librarytransaction_params
       params.require(:librarytransaction).permit(:accession_id, :ru_staff, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession, :accession_no, :accession_acc_book, :libcheckout_by, :returned, :returneddate, :extended, :fine, :finepay, :finepaydate, :reportlost, :college_id, {:data => []}).tap do |whitelisted|
         whitelisted[:reservations]=params[:librarytransaction][:reservations]
+	whitelisted[:digital_document]=params[:librarytransaction][:digital_document]
+	whitelisted[:loaner]=params[:librarytransaction][:loaner]
+	whitelisted[:reference]=params[:librarytransaction][:reference]
       end# <-- insert editable fields here inside here e.g (:date, :name)
     end
 

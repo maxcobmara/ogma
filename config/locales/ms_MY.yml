@@ -556,6 +556,7 @@ ms_MY:
   checked: Disemak
   not_checked: Belum Disemak
   view: Papar
+  column: Lajur
   edit_checked: Sunting Rekod Dipilih
   newrecord_type: Jenis Rekod
   single: Rekod Individu
@@ -589,6 +590,7 @@ ms_MY:
   error: ralat
   not_applicable: Tidak berkaitan
   none: Tiada
+  proceed: Teruskan
  
   actions:
     new: Baru
@@ -4429,7 +4431,7 @@ ms_MY:
     remark: Sila rujuk modul berkaitan bagi akses ke proses / borang PDF yang diisi secara atas talian. 
     
     title2: Dokumen Digital #Repositori Dokumen Digital
-    list2: Perpustakaan Digital #Senarai Repositori (Dokumen Digital)
+    list2: Dokumentasi Marin #Perpustakaan Digital #Senarai Repositori (Dokumen Digital)
     new2: Dokumen Digital Baru
     edit2: Sunting Dokumen Digital
     details2: Butiran Dokumen Digital
@@ -4441,6 +4443,7 @@ ms_MY:
     total_pages: Muka surat
     copies: Salinan
     location: Lokasi
+    marine_documentation: Dokumentasi Marin #Kejuruteraan #Perkapalan
     book: BR #Buku
     drawing: Lukisan Kejuruteraan
     test_trials: Pengujian & Percubaan
@@ -4460,10 +4463,22 @@ ms_MY:
     restricted: Terhad
     confidential: Sulit
     secret: Rahsia
-    remark: Catatan
-    available: Fail PDF ada
-    not_available: Fail PDF tiada
+    legend: Petunjuk
+    e_document: E-dokumen
+    available: Fail digital ada. Klik untuk paparan.
+    not_available: Fail digital tiada
     serial_no: No siri
+    physical_loaned: Dokumen fizikal diberi kebenaran untuk dibawa keluar bagi tujuan peminjaman.
+    physical: Salinan fizikal
+    loan_title: Peminjaman Dokumen (salinan fizikal)
+    loan_form: Borang Pinjaman
+    loan: Pinjam
+    loan_allowed: Peminjaman dibenarkan. Klik untuk meminjam.
+    loan_prohibited: Peminjaman tidak dibenarkan
+    on_loan: Sedang dipinjam
+    available2: Ada
+    loaner: Peminjam
+    reference: Rujukan kelulusan pinjaman
 
   conversation:
     local_messaging: Pemesejan Dalaman
@@ -4922,14 +4937,14 @@ ms_MY:
       #leaves_fields_blank_all_corresponding2: " dan klik 'Cari' untuk papar SEMUA butiran penerimaan/pengeluaran yang sepadan."
     repository:
       main_page: Senarai Repositori (Dokumen MS:ISO)
-      main_page2: Senarai Repositori (Dokumen Digital)
+      main_page2: Dokumentasi Marin #Perpustakaan Digital #Senarai Repositori (Dokumen Digital)
       title: Repositori Dokumen
-      title2: Dokumen Digital
+      title2: Dokumen Marin #Digital
       search: "Carian Lanjut Dokumen MS:ISO"
-      search2: Carian Lanjut Dokumen Digital
+      search2: Carian Lanjut Dokumen Marin #Digital
       document_title: Tajuk Dokumen
-      list_all: Senarai Penuh Dokumen Digital
-      list: Senarai Dokumen Digital
+      list_all: Senarai Penuh Dokumen Marin #Digital
+      list: Senarai Dokumen Marin #Digital
       total: Jumlah dokumen
       method: Kaedah
       remark1: "Catatan : Masukkan dan <u>PILIH</u> <b>Tajuk Dokumen</b> ATAU <b>No Rujukan</b> berkenaan dan klik butang CARI."
