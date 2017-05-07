@@ -157,9 +157,33 @@ class Repository < ActiveRecord::Base
   
   #Ransack - may also use 
   #define scope
+#   def self.vessel_search(query)
+#     ids=[]
+#     Repository.digital_library.each{ |repo|  ids << repo.id if repo.vessel.downcase.include?(query.downcase)}
+#     where(id: ids)
+#   end
+  
   def self.vessel_search(query)
     ids=[]
-    Repository.digital_library.each{ |repo|  ids << repo.id if repo.vessel.downcase.include?(query.downcase)}
+    Repository.digital_library.each do |repo|
+      unless repo.vessel.blank?
+        if repo.render_vessel.downcase.include?(query.downcase)
+          ids << repo.id
+        end
+      else
+        Repository.vessel_list2.each do |vesselclass, vessels| 
+	  ##
+	  if repo.render_vessel_class==vesselclass
+	    vessels.each do |vessel|
+	      if vessel.downcase.include?(query.downcase) && 
+	        ids << repo.id
+	      end
+	    end
+	  end
+	  ##
+        end
+      end
+    end
     where(id: ids)
   end
   
@@ -259,6 +283,16 @@ class Repository < ActiveRecord::Base
      ['Patrol Vessel', [[I18n.t('select'),''], ['KD Pahang', '5'], ['KD Kelantan', '6'], ['KD Selangor', '7'], ['KD Terengganu', '8'],['KD Kedah', '9'], ['KD Perak', '10']]], 
      ['Multi Purpose Support Ship', [[I18n.t('select'),''], ['KD Mahawangsa', '11']]], 
      ['Others', [[I18n.t('select'),''], ['KLD Tunas Samudera', '12'],['KD Perantau', '13']]]
+     ]
+  end
+  
+  def self.vessel_list2
+    [
+     ['Frigate', ['KD Jebat', 'KD Lekiu']], 
+     ['Corvette',['KD Kasturi', 'KD Lekir']], 
+     ['Patrol Vessel', ['KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah', 'KD Perak']], 
+     ['Multi Purpose Support Ship', ['KD Mahawangsa']], 
+     ['Others', ['KLD Tunas Samudera', 'KD Perantau']]
      ]
   end
   

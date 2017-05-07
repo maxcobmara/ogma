@@ -4530,7 +4530,7 @@ en:
     copies: Copies
     location: Location
     marine_documentation: Marine Documentation #Engineering #Vessel
-    book: BR #Book
+    book: BRs #Book
     drawing: Drawing
     test_trials: Tests & Trials
     others: Others

@@ -15,24 +15,32 @@ class RepositoriesController < ApplicationController
     @access=[staff_instructor_appraisals_path, staff_average_instructors_path, exam_evaluate_courses_path, exam_evaluate_courses_path, student_tenants_path, students_path, asset_loans_path, training_weeklytimetables_path]
   end
   
-  def index2
-    @search=Repository.digital_library.search(params[:q])
-    @repositories=@search.result.sort_by{|x|[x.vessel_class, x.document_type, x.document_subtype]}
-    @repositories=Kaminari.paginate_array(@repositories).page(params[:page]).per(20)  #page(params[:page]||1)  
-  end
+#   def index2_old
+#     @search=Repository.digital_library.search(params[:q])
+#     @repositories=@search.result.sort_by{|x|[x.vessel_class, x.document_type, x.document_subtype]}
+#     @repositories=Kaminari.paginate_array(@repositories).page(params[:page]).per(20)  #page(params[:page]||1)  
+#   end
   
-  def index3
+  def index2
     @search=Repository.digital_library.search(params[:q])
     repositories=@search.result
     
-    vessel_class_name=[ ['KD Jebat', 'KD Lekiu'], ['KD Kasturi', 'KD Lekir'], ['KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah','KD Perak'],['KD Mahawangsa'],['KLD Tunas Samudera', 'KD Perantau']]
+    unless @search.vessel_search.blank?
+      vessel_class_name=[@search.vessel_search]
+    else
+      vessel_class_name=[ ['KD Jebat', 'KD Lekiu'], ['KD Kasturi', 'KD Lekir'], ['KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah','KD Perak'],['KD Mahawangsa'],['KLD Tunas Samudera', 'KD Perantau']]
+    end
     
     @repos=[]
     @rep=[]
     @per_vessel=Hash.new
     repositories.group_by{|x|x.vessel_class}.sort.each do |vessel_class, mrepositories|
-      current_vessel_list=vessel_class_name[vessel_class.to_i-1]
-      per_vessel=Hash[current_vessel_list.map{|x|[x, Hash["master" => [], "specific" =>[] ]]}]        #per_vessel== list of vessel of each VESSEL C {}LASS
+      unless @search.vessel_search.blank?
+        current_vessel_list=vessel_class_name
+      else
+        current_vessel_list=vessel_class_name[vessel_class.to_i-1]
+      end
+      per_vessel=Hash[current_vessel_list.map{|x|[x, Hash["master" => [], "specific" =>[] ]]}]        #per_vessel== list of vessel of each VESSEL CLASS
       for a_vessel in current_vessel_list
         spec_arr=[]
         master_arr=[]
@@ -51,7 +59,7 @@ class RepositoriesController < ApplicationController
       per_vessel.each do |one_vessel, repo_by_cls|
         repo_by_cls.each do |repo_cls|
           @rep << repo_cls[1] 
-          @repos +=Repository.where(id: repo_cls[1])
+          @repos +=Repository.where(id: repo_cls[1]).sort_by{|x|[x.document_type, x.document_subtype]} #sort first
         end
       end
     end
