@@ -1,4 +1,6 @@
-You have late library marine documents pending return.
+To : <%=Visitor.find(@transactions.first.loaner.to_i).visitor_with_title %>
+
+You have late library technical documents pending return.
 
 <% @transactions.each_with_index do |transaction, ind| %>
   <% repo_id=0 %>
@@ -8,9 +10,3 @@ You have late library marine documents pending return.
 
 Please return as soon as possible.
 Thank You
-
-
-
-	
-	
-	

@@ -285,6 +285,7 @@ Ogma::Application.routes.draw do
     end
     collection do
       get :index2
+      get :index3
       get :new2
       post :new2
       get :repository_list

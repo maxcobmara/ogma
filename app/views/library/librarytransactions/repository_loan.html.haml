@@ -48,11 +48,10 @@
             %td=repo.vessel
             %td=repo.title
             %td
-              - if repo.refno.blank?
-                .text-grey=(t 'repositories.serial_no')+": "+repo.code 
-              - else
-                =repo.refno
-            %td=librarytransaction.loaner.blank? ? "" : Visitor.find(librarytransaction.loaner).name
+              =repo.refno
+              %i
+                .text-grey="("+(t 'repositories.serial_no')+": "+repo.code+")"
+            %td=librarytransaction.loaner.blank? ? "" : Visitor.find(librarytransaction.loaner).visitor_with_title
             %td.date
               - if librarytransaction.returnduedate < Date.today.yesterday && librarytransaction.returneddate.blank?
                 %span{style: "color:red;"}= librarytransaction.returnduedate.strftime('%d %b %Y')

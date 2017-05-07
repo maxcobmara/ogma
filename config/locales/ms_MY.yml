@@ -381,6 +381,7 @@ ms_MY:
         document_type: Jenis Dokumen
         document_subtype: Dokumentasi Untuk
         publish_date: Tarikh Terbitan
+        vessel_class: Kelas Kapal
       bookingfacility:
         location_id: Kemudahan Ditempah
         staff_id: Ditempah Oleh
@@ -3140,11 +3141,13 @@ ms_MY:
       returnby: Pegawai Pemulangan Pinjaman 
       #duedate: Tarikh Harus Pulang
       returnduedate: Tarikh Luput
-      returning: Pemulangan Pinjaman
+      returning: Pemulangan Pinjaman Buku
+      document_returning: Pemulangan Pinjaman Dokumen Teknikal
       return: Pulang?
       extend: Sambung?
       extended: Disambung
-      extending: Sambung Pinjaman
+      extending: Sambung Pinjaman Buku
+      document_extending: Sambung Pinjaman Dokumen Teknikal
       extend_for: "Pinjaman dilanjutkan : "
       extension_remark: Sambungan pinjaman bagi staf adalah 21 hari, manakala bagi pelatih adalah 14 hari.
       extension_remark2: Sambungan pinjaman bagi staf adalah 30 hari, manakala bagi pelatih adalah 14 hari.
@@ -4431,10 +4434,10 @@ ms_MY:
     remark: Sila rujuk modul berkaitan bagi akses ke proses / borang PDF yang diisi secara atas talian. 
     
     title2: Dokumen Digital #Repositori Dokumen Digital
-    list2: Dokumentasi Marin #Perpustakaan Digital #Senarai Repositori (Dokumen Digital)
-    new2: Dokumen Digital Baru
-    edit2: Sunting Dokumen Digital
-    details2: Butiran Dokumen Digital
+    list2: Dokumentasi Teknikal #Dokumentasi Marin #Perpustakaan Digital #Senarai Repositori (Dokumen Digital)
+    new2: Dokumen Teknikal Baru #Digital Baru
+    edit2: Sunting Dokumen Teknikal # Digital
+    details2: Butiran Dokumen Teknikal # Digital
     vessel: Nama Kapal
     document_type: Jenis Dokumen
     refno: No Rujukan
@@ -4459,7 +4462,7 @@ ms_MY:
     life_equipment: Sistem Peralatan Sokongan Hayat
     damage_safety: Sistem Kawalan Kerosakan / Keselamatan
     auxiliaries: Kelengkapan
-    classification: Pengelasan
+    classification: Pengelasan Had Akses
     restricted: Terhad
     confidential: Sulit
     secret: Rahsia
@@ -4479,6 +4482,13 @@ ms_MY:
     available2: Ada
     loaner: Peminjam
     reference: Rujukan kelulusan pinjaman
+    vessel_class: Kelas Kapal
+    vessel2: Kapal
+    ticker: "PILIH kotak semak dan pilih nama kapal bagi dokumen <b>spesifik</b> mengikut kapal, sebaliknya NYAHPILIH kotak semak untuk dokumen <b>utama</b>."
+    #ticker: "PILIH kotak semak kelas kapal (dokumen 'master'), atau NYAHPILIH untuk dokumen spesifik mengikut kapal."
+    master: "Dokumen 'master'"
+    specific: Dokumen Spesifik
+    continued_from: (sambungan dari laman sebelum ini)
 
   conversation:
     local_messaging: Pemesejan Dalaman
@@ -4937,14 +4947,14 @@ ms_MY:
       #leaves_fields_blank_all_corresponding2: " dan klik 'Cari' untuk papar SEMUA butiran penerimaan/pengeluaran yang sepadan."
     repository:
       main_page: Senarai Repositori (Dokumen MS:ISO)
-      main_page2: Dokumentasi Marin #Perpustakaan Digital #Senarai Repositori (Dokumen Digital)
+      main_page2: Dokumentasi Teknikal #Marin #Perpustakaan Digital #Senarai Repositori (Dokumen Digital)
       title: Repositori Dokumen
-      title2: Dokumen Marin #Digital
+      title2: Dokumentasi Teknikal #Dokumen Marin #Digital
       search: "Carian Lanjut Dokumen MS:ISO"
-      search2: Carian Lanjut Dokumen Marin #Digital
+      search2: Carian Lanjut Dokumen Teknikal #Marin #Digital
       document_title: Tajuk Dokumen
-      list_all: Senarai Penuh Dokumen Marin #Digital
-      list: Senarai Dokumen Marin #Digital
+      list_all: Senarai Penuh Dokumen Teknikal #Marin #Digital
+      list: Senarai Dokumen Teknikal #Marin #Digital
       total: Jumlah dokumen
       method: Kaedah
       remark1: "Catatan : Masukkan dan <u>PILIH</u> <b>Tajuk Dokumen</b> ATAU <b>No Rujukan</b> berkenaan dan klik butang CARI."

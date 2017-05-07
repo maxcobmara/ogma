@@ -1,6 +1,6 @@
 - model_class = Library
 .page-header
-  %h1= t 'library.transaction.returning'
+  %h1= t 'library.transaction.document_returning'
 
 = render 'shared/flashes'
 
@@ -59,9 +59,9 @@
     .row
       .form-group
         .col-md-2.col-md-offset-5
-          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), library_librarytransactions_path, :class => 'btn btn-default'
-        .col-md-2
-          .div{style: "margin-left:-40px;"}
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), repository_loan_library_librarytransactions_path, :class => 'btn btn-default'
+        .col-md-1
+          .div{style: "margin-left:-130px;"}
             = f.submit t('update'), class: "btn btn-primary"
 
 :javascript

@@ -924,6 +924,7 @@ authorization do
     has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
     ##additional roles for librarian --> making 'loan' for digital library (marine documentation) - 4May2017
     has_permission_on :repositories, :to => [:manage, :download, :repository_list, :repository_list2, :index2, :new2, :loan]
+    has_permission_on :campus_visitors, :to => :manage
   end
 
   #Group Student --------------------------------------------------------------------------------
@@ -995,6 +996,7 @@ authorization do
     has_permission_on :campus_location_damages, :to =>[:manage, :index_staff, :damage_report, :damage_report_staff]
     has_permission_on :student_tenants, :to => [:manage, :index_staff, :reports,:census_level, :room_map, :room_map2, :statistics, :return_key, :return_key2, :census, :tenant_report, :tenant_report_staff, :laporan_penginapan, :laporan_penginapan2]
     has_permission_on :campus_bookingfacilities, :to => [:index, :show, :update, :approval_facility, :booking_facility]
+    has_permission_on :campus_visitors, :to => :manage
   end
   role :warden do
     has_permission_on :campus_locations, :to => [:read, :kewpa7] #:core - NOTE - kewpa7 visible to all (sticked on wall)

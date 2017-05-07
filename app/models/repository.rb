@@ -14,10 +14,10 @@ class Repository < ActiveRecord::Base
   validates_attachment_content_type :uploaded, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif", "application/pdf"]
   
   validates :category, :title, :uploaded, :staff_id, presence: true, :if => :data_not_present?
-  validates :vessel, :document_type, :document_subtype, :title, :staff_id, presence: true, :if => :data_is_present?  #:publish_date,  :uploaded,
+  validates :document_type, :document_subtype, :title, :staff_id, :vessel_class, presence: true, :if => :data_is_present?  #:publish_date,  :uploaded,
   
   # NOTE - 20Apr2017 - workaround - to retrieve missing uploaded file when validation fails!  - start ####
-  attr_accessor :uploadcache
+  attr_accessor :uploadcache, :vessel_select, :ticker
   
   def set_upload_when_present
     unless uploadcache.blank?
@@ -147,6 +147,14 @@ class Repository < ActiveRecord::Base
     data[:code]
   end
   
+  def vessel_class=(value)
+    data[:vessel_class]=value
+  end
+  
+  def vessel_class
+    data[:vessel_class]
+  end
+  
   #Ransack - may also use 
   #define scope
   def self.vessel_search(query)
@@ -236,6 +244,45 @@ class Repository < ActiveRecord::Base
      ]
   end
   
+  def self.vessel_classes
+    [['Frigate', '1'],
+     ['Corvette', '2'],
+     ['Patrol Vessel', '3'],
+     ['Multi Purpose Support Ship', '4'],
+     ['Others', '5']]
+  end
+ 
+  def self.vessel_list
+    [
+     ['Frigate', [[I18n.t('select'),''], ['KD Jebat', '1'], ['KD Lekiu', '2']]], 
+     ['Corvette',[[I18n.t('select'),''], ['KD Kasturi', '3'], ['KD Lekir', '4']]], 
+     ['Patrol Vessel', [[I18n.t('select'),''], ['KD Pahang', '5'], ['KD Kelantan', '6'], ['KD Selangor', '7'], ['KD Terengganu', '8'],['KD Kedah', '9'], ['KD Perak', '10']]], 
+     ['Multi Purpose Support Ship', [[I18n.t('select'),''], ['KD Mahawangsa', '11']]], 
+     ['Others', [[I18n.t('select'),''], ['KLD Tunas Samudera', '12'],['KD Perantau', '13']]]
+     ]
+  end
+  
+#   def self.vessel_list
+#     [['KD Jebat', '1'], 
+#      ['KD Lekiu', '2'], 
+#      ['----------------', ''],
+#      ['KD Kasturi', '3'], 
+#      ['KD Lekir', '4'], 
+#      ['KD Pahang', '5'], 
+#      ['KD Kelantan', '6'], 
+#      ['KD Selangor', '7'], 
+#      ['KD Terengganu', '8'], 
+#      ['-----------------------', ''],
+#      ['KD Kedah', '9'], 
+#      ['KD Perak', '10'], 
+#      ['-------------------------', ''],
+#      ['KD Mahawangsa', '11'], 
+#      ['-------------------------', ''],
+#      ['KLD Tunas Samudera', '12'],
+#      ['KD Perantau', '13']
+#      ]
+#   end
+  
   def render_document
     (Repository.document.find_all{|disp, value| value == document_type }).map {|disp, value| disp}[0]
   end
@@ -248,6 +295,15 @@ class Repository < ActiveRecord::Base
     (Repository.document_classification.find_all{|disp, value|value==classification}).map {|disp, value| disp}[0]
   end
   
+  def render_vessel_class
+    (Repository.vessel_classes.find_all{|disp, value|value==vessel_class}).map {|disp, value| disp}[0]
+  end
+  
+  def render_vessel 
+    (Repository.vessel_list[(vessel_class.to_i)-1][1].find_all{|d,v|v==vessel}).map{|d,v|d}[0]
+    #(Repository.vessel_list.find_all {|disp, value| value==vessel}).map {|disp, value| disp}[0]
+  end
+    
   def self.doctype_per_vessel
     ab=[]
     Repository.digital_library.group_by(&:vessel).each do |k,v|

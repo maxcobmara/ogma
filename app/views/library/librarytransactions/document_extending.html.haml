@@ -1,6 +1,6 @@
 - model_class = Library
 .page-header
-  %h1= t 'library.transaction.extending'
+  %h1= t 'library.transaction.document_extending'
 
 = render 'shared/flashes'
 
@@ -54,7 +54,7 @@
     .row
       .form-group
         .col-md-1.col-md-offset-5
-          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), library_librarytransactions_path, :class => 'btn btn-default'
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), repository_loan_library_librarytransactions_path, :class => 'btn btn-default'
         .col-md-2
           .div{style: "margin-left:-10px;"}
             = f.submit t('library.transaction.extend'), class: "btn btn-primary"

@@ -17,8 +17,61 @@ class RepositoriesController < ApplicationController
   
   def index2
     @search=Repository.digital_library.search(params[:q])
-    @repositories=@search.result.sort_by{|x|[x.document_type, x.document_subtype, x.vessel]}
-    @repositories=Kaminari.paginate_array(@repositories).page(params[:page]||1)
+    @repositories=@search.result.sort_by{|x|[x.vessel_class, x.document_type, x.document_subtype]}
+    @repositories=Kaminari.paginate_array(@repositories).page(params[:page]).per(20)  #page(params[:page]||1)  
+  end
+  
+  def index3
+    @search=Repository.digital_library.search(params[:q])
+    repositories=@search.result
+    
+    vessel_class_name=[ ['KD Jebat', 'KD Lekiu'], ['KD Kasturi', 'KD Lekir'], ['KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah','KD Perak'],['KD Mahawangsa'],['KLD Tunas Samudera', 'KD Perantau']]
+    
+    @repos=[]
+    @rep=[]
+    @per_vessel=Hash.new
+    repositories.group_by{|x|x.vessel_class}.sort.each do |vessel_class, mrepositories|
+      current_vessel_list=vessel_class_name[vessel_class.to_i-1]
+      per_vessel=Hash[current_vessel_list.map{|x|[x, Hash["master" => [], "specific" =>[] ]]}]        #per_vessel== list of vessel of each VESSEL C {}LASS
+      for a_vessel in current_vessel_list
+        spec_arr=[]
+        master_arr=[]
+        for repository in mrepositories
+          unless repository.vessel.blank? #specific
+            spec_arr << repository.id if repository.render_vessel==a_vessel
+          else #master
+            master_arr << repository.id
+          end
+        end
+        per_vessel[a_vessel]["specific"]=spec_arr
+        per_vessel[a_vessel]["master"]=master_arr
+
+        @per_vessel=@per_vessel.merge(per_vessel)
+      end
+      per_vessel.each do |one_vessel, repo_by_cls|
+        repo_by_cls.each do |repo_cls|
+          @rep << repo_cls[1] 
+          @repos +=Repository.where(id: repo_cls[1])
+        end
+      end
+    end
+    
+    @repositories=Kaminari.paginate_array(@repos).page(params[:page]).per(20)  
+    ####
+    per_vessel_count2=0
+    per_vessel_count_arr=[]
+    @per_vessel_count_arr=[]
+    @per_vessel_count_arr2=[0]
+    @per_vessel.each do |vess, repo_sets|
+      per_vessel_count=0
+      repo_sets.each do |repo_set|
+        per_vessel_count+= repo_set[1].count
+        per_vessel_count2+= repo_set[1].count
+      end 
+      @per_vessel_count_arr << per_vessel_count
+      @per_vessel_count_arr2 << per_vessel_count2
+    end
+    ####
   end
 
   # GET /repositories/1
@@ -157,6 +210,6 @@ class RepositoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def repository_params
-      params.require(:repository).permit(:id, :title, :staff_id, :category, :created_at, :updated_at, :uploaded, :uploaded_file_name, :uploaded_content_type, :uploaded_file_size, :uploadcache, :uploaded_updated_at, :vessel, :document_type, :document_subtype, :refno, :publish_date, :total_pages, :copies, :location, :classification, :code, :college_id, {:data => []})
+      params.require(:repository).permit(:id, :title, :staff_id, :category, :created_at, :updated_at, :uploaded, :uploaded_file_name, :uploaded_content_type, :uploaded_file_size, :uploadcache, :uploaded_updated_at, :vessel, :document_type, :document_subtype, :refno, :publish_date, :total_pages, :copies, :location, :classification, :vessel_class, :code, :college_id, {:data => []})
     end
 end

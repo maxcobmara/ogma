@@ -398,6 +398,7 @@ en:
         document_type: Document Type
         document_subtype: Documentation For
         publish_date: Publish Date
+        vessel_class: Vessel Class
       bookingfacility:
         location_id: Booked Facility
         staff_id: Booking Staff
@@ -3251,10 +3252,12 @@ en:
       duedate: Due Date
       returnduedate: Return Due Date
       returning: Return of Book
+      document_returning: Return of Technical Document
       return: Return?
       extend: Extend
       extended: Extended
-      extending: Loan Extension
+      extending: Loan Extension for Book
+      document_extending: Loan Extension for Technical Document
       extend_for: "Extend loan for : "
       extension_remark: Loan extension allocated for staffs is 21 days, whereas for students is 14 days.
       extension_remark2: Loan extension allocated for staffs is 30 days, whereas for students is 14 days.
@@ -4514,10 +4517,10 @@ en:
     remark: Please refer to related modules for access to produce PDF format via online data entry.
     
     title2: Digital Document #Repository
-    list2: Marine Documentation #Digital Library #Digital Document Repository List
-    new2: New Digital Document
-    edit2: Edit Digital Document
-    details2: Digital Document Details
+    list2: Technical Documentations #Marine Documentation #Digital Library #Digital Document Repository List
+    new2: New Technical Document #Digital Document
+    edit2: Edit Technical Document #Digital Document
+    details2: Technical Document Details #Digital Document Details
     vessel: Vessel Name
     document_type: Document Type
     refno: Reference No
@@ -4542,7 +4545,7 @@ en:
     life_equipment: Life Equipment Support Systems
     damage_safety: Damage Control / Safety Systems
     auxiliaries: Auxiliaries
-    classification: Classification
+    classification: Security Classification
     restricted: Restricted
     confidential: Confidential
     secret: Secret
@@ -4562,6 +4565,13 @@ en:
     available2: Available
     loaner: Borrower
     reference: Loan approval reference
+    vessel_class: Vessel Class
+    vessel2: Vessel
+    ticker: "TICK checkbox and select vessel for <b>specific</b> document, otherwise leaves checkbox UNTICK for <b>master</b> document."
+    #"TICK checkbox for vessel class (master document), or UNTICK for specific vessel document."
+    master: Master document
+    specific: Specific document
+    continued_from: (continued from previous page)
     
   conversation:
     local_messaging: Local Messaging
@@ -5024,12 +5034,12 @@ en:
       main_page: "MS:ISO Document Repository List"
       main_page2: Digital Library #Digital Document Repository List
       title: Document Repository
-      title2: Digital Document
+      title2: Technical Documentations #Digital Document
       search: Repository Search
-      search2: Digital Document Equery
+      search2: Technical Document Equery
       document_title: Document Title
-      list_all: Listing All Digital Documents
-      list: Digital Documents List
+      list_all: Listing All Technical Documents
+      list: Technical Documents List
       total: Total documents
       method: Method
       remark1: "Remark : Insert and <u>SELECT</u> appropiate <b>Title</b> OR <b>Reference no</b> and click SEARCH button to proceed."

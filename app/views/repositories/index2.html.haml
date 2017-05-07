@@ -47,44 +47,118 @@
         %th{width: '30%'}= sort_link(@search, :title, (t 'repositories.document_title'))
         %th{width: '22%'}= sort_link(@search, :refno, (t 'repositories.refno2'))
         %th{width: '9%'}= sort_link(@search, :publish_date, (t 'repositories.publish_date'))
-        /%th{width: '15%'}= sort_link(@search, :location, (t 'repositories.location'))
-        /%th{width: '10%'}= (t 'repositories.copies')+" / "+(t 'repositories.total_pages')
         %th{width: '10%', colspan: 2}=(t 'repositories.classification')+" | "+(t 'repositories.loan')
         %th{width: '6%'}=(t 'repositories.e_document')
         
     %tbody
       = render "repositories/digital_library/index_search"
       - cnt=0
-      - @repositories.group_by{|x|x.document_type}.sort.each do |document_type, repos|
+      - cnt1=0
+      
+      - @repositories.group_by{|x|x.vessel_class}.sort.each do |vessel_class, mrepositories|
         %tr
-          %td.group{colspan: 9}=repos[0].render_document.upcase
-        - repos.group_by{|y|y.document_subtype}.each do |document_subtype, repositories|
-          %tr
-            %td.group{colspan: 9}=repositories[0].render_subdocument
-          - for repository in repositories.sort_by(&:vessel)
+          %td.group{colspan: 9}=mrepositories[0].render_vessel_class
+          
+          /////***********
+          - vessel_class_name1=[ ['KD Jebat', 'KD Lekiu'], ['KD Kasturi', 'KD Lekir'], ['KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah','KD Perak'],['KD Mahawangsa'],['KLD Tunas Samudera', 'KD Perantau']]
+          - current_vessel_list1=vessel_class_name1[vessel_class.to_i-1]
+          - per_vessel1= Hash[current_vessel_list1.map{|x|[x, Hash["master" => [], "specific" =>[] ]]}]
+          - current_vessel_list1.each do |ves|
+            - aa1=[]
+            - bb1=[]
+            - for repository in mrepositories
+              - unless repository.vessel.blank?
+                - aa1 << repository.id if repository.render_vessel==ves
+              - else
+                - bb1 << repository.id
+            - per_vessel1[ves]["specific"]=aa1
+            - per_vessel1[ves]["master"]=bb1
+          /////************
+          - per_vessel1.each do |one_vessel, repo_by_cls|
+            - combine=[]
+            - repo_by_cls.each{|repo_cls| combine+=repo_cls[1]}
+            
             %tr
-              %td=cnt+=1
-              %td=repository.vessel
-              %td= link_to repository.title, repository_path(repository)
-              %td=repository.refno
-              %td.centre=repository.publish_date
-              /%td=repository.location
-              /%td.centre=repository.copies.to_s+" / "+repository.total_pages.to_s
-              %td.centre=repository.render_classification
-              %td.centre
-                - if repository.classification=="3"
-                  .text-red= fa_icon("exclamation-circle")
-                - else
-                  - loaned=Librarytransaction.marine_loaned_serial
-                  - if loaned.include?(repository.code)
-                    =t 'repositories.on_loan'
-                  - else
-                    =link_to (fa_icon "plus-circle"), loan_repository_path(repository)
-              %td.centre
-                - unless repository.uploaded.blank?
-                  =link_to (fa_icon "file-pdf-o"), repository.uploaded.url 
-                - else
-                  .text-red= fa_icon("chain-broken")
+              %td.group{colspan: 8, style: 'color: blue;'}=one_vessel
+            - Repository.where(id: combine).group_by{|u|u.document_type}.sort.each do |dtype, repos1|
+              %tr
+                %td.group{colspan: 8, style: 'color: black;'}=repos1[0].render_document.upcase
+              - repos1.group_by{|v|v.document_subtype}.each do |document_subtype, repositories1|
+                %tr
+                  %td.group{colspan: 8}=repositories1[0].render_subdocument
+                - for repository1 in repositories1
+                  //**********
+                  %tr
+                    %td=cnt1+=1
+                    %td= link_to repository1.title, repository_path(repository1)
+                    %td
+                      =repository1.refno
+                      %i 
+                        .text-grey.small="("+(t 'repositories.serial_no')+": "+repository1.code+")"
+                    %td.centre=repository1.publish_date
+                    %td.centre=repository1.render_classification
+                    %td.centre
+                      - if repository1.classification=="3"
+                        .text-red= fa_icon("exclamation-circle")
+                      - else
+                        - loaned=Librarytransaction.marine_loaned_serial
+                        - if loaned.include?(repository1.code)
+                          =t 'repositories.on_loan'
+                        - else
+                          =link_to (fa_icon "plus-circle"), loan_repository_path(repository1)
+                    %td.centre
+                      - unless repository1.uploaded.blank?
+                        =link_to (fa_icon "file-pdf-o"), repository1.uploaded.url 
+                      - else
+                        .text-red= fa_icon("chain-broken")            
+                  //**********
+                  
+          /%tr
+          /  %td.group{colspan: 8, style: 'color: yellow;'} DIVIDER STOP HERE
+              
+          ////////////////////////////- YG ASAL - UNREMARK TO check
+          /- mrepositories.group_by{|x|x.document_type}.sort.each do |document_type, repos|
+          /  %tr
+          /    %td.group{colspan: 9}=repos[0].render_document.upcase
+          /  - repos.group_by{|y|y.document_subtype}.each do |document_subtype, repositories|
+          /    %tr
+          /      %td.group{colspan: 9}=repositories[0].render_subdocument
+          /    - for repository in repositories.sort_by(&:vessel)      
+          /      %tr
+          /        %td=cnt+=1
+          /        %td
+          /          /=repository.vessel
+          /          - unless repository.vessel_class.blank?
+          /            = repository.render_vessel_class
+          /          - else
+          /            - if repository.vessel.to_i ==0
+          /              =repository.vessel
+          /            - else
+          /              =repository.render_vessel
+                  
+          /        %td= link_to repository.title, repository_path(repository)
+          /        %td
+          /          =repository.refno
+          /          %i 
+          /            .text-grey.small="("+(t 'repositories.serial_no')+": "+repository.code+")"
+          /        %td.centre=repository.publish_date
+          /        /%td=repository.location
+          /        /%td.centre=repository.copies.to_s+" / "+repository.total_pages.to_s
+          /        %td.centre=repository.render_classification
+          /        %td.centre
+          /          - if repository.classification=="3"
+          /            .text-red= fa_icon("exclamation-circle")
+          /          - else
+          /            - loaned=Librarytransaction.marine_loaned_serial
+          /            - if loaned.include?(repository.code)
+          /              =t 'repositories.on_loan'
+          /            - else
+          /              =link_to (fa_icon "plus-circle"), loan_repository_path(repository)
+          /        %td.centre
+          /          - unless repository.uploaded.blank?
+          /            =link_to (fa_icon "file-pdf-o"), repository.uploaded.url 
+          /          - else
+          /            .text-red= fa_icon("chain-broken")
                 
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @repositories, :theme => 'twitter-bootstrap-3'

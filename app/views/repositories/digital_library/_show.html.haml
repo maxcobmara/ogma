@@ -10,18 +10,32 @@
   
   %dt= t 'repositories.document_title'
   %dd= repository.title
-   
-  %dt= t 'repositories.vessel'
-  %dd= repository.vessel
+  
+  %dt=(t 'repositories.vessel_class')
+  %dd
+    = repository.render_vessel_class
+    - if repository.vessel.blank?
+      =" ("+(t 'repositories.master')+")" 
+  
+  - unless repository.vessel.blank?
+    %dt=(t 'repositories.vessel')
+    %dd
+      = repository.render_vessel+" ("+(t 'repositories.specific')+")"
   
   %dt= t 'repositories.refno'
-  %dd= repository.refno
+  %dd{style: 'padding-left: 70px;'}
+    = repository.refno
+    %i 
+      .text-grey.small="("+(t 'repositories.serial_no')+": "+repository.code+")"
   
   %dt= t 'repositories.publish_date'
   %dd= repository.publish_date
   
   %dt= (t 'repositories.total')+" - "+(t 'repositories.copies')+" / "+(t 'repositories.total_pages')
-  %dd= repository.copies.to_s+" / "+repository.total_pages.to_s
+  %dd
+    = repository.copies.to_s
+    =" / " if !repository.copies.blank? || !repository.total_pages.blank?
+    = repository.total_pages.to_s
   
   %dt= t 'repositories.location'
   %dd= repository.location
