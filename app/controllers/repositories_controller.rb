@@ -28,7 +28,8 @@ class RepositoriesController < ApplicationController
     unless @search.vessel_search.blank?
       vessel_class_name=[@search.vessel_search]
     else
-      vessel_class_name=[ ['KD Jebat', 'KD Lekiu'], ['KD Kasturi', 'KD Lekir'], ['KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah','KD Perak'],['KD Mahawangsa'],['KLD Tunas Samudera', 'KD Perantau']]
+      vessel_class_name=Repository.vessel_class_names
+      # [ ['KD Jebat', 'KD Lekiu'], ['KD Kasturi', 'KD Lekir'], ['KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah','KD Perak'],['KD Mahawangsa'],['KLD Tunas Samudera', 'KD Perantau']]
     end
     
     @repos=[]

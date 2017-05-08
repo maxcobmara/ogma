@@ -4529,13 +4529,12 @@ en:
     total_pages: Pages
     copies: Copies
     location: Location
-    marine_documentation: Marine Documentation #Engineering #Vessel
     book: BRs #Book
     drawing: Drawing
     test_trials: Tests & Trials
     others: Others
     total: Total
-    document_subtype: Documentation for
+    document_subtype: Documentation Group
     propulsion: Propulsion Systems #Main Propulsion System
     electrical: Power Generation & Distribution Systems #Electrical Power System
     weapon: Weapon and Weapon Systems
@@ -5043,7 +5042,7 @@ en:
       total: Total documents
       method: Method
       remark1: "Remark : Insert and <u>SELECT</u> appropiate <b>Title</b> OR <b>Reference no</b> and click SEARCH button to proceed."
-      remark2: "Remark : Select <b>Vessel name</b> followed by <b>Document type</b> and <b>Documentation for </b> (if required) and click SEARCH button."
+      remark2: "Remark : Select <b>Vessel name</b> followed by <b>Document type</b> and <b>Documentation group </b> (if required) and click SEARCH button."
       search_form: Search Form
       
       vessel: Vessel Name
@@ -5058,7 +5057,7 @@ en:
       test_trials: Tests & Trials
       others: Others
       total: Total
-      document_subtype: Documentation for
+      document_subtype: Documentation group
       propulsion: Propulsion Systems
       electrical: Power Generation & Distribution Systems
       weapon: Weapon and Weapon Systems

@@ -236,15 +236,15 @@ class Repository < ActiveRecord::Base
   end  
   
   def self.document
-   [[I18n.t('repositories.book'), '1'],
+    [[I18n.t('repositories.book'), '1'],
      [I18n.t('repositories.drawing'), '2'],
      [I18n.t('repositories.test_trials'), '3']
-    ]
+     ]
   end
   
   def self.subdocument
     [[I18n.t('repositories.propulsion'), '1'],
-      [I18n.t('repositories.auxiliaries'), '9'],
+     [I18n.t('repositories.auxiliaries'), '9'],
      [I18n.t('repositories.electrical'), '2'],
      [I18n.t('repositories.weapon'), '3'],
      [I18n.t('repositories.navigation'), '4'],
@@ -276,7 +276,7 @@ class Repository < ActiveRecord::Base
      ['Corvette',[[I18n.t('select'),''], ['KD Kasturi', '3'], ['KD Lekir', '4']]], 
      ['Patrol Vessel', [[I18n.t('select'),''], ['KD Pahang', '5'], ['KD Kelantan', '6'], ['KD Selangor', '7'], ['KD Terengganu', '8'],['KD Kedah', '9'], ['KD Perak', '10']]], 
      ['Multi Purpose Support Ship', [[I18n.t('select'),''], ['KD Mahawangsa', '11']]], 
-     ['Others', [[I18n.t('select'),''], ['KLD Tunas Samudera', '12'],['KD Perantau', '13']]]
+     ['Others', [[I18n.t('select'),''], ['KLD Tunas Samudera', '12'],['KD Perantau', '13'], ['KD Mutiara', 14]]]
      ]
   end
   
@@ -286,30 +286,17 @@ class Repository < ActiveRecord::Base
      ['Corvette',['KD Kasturi', 'KD Lekir']], 
      ['Patrol Vessel', ['KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah', 'KD Perak']], 
      ['Multi Purpose Support Ship', ['KD Mahawangsa']], 
-     ['Others', ['KLD Tunas Samudera', 'KD Perantau']]
+     ['Others', ['KLD Tunas Samudera', 'KD Perantau', 'KD Mutiara']]
      ]
   end
+
+  def self.vessel_class_names
+    [ ['KD Jebat', 'KD Lekiu'], ['KD Kasturi', 'KD Lekir'], ['KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah','KD Perak'],['KD Mahawangsa'],['KLD Tunas Samudera', 'KD Perantau', 'KD Mutiara']]
+  end
   
-#   def self.vessel_list
-#     [['KD Jebat', '1'], 
-#      ['KD Lekiu', '2'], 
-#      ['----------------', ''],
-#      ['KD Kasturi', '3'], 
-#      ['KD Lekir', '4'], 
-#      ['KD Pahang', '5'], 
-#      ['KD Kelantan', '6'], 
-#      ['KD Selangor', '7'], 
-#      ['KD Terengganu', '8'], 
-#      ['-----------------------', ''],
-#      ['KD Kedah', '9'], 
-#      ['KD Perak', '10'], 
-#      ['-------------------------', ''],
-#      ['KD Mahawangsa', '11'], 
-#      ['-------------------------', ''],
-#      ['KLD Tunas Samudera', '12'],
-#      ['KD Perantau', '13']
-#      ]
-#   end
+  def self.vessel_names
+    ['KD Jebat', 'KD Lekiu', 'KD Kasturi', 'KD Lekir', 'KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah', 'KD Perak', 'KD Mahawangsa', 'KLD Tunas Samudera', 'KD Perantau', 'KD Mutiara']
+  end
   
   def render_document
     (Repository.document.find_all{|disp, value| value == document_type }).map {|disp, value| disp}[0]
@@ -330,22 +317,6 @@ class Repository < ActiveRecord::Base
   def render_vessel 
     (Repository.vessel_list[(vessel_class.to_i)-1][1].find_all{|d,v|v==vessel}).map{|d,v|d}[0]
     #(Repository.vessel_list.find_all {|disp, value| value==vessel}).map {|disp, value| disp}[0]
-  end
-    
-#   def self.doctype_per_vessel
-#     ab=[]
-#     Repository.digital_library.group_by(&:vessel).each do |k,v|
-#       a=[[I18n.t('select'), ""]]
-#        v.each do |y|
-# 	 a << [y.render_document, y.document_type]
-#        end
-#       ab << [k, a.uniq]
-#     end
-#     ab
-#   end
-  
-  def self.vessel_names
-    ['KD Jebat', 'KD Lekiu', 'KD Kasturi', 'KD Lekir', 'KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah', 'KD Perak', 'KD Mahawangsa', 'KLD Tunas Samudera', 'KD Perantau']
   end
   
   def self.doctype_per_vessel
@@ -385,6 +356,18 @@ class Repository < ActiveRecord::Base
     end
     ab
   end
+
+#   def self.doctype_per_vessel
+#     ab=[]
+#     Repository.digital_library.group_by(&:vessel).each do |k,v|
+#       a=[[I18n.t('select'), ""]]
+#        v.each do |y|
+# 	 a << [y.render_document, y.document_type]
+#        end
+#       ab << [k, a.uniq]
+#     end
+#     ab
+#   end
   
 #   def self.docsubtype_per_doctype
 #     ab=[]
