@@ -267,7 +267,8 @@ class Repository < ActiveRecord::Base
      ['Corvette', '2'],
      ['Patrol Vessel', '3'],
      ['Multi Purpose Support Ship', '4'],
-     ['Others', '5']]
+     ['Mine Counter Measure Vessels', '5'],
+     ['Others', '6']]
   end
  
   def self.vessel_list
@@ -276,7 +277,8 @@ class Repository < ActiveRecord::Base
      ['Corvette',[[I18n.t('select'),''], ['KD Kasturi', '3'], ['KD Lekir', '4']]], 
      ['Patrol Vessel', [[I18n.t('select'),''], ['KD Pahang', '5'], ['KD Kelantan', '6'], ['KD Selangor', '7'], ['KD Terengganu', '8'],['KD Kedah', '9'], ['KD Perak', '10']]], 
      ['Multi Purpose Support Ship', [[I18n.t('select'),''], ['KD Mahawangsa', '11']]], 
-     ['Others', [[I18n.t('select'),''], ['KLD Tunas Samudera', '12'],['KD Perantau', '13'], ['KD Mutiara', 14]]]
+     ['Mine Counter Measure Vessels', [[I18n.t('select'),''], ['KD Mahameru', '12'], ['KD Ledang', '13'], ['KD Kinabalu', '14'], ['KD Jerai', '15']]],
+     ['Others', [[I18n.t('select'),''], ['KLD Tunas Samudera', '16'],['KD Perantau', '17'], ['KD Mutiara', '18']]]
      ]
   end
   
@@ -285,17 +287,18 @@ class Repository < ActiveRecord::Base
      ['Frigate', ['KD Jebat', 'KD Lekiu']], 
      ['Corvette',['KD Kasturi', 'KD Lekir']], 
      ['Patrol Vessel', ['KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah', 'KD Perak']], 
-     ['Multi Purpose Support Ship', ['KD Mahawangsa']], 
+     ['Multi Purpose Support Ship', ['KD Mahawangsa']],
+     ['Mine Counter Measure Vessels', ['KD Mahameru', 'KD Ledang', 'KD Kinabalu', 'KD Jerai']],
      ['Others', ['KLD Tunas Samudera', 'KD Perantau', 'KD Mutiara']]
      ]
   end
 
   def self.vessel_class_names
-    [ ['KD Jebat', 'KD Lekiu'], ['KD Kasturi', 'KD Lekir'], ['KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah','KD Perak'],['KD Mahawangsa'],['KLD Tunas Samudera', 'KD Perantau', 'KD Mutiara']]
+    [ ['KD Jebat', 'KD Lekiu'], ['KD Kasturi', 'KD Lekir'], ['KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah','KD Perak'],['KD Mahawangsa'],['KD Mahameru', 'KD Ledang', 'KD Kinabalu', 'KD Jerai'], ['KLD Tunas Samudera', 'KD Perantau', 'KD Mutiara']]
   end
   
   def self.vessel_names
-    ['KD Jebat', 'KD Lekiu', 'KD Kasturi', 'KD Lekir', 'KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah', 'KD Perak', 'KD Mahawangsa', 'KLD Tunas Samudera', 'KD Perantau', 'KD Mutiara']
+    Repository.vessel_class_names.flatten
   end
   
   def render_document
