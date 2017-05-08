@@ -157,12 +157,6 @@ class Repository < ActiveRecord::Base
   
   #Ransack - may also use 
   #define scope
-#   def self.vessel_search(query)
-#     ids=[]
-#     Repository.digital_library.each{ |repo|  ids << repo.id if repo.vessel.downcase.include?(query.downcase)}
-#     where(id: ids)
-#   end
-  
   def self.vessel_search(query)
     ids=[]
     Repository.digital_library.each do |repo|
@@ -338,30 +332,72 @@ class Repository < ActiveRecord::Base
     #(Repository.vessel_list.find_all {|disp, value| value==vessel}).map {|disp, value| disp}[0]
   end
     
+#   def self.doctype_per_vessel
+#     ab=[]
+#     Repository.digital_library.group_by(&:vessel).each do |k,v|
+#       a=[[I18n.t('select'), ""]]
+#        v.each do |y|
+# 	 a << [y.render_document, y.document_type]
+#        end
+#       ab << [k, a.uniq]
+#     end
+#     ab
+#   end
+  
+  def self.vessel_names
+    ['KD Jebat', 'KD Lekiu', 'KD Kasturi', 'KD Lekir', 'KD Pahang', 'KD Kelantan', 'KD Selangor', 'KD Terengganu', 'KD Kedah', 'KD Perak', 'KD Mahawangsa', 'KLD Tunas Samudera', 'KD Perantau']
+  end
+  
   def self.doctype_per_vessel
     ab=[]
-    Repository.digital_library.group_by(&:vessel).each do |k,v|
-      a=[[I18n.t('select'), ""]]
-       v.each do |y|
-	 a << [y.render_document, y.document_type]
-       end
-      ab << [k, a.uniq]
+    Repository.digital_library.group_by{|x|x.vessel_class}.sort.each do |vessel_class, repositories|
+      for a_vessel in Repository.vessel_names
+        a=[[I18n.t('select'), ""]]
+        for repository in repositories
+          unless repository.vessel.blank? #specific
+            a << [repository.render_document, repository.document_type] if repository.render_vessel==a_vessel
+          else #master
+            a << [repository.render_document, repository.document_type]
+          end
+        end
+        ab << [a_vessel, a.uniq]
+      end
     end
     ab
   end
   
   def self.docsubtype_per_doctype
     ab=[]
-    Repository.digital_library.group_by(&:vessel).each do |k,v|
-      v.group_by(&:document_type).each do |dt, rs|
-	  a=[[I18n.t('select'), ""]]
-	  rs.each do |r|
-            a << [r.render_subdocument, r.document_subtype]
+    Repository.digital_library.group_by{|x|x.vessel_class}.sort.each do |vessel_class, repositories|
+      for a_vessel in Repository.vessel_names
+        repositories.group_by(&:document_type).each do |dt, rs|
+          a=[[I18n.t('select'), ""]]
+          for repository in rs
+            unless repository.vessel.blank? #specific
+              a << [repository.render_subdocument, repository.document_subtype] if repository.render_vessel==a_vessel && dt==repository.document_type
+            else #master
+              a << [repository.render_subdocument, repository.document_subtype] && dt==repository.document_type
+            end
           end
-          ab << [k+": "+((Repository.document.find_all{|disp, value| value == dt }).map {|disp, value| disp}[0]), a.uniq]
+          ab << [a_vessel+": "+((Repository.document.find_all{|disp, value| value == dt }).map {|disp, value| disp}[0]), a.uniq]
+        end 
       end
     end
     ab
   end
+  
+#   def self.docsubtype_per_doctype
+#     ab=[]
+#     Repository.digital_library.group_by(&:vessel).each do |k,v|
+#       v.group_by(&:document_type).each do |dt, rs|
+# 	  a=[[I18n.t('select'), ""]]
+# 	  rs.each do |r|
+#             a << [r.render_subdocument, r.document_subtype]
+#           end
+#           ab << [k+": "+((Repository.document.find_all{|disp, value| value == dt }).map {|disp, value| disp}[0]), a.uniq]
+#       end
+#     end
+#     ab
+#   end
   
 end
