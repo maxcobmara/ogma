@@ -322,24 +322,50 @@ class Repository < ActiveRecord::Base
     #(Repository.vessel_list.find_all {|disp, value| value==vessel}).map {|disp, value| disp}[0]
   end
   
+  #usage - repositorysearches/_form
+  def self.vessel_exist_documents
+    vmaster_spec=[]
+    vspecific=[]
+    Repository.digital_library.group_by{|x|x.vessel_class}.each do |vesselclass_no, repos|
+      index=vesselclass_no.to_i-1
+      vesselclass_str=Repository.vessel_classes[index][0]
+      vessel_ofclass_str=Repository.vessel_class_names[index]
+      a=0
+      for repo in repos
+        if repo.vessel.blank? 
+          if a==0 
+            vmaster_spec << [vesselclass_str, vessel_ofclass_str]    #retrieve vessel_class c/w vessels of vessel_class (hv master document)
+            a+=1
+          end
+        else
+          vspecific << [vesselclass_str, [repo.render_vessel]]
+        end
+      end
+    end
+    vspecific.uniq.each{|cc| vmaster_spec << cc if vmaster_spec.map{|x,y|x}.include?(cc[0]) == false} #combine vessel_class c/w ONE vessel (hv specific document)
+    vmaster_spec
+  end
+  
+  #usage - repositorysearches/_form
   def self.doctype_per_vessel
     ab=[]
-    Repository.digital_library.group_by{|x|x.vessel_class}.sort.each do |vessel_class, repositories|
-      for a_vessel in Repository.vessel_names
+    Repository.digital_library.group_by{|x|x.vessel_class}.sort.each do |vessel_class, repositories|   #vessel_class ===> "1"
+      for a_vessel in Repository.vessel_list2[vessel_class.to_i-1][1]
         a=[[I18n.t('select'), ""]]
         for repository in repositories
           unless repository.vessel.blank? #specific
             a << [repository.render_document, repository.document_type] if repository.render_vessel==a_vessel
           else #master
-            a << [repository.render_document, repository.document_type]
+            a << [repository.render_document, repository.document_type] if repository.vessel_class==vessel_class
           end
         end
-        ab << [a_vessel, a.uniq]
+        ab << [a_vessel, a.uniq] if a.count > 1 #(including 'select')
       end
     end
     ab
   end
   
+  #usage - repositorysearches/_form
   def self.docsubtype_per_doctype
     ab=[]
     Repository.digital_library.group_by{|x|x.vessel_class}.sort.each do |vessel_class, repositories|
@@ -350,7 +376,7 @@ class Repository < ActiveRecord::Base
             unless repository.vessel.blank? #specific
               a << [repository.render_subdocument, repository.document_subtype] if repository.render_vessel==a_vessel && dt==repository.document_type
             else #master
-              a << [repository.render_subdocument, repository.document_subtype] && dt==repository.document_type
+              a << [repository.render_subdocument, repository.document_subtype] if dt==repository.document_type
             end
           end
           ab << [a_vessel+": "+((Repository.document.find_all{|disp, value| value == dt }).map {|disp, value| disp}[0]), a.uniq]
@@ -359,31 +385,5 @@ class Repository < ActiveRecord::Base
     end
     ab
   end
-
-#   def self.doctype_per_vessel
-#     ab=[]
-#     Repository.digital_library.group_by(&:vessel).each do |k,v|
-#       a=[[I18n.t('select'), ""]]
-#        v.each do |y|
-# 	 a << [y.render_document, y.document_type]
-#        end
-#       ab << [k, a.uniq]
-#     end
-#     ab
-#   end
-  
-#   def self.docsubtype_per_doctype
-#     ab=[]
-#     Repository.digital_library.group_by(&:vessel).each do |k,v|
-#       v.group_by(&:document_type).each do |dt, rs|
-# 	  a=[[I18n.t('select'), ""]]
-# 	  rs.each do |r|
-#             a << [r.render_subdocument, r.document_subtype]
-#           end
-#           ab << [k+": "+((Repository.document.find_all{|disp, value| value == dt }).map {|disp, value| disp}[0]), a.uniq]
-#       end
-#     end
-#     ab
-#   end
   
 end
