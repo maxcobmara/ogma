@@ -155,6 +155,14 @@ class Repository < ActiveRecord::Base
     data[:vessel_class]
   end
   
+  def equipment=(value)
+    data[:equipment]=value
+  end
+  
+  def equipment
+    data[:equipment]
+  end
+  
   #Ransack - may also use 
   #define scope
   def self.vessel_search(query)
@@ -246,7 +254,7 @@ class Repository < ActiveRecord::Base
      ]
   end
   
-  def self.subdocument
+  def self.subdocument_old
     [[I18n.t('repositories.propulsion'), '1'],
      [I18n.t('repositories.auxiliaries'), '9'],
      [I18n.t('repositories.electrical'), '2'],
@@ -257,6 +265,64 @@ class Repository < ActiveRecord::Base
      [I18n.t('repositories.life_equipment'), '7'],
      [I18n.t('repositories.damage_safety'), '8']
      ]
+  end
+  
+  def self.subdocument
+    [[I18n.t('repositories.main_propulsion'), '1'],
+    [I18n.t('repositories.electrical_power'), '2'],
+    [I18n.t('repositories.steering_arrangement'), '3'],
+    [I18n.t('repositories.sea_water_service'), '4'],
+    [I18n.t('repositories.fresh_water_service'), '5'],
+    [I18n.t('repositories.fuel_and_lubricant'), '6'],
+    [I18n.t('repositories.compressed_air'), '7'],
+    [I18n.t('repositories.refrigerator'), '8'],
+    [I18n.t('repositories.life_saving_equipment'), '9'],
+    [I18n.t('repositories.fire_fighting'), '10'],
+    [I18n.t('repositories.hull_and_outfit'), '11'],
+    [I18n.t('repositories.deck_machinery'), '12'],
+    [I18n.t('repositories.weapon_system'), '13'],
+    [I18n.t('repositories.navigational_aid'), '14'],
+    [I18n.t('repositories.communication'), '15'],
+    [I18n.t('repositories.domestic_equipment'), '16'],
+    [I18n.t('repositories.ship_monitoring'), '17'],
+    [I18n.t('repositories.degaussing'), '18'],
+    [I18n.t('repositories.workshop_machinery'), '19'],
+    [I18n.t('repositories.stabilising_pump'), '20'],
+    [I18n.t('repositories.diving_facility'), '21'],
+    [I18n.t('repositories.sanitary_and_drainage'), '22'],
+    [I18n.t('repositories.boats'), '23'],
+    [I18n.t('repositories.special_tools_test'), '24'],
+    [I18n.t('repositories.survey_hydrographic'), '25'],
+    [I18n.t('repositories.cathodic_protection'), '26']]
+  end
+  
+  def self.equipment_list
+    [[I18n.t('repositories.main_propulsion'), [[I18n.t('select'),''], [I18n.t('repositories.main_engine'), '1'], [I18n.t('repositories.gearbox'), '2']] ],
+    [I18n.t('repositories.electrical_power'), [[I18n.t('select'),''], [I18n.t('repositories.auxiliary_engine'), '28'] ]],
+    [I18n.t('repositories.steering_arrangement'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.sea_water_service'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.fresh_water_service'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.fuel_and_lubricant'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.compressed_air'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.refrigerator'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.life_saving_equipment'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.fire_fighting'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.hull_and_outfit'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.deck_machinery'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.weapon_system'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.navigational_aid'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.communication'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.domestic_equipment'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.ship_monitoring'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.degaussing'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.workshop_machinery'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.stabilising_pump'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.diving_facility'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.sanitary_and_drainage'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.boats'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.special_tools_test'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.survey_hydrographic'), [[I18n.t('select'),'']]],
+    [I18n.t('repositories.cathodic_protection'), [[I18n.t('select'),'']]]]
   end
   
   def self.document_classification
@@ -311,6 +377,10 @@ class Repository < ActiveRecord::Base
   
   def render_subdocument
     (Repository.subdocument.find_all{|disp, value| value == document_subtype }).map {|disp, value| disp}[0]
+  end
+  
+  def render_subdocument_old
+    (Repository.subdocument_old.find_all{|disp, value| value == category.to_s }).map {|disp, value| disp}[0]
   end
   
   def render_classification

@@ -4535,6 +4535,8 @@ en:
     others: Others
     total: Total
     document_subtype: Documentation Group
+    
+    #old system---
     propulsion: Propulsion Systems #Main Propulsion System
     electrical: Power Generation & Distribution Systems #Electrical Power System
     weapon: Weapon and Weapon Systems
@@ -4544,6 +4546,42 @@ en:
     life_equipment: Life Equipment Support Systems
     damage_safety: Damage Control / Safety Systems
     auxiliaries: Auxiliaries
+    
+    #latest system---
+    main_propulsion: Main Propulsion
+    electrical_power: Electrical Power
+    steering_arrangement: Steering Arrangement
+    sea_water_service: Sea Water Service
+    fresh_water_service: Fresh Water Service
+    fuel_and_lubricant: Fuel and Lubricant
+    compressed_air: Compressed Air
+    refrigerator: Refrigeration, Air Conditioning and Ventilation
+    life_saving_equipment: Life Saving Equipment
+    fire_fighting: Fire Fighting and NBCD Control
+    hull_and_outfit: Hull and Outfit
+    deck_machinery: Deck Machinery
+    weapon_system: Weapon and Weapon System
+    navigational_aid: Navigational Aid
+    communication: Communication
+    domestic_equipment: Domestic Equipment
+    ship_monitoring: Ship Monitoring System
+    degaussing: Degaussing
+    workshop_machinery: Workshop Machinery
+    stabilising_pump: Stabilising Pump Motor and Control
+    diving_facility: Diving Facility
+    sanitary_and_drainage: Sanitary and Drainage System
+    boats: Boats
+    special_tools_test: Special Tools and Test Equipments
+    survey_hydrographic: Survey / Hydrographic Equipment System
+    cathodic_protection: Cathodic Protection
+    
+    #equipment---
+    equipment: Equipment
+    main_engine: Main Engine
+    gearbox: Gearbox
+    
+    auxiliary_engine: Auxiliary Engine
+    
     classification: Security Classification
     restricted: Restricted
     confidential: Confidential

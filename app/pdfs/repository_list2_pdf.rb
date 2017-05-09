@@ -166,16 +166,16 @@ class Repository_list2Pdf < Prawn::Document
           if repository.render_subdocument!= subdoctype
             subdoctype=repository.render_subdocument
             counting2+=1
-            body << [{content: "#{subdoctype} #{counting2}", colspan: 8}]
+            body << [{content: "#{subdoctype}", colspan: 8}]
           else
             counting2+=1
-            body << [{content: "#{subdoctype} #{counting2}", colspan: 8}]
+            body << [{content: "#{subdoctype}", colspan: 8}]
           end
         else
           if repository.render_subdocument!= subdoctype
             counting2+=1
             subdoctype=repository.render_subdocument
-            body << [{content: "#{subdoctype} #{counting2}", colspan: 8}]
+            body << [{content: "#{subdoctype}", colspan: 8}]
           end
         end
         #####HEADING - vessel, document_type, document_group - end

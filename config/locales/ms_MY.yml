@@ -4452,6 +4452,8 @@ ms_MY:
     others: Lain - lain
     total: Jumlah
     document_subtype: Kumpulan Dokumentasi
+    
+    #old system---
     propulsion: Sistem Penggerak #Utama
     electrical: Sistem Penjanaan & Agihan Kuasa #Kuasa Elektrik
     weapon: Senjata dan Sistem Senjata
@@ -4461,6 +4463,42 @@ ms_MY:
     life_equipment: Sistem Peralatan Sokongan Hayat
     damage_safety: Sistem Kawalan Kerosakan / Keselamatan
     auxiliaries: Kelengkapan
+    
+    #latest system---
+    main_propulsion: Penggerak Utama
+    electrical_power: Kuasa Elektrik
+    steering_arrangement: Peralatan Kemudi
+    sea_water_service: Perkhidmatan Air Masin
+    fresh_water_service: Perkhidmatan Air Tawar
+    fuel_and_lubricant: Bahan Api dan Pelincir
+    compressed_air: Gas Termampat
+    refrigerator: Penyejukan, Penyaman Udara dan Pengudaraan
+    life_saving_equipment: Peralatan Menyelamat Nyawa
+    fire_fighting: Pemadaman Api dan Kawalan NBCD
+    hull_and_outfit: Badan Kapal dan Kelengkapan Kapal
+    deck_machinery: Jentera Dek
+    weapon_system: Sistem Persenjataan
+    navigational_aid: Bantuan Navigasi
+    communication: Komunikasi
+    domestic_equipment: Peralatan Domestik
+    ship_monitoring: Pemantauan Kapal
+    degaussing: Degaussing
+    workshop_machinery: Jentera Bengkel
+    stabilising_pump: Motor dan Pengawal Pam Penstabil
+    diving_facility: Kemudahan Menyelam
+    sanitary_and_drainage: Sistem pembersihan dan Saliran
+    boats: Bot
+    special_tools_test: Alatan Khas dan Peralatan Pengujian
+    survey_hydrographic: Sistem Kaji Selidik / Peralatan Hidrografik
+    cathodic_protection: Perlindungan Katod
+    
+    #equipment---
+    equipment: Peralatan
+    main_engine: Enjin Utama
+    gearbox: Kotak Gear
+    
+    auxiliary_engine: Pelbagai Enjin
+    
     classification: Pengelasan Had Akses
     restricted: Terhad
     confidential: Sulit
