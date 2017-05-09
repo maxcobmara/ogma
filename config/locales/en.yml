@@ -396,7 +396,7 @@ en:
         staff_id: Uploaded by
         vessel: Vessel Name
         document_type: Document Type
-        document_subtype: Documentation For
+        document_subtype: Documentation Group
         publish_date: Publish Date
         vessel_class: Vessel Class
       bookingfacility:
@@ -5031,7 +5031,7 @@ en:
       #leaves_fields_blank_all_corresponding2: " 'blank'/unselected and click 'Search' to display ALL corresponding additions/deductions records."
     repository:
       main_page: "MS:ISO Document Repository List"
-      main_page2: Digital Library #Digital Document Repository List
+      main_page2: Technical Library #Digital Document Repository List
       title: Document Repository
       title2: Technical Documentations #Digital Document
       search: Repository Search
@@ -5057,7 +5057,7 @@ en:
       test_trials: Tests & Trials
       others: Others
       total: Total
-      document_subtype: Documentation group
+      document_subtype: Documentation Group
       propulsion: Propulsion Systems
       electrical: Power Generation & Distribution Systems
       weapon: Weapon and Weapon Systems

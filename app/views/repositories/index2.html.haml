@@ -15,15 +15,14 @@
 /[0, 10, 20, 58, 96, 104, 112, 120, 128, 136, 144, 152, 198, 198]
 
 /=@search.vessel_search
-
+/=@actual_records.count
 - model_class = Repository
 .page-header
   %h1= t('repositories.list2')
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li="<a href='http://localhost/repositories/index2'><span class='badge'>#{@repos.count}</span> #{t('records').titleize}</a>".html_safe
-      
+    %li="<a href=http://#{request.host}/repositories/index2><span class='badge'>#{@repos.count}</span> #{t('records').titleize}</a>".html_safe
     - permitted_to? :create, :repositories do
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new2_repositories_path
     - permitted_to? :manage, :library_librarytransactions do
@@ -62,9 +61,9 @@
     %thead
       %tr
         %th{width: '5%'} No
-        %th{width: '40%'}= sort_link(@search, :title, (t 'repositories.document_title'))
-        %th{width: '20%'}= sort_link(@search, :refno, (t 'repositories.refno2'))
-        %th{width: '9%'}= sort_link(@search, :publish_date, (t 'repositories.publish_date'))
+        %th{width: '40%'}=(t 'repositories.document_title')
+        %th{width: '20%'}=(t 'repositories.refno2')
+        %th{width: '9%'}=(t 'repositories.publish_date')
         %th{width: '5%'}=(t 'repositories.master')+"?"
         %th{width: '8%'}=(t 'repositories.classification')
         %th{width: '7%'}=(t 'repositories.loan')

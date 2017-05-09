@@ -161,20 +161,12 @@ class Repository < ActiveRecord::Base
     ids=[]
     Repository.digital_library.each do |repo|
       unless repo.vessel.blank?
-        if repo.render_vessel.downcase.include?(query.downcase)
-          ids << repo.id
-        end
+        ids << repo.id if repo.render_vessel.downcase.include?(query.downcase)
       else
         Repository.vessel_list2.each do |vesselclass, vessels| 
-	  ##
-	  if repo.render_vessel_class==vesselclass
-	    vessels.each do |vessel|
-	      if vessel.downcase.include?(query.downcase) && 
-	        ids << repo.id
-	      end
-	    end
-	  end
-	  ##
+          if repo.render_vessel_class==vesselclass
+            vessels.each{ |vessel| ids << repo.id if vessel.downcase.include?(query.downcase) }
+          end
         end
       end
     end
@@ -216,6 +208,18 @@ class Repository < ActiveRecord::Base
     Repository.digital_library.each{ |repo| ids << repo.id if repo.classification==query}
     where(id: ids)
   end
+  
+  def self.master_search(query)
+    ids=[]
+    Repository.digital_library.each do |repo|
+      if query=="1"                 #master
+        ids << repo.id if repo.vessel.blank?
+      elsif query=="2"            #specific
+        ids << repo.id unless repo.vessel.blank?
+      end
+    end
+    where(id: ids)
+  end
 
   def self.status_search(query)
     ids=[]
@@ -232,7 +236,7 @@ class Repository < ActiveRecord::Base
 
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-    [:vessel_search, :refno_search, :publish_date_search, :location_search, :document_type_search, :document_subtype_search, :classification_search, :status_search]
+    [:vessel_search, :refno_search, :publish_date_search, :location_search, :document_type_search, :document_subtype_search, :classification_search, :status_search, :master_search]
   end  
   
   def self.document

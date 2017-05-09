@@ -23,7 +23,7 @@ class RepositoriesController < ApplicationController
   
   def index2
     @search=Repository.digital_library.search(params[:q])
-    repositories=@search.result
+    @actual_records=@search.result
     
     unless @search.vessel_search.blank?
       vessel_class_name=[@search.vessel_search]
@@ -35,7 +35,7 @@ class RepositoriesController < ApplicationController
     @repos=[]
     @rep=[]
     @per_vessel=Hash.new
-    repositories.group_by{|x|x.vessel_class}.sort.each do |vessel_class, mrepositories|
+    @actual_records.group_by{|x|x.vessel_class}.sort.each do |vessel_class, mrepositories|
       unless @search.vessel_search.blank?
         current_vessel_list=vessel_class_name
       else
@@ -60,7 +60,7 @@ class RepositoriesController < ApplicationController
       per_vessel.each do |one_vessel, repo_by_cls|
         repo_by_cls.each do |repo_cls|
           @rep << repo_cls[1] 
-          @repos +=Repository.where(id: repo_cls[1]).sort_by{|x|[x.document_type, x.document_subtype]} #sort first
+          @repos +=Repository.where(id: repo_cls[1]).sort_by{|x|[x.document_type, x.document_subtype, x.title, x.refno]} #sort first
         end
       end
     end
