@@ -159,8 +159,7 @@ class RepositoriesController < ApplicationController
     def set_repositories
       if params[:ids]
         @actual_records=Repository.digital_library.where(id: params[:ids])
-        vessel_class_name=[]
-        @per_vessel.each{ |vess| vessel_class_name << vess[0]}
+        vessel_class_name=Repository.vessel_class_names
       else
         @search=Repository.digital_library.search(params[:q])
         @actual_records=@search.result
@@ -176,11 +175,15 @@ class RepositoriesController < ApplicationController
       @rep=[]
       @per_vessel=Hash.new
       @actual_records.group_by{|x|x.vessel_class}.sort.each do |vessel_class, mrepositories|
-        unless @search.vessel_search.blank?
-          current_vessel_list=vessel_class_name
+        if params[:ids]
+           current_vessel_list=vessel_class_name[vessel_class.to_i-1]
         else
-          current_vessel_list=vessel_class_name[vessel_class.to_i-1]
-        end
+          unless @search.vessel_search.blank?
+            current_vessel_list=vessel_class_name
+          else
+            current_vessel_list=vessel_class_name[vessel_class.to_i-1]
+          end
+	end
         per_vessel=Hash[current_vessel_list.map{|x|[x, Hash["master" => [], "specific" =>[] ]]}]        #per_vessel== list of vessel of each VESSEL CLASS
         for a_vessel in current_vessel_list
           spec_arr=[]

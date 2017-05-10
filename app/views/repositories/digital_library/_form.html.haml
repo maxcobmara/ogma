@@ -14,7 +14,7 @@
         =f.select :document_subtype, Repository.subdocument, {include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
         - unless @repository.new_record?
           %i
-            .small.text-grey
+            .small.text-red
               ='Previous data : '+@repository.render_subdocument_old+" - "+@repository.document_subtype
               %br
               ="Ref : "

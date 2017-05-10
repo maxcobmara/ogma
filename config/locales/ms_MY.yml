@@ -4489,7 +4489,7 @@ ms_MY:
     sanitary_and_drainage: Sistem pembersihan dan Saliran
     boats: Bot
     special_tools_test: Alatan Khas dan Peralatan Pengujian
-    survey_hydrographic: Sistem Kaji Selidik / Peralatan Hidrografik
+    surveyhydrographic: Sistem Kaji Selidik/Peralatan Hidrografik
     cathodic_protection: Perlindungan Katod
     
     #equipment list - 26 items --
@@ -4711,7 +4711,7 @@ ms_MY:
     breather_pipe: Breather Pipe 
     tag_list_and_nbcd_markings: Tag List and NBCD Markings 
     exhaust_trunking: Exhaust Trunking 
-    sside_transom_struct_wline: "S/Side, Transform and Struct Above W/Line"
+    sside_transform_struct_wline: "S/Side, Transform and Struct Above W/Line"
     superstructure_plating: "Superstructure Plating (External)"
     machinery_bilges: Machiner Bilges 
     watertight_doors: Watertight Doors 
@@ -4719,6 +4719,8 @@ ms_MY:
     watertight_hatches: Watertight Hatches 
     scuttles: Scuttles 
     windows: Windows 
+    windscreens: Windscreens
+    funnel: Funnel
     cargo_hatch: Cargo Hatch 
     flush_deck_hatches: Flush Deck Hatches 
     weather_decks: Weather Decks 
@@ -4736,23 +4738,23 @@ ms_MY:
     messes_cabons_off_space_boat_deck: "Messes, Cabins & Off. Space (Boat Deck)"
     messes_cabons_off_space_fcastle_dk: "Messes, Cabins & Off. Space (F'Castle DK)"
     messes_cabons_off_space_main_deck: "Messes, Cabins & Off. Space (Main Deck)"
-    messes_cabons_off_space_tween_deck:"Messes, Cabins & Off. Space (Tween Deck)"
-    messes_cabons_off_space_swage_deck:"Messes, Cabins & Off. Space (S'wage Deck)"
+    messes_cabons_off_space_tween_deck: "Messes, Cabins & Off. Space (Tween Deck)"
+    messes_cabons_off_space_swage_deck: "Messes, Cabins & Off. Space (S'wage Deck)"
     heads_showers_laundry_room_boat_deck: "Heads, Showers & Laundry Room (Boat Deck)"
     heads_showers_laundry_room_fcastle_deck: "Heads, Showers & Laundry Room (F'Castle Deck)"
     heads_showers_laundry_room_main_deck: "Heads, Showers & Laundry Room (Main Deck)"
     heads_showers_laundry_room_tween_deck: "Heads, Showers & Laundry Room (Tween Deck)"
     heads_showers_laundry_room_swage_deck: "Heads, Showers & Laundry Room (S'wage Deck)"
-    cold_and_cool_rooms
+    cold_and_cool_rooms: Cold and Cool Rooms
     ammunition_explosives_gunners_stores: Ammunition, Explosives & Gunner's Stores
     store_rooms_forecastle_deck: Store Rooms Forecastle Deck
     store_rooms_main_deck: Store Rooms  Main Deck
     store_rooms_tween_deck: Store Rooms Tween Deck 
-    store_rooms_stowage_deck: : Store Rooms Stowage Deck
+    store_rooms_stowage_deck: Store Rooms Stowage Deck
     cofferdam: Cofferdam
     air_conditioning_room: Air Conditioning Room
-    dving_room: Diving Room
-    steering_gear_rooms: Steering Gear Rooms
+    diving_room: Diving Room
+    steering_gear_room: Steering Gear Room
     bow_thruster_room: Bow Thruster Room
     fresh_water_treatment_room: Fresh Water Treatment Room
     garbage_disposal_room: Garbage Disposal Room 
@@ -4887,7 +4889,7 @@ ms_MY:
     #19
     lathe_machine: Lathe Machine 
     pedestal_drilling_machine: Pedestal Drilling Machine 
-    bench_drilling_machine; bench Drilling Machine 
+    bench_drilling_machine: Bench Drilling Machine 
     drilling_machine : Drilling Machine 
     #bench_drilling_machine
     grinding_machine: Grinding Machine 
@@ -4927,10 +4929,10 @@ ms_MY:
     dinghy: Dinghy
     
     #24
-    #as above - special_tools_test
+    special_tools_test_equipments: Special Tools Test Equipments
     
     #25
-    #as above - survey_hydrographic
+    surveyhydrographic_equipment_system: "Survey/Hydrographic Equipment System"
     
     #26
     cathodic_protection: Cathodic Protection
