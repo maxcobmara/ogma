@@ -4575,12 +4575,450 @@ en:
     survey_hydrographic: Survey / Hydrographic Equipment System
     cathodic_protection: Cathodic Protection
     
-    #equipment---
+    #equipment list - 26 items --
+    #1
     equipment: Equipment
     main_engine: Main Engine
     gearbox: Gearbox
-    
+    cpp_system: CPP System
+    controllable_pitch_propeller: Controllable Pitch Propeller
+    shaft: Shaft
+    sternseal: Sternseal
+    shaft_brake: Shaft Brake
+    heat_exchanger: Heat Exchanger 
+    main_engine_lub_oil_filling_pump: Main Engine Lub Oil Filling Pump
+    me_lub_oil_filling_pump_motor: ME Lub Oil Filling Pump
+    main_engine_lub_oil_pump: Main Engine Lub Oil Pump
+    me_lub_oil_pump_motor: ME Lub Oil Pump Motor
+    main_engine_fresh_water_cooling_pump: Main Engine Fresh Water Cooling Pump
+    me_fresh_cooling_water_pump_control: ME Fresh Cooling Water Pump Control
+    main_engine_fuel_oil_feeder_pump: Main Engine Fuel Oil Feeder Pump
+    me_fuel_oil_feeder_pump_motor: ME Fuel Oil Feeder Pump Motor
+    main_engine_sea_water_cooling_pump: Main Engine Sea Water Cooling Pump
+    me_sea_cooling_water_pump_motor: ME Sea Cooling Water Pump Motor 
+    sea_water_cooling_pump: Sea Water Cooling Pump 
+    sea_cooling_water_pump_motor: Sea Cooling Water Pump Motor
+    gearbox_lub_oil_pump: Geabox Lub Oil Pump 
+    gearbox_lub_oil_pump_motor: Gearbox Lub Oil Pump Motor
+    cpp_hydraulic_pump: CPP Hydraulic Pump
+    cpp_hydraulic_pump_motor: Cpp Hydraulic Pump Motor
+    flexible_coupling: Flexible Coupling
+    shaft_torque_meter: Shaft Torque Meter
+    pitch_control_unit: Pitch Control Unit
+
+    #2
     auxiliary_engine: Auxiliary Engine
+    emergency_diesel_engine: Emergency Diesel Engine
+    box_cooler: Box Cooler 
+    main_alternator: Main Alternator 
+    emergency_altenator: Emergency Alternator 
+    main_switchboard: Main Switchboard 
+    emergency_switchboard: Emergency Switchboard 
+    transformer: Transformer 
+    shore_supply_connection_box: Shore Supply Connection Box 
+    battery_charger_rectifier_em_diesel: Battery Charger Rectifier EM Diesel
+    battery_charger_rectifier_automation: "Battery Charger Rectifier 1+2 Automation"
+    battery_charger_rectifier_navicom: "Battery Charger Rectifier 1+2 Navicom"
+    battery_charger_rectif_port_batt: "Battery Charger Rectif 1+2 Port Batt"
+    ups_static_converter: UPS Static Converter
+    dbp_distribution_deck_aft: DBP Distribution Deck AFT 
+    dbl_lighting_distribution: DBL Lighting Distribution 
+    dbel_emergency_lighting_distribution: DBEL Emergency Lighting Distribution 
+    dbn_distribution_230v: DBN Distribution 230V 
+    dbs_distribution_socket: DBS Distribution Socket 
+    dbh_heating_distribution: DBH Heating Distribution 
+    ups_converter_40kva: UPS Converter 40KVA 
+    shaft_earthing_device: Shaft Earthing Device 
+    mcc1_main_engine_room: MCC 1 Main Engine Room
+    mcc2_main_engine_room: MCC 2 Main Engine Room
+    mcc3_auxiliary_engine_room: MCC 3 Auxiliary Engine Room 
+    mcc4_auxiliary_engine_room: MCC 4 Auxiliary Engine Room 
+    emergency_motor_control_centre: Emergency Motor Control Centre
+    static_converter_400hz: Static Converter 400HZ
+    
+    #3
+    steering_gear: Steering Gear 
+    steering_gear_pump_motor: Steering Gear Pump Motor 
+    steering_gear_pump_motor_starter: Steering Gear Motor Starter 
+    bow_thruster: Bow Thruster
+    bow_thruster_motor: Bow Thruster Motor
+    bow_thruster_motor_speed_controller: Bow Thruster Motor Speed Controller 
+    rudder_position_indicator_equipment: Rudder Position Indicator Equipment
+    
+    #4
+    hull_and_fire_pump: Hull and Fire Pump
+    hull_and_fire_pump_motor: Hull and Fire Pump Motor
+    hull_and_fire_pump_motor_starter: Hull and Fire Pump Motor Starter
+    emergency_fire_pump: Emergency Fire Pump
+    sea_water_pump_motor: Sea Water Pump Motor
+    water_ballast_tanks: Water Ballast Tanks
+    
+    #5
+    fresh_water_hydrophore_pump: Fresh Water Hydrophore Pump 
+    fresh_water_hydrophore_pump_motor: Fresh Water Hydrophore Pump Motor
+    fw_hydrophone_pump_motor_starter: Fresh water Hydrophore Pump Motor Starter
+    hot_water_circulating_pump: Hot Water Circulating Pump
+    hot_water_circulating_pump_motor: Hot Water Circulating Pump Motor
+    fresh_water_refilling_pump: Fresh Water Refilling Pump
+    fw_water_refilling_pump_motor: Fresh Water Refilling Pump Motor
+    fresh_water_generator: Fresh Water Generator 
+    fw_generator_filter_pump_motor: FW Generator Filter Pump Motor
+    fw_water_generator_high_pressure_pump_motor: FW Water Generator High Pressure Pump Motor
+    fw_generator_booster_pump_motor: FW Generator Booster Pump Motor
+    fw_generator_motor_controller: FW Generator Motor Controller
+    fresh_water_transfer_pump: Fresh Water Transfer Pump
+    fresh_water_transfer_pump_motor: Fresh Water Transfer Pump Motor
+    fresh_water_metering_pump: Fresh Water Metering Pump
+    fresh_water_metering_pump_motor: Fresh Water Metering Pump Motor
+    fresh_water_tanks: Fresh Water Tanks
+    cooling_water_tank: Cooling Water Tank
+    cooling_fw_exp_tank_main_engine: "Cooling FW EXP Tank - Main Engine"
+    cooling_fw_xp_tank_aux_engine: "Cooling FW XP Tank - AUX Engine"
+    fresh_water_hydrophore_tank: Fresh Water Hydrophore Tank
+    
+    #6
+    fuel_oil_transfer_pump: Fuel Oil Transfer Pump
+    fuel_oil_transfer_pump_motor: Fuel Oil Transfer Pump
+    lubricating_oil_separator: Lubricating Oil Separator
+    dirty_oil_discharge_pump: Dirty Oil Discharge Pump
+    dirty_oil_discharge_pump_motor: Dirty Oil Discharge Pump Motor
+    fuel_oil_filter_water_separator: Fuel Oil Filter/Water Separator 
+    fo_filter_water_separator_pump_motor: FO Filter/Water Separator Pump Motor
+    fo_filter_water_separator_motor_starter: FO Filter/Water Separator Motor Starter 
+    petrol_pump_unit: Petrol Pump Unit
+    petrol_pump_motor: Petrol Pump Motor
+    diesel_oil_pump_unit: Diesel Oil Pump Unit
+    diesel_oil_pump_motor: Diesel Oil Pump Motor 
+    lub_oil_storage_tanks: Lube Oil Storage Tanks
+    fuel_oil_tanks: Fuel Oil Tanks
+    fuel_oil_settling_tanks: Fuel Oil Settling Tanks
+    fuel_oil_day_tank_main_engine: Fuel Oil Day Tank Main Engine
+    fuel_oil_day_tank_auxiliary_engine: Fuel Oil Day Tank Auxiliary Engine
+    fuel_oil_day_tank_emergency_engine: Fuel Oil Day Tank Emergency Engine 
+    fuel_oil_overflow_tank: Fuel Oil Overflow Tank
+    fuel_oil_leak_off_tank: Fuel Oil Leak Off Tank
+    dirty_oil_tank: Dirty Oil Tank
+    petrol_cans: Petrol Cans 
+    petrol_tank: Petrol Tank
+    hydraulic_oil_storage_tank: Hydraulic oil Storage Tank
+    bow_thruster_lub_oil_storage_tank: Bow Thruster Lub Oil Storage Tank
+    fuel_oil_intermediate_tank: Fuel Oil Intermediate Tank
+    
+    #7
+    starting_air_compressor: Starting Air Compressor 
+    starting_air_compressor_motor: Starting Air Compressor Motor 
+    diesel_driven_emergency_air_compressor: Diesel Driven Emergency Air Compressor
+    emergency_air_compressor_diesel_engine: Emergency Air Compressor Diesel Engine
+    
+    #8
+    chilled_water_unit: Chilled Wate Unit
+    chilled_water_unit_chilled_water_pump: Chilled Water Unit Chilled Water Pump 
+    chilled_water_unit_sea_water_pump: Chilled Water Unit Sea Water Pump 
+    air_handling_unit: Air Handling Unit
+    chilled_water_unit_compressor_motor: Chilled Water Unit Compressor Motor
+    chilled_water_unit_cw_pump_motor: Chilled Water Unit CW Pump Motor
+    chilled_water_unit_sw_pump_motor: Chilled Water Unit SW Pump Motor
+    chilled_water_unit_switchboard: Chilled Water Unit Switchboard
+    chilled_and_sw_pump_motor_switchboard: Chilled And SW Pump Motor Switchboard
+    provision_cooling_unit: Provision Cooling Unit
+    provision_cooling_unit_compressor_motor: Provision Cooling Unit Compressor Motor
+    provision_cooling_unit_sea_water_pump: Provision Cooling Unit Sea Water Pump
+    provision_cooling_unit_sw_pump_motor: Provision Cooling Unit SW Pump Motor
+    provision_cooling_unit_switchboard: Provison Cooling Unit Switchboard
+    rcu_sea_water_pump: RCU Sea Water Pump
+    rcu_sea_water_pump_motor: RCU Sea Water Pump Motor
+    recirculating_cooling_unit: Recirculating Cooling Unit
+    supply_fan: Supply Fan 
+    exhaust_fan: Exhaust Fan 
+    working_room_ventilation_switchboard: Working Room VEntilaton Switchboard
+    acu_fan: ACU Fan
+    air_conditioning_switchboard: "Air-Conditioning Switchboard"
+    acu_heating_elements: ACU Heating Elements
+    engine_room_ventilation_switchbord: Engine Room Ventilation Switchboard
+    supply_exh_trunking_mc_space: "Supply & Exh. Trunking (Machinery Space)"
+    supply_exh_trunking_compartments: "Supply & Exh. Trunking (Compartments)"
+    
+    #9
+    life_buoy_light: Life Buoy Light
+    life_buoys: Life Buoys
+    life_jackets: Life Jackets 
+    life_rafts: Life Rafts 
+    safety_belts: Safety Belts 
+    survival_suits: Surival Suits 
+    stretcher: Stretcher
+    
+    #10
+    co2_system: CO2 System
+    co2_fire_extinguisher: CO2 Fire Extinguisher
+    gas_water_fire_extinguiser: "Gas/Water Fire Extinguisher"
+    dry_powder_extingusher: Dry Powder Extinguisher
+    foam_fire_extinguisher: Foam Fire Extinguisher
+    combine_spray_fire_extinguisher: Combine Spray Fire Extinguisher
+    pressure_holding_pump: Pressure Holding Pump 
+    pressure_holding_pump_motor: Pressure Holding Pump Motor
+    fire_alarm_system: Fire Alarm System
+    
+    #11 
+    underwater_hull_and_boot_topping_area: Underwater Hull and Boot Topping Area
+    propeller_shaft_bracket: Propeller Shaft Bracket
+    rudder: Rudder
+    sea_chest_gratings: Sea Chest Gratings 
+    bow_thruster_tunnel: Bow Thruster Tunnel 
+    replenishment_at_sea_arrangement: Replenishment at Sea Arrangement 
+    refueling_at_sea_arrangement: Refueling at Sea Arrangement
+    jack_and_ensign_staff_fittings: Jack and Ensign Staff Fittings  
+    deck_scuppers_and_scupper_pipes: Deck Scuppers and Scupper Pipes 
+    dressing_line_and_fittings: Dressing Line and Fittings 
+    awning_and_fittings: Awning and Fittings 
+    towing_and_fittings: Towing and Fittings 
+    portable_f_fighting_extinguisher_bracket: "Portable F/Fighting Extinguisher Bracket"
+    petrol_stowage_rack: Petrol Stowage Rack 
+    accommodation_ladder: Accommodation Ladder 
+    brow_ladder: Brow Ladder 
+    bollards: Bollards 
+    stanchions_quardrails_and_handrails: "Stanchions, Guardrails and Handrails"
+    scrambling_net: Scrambling Net 
+    brow_safety_net: Brow Safety Net 
+    lifting_net: Lifting Net 
+    anchors: Anchors 
+    anchors_cables_and_fittings: Anchors Cables and Fittings 
+    mast: Mast 
+    bosuns_chair_plank_stages_fittings: Bosuns Chair Plank Stages Fittings 
+    eyeplates_and_eyebolts: Eyeplates and Eyebolts 
+    roller_fairleads: Rollwe Fairleads 
+    hawser_reels: Hawser Reels 
+    portable_chain_block: Portable Chain Block
+    blobk_sheaves_and_associated_cordage: "Block, Sheaves and Associated Cordage"
+    inside_staircase: Inside Staircase 
+    outside_ladder: Outside Ladder
+    breather_pipe: Breather Pipe 
+    tag_list_and_nbcd_markings: Tag List and NBCD Markings 
+    exhaust_trunking: Exhaust Trunking 
+    sside_transom_struct_wline: "S/Side, Transform and Struct Above W/Line"
+    superstructure_plating: "Superstructure Plating (External)"
+    machinery_bilges: Machiner Bilges 
+    watertight_doors: Watertight Doors 
+    non_watertight_doors: Non Watertight Doors 
+    watertight_hatches: Watertight Hatches 
+    scuttles: Scuttles 
+    windows: Windows 
+    cargo_hatch: Cargo Hatch 
+    flush_deck_hatches: Flush Deck Hatches 
+    weather_decks: Weather Decks 
+    compartments: Compartments 
+    chain_locker: Chain Locker 
+    elect_compts_wshop_bridge_deck: "Elec/Electr Compts & W/Shop (Bridge Deck)"
+    elect_compts_wshop_main_deck: "Elec/Electr Compts & W/Shop (Main Deck)"
+    elect_compts_wshop_tween_deck: "Elec/Electr Compts & W/Shop (Tween Deck)"
+    elect_compts_wshop_swage_deck: "Elec/Electr Compts & W/Shop (S'wage Deck)"
+    elect_compts_wshop_fcastle_deck: "Elec/Electr Compts & W/Shop (F'Castle Deck)"
+    machinery_space: machinery Space 
+    mechanical_workshop: Mechanical Workshop 
+    pantries_dining_hall_galley: Pantries Dining Hall Galley 
+    messes_cabons_off_space_bridge_deck: "Messes, Cabins & Off. Space (Bridge Deck)"
+    messes_cabons_off_space_boat_deck: "Messes, Cabins & Off. Space (Boat Deck)"
+    messes_cabons_off_space_fcastle_dk: "Messes, Cabins & Off. Space (F'Castle DK)"
+    messes_cabons_off_space_main_deck: "Messes, Cabins & Off. Space (Main Deck)"
+    messes_cabons_off_space_tween_deck:"Messes, Cabins & Off. Space (Tween Deck)"
+    messes_cabons_off_space_swage_deck:"Messes, Cabins & Off. Space (S'wage Deck)"
+    heads_showers_laundry_room_boat_deck: "Heads, Showers & Laundry Room (Boat Deck)"
+    heads_showers_laundry_room_fcastle_deck: "Heads, Showers & Laundry Room (F'Castle Deck)"
+    heads_showers_laundry_room_main_deck: "Heads, Showers & Laundry Room (Main Deck)"
+    heads_showers_laundry_room_tween_deck: "Heads, Showers & Laundry Room (Tween Deck)"
+    heads_showers_laundry_room_swage_deck: "Heads, Showers & Laundry Room (S'wage Deck)"
+    cold_and_cool_rooms
+    ammunition_explosives_gunners_stores: Ammunition, Explosives & Gunner's Stores
+    store_rooms_forecastle_deck: Store Rooms Forecastle Deck
+    store_rooms_main_deck: Store Rooms  Main Deck
+    store_rooms_tween_deck: Store Rooms Tween Deck 
+    store_rooms_stowage_deck: : Store Rooms Stowage Deck
+    cofferdam: Cofferdam
+    air_conditioning_room: Air Conditioning Room
+    dving_room: Diving Room
+    steering_gear_rooms: Steering Gear Rooms
+    bow_thruster_room: Bow Thruster Room
+    fresh_water_treatment_room: Fresh Water Treatment Room
+    garbage_disposal_room: Garbage Disposal Room 
+    anterooms: Anterooms 
+    co2_room: CO2 Room 
+    fuel_oil_refuelling_station: Fuel Oil Refuelling Station
+    petrol_refuelling_station: Petrol Refuelling Station
+    escape_trunking: Escape Trunking
+    
+    #12
+    stern_mooring_winch: Stern Mooring Winch 
+    stern_mooring_winch_motor: Stern Mooring Winch Motor
+    stern_anchor_mooring_winch: Stern Anchor Mooring Winch
+    stern_anchor_mooring_winch_motor: Stern Anchor Mooring Winch Motor 
+    stern_anchor_moor_winch_motor_controller: Stern Anchor Moor Winch Motor Controller 
+    boat_davit: Boat Davit
+    boat_davit_motor: Boat Davit Motor 
+    boat_davit_motor_controller: Boat Davit Motor Controller 
+    boat_davit_hydraulic_motor: Boat Davit Hydraulic Motor 
+    crane: Crane 
+    crane_hydraulic_motor: Crane Hydraulic Motor 
+    crane_hydraulic_motor_starter: Crane Hydraulic Motor Starter 
+    combined_rescuework_boat_davit: "Combined Rescue/Work Boat Davit"
+    combined_rescuework_boat_davit_motor: "Combined Rescue/Work Boat Davit Motor"
+    combined_rescuework_boat_davit_starter:  "Combined Rescue/Work Boat Davit Starter"
+    radial_boom_davit: Radial Boom Davit 
+    ctd_bottomless_winch: CTD Bottomless Winch
+    ctd_bottomless_winch_motor: CTD Bottomless Winch Motor
+    ctd_bottomless_winch_motor_controller: CTD Bottomless Winch Motor Controller
+    life_raft_davit: Life Raft Davit
+    side_scan_sonar_winch: Side Scan Sonar Winch
+    side_scan_sonar_winch_motor: Side Scan Sonar Winch Motor
+    side_scan_sonar_winch_motor_controller: Side Scan Sonar Winch Motor Controller
+    bow_anchor_mooring_winch: Bow Anchor Mooring Winch
+    bow_anchor_mooring_winch_motor: Bow Anchor Mooring Winch Motor
+    bow_anchor_mooring_winch_motor_controller: Bow Anchor Mooring Winch Motor Controller
+    accomodation_ladder_winch_motor: Accommodation Ladder Winch Motor
+    accomodation_ladder_winch_motor_starter: Accommodation Ladder Winch Motor Starter
+    
+    #13
+    weapon_and_weapon_system: Weapon and Weapon System
+    
+    #14
+    navigation_light: Navigation Light
+    window_wiper: Window Wiper 
+    windscreen_wiper_motor_control: Windscreen Wiper Motor Control 
+    radarpilot_xband: Radarpilot (X-Band)
+    multipilot_sband: Multipilot (S-Band)
+    electromagnetic_log: Electromagnetic Log
+    atlas_echograph_481: Atlas Echograph 481 
+    chartpilot: Chartpilot
+    gyro_compass_equipment: Gyro Compass Equipment 
+    steering_repeater_compass: Steering Repeater Compass 
+    bearing_repeater_compass: Beering Repeater Compass 
+    digital_repeater_compass: Digital Repeater Compass 
+    combined_wind_sensor: Combined Wind Sensor 
+    differential_global_positioning_system: Differential Global Positioning System
+    
+    #15
+    operator_console: Operator Console
+    vhf_duplex_radio_telephone_debeg_6347: VHF Duplex Radio Telephone Debeg 6347
+    handset: Handset
+    gmdss_console: GMDSS Console
+    mfhf_controllerreceiver_dsc_9000: "MF/HF Controller/Receiver DSC 9000"
+    vhf_transceiver_telecar_10: VHF Transceiver Telecar 10
+    inmarset_c_trx_debeg_322b: "INMARSET-C TRX DEBEG 322B"
+    satellite_telephone_trx_sp_1600m: Satellite Telephone TRX SP 1600M
+    hf_ssb_radio_system_trp_7000: HF SSB Radio System TRP 7000
+    vhf_dsc_controllerreceiver_dsc_3000: "VHF DSC Controller/Receiver DSC 3000"
+    watch_receiver_debeg_2150: Watch Receiver Debeg 2150 
+    antenna_coupler: Antenna Coupler 
+    antenna_arrangement: Antenna Arrangement 
+    natvex_receiver_rx_518: Navtex Receiver RX 518 
+    radio_facsimile_rx_debeg_2952: Radio Facsimile RX Debeg 2952
+    hf_manpack_transceiver_prm_4790a: HF Manpack Transceiver PRM 4790A
+    headset: Headset
+    vhf_fm_manpack_transceiver_prm_4790a: "VHF-FM Manpack Transceiver PRM 4700A"
+    vhm_hand_held_transceiver_prm_4720b: "VHF Hand-Held Transceiver PRM 4720B"
+    vhm_hand_held_transceiver_prm_6701: "VHF Hand-Held Transceiver PRM 6701"
+    emergency_radar_transponder_debeg_5900: Emergency Radar Transponder DEBEG 5900
+    emergency_beacon: Emergency Beacon 
+    hf_transmitter_subsystem: HF Transmitter Subsystem
+    1kw_hf_transceiver_1510: 1kw HF Transceiver 1510 
+    180w_hf_transceiver_300: 180w HF Transceiver 300
+    vlflfhf_receiver_subsystem: "VLF/LF/HF Receiver Subsystem"
+    vhfuhf_transceiver_subsystem: "VHF/UHF Transceiver Subsystem"
+    audio_distribution_subsystem: Audio Distribution Subsystem
+    message_handling_subsystem: Message Handling Subsystem 
+    remote_control_subsystem: Remote Control Subsystem
+    gmdss_subsystem: GMDSS Subsystem
+    vhf_direction_finder_subsystem: VHF Direction Finder Subsystem 
+    sound_powered_telephone_system: Sound Powered Telephone System
+    user_station_ust: User Statuon UST 
+    main_broadcast_system: Main Broadcast System
+    automatic_telephone_system: Automatic Telephone System
+    loudhailer_system: Loudhailer System
+    
+    #16
+    ice_cube_maker: Ice Cube Maker 
+    drinking_water_chiller: Drinking Water Chiller 
+    refrigerator: Refrigerator
+    provision_food_lift: Provision Food Lift 
+    provision_food_lift_motor: Provision Food Lift Motor
+    provision_food_lift_motor_starter: Provision Food Lift Motor Starter
+    refrigerator: Refrigerator 
+    electric_galley_range: Electric Galley Range 
+    electric_deep_fryer: Electric Deep Fryer 
+    electric_boiling_kettle: Electric Boiling Kettle 
+    electric_tiltable_frying_pan: Electric Tiltable Frying Pan 
+    garbage_waste_compactor: Garbage Waste Compactor
+    washing_machine: Washing Machine 
+    drying_tumbler: Drying Tumbler 
+    baking_oven: Baking Oven 
+    baking_equipment: Baking Equipment 
+    coffee_machine: Coffee Machine 
+    food_waste_disposer: Food Waste Disposer 
+    electric_meat_slicer: Electric Meat Slicer 
+    ships_recreation_equipment_sre: "Ship's Recreation Equipment (SRE)"
+    closed_circuit_television: Closed Circuit Television
+    
+    #17
+    ship_monitoring_system: Ship Monitoring System
+    
+    #18
+    degaussing_control_unit: Degaussing Control Unit
+    power_distribution_centre: Power Distribution Centre 
+    degaussing_power_supply_unit: Degaussing Power Supply Unit 
+    tripple_probe: Tripple Probe 
+    probe_connection_box: Probe Connection Box 
+    terminal_box: Terminal Box
+    
+    #19
+    lathe_machine: Lathe Machine 
+    pedestal_drilling_machine: Pedestal Drilling Machine 
+    bench_drilling_machine; bench Drilling Machine 
+    drilling_machine : Drilling Machine 
+    #bench_drilling_machine
+    grinding_machine: Grinding Machine 
+    welding_rectifier: Welding Rectifier
+    #pedestal_drilling_machine
+    #lathe_machine
+    #drilling_machine
+    
+    #20
+    intering_stabilizer_plant: Intering Stabilizer Plant 
+    stabilising_tank: Stabilising Tank 
+    stabilising_plant: Stabilising Plant
+    
+    #21
+    diving_air_compressor: Diving Air Compressor
+    diving_air_compressor_motor: Diving Air Compressor Motor
+    
+    #22
+    sewage_treatment_plant: Sewage Treatment Plant
+    sewage_pump: Sewage Pump
+    sewage_pump_motor: Sewage Pump Motor
+    sewage_metering_pump_motor: Sewage Metering Pump Motor
+    sewage_driving_water_pump_motor: Sewage Driving Water Pump Motor 
+    ejector: Ejector
+    sewage_treatment_switchboard: Sewage Treatment Switchboard
+    sewage_aeration_blower: Sewage Aeration Blower 
+    oily_water_separator: Oil Water Separator
+    grey_water_pump: Grey Water Pump
+    grey_water_pump_motor: Grey Water Pump Motor
+    sanitary_system_and_fittings: Sanitary System and Fittings
+    waste_detergent_tank: Waste Detergent Tank
+    waste_water_tank: Waste Water Tank
+    bilge_water_tank: Bilge Water Tank
+    
+    #23
+    whaler: Whaler
+    dinghy: Dinghy
+    
+    #24
+    #as above - special_tools_test
+    
+    #25
+    #as above - survey_hydrographic
+    
+    #26
+    cathodic_protection: Cathodic Protection
+    zinc_anode: Zinc Anode
+    
     
     classification: Security Classification
     restricted: Restricted

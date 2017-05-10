@@ -3,14 +3,16 @@
   %dd= repository.render_document
   
   %dt= t 'repositories.document_subtype'
-  %dd
+  %dd{style: 'padding-left: 70px;'}
     = repository.render_subdocument
     %i
       .small.text-grey
         ='Previous data : '+@repository.render_subdocument_old+" - "+@repository.document_subtype
         %br
         ="Ref : "
-        =Repository.subdocument_old.map{|x,y|"#{y} = #{x}"} 
+        %ul
+          - Repository.subdocument_old.sort_by{|x, y|y.to_i}.each do |x,y|
+            %li="#{y} = #{x}"
   
   %dt= t 'repositories.classification'
   %dd= repository.render_classification

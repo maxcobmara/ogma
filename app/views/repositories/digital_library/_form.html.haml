@@ -18,12 +18,14 @@
               ='Previous data : '+@repository.render_subdocument_old+" - "+@repository.document_subtype
               %br
               ="Ref : "
-              =Repository.subdocument_old.map{|x,y|"#{y} = #{x}"} 
+              %ul
+                - Repository.subdocument_old.sort_by{|x, y|y.to_i}.each do |x,y|
+                  %li="#{y} = #{x}"
       
     .form-group
       .col-sm-2.control-label
         =f.label t 'repositories.equipment'
-      .col-md-5
+      .col-md-4
         =f.select :equipment, grouped_options_for_select(Repository.equipment_list), {:include_blank => (t 'select')}, {:class => 'form-control'}
     
     
