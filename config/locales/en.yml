@@ -4879,8 +4879,8 @@ en:
     bow_anchor_mooring_winch: Bow Anchor Mooring Winch
     bow_anchor_mooring_winch_motor: Bow Anchor Mooring Winch Motor
     bow_anchor_mooring_winch_motor_controller: Bow Anchor Mooring Winch Motor Controller
-    accomodation_ladder_winch_motor: Accommodation Ladder Winch Motor
-    accomodation_ladder_winch_motor_starter: Accommodation Ladder Winch Motor Starter
+    accommodation_ladder_winch_motor: Accommodation Ladder Winch Motor
+    accommodation_ladder_winch_motor_starter: Accommodation Ladder Winch Motor Starter
     
     #13
     weapon_and_weapon_system: Weapon and Weapon System

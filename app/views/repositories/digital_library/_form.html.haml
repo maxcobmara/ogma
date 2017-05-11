@@ -27,7 +27,7 @@
         =f.label t 'repositories.equipment'
       .col-md-4
         =f.select :equipment, grouped_options_for_select(Repository.equipment_list), {:include_blank => (t 'select')}, {:class => 'form-control'}
-    
+        = hidden_field_tag :selected_equipment, @repository.equipment, :class => 'selectedequipment'
     
     .form-group
       .col-sm-2.control-label
@@ -158,6 +158,16 @@
     }
     else
     {  checkbox.checked = false; }
+  });
+  
+  /*on load : document_subtype (system) exist -> assign selected equipment to optgroup select accordingly */
+  $("#repository_equipment").each(function(){
+    var selected_system=$('#repository_document_subtype :selected').text();
+    var selectedequipment=$('#repository_equipment');
+    var equipment_name=$('#selected_equipment').val();
+    var optgroup=$(selectedequipment).children('optgroup[label="'+selected_system+'"]');
+    var option = optgroup.find('option[value="'+equipment_name+'"]');
+    option.attr('selected', true);
   });
   
   /* onload : when checked, display vessel name selection, otherwise hide */

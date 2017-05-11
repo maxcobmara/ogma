@@ -595,7 +595,7 @@ class Repository < ActiveRecord::Base
       [I18n.t('repositories.bow_anchor_mooring_winch'), '271'],
       [I18n.t('repositories.bow_anchor_mooring_winch_motor'), '272'],
       [I18n.t('repositories.bow_anchor_mooring_winch_motor_controller'), '273'],
-      [I18n.t('repositories.accomodation_ladder_winch_motor'), '274'],
+      [I18n.t('repositories.accommodation_ladder_winch_motor'), '274'],
       [I18n.t('repositories.accommodation_ladder_winch_motor_starter'), '275']]],
     [I18n.t('repositories.weapon_system'), 
      [[I18n.t('select'),''],
@@ -798,8 +798,21 @@ class Repository < ActiveRecord::Base
     (Repository.subdocument.find_all{|disp, value| value == document_subtype }).map {|disp, value| disp}[0]
   end
   
+  #temporary 11May2017 - remove upon completion of updates for document_subtype (document_group) - note : 209 (118 records)
   def render_subdocument_old
     (Repository.subdocument_old.find_all{|disp, value| value == category.to_s }).map {|disp, value| disp}[0]
+  end
+  
+  def render_equipment
+    #list=Repository.equipment_list.map{|x,y|y.each{|a|a}}  #Repository.equipment_list.map{|x,y|y}
+    ls=[]
+    Repository.equipment_list.each do |x, y|
+      y.each do |a|
+	ls << a 
+      end
+    end
+    ls
+    (ls.find_all{|disp, value| value==equipment}).map{|disp, value| disp}[0]
   end
   
   def render_classification
