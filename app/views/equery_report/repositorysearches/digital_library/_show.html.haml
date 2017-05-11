@@ -15,6 +15,9 @@
     - unless repositorysearch.vessel.blank?
       %dt=(t 'equery.repository.vessel')
       %dd=repositorysearch.vessel
+      - vesselid=repositorysearch.vessel
+    - else
+      - vesselid=0
                
     - unless repositorysearch.document_type.blank?
       %dt=(t 'equery.repository.document_type')
@@ -44,7 +47,7 @@
   %br
   - if repositorysearch.repositories.count > 0
 
-    .right=link_to (fa_icon "print", text: (t 'equery.print_result')), repository_list2_repositories_path(format: 'pdf', ids: @repositorysearch.repositories.pluck(:id))
+    .right=link_to (fa_icon "print", text: (t 'equery.print_result')), repository_list2_repositories_path(format: 'pdf', ids: @repositorysearch.repositories.pluck(:id), vessel_id: vesselid)
     %table.table.table-bordered.table-condensed.table-hover
       %head
         %tr.info

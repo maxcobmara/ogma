@@ -19,12 +19,22 @@ class EqueryReport::RepositorysearchesController < ApplicationController
     @repositorysearch = Repositorysearch.find(params[:id])
     #@repositories = Kaminari.paginate_array(@repositorysearch.repositories.sort_by{|x|[x.document_type, x.document_subtype, x.vessel]}).page(params[:page]).per(10)
 
+    unless @repositorysearch.vessel.blank? #@search.vessel_search.blank?
+      vessel_class_name=[@repositorysearch.vessel]
+    else
+      vessel_class_name=Repository.vessel_class_names
+    end
     @actual_records=@repositorysearch.repositories
     @repos=[]
     @rep=[]
     @per_vessel=Hash.new
     @actual_records.group_by{|x|x.vessel_class}.sort.each do |vessel_class, mrepositories|
-      current_vessel_list=Repository.vessel_class_names[vessel_class.to_i-1]
+      unless @repositorysearch.vessel.blank?  #@search.vessel_search.blank?
+        current_vessel_list=vessel_class_name
+      else
+        current_vessel_list=vessel_class_name[vessel_class.to_i-1]
+      end
+      #current_vessel_list=vessel_class_name[vessel_class.to_i-1]
       per_vessel=Hash[current_vessel_list.map{|x|[x, Hash["master" => [], "specific" =>[] ]]}]        #per_vessel== list of vessel of each VESSEL CLASS
       for a_vessel in current_vessel_list
         spec_arr=[]
@@ -70,7 +80,7 @@ class EqueryReport::RepositorysearchesController < ApplicationController
   private
    
     def repositorysearch_params
-      params.require(:repositorysearch).permit(:title, :vessel, :document_type, :document_subtype, :refno, :publish_date, :total_pages, :copies, :location, :repotype, :classification, [:keyword =>{}], :college_id, [:data =>{}])
+      params.require(:repositorysearch).permit(:title, :vessel, :document_type, :document_subtype, :equipment, :refno, :publish_date, :total_pages, :copies, :location, :repotype, :classification, [:keyword =>{}], :college_id, [:data =>{}])
     end
    
 end

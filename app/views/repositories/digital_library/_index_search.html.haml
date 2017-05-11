@@ -7,7 +7,9 @@
       = f.select :document_type_search, Repository.document,{ include_blank: (t 'select')+" "+(t 'repositories.document_type')},{ :class => "selectpicker","data-width" =>"fit", "data-style" => "btn-sm"}
       = f.select :document_subtype_search, Repository.subdocument,{ include_blank: (t 'select')+" "+(t 'repositories.document_subtype')},{ :class => "selectpicker", "data-width" =>"fit","data-style" => "btn-sm"}
       = f.text_field :title_cont, size: 2,  :class => "form-control", :placeholder =>  (t 'repositories.document_title')
-    %td= f.text_field :refno_search, size: 2,  :class => "form-control", :placeholder =>  (t 'repositories.refno')
+    %td
+      = f.select :equipment_search, Repository.equipment_list,{ include_blank: (t 'select')+" "+(t 'repositories.equipment')},{ :class => "selectpicker", "data-width" =>"fit","data-style" => "btn-sm"}
+      = f.text_field :refno_search, size: 2,  :class => "form-control", :placeholder =>  (t 'repositories.refno')
     %td= f.text_field :publish_date_search, size: 2,  :class => "form-control date_picker_reverse", :placeholder =>  (t 'repositories.publish_date')
     %td= f.select :master_search, [[(t 'yes2'), "1"], [(t 'no2'), "2"]], { include_blank: (t 'select')},{ :class => "selectpicker","data-width" =>"fit", "data-style" => "btn-sm"}
     %td{colspan: 2}

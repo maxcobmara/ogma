@@ -211,6 +211,12 @@ class Repository < ActiveRecord::Base
     where(id: ids)
   end
   
+  def self.equipment_search(query)
+    ids=[]
+    Repository.digital_library.each{ |repo| ids << repo.id if repo.equipment==query}
+    where(id: ids)
+  end
+  
   def self.classification_search(query)
     ids=[]
     Repository.digital_library.each{ |repo| ids << repo.id if repo.classification==query}
@@ -244,7 +250,7 @@ class Repository < ActiveRecord::Base
 
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-    [:vessel_search, :refno_search, :publish_date_search, :location_search, :document_type_search, :document_subtype_search, :classification_search, :status_search, :master_search]
+    [:vessel_search, :refno_search, :publish_date_search, :location_search, :document_type_search, :document_subtype_search, :classification_search, :status_search, :master_search, :equipment_search]
   end  
   
   def self.document
@@ -565,7 +571,7 @@ class Repository < ActiveRecord::Base
       [I18n.t('repositories.anterooms'), '243'],
       [I18n.t('repositories.co2_room'), '244'],
       [I18n.t('repositories.fuel_oil_refuelling_station'), '245'],
-      [I18n.t('repositories.petrol_refuelling'), '246'],
+      [I18n.t('repositories.petrol_refuelling_station'), '246'],
       [I18n.t('repositories.escape_trunking'), '247']]],
     [I18n.t('repositories.deck_machinery'),
      [[I18n.t('select'),''],
@@ -893,6 +899,23 @@ class Repository < ActiveRecord::Base
           ab << [a_vessel+": "+((Repository.document.find_all{|disp, value| value == dt }).map {|disp, value| disp}[0]), a.uniq]
         end 
       end
+    end
+    ab
+  end
+ 
+  #usage - repositorysearches/_form --> display list based on current saved records only
+  def self.equipment_per_docsubtype
+    ab=[]
+    Repository.digital_library.group_by{|x|x.vessel_class}.sort.each do |vessel_class, repositories|
+        repositories.group_by(&:document_subtype).each do |dst, rs|
+          a=[[I18n.t('select'), ""]]
+          rs.group_by(&:vessel).each do |ves, repos|
+            for repository in repos
+              a << [repository.render_equipment, repository.equipment]
+            end
+          end
+          ab << [((Repository.subdocument.find_all{|disp, value| value == dst }).map {|disp, value| disp}[0]), a.uniq]
+        end
     end
     ab
   end
