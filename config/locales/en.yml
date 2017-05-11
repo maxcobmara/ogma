@@ -3232,6 +3232,10 @@ en:
   library:
     title: Library
     help: Help
+    main: E-Library Main Page
+    main2: E-Library
+    borrower_list: Membership
+    general_title: Technical Documentations and General Books Repository
     transaction: 
       manager: Library Transaction Manager
       title: Library Transactions
@@ -3409,6 +3413,7 @@ en:
       isbn: ISBN
       others: Others
       book2: Book
+      general_books: General Books
       magazine: Magazine
       available: Available
       on_loan: "On-loan"
@@ -4416,11 +4421,11 @@ en:
       web: Web
       
     visitors:
-      title: Visitor
-      list: Visitors List
-      new: New Visitor
-      edit: Edit Visitor
-      details: Visitor Details
+      title: Membership (Visitor)
+      list: Membership List (Visitors)
+      new: New Membership (Visitor)
+      edit: Edit Membership (Visitor)
+      details: Membership Details (Visitor)
       name: Name
       icno: MyKad No
       rank_id: Rank

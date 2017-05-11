@@ -13,6 +13,8 @@
         %ul
           - Repository.subdocument_old.sort_by{|x, y|y.to_i}.each do |x,y|
             %li="#{y} = #{x}"
+            
+  / TODO - add equipment here 11May2017
   
   %dt= t 'repositories.classification'
   %dd= repository.render_classification

@@ -675,6 +675,7 @@ Ogma::Application.routes.draw do
   match '/fetch_items', to: 'exam/exams#question_selection', via: 'get'
   #match '/rules_regulations', to: 'static_pages#rules_regulations', via: 'get'
   match '/equery_reports', to: 'static_pages#equery_reports', via: 'get'
+  match '/library_main', to: 'static_pages#library', via: 'get'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

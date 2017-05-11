@@ -3122,6 +3122,10 @@ ms_MY:
   library:
     title: Perpustakaan
     help: Bantuan
+    main: Laman Utama E-Perpustakaan
+    main2: E-Perpustakaan
+    borrower_list: Keahlian
+    general_title: Repositori Dokumentasi Teknikal dan Buku Umum
     transaction: 
       manager: Pengurusan Transaksi Perpustakaan
       title: Transaksi Perpustakaan
@@ -3300,6 +3304,7 @@ ms_MY:
       isbn: ISBN
       others: "Lain - lain"
       book2: Buku
+      general_books: Buku Umum
       magazine: Majalah
       available: Ada
       on_loan: Dipinjam
@@ -4333,11 +4338,11 @@ ms_MY:
       web: Web 
 
     visitors:
-      title: Pelawat
-      list: Senarai Pelawat
-      new: Pelawat Baru
-      edit: Sunting Pelawat
-      details: Butiran Pelawat
+      title: Keahlian (Pelawat)
+      list: Senarai Keahlian (Pelawat)
+      new: Keahlian Baru (Pelawat)
+      edit: Sunting Keahlian (Pelawat)
+      details: Butiran Keahlian (Pelawat)
       name: Nama
       icno: No MyKad
       rank_id: Pangkat

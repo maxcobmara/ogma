@@ -2,6 +2,9 @@
 .page-header
   %h1= t('library.transaction.manager')
 
+  - if current_user.userable.coemail.include?('teknikpadu.com')
+    =link_to fa_icon("backward"), library_main_path, {title: (t 'library.main')}
+      
 - if current_user.college.code=='amsas'
   - staff_list=Staff.order(rank_id: :asc, name: :asc).map(&:staff_with_rank)
   - student_list=Student.order(rank_id: :asc, name: :asc).map(&:student_with_rank)

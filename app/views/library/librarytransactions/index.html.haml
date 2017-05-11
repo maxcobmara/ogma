@@ -4,6 +4,8 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
+    - if current_user.userable.coemail.include?('teknikpadu.com')
+      %li=link_to fa_icon("backward"), library_main_path, {title: (t 'library.main')}
     - permitted_to? :manage, :library_librarytransactions do
       %li= link_to content_tag(:li, fa_icon("gear", text: (t 'library.transaction.manager'))), manager_library_librarytransactions_path
     - permitted_to? :check_status, :library_librarytransactions do
