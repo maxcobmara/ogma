@@ -460,7 +460,7 @@ class Repository < ActiveRecord::Base
        [I18n.t('repositories.working_room_ventilation_switchboard'), '138'],
        [I18n.t('repositories.acu_fan'), '139'],
        [I18n.t('repositories.air_conditioning_switchboard'), '140'],
-       [I18n.t('repositories.acu_heatinf_elements'), '141'],
+       [I18n.t('repositories.acu_heating_elements'), '141'],
        [I18n.t('repositories.engine_room_ventilation_switchbord'), '142'],
        [I18n.t('repositories.supply_exh_trunking_mc_space'), '143'],
        [I18n.t('repositories.supply_exh_trunking_compartments'), '144']]],
@@ -700,14 +700,9 @@ class Repository < ActiveRecord::Base
       [I18n.t('repositories.lathe_machine'), '356'],
       [I18n.t('repositories.pedestal_drilling_machine'), '357'],
       [I18n.t('repositories.bench_drilling_machine'), '358'],
-      [I18n.t('repositories.drilling_machine'), '359'],
-      #bench_drilling_machine
+      [I18n.t('repositories.drilling_machine'), '359'], 
       [I18n.t('repositories.grinding_machine'), '360'],
-      [I18n.t('repositories.welding_rectifier'), '361']
-      #pedestal_drilling_machine
-      #lathe_machine
-      #drilling_machine
-      ]],
+      [I18n.t('repositories.welding_rectifier'), '361']]],
     [I18n.t('repositories.stabilising_pump'), 
      [[I18n.t('select'),''],
       [I18n.t('repositories.intering_stabilizer_plant'), '362'],
@@ -749,6 +744,13 @@ class Repository < ActiveRecord::Base
       [I18n.t('repositories.cathodic_protection'), '386'],
       [I18n.t('repositories.zinc_anode'), '387']]]]
   end
+  
+  #workshop_machinery
+  
+     #bench_drilling_machine
+      #pedestal_drilling_machine
+      #lathe_machine
+      #drilling_machine
   
   def self.document_classification
     [[I18n.t('repositories.restricted'), '1'],

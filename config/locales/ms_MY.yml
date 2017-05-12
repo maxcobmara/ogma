@@ -4658,7 +4658,7 @@ ms_MY:
     recirculating_cooling_unit: Recirculating Cooling Unit
     supply_fan: Supply Fan 
     exhaust_fan: Exhaust Fan 
-    working_room_ventilation_switchboard: Working Room VEntilaton Switchboard
+    working_room_ventilation_switchboard: Working Room Ventilaton Switchboard
     acu_fan: ACU Fan
     air_conditioning_switchboard: "Air-Conditioning Switchboard"
     acu_heating_elements: ACU Heating Elements
