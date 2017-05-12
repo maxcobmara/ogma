@@ -3,25 +3,52 @@
   %dd= repository.render_document
   
   %dt= t 'repositories.document_subtype'
-  %dd= repository.render_subdocument
+  %dd{style: 'padding-left: 70px;'}
+    = repository.render_subdocument
+    - unless repository.category.blank?
+      %br
+      %i.small.text-red
+        ='Previous data : '+repository.render_subdocument_old+" - "+repository.document_subtype
+        %br
+        ="Ref : "
+        %ul
+          - Repository.subdocument_old.sort_by{|x, y|y.to_i}.each do |x,y|
+            %li="#{y} = #{x}"
+            
+  %dt= t 'repositories.equipment'
+  %dd= repository.render_equipment
   
   %dt= t 'repositories.classification'
   %dd= repository.render_classification
   
   %dt= t 'repositories.document_title'
   %dd= repository.title
-   
-  %dt= t 'repositories.vessel'
-  %dd= repository.vessel
+  
+  %dt=(t 'repositories.vessel_class')
+  %dd
+    = repository.render_vessel_class
+    - if repository.vessel.blank?
+      =" ("+(t 'repositories.master')+")" 
+  
+  - if !repository.vessel.blank? && !repository.vessel_class.blank?
+    %dt=(t 'repositories.vessel')
+    %dd
+      = repository.render_vessel+" ("+(t 'repositories.specific')+")"
   
   %dt= t 'repositories.refno'
-  %dd= repository.refno
+  %dd{style: 'padding-left: 70px;'}
+    = repository.refno
+    %i 
+      .text-grey.small="("+(t 'repositories.serial_no')+": "+repository.code+")"
   
   %dt= t 'repositories.publish_date'
   %dd= repository.publish_date
   
   %dt= (t 'repositories.total')+" - "+(t 'repositories.copies')+" / "+(t 'repositories.total_pages')
-  %dd= repository.copies.to_s+" / "+repository.total_pages.to_s
+  %dd
+    = repository.copies.to_s
+    =" / " if !repository.copies.blank? || !repository.total_pages.blank?
+    = repository.total_pages.to_s
   
   %dt= t 'repositories.location'
   %dd= repository.location

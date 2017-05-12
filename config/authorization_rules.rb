@@ -30,7 +30,7 @@ authorization do
      if_attribute :id => is {user.college_id}
    end
    has_permission_on :campus_pages, :to =>[:manage, :page_list, :flexible]
-   has_permission_on :repositories, :to => [:manage, :download, :repository_list, :repository_list2, :index2, :new2]
+   has_permission_on :repositories, :to => [:manage, :download, :repository_list, :repository_list2, :index2, :new2, :loan]
    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
    has_permission_on :staff_mentors, :to => :manage
     
@@ -914,7 +914,7 @@ authorization do
   role :librarian do
     has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import, :check_availability, :stock_listing, :book_summary]
     has_permission_on :library_accessions, :to =>[:read, :reservation, :update, :reservation_list]
-    has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext]
+    has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :document_extending, :document_returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :repository_loan]
     has_permission_on :students, :to => [:read, :borang_maklumat_pelajar, :student_list]
     has_permission_on :equery_report_studentsearches, :to => [:new, :create, :show]
     has_permission_on :campus_pages, :to => :update do
@@ -922,6 +922,9 @@ authorization do
     end
     has_permission_on :equery_report_booksearches, :to => [:new, :create, :show]
     has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
+    ##additional roles for librarian --> making 'loan' for digital library (marine documentation) - 4May2017
+    has_permission_on :repositories, :to => [:manage, :download, :repository_list, :repository_list2, :index2, :new2, :loan]
+    has_permission_on :campus_visitors, :to => :manage
   end
 
   #Group Student --------------------------------------------------------------------------------
@@ -993,6 +996,7 @@ authorization do
     has_permission_on :campus_location_damages, :to =>[:manage, :index_staff, :damage_report, :damage_report_staff]
     has_permission_on :student_tenants, :to => [:manage, :index_staff, :reports,:census_level, :room_map, :room_map2, :statistics, :return_key, :return_key2, :census, :tenant_report, :tenant_report_staff, :laporan_penginapan, :laporan_penginapan2]
     has_permission_on :campus_bookingfacilities, :to => [:index, :show, :update, :approval_facility, :booking_facility]
+    has_permission_on :campus_visitors, :to => :manage
   end
   role :warden do
     has_permission_on :campus_locations, :to => [:read, :kewpa7] #:core - NOTE - kewpa7 visible to all (sticked on wall)
@@ -1091,7 +1095,7 @@ authorization do
   role :staffs_module_admin do
     has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff, :staff_list] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
     has_permission_on :campus_pages, :to => :flexipage
-    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2]
+    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2, :loan]
     has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
     has_permission_on :equery_report_staffsearch2s, :to => [:new, :create, :show]
   end
@@ -1933,15 +1937,15 @@ authorization do
   #29-OK, extend, return completed
   #29 - 3/4 OK (Admin/Viewer/User)
   role :library_transactions_module_admin do
-    has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext] 
+    has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :document_extending, :document_returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :repository_loan] 
     has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
   end
   role :library_transactions_module_viewer do
-    has_permission_on :library_librarytransactions, :to => [:read, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext] 
+    has_permission_on :library_librarytransactions, :to => [:read, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :repository_loan] 
     has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
   end
   role :library_transactions_module_user do
-    has_permission_on :library_librarytransactions, :to => [:read, :update, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext]
+    has_permission_on :library_librarytransactions, :to => [:read, :update, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :repository_loan]
     has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - lbrary[0].disabled=true as the only owner of this module requires 'Librarian' role

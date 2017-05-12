@@ -36,6 +36,14 @@ class Repositorysearch < ActiveRecord::Base
     keyword[:document_subtype]
   end
   
+  def equipment=(value)
+    keyword[:equipment] = value
+  end
+  
+  def equipment
+    keyword[:equipment]
+  end
+  
   def refno=(value)
     keyword[:refno] = value
   end
@@ -117,6 +125,19 @@ class Repositorysearch < ActiveRecord::Base
       ["("+a+")", ids]
     end
   end
+  
+  ###
+  def equipment_conditions
+    unless equipment.blank?
+      ids=Repository.equipment_search(equipment).pluck(:id)
+      a="id=?" if ids.count > 0
+      0.upto(ids.count-2) do |x|
+        a+=" OR id=? "
+      end
+      ["("+a+")", ids]
+    end
+  end
+  ###
   
   def refno_conditions
     unless refno.blank?

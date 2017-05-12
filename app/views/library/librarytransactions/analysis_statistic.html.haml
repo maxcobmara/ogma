@@ -2,6 +2,8 @@
   %h1=t 'library.transaction.analysis_statistic'
 = render 'shared/flashes'
 
+- if current_user.userable.coemail.include?('teknikpadu.com')
+  =link_to fa_icon("backward"), library_main_path, {title: (t 'library.main')}
 .row.fluid
   = form_tag analysis_statistic_main_library_librarytransactions_path, :method =>'get' do
     .row

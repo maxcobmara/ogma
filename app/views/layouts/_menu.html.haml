@@ -357,18 +357,27 @@
           %ul
             /%li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.rules_regulations"), rules_regulations_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.rules_regulations"), flexipage_campus_page_path(74)
-            - permitted_to? :read, :library_librarytransactions do 
-              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.title"), library_librarytransactions_path
-            - permitted_to? :manage, :library_librarytransactions do
-              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.manager"), manager_library_librarytransactions_path
             - permitted_to? :read, :library_books do  
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.list"), library_books_path
             /temporary for Digital Library
             - permitted_to? :read, :repositories do
               %li=link_to content_tag(:i, "", :class => "icon-numb") + t('repositories.list2'), index2_repositories_path
+            - permitted_to? :read, :library_librarytransactions do 
+              %li.icon.icon-left
+                = link_to content_tag(:i, "", :class => "icon-numb")+(t "library.transaction.title"), '#'
+                .mp-level
+                  %h2.icon=(t "library.transaction.title")
+                  %a.mp-back{:href => "#"}=t('back')
+                  %ul
+                    %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.book2"), library_librarytransactions_path
+                    %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "repositories.list2"), repository_loan_library_librarytransactions_path
+            - permitted_to? :manage, :library_librarytransactions do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.manager"), manager_library_librarytransactions_path
             - permitted_to? :analysis_statistic, :library_librarytransactions do 
               %li= link_to content_tag(:i, "", :class => "icon_numb") + (t "library.transaction.analysis_statistic"), analysis_statistic_library_librarytransactions_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.help"), flexipage_campus_page_path(80)
+            - if current_user.userable.coemail.include?("teknikpadu.com")
+              %li=link_to content_tag(:i, "", :class => "icon-numb") + (t 'library.main'), library_main_path
    
             
 

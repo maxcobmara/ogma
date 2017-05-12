@@ -15,6 +15,9 @@
     - unless repositorysearch.vessel.blank?
       %dt=(t 'equery.repository.vessel')
       %dd=repositorysearch.vessel
+      - vesselid=repositorysearch.vessel
+    - else
+      - vesselid=0
                
     - unless repositorysearch.document_type.blank?
       %dt=(t 'equery.repository.document_type')
@@ -35,55 +38,117 @@
           %hr
                 
     %dt=(t'equery.repository.total')
-    %dd=repositorysearch.repositories.count==0 ? repositorysearch.repositories.count : repositorysearch.repositories.count.to_s+" "+(t 'records')   
-            
-           
+    %dd=repositorysearch.repositories.count==0 ? repositorysearch.repositories.count : @repos.count.to_s+" "+(t 'records')   
+    /=repositorysearch.repositories.count
+      
 
 /display result
 .col-md-11
   %br
   - if repositorysearch.repositories.count > 0
 
-    .right=link_to (fa_icon "print", text: (t 'equery.print_result')), repository_list2_repositories_path(format: 'pdf', ids: @repositorysearch.repositories.pluck(:id))
+    .right=link_to (fa_icon "print", text: (t 'equery.print_result')), repository_list2_repositories_path(format: 'pdf', ids: @repositorysearch.repositories.pluck(:id), vessel_id: vesselid)
     %table.table.table-bordered.table-condensed.table-hover
       %head
         %tr.info
           %th{width: '5%'} No
-          %th{width: '5%'}=t 'equery.repository.document_type'
-          %th{width: '12%'}=t 'equery.repository.document_subtype'
-          %th{width: '12%'}=t 'equery.repository.vessel'
-          %th{width: '20%'}=t 'equery.repository.document_title'
-          %th{width: '15%'}=t 'equery.repository.refno'
+          %th{width: '32%'}=t 'equery.repository.document_title'
+          %th{width: '25%'}=t 'equery.repository.refno'
           %th{width: '8%'}=t 'equery.repository.publish_date'
-          %th{width: '10%'}=t 'equery.repository.location'
-          /%th{width: '6%'}= (t 'equery.repository.copies')+" / "+(t 'equery.repository.total_pages')
-          %th{width: '8%'}=t 'equery.repository.classification'
-          %th{width: '4%'}=t 'equery.view'
+          %th{width: '8%'}=t 'equery.repository.location'
+          %th{width: '5%'}=(t 'repositories.master')+"?"
+          %th{width: '8%', colspan: 2}=t 'equery.repository.classification'
+          %th{width: '8%'}=t 'repositories.e_document'
         
       %body
         - if params[:page]
-          - cnt=(params[:page].to_i-1)*10
+          - no=(params[:page].to_i-1)*20
         - else
-          - cnt=0
+          - no=0
 
+        /starting value for document_type(BRs, Drawings, Test & Trials) & subdocument_type(systems)
+        - doctype=""
+        - subdoctype=""
+        - subdoctype2=""
+        
+        - vessel_sort=[]
+        - @per_vessel.each{ |vess| vessel_sort << vess[0]}
+      
+        - cnt=0
         - for repository in repositories
+        
+          //////---heading starts here
+          //1) heading - vessel (name)
+          /1a-display heading (vessel name) - before first record of each vessel - start
+          - @per_vessel_count_arr2.each_with_index do |x, ind|
+            - if x==no
+              %tr.warning
+                %td.centre{colspan: 9, style: 'font-weight: bold; color: #e53e0c;'}=vessel_sort[ind]
+              /reset value for document_type(BRs, Drawings, Test & Trials) & subdocument_type(systems) - for every NEW vessel
+              - doctype=""
+              - subdoctype=""
+              - subdoctype2=""
+          /display heading (vessel name) - before first record of each vessel - start
+        
+          /1b-rescue for pages w/o heading (vessel name) before the first record - start
+          - if cnt==0 && @per_vessel_count_arr2.include?(no)==false
+            %tr.warning
+              %td.centre{colspan: 9, style: 'font-weight: bold; color: #e53e0c;'}
+                /=no
+                - checker=0
+                - @per_vessel_count_arr2.each_with_index do |x, ind|
+                  - if x > no && checker==0
+                    - checker+=1
+                    =vessel_sort[ind-1]
+                    .small{style: 'font-weight: normal; font-style: italic;'}=(t 'repositories.continued_from')
+          /rescue for pages w/o heading (vessel name) before the first record - end 
+        
+          //2) heading - document_type (BRs, Drawings, Test & Trials) & subdocument_type (system)
+          - if repository.render_document!= doctype
+            %tr.warning
+              %td.centre{colspan: 9, style: 'font-weight: bold;'}=doctype=repository.render_document
+            - if repository.render_subdocument!= subdoctype
+              %tr.warning
+                %td.centre{colspan: 9, style: 'color: blue; font-weight: bold;'}=subdoctype=repository.render_subdocument
+            - else
+              %tr.warning
+                %td.centre{colspan: 9, style: 'color: blue; font-weight: bold;'}=subdoctype
+          - else
+            - if repository.render_subdocument!= subdoctype
+              %tr.warning
+                %td.centre{colspan: 9, style: 'color: blue; font-weight: bold;'}=subdoctype=repository.render_subdocument
+
+          //3) display all records
+          - no+=1
+          - cnt+=1
+          /////-----heading ends here
+          
           %tr
-            %td.centre=cnt+=1
-            %td=repository.render_document
-            %td=repository.render_subdocument
-            %td=repository.vessel
+            %td.centre=cnt
             %td= link_to repository.title, repository_path(repository)
-            %td=repository.refno
+            %td
+              - unless repository.refno.blank?
+                =repository.refno
+              - else
+                %i
+                  .small.text-grey=(t 'repositories.serial_no')+" : "+repository.code
             %td.centre=repository.publish_date
             %td=repository.location
+            %td.centre.small=repository.vessel.blank? ? fa_icon('check') : fa_icon('times')
             %td.centre=repository.render_classification
-            /=repository.copies.to_s+" / "+repository.total_pages.to_s
+            %td.centre
+              - if repository.classification=="3"
+                .text-red= fa_icon("exclamation-circle")
+              - else
+                - loaned=Librarytransaction.marine_loaned_serial
+                - if loaned.include?(repository.code)
+                  =t 'repositories.on_loan'
+                - else
+                  =link_to (fa_icon "plus-circle"), loan_repository_path(repository, result: "#{repositorysearch.id}")
             %td.centre
               - unless repository.uploaded.blank?
                 =link_to (fa_icon "file-pdf-o"), repository.uploaded.url
-                /="<iframe src=#{repository.uploaded.url} width='200'>".html_safe
               - else
-                = fa_icon("chain-broken")              
-
+                .text-red= fa_icon("chain-broken")
 
   .right{style:"padding: 0 10px; margin:0;"}= paginate repositories, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

@@ -12,7 +12,23 @@
         = f.label t 'repositories.document_subtype', for: :document_subtype
       .col-md-5
         =f.select :document_subtype, Repository.subdocument, {include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
-
+        - unless @repository.category.blank?
+          %br
+          %i.small.text-red
+            ='Previous data : '+@repository.render_subdocument_old+" - "+@repository.document_subtype
+            %br
+            ="Ref : "
+            %ul
+              - Repository.subdocument_old.sort_by{|x, y|y.to_i}.each do |x,y|
+                %li="#{y} = #{x}"
+      
+    .form-group
+      .col-sm-2.control-label
+        =f.label t 'repositories.equipment'
+      .col-md-4
+        =f.select :equipment, grouped_options_for_select(Repository.equipment_list), {:include_blank => (t 'select')}, {:class => 'form-control'}
+        = hidden_field_tag :selected_equipment, @repository.equipment, :class => 'selectedequipment'
+    
     .form-group
       .col-sm-2.control-label
         =f.label t 'repositories.classification', for: :classification
@@ -22,15 +38,31 @@
     .form-group
       .col-sm-2.control-label
         = f.label t 'repositories.document_title', for: :title
-      .col-md-5
+      .col-md-6
         = f.text_field :title, class: 'form-control mandatory'
 
     .form-group
       .col-sm-2.control-label
-        = f.label t 'repositories.vessel', for: :vessel
-      .col-md-4
-        =f.text_field :vessel, class: 'form-control mandatory', data: {autocomplete_source: Repository.digital_library.map(&:vessel).uniq.sort}
-        
+        =f.label t 'repositories.vessel_class'
+      .col-md-9
+        = f.select :vessel_class, Repository.vessel_classes, {include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
+        .form-inline
+          .form-group.ticker_span
+            .small.text-grey
+              =f.check_box :ticker, class: 'sel_vclass', id: 'vclass_ticker'
+              &nbsp;&nbsp;
+              %i=(t 'repositories.ticker').html_safe
+      
+    .form-group.span_vessel{style: 'display: none;'}
+      .col-sm-2.control-label
+        = f.label t 'repositories.vessel'
+      .col-md-5
+        =f.select :vessel, grouped_options_for_select(Repository.vessel_list), {:include_blank => (t 'select')}, {:class => 'form-control'}
+        = hidden_field_tag :selected_type, @repository.vessel, :class => 'selectedone'
+        - unless @repository.new_record?
+          %i
+            .small.text-grey='Previous data : '+@repository.vessel
+
     .form-group
       .col-sm-2.control-label
         = f.label t 'repositories.refno', for: :refno
@@ -41,8 +73,11 @@
           - serial_no=(SecureRandom.hex 8) 
           = f.hidden_field :code, value: serial_no
         - else
-          - serial_no=@repository.code
-        
+          - unless @repository.code.blank?
+            - serial_no=@repository.code
+          - else
+            - serial_no=(SecureRandom.hex 8) 
+            = f.hidden_field :code, value: serial_no
         %i
           .small.text-grey=(t 'repositories.serial_no')+": "+serial_no
         
@@ -95,9 +130,58 @@
       .col-sm-2.control-label
         = f.label t 'repositories.staff_id', for: :staff_id
       .col-md-5
-        = f.collection_select :staff_id, Staff.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
+        = f.collection_select :staff_id, Staff.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {include_blank: (t 'select'), selected: current_user.userable_id}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
 
 %br
+
+:javascript
+
+  /* refer repositories.js.coffee */
+
+  /* onload : vessel name exist -> checked & assign selected vessel to optgroup select, otherwise just unchecked */
+  $("#repository_vessel").each(function(){
+    var vessel_name=$('#selected_type').val();
+    var checkbox=document.getElementById("vclass_ticker");
     
-        
-        
+    /*specific, vessel name selected*/
+    if (vessel_name!="")
+    {
+      checkbox.checked = true; 
+       
+      /* NOTE : to manually assign selected value for vessel (vessel name) in optgroup selection, --> (EACH) as js.coffee only load full data selection, but not selected option */
+      var selected_class = $('#repository_vessel_class :selected').text();
+      var selecttype=$('#repository_vessel');
+      var selected1=$('#selected_type').val();
+      var optgroup=$(selecttype).children('optgroup[label="'+selected_class+'"]');
+      var option = optgroup.find('option[value="'+selected1+'"]');
+      option.attr('selected', true);
+    }
+    else
+    {  checkbox.checked = false; }
+  });
+  
+  /*on load : document_subtype (system) exist -> assign selected equipment to optgroup select accordingly */
+  $("#repository_equipment").each(function(){
+    var selected_system=$('#repository_document_subtype :selected').text();
+    var selectedequipment=$('#repository_equipment');
+    var equipment_name=$('#selected_equipment').val();
+    var optgroup=$(selectedequipment).children('optgroup[label="'+selected_system+'"]');
+    var option = optgroup.find('option[value="'+equipment_name+'"]');
+    option.attr('selected', true);
+  });
+  
+  /* onload : when checked, display vessel name selection, otherwise hide */
+  $("input[class='sel_vclass']").each(function() {  
+    if($('#vclass_ticker').is(':checked')) 
+    { $(".span_vessel").show(); }
+    else
+    { $(".span_vessel").hide(); }
+  });
+  
+  /* onchange : when checked, display vessel name selection, otherwise hide */
+  $("input[class='sel_vclass']").change(function() {  
+    if($('#vclass_ticker').is(':checked')) 
+    { $(".span_vessel").show(); }
+    else
+    { $(".span_vessel").hide(); }
+  });

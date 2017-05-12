@@ -1,0 +1,97 @@
+.page-header
+  %h1= t 'repositories.loan_title'
+
+- repo=Repository.find(params[:id])
+
+.row.fluid
+  = form_for [:library, @librarytransaction], :html => { :class => 'form-horizontal' } do |f|  
+    = f.hidden_field :digital_document, value: repo.code
+    = f.hidden_field :college_id, value: current_user.college_id
+    = f.hidden_field :libcheckout_by, value: current_user.userable_id
+    = render 'shared/error_messages', object: f.object
+    
+    .row
+      .col-md-10.col-md-offset-1
+        / Nav tabs
+        %ul.nav.nav-tabs
+          %li.active= link_to (t 'repositories.loan_form'),"#loan", "data-toggle" => "tab"
+
+        .tab-content{style:"padding-top:1em"}
+          #loan.tab-pane.active
+            %br
+            .col-md-offset-2   
+              .form-group
+                .col-sm-2.control-label
+                  =f.label (t 'repositories.document_title')
+                .col-md-5
+                  = text_area_tag "just_title", repo.title, class: 'form-control', readonly: 'readonly'
+                  - if repo.refno.blank?
+                    %i
+                      .text-grey.small=(t 'repositories.serial_no')+" : "+repo.code
+            
+              - unless repo.refno.blank?    
+                .form-group
+                  .col-sm-2.control-label
+                    =f.label (t 'repositories.refno2')
+                  .col-md-5
+                    = text_field_tag "just_refno", repo.refno, class: 'form-control', readonly: 'readonly'
+                    %i
+                      .text-grey.small=(t 'repositories.serial_no')+" : "+repo.code
+            
+              .form-group
+                .col-sm-2.control-label
+                  =f.label (t 'repositories.loaner')
+                .col-md-4
+                  = f.collection_select :loaner, Visitor.all, :id, :name,{include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width" => "auto"}
+            
+              .form-group
+                .col-sm-2.control-label
+                  =f.label (t 'repositories.reference')
+                .col-md-4
+                  = f.text_field :reference, class: 'form-control'
+               
+              .form-group
+                .col-sm-2.control-label
+                  =f.label (t 'library.transaction.returnduedate')
+                .col-md-2
+                  = f.text_field :returnduedate, class: 'form-control date_picker_reverse mandatory'
+                 
+          
+    .col-md-offset-1
+      .form-group
+        .col-sm-offset-3.col-sm-2
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("repositories.list2")), index2_repositories_path, :class => 'btn btn-default'
+        - if params[:result]
+          .col-sm-2
+            %div{style: 'margin-left: -30px;'}
+              = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("equery.result")), equery_report_repositorysearch_path(params[:result].to_i), :class => 'btn btn-default'
+
+        .span_submit{style: 'display: none;'}
+          - to_submit= f.submit t('proceed'), class: "btn btn-primary", id: 'submit_button'
+          - if params[:result]
+            .col-sm-1
+              %div{style: 'margin-left: -100px;'}=to_submit
+          - else
+            .col-sm-2
+              =to_submit
+            
+:javascript
+  
+  $("#librarytransaction_returnduedate").change(function(){
+    var duedate=$(this).val();
+    var loaner=$("#librarytransaction_loaner :selected").val();
+    if (duedate!="" && loaner!="")
+    {  $(".span_submit").show(); }
+    else
+    {  $(".span_submit").hide();  }
+  });
+  
+  $("#librarytransaction_loaner").change(function(){
+    var loaner=$(this).val();
+    var duedate=$("#librarytransaction_returnduedate").val();
+    if (duedate!="" && loaner!="")
+    {  $(".span_submit").show(); }
+    else
+    {  $(".span_submit").hide();  }
+  });
+ 

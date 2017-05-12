@@ -22,6 +22,10 @@ class Visitor < ActiveRecord::Base
     "#{a} #{name}"
   end
   
+  def visitor_with_title 
+    "#{title.try(:name)} #{name}"
+  end
+  
   def organisation_details
     unless department.blank?
       department

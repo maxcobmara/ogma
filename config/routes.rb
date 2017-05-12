@@ -280,6 +280,8 @@ Ogma::Application.routes.draw do
   resources :repositories do
     member do
       get :download
+      get :loan
+      post :loan
     end
     collection do
       get :index2
@@ -473,6 +475,8 @@ Ogma::Application.routes.draw do
       member do
         get :extending
         get :returning
+        get :document_returning
+        get :document_extending
       end
       collection do
         get :check_status
@@ -488,6 +492,7 @@ Ogma::Application.routes.draw do
         post :analysis_statistic
         get :analysis_statistic_main
 	get :latereturn_report
+	get :repository_loan
       end
     end
     resources :books do
@@ -670,6 +675,7 @@ Ogma::Application.routes.draw do
   match '/fetch_items', to: 'exam/exams#question_selection', via: 'get'
   #match '/rules_regulations', to: 'static_pages#rules_regulations', via: 'get'
   match '/equery_reports', to: 'static_pages#equery_reports', via: 'get'
+  match '/library_main', to: 'static_pages#library', via: 'get'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

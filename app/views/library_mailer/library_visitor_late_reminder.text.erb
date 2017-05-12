@@ -1,0 +1,14 @@
+<%=Visitor.find(@transactions.first.loaner.to_i).visitor_with_title %>,
+
+<%=I18n.t('library.mailer.technical_documents_late')%>
+
+<% @transactions.each_with_index do |transaction, ind| %>
+  <% repo_id=0 %>
+  <% Repository.digital_library.each{|u|repo_id=u.id if u.code==transaction.digital_document} %>
+  <%=ind+1%>) <%=document_title=Repository.find(repo_id).title %>    (Due date : <%=transaction.returnduedate.strftime('%d-%m-%Y')%>)
+<% end %>
+
+<%=I18n.t('library.mailer.please_return')%>
+<%=I18n.t('library.mailer.thanks')%>
+    
+      

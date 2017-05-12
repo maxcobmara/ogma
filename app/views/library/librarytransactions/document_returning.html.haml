@@ -1,0 +1,88 @@
+- model_class = Library
+.page-header
+  %h1= t 'library.transaction.document_returning'
+
+= render 'shared/flashes'
+
+.row
+  = form_for [:library, @librarytransaction], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = hidden_field_tag :redirect_location, repository_loan_library_librarytransactions_path 
+    = f.hidden_field :libreturned_by, :value => @current_user.userable_id
+    = f.hidden_field :college_id
+    .row
+      .col-md-8.col-md-offset-3
+        %dl.dl-horizontal
+          - repoid=0
+          - Repository.digital_library.each{|x| repoid=x.id if x.code==@librarytransaction.digital_document}
+          - repo=Repository.find(repoid)
+          
+          =f.hidden_field :digital_document, value: @librarytransaction.digital_document
+          =f.hidden_field :loaner, value: @librarytransaction.loaner
+          =f.hidden_field :reference, value: @librarytransaction.reference
+          
+          %dt=t 'repositories.vessel'
+          %dd=repo.vessel
+          
+          %dt=t 'repositories.document_title'
+          %dd=repo.title
+          
+          %dt=t 'repositories.refno2'
+          %dd=repo.refno
+          
+          %dt= t 'library.transaction.borrower'
+          %dd=Visitor.find(@librarytransaction.loaner.to_i).name
+          
+          %dt=t 'library.transaction.checkoutdate'
+          %dd=@librarytransaction.checkoutdate.try(:strftime, '%d-%m-%Y')+" ("+@librarytransaction.libcheckoutby.try(:name)+")"
+          
+          %dt=t 'library.transaction.returnduedate'
+          %dd=@librarytransaction.returnduedate.try(:strftime, '%d-%m-%Y')
+          =f.hidden_field :returnduedate
+          
+      .col-md-12.col-md-offset-3
+        .form-group
+          .col-sm-2.control-label
+            = f.label (t 'library.transaction.return')
+          .col-md-1
+            = f.check_box :returned, :id => 'is_returned'
+        .form-group.span_returned_on
+          .col-sm-2.control-label
+            = f.label (t 'library.transaction.returneddate')
+          .col-md-2
+            - if @librarytransaction.returneddate.nil?
+              - rdate=Date.today.strftime('%d-%m-%Y')
+            - else
+              - rdate=@librarytransaction.returneddate.strftime('%d-%m-%Y')
+            = f.text_field :returneddate, class: 'date_picker_reverse form-control', value: rdate
+
+    .row
+      .form-group
+        .col-md-2.col-md-offset-5
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), repository_loan_library_librarytransactions_path, :class => 'btn btn-default'
+        .col-md-1
+          .div{style: "margin-left:-130px;"}
+            = f.submit t('update'), class: "btn btn-primary"
+
+:javascript
+
+$(document).ready(function(){
+  $("input[id='is_returned']").change(function() {  
+    if($('#is_returned').is(':checked')) { 
+      $('.span_returned_on').show("highlight");
+    }
+    else
+    { 
+      $('.span_returned_on').hide();
+    }
+  });
+  $("input[id='is_returned']").each(function() {  
+    if($('#is_returned').is(':checked')) { 
+      $('.span_returned_on').show("highlight");
+    }
+    else
+    {
+      $('.span_returned_on').hide();
+    }
+  });  
+}); 

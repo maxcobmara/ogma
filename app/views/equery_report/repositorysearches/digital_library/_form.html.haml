@@ -48,8 +48,8 @@
                   .col-sm-4.control-label
                     =f.label (t 'equery.repository.vessel')
                   .col-md-5
-                    /=f.text_field :vessel, class: 'form-control'
-                    =f.select :vessel, Repository.digital_library.map(&:vessel).uniq.sort, {include_blank: (t 'select')}, {class: 'form-control'}
+                    /=f.select :vessel, Repository.digital_library.map(&:vessel).uniq.sort, {include_blank: (t 'select')}, {class: 'form-control'}
+                    =f.select :vessel, Repository.vessel_exist_documents, {include_blank: (t 'select')}, {class: 'form-control'}
 
                 .form-group
                   .col-sm-4.control-label
@@ -66,6 +66,14 @@
                     =f.select :document_subtype, grouped_options_for_select(Repository.docsubtype_per_doctype), {:include_blank => (t 'select')}, {:class => 'form-control'}
                 /.row
                 /  .text-blue.centre.small=(t 'equery.repository.remark2').html_safe
+                
+                .form-group
+                  .col-sm-4.control-label
+                    =f.label (t 'equery.repository.equipment')
+                  .col-md-6
+                    /=f.select :document_subtype, Repository.subdocument, {include_blank: (t 'select')}, {class: 'form-control'}
+                    /Repository.equipment_list
+                    =f.select :equipment, grouped_options_for_select(Repository.equipment_per_docsubtype), {:include_blank => (t 'select')}, {:class => 'form-control'}
                 
 
 / :javascript
