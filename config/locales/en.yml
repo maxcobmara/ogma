@@ -4741,7 +4741,7 @@ en:
     recirculating_cooling_unit: Recirculating Cooling Unit
     supply_fan: Supply Fan 
     exhaust_fan: Exhaust Fan 
-    working_room_ventilation_switchboard: Working Room VEntilaton Switchboard
+    working_room_ventilation_switchboard: Working Room Ventilaton Switchboard
     acu_fan: ACU Fan
     air_conditioning_switchboard: "Air-Conditioning Switchboard"
     acu_heating_elements: ACU Heating Elements
@@ -4825,7 +4825,7 @@ en:
     elect_compts_wshop_tween_deck: "Elec/Electr Compts & W/Shop (Tween Deck)"
     elect_compts_wshop_swage_deck: "Elec/Electr Compts & W/Shop (S'wage Deck)"
     elect_compts_wshop_fcastle_deck: "Elec/Electr Compts & W/Shop (F'Castle Deck)"
-    machinery_space: machinery Space 
+    machinery_space: Machinery Space 
     mechanical_workshop: Mechanical Workshop 
     pantries_dining_hall_galley: Pantries Dining Hall Galley 
     messes_cabons_off_space_bridge_deck: "Messes, Cabins & Off. Space (Bridge Deck)"
