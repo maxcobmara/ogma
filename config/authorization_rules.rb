@@ -1095,7 +1095,7 @@ authorization do
   role :staffs_module_admin do
     has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff, :staff_list] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
     has_permission_on :campus_pages, :to => :flexipage
-    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2]
+    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2, :loan]
     has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
     has_permission_on :equery_report_staffsearch2s, :to => [:new, :create, :show]
   end

@@ -1,7 +1,7 @@
 class RepositoriesController < ApplicationController
   #filter_resource_access
   filter_access_to :index, :new, :create, :index2, :new2, :repository_list, :repository_list2, :attribute_check => false
-  filter_access_to :show, :edit, :update, :destroy, :download, :attribute_check => true
+  filter_access_to :show, :edit, :update, :destroy, :download, :loan, :attribute_check => true
   before_action :set_repository, only: [:show, :edit, :update, :destroy, :download]
   before_action :set_repositories, only: [:index2, :repository_list2]
 
