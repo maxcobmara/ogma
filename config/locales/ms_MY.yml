@@ -3391,6 +3391,12 @@ ms_MY:
       books: Buku
       remove_reservation: Padam tempahan
 
+    mailer:
+      general_books_late: "Anda mempunyai pinjaman buku perpustakaan lewat dan belum dipulangkan."
+      technical_documents_late: "Anda mempunyai pinjaman dokumen teknikal lewat dan belum dipulangkan."
+      please_return: "Sila pulangkan pada kadar segera."
+      thanks: Terima kasih
+      
   buletin:
     list: Senarai Buletin
     title: Papan Buletin

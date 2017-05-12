@@ -1,7 +1,8 @@
-You have late library books pending return.
+<%=I18n.t('library.mailer.general_books_late')%>
+
 <% @transactions.each do |book| %>
   <%= book.books %>
 <% end %>
 
-Please return as soon as possible.
-Thank You
+<%=I18n.t('library.mailer.please_return')%>
+<%=I18n.t('library.mailer.thanks')%>

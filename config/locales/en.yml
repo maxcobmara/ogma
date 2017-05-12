@@ -3499,6 +3499,12 @@ en:
       reservations: Reservations
       books: Books
       remove_reservation: Remove reservation
+      
+    mailer:
+      general_books_late: "You have late library books pending return."
+      technical_documents_late: "You have late library technical documents pending return."
+      please_return: "Please return as soon as possible."
+      thanks: Thank You
    
   buletin:
     list: List of Bulletins

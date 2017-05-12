@@ -1,6 +1,6 @@
-To : <%=Visitor.find(@transactions.first.loaner.to_i).visitor_with_title %>
+<%=Visitor.find(@transactions.first.loaner.to_i).visitor_with_title %>,
 
-You have late library technical documents pending return.
+<%=I18n.t('library.mailer.technical_documents_late')%>
 
 <% @transactions.each_with_index do |transaction, ind| %>
   <% repo_id=0 %>
@@ -8,5 +8,7 @@ You have late library technical documents pending return.
   <%=ind+1%>) <%=document_title=Repository.find(repo_id).title %>    (Due date : <%=transaction.returnduedate.strftime('%d-%m-%Y')%>)
 <% end %>
 
-Please return as soon as possible.
-Thank You
+<%=I18n.t('library.mailer.please_return')%>
+<%=I18n.t('library.mailer.thanks')%>
+    
+      
