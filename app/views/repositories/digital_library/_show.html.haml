@@ -5,9 +5,10 @@
   %dt= t 'repositories.document_subtype'
   %dd{style: 'padding-left: 70px;'}
     = repository.render_subdocument
-    %i
-      .small.text-red
-        ='Previous data : '+@repository.render_subdocument_old+" - "+@repository.document_subtype
+    - unless repository.category.blank?
+      %br
+      %i.small.text-red
+        ='Previous data : '+repository.render_subdocument_old+" - "+repository.document_subtype
         %br
         ="Ref : "
         %ul
@@ -29,7 +30,7 @@
     - if repository.vessel.blank?
       =" ("+(t 'repositories.master')+")" 
   
-  - unless repository.vessel.blank?
+  - if !repository.vessel.blank? && !repository.vessel_class.blank?
     %dt=(t 'repositories.vessel')
     %dd
       = repository.render_vessel+" ("+(t 'repositories.specific')+")"

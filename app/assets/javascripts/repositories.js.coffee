@@ -17,6 +17,7 @@ jQuery ->
       $('#repository_vessel').parent().hide()
       $('.ticker_span').hide()
       
+   vname = $('#repository_vessel').html()
   $('#repository_vessel_class').each ->
     vclass = $('#repository_vessel_class :selected').text()
     escaped_vclass = vclass.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g, '\\$1')
