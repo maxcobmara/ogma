@@ -96,7 +96,8 @@
       /starting value for document_type(BRs, Drawings, Test & Trials) & subdocument_type(systems)
       - doctype=""
       - subdoctype=""
-      - subdoctype2=""
+      /- subdoctype2=""
+      - equip=""
       
       - for repository in @repositories
         //1) heading - vessel (name)
@@ -108,7 +109,8 @@
             /reset value for document_type(BRs, Drawings, Test & Trials) & subdocument_type(systems) - for every NEW vessel
             - doctype=""
             - subdoctype=""
-            - subdoctype2=""
+            /- subdoctype2=""
+            - equip=""
         /display heading (vessel name) - before first record of each vessel - end
         
         /1b-rescue for pages w/o heading (vessel name) before the first record - start
@@ -131,20 +133,45 @@
           - if repository.render_subdocument!= subdoctype
             %tr
               %td.group{colspan: 8, style: 'color: blue;'}=subdoctype=repository.render_subdocument
+              - if repository.render_equipment!=equip
+                %tr
+                  %td.tech_equipment{colspan: 8}=equip=repository.render_equipment
+              - else
+                %tr
+                  %td.tech_equipment{colspan: 8}=equip
           - else
             %tr
               %td.group{colspan: 8, style: 'color: blue;'}=subdoctype
+              - if repository.render_equipment!=equip
+                %tr
+                  %td.tech_equipment{colspan: 8}=equip=repository.render_equipment
+              - else
+                %tr
+                  %td.tech_equipment{colspan: 8}=equip
         - else
           - if repository.render_subdocument!= subdoctype
             %tr
               %td.group{colspan: 8, style: 'color: blue;'}=subdoctype=repository.render_subdocument
+            - if repository.render_equipment!=equip
+              %tr
+                %td.tech_equipment{colspan: 8}=equip=repository.render_equipment
+            - else
+              %tr
+                %td.tech_equipment{colspan: 8}=equip
+          - else
+            - if repository.render_equipment!=equip
+              %tr
+                %td.tech_equipment{colspan: 8}=equip=repository.render_equipment
+            
 
         //3) display all records
         - no+=1
         - cnt+=1
         %tr
           %td.centre=cnt
-          %td= link_to repository.title, repository_path(repository)
+          %td
+            = link_to repository.title, repository_path(repository)
+            =repository.equipment.blank? ? "" : repository.render_equipment
           %td
             /=repository.id
             =repository.refno
