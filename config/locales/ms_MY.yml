@@ -3185,6 +3185,7 @@ ms_MY:
       analysis_statistic: "Analisis & Statistik"
       loan_details: Butiran buku dipinjam
       latereturn_report: Laporan Lewat Pemulangan Buku
+      latereturn_technical_report: Laporan Lewat Pemulangan Dokumen Teknikal
       borrower_name: Nama Peminjam
       book_title: Tajuk Buku
       staff: "Staf "

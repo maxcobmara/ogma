@@ -491,8 +491,9 @@ Ogma::Application.routes.draw do
         get :analysis_statistic
         post :analysis_statistic
         get :analysis_statistic_main
-	get :latereturn_report
-	get :repository_loan
+        get :latereturn_report
+        get :latereturn_technical_report
+        get :repository_loan
       end
     end
     resources :books do
