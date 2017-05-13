@@ -3294,6 +3294,7 @@ en:
       analysis_statistic: "Analysis & Statistics"
       loan_details: Book on-loan details
       latereturn_report: Late Book Return Report
+      latereturn_technical_report: Late Technical Document Return Report
       borrower_name: Borrower Name
       book_title: Book Title
       staff: "Staff of "

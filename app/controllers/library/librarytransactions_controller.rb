@@ -3,7 +3,7 @@ class Library::LibrarytransactionsController < ApplicationController
   before_action :set_librarytransaction, only: [:show, :edit, :update, :destroy]
   filter_access_to :manager, :require => :manage,  :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :late_books, :extending, :document_extending, :returning, :document_returning, :attribute_check => true
-  filter_access_to :index, :new, :create, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :repository_loan, :attribute_check => false
+  filter_access_to :index, :new, :create, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :repository_loan, :latereturn_report, :latereturn_technical_report, :attribute_check => false
 
   def index
 #     @filters = Librarytransaction::FILTERS
@@ -330,6 +330,25 @@ class Library::LibrarytransactionsController < ApplicationController
        format.pdf do
          pdf = LatereturnReportPdf.new(@librarytransactions, view_context, current_user.college)
          send_data pdf.render, filename: "latereturn_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+  end
+  
+  def latereturn_technical_report
+    reporting_year=params[:report_year].to_i
+    beginyear=Date.new(reporting_year, 1,1)
+    endyear=beginyear.end_of_year
+    # NOTE - Librarytransaction.overdue - covers completed transactions only
+    selected_year_trans=Librarytransaction.marine_docs_transactions.where('returnduedate >=? and returnduedate <=?', beginyear, endyear).pluck(:id)
+    returned_late=Librarytransaction.marine_docs_transactions.overdue.pluck(:id)
+    current_late=Librarytransaction.marine_docs_transactions.where('returnduedate <? and returned is not true', Date.today).pluck(:id)
+    @librarytransactions=Librarytransaction.where(id: selected_year_trans).where(id: returned_late+current_late)
+    respond_to do |format|
+       format.pdf do
+         pdf = LatereturnTechnicalReportPdf.new(@librarytransactions, view_context, current_user.college)
+         send_data pdf.render, filename: "latereturn_technical_report-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
        end
