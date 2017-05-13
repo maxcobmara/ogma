@@ -212,7 +212,7 @@ class RepositoriesController < ApplicationController
         per_vessel.each do |one_vessel, repo_by_cls|
           repo_by_cls.each do |repo_cls|
             @rep << repo_cls[1] 
-            @repos +=Repository.where(id: repo_cls[1]).sort_by{|x|[x.document_type, x.document_subtype, x.title, x.refno]} #sort first
+            @repos +=Repository.where(id: repo_cls[1]).sort_by{|x|[x.document_type, x.document_subtype, x.equipment, x.title, x.refno]} #sort first
           end
         end
       end
