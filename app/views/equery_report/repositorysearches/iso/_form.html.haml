@@ -12,4 +12,4 @@
             .col-sm-3.control-label
               =f.label (t 'equery.repository.document_title')
             .col-md-6
-              =f.text_field :title, class: 'form-control', data: {autocomplete_source: Repository.where.not(category: nil).order(title: :asc).pluck(:title)}
+              =f.text_field :title, class: 'form-control', data: {autocomplete_source: Repository.where(data: nil).order(title: :asc).pluck(:title)}

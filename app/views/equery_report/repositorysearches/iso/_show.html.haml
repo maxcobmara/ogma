@@ -39,7 +39,7 @@
         - else
           - cnt=0
         /- for repository in @repositorysearch.repositories
-        - for repository in repositories.sort_by(&:vessel)
+        - for repository in repositories
           %tr
             %td.centre=cnt+=1
             %td= link_to repository.title, repository_path(repository)

@@ -83,7 +83,7 @@ class Repositorysearch < ActiveRecord::Base
 
   def find_repositories
     if repotype=='1'
-      Repository.where.not(category: nil).where(conditions).order(orders)
+      Repository.where(data: nil).where(conditions).order(orders)
     elsif repotype=='2'
       Repository.digital_library.where(conditions).order(orders)
     end

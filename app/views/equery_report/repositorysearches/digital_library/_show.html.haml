@@ -17,7 +17,7 @@
       %dd=repositorysearch.vessel
       - vesselid=repositorysearch.vessel
     - else
-      - vesselid=0
+      - vesselid='0'
                
     - unless repositorysearch.document_type.blank?
       %dt=(t 'equery.repository.document_type')
@@ -69,7 +69,7 @@
         /starting value for document_type(BRs, Drawings, Test & Trials) & subdocument_type(systems)
         - doctype=""
         - subdoctype=""
-        - subdoctype2=""
+        - equip=""
         
         - vessel_sort=[]
         - @per_vessel.each{ |vess| vessel_sort << vess[0]}
@@ -87,7 +87,7 @@
               /reset value for document_type(BRs, Drawings, Test & Trials) & subdocument_type(systems) - for every NEW vessel
               - doctype=""
               - subdoctype=""
-              - subdoctype2=""
+              - equip=""
           /display heading (vessel name) - before first record of each vessel - start
         
           /1b-rescue for pages w/o heading (vessel name) before the first record - start
@@ -110,13 +110,38 @@
             - if repository.render_subdocument!= subdoctype
               %tr.warning
                 %td.centre{colspan: 9, style: 'color: blue; font-weight: bold;'}=subdoctype=repository.render_subdocument
+              - if repository.render_equipment!=equip
+                %tr.warning
+                  %td.centre{colspan: 9, style: 'color: #999; font-weight:normal; font-style: italic; text-decoration: underline;'}=equip=repository.render_equipment
+              - else
+                %tr.warning
+                  %td.centre{colspan: 9, style: 'color: #999; font-weight:normal; font-style: italic; text-decoration: underline;'}=equip
             - else
               %tr.warning
                 %td.centre{colspan: 9, style: 'color: blue; font-weight: bold;'}=subdoctype
+              - if repository.render_equipment!=equip
+                %tr.warning
+                  %td.centre{colspan: 9, style: 'color: #999; font-weight:normal; font-style: italic; text-decoration: underline;'}=equip=repository.render_equipment
+              - else
+                %tr.warning
+                  %td.centre{colspan: 9, style: 'color: #999; font-weight:normal; font-style: italic; text-decoration: underline;'}=equip
           - else
             - if repository.render_subdocument!= subdoctype
               %tr.warning
                 %td.centre{colspan: 9, style: 'color: blue; font-weight: bold;'}=subdoctype=repository.render_subdocument
+              - if repository.render_equipment!=equip
+                %tr.warning
+                  %td.centre{colspan: 9, style: 'color: #999; font-weight:normal; font-style: italic; text-decoration: underline;'}=equip=repository.render_equipment
+              - else
+                %tr.warning
+                  %td.centre{colspan: 9, style: 'color: #999; font-weight:normal; font-style: italic; text-decoration: underline;'}=equip
+            - else
+              - if repository.render_equipment!=equip
+                %tr.warning
+                  %td.centre{colspan: 9, style: 'color: #999; font-weight:normal; font-style: italic; text-decoration: underline;'}=equip=repository.render_equipment
+              /- else
+              /  %tr
+              /    %td.tech_equipment{colspan: 8}=equip
 
           //3) display all records
           - no+=1

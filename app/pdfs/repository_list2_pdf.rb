@@ -21,10 +21,12 @@ class Repository_list2Pdf < Prawn::Document
     a=2
     doctype=""
     subdoctype=""
-    subdoctype2=""
+    #subdoctype2=""
+    equip=""
     vessel_row=[]
     doctype_row=[]
     subdoctype_row=[]
+    equip_row=[]
     counting2=1
     
     for repository in @repositories
@@ -35,7 +37,8 @@ class Repository_list2Pdf < Prawn::Document
             vessel_row << counting2
             doctype=""
             subdoctype=""
-            subdoctype2=""
+            #subdoctype2=""
+	    equip=""
            end
         end
         
@@ -63,24 +66,58 @@ class Repository_list2Pdf < Prawn::Document
             subdoctype=repository.render_subdocument
             counting2+=1
             subdoctype_row << counting2
+	    if repository.render_equipment!=equip
+	      equip=repository.render_equipment
+              counting2+=1
+              equip_row << counting2
+            else
+              counting2+=1
+              equip_row << counting2
+	    end
           else
             counting2+=1
             subdoctype_row << counting2
+	    if repository.render_equipment!=equip
+	      equip=repository.render_equipment
+              counting2+=1
+              equip_row << counting2
+            else
+              counting2+=1
+              equip_row << counting2
+	    end
           end
         else
           if repository.render_subdocument!= subdoctype
             subdoctype=repository.render_subdocument
             counting2+=1
             subdoctype_row << counting2
+	    if repository.render_equipment!=equip
+	      equip=repository.render_equipment
+              counting2+=1
+              equip_row << counting2
+            else
+              counting2+=1
+              equip_row << counting2
+	    end
+	  else
+	    if repository.render_equipment!=equip
+	      equip=repository.render_equipment
+              counting2+=1
+              equip_row << counting2
+#             else
+#               counting2+=1
+#               equip_row << counting2
+	    end
           end
         end
+	
         counting2+=1
         no+=1
         cnt+=1
     end
     ##########
     
-    table(line_item_rows, :column_widths => [30, 195, 130, 80, 80, 55, 85, 110] , :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
+    table(line_item_rows, :column_widths => [30, 205, 130, 70, 80, 55, 85, 110] , :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=30
       row(0).style size: 11
@@ -106,6 +143,12 @@ class Repository_list2Pdf < Prawn::Document
         row(subdoctype_row[counting]).background_color='f8dd78' #'ffe3b5'
         row(subdoctype_row[counting]).text_color = '0516de'
       end
+      0.upto(equip_row.count-1).each do |counting|
+        row(equip_row[counting]).align = :center
+        row(equip_row[counting]).font_style = :italic
+        row(equip_row[counting]).background_color='ffe3b5' #'f8dd78'
+        row(equip_row[counting]).text_color = '0516de'
+      end
     end
   end
   
@@ -120,7 +163,8 @@ class Repository_list2Pdf < Prawn::Document
     #starting value for document_type(BRs, Drawings, Test & Trials) & subdocument_type(systems)
     doctype=""
     subdoctype=""
-    subdoctype2=""
+    equip=""
+    #subdoctype2=""
     ####
     
     header = [[{content: "#{I18n.t('repositories.list2')}", colspan: 8}], [ 'No',  I18n.t('repositories.document_title'), I18n.t('repositories.refno'), I18n.t('repositories.publish_date'), I18n.t('repositories.location'), I18n.t('repositories.master'), I18n.t('repositories.classification'), I18n.t('repositories.uploaded')]]
@@ -140,22 +184,23 @@ class Repository_list2Pdf < Prawn::Document
             #reset value for document_type(BRs, Drawings, Test & Trials) & subdocument_type(systems) - for every NEW vessel
             doctype=""
             subdoctype=""
-            subdoctype2=""
+	    equip=""
+            #subdoctype2=""
            end
         end
         #display heading (vessel name) - before first record of each vessel - end
         
         #1b-rescue for pages w/o heading (vessel name) before the first record - start
-        if cnt==0 && @per_vessel_count_arr2.include?(no)==false
-          checker=0
-          @per_vessel_count_arr2.each_with_index do |x, ind|
-            if x > no && checker==0
-              checker+=1
-              counting2+=1
-              body << [{content: "#{vessel_sort[ind-1]}<br>#{(I18n.t 'repositories.continued_from')}", colspan: 10}]
-            end
-          end
-        end
+#         if cnt==0 && @per_vessel_count_arr2.include?(no)==false
+#           checker=0
+#           @per_vessel_count_arr2.each_with_index do |x, ind|
+#             if x > no && checker==0
+#               checker+=1
+#               counting2+=1
+#               body << [{content: "#{vessel_sort[ind-1]}<br>#{(I18n.t 'repositories.continued_from')}", colspan: 10}]
+#             end
+#           end
+#         end
         #rescue for pages w/o heading (vessel name) before the first record - end 
         
         #2) heading - document_type (BRs, Drawings, Test & Trials) & subdocument_type (system)
@@ -167,15 +212,45 @@ class Repository_list2Pdf < Prawn::Document
             subdoctype=repository.render_subdocument
             counting2+=1
             body << [{content: "#{subdoctype}", colspan: 8}]
+	    if repository.render_equipment!=equip
+	      equip=repository.render_equipment
+              counting2+=1
+	      body << [{content: "#{equip}", colspan: 8}]
+            else
+              counting2+=1
+	      body << [{content: "#{equip}", colspan: 8}]
+	    end
           else
             counting2+=1
             body << [{content: "#{subdoctype}", colspan: 8}]
+	    if repository.render_equipment!=equip
+	      equip=repository.render_equipment
+              counting2+=1
+	      body << [{content: "#{equip}", colspan: 8}]
+            else
+              counting2+=1
+	      body << [{content: "#{equip}", colspan: 8}]
+	    end
           end
         else
           if repository.render_subdocument!= subdoctype
             counting2+=1
             subdoctype=repository.render_subdocument
             body << [{content: "#{subdoctype}", colspan: 8}]
+	    if repository.render_equipment!=equip
+	      equip=repository.render_equipment
+              counting2+=1
+	      body << [{content: "#{equip}", colspan: 8}]
+            else
+              counting2+=1
+	      body << [{content: "#{equip}", colspan: 8}]
+	    end
+	  else
+	    if repository.render_equipment!=equip
+	      equip=repository.render_equipment
+              counting2+=1
+	      body << [{content: "#{equip}", colspan: 8}]
+	    end
           end
         end
         #####HEADING - vessel, document_type, document_group - end
