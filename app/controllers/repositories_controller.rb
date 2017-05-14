@@ -120,7 +120,7 @@ class RepositoriesController < ApplicationController
   
   
   def repository_list
-    @search = Repository.where.not(category: nil).search(params[:q])
+    @search = Repository.where(data: nil).search(params[:q])
     @repositories = @search.result
     respond_to do |format|
       format.pdf do
@@ -160,7 +160,7 @@ class RepositoriesController < ApplicationController
       if params[:ids]
         @actual_records=Repository.digital_library.where(id: params[:ids])
         
-        if params[:vessel_id]!=0
+        if params[:vessel_id]!='0'
           vessel_class_name=[params[:vessel_id]]
         else
           vessel_class_name=Repository.vessel_class_names
@@ -181,7 +181,7 @@ class RepositoriesController < ApplicationController
       @per_vessel=Hash.new
       @actual_records.group_by{|x|x.vessel_class}.sort.each do |vessel_class, mrepositories|
         if params[:ids]
-          if params[:vessel_id]!=0
+          if params[:vessel_id]!='0'
             current_vessel_list=vessel_class_name
           else
             current_vessel_list=vessel_class_name[vessel_class.to_i-1]
