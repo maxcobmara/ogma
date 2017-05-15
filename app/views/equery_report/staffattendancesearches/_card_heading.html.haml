@@ -1,14 +1,15 @@
 %tr
   %th.centre{colspan: 7}KAD MENCATAT WAKTU
 %tr
-  %th{colspan: 2} B No
+  - pg=cardpage==1 ? "A" : "B"
+  %th{colspan: 2}=pg+" No"
   %th{colspan: 5}="NAMA : #{Staff.find_by_thumb_id(staffattendancesearch.thumb_id).staff_with_rank}"
 %tr
   %td{colspan: 7}="<b>KEM / JAB : </b>#{staffattendancesearch.college.name}".html_safe
 %tr
   %td{colspan: 7}="<b>BAHAGIAN / SEKSYEN : </b>#{staffattendancesearch.department}".html_safe
 %tr 
-  %td{colspan: 7, style: 'height: 40px, valign: bottom;'}="<b>BULAN : </b>#{staffattendancesearch.logged_at.strftime("%B %Y")}".html_safe
+  %td.heading{colspan: 7}="<b>BULAN : </b>#{staffattendancesearch.logged_at.strftime("%B %Y")}".html_safe
 %tr
   %th HARI
   %th MASUK

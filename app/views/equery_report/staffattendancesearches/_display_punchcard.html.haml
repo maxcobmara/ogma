@@ -4,13 +4,14 @@
 - shift_e=shift.end_at
           
 /4) Display front card
-%span{style: 'align:left; width: 30%; float:left;'}    
-  %table.table.table-bordered{style: 'cellpadding: 7; cellspacing: 0; background-color: #FEFDBD;'}
-    = render :partial => 'card_heading', locals: {staffattendancesearch: @staffattendancesearch}
-    = render :partial => 'attendance_rows', locals: {cardpage: StaffAttendance.punchcard(byday, 1), shift_start: shift_s, shift_end: shift_e}
+%span.punchcard-front    
+  %table.table.table-bordered.equery-punchcard
+    - cpg=StaffAttendance.punchcard(byday, 1)
+    = render :partial => 'card_heading', locals: {staffattendancesearch: @staffattendancesearch, cardpage: cpg.keys[0]}
+    = render :partial => 'attendance_rows', locals: {cardpage: cpg, shift_start: shift_s, shift_end: shift_e}
     /Footer
     %tr
-      %td.centre{colspan: 7, style: 'height: 50px;'}
+      %td.punchcard-column{colspan: 7}
         %BR
         %u
           %strong AMARAN
@@ -19,13 +20,14 @@
         %br tindakan tatatertib akan diambil ke atasnya.       
             
 /5) Display back of the card
-%span{style: 'align:left; width: 30%; float:left; padding-left: 300px;'} 
-  %table.table.table-bordered{style: 'cellpadding: 7; cellspacing: 0; background-color: #FEFDBD;'}
-    = render :partial => 'card_heading', locals: {staffattendancesearch: @staffattendancesearch}
-    = render :partial => 'attendance_rows', locals: {cardpage: StaffAttendance.punchcard(byday, 2), shift_start: shift_s, shift_end: shift_e}
+%span.punchcard-back
+  %table.table.table-bordered.equery-punchcard
+    - cpg=StaffAttendance.punchcard(byday, 2)
+    = render :partial => 'card_heading', locals: {staffattendancesearch: @staffattendancesearch, cardpage: cpg.keys[0]}
+    = render :partial => 'attendance_rows', locals: {cardpage: cpg, shift_start: shift_s, shift_end: shift_e}
     /Footer
     %tr
-      %td.centre{colspan: 7, style: 'height: 50px;'}
+      %td.punchcard-column{colspan: 7}
         %u
           %strong AMARAN
         %br
