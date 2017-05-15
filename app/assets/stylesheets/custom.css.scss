@@ -209,6 +209,8 @@ table.ogma {
     tr {font-size:0.85em !important;}
     td.group2{background-color: #ECFAFE; font-weight: bold;}
     td.group{background-color: #999; color:#FFF; font-weight:bold; font-size:1.2em; padding: 5px 0; text-align:center;}
+    td.document{background-color: #999; color: black; font-weight:bold; font-size:1.2em; padding: 5px 0; text-align:center;}
+    td.system{background-color: #999; color: blue; font-weight:bold; font-size:1.2em; padding: 5px 0; text-align:center;}
     td.tech_equipment{background-color: #999; color:#fcdcbe; font-weight:normal; font-size:1.2em; font-style: italic; padding: 5px 0; text-align:center; text-decoration: underline;}
     td {height:35px; padding:5px; vertical-align: top;
       &.number {text-align:right; padding-right:15px;}
@@ -272,6 +274,25 @@ table.question{
   border:collapse; border-spacing:0;border:0;
   td.item{padding: 0; border: 0; width: 25px; height: 20px; font-size:1.0em; vertical-align: top;}
   td.desc{padding: 0; border: 0; height: 25px;font-size:1.0em;vertical-align: top;}
+}
+
+/* equery - show */
+table.equery{
+  th.perjawatan{width: 5%; vertical-align: top;}
+  td.vessel{font-weight: bold; color: #e53e0c; text-align: center;}
+  td.document{font-weight: bold; text-align: center;}
+  td.system{color: blue; font-weight: bold; text-align: center;}
+  td.tech_equipment{color: #999; font-weight:normal; font-style: italic; text-align:center; text-decoration: underline;}
+}
+.result-all{padding-left: 150px; text-decoration: underline; font-weight: bold;}
+.result-search{padding-left: 200px; text-decoration: underline; font-weight: bold;}
+
+.punchcard-front{text-align:left; width: 30%; float:left;}
+.punchcard-back{text-align:left; width: 30%; float:left; padding-left: 300px;}
+table.equery-punchcard{
+  padding: 7; background-color: #FEFDBD;
+  td.punchcard-column{text-align: center; height: 50px;}
+  td.heading{height: 60px; vertical-align: bottom;}
 }
 
 /* forms */

@@ -12,9 +12,9 @@
       %dl.dl-horizontal
       
         - if documentsearch.refno.blank? && documentsearch.category.blank? && documentsearch.title.blank? && documentsearch.letterdt.blank? && documentsearch.letterxdt.blank? && documentsearch.sender.blank? && documentsearch.file_id.blank?  && documentsearch.letterdtend.blank? && documentsearch.letterxdtend.blank? && documentsearch.from=='1'
-          %div{style: 'padding-left: 150px; text-decoration: underline; font-weight: bold;'}=t 'equery.document.list_all'
+          %div.result-all=t 'equery.repository.list_all'
         - else
-          %div{style: 'padding-left: 200px; text-decoration: underline; font-weight: bold;'}=t 'equery.search_by'
+          %div.result-search=t 'equery.search_by'
             
         %br
                    

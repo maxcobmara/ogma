@@ -2,9 +2,9 @@
 .col-md-8.col-md-offset-2
   %dl.dl-horizontal
     - if repositorysearch.title.blank? 
-      %div{style: 'padding-left: 150px; text-decoration: underline; font-weight: bold;'}=t 'equery.repository.list_all'
+      %div.result-all=t 'equery.repository.list_all'
     - else
-      %div{style: 'padding-left: 200px; text-decoration: underline; font-weight: bold;'}=t 'equery.search_by'
+      %div.result-search=t 'equery.search_by'
             
     %br
             
@@ -25,7 +25,7 @@
   %br
   - if repositorysearch.repositories.count > 0
 
-    .right=link_to (fa_icon "print", text: (t 'equery.print_result')), repository_list_repositories_path(format: 'pdf', ids: @repositorysearch.repositories.pluck(:id))
+    .right=link_to (fa_icon "print", text: (t 'equery.print_result')), repository_list_repositories_path(format: 'pdf', ids: repositorysearch.repositories.map(&:id))
     %table.table.table-bordered.table-condensed.table-hover
       %head
         %tr.info
