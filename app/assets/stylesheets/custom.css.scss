@@ -274,6 +274,16 @@ table.question{
   td.desc{padding: 0; border: 0; height: 25px;font-size:1.0em;vertical-align: top;}
 }
 
+/* equery - show */
+table.equery{
+  td.vessel{font-weight: bold; color: #e53e0c; text-align: center;}
+  td.document{font-weight: bold; text-align: center;}
+  td.system{color: blue; font-weight: bold; text-align: center;}
+  td.tech_equipment{color: #999; font-weight:normal; font-style: italic; text-align:center; text-decoration: underline;}
+}
+.result-all{padding-left: 150px; text-decoration: underline; font-weight: bold;}
+.result-search{padding-left: 200px; text-decoration: underline; font-weight: bold;}
+
 /* forms */
 .datepicker {z-index: 1151 !important;}
 .form-inline .form-group{

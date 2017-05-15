@@ -8,7 +8,7 @@ class RepositoriesController < ApplicationController
   # GET /repositories
   # GET /repositories.xml
   def index
-    @search=Repository.where.not(category: nil).search(params[:q])
+    @search=Repository.where(data: nil).search(params[:q])
     @repositories=@search.result.order(category: :asc)
     @repositories=@repositories.page(params[:page]||1)
     @exist_in_syst=Repository.where('title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) ', '%penilaian diri untuk jurulatih%', '%PENILAIAN ANALISA SKOR PURATA JURULATIH%', '%PENILAIAN PENSYARAH%', '%DATA ANALISA SKOR PURATA PENILAIAN PENSYARAH%', '%KEDIAMAN ASRAMA%', '%MAKLUMAT PERIBADI%')
@@ -120,8 +120,12 @@ class RepositoriesController < ApplicationController
   
   
   def repository_list
-    @search = Repository.where(data: nil).search(params[:q])
-    @repositories = @search.result
+    if params[:ids]
+      @repositories=Repository.where(id: params[:ids])
+    else
+      @search = Repository.where(data: nil).search(params[:q])
+      @repositories = @search.result
+    end
     respond_to do |format|
       format.pdf do
         pdf = Repository_listPdf.new(@repositories, view_context, current_user.college)
