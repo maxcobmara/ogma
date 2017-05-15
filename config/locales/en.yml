@@ -5318,6 +5318,7 @@ en:
       absent: Absent
     student_counseling:
       search: "Student Counseling Session Search (Referred Cases & Counselor's Feedback)"
+      list_all: "List of All Student Counseling Session (Referred Cases & Counselor's Feedback)"
       #search_by: "Search Counseling Session (for Referred Case c/w Counselor's Feedback) By"
       reported_on: reported on
       session_duration: Session Duration
@@ -5325,12 +5326,13 @@ en:
       notes_feedback_links: "Session Notes & Counselor's Feedback Links"
       #infraction: Infraction
       #total: Total
-      #counseling_for: "counseling appointment/sessions for"
-      #discipline_cases: "student discipline cases."
-      #session_notes: Session Notes
-      #feedback_referrer: Feedback to Referrer
+      counseling_for: "counseling appointment/sessions for"
+      discipline_cases: " student discipline cases."
+      session_notes: Session Notes
+      feedback_referrer: Feedback to Referrer
     student_discipline:
       search: Student Discipline Cases Search
+      list_all: List of All Student Discipline Cases
     #weeklytimetable:
       #search: Weekly Timetable Search
       #search_by: Search Weekly Timetable By
