@@ -11,7 +11,7 @@
       %dl.dl-horizontal
 
         - if studentcounselingsearch.case_id.blank? && studentcounselingsearch.icno.blank? && studentcounselingsearch.name.blank? && studentcounselingsearch.matrixno.blank?
-          %div.result-all=t 'equery.repository.list_all'
+          %div.result-all=t 'equery.student_counseling.list_all'
         - else
           %div.result-search=t 'equery.search_by'
             
@@ -40,27 +40,32 @@
               %hr
           
         %dt=(t 'equery.total')
-        %dd=studentcounselingsearch.studentcounselings.count==0 ? studentcounselingsearch.studentcounselings.count : studentcounselingsearch.studentcounselings.count.to_s+" "+(t 'records')
+        %dd=studentcounselingsearch.studentcounselings.count==0 ? studentcounselingsearch.studentcounselings.count : studentcounselingsearch.studentcounselings.count.to_s+" "+(t 'equery.student_counseling.counseling_for')+" "+@bycases.count.to_s+(t 'equery.student_counseling.discipline_cases')
 
     /display result
-    .col-md-11
+    .col-md-8.col-md-offset-1
       %br
       - if studentcounselingsearch.studentcounselings.count > 0
         - counter=0
-        - studentcounselings.group_by(&:case_id).each do |caseid, scounselings|
+        /- studentcounselings.group_by(&:case_id).each do |caseid, scounselings|
+        /- bycases.each do |caseid, scounselings|
+        - for caseid in bycases
+          - scounselings=studentcounselings.where(case_id: caseid)
           %table.table.table-bordered.table-condensed.table-hover.equery
             %head
               %tr.info 
                 %th No
                 %th{colspan: 3}=t('student.students.title')
-                %th=t('student.discipline.infraction_id')
+                %th{colspan: 2}=t('student.discipline.infraction_id')
             %body
-              %tr
-                %td{rowspan: "#{scounselings.count+2}"}=counter+=1
-                %td=scounselings[0].student.matrixno
-                %td=scounselings[0].student.student_with_rank
-                %td=formatted_mykad(scounselings[0].student.icno)
-                %td.text-red
+              %tr.warning
+                %th{rowspan: "#{scounselings.count+2}", style: 'text-align: center; vertical-align: middle;'}=counter+=1
+                %th{colspan: 2}
+                  =scounselings[0].student.matrixno
+                  &nbsp;&nbsp;&nbsp;
+                  =scounselings[0].student.student_with_rank
+                %th=formatted_mykad(scounselings[0].student.icno)
+                %th.text-red{colspan: 2}
                   =StudentDisciplineCase.find(caseid).render_infraction 
                   =t('equery.student_counseling.reported_on')+" : "
                   =scounselings[0].student_discipline_case.reported_on.strftime("%d-%m-%Y")
@@ -68,18 +73,17 @@
                 %th No
                 %th=t('equery.student_counseling.session_duration')
                 %th=t('equery.student_counseling.date_time')
-                %th=t('equery.student_counseling.notes_feedback_links')
+                %th{colspan: 2}=t('equery.student_counseling.notes_feedback_links')
               - counter2=0
               - for session in scounselings
                 %tr
-                  %td=counter2+=1
+                  %td.centre=counter2+=1
                   %td=session.duration.blank? ? "" : session.duration.to_s+" "+(t 'time.minutes')
-                  %td= session.is_confirmed? ?  l(session.confirmed_at, :format=>"%d %b %y, %l:%M %P") : (t 'equery.data_not_available') 
-                  %td
-                    = link_to (t 'equery.student_counseling.session_notes'), student_student_counseling_session_path(session.id)
-                    &nbsp; &nbsp; &nbsp; &nbsp;
-                    - if counter2==1 
+                  %td=session.is_confirmed? ?  l(session.confirmed_at, :format=>"%d-%m-%y, %l:%M %P") : (t 'equery.data_not_available') 
+                  %td= link_to (t 'equery.student_counseling.session_notes'), student_student_counseling_session_path(session.id)
+                  - if counter2==1 
+                    %td{rowspan: "#{scounselings.count}", style: 'text-align: center; vertical-align: middle;'} 
                       - unless session.student_discipline_case.counselor_feedback.blank? 
                         = link_to (t 'equery.student_counseling.feedback_referrer'), feedback_referrer_student_student_counseling_sessions_path(format: 'pdf', id: session.case_id)
             
-      .right{style:"padding: 0 10px; margin:0;"}= paginate studentcounselings, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
+      .right{style:"padding: 0 10px; margin:0;"}= paginate @bycases, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

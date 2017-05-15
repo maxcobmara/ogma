@@ -13,7 +13,7 @@
         /:name, :programme, :intake, :matrixno, :icno
 
         - if studentdisciplinesearch.programme.blank? && studentdisciplinesearch.intake.blank? && studentdisciplinesearch.icno.blank? && studentdisciplinesearch.name.blank? && studentdisciplinesearch.matrixno.blank?
-          %div.result-all=t 'equery.repository.list_all'
+          %div.result-all=t 'equery.student_discipline.list_all'
         - else
           %div.result-search=t 'equery.search_by'
             

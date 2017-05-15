@@ -20,7 +20,12 @@ class EqueryReport::StudentcounselingsearchesController < ApplicationController
 
   def show
     @studentcounselingsearch = Studentcounselingsearch.find(params[:id])
-    @studentcounselings=@studentcounselingsearch.studentcounselings.page(params[:page]).per(10)
+    @studentcounselings=@studentcounselingsearch.studentcounselings#.page(params[:page]).per(10)
+    counselings_bycase=[]
+    @studentcounselingsearch.studentcounselings.group_by(&:case_id).each do |caseid, counselings|
+      counselings_bycase << caseid
+    end
+    @bycases=Kaminari.paginate_array(counselings_bycase).page(params[:page]).per(5)
   end
   
   private

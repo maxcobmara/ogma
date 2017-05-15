@@ -3,8 +3,6 @@
     - if @searchstudentcounselingtype=='1' || @searchstudentcounselingtype==1
       = f.hidden_field :method, value: @searchstudentcounselingtype
       
-      /(:name, :programme, :intake, :matrixno, :icno
-      
       / Nav tabs
       %ul.nav.nav-tabs
         %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
@@ -13,18 +11,6 @@
         #search.tab-pane.active
           %br
           .col-md-offset-2
-            /.form-group
-            /  .col-sm-2.control-label
-            /    = f.label (t 'student.students.course_id') 
-            /  .col-md-4
-            /    = f.collection_select :programme, Programme.roots.where('id IN(?)', Student.all.map(&:course_id)).sort_by{|x|x.id}, :id, :programme_list, {:include_blank => (t 'select')}, {class: 'selectpicker'}
-            
-            /.form-group
-            /  .col-sm-2.control-label.intake_span
-            /    = f.label (t 'student.students.intake_id') 
-            /  .col-md-4
-            /    =f.select :intake, grouped_options_for_select(Intake.programme_intake_list), {}, {:class => 'form-control'}
-           
             .row  
               .col-md-8
                 /%hr
@@ -65,4 +51,13 @@
             .row  
               .col-md-8
                 %hr
+                
+            .form-group
+              .col-sm-2.control-label
+                = f.label (t 'student.counseling.confirmed_at')
+              .col-md-4
+                .input-group
+                  = f.text_field :confirmed_at_start, class: 'form-control datetime_picker3_reverse'
+                  .input-group-addon=t('to')
+                  = f.text_field :confirmed_at_end, class: 'form-control datetime_picker3_reverse'
      

@@ -5234,6 +5234,7 @@ ms_MY:
       absent: Tidak Hadir
     student_counseling:
       search: "Carian Sesi Kaunseling Pelajar (Kes Rujukan & Maklumbalas Kaunselor)"
+      list_all: "Senarai Penuh Sesi Kaunseling Pelajar (Kes Rujukan & Maklumbalas Kaunselor)"
       #search_by: "Carian Sesi Kaunseling Pelajar (Kes Rujukan beserta Maklumbalas Kaunselor)"
       reported_on: dilaporkan pada
       session_duration: Tempoh Sesi
@@ -5241,12 +5242,13 @@ ms_MY:
       notes_feedback_links: "Nota Sesi & Pautan Maklumbalas Kaunselor"
       #infraction: Pelanggaran Disiplin
       #total: Jumlah
-      #counseling_for: "temujanji/sesi kaunseling untuk"
-      #discipline_cases: "kes disiplin pelajar."
-      #session_notes: Nota Sesi
-      #feedback_referrer: Maklumbalas kepada perujuk
+      counseling_for: "temujanji/sesi kaunseling untuk"
+      discipline_cases: " kes disiplin pelajar."
+      session_notes: Nota Sesi
+      feedback_referrer: Maklumbalas kepada perujuk
     student_discipline:
       search: Carian Kes Disiplin Pelajar
+      list_all: Senarai Penuh Kes Disiplin Pelajar
     #weeklytimetable:
       #search: Carian Jadual Waktu Mingguan
       #search_by: Carian Jadual Waktu Mingguan Mengikut
