@@ -7,7 +7,6 @@ class EqueryReport::StudentcounselingsearchesController < ApplicationController
   end
 
   def create
-   #raise params.inspect
     @searchstudentcounselingtype = params[:method]
     if (@searchstudentcounselingtype == '1' || @searchstudentcounselingtype == 1)
       @studentcounselingsearch = Studentcounselingsearch.new(params[:studentcounselingsearch])
@@ -28,7 +27,7 @@ class EqueryReport::StudentcounselingsearchesController < ApplicationController
   
   # Never trust parameters from the scary internet, only allow the white list through.
     def studentcounselingsearch_params
-      params.require(:studentcounselingsearch).permit(:matrixno, :case_id, :confirmed_at_start, :confirmed_at_end, :is_confirmed, name, :college_id, [:data => {}])
+      params.require(:studentcounselingsearch).permit(:matrixno, :case_id, :confirmed_at_start, :confirmed_at_end, :is_confirmed, :name, :college_id, [:data => {}])
     end
     
 end

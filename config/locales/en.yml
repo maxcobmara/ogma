@@ -5319,10 +5319,10 @@ en:
     student_counseling:
       search: "Student Counseling Session Search (Referred Cases & Counselor's Feedback)"
       #search_by: "Search Counseling Session (for Referred Case c/w Counselor's Feedback) By"
-      #reported_on: reported on
-      #session_duration: Session Duration
-      #date_time: "Date & Time"
-      #notes_feedback_links: "Session Notes & Counselor's Feedback Links"
+      reported_on: reported on
+      session_duration: Session Duration
+      date_time: "Date & Time"
+      notes_feedback_links: "Session Notes & Counselor's Feedback Links"
       #infraction: Infraction
       #total: Total
       #counseling_for: "counseling appointment/sessions for"

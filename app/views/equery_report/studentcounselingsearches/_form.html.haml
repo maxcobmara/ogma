@@ -1,1 +1,68 @@
- 
+.row
+  .col-md-10.col-md-offset-1
+    - if @searchstudentcounselingtype=='1' || @searchstudentcounselingtype==1
+      = f.hidden_field :method, value: @searchstudentcounselingtype
+      
+      /(:name, :programme, :intake, :matrixno, :icno
+      
+      / Nav tabs
+      %ul.nav.nav-tabs
+        %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
+
+      .tab-content{style:"padding-top:1em"}
+        #search.tab-pane.active
+          %br
+          .col-md-offset-2
+            /.form-group
+            /  .col-sm-2.control-label
+            /    = f.label (t 'student.students.course_id') 
+            /  .col-md-4
+            /    = f.collection_select :programme, Programme.roots.where('id IN(?)', Student.all.map(&:course_id)).sort_by{|x|x.id}, :id, :programme_list, {:include_blank => (t 'select')}, {class: 'selectpicker'}
+            
+            /.form-group
+            /  .col-sm-2.control-label.intake_span
+            /    = f.label (t 'student.students.intake_id') 
+            /  .col-md-4
+            /    =f.select :intake, grouped_options_for_select(Intake.programme_intake_list), {}, {:class => 'form-control'}
+           
+            .row  
+              .col-md-8
+                /%hr
+                .left
+                  %u=t 'equery.student.identification'
+           
+            - label_icno=current_user.college.code=='kskbjb' ? (t 'student.students.icno')+" / "+(t 'student.students.name') : (t 'student.students.icno')
+            - label_matrix=current_user.college.code=="amsas" ? (t 'student.students.apmmno') : (t 'student.students.matrixno')
+            
+            .form-group
+              .col-sm-2.control-label
+                = f.label label_icno
+              .col-md-4
+                = f.text_field :icno, class: 'form-control', data: {autocomplete_source: Student.all.map(&:student_list2)}, placeholder: (t 'student.students.icno')+" "+(t 'or')+" "+(t 'student.students.name')
+              
+            ///////////////////////////////////////////////////////////////////////////////
+            //select rank+name - search by name using ILIKE - when a name hv multiple occurance, all students will be displayed, otherwise 1 result will be displayed
+            - if current_user.college.code=='amsas'
+              .row
+                .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
+              
+              .form-group
+                .col-sm-2.control-label
+                  = f.label (t 'student.students.rank_id')
+                .col-md-4
+                  = f.text_field :name, class: 'form-control', data: {autocomplete_source: Student.all.map(&:student_with_rank2)}, placeholder: (t 'student.students.rank_id')+" "+t('or')+" "+t('student.students.name')
+            ///////////////////////////////////////////////////////////////////////////////
+
+            .row
+              .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
+              
+            .form-group
+              .col-sm-2.control-label
+                = f.label label_matrix
+              .col-md-4
+                = f.text_field :matrixno, class: 'form-control', data: {autocomplete_source: Student.where.not(matrixno: [nil, ""]).map(&:matrix_name2)}, placeholder: label_matrix+" "+t('or')+" "+(t 'student.students.name')
+
+            .row  
+              .col-md-8
+                %hr
+     

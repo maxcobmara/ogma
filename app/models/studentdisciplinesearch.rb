@@ -36,19 +36,7 @@ class Studentdisciplinesearch < ActiveRecord::Base
    
    def intake_conditions
        [" ("+intake_details+")",Student.where('intake_id=?', intake).map(&:id)] unless intake.blank?
-       #[" ("+intake_details+")",Student.find(:all, :conditions=>['intake=?',"2011-09-01"]).map(&:id)] unless intake.blank?
    end
-#   def intake_details
-#      a='student_id=? ' if  Student.find(:all, :conditions=>['intake=? and course_id=?', intake, programme]).map(&:id).uniq.count!=0
-#      0.upto( Student.find(:all, :conditions=>['intake=? and course_id=?', intake, programme]).map(&:id).uniq.count-2) do |l|  
-#        a=a+'OR student_id=? '
-#      end 
-#      return a unless intake.blank? 
-#   end
-#   
-#   def intake_conditions
-#       [" ("+intake_details+")",Student.find(:all, :conditions=>['intake=? and course_id=?', intake, programme]).map(&:id)] unless intake.blank? 
-#   end
   
   def matrixno_details
       a='student_id=? ' if  Student.where('matrixno=?', matrixno).map(&:id).uniq.count!=0
@@ -84,21 +72,7 @@ class Studentdisciplinesearch < ActiveRecord::Base
   
   def name_conditions
       [" ("+name_details+")",Student.where('name ILIKE ?', "%#{name}%").map(&:id)] unless name.blank? || Student.where('name ILIKE ?',"%#{name}%").count==0
-      #["sender ILIKE ?","%#{sender}%" ] unless sender.blank? 
   end
-  
-#   def icno_details
-#       a='student_id=? ' if Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id).uniq.count!=0
-#       0.upto( Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id).uniq.count-2) do |l|  
-#         a=a+'OR student_id=? '
-#       end 
-#       return a unless (icno.blank? && Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id).count==0)
-#   end
-#   
-#   def icno_conditions
-#       [" ("+icno_details+")",Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id)] unless (icno.blank? && Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id).count==0)
-#   end
-  
   
   def orders
     "id ASC"

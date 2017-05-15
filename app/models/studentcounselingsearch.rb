@@ -1,5 +1,4 @@
 class Studentcounselingsearch < ActiveRecord::Base
-#   attr_accessible :matrixno, :case_id, :confirmed_at_start, :confirmed_at_end, :is_confirmed, :name
   attr_accessor :method
   
   belongs_to :college
@@ -36,6 +35,18 @@ class Studentcounselingsearch < ActiveRecord::Base
   
   def name_conditions
     [" ("+name_details+")", Student.where('name ILIKE(?)',"%#{name}%").map(&:id)] unless name.blank? || Student.where('name ILIKE ?',"%#{name}%").count==0
+  end
+  
+  def icno_details
+      a='student_id=? ' if  Student.where('icno ILIKE ?', "%#{icno.split(" | ")[0]}%").map(&:id).uniq.count!=0
+      0.upto( Student.where('icno ILIKE ?',"%#{icno.split(" | ")[0]}%").map(&:id).uniq.count-2) do |l|  
+        a=a+'OR student_id=? '
+      end 
+      return a unless icno.blank?
+  end
+  
+  def icno_conditions
+      [" ("+icno_details+")",Student.where('icno ILIKE ?',"%#{icno.split(" | ")[0]}%").map(&:id)] unless icno.blank? || Student.where('icno ILIKE ?',"%#{icno.split(" | ")[0]}%").count==0
   end
   
   def case_id_details
