@@ -11,9 +11,9 @@
       %dl.dl-horizontal
 
         - if studentsearch.course_id.blank? && studentsearch.intake.blank? && studentsearch.icno.blank? && studentsearch.name.blank? && studentsearch.matrixno.blank? && studentsearch.ssponsor.blank? && studentsearch.physical.blank? && studentsearch.end_training.blank? && studentsearch.gender.blank? && studentsearch.race.blank? && studentsearch.bloodtype.blank? 
-          %div{style: 'padding-left: 180px; text-decoration: underline; font-weight: bold;'}=t 'equery.student.list_all'
+          %div.result-all=t 'equery.repository.list_all'
         - else
-          %div{style: 'padding-left: 200px; text-decoration: underline; font-weight: bold;'}=t 'equery.search_by'
+          %div.result-search=t 'equery.search_by'
             
         %br
                    
@@ -87,7 +87,7 @@
       %br
       - if studentsearch.students.count > 0
         .right=link_to (fa_icon "print", text: (t 'equery.print_result')), student_list_students_path(format: 'pdf', ids: studentsearch.students.pluck(:id))
-        %table.table.table-bordered.table-condensed.table-hover
+        %table.table.table-bordered.table-condensed.table-hover.equery
           %head
             %tr.info
               %th{width: '4%'} No
@@ -107,11 +107,11 @@
             - else
               - cnt=0
             - students.group_by{|x|x.course}.each do |programme, students_programme|
-              %tr
-                %td.centre.bg-grey{colspan: 11}=programme.programme_list
+              %tr.warning
+                %td.document{colspan: 11}=programme.programme_list
               - students_programme.group_by{|y|y.intakestudent}.each do |int, student_list|
-                %tr
-                  %td.centre.bg-grey{colspan: 11}=int.intake_details
+                %tr.warning
+                  %td.document{colspan: 11}=int.intake_details
                 - for student in student_list.sort_by{|u|u.name}
                   %tr
                     %td.centre=cnt+=1

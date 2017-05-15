@@ -2910,7 +2910,7 @@ ms_MY:
       comandant_id: Komandan
       file_id: Rujukan Fail
       location_id: Lokasi
-      #counselor_feedback: Maklum Balas Kaunselor
+      counselor_feedback: Maklum Balas Kaunselor #usage: equery
       year: Tahun
       not_related: Tidak Berkaitan
       counseling: Kaunseling

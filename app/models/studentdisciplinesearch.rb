@@ -1,5 +1,4 @@
 class Studentdisciplinesearch < ActiveRecord::Base
-#   attr_accessible :name, :programme, :intake, :matrixno, :icno
   
   attr_accessor :method
   
@@ -28,15 +27,15 @@ class Studentdisciplinesearch < ActiveRecord::Base
   end
   
    def intake_details
-      a='student_id=? ' if  Student.where('intake=?', intake).map(&:id).uniq.count!=0
-      0.upto( Student.where('intake=?', intake).map(&:id).uniq.count-2) do |l|  
+      a='student_id=? ' if  Student.where('intake_id=?', intake).map(&:id).uniq.count!=0
+      0.upto( Student.where('intake_id=?', intake).map(&:id).uniq.count-2) do |l|  
         a=a+'OR student_id=? '
       end 
       return a unless intake.blank?
    end
    
    def intake_conditions
-       [" ("+intake_details+")",Student.where('intake=?', intake).map(&:id)] unless intake.blank?
+       [" ("+intake_details+")",Student.where('intake_id=?', intake).map(&:id)] unless intake.blank?
        #[" ("+intake_details+")",Student.find(:all, :conditions=>['intake=?',"2011-09-01"]).map(&:id)] unless intake.blank?
    end
 #   def intake_details
@@ -64,15 +63,15 @@ class Studentdisciplinesearch < ActiveRecord::Base
   end
   
   def icno_details
-      a='student_id=? ' if  Student.where('icno ILIKE ?', "%#{icno}%").map(&:id).uniq.count!=0
-      0.upto( Student.where('icno ILIKE ?',"%#{icno}%").map(&:id).uniq.count-2) do |l|  
+      a='student_id=? ' if  Student.where('icno ILIKE ?', "%#{icno.split(" | ")[0]}%").map(&:id).uniq.count!=0
+      0.upto( Student.where('icno ILIKE ?',"%#{icno.split(" | ")[0]}%").map(&:id).uniq.count-2) do |l|  
         a=a+'OR student_id=? '
       end 
       return a unless icno.blank?
   end
   
   def icno_conditions
-      [" ("+icno_details+")",Student.where('icno ILIKE ?',"%#{icno}%").map(&:id)] unless icno.blank? || Student.where('icno ILIKE ?',"%#{icno}%").count==0
+      [" ("+icno_details+")",Student.where('icno ILIKE ?',"%#{icno.split(" | ")[0]}%").map(&:id)] unless icno.blank? || Student.where('icno ILIKE ?',"%#{icno.split(" | ")[0]}%").count==0
   end
   
   def name_details

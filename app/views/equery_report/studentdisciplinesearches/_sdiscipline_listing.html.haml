@@ -1,0 +1,122 @@
+/ Nav tabs
+%ul.nav.nav-tabs
+  %li.active= link_to  (t 'equery.result'), "#search", "data-toggle" => "tab"
+
+/ display 
+.tab-content{style:"padding-top:1em"}
+  #search_details.tab-pane.active  
+        
+    /additional heading
+    .col-md-8.col-md-offset-2
+      %dl.dl-horizontal
+      
+        /:name, :programme, :intake, :matrixno, :icno
+
+        - if studentdisciplinesearch.programme.blank? && studentdisciplinesearch.intake.blank? && studentdisciplinesearch.icno.blank? && studentdisciplinesearch.name.blank? && studentdisciplinesearch.matrixno.blank?
+          %div.result-all=t 'equery.repository.list_all'
+        - else
+          %div.result-search=t 'equery.search_by'
+            
+        %br
+                   
+        - unless studentdisciplinesearch.programme.blank?
+          %dt=t('student.students.course_id')
+          %dd=Programme.find(studentdisciplinesearch.programme).programme_list
+      
+        - unless studentdisciplinesearch.intake.blank?
+          %dt=t('student.students.intake_id')
+          %dd=Intake.find(studentdisciplinesearch.intake).intake_details
+          
+        - unless studentdisciplinesearch.icno.blank?
+          %dt=t('student.students.icno')
+          %dd=formatted_mykad(studentdisciplinesearch.icno.split(" |")[0])+" (#{studentdisciplinesearch.icno.split(" | ")[1]})"
+
+        - unless studentdisciplinesearch.name.blank?
+          %dt=(t 'student.students.rank_id')+" | "+(t 'student.students.name')
+          %dd=studentdisciplinesearch.name
+              
+        - unless studentdisciplinesearch.matrixno.blank?
+          %dt=t('student.students.matrixno')
+          %dd=studentdisciplinesearch.matrixno.split(" |")[0]
+
+        - if studentdisciplinesearch.programme.blank? && studentdisciplinesearch.intake.blank? && studentdisciplinesearch.icno.blank? && studentdisciplinesearch.name.blank? && studentdisciplinesearch.matrixno.blank?
+        - else
+          .col-md-12
+            .col-md-8
+              %hr
+          
+        %dt=(t 'equery.total')
+        %dd=studentdisciplinesearch.studentdisciplines.count==0 ? studentdisciplinesearch.studentdisciplines.count : studentdisciplinesearch.studentdisciplines.count.to_s+" "+(t 'records')
+        
+        
+    /display result
+    .col-md-11
+      %br
+      - if studentdisciplinesearch.studentdisciplines.count > 0
+        .right=link_to (fa_icon "print", text: (t 'equery.print_result')), discipline_report_student_student_discipline_cases_path(format: 'pdf', ids: studentdisciplinesearch.studentdisciplines.pluck(:id))
+        %table.table.table-bordered.table-condensed.table-hover.equery
+          %head
+            %tr.info
+              %th{width: '4%'} No
+              %th{width: '10%'}=t('student.students.icno')
+              %th{width: '20%'}=t('student.students.name')
+              %th{width: '12%'}=studentdisciplinesearch.college.code=='kskbjb' ? (t 'student.students.matrixno') : (t 'student.students.apmmno')
+              %th{width: '10%'}=t('student.discipline.infraction_id')
+              %th{width: '10%'}=t('student.discipline.reported_on')
+              %th{width: '14%'}=t('student.discipline.location_id')
+              %th{width: '6%'} Status
+              %th{width: '10%'}=t('student.discipline.action_by')
+              %th{width: '4%'}=t('student.discipline.counselor_feedback')
+          %body
+            - if params[:page]
+              - cnt=(params[:page].to_i-1)*10
+            - else
+              - cnt=0
+            - studentdisciplines.group_by{|x|x.student.course}.each do |programme, students_programme|
+              %tr.warning
+                %td.vessel{colspan: 11}=programme.programme_list
+              - students_programme.group_by{|y|y.student.intakestudent}.each do |int, student_disps|
+                %tr.warning
+                  %td.document{colspan: 11}=int.intake_details
+                - student_disps.group_by{|s|s.student}.each do |student, student_disciplines|
+                  - total_recs=studentdisciplinesearch.studentdisciplines.where(student_id: student.id).count.to_s+" " +t('records')
+                  %tr.warning
+                    %td{colspan: 11}
+                      .centre
+                        %b=student.student_with_rank
+                        | 
+                        %span{style: 'font-style: italic;'}=link_to (t "student.discipline.report_title")+" - "+total_recs, anacdotal_report_student_student_discipline_cases_path(student: student.id, coverage: "logged", format: 'pdf')
+                     
+                  - for student_discipline in student_disciplines.sort_by{|u|u.student.name}
+                    %tr
+                      %td.centre=cnt+=1
+                      %td=formatted_mykad(student_discipline.student.icno)
+                      %td=student_discipline.student.student_with_rank
+                      %td=student_discipline.student.matrixno
+                      %td=student_discipline.render_infraction
+                      %td=student_discipline.reported_on.try(:strftime, '%d %b %Y')
+                      %td=student_discipline.location.name
+                      %td=link_to student_discipline.render_status, student_student_discipline_case_path(student_discipline)
+                      %td
+                        - if current_user.college.code=='kskbjb'
+                          - unless student_discipline.action_type.blank? 
+                            =h t('studentdiscipline.refer_bpl') if student_discipline.action_type=="Ref to BPL"
+                            =h t('studentdiscipline.refer_tphep') if student_discipline.action_type=="Ref TPHEP"
+                            =h t('studentdiscipline.no_case') if student_discipline.action_type=="no_case" 
+                        - elsif current_user.college.code=='amsas'
+                          - if student_discipline.render_action_by==I18n.t('student.discipline.no_case')
+                            %font{style: 'color: green; font-weight: bold'}=h student_discipline.render_action_by
+                          - elsif student_discipline.render_action_by==I18n.t('not_completed')
+                            %font{style: 'color: red;'}=h student_discipline.render_action_by
+                          - else
+                            =h student_discipline.render_action_by
+                      %td
+                        - unless student_discipline.counselor_feedback.blank?
+                          =link_to (t 'student.discipline.counselor_feedback'), feedback_referrer_student_student_counseling_sessions_path(format: 'pdf', id: student_discipline.id)
+                        - else
+                          =t 'not_applicable'
+                        /= link_to (t 'studentdiscipline.feedback_counsellor'),:controller=>'student_counseling_sessions', :action => 'feedback_referrer', :id => student_discipline.id if !student_discipline.counselor_feedback.blank?
+                    
+                        /%td.centre= link_to (fa_icon "file-pdf-o"), borang_maklumat_pelajar_student_path(student, format: "pdf")
+            
+      .right{style:"padding: 0 10px; margin:0;"}= paginate studentdisciplines, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

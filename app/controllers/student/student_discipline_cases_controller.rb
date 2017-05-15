@@ -34,17 +34,20 @@ class Student::StudentDisciplineCasesController < ApplicationController
   def discipline_report
     roles = current_user.roles.pluck(:authname)
     @is_admin =  roles.include?("developer") || roles.include?("administration") || roles.include?("disciplinary_officer") || roles.include?("student_discipline_module_admin") || roles.include?("student_discipline_module_viewer") || roles.include?("student_discipline_module_user") || roles.include?("warden")
-    if @is_admin
-      @search = StudentDisciplineCase.search(params[:q])
+    if params[:ids]
+      @student_discipline_cases2 = StudentDisciplineCase.where(id: params[:ids])
     else
-      if params[:coverage] && params[:coverage]=="all"
+      if @is_admin
         @search = StudentDisciplineCase.search(params[:q])
       else
-        @search = StudentDisciplineCase.sstaff2(current_user.userable.id).search(params[:q])
-      end
-    end 
-    @student_discipline_cases2 = @search.result.sort_by{|x|x.student.course_id}
-
+        if params[:coverage] && params[:coverage]=="all"
+          @search = StudentDisciplineCase.search(params[:q])
+        else
+          @search = StudentDisciplineCase.sstaff2(current_user.userable.id).search(params[:q])
+        end
+      end 
+      @student_discipline_cases2 = @search.result.sort_by{|x|x.student.course_id}
+    end
     respond_to do |format|
        format.pdf do
          pdf = Discipline_reportPdf.new(@student_discipline_cases2, view_context, current_user.college)

@@ -3021,7 +3021,7 @@ en:
       comandant_id: Comandant
       file_id: File Reference
       location_id: Location
-      #counselor_feedback: Counselor Feedback
+      counselor_feedback: Counselor Feedback  #usage: equery
       year: Year
       not_related: Not Related
       counseling: Counseling
