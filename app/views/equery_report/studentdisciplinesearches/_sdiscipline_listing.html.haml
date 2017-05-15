@@ -115,8 +115,5 @@
                           =link_to (t 'student.discipline.counselor_feedback'), feedback_referrer_student_student_counseling_sessions_path(format: 'pdf', id: student_discipline.id)
                         - else
                           =t 'not_applicable'
-                        /= link_to (t 'studentdiscipline.feedback_counsellor'),:controller=>'student_counseling_sessions', :action => 'feedback_referrer', :id => student_discipline.id if !student_discipline.counselor_feedback.blank?
-                    
-                        /%td.centre= link_to (fa_icon "file-pdf-o"), borang_maklumat_pelajar_student_path(student, format: "pdf")
             
       .right{style:"padding: 0 10px; margin:0;"}= paginate studentdisciplines, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

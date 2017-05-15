@@ -1,0 +1,85 @@
+/ Nav tabs
+%ul.nav.nav-tabs
+  %li.active= link_to  (t 'equery.result'), "#search", "data-toggle" => "tab"
+
+/ display 
+.tab-content{style:"padding-top:1em"}
+  #search_details.tab-pane.active  
+        
+    /additional heading
+    .col-md-8.col-md-offset-2
+      %dl.dl-horizontal
+
+        - if studentcounselingsearch.case_id.blank? && studentcounselingsearch.icno.blank? && studentcounselingsearch.name.blank? && studentcounselingsearch.matrixno.blank?
+          %div.result-all=t 'equery.repository.list_all'
+        - else
+          %div.result-search=t 'equery.search_by'
+            
+        %br
+           
+        - unless studentcounselingsearch.case_id.blank?
+          %dt=t('student.students.intake_id')
+          %dd=Studentdisciplinecase.find(studentcounselingsearch.case_id)
+          
+        - unless studentcounselingsearch.icno.blank?
+          %dt=t('student.students.icno')
+          %dd=formatted_mykad(studentcounselingsearch.icno.split(" |")[0])+" (#{studentcounselingsearch.icno.split(" | ")[1]})"
+
+        - unless studentcounselingsearch.name.blank?
+          %dt=(t 'student.students.rank_id')+" | "+(t 'student.students.name')
+          %dd=studentcounselingsearch.name
+              
+        - unless studentcounselingsearch.matrixno.blank?
+          %dt=t('student.students.matrixno')
+          %dd=studentcounselingsearch.matrixno.split(" |")[0]
+
+        - if studentcounselingsearch.case_id.blank? && studentcounselingsearch.icno.blank? && studentcounselingsearch.name.blank? && studentcounselingsearch.matrixno.blank?
+        - else
+          .col-md-12
+            .col-md-8
+              %hr
+          
+        %dt=(t 'equery.total')
+        %dd=studentcounselingsearch.studentcounselings.count==0 ? studentcounselingsearch.studentcounselings.count : studentcounselingsearch.studentcounselings.count.to_s+" "+(t 'records')
+
+    /display result
+    .col-md-11
+      %br
+      - if studentcounselingsearch.studentcounselings.count > 0
+        - counter=0
+        - studentcounselings.group_by(&:case_id).each do |caseid, scounselings|
+          %table.table.table-bordered.table-condensed.table-hover.equery
+            %head
+              %tr.info 
+                %th No
+                %th{colspan: 3}=t('student.students.title')
+                %th=t('student.discipline.infraction_id')
+            %body
+              %tr
+                %td{rowspan: "#{scounselings.count+2}"}=counter+=1
+                %td=scounselings[0].student.matrixno
+                %td=scounselings[0].student.student_with_rank
+                %td=formatted_mykad(scounselings[0].student.icno)
+                %td.text-red
+                  =StudentDisciplineCase.find(caseid).render_infraction 
+                  =t('equery.student_counseling.reported_on')+" : "
+                  =scounselings[0].student_discipline_case.reported_on.strftime("%d-%m-%Y")
+              %tr.warning
+                %th No
+                %th=t('equery.student_counseling.session_duration')
+                %th=t('equery.student_counseling.date_time')
+                %th=t('equery.student_counseling.notes_feedback_links')
+              - counter2=0
+              - for session in scounselings
+                %tr
+                  %td=counter2+=1
+                  %td=session.duration.blank? ? "" : session.duration.to_s+" "+(t 'time.minutes')
+                  %td= session.is_confirmed? ?  l(session.confirmed_at, :format=>"%d %b %y, %l:%M %P") : (t 'equery.data_not_available') 
+                  %td
+                    = link_to (t 'equery.student_counseling.session_notes'), student_student_counseling_session_path(session.id)
+                    &nbsp; &nbsp; &nbsp; &nbsp;
+                    - if counter2==1 
+                      - unless session.student_discipline_case.counselor_feedback.blank? 
+                        = link_to (t 'equery.student_counseling.feedback_referrer'), feedback_referrer_student_student_counseling_sessions_path(format: 'pdf', id: session.case_id)
+            
+      .right{style:"padding: 0 10px; margin:0;"}= paginate studentcounselings, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
