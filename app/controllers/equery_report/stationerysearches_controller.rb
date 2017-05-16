@@ -19,7 +19,8 @@ class EqueryReport::StationerysearchesController < ApplicationController
 
   def show
     @stationerysearch = Stationerysearch.find(params[:id])
-    @stationeries=@stationerysearch.stationeries.page(params[:page]).per(10)
+    @stationeries=@stationerysearch.stationeries.page(params[:page]).per(10)  # NOTE - when search solely by product
+    # TODO - Kaminari - use array as in studentcounseling - when search NOT solely by product -- page limit to 5 stationery records (c/w add+deduct)
   end
   
   private
