@@ -1,5 +1,5 @@
 class Asset::StationeriesController < ApplicationController
-  filter_access_to :index, :new, :create, :kewps13, :attribute_check => false
+  filter_access_to :index, :new, :create, :kewps13, :stationery_details, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_stationery, only: [:show, :edit, :update, :destroy]
   
@@ -71,6 +71,18 @@ class Asset::StationeriesController < ApplicationController
     respond_to do |format|
       format.pdf do
         pdf = Kewps13Pdf.new(view_context, @reporting_year)
+        send_data pdf.render, filename: "kewps13-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
+  def stationery_details
+    @stationery=Stationery.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Stationery_detailsPdf.new(@stationery, view_context, current_user.college)
         send_data pdf.render, filename: "kewps13-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

@@ -20,6 +20,10 @@ class Stationery < ActiveRecord::Base
   def self.ransackable_scopes(auth_object = nil)
     [:current_quantity]
   end
+  
+  def details
+    "#{code} | #{category}"
+  end
 end
 
 # == Schema Information

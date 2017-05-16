@@ -1,0 +1,147 @@
+/ Nav tabs
+%ul.nav.nav-tabs
+  %li.active= link_to  (t 'equery.result'), "#search", "data-toggle" => "tab"
+
+/ display 
+.tab-content{style:"padding-top:1em"}
+  #search_details.tab-pane.active  
+        
+    /additional heading
+    .col-md-8.col-md-offset-2
+      %dl.dl-horizontal
+      
+        /:product, :document, :received, :received2, :issuedby, :receivedby, :issuedate, :issudate2,
+
+        - if stationerysearch.product.blank? && stationerysearch.document.blank? && stationerysearch.received.blank? && stationerysearch.received2.blank? && stationerysearch.issuedby.blank? && stationerysearch.receivedby.blank? && stationerysearch.issuedate.blank? && stationerysearch.issuedate2.blank?
+          %div.result-all=t 'equery.stationery.list_all'
+        - else
+          %div.result-search=t 'equery.search_by'
+            
+        %br
+                   
+        - unless stationerysearch.product.blank?
+          %dt=(t 'stationery.code')+" | "+(t 'stationery.category')
+          %dd=stationerysearch.product
+      
+        - unless stationerysearch.document.blank?
+          %dt=(t 'stationery.supplier_name')+" | "+(t 'stationery.lpono')
+          %dd=stationerysearch.document
+
+        - if stationerysearch.received.blank? == false || stationerysearch.received2.blank? ==false
+          %dt= t('stationery.received_date')
+          %dd
+            - unless stationerysearch.received.blank?
+              =stationerysearch.received.strftime('%d-%m-%Y')
+            - unless stationerysearch.received2.blank?
+              =(t 'to')+" " if stationerysearch.received.blank? == false
+              =stationerysearch.received2.strftime('%d-%m-%Y')
+          
+        - unless stationerysearch.receivedby.blank?
+          - astaff=Staff.where(id: stationerysearch.receivedby).first
+          %dt=(t 'stationery.received_by')
+          %dd=stationerysearch.college.code=='amsas' ? astaff.staff_with_rank : astaff.staff_name_with_position
+
+        - unless stationerysearch.issuedby.blank?
+          - astaff1=Staff.where(id: stationerysearch.issuedby).first
+          %dt=(t 'stationery.issues_by')
+          %dd=stationerysearch.college.code=='amsas' ? astaff1.staff_with_rank : astaff1.staff_name_with_position
+
+        - if stationerysearch.issuedate.blank? == false || stationerysearch.issuedate2.blank? == false
+          %dt= t('stationery.issue_date')
+          %dd
+            - unless stationerysearch.issuedate.blank?
+              =stationerysearch.issuedate.strftime('%d-%m-%Y')
+              - unless stationerysearch.issue_date2.blank?
+                =(t 'to')+" " if stationerysearch.issuedate.blank? == false
+                =stationerysearch.issue_date2.strftime('%d-%m-%Y')
+
+        - if stationerysearch.product.blank? && stationerysearch.document.blank? && stationerysearch.received.blank? && stationerysearch.received2.blank? && stationerysearch.issuedby.blank? && stationerysearch.receivedby.blank? && stationerysearch.issuedate.blank? && stationerysearch.issuedate2.blank?
+        - else
+          .col-md-12
+            .col-md-8
+              %hr
+          
+        %dt=(t 'equery.total')
+        %dd=stationerysearch.stationeries.count==0 ? stationerysearch.stationeries.count : stationerysearch.stationeries.count.to_s+" "+(t 'records')
+        
+         
+    /display result
+    .col-md-9.col-md-offset-1
+      %br
+      - counter=0
+      - if stationerysearch.stationeries.count > 0
+        /.right=link_to (fa_icon "print", text: (t 'equery.print_result')), discipline_report_student_stationery_cases_path(format: 'pdf', ids: stationerysearch.stationerys.pluck(:id))
+        %table.table.table-bordered.table-condensed.table-hover.equery
+          %head
+            %tr.info
+              %th{width: '4%'} No
+              %th{width: '15%'}=t 'stationery.code'
+              %th{width: '36%'}=t 'stationery.category'
+              %th{width: '13%'}=t 'stationery.quantity'
+              %th{width: '13%'}=t 'stationery.max'
+              %th{width: '13%'}=t 'stationery.min'
+              %th{width: '7%'}=t 'view'
+          %body
+            - if params[:page]
+              - cnt=(params[:page].to_i-1)*10
+            - else
+              - cnt=0
+            - for stationery in stationeries
+              %tr
+                %td=counter+=1
+                %td= link_to stationery.code, asset_stationery_path(stationery)
+                %td= link_to stationery.category, asset_stationery_path(stationery)
+                %td
+                  = stationery.current_quantity.to_i rescue 0
+                  &nbsp; 
+                  = stationery.unittype
+                %td= stationery.maxquantity.to_i.to_s+" "+ stationery.unittype
+                %td= stationery.minquantity.to_i.to_s+" "+ stationery.unittype
+                %td.centre=link_to (fa_icon "file-pdf-o"), stationery_details_asset_stationery_path(id: stationery, format: "pdf")
+                
+      .right{style:"padding: 0 10px; margin:0;"}= paginate stationeries, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
+      
+/               %tr.warning
+/                 %td.vessel{colspan: 11}=programme.programme_list
+/               - students_programme.group_by{|y|y.student.intakestudent}.each do |int, student_disps|
+/                 %tr.warning
+/                   %td.document{colspan: 11}=int.intake_details
+/                 - student_disps.group_by{|s|s.student}.each do |student, stationerys|
+/                   - total_recs=stationerysearch.stationerys.where(student_id: student.id).count.to_s+" " +t('records')
+/                   %tr.warning
+/                     %td{colspan: 11}
+/                       .centre
+/                         %b=student.student_with_rank
+/                         | 
+/                         %span{style: 'font-style: italic;'}=link_to (t "student.discipline.report_title")+" - "+total_recs, anacdotal_report_student_stationery_cases_path(student: student.id, coverage: "logged", format: 'pdf')
+/                      
+/                   - for stationery in stationerys.sort_by{|u|u.student.name}
+/                     %tr
+/                       %td.centre=cnt+=1
+/                       %td=formatted_mykad(stationery.student.icno)
+/                       %td=stationery.student.student_with_rank
+/                       %td=stationery.student.matrixno
+/                       %td=stationery.render_infraction
+/                       %td=stationery.reported_on.try(:strftime, '%d %b %Y')
+/                       %td=stationery.location.name
+/                       %td=link_to stationery.render_status, student_stationery_case_path(stationery)
+/                       %td
+/                         - if current_user.college.code=='kskbjb'
+/                           - unless stationery.action_type.blank? 
+/                             =h t('stationery.refer_bpl') if stationery.action_type=="Ref to BPL"
+/                             =h t('stationery.refer_tphep') if stationery.action_type=="Ref TPHEP"
+/                             =h t('stationery.no_case') if stationery.action_type=="no_case" 
+/                         - elsif current_user.college.code=='amsas'
+/                           - if stationery.render_action_by==I18n.t('student.discipline.no_case')
+/                             %font{style: 'color: green; font-weight: bold'}=h stationery.render_action_by
+/                           - elsif stationery.render_action_by==I18n.t('not_completed')
+/                             %font{style: 'color: red;'}=h stationery.render_action_by
+/                           - else
+/                             =h stationery.render_action_by
+/                       %td
+/                         - unless stationery.counselor_feedback.blank?
+/                           =link_to (t 'student.discipline.counselor_feedback'), feedback_referrer_student_student_counseling_sessions_path(format: 'pdf', id: stationery.id)
+/                         - else
+/                           =t 'not_applicable'
+/             
+/       .right{style:"padding: 0 10px; margin:0;"}= paginate stationeries, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

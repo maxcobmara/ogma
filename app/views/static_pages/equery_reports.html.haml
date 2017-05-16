@@ -36,6 +36,16 @@
                 %td= link_to (t 'staff.training.application_status.viewsummary'), show_total_days_staff_training_ptdos_path(:id=>current_user.userable_id)
                 %td.centre= link_to (fa_icon "search"), new_equery_report_ptdosearch_path
           
+          - elsif @query_module=='2'
+            - permitted_to? :read, :stationerysearches do 
+              %tr
+                %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'asset.title')
+              %tr
+                %td.centre=no+=1
+                %td= link_to (t "stationery.title_menu"), asset_stationeries_path
+                %td.centre= link_to (fa_icon "search"), new_equery_report_stationerysearch_path(searchstationerytype: 1)
+
+		
           - elsif @query_module=='3'
             %tr
               %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'document.title')

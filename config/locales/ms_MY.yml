@@ -577,6 +577,7 @@ ms_MY:
   select_excel_file: Sila pilih fail Excel untuk diimport
   reports: Laporan
   all_records: Semua Rekod
+  no_record: Tiada Rekod
   rejected: Tidak Diluluskan
   active: Aktif
   not_active: Tidak Aktif
@@ -2552,14 +2553,14 @@ ms_MY:
   stationery:
     title: Senarai Keperluan Pejabat
     title_menu: Bekalan Pejabat
-    code: Kod Barang
+    code: Kod Item
     category: Nama Produk
     quantity: Kuantiti Semasa
-    max: Max Kuantiti
-    min: Min Kuantiti
+    max: Kuantiti Maksima
+    min: Kuantiti Minima
     details: Keperluan Pejabat
     additions: Penambahan
-    deductions: Pengurangan
+    deductions: Pengurangan / Pengeluaran
     unittype: Jenis Unit
     new: Bekalan Pejabat Baru
     lpono: Nombor LPO
@@ -2568,9 +2569,9 @@ ms_MY:
     price_per_unit: Harga Seunit
     total: Jumlah
     received_date: Tarikh Terima
-    issues_by: Isu oleh
+    issues_by: Dikeluarkan oleh
     received_by: Diterima oleh
-    issue_date: Tarikh isu
+    issue_date: Tarikh dikeluarkan
 
   location:
     title: Lokasi
@@ -5156,8 +5157,8 @@ ms_MY:
       total: Jumlah Kakitangan
       available_staff: Carian mengikut staf tertakluk kepada staf yang pernah menghadiri latihan sahaja.
       #date_out_of_range: "Tarikh kursus adalah di luar julat rekod kursus yang dihadiri kakitangan. Pilihan tarikh mestilah di antara  "
-    #asset:
-      #search: Carian Aset
+    asset:
+      search: Carian Aset
       #asset_name: Nama Aset
       #asset_type: Jenis Aset
       #type_select: "Masukkan 'H' untuk senaraikan 'Harta Modal' atau 'I' untuk senaraikan 'Inventori' "
@@ -5429,8 +5430,12 @@ ms_MY:
       classification: Klasifikasi
       fines: Denda
       select_criteria: Sila pilih jenis data statistik yang ingin dipaparkan
-    #stationery:
-      #search_by: Carian Mengikut
+    stationery:
+      search: "Carian Aset : Bekalan Pejabat"
+      search_product: Carian mengikut produk (bekalan pejabat)
+      search_additions: Carian mengikut rekod penambahan bekalan pejabat
+      search_deductions: Carian mengikut rekod pengeluaran bekalan pejabat
+      list_all: Senarai Penuh Bekalan Pejabat
       #report: "Laporan Kedudukan Stok Tahunan (KEWPS 13)"
       #by_stock: Mengikut stok
       #total: Jumlah semua keperluan pejabat
