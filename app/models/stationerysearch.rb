@@ -41,86 +41,94 @@ class Stationerysearch < ActiveRecord::Base
     end
   end
   
-  def received_details
-    exist = StationeryAdd.where('received>=?', received).count
-    a='id=? ' if StationeryAdd.where('received>=?', received).map(&:stationery_id).uniq.count!=0
-    0.upto(StationeryAdd.where('received>=?', received).map(&:stationery_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if exist > 0 && received.blank? == false
-  end
-  def received_conditions  
-    ["( "+received_details+")", StationeryAdd.where('received>=?', received).map(&:stationery_id).uniq] if (StationeryAdd.where('received>=?', received).count) > 0 && received.blank? == false 
-  end
-
-  def received2_details
-    exist = StationeryAdd.where('received<=?', received2).count
-    a='id=? ' if StationeryAdd.where('received<=?', received2).map(&:stationery_id).uniq.count!=0
-    0.upto(StationeryAdd.where('received<=?', received2).map(&:stationery_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if exist > 0 && received2.blank? == false
-  end
-  def received2_conditions  
-    ["( "+received2_details+")", StationeryAdd.where('received<=?', received2).map(&:stationery_id).uniq] if (StationeryAdd.where('received<=?', received2).count) > 0 && received2.blank? == false 
+  def received_conditions
+    unless received.blank?
+      ids=Stationery.joins(:stationery_adds).where('received>=?', received).pluck(:stationery_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
   end
   
-  #-------
-  
-  def issuedate_details
-    exist = StationeryUse.where('issuedate>=?', issuedate).count
-    a='id=? ' if StationeryUse.where('issuedate>=?', issuedate).map(&:stationery_id).uniq.count!=0
-    0.upto(StationeryUse.where('issuedate>=?', issuedate).map(&:stationery_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if exist > 0 && issuedate.blank? == false
-  end
-  def issuedate_conditions  
-    ["( "+issuedate_details+")", StationeryUse.where('issuedate>=?', issuedate).map(&:stationery_id).uniq] if (StationeryUse.where('issuedate>=?', issuedate).count) > 0 && issuedate.blank? == false 
-  end
-
-  def issuedate2_details
-    exist = StationeryUse.where('issuedate<=?', issuedate2).count
-    a='id=? ' if StationeryUse.where('issuedate<=?', issuedate2).map(&:stationery_id).uniq.count!=0
-    0.upto(StationeryUse.where('issuedate<=?', issuedate2).map(&:stationery_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if exist > 0 && issuedate2.blank? == false
-  end
-  def issuedate2_conditions  
-    ["( "+issuedate2_details+")", StationeryUse.where('issuedate<=?', issuedate2).map(&:stationery_id).uniq] if (StationeryUse.where('issuedate<=?', issuedate2).count) > 0 && issuedate2.blank? == false 
+  def received2_conditions
+    unless received2.blank?
+      ids=Stationery.joins(:stationery_adds).where('received<=?', received2).pluck(:stationery_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
   end
   
-  
-#   def received_conditions
-#     ["received>=?", received] unless received.blank?
-#   end
-#   def received2_conditions  #between 2 dates
-#     ["received<=?", received2] unless received2.blank?
-#   end
-  
-  def issuedby_details
-    exist = StationeryUse.where('issuedby=?', issuedby).count
-    a='id=? ' if StationeryUse.where('issuedby=?', issuedby).map(&:stationery_id).uniq.count!=0
-    0.upto(StationeryUse.where('issuedby=?', issuedby).map(&:stationery_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if exist > 0 && issuedby.blank? == false
-  end
-  def issuedby_conditions  
-    ["( "+issuedby_details+")",StationeryUse.where('issuedby=?', issuedby).map(&:stationery_id).uniq] if (StationeryUse.where('issuedby=?', issuedby).count) > 0 && issuedby.blank? == false 
+  def issuedate_conditions
+    unless issuedate.blank?
+      ids=Stationery.joins(:stationery_uses).where('issuedate>=?', issuedate).pluck(:stationery_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
   end
   
-  def receivedby_details
-    exist = StationeryUse.where('receivedby=?', receivedby).count
-    a='id=? ' if StationeryUse.where('receivedby=?', receivedby).map(&:stationery_id).uniq.count!=0
-    0.upto(StationeryUse.where('receivedby=?', receivedby).map(&:stationery_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if exist > 0 && receivedby.blank? == false
+  def issuedate2_conditions
+    unless issuedate2.blank?
+      ids=Stationery.joins(:stationery_uses).where('issuedate<=?', issuedate2).pluck(:stationery_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
   end
-  def receivedby_conditions  
-    ["( "+receivedby_details+")", StationeryUse.where('receivedby=?', receivedby).map(&:stationery_id).uniq] if (StationeryUse.where('receivedby=?', receivedby).count) > 0 && receivedby.blank? == false 
+  
+  def issuedby_conditions
+    unless issuedby.blank?
+      ids=Stationery.joins(:stationery_uses).where('issuedby=?', issuedby)
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
+  end
+  
+  def receivedby_conditions
+    unless receivedby.blank?
+      ids=Stationery.joins(:stationery_uses).where('receivedby=?', receivedby)
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
   end
   
   ################

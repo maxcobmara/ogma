@@ -26,6 +26,6 @@ class EqueryReport::StationerysearchesController < ApplicationController
   
   # Never trust parameters from the scary internet, only allow the white list through.
     def stationerysearch_params
-      params.require(:stationerysearch).permit(:product, :document, :received, :received2, :issuedby, :receivedby, :issuedate, :issudate2, :college_id, [:data => {}])
+      params.require(:stationerysearch).permit(:product, :document, :received, :received2, :issuedby, :receivedby, :issuedate, :issuedate2, :college_id, [:data => {}])
     end
 end

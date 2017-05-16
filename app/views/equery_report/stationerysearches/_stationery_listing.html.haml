@@ -33,7 +33,10 @@
             - unless stationerysearch.received.blank?
               =stationerysearch.received.strftime('%d-%m-%Y')
             - unless stationerysearch.received2.blank?
-              =(t 'to')+" " if stationerysearch.received.blank? == false
+              - if stationerysearch.received.blank? == false
+                =(t 'to')+" " 
+              - else
+                =(t 'equery.upto')+" "
               =stationerysearch.received2.strftime('%d-%m-%Y')
           
         - unless stationerysearch.receivedby.blank?
@@ -51,9 +54,14 @@
           %dd
             - unless stationerysearch.issuedate.blank?
               =stationerysearch.issuedate.strftime('%d-%m-%Y')
-              - unless stationerysearch.issue_date2.blank?
-                =(t 'to')+" " if stationerysearch.issuedate.blank? == false
-                =stationerysearch.issue_date2.strftime('%d-%m-%Y')
+            - unless stationerysearch.issuedate2.blank?
+              - if stationerysearch.issuedate.blank? == false
+                =(t 'to')+" " 
+              - else
+                =(t 'equery.upto')+" "
+              =stationerysearch.issuedate2.strftime('%d-%m-%Y')
+            - else
+              =(t 'equery.onwards')
 
         - if stationerysearch.product.blank? && stationerysearch.document.blank? && stationerysearch.received.blank? && stationerysearch.received2.blank? && stationerysearch.issuedby.blank? && stationerysearch.receivedby.blank? && stationerysearch.issuedate.blank? && stationerysearch.issuedate2.blank?
         - else
@@ -70,7 +78,7 @@
       %br
       - counter=0
       - if stationerysearch.stationeries.count > 0
-        /.right=link_to (fa_icon "print", text: (t 'equery.print_result')), discipline_report_student_stationery_cases_path(format: 'pdf', ids: stationerysearch.stationerys.pluck(:id))
+        /.right=link_to (fa_icon "print", text: (t 'equery.print_result')), discipline_report_student_stationery_cases_path(format: 'pdf', ids: stationerysearch.stationeries.pluck(:id))
         %table.table.table-bordered.table-condensed.table-hover.equery
           %head
             %tr.info
