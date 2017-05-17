@@ -4,9 +4,7 @@
             
     - if @searchstationerytype=='1' || @searchstationerytype==1
       = f.hidden_field :method, value: @searchstationerytype
-      
-      /:product, :document, :received, :received2, :issuedby, :receivedby, :issuedate, :issudate2,
-      
+            
       / Nav tabs
       %ul.nav.nav-tabs
         %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
