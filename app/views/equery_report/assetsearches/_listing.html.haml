@@ -1,0 +1,94 @@
+/additional heading
+.col-md-8.col-md-offset-2
+  %dl.dl-horizontal
+
+    - if assetsearch.assetcode.blank? && assetsearch.name.blank? && assetsearch.purchaseprice.blank? && assetsearch.purchaseprice2.blank? && assetsearch.purchasedate.blank? && assetsearch.purchasedate2.blank?
+      %div.result-all=t 'equery.asset.list_all'
+    - else
+      %div.result-search=t 'equery.search_by'
+            
+    %br
+                   
+    - unless assetsearch.assetcode.blank?
+      %dt=t('asset.assetcode')
+      %dd=assetsearch.assetcode
+      
+    - unless assetsearch.name.blank?
+      %dt=(t 'equery.asset.asset_name')
+      %dd=assetsearch.name
+
+    - if assetsearch.purchaseprice.blank? == false || assetsearch.purchaseprice2.blank? ==false
+      %dt= t('asset.purchaseprice')
+      %dd
+        - unless assetsearch.purchaseprice.blank?
+          =ringgols(assetsearch.purchaseprice)
+        - unless assetsearch.purchaseprice2.blank?
+          - if assetsearch.purchaseprice.blank? == false
+            =(t 'to')+" " 
+          - else
+            =(t 'equery.upto')+" "
+          =ringgols(assetsearch.purchaseprice2)
+
+    - if assetsearch.purchasedate.blank? == false || assetsearch.purchasedate2.blank? == false
+      %dt=t('asset.purchasedate')
+      %dd
+        - unless assetsearch.purchasedate.blank?
+          =assetsearch.purchasedate.strftime('%d-%m-%Y')
+        - unless assetsearch.purchasedate2.blank?
+          - if assetsearch.purchasedate.blank? == false
+            =(t 'to')+" " 
+          - else
+            =(t 'equery.upto')+" "
+          =assetsearch.purchasedate2.strftime('%d-%m-%Y')
+        - else
+          =(t 'equery.onwards')
+
+    - if assetsearch.assetcode.blank? && assetsearch.name.blank? && assetsearch.purchaseprice.blank? && assetsearch.purchaseprice2.blank? && assetsearch.purchasedate.blank? && assetsearch.purchasedate2.blank?
+    - else
+      .col-md-12
+        .col-md-8
+          %hr
+          
+    %dt=(t 'equery.total')
+    %dd
+      =assetsearch.assets.count==0 ? assetsearch.assets.count : assetsearch.assets.count.to_s+" "+(t 'records')
+      =assetsearch.assets.group_by(&:assettype).count==2 ? "(#{t('equery.asset.fixed_acr')} / #{t('equery.asset.inv_acr')}  : #{assetsearch.assets.hm.count} / #{assetsearch.assets.inv.count})" : ""
+
+/display result
+.col-md-9.col-md-offset-1
+  %br
+  - counter=0
+  /- if params[:page]
+  /  - cnt=(params[:page].to_i-1)*10
+  /- else
+  /  - cnt=0
+  - if assetsearch.assets.count > 0
+    %table.table.table-condensed.table-bordered.table-hover.equery
+      %head
+        %tr.info
+          %th{width: '4%'} No
+          %th{width: '24%'}=t('asset.assetcode')
+          %th{width: '25%'}=t('equery.asset.asset_name')
+          %th{width: '13%'}=t('asset.purchasedate')
+          %th{width: '13%'}=t('asset.purchaseprice')
+          %th{width: '12%'}=t('equery.links')
+             
+      %body
+        - assets.group_by(&:assettype).each do |asset_type, massets|
+          %tr.warning
+            %td.system{colspan: 6}=asset_type==1 ? (t 'asset.fixed') : (t 'asset.inventory')
+          - for asset in massets
+            %tr
+              %td=counter+=1
+              %td=asset.assetcode
+              %td=asset.name
+              %td=asset.purchasedate.try(:strftime, '%d-%m-%Y')
+              %td=ringgols(asset.purchaseprice)
+              %td.centre
+                - if asset.assettype==1
+                  =link_to (fa_icon "file-pdf-o")+" KEW-PA 2", kewpa2_asset_asset_path(format: "pdf", id: asset)
+                - elsif asset.assettype==2
+                  =link_to (fa_icon "file-pdf-o")+" KEW-PA 3", kewpa3_asset_asset_path(format: "pdf", id: asset)
+      %br
+
+  .right{style:"padding: 0 10px; margin:0;"}= paginate assets, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

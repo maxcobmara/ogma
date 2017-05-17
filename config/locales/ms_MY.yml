@@ -5164,6 +5164,9 @@ ms_MY:
       asset_name: Nama Aset
       asset_type: Jenis Aset
       type_select: "Masukkan 'H' untuk senaraikan 'Harta Modal' atau 'I' untuk senaraikan 'Inventori' "
+      list_all: "Senarai Penuh Aset (Harta Modal & Inventori)"
+      fixed_acr: H
+      inv_acr: I
       #leave_unselected_kewpa6: "Nyahpilihkan semua medan untuk papar SEMUA rekod peminjaman aset (KEW-PA 6) yang wujud."
       #leave_unselected_kewpa9: "Pilih kotak semak ini dan nyahpilih medan - medan lain untuk papar SEMUA rekod kerosakan aset (KEW-PA 9) yang wujud.'"
       #leave_blank_maintenance: "Pilih kotak semak ini dan kosongkan medan - medan lain untuk papar SEMUA rekod aset untuk diselenggara "
