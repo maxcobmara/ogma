@@ -2342,7 +2342,7 @@ ms_MY:
     buyinfo: Maklumat Pembelian
     orderno: No Pesanan Tempatan (No LO)
     purchasedate: Tarikh Pesanan (Tarikh LO)
-    purchaseprice: Harga Beli
+    purchaseprice: Harga Belian
     receiveddate: Tarikh Terima
     receivedby: Diterima Oleh
     suppliedby: Dibekalkan Oleh
@@ -5161,9 +5161,9 @@ ms_MY:
       #date_out_of_range: "Tarikh kursus adalah di luar julat rekod kursus yang dihadiri kakitangan. Pilihan tarikh mestilah di antara  "
     asset:
       search: Carian Aset
-      #asset_name: Nama Aset
-      #asset_type: Jenis Aset
-      #type_select: "Masukkan 'H' untuk senaraikan 'Harta Modal' atau 'I' untuk senaraikan 'Inventori' "
+      asset_name: Nama Aset
+      asset_type: Jenis Aset
+      type_select: "Masukkan 'H' untuk senaraikan 'Harta Modal' atau 'I' untuk senaraikan 'Inventori' "
       #leave_unselected_kewpa6: "Nyahpilihkan semua medan untuk papar SEMUA rekod peminjaman aset (KEW-PA 6) yang wujud."
       #leave_unselected_kewpa9: "Pilih kotak semak ini dan nyahpilih medan - medan lain untuk papar SEMUA rekod kerosakan aset (KEW-PA 9) yang wujud.'"
       #leave_blank_maintenance: "Pilih kotak semak ini dan kosongkan medan - medan lain untuk papar SEMUA rekod aset untuk diselenggara "

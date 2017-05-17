@@ -1,0 +1,177 @@
+/=@assetsearch.assets.count 
+
+/=@assetsearch.render_search_type
+/:assetcode, :name, :purchaseprice, :purchasedate, :purchaseprice2, :purchasedate2
+
+/ Nav tabs
+%ul.nav.nav-tabs
+  %li.active= link_to  (t 'equery.result'), "#search", "data-toggle" => "tab"
+
+/ display 
+.tab-content{style:"padding-top:1em"}
+  #search_details.tab-pane.active  
+        
+    /additional heading
+    .col-md-8.col-md-offset-2
+      %dl.dl-horizontal
+      
+        - if assetsearch.search_type==1
+          /start - kew-pa 2 & 3
+          
+          - if assetsearch.assetcode.blank? && assetsearch.name.blank? && assetsearch.purchaseprice.blank? && assetsearch.purchaseprice2.blank? && assetsearch.purchasedate.blank? && assetsearch.purchasedate2.blank?
+            %div.result-all=t 'equery.stationery.list_all'
+          - else
+            %div.result-search=t 'equery.search_by'
+            
+          %br
+                   
+          - unless assetsearch.assetcode.blank?
+            %dt=(t 'stationery.code')+" | "+(t 'stationery.category')
+            %dd=assetsearch.assetcode
+      
+          - unless assetsearch.name.blank?
+            %dt=(t 'stationery.supplier_name')+" | "+(t 'stationery.lpono')
+            %dd=assetsearch.name
+
+          - if assetsearch.purchaseprice.blank? == false || assetsearch.purchaseprice2.blank? ==false
+            %dt= t('stationery.received_date')
+            %dd
+              - unless assetsearch.purchaseprice.blank?
+                =assetsearch.purchaseprice
+              - unless assetsearch.purchaseprice2.blank?
+                - if assetsearch.purchaseprice.blank? == false
+                  =(t 'to')+" " 
+                - else
+                  =(t 'equery.upto')+" "
+                =assetsearch.purchaseprice2.strftime('%d-%m-%Y')
+
+          - if assetsearch.purchasedate.blank? == false || assetsearch.purchasedate2.blank? == false
+            %dt= t('stationery.issue_date')
+            %dd
+              - unless assetsearch.purchasedate.blank?
+                =assetsearch.purchasedate.strftime('%d-%m-%Y')
+              - unless assetsearch.purchasedate2.blank?
+                - if assetsearch.purchasedate.blank? == false
+                  =(t 'to')+" " 
+                - else
+                  =(t 'equery.upto')+" "
+                =assetsearch.purchasedate2.strftime('%d-%m-%Y')
+              - else
+                =(t 'equery.onwards')
+
+          - if assetsearch.assetcode.blank? && assetsearch.name.blank? && assetsearch.purchaseprice.blank? && assetsearch.purchaseprice2.blank? && assetsearch.purchasedate.blank? && assetsearch.purchasedate2.blank?
+          - else
+            .col-md-12
+              .col-md-8
+                %hr
+          /end - kew-pa 2 & 3
+
+        - elsif assetsearch.search_type==2
+          /start - kew-pa 4
+          /end - kewpa 4
+          
+        - elsif assetsearch.search_type==3
+          /start - kew-pa 5
+          /end - kew-pa 5
+          
+        - elsif assetsearch.search_type==4
+          /start - kew-pa 6
+          /end - kew-pa 6
+          
+        - elsif assetsearch.search_type==5
+          /start - kew-pa 7
+          /end - kew-pa 7
+          
+        - elsif assetsearch.search_type==6
+          /start - kew-pa 8
+          /end - kew-pa 8
+        
+        - elsif assetsearch.search_type==7
+          /start - kew-pa 9
+          /end - kew-pa 9
+       
+        - elsif assetsearch.search_type==8
+          /start - kew-pa 13
+          /end - kew-pa 13
+          
+        - elsif assetsearch.search_type==9
+          /start - kew-pa 14
+          /end - kew-pa 14
+        
+        - elsif assetsearch.search_type==10
+          /start - kew-pa 16
+          /end - kew-pa 16
+          
+        - elsif assetsearch.search_type==11
+          /start - kew-pa 17
+          /end - kew-pa 17
+        
+        - elsif assetsearch.search_type==12
+          /start - kew-pa 18
+          /end - kew-pa 18
+          
+        - elsif assetsearch.search_type==13
+          /start - kew-pa 19
+          /end - kew-pa 19
+          
+        - elsif assetsearch.search_type==14
+          /start - kew-pa 20
+          /end - kew-pa 20
+          
+        - elsif assetsearch.search_type==15
+          /start - kew-pa 28
+          /end - kew-pa 28
+          
+        - elsif assetsearch.search_type==16
+          /start - kew-pa 30
+          /end - kew-pa 30
+          
+        - elsif assetsearch.search_type==17
+          /start - kew-pa 31
+          /end - kew-pa 31
+     
+        
+        %dt=(t 'equery.total')
+        %dd=assetsearch.assets.count==0 ? assetsearch.assets.count : assetsearch.assets.count.to_s+" "+(t 'records')+" "+(t 'stationery.title_menu').downcase
+        
+    /display result
+    .col-md-9.col-md-offset-1
+      %br
+      - counter=0
+      /- if params[:page]
+      /  - cnt=(params[:page].to_i-1)*10
+      /- else
+      /  - cnt=0
+      - if assetsearch.assets.count > 0
+        %table.table.table-condensed.table-bordered.table-hover.equery
+          %head
+            %tr.info
+              %th{width: '4%'} No
+              %th{width: '18%'}=t('asset.assetcode')
+              %th{width: '18%'}=t('equery.asset.asset_name')
+              %th{width: '13%'}=t('equery.asset.asset_type')
+              %th{width: '13%'}=t('asset.purchasedate')
+              %th{width: '13%'}=t('asset.purchaseprice')
+              %th{width: '12%'}=t('equery.links')
+             
+          %body
+            - for asset in assets
+              %tr
+                %td=counter+=1
+                %td=asset.assetcode
+                %td=asset.name
+                %td=asset.assettype==1 ? (t 'asset.fixed') : (t 'asset.inventory')
+                %td=asset.purchasedate.try(:strftime, '%d-%m-%Y')
+                %td=ringgols(asset.purchaseprice)
+                %td
+                  - if asset.assettype==1
+                    - kewpatype="2"
+                    =link_to "KEW-PA #{kewpatype}", kewpa2_asset_asset_path(format: "pdf", id: asset)
+                  - elsif
+                    - kewpatype="3"
+                    =link_to "KEW-PA #{kewpatype}", kewpa3_asset_asset_path(format: "pdf", id: asset)
+          %br
+
+      .right{style:"padding: 0 10px; margin:0;"}= paginate assets, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
+        
+         

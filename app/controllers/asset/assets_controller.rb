@@ -90,8 +90,14 @@ class Asset::AssetsController < ApplicationController
   end
   
   def kewpa4
-    @search=Asset.search(params[:q])
-    @assets=@search.result.where(assettype: 1)
+    if params[:search_year]
+      begin_year=Date.new(params[:search_year].to_i, 1, 1)
+      end_year=Date.new(params[:search_year].to_i, 12, 31)
+      @assets=Asset.where('receiveddate >=? and receiveddate <=?', begin_year, end_year).where(assettype: 1)
+    else
+      @search=Asset.search(params[:q])
+      @assets=@search.result.where(assettype: 1)
+    end
     respond_to do |format|
       format.pdf do
         pdf = Kewpa4Pdf.new(@assets, view_context)
@@ -103,8 +109,14 @@ class Asset::AssetsController < ApplicationController
   end  
   
   def kewpa5
-    @search=Asset.search(params[:q])
-    @assets=@search.result.where(assettype: 2)
+    if params[:search_year]
+      begin_year=Date.new(params[:search_year].to_i, 1, 1)
+      end_year=Date.new(params[:search_year].to_i, 12, 31)
+      @assets=Asset.where('receiveddate >=? and receiveddate <=?', begin_year, end_year).where(assettype: 2)
+    else
+      @search=Asset.search(params[:q])
+      @assets=@search.result.where(assettype: 2)
+    end
     respond_to do |format|
       format.pdf do
         pdf = Kewpa5Pdf.new(@assets, view_context)

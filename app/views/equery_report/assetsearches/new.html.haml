@@ -1,0 +1,60 @@
+- model_class = Assetsearch
+/ - if @searchtype=='1'
+/   - @search_name="2 & 3"
+/ - elsif @searchtype=='2' 
+/   - @search_name="4 (Harta Modal / Fixed Asset)"
+/ - elsif @searchtype=='3'  
+/   - @search_name="5 (Inventori / Inventory)"
+/ - elsif @searchtype=='4'  
+/   - @search_name="6 (Pergerakan Aset : Peminjaman)"
+/ - elsif @searchtype=='5'
+/   - @search_name="7 (Penempatan Aset)"
+/ - elsif @searchtype=='6'  
+/   - @search_name="8 (Laporan Tahunan Harta Modal & Inventori)"
+/ - elsif @searchtype=='7'  
+/   - @search_name="9 (Aduan Kerosakan Aset Alih)"
+/ - elsif @searchtype=='8'  
+/   - @search_name="13 (Senarai Aset Alih yang Memerlukan Penyelenggaraan)"
+/ - elsif @searchtype=='9'  
+/   - @search_name="14 (Daftar Penyelenggaraan Harta Modal)"
+/ - elsif @searchtype=='10'  
+/   - @search_name="16 (Perakuan Pelupusan (PEP) Aset Alih Kerajaan)"
+/ - elsif @searchtype=='11'  
+/   - @search_name="17 (Laporan Lembaga Pemeriksa Aset Alih Kerajaan)"
+/ - elsif @searchtype=='12'  
+/   - @search_name="18 (Sijil Penyaksian Pemusnahan Aset Alih Kerajaan)"
+/ - elsif @searchtype=='13'  
+/   - @search_name="19 (Sijil Pelupusan Aset Alih Kerajaan)"
+/ - elsif @searchtype=='14'  
+/   - @search_name="20 (Laporan Tahunan Pemusnahan Aset Alih Kerajaan)"
+/ - elsif @searchtype=='15'  
+/   - @search_name="28 (Laporan Awal Kehilangan Aset Alih Kerajaan)"
+/ - elsif @searchtype=='16'  
+/   - @search_name="30 (Laporan Akhir Kehilangan Aset Alih Kerajaan)"
+/ - elsif @searchtype=='17'  
+/   - @search_name="31 (Sijil Hapus Kira Aset Alih Kerajaan)"
+
+.page-header
+  - search_name=(Assetsearch::SEARCH_TYPE.find_all{|disp, value| value==@searchtype.to_i}).map{|disp, value| disp}[0]
+  %h1=t('equery.asset.search')+" : KEW-PA "+search_name
+
+= render 'shared/flashes'
+
+.row.fluid
+  = form_for [:equery_report, @assetsearch], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = render :partial => 'form', :locals => {:f => f}
+    = f.hidden_field :college_id, value: current_user.college_id
+    = f.hidden_field :search_type, value: @searchtype.to_i
+    
+    .col-sm-8.col-md-offset-2
+      .row
+        .col-sm-offset-3
+          .small=t('equery.leaves_all_blank_all_records')
+        .col-md-offset-1
+          %hr
+        .form-group
+          .col-sm-offset-4.col-sm-1
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), "/equery_reports?query_module=2", :class => 'btn btn-default'
+          .col-sm-offset-1.col-sm-2
+            = f.submit (t 'search') , class: "btn btn-primary"
