@@ -598,6 +598,7 @@ en:
   select_excel_file: Please select an Excel file for import
   reports: Reports
   all_records: All Records
+  no_record: No record
   rejected: Rejected
   active: Active
   not_active: Not Active
@@ -5177,7 +5178,7 @@ en:
     #select_record: Select record by
     #data_based_existing_records: " data are based on existing records."
     #listing: Listing
-    #links: links
+    links: links
     #for_selected_date: "for selected date."
     search_by: Search By
     result: Search Result
@@ -5240,8 +5241,8 @@ en:
       total: Total staff 
       available_staff: Search by staff is limited to staff attended training.
       #date_out_of_range: "Training date is out of range (attended training). Selection must be between "
-    #asset:
-      #search: Asset Search
+    asset:
+      search: Asset Search
       #asset_name: Asset Name
       #asset_type: Asset Type
       #type_select: "Insert 'H' for listing of all 'Fixed Asset' or 'I' for listing of all 'Inventory'"
@@ -5514,8 +5515,12 @@ en:
       classification: Classification
       fines: Denda
       select_criteria: Please select statistic data type to be displayed
-    #stationery:
-      #search_by: Search by
+    stationery:
+      search: "Asset Search : Office Supplies"
+      search_product: Search by product (office supplies)
+      search_additions: Search by office supplies (addition records)
+      search_deductions: Search by office supplies (deduction records)
+      list_all: List of All Office Supplies
       #report: "Yearly Stock Report (KEWPS 13)"
       #by_stock: By stock
       #total: Total all office supplies

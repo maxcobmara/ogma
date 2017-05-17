@@ -61,11 +61,11 @@
       %tbody
         - for stationery_use in @stationery.stationery_uses 
           %tr 
-            %td= stationery_use.issuesupply.try(:name)
-            %td= stationery_use.receivesupply.try(:name)
-            %td= stationery_use.quantity.to_i
+            %td=current_user.college.code=='amsas' ? stationery_use.issuesupply.staff_with_rank  :  stationery_use.issuesupply.try(:staff_name_with_position)
+            %td=current_user.college.code=='amsas' ? stationery_use.receivesupply.staff_with_rank : stationery_use.receivesupply.try(:staff_name_with_position)
+            %td= stationery_use.quantity.to_i.to_s+@stationery.unittype
             %td= stationery_use.issuedate.try(:strftime, "%d %b %Y")
-			
+
 .row
   .col-md-6.col-md-offset-2
     %hr
@@ -74,7 +74,7 @@
 
       = link_to content_tag(:i, "", :class => "fa fa-edit") , edit_asset_stationery_path(@stationery),  {class: "btn btn-primary", "data-toggle" => "tooltip", title: t("actions.edit")}
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white"), |
-        asset_stationeries_path(@stationery),                                                                                                    |
+        asset_stationery_path(@stationery),                                                                                                    |
         :method => 'delete',                                                                                                           |
         :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
         :class => 'btn btn-danger', "data-toggle" => "tooltip", title: t("actions.delete")			

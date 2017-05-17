@@ -7,8 +7,9 @@
 .row.fluid
   = form_for [:asset, @stationery], html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
+    = f.hidden_field :college, value: current_user.college_id
     = render :partial => 'form', :locals => {:f => f}
-	
+
     .col-md-offset-1
       .form-group
         .col-sm-offset-2.col-sm-1

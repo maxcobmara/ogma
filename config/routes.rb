@@ -178,6 +178,9 @@ Ogma::Application.routes.draw do
       end
     end
     resources :stationeries do
+      member do
+        get :stationery_details
+      end
       collection do
         get :kewps13
       end
@@ -653,6 +656,7 @@ Ogma::Application.routes.draw do
     resources :studentattendancesearches
     resources :studentdisciplinesearches
     resources :studentcounselingsearches
+    resources :stationerysearches
   end
 
   #refer 1)lib/Subdomain.rb & 2)config/application.rb (auto loader for lib files)

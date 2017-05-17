@@ -18,6 +18,10 @@ class StationeryAdd < ActiveRecord::Base
   def boo
     "ba"
   end
+  
+  def details
+    "#{document} | #{lpono}"
+  end
 end
 
 # == Schema Information

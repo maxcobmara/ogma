@@ -2148,13 +2148,16 @@ authorization do
   #start of Assets modules#######################################
   #38-OK
   role :stationeries_module_admin do
-     has_permission_on :asset_stationeries, :to => [:manage, :kewps13]
+     has_permission_on :asset_stationeries, :to => [:manage, :kewps13, :stationery_details]
+     has_permission_on :equery_report_stationerysearches, :to => [:new, :create, :show]
   end
   role :stationeries_module_viewer do
-     has_permission_on :asset_stationeries, :to => [:read, :kewps13]
+     has_permission_on :asset_stationeries, :to => [:read, :kewps13, :stationery_details]
+     has_permission_on :equery_report_stationerysearches, :to => [:new, :create, :show]
   end
   role :stationeries_module_user do
-     has_permission_on :asset_stationeries, :to => [:read, :update, :kewps13]
+     has_permission_on :asset_stationeries, :to => [:read, :update, :kewps13, :stationery_details]
+     has_permission_on :equery_report_stationerysearches, :to => [:new, :create, :show]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - assetown[0].disabled=true as there's no specific role & above 3 access are adequate
 #   role :stationeries_module_member do

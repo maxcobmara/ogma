@@ -1,0 +1,147 @@
+/ Nav tabs
+%ul.nav.nav-tabs
+  %li.active= link_to  (t 'equery.result'), "#search", "data-toggle" => "tab"
+
+/ display 
+.tab-content{style:"padding-top:1em"}
+  #search_details.tab-pane.active  
+        
+    /additional heading
+    .col-md-8.col-md-offset-2
+      %dl.dl-horizontal
+
+        - if stationerysearch.product.blank? && stationerysearch.document.blank? && stationerysearch.received.blank? && stationerysearch.received2.blank? && stationerysearch.issuedby.blank? && stationerysearch.receivedby.blank? && stationerysearch.issuedate.blank? && stationerysearch.issuedate2.blank?
+          %div.result-all=t 'equery.stationery.list_all'
+        - else
+          %div.result-search=t 'equery.search_by'
+            
+        %br
+                   
+        - unless stationerysearch.product.blank?
+          %dt=(t 'stationery.code')+" | "+(t 'stationery.category')
+          %dd=stationerysearch.product
+      
+        - unless stationerysearch.document.blank?
+          %dt=(t 'stationery.supplier_name')+" | "+(t 'stationery.lpono')
+          %dd=stationerysearch.document
+
+        - if stationerysearch.received.blank? == false || stationerysearch.received2.blank? ==false
+          %dt= t('stationery.received_date')
+          %dd
+            - unless stationerysearch.received.blank?
+              =stationerysearch.received.strftime('%d-%m-%Y')
+            - unless stationerysearch.received2.blank?
+              - if stationerysearch.received.blank? == false
+                =(t 'to')+" " 
+              - else
+                =(t 'equery.upto')+" "
+              =stationerysearch.received2.strftime('%d-%m-%Y')
+          
+        - unless stationerysearch.receivedby.blank?
+          - astaff=Staff.where(id: stationerysearch.receivedby).first
+          %dt=(t 'stationery.received_by')
+          %dd=stationerysearch.college.code=='amsas' ? astaff.staff_with_rank : astaff.staff_name_with_position
+
+        - unless stationerysearch.issuedby.blank?
+          - astaff1=Staff.where(id: stationerysearch.issuedby).first
+          %dt=(t 'stationery.issues_by')
+          %dd=stationerysearch.college.code=='amsas' ? astaff1.staff_with_rank : astaff1.staff_name_with_position
+
+        - if stationerysearch.issuedate.blank? == false || stationerysearch.issuedate2.blank? == false
+          %dt= t('stationery.issue_date')
+          %dd
+            - unless stationerysearch.issuedate.blank?
+              =stationerysearch.issuedate.strftime('%d-%m-%Y')
+            - unless stationerysearch.issuedate2.blank?
+              - if stationerysearch.issuedate.blank? == false
+                =(t 'to')+" " 
+              - else
+                =(t 'equery.upto')+" "
+              =stationerysearch.issuedate2.strftime('%d-%m-%Y')
+            - else
+              =(t 'equery.onwards')
+
+        - if stationerysearch.product.blank? && stationerysearch.document.blank? && stationerysearch.received.blank? && stationerysearch.received2.blank? && stationerysearch.issuedby.blank? && stationerysearch.receivedby.blank? && stationerysearch.issuedate.blank? && stationerysearch.issuedate2.blank?
+        - else
+          .col-md-12
+            .col-md-8
+              %hr
+          
+        %dt=(t 'equery.total')
+        %dd=stationerysearch.stationeries.count==0 ? stationerysearch.stationeries.count : stationerysearch.stationeries.count.to_s+" "+(t 'records')+" "+(t 'stationery.title_menu').downcase
+        
+         
+    /display result
+    .col-md-9.col-md-offset-1
+      %br
+      - counter=0
+      /- if params[:page]
+      /  - cnt=(params[:page].to_i-1)*10
+      /- else
+      /  - cnt=0
+      - if stationerysearch.stationeries.count > 0
+        - for stationery in stationeries
+          %table.table.table-condensed.table-hover.equery.differentTable
+            %head
+              %tr.info
+                %th{width: '4%'} No
+                %th{width: '10%'}=t 'stationery.code'
+                %th{width: '36%'}=t 'stationery.category'
+                %th{width: '13%'}=t 'stationery.quantity'
+                %th{width: '13%'}=t 'stationery.max'
+                %th{width: '13%'}=t 'stationery.min'
+                %th{width: '12%'}=t 'view'
+            %body
+              %tr.info
+                %td.product-line=counter+=1
+                %td.product-line= link_to stationery.code, asset_stationery_path(stationery)
+                %td.product-line= link_to stationery.category, asset_stationery_path(stationery)
+                %td.product-line
+                  = stationery.current_quantity.to_i rescue 0
+                  &nbsp; 
+                  = stationery.unittype
+                %td.product-line= stationery.maxquantity.to_i.to_s+" "+ stationery.unittype
+                %td.product-line= stationery.minquantity.to_i.to_s+" "+ stationery.unittype
+                %td.product-line.centre=link_to (fa_icon "file-pdf-o"), stationery_details_asset_stationery_path(id: stationery, format: "pdf")
+              - if stationerysearch.product.blank?
+                - if stationery.stationery_adds.count > 0
+                  %tr.warning
+                    %td.vessel{colspan: 7}=t 'stationery.additions' 
+                  %tr.warning
+                    %th No
+                    %th=t 'stationery.lpono'
+                    %th=t 'stationery.supplier_name'
+                    %th=t 'stationery.quantity'
+                    %th=t 'stationery.price_per_unit'
+                    %th=t 'stationery.total'
+                    %th=t 'stationery.received_date'
+                  - stationery.stationery_adds.each_with_index do |add, num1|
+                    %tr
+                      %td="("+(num1+1).to_s+") "
+                      %td= add.lpono.blank? ? "&nbsp;" : add.lpono
+                      %td= add.document.blank? ? "&nbsp;" : add.document 
+                      %td= add.quantity.to_s+" "+stationery.unittype
+                      %td= ringgols(add.unitcost) 
+                      %td= ringgols(add.line_item_value) 
+                      %td= add.received? ? add.received.strftime("%d-%m-%Y") : "-"
+                - if stationery.stationery_uses.count > 0
+                  %tr.warning
+                    %td.vessel{colspan: 7}=t 'stationery.deductions' 
+                  %tr.warning
+                    %th No
+                    %th=t 'stationery.issue_date'
+                    %th=t 'stationery.received_by'
+                    %th=t 'stationery.quantity'
+                    %th{colspan: 3}=t 'stationery.issues_by'
+                    
+                  - stationery.stationery_uses.each_with_index do |ded, num2|
+                    %tr
+                      %td="("+(num2+1).to_s+") "
+                      %td= ded.issuedate? ? ded.issuedate.strftime("%d-%m-%Y") : "-"
+                      %td= ded.receivedby.blank? ? "&nbsp;" : ded.receivesupply.staff_with_rank
+                      %td= ded.quantity.to_s+" "+stationery.unittype 
+                      %td{colspan: 3}= ded.issuedby.blank? ? "&nbsp;" : ded.issuesupply.staff_with_rank
+ 
+          %br
+
+      .right{style:"padding: 0 10px; margin:0;"}= paginate stationeries, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

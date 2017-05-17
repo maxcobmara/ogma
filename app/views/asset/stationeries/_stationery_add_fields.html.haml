@@ -1,18 +1,20 @@
 %fieldset 
-  = f.hidden_field :_destroy
   - @object_full_id = f.object_name.gsub(/(\])?\[/,"_").chop
   - @object_index_id = @object_full_id.to_s.split("attributes_").last
   
   .row
-    .col-sm-1= f.text_field :lpono, class: 'form-control'
+    .col-sm-1
+      = f.hidden_field :_destroy
+      = f.text_field :lpono, class: 'form-control'
     .col-sm-2= f.text_field :document, class: 'form-control'
-    .col-sm-1= f.text_field :quantity, class: 'g1'
-    .col-sm-2= f.text_field :unitcost, class: 'g1'
+    .col-sm-1= f.text_field :quantity, class: 'g1 form-control'
+    .col-sm-2= f.text_field :unitcost, class: 'g1 form-control'
     /.col-sm-2= f.text_field :total, class: 'g1', readonly: 'readonly', class: 'form-control'
     .col-sm-2= f.text_field :total, readonly: 'readonly', class: 'form-control'
-    .col-sm-2= f.text_field :received, class: 'date_picker form-control'
+    .col-sm-2= f.text_field :received, class: 'date_picker_reverse form-control', value: f.object.received.try(:strftime, '%d-%m-%Y')
     .col-sm-1
-      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+      /= link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+      = link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
       
 :javascript
 
@@ -33,13 +35,22 @@
     ansP1.value = (unitcost*1)*(qty*1);
   });
 
-  $('.date_picker').datetimepicker({
+  $('.date_picker_reverse').datetimepicker({
     timepicker:false,
-      format:'Y-m-d',
+      format:'d-m-Y',
       formatDate:'Y-m-d'
   });
 
   $('.selectpicker').selectpicker('render');
+
+  $('.removing_fields').click(function(){
+    var fieldset=$(this).parent().parent().parent();
+    var row=$(this).parent().parent();
+    var all_fields=row.children().children();
+    var destroyer=all_fields[0];
+    destroyer.value=true;    
+    fieldset.hide();
+  });
 
 /line 19-25 //required for EXISTING saved items to works?
 /line 27-34 //required for newly added (second item and subsequent items to works)?

@@ -1,12 +1,12 @@
 class Asset::StationeriesController < ApplicationController
-  filter_access_to :index, :new, :create, :kewps13, :attribute_check => false
+  filter_access_to :index, :new, :create, :kewps13, :stationery_details, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_stationery, only: [:show, :edit, :update, :destroy]
   
   def index
-    @stationeries = Stationery.order(code: :asc).page(params[:page]||1)
     @search = Stationery.search(params[:q])
-    @stationery = @search.result
+    @stationeries=@search.result
+    @stationeries=@stationeries.order(code: :asc).page(params[:page]||1)
   end
   
   def show
@@ -21,7 +21,7 @@ class Asset::StationeriesController < ApplicationController
     @stationery = Stationery.new(stationery_params)
     respond_to do |format|
       if @stationery.save
-        format.html { redirect_to(asset_stationery_path(@stationery), notice: 'A new office supply was successfully created.') }
+        format.html { redirect_to(asset_stationery_path(@stationery), notice: (t 'stationery.title_menu')+(t 'actions.created')) }
         format.json { render action: 'show', status: :created, location: @stationery }
       else
         format.html { render action: 'new' }
@@ -39,7 +39,7 @@ class Asset::StationeriesController < ApplicationController
 
     respond_to do |format|
       if @stationery.update(stationery_params)
-        format.html { redirect_to asset_stationery_path, notice: (t 'stationery.title')+(t 'actions.updated')}
+        format.html { redirect_to asset_stationery_path, notice: (t 'stationery.title_menu')+(t 'actions.updated')}
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -48,12 +48,10 @@ class Asset::StationeriesController < ApplicationController
     end
   end
   
-  # TODO - fix here
   def destroy
-    @stationery = Stationery.find(params[:id])
     @stationery.destroy
     respond_to do |format|
-      format.html { redirect_to(asset_stationeries_url) } 
+      format.html { redirect_to(asset_stationeries_path) } 
       format.xml  { head :ok }
     end
   end
@@ -78,6 +76,18 @@ class Asset::StationeriesController < ApplicationController
     end
   end
   
+  def stationery_details
+    @stationery=Stationery.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Stationery_detailsPdf.new(@stationery, view_context, current_user.college)
+        send_data pdf.render, filename: "kewps13-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_stationery
@@ -86,8 +96,6 @@ class Asset::StationeriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def stationery_params
-      params.require(:stationery).permit(:code, :category, :unittype, :maxquantity, :minquantity, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id], 
-                                  stationery_adds_attributes: [:id, :_destroy, :lpono, :document, :quantity, :unitcost, :received], stationery_uses_attributes: [:id, :_destroy,
-                                  :issuedby, :receivedby, :quantity, :issuedate])
+      params.require(:stationery).permit(:code, :category, :unittype, :maxquantity, :minquantity, :college_id,[ :data => {}], damages_attributes: [:id, :description,:reported_on,:document_id,:location_id], stationery_adds_attributes: [:id, :_destroy, :lpono, :document, :quantity, :unitcost, :received], stationery_uses_attributes: [:id, :_destroy, :issuedby, :receivedby, :quantity, :issuedate])
     end
 end

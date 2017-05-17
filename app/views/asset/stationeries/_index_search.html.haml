@@ -2,7 +2,8 @@
   %tr.search_row{style: "display: none;"}
     %td=f.text_field :code_cont, class:  'form-control'
     %td=f.text_field :category_cont,  class:  'form-control'
-    /%td=f.text_field :current_quantity_eq, class:  'form-control'
+    %td
+      /=f.text_field :current_quantity_eq, class:  'form-control'
     %td=f.text_field :maxquantity_eq, class:  'form-control'
     %td
       .input-group
