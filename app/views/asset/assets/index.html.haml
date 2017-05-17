@@ -27,7 +27,7 @@
 %ul.nav.nav-tabs
   %li.half_width.active= link_to (t 'asset.fixed'), "#home", "data-toggle" => "tab" if permitted_to? :index, :asset_assets
   %li.half_width= link_to (t 'asset.inventory'), "#profile", "data-toggle" => "tab" if permitted_to? :index, :asset_assets
-  
+
 .tab-content
   /- permitted_to? :read, :assets do
   #home.tab-pane.fade

@@ -45,7 +45,111 @@
                 %td= link_to (t "stationery.title_menu"), asset_stationeries_path
                 %td.centre= link_to (fa_icon "search"), new_equery_report_stationerysearch_path(searchstationerytype: 1)
 
-		
+            /////////////////////
+            - permitted_to? :read, :assetsearches do
+              - unless permitted_to? :read, :stationerysearches
+                %tr
+                  %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'asset.title')
+              %tr
+                %td.centre=no+=1
+                %td= link_to "KEW.PA-2 (Daftar Harta Modal)", asset_assets_path
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 1)
+              %tr
+                %td.centre=no+=1
+                %td= link_to "KEW.PA-3 (Daftar Inventori)", asset_assets_path
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 1)
+              %tr
+                %td.centre=no+=1
+                %td 
+                  KEW.PA-4 (Senarai Daftar Harta Modal)
+                  %br
+                  - yeartab=[]
+                  - yeartab_raw = Asset.all.map{|d| d.assetcode.split("/")[4]}
+                  - yeartab_raw.each do |x|
+                    - if x.size==2
+                      - yeartab << "20"+x
+                    - else
+                      - yeartab << x
+                  - yeartab.uniq.sort.each do |ytab|
+                    | 
+                    = link_to "#{ytab}", kewpa4_asset_assets_path(format: "pdf", search_year: ytab)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 2)
+              %tr
+                %td.centre=no+=1
+                %td
+                  KEW.PA-5 (Senarai Daftar Inventori)
+                  %br
+                  - yeartab=[]
+                  - yeartab_raw = Asset.all.map{|d| d.assetcode.split("/")[4]}
+                  - yeartab_raw.each do |x|
+                    - if x.size==2
+                      - yeartab << "20"+x
+                    - else
+                      - yeartab << x
+                  - yeartab.uniq.sort.each do |ytab|
+                    | 
+                    - ayeartab=yeartab.size==2 ? ("20"+yeartab) : yeartab
+                    = link_to "#{ytab}", kewpa5_asset_assets_path(format: "pdf", search_year: ytab)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 3)
+              %tr
+                %td.centre=no+=1
+                %td KEW.PA-6 (Daftar Pergerakan Harta Modal dan Inventori)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 4)
+              %tr
+                %td.centre=no+=1
+                %td KEW.PA-7 (Senarai Aset Alih Kerajaan (mengikut lokasi))
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 5)
+              %tr
+                %td.centre=no+=1
+                %td KEW.PA-8 (Laporan Tahunan Harta Modal Dan Inventori Bagi Tahun .........)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 6)
+              %tr
+                %td.centre=no+=1
+                %td KEW.PA-9 (Borang Aduan Kerosakan Aset Alih Kerajaan)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 7)
+              %tr
+                %td.centre=no+=1
+                %td KEW.PA-13 (Senarai Aset Alih Kerajaan yang Memerlukan Penyelenggaraan)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 8)
+              %tr
+                %td.centre=no+=1
+                %td KEW.PA-14 (Daftar Penyelenggaraan Harta Modal)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 9)
+              %tr
+                %td.centre=no+=1
+                %td KEW.PA-16 (Perakuan Pelupusan (PEP) Aset Alih Kerajaan)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 10)
+              %tr
+                %td.centre=no+=1
+                %td KEW.PA-17 (Laporan Lembaga Pemeriksa Aset Alih Kerajaan)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 11)
+              %tr
+                %td.centre=no+=1
+                %td KEW.PA-18 (Sijil Penyaksian Pemusnahan Aset Alih Kerajaan)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 12)
+              %tr
+                %td.centre=no+=1
+                %td KEW.PA-19 (Sijil Pelupusan Pemusnahan Aset Alih Kerajaan)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 13)
+              %tr
+                %td.centre=no+=1
+                %td KEW.PA-20 (Laporan Tahunan Pemusnahan Aset Alih Kerajaan)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 14)
+              %tr
+                %td.centre=no+=1
+                %td KEW.PA-29 (Laporan Awal Kehilangan Aset Alih Kerajaan)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 15)
+              %tr
+                %td.centre=no+=1
+                %td KEW.PA-30 (Laporan Akhir Kehilangan Aset Alih Kerajaan)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 16)
+              %tr
+                %td.centre=no+=1
+                %td KEW.PA-31 (Sijil Hapus Kira Aset Alih Kerajaan)
+                %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 17)
+                
+            /////////////////////
+            
           - elsif @query_module=='3'
             %tr
               %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'document.title')

@@ -1,0 +1,141 @@
+.row
+  .col-md-10.col-md-offset-1
+    %br
+            
+    /:assetcode, :assettype, :name, :purchaseprice, :purchasedate, :startdate, :enddate, :category, :assignedto, :bookable, :loandate, :returndate, :location, :defect_asset, :defect_reporter, :defect_processor, :defect_process, :maintainable, :maintname, :maintcode, :disposal, :disposaltype, :discardoption, :disposalreport, :disposalcert, :disposalreport2, :loss_start, :loss_end, :loss_cert, :loanedasset, :alldefectasset, :purchaseprice2, :purchasedate2, :receiveddate, :receiveddate2, :loandate2, :returndate2, :expectedreturndate, :expectedreturndate2
+            
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #search.tab-pane.active
+        .col-md-offset-3
+          %br
+          
+          - if @searchtype.to_i==1
+            .form-group
+              .col-sm-2.control-label
+                =f.label  (t 'asset.assetcode')
+              .col-md-5
+                = f.text_field :assetcode, class: 'form-control'
+                .small
+                  =t('equery.asset.type_select')
+                  .text-blue=current_user.college.code=='kskbjb' ? "(Format : KKM/BPL/010619/H/10/395)" : "(Format: JPM/APMM/PL/H/2004/01-05)"
+                
+            .form-group
+              .col-sm-2.control-label
+                =f.label t('equery.asset.asset_name')
+              .col-md-5
+                = f.text_field :name, class: 'form-control'
+                
+            .form-group
+              .col-sm-2.control-label
+                =f.label t('asset.purchaseprice')
+              .col-md-2
+                .input-group
+                  .input-group-addon RM
+                  = f.text_field :purchaseprice, class: 'form-control'
+              .col-md-1
+                =t('to')
+              .col-md-2 
+                .input-group
+                  .input-group-addon RM
+                  = f.text_field :purchaseprice2, class: 'form-control'
+                
+            .form-group
+              .col-sm-2.control-label
+                %b= t('asset.purchasedate')
+              .col-md-5
+                .input-group
+                  = f.text_field :purchasedate, class: 'form-control date_picker_reverse'    
+                  .input-group-addon=t('to')
+                  = f.text_field :purchasedate2, class: 'form-control date_picker_reverse'
+            
+          
+          - elsif @searchtype=='2' || @searchtype==2
+          - elsif @searchtype=='3' || @searchtype==3
+          - elsif @searchtype=='4' || @searchtype==4
+          - elsif @searchtype=='5' || @searchtype==5
+          - elsif @searchtype=='6' || @searchtype==6
+          - elsif @searchtype=='7' || @searchtype==7
+          - elsif @searchtype=='8' || @searchtype==8
+          - elsif @searchtype=='9' || @searchtype==9
+          - elsif @searchtype=='10' || @searchtype==10
+          - elsif @searchtype=='11' || @searchtype==11
+          - elsif @searchtype=='12' || @searchtype==12
+          - elsif @searchtype=='13' || @searchtype==13
+          - elsif @searchtype=='14' || @searchtype==14
+          - elsif @searchtype=='15' || @searchtype==15
+          - elsif @searchtype=='16' || @searchtype==16
+          - elsif @searchtype=='17' || @searchtype==17
+          
+          
+/             %span{style: 'text-decoration: underline;'}=t 'equery.asset.search_product'
+/             %BR
+/             .form-group
+/               .col-sm-2.control-label
+/                 %b= (t 'asset.code')+" / "+(t 'asset.category')
+/               .col-md-5
+/                 = f.text_field :product, class: 'form-control', data: {autocomplete_source: Stationery.all.map(&:details)}
+/  
+/             /.row  
+/             /  .col-md-8
+/             /    .text-red.centre=t('or').upcase
+/             /    %hr
+/               = render 'shared/error_messages', object: f.object    
+/             %span{style: 'text-decoration: underline;'}=t 'equery.asset.search_additions'
+/             %BR
+/             .form-group
+/               .col-sm-2.control-label.intake_span
+/                 %b= (t 'asset.supplier_name')+" / "+(t 'asset.lpono')
+/               .col-md-5
+/                 = f.text_field :document, class: 'form-control', data: {autocomplete_source: StationeryAdd.all.map(&:details)}
+/  
+/             .form-group
+/               .col-sm-2.control-label
+/                 = f.label t('asset.received_date')
+/               .col-md-4
+/                 .input-group
+/                   = f.text_field :received, class: 'form-control date_picker_reverse'
+/                   .input-group-addon=t('to')
+/                   = f.text_field :received2, class: 'form-control date_picker_reverse'
+/                   
+/             /.row  
+/             /  .col-md-8
+/             /    .text-red.centre=t('or').upcase
+/             /    %hr
+/                 
+/             %span{style: 'text-decoration: underline;'}=t 'equery.asset.search_deductions'
+/             %BR
+/             .form-group
+/               .col-sm-2.control-label
+/                 = f.label (t 'asset.issues_by')
+/               .col-md-4
+/                 - issuer=StationeryUse.where.not(issuedby: nil).pluck(:issuedby)
+/                 - if current_user.college.code=='amsas'
+/                   =f.collection_select :issuedby, Staff.where(id: issuer).order(name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'form-control selectpicker'}
+/                 - else
+/                   =f.collection_select :issuedby, Staff.where(id: issuer).order(name: :asc), :id, :staff_name_with_position, {include_blank: (t 'select')}, {class: 'form-control selectpicker'}
+/               
+/             .form-group
+/               .col-sm-2.control-label
+/                 = f.label (t 'asset.received_by')
+/               .col-md-4 
+/                 - receiver=StationeryUse.where.not(receivedby: nil).pluck(:receivedby)
+/                 - if current_user.college.code=='amsas'
+/                   = f.collection_select :receivedby, Staff.where(id: receiver).order(name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'form-control selectpicker'}
+/                 - else
+/                   = f.collection_select :receivedby, Staff.where(id: receiver).order(name: :asc), :id, :staff_name_with_position, {include_blank: (t 'select')}, {class: 'form-control selectpicker'}
+/                   
+/               
+/             .form-group
+/               .col-sm-2.control-label
+/                 = f.label t('asset.issue_date')
+/               .col-md-4
+/                 .input-group
+/                   = f.text_field :issuedate, class: 'form-control date_picker_reverse'
+/                   .input-group-addon=t('to')
+/                   = f.text_field :issuedate2, class: 'form-control date_picker_reverse'
+/     
+     

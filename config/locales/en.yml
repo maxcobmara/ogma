@@ -5243,9 +5243,9 @@ en:
       #date_out_of_range: "Training date is out of range (attended training). Selection must be between "
     asset:
       search: Asset Search
-      #asset_name: Asset Name
-      #asset_type: Asset Type
-      #type_select: "Insert 'H' for listing of all 'Fixed Asset' or 'I' for listing of all 'Inventory'"
+      asset_name: Asset Name
+      asset_type: Asset Type
+      type_select: "Insert 'H' for listing of all 'Fixed Asset' or 'I' for listing of all 'Inventory'"
       #leave_unselected_kewpa6: "Leave all fields 'unselected' to display ALL existing asset loan (KEW-PA 6)"
       #leave_unselected_kewpa9: "Tick this checkbox and leave other fields 'unselected' to display ALL existing 'asset defect (KEW-PA 9)'"
       #leave_blank_maintenance: "Tick this checkbox and leave other fields blank to display ALL asset for maintenance "
