@@ -17,7 +17,7 @@ class EqueryReport::AssetsearchesController < ApplicationController
 
   def show
     @assetsearch = Assetsearch.find(params[:id])
-    @assets=@assetsearch.assets.order(assetcode: :asc).page(params[:page]).per(20)
+    @assets=@assetsearch.assets.order(assettype: :asc, assetcode: :asc).page(params[:page]).per(20)
   end
   
   private

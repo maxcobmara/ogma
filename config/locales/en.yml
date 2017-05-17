@@ -5246,6 +5246,9 @@ en:
       asset_name: Asset Name
       asset_type: Asset Type
       type_select: "Insert 'H' for listing of all 'Fixed Asset' or 'I' for listing of all 'Inventory'"
+      list_all: "List of All Asset (Fixed Asset & Inventory)"
+      fixed_acr: Fixed Asset
+      inv_acr: Inventory
       #leave_unselected_kewpa6: "Leave all fields 'unselected' to display ALL existing asset loan (KEW-PA 6)"
       #leave_unselected_kewpa9: "Tick this checkbox and leave other fields 'unselected' to display ALL existing 'asset defect (KEW-PA 9)'"
       #leave_blank_maintenance: "Tick this checkbox and leave other fields blank to display ALL asset for maintenance "
