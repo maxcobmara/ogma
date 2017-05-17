@@ -284,6 +284,17 @@ table.equery{
   td.system{color: blue; font-weight: bold; text-align: center;}
   td.tech_equipment{color: #999; font-weight:normal; font-style: italic; text-align:center; text-decoration: underline;}
 }
+
+.differentTable{
+   border-bottom: 3px solid #D3D3D3;
+   border-top: 3px solid #D3D3D3;
+   tr, td {border-left: 1px solid #D3D3D3; border-right: 1px solid #D3D3D3; }
+   td.product-line 
+   {
+     color: #4b4ed5; font-weight: normal;
+     a {color: #4b4ed5;}
+   }
+}
 .result-all{padding-left: 150px; text-decoration: underline; font-weight: bold;}
 .result-search{padding-left: 200px; text-decoration: underline; font-weight: bold;}
 

@@ -1,6 +1,7 @@
 class Stationery < ActiveRecord::Base
   
   validates :category, presence: true, uniqueness: true
+  validates :unittype, presence: true
   validates_uniqueness_of :code
   
   has_many :stationery_adds, :foreign_key => 'stationery_id' , :dependent => :destroy

@@ -1,12 +1,14 @@
 %fieldset   
-  = f.hidden_field :_destroy
   .row
-    .col-sm-2= f.collection_select :issuedby, Staff.all.order(name: :asc), :id, :staff_name_with_position, {include_blank: (t 'helpers.prompt.select_staff')}, {class: 'selectpicker'}
+    .col-sm-2
+      = f.hidden_field :_destroy
+      = f.collection_select :issuedby, Staff.all.order(name: :asc), :id, :staff_name_with_position, {include_blank: (t 'helpers.prompt.select_staff')}, {class: 'selectpicker'}
     .col-sm-2= f.collection_select :receivedby, Staff.all.order(name: :asc), :id, :staff_name_with_position, {include_blank: (t 'helpers.prompt.select_staff')}, {class: 'selectpicker'}
     .col-sm-1= f.text_field :quantity, class: 'form-control'
     .col-sm-2= f.text_field :issuedate, class: 'date-picker form-control'
     .col-sm-1
-      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+      /= link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+      = link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
       
 :javascript
   $('.selectpicker').selectpicker('render');
@@ -16,4 +18,13 @@
     format: "d-m-Y",
     defaultSeconds: 0,
     autoclose: true
+  });
+  
+  $('.removing_fields').click(function(){
+    var fieldset=$(this).parent().parent().parent();
+    var row=$(this).parent().parent();
+    var all_fields=row.children().children();
+    var destroyer=all_fields[0];
+    destroyer.value=true;    
+    fieldset.hide();
   });

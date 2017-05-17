@@ -42,7 +42,11 @@ class Kewps13Pdf < Prawn::Document
     end
     
     @mac_balance = (@new_balance + @mac_receive) - @mac_usage
-    @stock_rate_mac = @mac_usage/((@new_balance + @mac_balance)/2)
+    if (@new_balance + @mac_balance)==0
+      @stock_rate_mac=0  #17May2017
+    else
+      @stock_rate_mac = @mac_usage/((@new_balance + @mac_balance)/2)
+    end
     
     #Suku tahun Jun
     @jun_receive = 0
@@ -62,7 +66,11 @@ class Kewps13Pdf < Prawn::Document
     end
     
     @jun_balance = (@mac_balance + @jun_receive) - @jun_usage
-    @stock_rate_jun = @jun_usage/((@mac_balance + @jun_balance)/2)
+    if (@mac_balance + @jun_balance)== 0
+      @stock_rate_jun=0  #17May2017
+    else
+      @stock_rate_jun = @jun_usage/((@mac_balance + @jun_balance)/2)
+    end
     
     #Suku tahun September
     @sep_receive = 0
@@ -81,7 +89,11 @@ class Kewps13Pdf < Prawn::Document
     end
     
     @sep_balance = (@jun_balance + @sep_receive) - @sep_usage
-    @stock_rate_sep = @sep_usage/((@jun_balance + @sep_balance)/2)
+    if (@jun_balance + @sep_balance)==0
+      @stock_rate_sep = 0
+    else
+      @stock_rate_sep = @sep_usage/((@jun_balance + @sep_balance)/2)
+    end
     
     #Suku tahun Disember
     @dis_receive = 0
@@ -100,7 +112,11 @@ class Kewps13Pdf < Prawn::Document
     end
     
     @dis_balance = (@sep_balance + @dis_receive) - @dis_usage
-    @stock_rate_dis = @dis_usage/((@sep_balance + @dis_balance)/2)
+    if (@sep_balance + @dis_balance)==0
+      @stock_rate_dis = 0
+    else
+      @stock_rate_dis = @dis_usage/((@sep_balance + @dis_balance)/2)
+    end
     
     #Nilai Tahunan
     @annual_rec_value = @mac_receive + @jun_receive + @sep_receive + @dis_receive

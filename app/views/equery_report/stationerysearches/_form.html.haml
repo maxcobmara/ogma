@@ -1,5 +1,7 @@
 .row
   .col-md-10.col-md-offset-1
+    %br
+            
     - if @searchstationerytype=='1' || @searchstationerytype==1
       = f.hidden_field :method, value: @searchstationerytype
       
@@ -11,9 +13,17 @@
 
       .tab-content{style:"padding-top:1em"}
         #search.tab-pane.active
-          %br
+          .col-md-offset-1
+            %br
+            %h5
+              ="<b><u>#{t('equery.links')} #{t('equery.stationery.report')}</u></b> : ".html_safe
+              &nbsp;&nbsp;&nbsp;
+              - existing_years=(StationeryAdd.all.map{|x|x.received.year}+StationeryUse.all.map{|x|x.issuedate.year}).uniq.sort
+              - existing_years.each_with_index do |existyear, no|
+                =link_to (fa_icon "file-pdf-o", text: existyear), kewps13_asset_stationeries_path(:format => 'pdf', :yyear => existyear)
+                ="  |  " if no < existing_years.uniq.count-1   
+          
           .col-md-offset-3
-            links ke kewps .... TODO
             %br
             
             %span{style: 'text-decoration: underline;'}=t 'equery.stationery.search_product'

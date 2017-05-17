@@ -20,15 +20,15 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :code, (t 'stationery.code'))
-        %th= sort_link(@search, :category, (t 'stationery.category'))
-        %th= sort_link(@search, :quantity, (t 'stationery.quantity'))
-        %th= sort_link(@search, :maxquantity, (t 'stationery.max'))
-        %th{style: "width:33%;"}= sort_link(@search, :minquantity, (t 'stationery.min'))
+        %th{style: "width:10%;"}= sort_link(@search, :code, (t 'stationery.code'))
+        %th{style: "width:30%;"}= sort_link(@search, :category, (t 'stationery.category'))
+        %th{style: "width:20%;"}= sort_link(@search, :quantity, (t 'stationery.quantity'))
+        %th{style: "width:20%;"}= sort_link(@search, :maxquantity, (t 'stationery.max'))
+        %th{style: "width:20%;"}= sort_link(@search, :minquantity, (t 'stationery.min'))
 
     %tbody
     = render "index_search"
-    - @stationery.each do |stationery|
+    - @stationeries.each do |stationery|
       %tr
         %td= link_to stationery.code, asset_stationery_path(stationery)
         %td= link_to stationery.category, asset_stationery_path(stationery)

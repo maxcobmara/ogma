@@ -4,7 +4,7 @@
       = f.hidden_field :_destroy
       = f.select :ltype, DropDown::LOAN_TYPE, {prompt: (t 'select')}, {class: 'form-control selectpicker', "data-width"=>"auto"}
     .col-sm-1= f.text_field :accno,       :placeholder => "account_no", class: 'form-control'
-    .col-sm-1= f.text_field :startdt,     :placeholder => "start",      class: 'form-control date_picker'
+    .col-sm-1= f.text_field :startdt,     :placeholder => "start",      class: 'form-control date_picker_reverse', value: f.object.startdt.try(:strftime, '%d-%m-%Y')
     .col-sm-1= f.text_field :durationmn,  :placeholder => "Months Duration", class: 'form-control'
     .col-sm-1
       .input-group
@@ -14,8 +14,8 @@
       .input-group
         .input-group-addon RM
         = f.text_field :deductions, placeholder: t('staff.loans.deductions'), class: 'form-control'
-    .col-sm-1= f.text_field :firstdate,   :placeholder => "firstdate",    class: 'form-control date_picker'
-    .col-sm-1= f.text_field :enddate,     :placeholder => "enddate",      class: 'form-control date_picker'
+    .col-sm-1= f.text_field :firstdate,   :placeholder => "firstdate",    class: 'form-control date_picker_reverse', value: f.object.firstdate.try(:strftime, '%d-%m-%Y')
+    .col-sm-1= f.text_field :enddate,     :placeholder => "enddate",      class: 'form-control date_picker_reverse', value: f.object.enddate.try(:strftime, '%d-%m-%Y')
     .col-sm-1
       .input-group
         .input-group-addon RM
@@ -24,9 +24,9 @@
 
   :javascript
     $('.selectpicker').selectpicker('render');
-    $('.date_picker').datetimepicker({
+    $('.date_picker_reverse').datetimepicker({
       timepicker:false,
-      format:'Y-m-d',
+      format:'d-m-Y',
       formatDate:'Y-m-d'
     });
     

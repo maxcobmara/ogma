@@ -5178,7 +5178,7 @@ en:
     #select_record: Select record by
     #data_based_existing_records: " data are based on existing records."
     #listing: Listing
-    #links: links
+    links: links
     #for_selected_date: "for selected date."
     search_by: Search By
     result: Search Result

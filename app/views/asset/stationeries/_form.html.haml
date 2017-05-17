@@ -21,14 +21,14 @@
           .form-group
             .col-sm-2.control-label
               = f.label t 'stationery.category', for: :category
-            .col-md-3
-              = f.text_field :category, class: 'form-control'
+            .col-md-4
+              = f.text_field :category, class: 'form-control mandatory'
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'stationery.unittype', for: :unittype
             .col-md-2
-              = f.text_field :unittype, class: 'form-control'
+              = f.text_field :unittype, class: 'form-control mandatory'
 			
           .form-group
             .col-sm-2.control-label
@@ -56,7 +56,8 @@
           = render 'stationery_add_fields', :f => builder, :index=>@index+=1
               
         .row
-          = link_to_add_fields t('addmore'), f, :stationery_adds, "",  t('addmore')
+          /= link_to_add_fields t('addmore'), f, :stationery_adds, "",  t('addmore')
+          = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :stationery_adds, "", t('addmore')
                 
       #deductions.tab-pane.fade
         .row
@@ -70,7 +71,8 @@
           = render 'stationery_use_fields', :f => builder
               
         .row
-          = link_to_add_fields t('addmore'), f, :stationery_uses, "",  t('addmore')
+          /= link_to_add_fields t('addmore'), f, :stationery_uses, "",  t('addmore')
+          = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :stationery_uses, "", t('addmore')
                 
 :javascript
           
@@ -90,4 +92,4 @@
     ansP1.value = (unitcost1*1)*(qty1*1);
   });             
                 
-/line 83-90 //required for first newly added (FIRST item only...) to works?                
+/line 85-92 //required for first newly added (FIRST item only...) to works?                
