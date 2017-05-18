@@ -7,14 +7,10 @@
   #search_details.tab-pane.active  
   
     - if assetsearch.search_type==1
-      /kewpa 2 & 3
-      = render partial: 'listing', locals: {assetsearch: assetsearch, assets: assets}
+      = render partial: 'kewpa2n3_listing', locals: {assetsearch: assetsearch, assets: assets}
         
-    - elsif assetsearch.search_type==2
-      /kewpa 4
-          
-    - elsif assetsearch.search_type==3
-      /kewpa 5
+    - elsif assetsearch.search_type==2 || assetsearch.search_type==3
+      = render partial: 'kewpa4n5_listing', locals: {assetsearch: assetsearch, assets: assets}
           
     - elsif assetsearch.search_type==4
       /kewpa 6

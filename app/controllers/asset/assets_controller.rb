@@ -93,10 +93,12 @@ class Asset::AssetsController < ApplicationController
     if params[:search_year]
       begin_year=Date.new(params[:search_year].to_i, 1, 1)
       end_year=Date.new(params[:search_year].to_i, 12, 31)
-      @assets=Asset.where('receiveddate >=? and receiveddate <=?', begin_year, end_year).where(assettype: 1)
+      @assets=Asset.hm.where('receiveddate >=? and receiveddate <=?', begin_year, end_year)
+    elsif params[:ids]
+      @assets=Asset.where(id: params[:ids])
     else
       @search=Asset.search(params[:q])
-      @assets=@search.result.where(assettype: 1)
+      @assets=@search.result.hm #where(assettype: 1)
     end
     respond_to do |format|
       format.pdf do
@@ -112,10 +114,12 @@ class Asset::AssetsController < ApplicationController
     if params[:search_year]
       begin_year=Date.new(params[:search_year].to_i, 1, 1)
       end_year=Date.new(params[:search_year].to_i, 12, 31)
-      @assets=Asset.where('receiveddate >=? and receiveddate <=?', begin_year, end_year).where(assettype: 2)
+      @assets=Asset.inv.where('receiveddate >=? and receiveddate <=?', begin_year, end_year)
+    elsif params[:ids]
+      @assets=Asset.where(id: params[:ids])
     else
       @search=Asset.search(params[:q])
-      @assets=@search.result.where(assettype: 2)
+      @assets=@search.result.inv #where(assettype: 2)
     end
     respond_to do |format|
       format.pdf do

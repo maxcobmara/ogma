@@ -1,0 +1,79 @@
+/additional heading
+.col-md-8.col-md-offset-2
+  %dl.dl-horizontal
+
+    - if assetsearch.purchaseprice.blank? && assetsearch.purchaseprice2.blank? && assetsearch.startdate.blank? && assetsearch.enddate.blank? && assetsearch.receiveddate.blank? && assetsearch.receiveddate2.blank?
+      %div.result-all=t 'equery.asset.list_all'
+    - else
+      %div.result-search=t 'equery.search_by'
+            
+    %br 
+    
+    - if assetsearch.purchaseprice.blank? == false || assetsearch.purchaseprice2.blank? ==false
+      %dt= t('asset.purchaseprice')
+      %dd
+        - unless assetsearch.purchaseprice.blank?
+          =ringgols(assetsearch.purchaseprice)
+        - unless assetsearch.purchaseprice2.blank?
+          - if assetsearch.purchaseprice.blank? == false
+            =(t 'to')+" " 
+          - else
+            =(t 'equery.upto')+" "
+          =ringgols(assetsearch.purchaseprice2)
+
+    - if assetsearch.startdate.blank? == false || assetsearch.enddate.blank? == false
+      %dt=t('asset.purchasedate')
+      %dd
+        - unless assetsearch.startdate.blank?
+          =assetsearch.startdate.strftime('%d-%m-%Y')
+        - unless assetsearch.enddate.blank?
+          - if assetsearch.startdate.blank? == false
+            =(t 'to')+" " 
+          - else
+            =(t 'equery.upto')+" "
+          =assetsearch.enddate.strftime('%d-%m-%Y')
+        - else
+          =(t 'equery.onwards')
+          
+    - if assetsearch.receiveddate.blank? == false || assetsearch.receiveddate2.blank? == false
+      %dt=t('asset.purchasedate')
+      %dd
+        - unless assetsearch.receiveddate.blank?
+          =assetsearch.receiveddate.strftime('%d-%m-%Y')
+        - unless assetsearch.receiveddate2.blank?
+          - if assetsearch.receiveddate.blank? == false
+            =(t 'to')+" " 
+          - else
+            =(t 'equery.upto')+" "
+          =assetsearch.receiveddate2.strftime('%d-%m-%Y')
+        - else
+          =(t 'equery.onwards')
+
+    - if assetsearch.purchaseprice.blank? && assetsearch.purchaseprice2.blank? && assetsearch.startdate.blank? && assetsearch.enddate.blank? && assetsearch.receiveddate.blank? && assetsearch.receiveddate2.blank?
+    - else
+      .col-md-12
+        .col-md-8
+          %hr
+          
+    - if assetsearch.search_type==2
+      - asset_recs=assetsearch.assets.hm
+    - elsif assetsearch.search_type==3
+      - asset_recs=assetsearch.assets.inv
+      
+    %dt=(t 'equery.total')
+    %dd=asset_recs.count==0 ? asset_recs.count : asset_recs.count.to_s+" "+(t 'records')
+    
+    %dt Format
+    %dd
+      - if assetsearch.search_type==2
+        = link_to (fa_icon "file-pdf-o")+" KEW-PA 4", kewpa4_asset_assets_path(format: "pdf", ids: asset_recs.pluck(:id))
+      - elsif assetsearch.search_type==3
+        = link_to (fa_icon "file-pdf-o")+" KEW-PA 5", kewpa5_asset_assets_path(format: "pdf", ids: asset_recs.pluck(:id))
+
+.row
+  .col-md-8.col-md-offset-1
+    %hr
+  .col-md-6.col-md-offset-3
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('asset.title')}", "/equery_reports?query_module=2", class: 'btn btn-primary'
+      %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_assetsearch_path(searchtype: assetsearch.search_type),  :class => 'btn btn-default'
