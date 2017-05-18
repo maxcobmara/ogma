@@ -15,7 +15,7 @@
     
 .form-group
   .col-sm-2.control-label
-    =f.label t('equery.search_by')
+    =f.label t('equery.search_by2')
   .col-md-5
     = f.select :locationtype, options_for_select([[(t 'equery.asset.person_in_charge'),'Person In-Charge'],[(t 'equery.asset.asset_location'),'Asset Location']]), {include_blank: (t 'select')}, {class: 'selectpicker'}
  
@@ -40,7 +40,7 @@
     = f.label (t 'equery.asset.asset_location')
   .col-md-5
     /asset_locations
-    =f.collection_select :location, Location.where(id: Asset.assigned_locations), :id, :name, {include_blank: (t 'select')}, class: 'selectpicker'
+    =f.collection_select :location, Location.where(id: Asset.assigned_locations), :id, :location_list, {include_blank: (t 'select')}, class: 'selectpicker'
 
 .row
   .col-md-8

@@ -94,32 +94,37 @@ class Assetsearch < ActiveRecord::Base
 
   def loandate_conditions
     unless loandate.blank?
-      ids=AssetLoan.where('loaned_on>=? AND is_approved!=?', loandate, false).pluck(:asset_id).uniq 
-      if ids.count > 0
-        a="id=?" 
-        0.upto(ids.count-2) do |x|
-          a+=" OR id=? "
+      if loandate2.blank?
+        ids=AssetLoan.where('loaned_on>=? AND is_approved!=?', loandate, false).pluck(:asset_id).uniq 
+        if ids.count > 0
+          a="id=?" 
+          0.upto(ids.count-2) do |x|
+            a+=" OR id=? "
+          end
+          ["("+a+")", ids] 
+        else
+          [" (id=?)", 0]  # NOTE - refer above
         end
-        ["("+a+")", ids] 
-      else
-        [" (id=?)", 0]  # NOTE - refer above
       end
-      
     end
   end
   
   def loandate2_conditions
-    unless loandate2.blank?
-      ids=AssetLoan.where('loaned_on<=? AND is_approved!=?', loandate2, false).pluck(:asset_id).uniq 
-      if ids.count > 0
-        a="id=?" 
-        0.upto(ids.count-2) do |x|
-          a+=" OR id=? "
-        end
-        ["("+a+")", ids] 
+    unless loandate2.blank? 
+      if loandate.blank?
+        ids=AssetLoan.where('loaned_on<=? AND is_approved!=?', loandate2, false).pluck(:asset_id).uniq 
       else
-        [" (id=?)", 0]  # NOTE - refer above
+	ids=AssetLoan.where('loaned_on<=? AND loaned_on >=? AND is_approved!=?', loandate2, loandate, false).pluck(:asset_id).uniq 
       end
+      if ids.count > 0
+          a="id=?" 
+          0.upto(ids.count-2) do |x|
+            a+=" OR id=? "
+          end
+          ["("+a+")", ids] 
+        else
+          [" (id=?)", 0]  # NOTE - refer above
+        end
     end
   end
   
@@ -183,6 +188,7 @@ class Assetsearch < ActiveRecord::Base
     end
   end
 
+  #kewpa 6
   def loanedasset_conditions
     if loanedasset==1
       ids=AssetLoan.pluck(:asset_id).uniq

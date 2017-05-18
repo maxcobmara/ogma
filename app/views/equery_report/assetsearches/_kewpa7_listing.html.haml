@@ -2,28 +2,136 @@
 =assets.count
 type
 =assetsearch.search_type
-location
-=assetsearch.location
-incharge
-=assetsearch.assignedto
-%br
-=assetsearch.category
-- count=0
-%BR
-- for asset in assets
-  = (count+=1).to_s+")"
-  = asset.name.blank? ? "#{asset.assetcode} asset w/o name" : asset.assetcode+" "+asset.name
-  =" | "
-  = asset.location_id.blank? ? "no hm location" : asset.hmlocation.name
-  - if asset.asset_placements.count > 0
-    ada data penempatan
-    - asset.asset_placements.each do |ap|
-      %br
-      = ap.staff_id.to_s+" ~ "+ap.location_id.to_s
-  - else
-    tiada penempatan
-  
-  %BR
+/ location
+/ =assetsearch.location
+/ incharge
+/ =assetsearch.assignedto
+/ %br
+/ =assetsearch.category
+/ - count=0
+/ %BR
+/ - for asset in assets
+/   = (count+=1).to_s+")"
+/   = asset.name.blank? ? "#{asset.assetcode} asset w/o name" : asset.assetcode+" "+asset.name
+/   =" | "
+/   = asset.location_id.blank? ? "no hm location" : asset.hmlocation.location_list
+/   - if asset.asset_placements.count > 0
+/     ada data penempatan
+/     - asset.asset_placements.each do |ap|
+/       %br
+/       = ap.staff_id.to_s+" ~ "+ap.location_id.to_s
+/   - else
+/     tiada penempatan
+/ = AssetPlacement.where(asset_id: assets.pluck(:id)).count
 
-= AssetPlacement.where(asset_id: assets.pluck(:id)).count
+/additional heading
+.col-md-8.col-md-offset-2
+  %dl.dl-horizontal
+    
+    - if assetsearch.assetcode.blank? && assetsearch.assignedto.blank? && assetsearch.location.blank? 
+      %div.result-all=t 'equery.asset.kewpa7_list_all'
+    - else
+      %div.result-search=t 'equery.search_by'
+            
+    %br
+    
+    - unless assetsearch.assetcode.blank?
+      %dt=t('asset.assetcode')
+      %dd=assetsearch.assetcode
+
+    - unless assetsearch.assignedto.blank?
+      %dt=(t 'equery.asset.person_in_charge')
+      %dd
+        - staff=Staff.find(assetsearch.assignedto)
+        = current_user.college.code=='amsas' ? staff.staff_with_rank : staff.staff_name_with_position
+      
+    - unless assetsearch.location.blank?
+      %dt=(t 'equery.asset.asset_location')
+      %dd=Location.find(assetsearch.location).location_list
+
+    - if assetsearch.assetcode.blank? && assetsearch.assignedto.blank? && assetsearch.location.blank? 
+    - else
+      .col-md-12
+        .col-md-8
+          %hr
+          
+    %dt=(t 'equery.total')
+    %dd
+      =assetsearch.assets.count==0 ? assetsearch.assets.count : assetsearch.assets.count.to_s+" "+(t 'records')
+      =assetsearch.assets.group_by(&:assettype).count==2 ? "(#{t('equery.asset.fixed_acr')} / #{t('equery.asset.inv_acr')}  : #{assetsearch.assets.hm.count} / #{assetsearch.assets.inv.count})" : ""
+
+/display result
+.col-md-10
+  %br
+  - counter=0
+  /- if params[:page]
+  /  - cnt=(params[:page].to_i-1)*10
+  /- else
+  /  - cnt=0
+  - if assetsearch.assets.count > 0
+    %table.table.table-condensed.table-bordered.table-hover.equery
+      %head
+        %tr.info
+          %th{width: '4%'} No
+          %th{width: '15%'}=t('asset.assetcode')
+          %th{width: '16%'}=t('equery.asset.asset_name')
+          /%th{width: '10%'}=t('asset.purchasedate')
+          /%th{width: '10%'}=t('asset.purchaseprice')
+          %th{width: '20%'}=t('equery.asset.asset_location')
+          %th{width: '22%'}=t('equery.asset.person_in_charge')
+          %th{width: '14%'}=t('equery.links')
+             
+      %body
+        - assets.group_by(&:assettype).each do |asset_type, massets|
+          %tr.warning
+            %td.system{colspan: 6}=asset_type==1 ? (t 'asset.fixed') : (t 'asset.inventory')
+          - for asset in massets
+            %tr
+              %td=counter+=1
+              %td=asset.assetcode
+              %td=asset.name
+              /%td=asset.purchasedate.try(:strftime, '%d-%m-%Y')
+              /%td=ringgols(asset.purchaseprice)
+              - asset_wlocation=Asset.wlocation.pluck(:id)
+              - asset_wplacement=Asset.wplacement.pluck(:id)
+              %td
+                - if asset_wlocation.include?(asset.id) 
+                  =asset.hmlocation.try(:location_list)
+                - elsif asset_wplacement.include?(asset.id)
+                  %ol
+                    - for placement in asset.asset_placements
+                      %li=placement.location.location_list
+                  
+              %td
+                - if asset_wlocation.include?(asset.id) 
+                  - unless asset.assignedto_id.blank?
+                    =current_user.college.code=='amsas' ? asset.assignedto.staff_with_rank : asset.assignedto.staff_name_with_position
+                  - else
+                    /location MUST exist, as this is for kew-pa 7, but 'person_in_charge' data may not available
+                    .centre="-"
+                - elsif asset_wplacement.include?(asset.id)
+                  %ol
+                    - for placement in asset.asset_placements
+                      %li=current_user.college.code=='amsas' ? placement.staff.staff_with_rank : placement.staff.staff_name_with_position
+                 
+              %td.centre
+                - if asset_wlocation.include?(asset.id) 
+                  =link_to (fa_icon "file-pdf-o")+" KEW-PA 7", kewpa7_campus_location_path(format: "pdf", id: asset)
+                - elsif asset_wplacement.include?(asset.id)
+                  %ol
+                    - for placement in asset.asset_placements
+                      %li=link_to (fa_icon "file-pdf-o")+" KEW-PA 7", kewpa7_campus_location_path(format: "pdf", id: placement.location_id)
+
+      %br
+
+  .right{style:"padding: 0 10px; margin:0;"}= paginate assets, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
+  
+    
+.row
+  .col-md-8.col-md-offset-1
+    %hr
+  .col-md-6.col-md-offset-3
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('asset.title')}", "/equery_reports?query_module=2", class: 'btn btn-primary'
+      %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_assetsearch_path(searchtype: assetsearch.search_type),  :class => 'btn btn-default'
       

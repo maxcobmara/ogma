@@ -5180,7 +5180,8 @@ en:
     #listing: Listing
     links: links
     #for_selected_date: "for selected date."
-    search_by: Search By
+    search_by: Search Criteria
+    search_by2: Search By
     result: Search Result
     print_result: Print Search Result
     #data_not_available: Data not available
@@ -5250,6 +5251,7 @@ en:
       kewpa4_list_all: List of All Asset (Fixed Asset)
       kewpa5_list_all: List of All Asset (Inventory)
       kewpa6_list_all: "List of All (Asset Movement : Loan)"
+      kewpa7_list_all: List of All Asset Location
       fixed_acr: Fixed Asset
       inv_acr: Inventory
       #leave_unselected_kewpa6: "Leave all fields 'unselected' to display ALL existing asset loan (KEW-PA 6)"
