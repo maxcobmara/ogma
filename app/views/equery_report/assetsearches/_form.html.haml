@@ -14,47 +14,9 @@
           %br
           
           - if @searchtype.to_i==1
-            .form-group
-              .col-sm-2.control-label
-                =f.label  (t 'asset.assetcode')
-              .col-md-5
-                = f.text_field :assetcode, class: 'form-control'
-                .small
-                  =t('equery.asset.type_select')
-                  .text-blue=current_user.college.code=='kskbjb' ? "(Format : KKM/BPL/010619/H/10/395)" : "(Format: JPM/APMM/PL/H/2004/01-05)"
-                
-            .form-group
-              .col-sm-2.control-label
-                =f.label t('equery.asset.asset_name')
-              .col-md-5
-                = f.text_field :name, class: 'form-control'
-                
-            .form-group
-              .col-sm-2.control-label
-                =f.label t('asset.purchaseprice')
-              .col-md-2
-                .input-group
-                  .input-group-addon RM
-                  = f.text_field :purchaseprice, class: 'form-control'
-              .col-md-1
-                =t('to')
-              .col-md-2 
-                .input-group
-                  .input-group-addon RM
-                  = f.text_field :purchaseprice2, class: 'form-control'
-                
-            .form-group
-              .col-sm-2.control-label
-                %b= t('asset.purchasedate')
-              .col-md-5
-                .input-group
-                  = f.text_field :purchasedate, class: 'form-control date_picker_reverse'    
-                  .input-group-addon=t('to')
-                  = f.text_field :purchasedate2, class: 'form-control date_picker_reverse'
-            
-          
-          - elsif @searchtype=='2' || @searchtype==2
-          - elsif @searchtype=='3' || @searchtype==3
+            = render partial: 'kewpa2n3_form', locals: {f: f}
+          - elsif @searchtype.to_i==2 || @searchtype.to_i==3
+            = render partial: 'kewpa4n5_form', locals: {f: f}
           - elsif @searchtype=='4' || @searchtype==4
           - elsif @searchtype=='5' || @searchtype==5
           - elsif @searchtype=='6' || @searchtype==6

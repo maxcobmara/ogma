@@ -2343,7 +2343,7 @@ ms_MY:
     orderno: No Pesanan Tempatan (No LO)
     purchasedate: Tarikh Pesanan (Tarikh LO)
     purchaseprice: Harga Belian
-    receiveddate: Tarikh Terima
+    receiveddate: Tarikh Perolehan
     receivedby: Diterima Oleh
     suppliedby: Dibekalkan Oleh
     manufacturer: Pembuat
@@ -5163,7 +5163,7 @@ ms_MY:
       search: Carian Aset
       asset_name: Nama Aset
       asset_type: Jenis Aset
-      type_select: "Masukkan 'H' untuk senaraikan 'Harta Modal' atau 'I' untuk senaraikan 'Inventori' "
+      type_select: "Masukkan 'H' untuk senaraikan kesemua rekod 'Harta Modal' atau 'I' untuk senaraikan kesemua rekod 'Inventori' "
       list_all: "Senarai Penuh Aset (Harta Modal & Inventori)"
       fixed_acr: H
       inv_acr: I

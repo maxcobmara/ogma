@@ -5245,7 +5245,7 @@ en:
       search: Asset Search
       asset_name: Asset Name
       asset_type: Asset Type
-      type_select: "Insert 'H' for listing of all 'Fixed Asset' or 'I' for listing of all 'Inventory'"
+      type_select: "Insert 'H' for listing of all 'Fixed Asset' records or 'I' for listing of all 'Inventory' records"
       list_all: "List of All Asset (Fixed Asset & Inventory)"
       fixed_acr: Fixed Asset
       inv_acr: Inventory
