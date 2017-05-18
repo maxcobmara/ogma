@@ -5181,8 +5181,8 @@ ms_MY:
       loan_date: Tarikh pinjam
       return_date: Tarikh pulang
       expected_return_date: Tarikh perlu dipulangkan
-      #person_in_charge: "Pegawai Bertanggungjawab "
-      #asset_location: Lokasi Aset
+      person_in_charge: "Pegawai Bertanggungjawab "
+      asset_location: Lokasi Aset
       #select_year: Pilih tahun
       #defected_asset: Aset Rosak
       #person: Kakitangan

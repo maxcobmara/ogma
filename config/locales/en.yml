@@ -5263,8 +5263,8 @@ en:
       loan_date: Loan date
       return_date: Return Date
       expected_return_date: Expected return date
-      #person_in_charge: "Person in-charge "
-      #asset_location: Asset Location
+      person_in_charge: "Person in-charge "
+      asset_location: Asset Location
       #select_year: Select year
       #defected_asset: Defected Asset
       #person: Person

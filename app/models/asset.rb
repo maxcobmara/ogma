@@ -31,6 +31,18 @@ class Asset < ActiveRecord::Base
   scope :inv, -> {where(assettype: 2)}
   scope :vehicle, -> {where(category_id: Asset.category_id_of_vehicle)}
   scope :otherasset, -> {where.not(category_id: 3)}
+  scope :wlocation, -> { where.not(location_id: nil) }                                                              #usage - equery: kewpa7
+  scope :wplacement, -> { where(id: AssetPlacement.joins(:asset).pluck(:asset_id).uniq) }  #usage - equery: kewpa7
+  
+  #usage - equery: kewpa7
+  def self.assigned_locations
+    location_ids=Asset.wlocation.pluck(:location_id)+AssetPlacement.joins(:asset).pluck(:location_id) # NOTE - same field name in use, AssetPlacement should comes 1st
+  end
+
+  #usage - equery: kewpa7
+  def self.assigned_administrators
+    admin_ids=Asset.wlocation.pluck(:assignedto_id)+AssetPlacement.joins(:asset).pluck(:staff_id)
+  end
   
   def self.category_id_of_vehicle; Assetcategory.where('description ilike(?) or description ilike(?) or description ilike(?) or description ilike(?)', '%kenderaan%', '%Kenderaan%', '%vehicle%', '%Vehicle%').first.id; end
     

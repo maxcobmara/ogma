@@ -6,7 +6,8 @@ class Assetsearch < ActiveRecord::Base
 #   attr_accessor :method, :datetype, :curryear, :locationtype, :defect_type,:persontype,:disposal_for_reports
   
   #:assetcode, :assettype, :name, :purchaseprice, :purchasedate, :startdate, :enddate, :category, :assignedto, :bookable, :loandate, :returndate, :location, :defect_asset, :defect_reporter, :defect_processor, :defect_process, :maintainable, :maintname, :maintcode, :disposal, :disposaltype, :discardoption, :disposalreport, :disposalcert, :disposalreport2, :loss_start, :loss_end, :loss_cert, :loanedasset, :alldefectasset, :purchaseprice2, :purchasedate2, :receiveddate, :receiveddate2, :loandate2, :returndate2, :expectedreturndate, :expectedreturndate2
-  attr_accessor :datetype
+  
+  attr_accessor :datetype, :locationtype
   
   def assets
     @assets ||= find_assets
@@ -236,10 +237,42 @@ class Assetsearch < ActiveRecord::Base
     ["assignedto_id=?", assignedto] unless assignedto.blank?  #use this condition WITH FILTER FOR asset in ASSETDEFECT DB only - in show page.
   end
 
-
+  #to include asset_placement records - KEWPA 7
+  def category_conditions
+    if category==1
+      ids=AssetPlacement.joins(:asset).pluck(:asset_id).uniq.compact+Asset.where.not(location_id: nil).pluck(:id)
+      if ids.count > 0
+          a="id=?" 
+          0.upto(ids.count-2) do |x|
+            a+=" OR id=? "
+          end
+          ["("+a+")", ids] 
+      else
+          [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
+  end
   
   def location_conditions
-    ["location_id=?", location] unless location.blank?
+    unless location.blank?
+      assets_of_location=Asset.where(location_id: location)
+      placements=AssetPlacement.joins(:asset)
+      placements_of_location=placements.where(location_id: location)
+      if assets_of_location.count > 0
+        ["location_id=?", location] 
+      elsif placements_of_location.count > 0
+        ids=placements.pluck(:asset_id)
+	if ids.count > 0
+          a="id=?" 
+          0.upto(ids.count-2) do |x|
+            a+=" OR id=? "
+          end
+          ["("+a+")", ids] 
+        else
+          [" (id=?)", 0]  # NOTE - refer above
+        end
+      end
+    end
   end
   
   def defect_asset_conditions

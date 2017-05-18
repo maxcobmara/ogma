@@ -1,0 +1,29 @@
+=assetsearch.assets.count
+=assets.count
+type
+=assetsearch.search_type
+location
+=assetsearch.location
+incharge
+=assetsearch.assignedto
+%br
+=assetsearch.category
+- count=0
+%BR
+- for asset in assets
+  = (count+=1).to_s+")"
+  = asset.name.blank? ? "#{asset.assetcode} asset w/o name" : asset.assetcode+" "+asset.name
+  =" | "
+  = asset.location_id.blank? ? "no hm location" : asset.hmlocation.name
+  - if asset.asset_placements.count > 0
+    ada data penempatan
+    - asset.asset_placements.each do |ap|
+      %br
+      = ap.staff_id.to_s+" ~ "+ap.location_id.to_s
+  - else
+    tiada penempatan
+  
+  %BR
+
+= AssetPlacement.where(asset_id: assets.pluck(:id)).count
+      
