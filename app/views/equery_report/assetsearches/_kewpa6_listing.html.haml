@@ -2,48 +2,62 @@
 .col-md-8.col-md-offset-2
   %dl.dl-horizontal
 
-    - if assetsearch.assetcode.blank? && assetsearch.name.blank? && assetsearch.purchaseprice.blank? && assetsearch.purchaseprice2.blank? && assetsearch.purchasedate.blank? && assetsearch.purchasedate2.blank?
-      %div.result-all=t 'equery.asset.list_all'
+    / loandate, loandate2, returndate, returndate2, expectedreturndate, expectedreturndate2
+    
+    - if assetsearch.assetcode.blank? && assetsearch.loandate.blank? && assetsearch.loandate2.blank? && assetsearch.returndate.blank? && assetsearch.returndate2.blank? && assetsearch.expectedreturndate.blank? && assetsearch.expectedreturndate2.blank?
+      %div.result-all=t 'equery.asset.kewpa6_list_all'
     - else
       %div.result-search=t 'equery.search_by'
             
     %br
-                   
+    
     - unless assetsearch.assetcode.blank?
       %dt=t('asset.assetcode')
       %dd=assetsearch.assetcode
-      
-    - unless assetsearch.name.blank?
-      %dt=(t 'equery.asset.asset_name')
-      %dd=assetsearch.name
 
-    - if assetsearch.purchaseprice.blank? == false || assetsearch.purchaseprice2.blank? ==false
-      %dt= t('asset.purchaseprice')
+    - if assetsearch.loandate.blank? == false || assetsearch.loandate2.blank? == false
+      %dt=t('equery.asset.loan_date')
       %dd
-        - unless assetsearch.purchaseprice.blank?
-          =ringgols(assetsearch.purchaseprice)
-        - unless assetsearch.purchaseprice2.blank?
-          - if assetsearch.purchaseprice.blank? == false
+        - unless assetsearch.loandate.blank?
+          =assetsearch.loandate.strftime('%d-%m-%Y')
+        - unless assetsearch.loandate2.blank?
+          - if assetsearch.loandate.blank? == false
             =(t 'to')+" " 
           - else
             =(t 'equery.upto')+" "
-          =ringgols(assetsearch.purchaseprice2)
-
-    - if assetsearch.purchasedate.blank? == false || assetsearch.purchasedate2.blank? == false
-      %dt=t('asset.purchasedate')
+          =assetsearch.loandate2.strftime('%d-%m-%Y')
+        - else
+          =(t 'equery.onwards')
+          
+    - if assetsearch.returndate.blank? == false || assetsearch.returndate2.blank? == false
+      %dt=t('equery.asset.return_date')
       %dd
-        - unless assetsearch.purchasedate.blank?
-          =assetsearch.purchasedate.strftime('%d-%m-%Y')
-        - unless assetsearch.purchasedate2.blank?
-          - if assetsearch.purchasedate.blank? == false
+        - unless assetsearch.returndate.blank?
+          =assetsearch.returndate.strftime('%d-%m-%Y')
+        - unless assetsearch.returndate2.blank?
+          - if assetsearch.returndate.blank? == false
             =(t 'to')+" " 
           - else
             =(t 'equery.upto')+" "
-          =assetsearch.purchasedate2.strftime('%d-%m-%Y')
+          =assetsearch.returndate2.strftime('%d-%m-%Y')
+        - else
+          =(t 'equery.onwards')
+          
+    - if assetsearch.expectedreturndate.blank? == false || assetsearch.expectedreturndate2.blank? == false
+      %dt=t('equery.asset.expected_return_date')
+      %dd
+        - unless assetsearch.expectedreturndate.blank?
+          =assetsearch.expectedreturndate.strftime('%d-%m-%Y')
+        - unless assetsearch.expectedreturndate2.blank?
+          - if assetsearch.expectedreturndate.blank? == false
+            =(t 'to')+" " 
+          - else
+            =(t 'equery.upto')+" "
+          =assetsearch.expectedreturndate2.strftime('%d-%m-%Y')
         - else
           =(t 'equery.onwards')
 
-    - if assetsearch.assetcode.blank? && assetsearch.name.blank? && assetsearch.purchaseprice.blank? && assetsearch.purchaseprice2.blank? && assetsearch.purchasedate.blank? && assetsearch.purchasedate2.blank?
+    - if assetsearch.loandate.blank? && assetsearch.loandate2.blank? && assetsearch.returndate.blank? && assetsearch.returndate2.blank? && assetsearch.expectedreturndate.blank? && assetsearch.expectedreturndate2.blank?
     - else
       .col-md-12
         .col-md-8
@@ -84,11 +98,8 @@
               %td=asset.name
               %td=asset.purchasedate.try(:strftime, '%d-%m-%Y')
               %td=ringgols(asset.purchaseprice)
-              %td.centre
-                - if asset.assettype==1
-                  =link_to (fa_icon "file-pdf-o")+" KEW-PA 2", kewpa2_asset_asset_path(format: "pdf", id: asset)
-                - elsif asset.assettype==2
-                  =link_to (fa_icon "file-pdf-o")+" KEW-PA 3", kewpa3_asset_asset_path(format: "pdf", id: asset)
+              %td.centre=link_to (fa_icon "file-pdf-o")+" KEW-PA 6", kewpa6_asset_asset_path(format: "pdf", id: asset)
+
       %br
 
   .right{style:"padding: 0 10px; margin:0;"}= paginate assets, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

@@ -6,6 +6,7 @@ class Assetsearch < ActiveRecord::Base
 #   attr_accessor :method, :datetype, :curryear, :locationtype, :defect_type,:persontype,:disposal_for_reports
   
   #:assetcode, :assettype, :name, :purchaseprice, :purchasedate, :startdate, :enddate, :category, :assignedto, :bookable, :loandate, :returndate, :location, :defect_asset, :defect_reporter, :defect_processor, :defect_process, :maintainable, :maintname, :maintcode, :disposal, :disposaltype, :discardoption, :disposalreport, :disposalcert, :disposalreport2, :loss_start, :loss_end, :loss_cert, :loanedasset, :alldefectasset, :purchaseprice2, :purchasedate2, :receiveddate, :receiveddate2, :loandate2, :returndate2, :expectedreturndate, :expectedreturndate2
+  attr_accessor :datetype
   
   def assets
     @assets ||= find_assets
@@ -89,101 +90,115 @@ class Assetsearch < ActiveRecord::Base
   #AND is_approved!=?
   #@loanable = AssetLoan.find(:all, :conditions => ['asset_id=? AND is_approved!=?',params[:id], false], :order=>'returned_on ASC')
   #=================================
-  #====loandate
-  def loandetails
-    a='id=? ' if AssetLoan.where('loaned_on>=? AND is_approved!=?',loandate, false).map(&:asset_id).uniq.count!=0
-    #0.upto(AssetLoan.where('loaned_on=?',"2013-04-23").map(&:id).uniq.count-2) do |l|
-    0.upto(AssetLoan.where('loaned_on>=? AND is_approved!=?',loandate, false).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if (loandate.blank? == false && loanedasset == 1) #0)  #unless loandate.blank?
-  end
-    
-  def loandate_conditions  #one date only
-    ["( "+loandetails+")",AssetLoan.where('loaned_on>=? AND is_approved!=?',loandate,false).map(&:asset_id).uniq] if (loandate.blank? == false && loanedasset == 1)#0)  #unless loandate.blank?
-    #[loandetails,AssetLoan.where('loaned_on=?',"2013-04-23").map(&:id).uniq] unless loandate.blank?
-    #['id=? OR id=? OR id=? OR id=? OR id=? OR id=? OR id=? ',[37, 38, 39, 40, 41, 42, 43]]  #["loandate=?", loandate] unless enddate.blank?
-  end
-  #====loandate
-  #====loandate2
-  def loandate2_details
-    a='id=? ' if AssetLoan.where('loaned_on<=? AND is_approved!=?',loandate2, false).map(&:asset_id).uniq.count!=0
-    0.upto(AssetLoan.where('loaned_on<=? AND is_approved!=?',loandate2, false).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if (loandate2.blank? == false && loanedasset == 1) #0)  #unless loandate.blank?
-  end
 
-  def loandate2_conditions  #one date only
-    ["( "+loandate2_details+")",AssetLoan.where('loaned_on<=? AND is_approved!=?',loandate2, false).map(&:asset_id).uniq] if (loandate2.blank? == false && loanedasset == 1)#0)  #unless loandate.blank?
-  end
-  #====loandate2
-  #====returndate
-  def loandetails2
-    a='id=? ' if AssetLoan.where('returned_on>=? AND is_approved!=?',returndate, false).map(&:asset_id).uniq.count!=0
-    0.upto(AssetLoan.where('returned_on>=? AND is_approved!=?',returndate, false).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if (returndate.blank? == false && loanedasset == 1)  #0) #unless returndate.blank?
-  end
-
-  def returndate_conditions  #one date only
-    ["( "+loandetails2+")",AssetLoan.where('returned_on>=? AND is_approved!=?',returndate, false).map(&:asset_id).uniq] if (returndate.blank? == false && loanedasset == 1)  #0)#unless returndate.blank? 
-  end
-  #====returndate
-  #====returndate2
-  def returndate2_details
-    a='id=? ' if AssetLoan.where('returned_on<=? AND is_approved!=?',returndate2, false).map(&:asset_id).uniq.count!=0
-    0.upto(AssetLoan.where('returned_on<=? AND is_approved!=?',returndate2, false).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if (returndate2.blank? == false && loanedasset == 1)  #0) #unless returndate.blank?
-  end
-
-  def returndate2_conditions  #one date only
-    ["("+returndate2_details+")",AssetLoan.where('returned_on<=? AND is_approved!=?',returndate2,false).map(&:asset_id).uniq] if (returndate2.blank? == false && loanedasset == 1)  #0)#unless returndate.blank? 
-  end
-  #====returndate2
-  #====expectedreturndate
-  def expectedreturndate_details
-    a='id=? ' if AssetLoan.where('expected_on>=? AND is_approved!=?',expectedreturndate, false).map(&:asset_id).uniq.count!=0
-    0.upto(AssetLoan.where('expected_on>=? AND is_approved!=?',expectedreturndate,false).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if (expectedreturndate.blank? == false && loanedasset == 1)  #0) #unless returndate.blank?
-  end
-
-  def expectedreturndate_conditions  #one date only
-    ["( "+expectedreturndate_details+")",AssetLoan.where('expected_on>=? AND is_approved!=?',expectedreturndate,false).map(&:asset_id).uniq] if (expectedreturndate.blank? == false && loanedasset == 1)  #0)#unless returndate.blank? 
-  end
-  #====expectedreturndate
-  #====expectedreturndate2
-  def expectedreturndate2_details
-    a='id=? ' if AssetLoan.where('expected_on<=? AND is_approved!=?',expectedreturndate2,false).map(&:asset_id).uniq.count!=0
-    0.upto(AssetLoan.where('expected_on<=? AND is_approved!=?',expectedreturndate2, false).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if (expectedreturndate2.blank? == false && loanedasset == 1)  #0) #unless returndate.blank?
-  end
-
-  def expectedreturndate2_conditions  #one date only
-    ["( "+expectedreturndate2_details+")",AssetLoan.where('expected_on<=? AND is_approved!=?',expectedreturndate2,false).map(&:asset_id).uniq] if (expectedreturndate2.blank? == false && loanedasset == 1)  #0)#unless returndate.blank? 
-  end
-  #====expectedreturndate2
-    
-  #----newly added-30July2013
-  #---tick to display all asset loan records---
-  def loanedasset_details
-    a='id=? ' if AssetLoan.all.map(&:asset_id).uniq.count!=0
-    0.upto(AssetLoan.all.map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
+  def loandate_conditions
+    unless loandate.blank?
+      ids=AssetLoan.where('loaned_on>=? AND is_approved!=?', loandate, false).pluck(:asset_id).uniq 
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+      
     end
-    return a if loanedasset == 1 
   end
   
-  def loanedasset_conditions
-    ["( "+loanedasset_details+")", AssetLoan.all.map(&:asset_id).uniq] if loanedasset == 1
+  def loandate2_conditions
+    unless loandate2.blank?
+      ids=AssetLoan.where('loaned_on<=? AND is_approved!=?', loandate2, false).pluck(:asset_id).uniq 
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
   end
+  
+  def returndate_conditions
+    unless returndate.blank?
+      ids=AssetLoan.where('returned_on>=? AND is_approved!=?', returndate, false).pluck(:asset_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
+  end
+  
+  def returndate2_conditions
+    unless returndate2.blank?
+      ids=AssetLoan.where('returned_on<=? AND is_approved!=?', returndate2, false).pluck(:asset_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
+  end
+
+  def expectedreturndate_conditions
+    unless expectedreturndate.blank?
+      ids=AssetLoan.where('expected_on>=? AND is_approved!=?', expectedreturndate, false).pluck(:asset_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
+  end
+  
+  def expectedreturndate2_conditions
+    unless expectedreturndate2.blank?
+      ids=AssetLoan.where('expected_on<=? AND is_approved!=?', expectedreturndate2, false).pluck(:asset_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
+  end
+
+  def loanedasset_conditions
+    if loanedasset==1
+      ids=AssetLoan.pluck(:asset_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
+  end
+  
+    
+  #----newly added-30July2013
   #---tick to display all asset defect records---
   def alldefectasset_details
     a='id=? ' if AssetDefect.all.map(&:asset_id).uniq.count!=0

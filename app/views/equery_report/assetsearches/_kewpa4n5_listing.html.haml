@@ -3,7 +3,7 @@
   %dl.dl-horizontal
 
     - if assetsearch.purchaseprice.blank? && assetsearch.purchaseprice2.blank? && assetsearch.startdate.blank? && assetsearch.enddate.blank? && assetsearch.receiveddate.blank? && assetsearch.receiveddate2.blank?
-      %div.result-all=t 'equery.asset.list_all'
+      %div.result-all=assetsearch.search_type==2 ? (t 'equery.asset.kewpa4_list_all') : (t 'equery.asset.kewpa5_list_all')
     - else
       %div.result-search=t 'equery.search_by'
             
