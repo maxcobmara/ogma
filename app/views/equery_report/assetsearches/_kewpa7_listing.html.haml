@@ -1,7 +1,3 @@
-=assetsearch.assets.count
-=assets.count
-type
-=assetsearch.search_type
 / location
 / =assetsearch.location
 / incharge
@@ -75,8 +71,6 @@ type
           %th{width: '4%'} No
           %th{width: '15%'}=t('asset.assetcode')
           %th{width: '16%'}=t('equery.asset.asset_name')
-          /%th{width: '10%'}=t('asset.purchasedate')
-          /%th{width: '10%'}=t('asset.purchaseprice')
           %th{width: '20%'}=t('equery.asset.asset_location')
           %th{width: '22%'}=t('equery.asset.person_in_charge')
           %th{width: '14%'}=t('equery.links')
@@ -89,9 +83,7 @@ type
             %tr
               %td=counter+=1
               %td=asset.assetcode
-              %td=asset.name
-              /%td=asset.purchasedate.try(:strftime, '%d-%m-%Y')
-              /%td=ringgols(asset.purchaseprice)
+              %td=asset.name.blank? ? asset.typename : asset.name+": "+asset.typename
               - asset_wlocation=Asset.wlocation.pluck(:id)
               - asset_wplacement=Asset.wplacement.pluck(:id)
               %td
@@ -99,7 +91,7 @@ type
                   =asset.hmlocation.try(:location_list)
                 - elsif asset_wplacement.include?(asset.id)
                   %ol
-                    - for placement in asset.asset_placements
+                    - for placement in asset.asset_placements.sort_by{|x|x.location.combo_code}
                       %li=placement.location.location_list
                   
               %td
@@ -111,7 +103,7 @@ type
                     .centre="-"
                 - elsif asset_wplacement.include?(asset.id)
                   %ol
-                    - for placement in asset.asset_placements
+                    - for placement in asset.asset_placements.sort_by{|x|x.location.combo_code}
                       %li=current_user.college.code=='amsas' ? placement.staff.staff_with_rank : placement.staff.staff_name_with_position
                  
               %td.centre
@@ -119,7 +111,7 @@ type
                   =link_to (fa_icon "file-pdf-o")+" KEW-PA 7", kewpa7_campus_location_path(format: "pdf", id: asset)
                 - elsif asset_wplacement.include?(asset.id)
                   %ol
-                    - for placement in asset.asset_placements
+                    - for placement in asset.asset_placements.sort_by{|x|x.location.combo_code}
                       %li=link_to (fa_icon "file-pdf-o")+" KEW-PA 7", kewpa7_campus_location_path(format: "pdf", id: placement.location_id)
 
       %br

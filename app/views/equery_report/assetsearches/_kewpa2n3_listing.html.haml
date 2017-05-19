@@ -81,7 +81,7 @@
             %tr
               %td=counter+=1
               %td=asset.assetcode
-              %td=asset.name
+              %td=asset.name.blank? ? asset.typename : asset.name+": "+asset.typename
               %td=asset.purchasedate.try(:strftime, '%d-%m-%Y')
               %td=ringgols(asset.purchaseprice)
               %td.centre

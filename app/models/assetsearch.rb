@@ -293,14 +293,16 @@ class Assetsearch < ActiveRecord::Base
     elsif search_type==5   #kewpa7
       ids=AssetPlacement.joins(:asset).pluck(:asset_id).uniq.compact+Asset.where.not(location_id: nil).pluck(:id)
     end
-    if ids.count > 0
-      a="id=?" 
-      0.upto(ids.count-2) do |x|
-        a+=" OR id=? "
+    if [4, 5].include?(search_type)
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
       end
-      ["("+a+")", ids] 
-    else
-      [" (id=?)", 0]  # NOTE - refer above
     end
   end
   

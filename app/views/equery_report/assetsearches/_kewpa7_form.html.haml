@@ -1,4 +1,4 @@
-= f.hidden_field :category, value: 1
+/= f.hidden_field :category, value: 1
 .form-group
   .col-sm-2.control-label
     =f.label  (t 'asset.assetcode')
@@ -40,7 +40,7 @@
     = f.label (t 'equery.asset.asset_location')
   .col-md-5
     /asset_locations
-    =f.collection_select :location, Location.where(id: Asset.assigned_locations), :id, :location_list, {include_blank: (t 'select')}, class: 'selectpicker'
+    =f.collection_select :location, Location.where(id: Asset.assigned_locations).order(combo_code: :asc), :id, :location_list, {include_blank: (t 'select')}, class: 'selectpicker'
 
 .row
   .col-md-8
