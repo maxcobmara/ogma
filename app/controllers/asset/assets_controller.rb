@@ -175,7 +175,11 @@ class Asset::AssetsController < ApplicationController
   end
   
   def kewpa13
-    @assets = Asset.where('is_maintainable = ?', true).order(assetcode: :asc)
+    if params[:ids]
+      @assets=Asset.where(id: params[:ids]).order(assetcode: :asc)
+    else
+      @assets = Asset.where('is_maintainable = ?', true).order(assetcode: :asc)
+    end
     respond_to do |format|
       format.pdf do
         pdf = Kewpa13Pdf.new(@assets, view_context)
@@ -216,8 +220,7 @@ class Asset::AssetsController < ApplicationController
     def asset_params
       params.require(:asset).permit(:assetcode, :assettype, :assignedto_id, :bookable, :cardno, :cardno2,  :category_id, :engine_no, :engine_type_id, :is_maintainable, 
         :locassigned, :location_id, :manufacturer_id, :country_id, :mark_as_lost, :mark_disposal, :modelname, :name, :purchasedate, :purchaseprice, :quantity, :quantity_type, 
-        :receiveddate, :receiver_id, :registration, :serialno, :status, :subcategory, :supplier_id, :typename, :warranty_length, :warranty_length_type, :college_id, :data,
-        damages_attributes: [:id, :description,:reported_on,:document_id,:location_id], asset_placements_attributes: [:id, :_destroy, :location_id, :staff_id, :reg_on, :quantity])
+        :receiveddate, :receiver_id, :registration, :serialno, :status, :subcategory, :supplier_id, :typename, :warranty_length, :warranty_length_type, :college_id, {:data=>[]}, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id], asset_placements_attributes: [:id, :_destroy, :location_id, :staff_id, :reg_on, :quantity])
     end
 end
 

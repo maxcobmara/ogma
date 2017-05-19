@@ -106,7 +106,7 @@ class Asset::AssetDefectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_defect_params
-      params.require(:asset_defect).permit(:editing_page, :description, :asset_id, :asset_show, :reported_by, :notes,:process_type, :recommendation, :is_processed, :processed_by, :processed_on, :decision, :decision_by, :decision_on)
+      params.require(:asset_defect).permit(:editing_page, :description, :asset_id, :asset_show, :reported_by, :notes,:process_type, :recommendation, :is_processed, :processed_by, :processed_on, :decision, :decision_by, :decision_on, :college_id, {:data=>[]})
     end
 end
 

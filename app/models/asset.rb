@@ -62,6 +62,11 @@ class Asset < ActiveRecord::Base
     "#{name} - #{modelname} "
   end
   
+  #usage - equery - kewpa13&14
+  def name_type_model
+    "#{name} | #{typename} | #{modelname}"
+  end
+  
   def save_my_vars
     if assetcode == nil
       self.assetcode = (suggested_serial_no).to_s

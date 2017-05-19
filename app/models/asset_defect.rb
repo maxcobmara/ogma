@@ -1,6 +1,7 @@
 class AssetDefect < ActiveRecord::Base
   include AssetDefectsHelper
   
+  belongs_to :college
   belongs_to :asset
   belongs_to :reporter,   :class_name => 'Staff', :foreign_key => 'reported_by'
   belongs_to :processor,  :class_name => 'Staff', :foreign_key => 'processed_by'
@@ -28,7 +29,39 @@ class AssetDefect < ActiveRecord::Base
   def self.sstaff2(u)
      where('reported_by=? OR processed_by=? OR decision_by=?', u,u,u)
   end  
+  
+  #usage - equery - kewpa9 - below onwards
+  def self.incharge_staffs
+     defected_asset_ids = AssetDefect.pluck(:asset_id)
+     incharge_ids_of_defected = Asset.where('assignedto_id is not null AND id IN(?)',defected_asset_ids).pluck(:assignedto_id).uniq
+     staff_ids=Staff.pluck(:id)
+     incharge_ids_of_defected2 = []
+     incharge_ids_of_defected.each do |incharge| 
+        incharge_ids_of_defected2 << incharge if staff_ids.include?(incharge) == true
+     end
+     incharge_ids_of_defected2
+   end
 
+   def asset_code
+     asset.assetcode
+   end
+   
+   def reported_name_rank
+     "#{reporter.staff_with_rank}"
+   end
+   
+   def reported_name_position
+     "#{reporter.staff_name_with_position}"
+   end
+   
+   def processor_name_rank
+     "#{processor.staff_with_rank}"
+   end
+   
+   def processor_name_position
+     "#{processor.staff_name_with_position}"
+   end
+   
 end
 
 # == Schema Information

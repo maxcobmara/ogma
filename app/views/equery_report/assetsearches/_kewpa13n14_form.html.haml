@@ -1,0 +1,25 @@
+/maintcode, maintname, maintainable (maintcode & maintname no longer use - 20May2017)
+.form-group
+  .col-sm-2.control-label
+    =f.label  (t 'asset.assetcode')
+  .col-md-5
+    = f.text_field :assetcode, class: 'form-control', data: {autocomplete_source: Asset.pluck(:assetcode).sort}
+    .small
+      =t('equery.asset.type_select')
+      .text-blue=current_user.college.code=='kskbjb' ? "(Format : KKM/BPL/010619/H/10/395)" : "(Format: JPM/APMM/PL/H/2004/01-05)"
+            
+.row
+  .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
+              
+.row
+  .col-md-8
+    %hr
+                
+.form-group
+  .col-sm-2.control-label
+    =f.label t('equery.asset.asset_name')+" / "+t('asset.assettype')+" / Model"
+  .col-md-5
+    = f.text_field :maintname, class: 'form-control', data: {autocomplete_source: Asset.map(&:name_type_model).sort}
+                
+.row
+  .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase

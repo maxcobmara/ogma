@@ -1,0 +1,109 @@
+/exclude defect_type, person_type
+/defect_asset, defect_process, defect_reporter, assignedto, defect_processor
+
+/additional heading
+.col-md-8.col-md-offset-2
+  %dl.dl-horizontal
+    
+    - if assetsearch.defect_asset.blank? && assetsearch.defect_process.blank? && assetsearch.defect_reporter.blank? && assetsearch.assignedto.blank? && assetsearch.defect_processor.blank? 
+      %div.result-all=t 'equery.asset.kewpa9_list_all'
+    - else
+      %div.result-search=t 'equery.search_by'
+            
+    %br
+    
+    - unless assetsearch.assetcode.blank?
+      %dt=t('asset.assetcode')
+      %dd=assetsearch.assetcode
+      
+    - unless assetsearch.assetcode.blank?
+      %dt=(t 'equery.asset.defected_asset')
+      %dd=assetsearch.defect_asset
+      
+    - unless assetsearch.defect_process.blank?
+      %dt=(t 'equery.asset.process_type')
+      %dd=t('asset.defect.'+assetsearch.defect_process)
+      
+    - unless assetsearch.defect_reporter.blank?
+      %dt= t('equery.asset.reported_by')
+      %dd
+        - staff=Staff.find(assetsearch.defect_reporter)
+        = current_user.college.code=='amsas' ? staff.staff_with_rank : staff.staff_name_with_position
+
+    - unless assetsearch.assignedto.blank?
+      %dt=(t 'equery.asset.person_in_charge')
+      %dd
+        - staff=Staff.find(assetsearch.assignedto)
+        = current_user.college.code=='amsas' ? staff.staff_with_rank : staff.staff_name_with_position
+      
+    - unless assetsearch.defect_processor.blank?
+      %dt= t('equery.asset.processed_by')
+      %dd
+        - staff=Staff.find(assetsearch.defect_processor)
+        = current_user.college.code=='amsas' ? staff.staff_with_rank : staff.staff_name_with_position
+
+    - if assetsearch.defect_asset.blank? && assetsearch.defect_process.blank? && assetsearch.defect_reporter.blank? && assetsearch.assignedto.blank? && assetsearch.defect_processor.blank? 
+    - else
+      .col-md-12
+        .col-md-8
+          %hr
+          
+    %dt=(t 'equery.total')
+    %dd
+      - all_defects=AssetDefect.where(asset_id: assetsearch.assets.pluck(:id)).count.to_s+(t 'equery.asset.defects')
+      = assetsearch.assets.count==0 ? "0" : (all_defects+assetsearch.assets.count.to_s+" "+(t 'equery.asset.asset_records'))
+
+/display result
+.col-md-11
+  %br
+  - counter=0
+  - if assetsearch.assets.count > 0
+    %table.table.table-condensed.table-bordered.table-hover.equery
+      %head
+        %tr.info
+          %th{width: '4%'} No
+          %th{width: '15%'}=t('asset.assetcode')
+          %th{width: '13%'}=t('equery.asset.asset_name')
+          %th{width: '16%'}=t('equery.asset.person_in_charge')
+          %th{width: '16%'}=(t('equery.asset.reported_by')+"<br> ("+(t 'equery.asset.reported_on')+")").html_safe
+          %th{width: '6%'}=(t 'equery.asset.process_type')
+          %th{width: '16%'}=t('equery.asset.processed_by')
+          %th{width: '8%'}=t('equery.links')
+             
+      %body
+        - for asset in assets
+          - defects=AssetDefect.where(asset_id: asset)
+          - no=0
+          - for defect in defects
+            %tr
+              - if no==0
+                - no+=1
+                %td{rowspan: "#{defects.count}"}=counter+=1
+                %td{rowspan: "#{defects.count}"}=link_to asset.assetcode, asset_asset_path(asset)
+                %td{rowspan: "#{defects.count}"}=asset.name.blank? ? asset.typename : asset.name+": "+asset.typename
+                %td{rowspan: "#{defects.count}"}
+                  - unless asset.assignedto_id.blank?
+                    =assetsearch.college.code=='amsas' ? asset.assignedto.staff_with_rank : asset.assignedto.staff_name_with_position
+              %td
+                =assetsearch.college.code=='amsas' ? defect.reporter.staff_with_rank : defect.reporter.staff_name_with_position
+                %br="("+defect.created_at.strftime('%d-%m-%Y')+")"
+                %td=defect.process_type.blank? ? "" : t('asset.defect.'+defect.process_type)
+              %td
+                - unless defect.processed_by.blank?
+                  =assetsearch.college.code=='amsas' ? defect.processor.staff_with_rank : defect.processor.staff_name_with_position
+              %td=link_to (fa_icon "file-pdf-o")+" KEW-PA 9", kewpa9_asset_defect_path(format: "pdf", id: defect)
+               
+
+      %br
+
+  .right{style:"padding: 0 10px; margin:0;"}= paginate assets, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
+  
+    
+.row
+  .col-md-8.col-md-offset-1
+    %hr
+  .col-md-6.col-md-offset-3
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('asset.title')}", "/equery_reports?query_module=2", class: 'btn btn-primary'
+      %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_assetsearch_path(searchtype: assetsearch.search_type),  :class => 'btn btn-default'
+       

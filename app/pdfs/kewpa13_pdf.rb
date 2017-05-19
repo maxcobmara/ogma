@@ -38,7 +38,15 @@ class Kewpa13Pdf < Prawn::Document
     header = [[ 'Bil', 'Keterangan Aset', 'Jenis / Jenama / Model', 'Lokasi Aset', 'Harga Perolehan', 'Catatan']]
     header +
       @assets.map do |asset|
-      ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "#{asset.try(:location).try(:name)}", @view.currency(asset.purchaseprice.to_f), "#{asset.remark}" ]
+        asset_wplacement=Asset.wplacement.pluck(:id)
+        if asset_wplacement.include?(asset.id)
+          for placement in asset.asset_placements.sort_by{|x|x.location.combo_code}
+           placements="#{placement.location.location_list}<br>"
+	  end
+	else
+	  placements=""
+	end
+      ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "#{asset.try(:hmlocation).try(:location_list)} #{placements}", @view.currency(asset.purchaseprice.to_f), "#{asset.remark}" ]
     end
   end
 end

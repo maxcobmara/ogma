@@ -1,16 +1,16 @@
 class Kewpa9Pdf < Prawn::Document
   def initialize(defective, view , lead)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 50, left_margin: 50, page_size: 'A4', page_layout: :portrait })
     @defective = defective
     @view = view
     @lead = lead 
     
-    font "Times-Roman"
-    text "KEW.PA-9", :align => :right, :size => 16, :style => :bold
+    font "Helvetica"
+    text "KEW.PA-9", :align => :right, :size => 14, :style => :bold
     move_down 20
-    text "BORANG ADUAN KEROSAKAN ASET ALIH KERAJAAN", :align => :center, :size => 14, :style => :bold
+    text "BORANG ADUAN KEROSAKAN ASET ALIH KERAJAAN", :align => :center, :size => 12, :style => :bold
     move_down 20
-    text "Bahagian 1", :align => :left, :size => 12
+    text "Bahagian 1", :align => :left, :size => 11
     table1
     #move_down 500
     if y < 260
@@ -30,7 +30,7 @@ class Kewpa9Pdf < Prawn::Document
              ["7. Perihal Kerosakan", ":"],
              ["#{@defective.description}",""]]
              
-             table(data1, :column_widths => [180, 340]) do
+             table(data1, :column_widths => [180, 320], :cell_style => { :size => 11}) do
                row(0..7).borders = [ ]
                row(7).align = :center
              end
@@ -41,7 +41,7 @@ class Kewpa9Pdf < Prawn::Document
              ["#{@defective.process_type}",""],
              ["#{@defective.recommendation}",""]]
              
-             table(data1, :column_widths => [180, 340]) do
+             table(data1, :column_widths => [180, 320], :cell_style => { :size => 11}) do
                row(0..2).borders = [ ]
                row(1..2).align = :center
              end
@@ -50,16 +50,16 @@ class Kewpa9Pdf < Prawn::Document
 
   def signatory
      
-      text "Nama : #{@defective.processor.try(:name)}", :align => :left, :size => 12
-      text "Jawatan : #{@defective.processor.try(:position).try(:name)}", :align => :left, :size => 12
-      text "Tarikh : #{@defective.processed_on.try(:strftime, "%d/%m/%y")}", :align => :left, :size => 12
+      text "Nama : #{@defective.processor.try(:name)}", :align => :left, :size => 11
+      text "Jawatan : #{@defective.processor.try(:position).try(:name)}", :align => :left, :size => 11
+      text "Tarikh : #{@defective.processed_on.try(:strftime, "%d/%m/%y")}", :align => :left, :size => 11
       move_down 20
-      text "Bahagian II (Keputusan Ketua Jabatan)", :align => :left, :size => 12
-      text "- #{@defective.decision}", :align => :left, :size => 12
+      text "Bahagian II (Keputusan Ketua Jabatan)", :align => :left, :size => 11
+      text "- #{@defective.decision}", :align => :left, :size => 11
       move_down 40
-      text "Tandatangan : ", :align => :left, :size => 12
-      text "Nama : #{@lead.try(:staff).try(:name)}", :align => :left, :size => 12
-      text "Jawatan : #{@lead.name}", :align => :left, :size => 12
-      text "Tarikh :", :align => :left, :size => 12
+      text "Tandatangan : ", :align => :left, :size => 11
+      text "Nama : #{@lead.try(:staff).try(:name)}", :align => :left, :size => 11
+      text "Jawatan : #{@lead.try(:name)}", :align => :left, :size => 11
+      text "Tarikh :", :align => :left, :size => 11
   end
 end

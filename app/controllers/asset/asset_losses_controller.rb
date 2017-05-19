@@ -129,6 +129,6 @@ class Asset::AssetLossesController < ApplicationController
         :investigated_by, :investigation_code, :investigation_completed_on, :is_police_report_made, :is_prima_facie, :is_rule_broken, :is_staff_action, :is_submit_to_hod, 
         :is_used, :is_writeoff, :last_handled_by, :location_id, :loss_type, :lost_at, :new_measures, :notes, :ownership, :police_action_status, :police_report_code, 
         :prev_action_enforced_by, :preventive_action_dept, :preventive_measures, :recommendations, :report_code, :rules_broken_desc, :security_code, :security_officer_id,
-        :security_officer_notes, :surcharge_notes, :updated_at, :value_federal, :value_state, :why_no_report)
+        :security_officer_notes, :surcharge_notes, :updated_at, :value_federal, :value_state, :why_no_report, :college_id, {:data=>[]})
     end
 end

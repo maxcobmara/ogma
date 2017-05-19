@@ -82,7 +82,7 @@
           - for asset in massets
             %tr
               %td=counter+=1
-              %td=asset.assetcode
+              %td=link_to asset.assetcode, asset_asset_path(asset)
               %td=asset.name.blank? ? asset.typename : asset.name+": "+asset.typename
               - asset_wlocation=Asset.wlocation.pluck(:id)
               - asset_wplacement=Asset.wplacement.pluck(:id)
