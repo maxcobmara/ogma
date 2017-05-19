@@ -163,6 +163,15 @@ $(document).ready(function(e) {
         $input.val($input.val().substr(0,4) + '-01-01');
       }
   });
+  $('.year_picker_reverse').datetimepicker({
+      format:'d-m-Y',
+      formatDate:'Y-m-d',
+      timepicker: false,
+      autoclose: true,
+      onSelectDate: function(dp, $input) {
+        $input.val($input.val().substr(0,4) + '-01-01');
+      }
+  });
   $(function() {
     $('#myorgchart ul:first').attr('id', 'chart-source');
     $('#myorgchart ul:first').attr('class', 'hide');

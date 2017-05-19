@@ -17,7 +17,13 @@ class EqueryReport::AssetsearchesController < ApplicationController
 
   def show
     @assetsearch = Assetsearch.find(params[:id])
-    @assets=@assetsearch.assets.order(assettype: :asc, assetcode: :asc).page(params[:page]).per(20)
+    if @assetsearch.search_type==6
+      #kewpa 8 (group by year)
+      @assets_by_year=(@assetsearch.assets.sort_by{|x|x.receiveddate}.group_by{|d|d.receiveddate.strftime('%Y-%m-%d').split("-")[0]}).to_a
+      @assets=Kaminari.paginate_array(@assets_by_year).page(params[:page]).per(20)
+    else
+      @assets=@assetsearch.assets.order(assettype: :asc, assetcode: :asc).page(params[:page]).per(20)
+    end
   end
   
   private

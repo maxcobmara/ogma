@@ -5252,6 +5252,7 @@ en:
       kewpa5_list_all: List of All Asset (Inventory)
       kewpa6_list_all: "List of All (Asset Movement : Loan)"
       kewpa7_list_all: List of All Asset Location
+      kewpa8_list_all: List of All Fixed Asset & Inventory Yearly Report
       fixed_acr: Fixed Asset
       inv_acr: Inventory
       #leave_unselected_kewpa6: "Leave all fields 'unselected' to display ALL existing asset loan (KEW-PA 6)"
@@ -5269,6 +5270,9 @@ en:
       asset_location: Asset Location
       total_transactions: Total Transactions
       #select_year: Select year
+      year: Year
+      yearly_report: Fixed Asset and Inventory Yearly Report
+      partial: "* Search result only part of complete fixed asset and invetory records for related year."
       #defected_asset: Defected Asset
       #person: Person
       #process_type: Process Type

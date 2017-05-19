@@ -5170,6 +5170,7 @@ ms_MY:
       kewpa5_list_all: Senarai Penuh Aset (Inventori)
       kewpa6_list_all: "Senarai Penuh (Pergerakan Aset : Peminjaman)"
       kewpa7_list_all: Senarai Penuh (Penempatan Aset)
+      kewpa8_list_all: Senarai Penuh (Laporan Tahunan Harta Modal dan Inventori)
       fixed_acr: H
       inv_acr: I
       #leave_unselected_kewpa6: "Nyahpilihkan semua medan untuk papar SEMUA rekod peminjaman aset (KEW-PA 6) yang wujud."
@@ -5187,6 +5188,9 @@ ms_MY:
       asset_location: Lokasi Aset
       total_transactions: Jumlah Transaksi
       #select_year: Pilih tahun
+      year: Tahun
+      yearly_report: Laporan Tahunan Harta Modal dan Inventori
+      partial: "* Hasil carian hanya merangkumi sebahagian daripada rekod harta modal dan inventori bagi tahun berkenaan."
       #defected_asset: Aset Rosak
       #person: Kakitangan
       #process_type: Jenis Proses

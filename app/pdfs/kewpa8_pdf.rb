@@ -4,6 +4,7 @@ class Kewpa8Pdf < Prawn::Document
     @fa = fa
     @inv = inv
     @view = view
+    @college=college
     font "Times-Roman"
     text "KEW.PA-8", :align => :right, :size => 12, :style => :bold
     move_down 20  
@@ -53,7 +54,7 @@ class Kewpa8Pdf < Prawn::Document
     fa_p << @fa.map(&:purchaseprice).compact.sum
     inv_p << @inv.map(&:purchaseprice).compact.sum
     header = [[ 'Bil', 'KEMENTERIAN/ JABATAN DI BAWAHNYA', 'BILANGAN KEW.PA-2', 'JUMLAH NILAI HARTA MODAL (RM)', 'BILANGAN KEW.PA-3', 'JUMLAH NILAI INVENTORI (RM)']]
-    content_line= [[bil+1, 'Kolej Sains Kesihatan Bersekutu Johor Bahru', fa[bil], @view.currency(fa_p[bil]), inv[bil], @view.currency(inv_p[bil])]]
+    content_line= [[bil+1, @college.name, fa[bil], @view.currency(fa_p[bil]), inv[bil], @view.currency(inv_p[bil])]]
     #bil+=1
     total_line = [['','JUMLAH', fa.sum, @view.currency(fa_p.sum), inv.sum, @view.currency(inv_p.sum)]]
     header+content_line+total_line

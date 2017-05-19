@@ -1,0 +1,8 @@
+.form-group
+  .col-sm-2.control-label
+    =f.label t('asset.receiveddate') 
+  .col-md-4
+    .input-group
+      = f.text_field :receiveddate, class: 'form-control date_picker_reverse'
+      .input-group-addon=t('to')
+      = f.text_field :receiveddate2, class: 'form-control date_picker_reverse'

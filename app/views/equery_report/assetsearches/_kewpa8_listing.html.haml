@@ -1,0 +1,73 @@
+/additional heading
+.col-md-8.col-md-offset-2
+  %dl.dl-horizontal
+    
+    /purchasedate
+    
+    - if assetsearch.receiveddate.blank? && assetsearch.receiveddate2.blank?
+      %div.result-all=t 'equery.asset.kewpa8_list_all'
+    - else
+      %div.result-search=t 'equery.search_by'
+            
+    %br
+
+    - if assetsearch.receiveddate.blank? ==false || assetsearch.receiveddate2.blank? ==false
+      %dt=t 'asset.receiveddate'
+      %dd
+        - unless assetsearch.receiveddate.blank?
+          =assetsearch.receiveddate.strftime('%d-%m-%Y')
+        - unless assetsearch.receiveddate2.blank?
+          - if assetsearch.receiveddate.blank? == false
+            =(t 'to')+" " 
+          - else
+            =(t 'equery.upto')+" "
+          =assetsearch.receiveddate2.strftime('%d-%m-%Y')
+        - else
+          =(t 'equery.onwards')
+          
+    - if assetsearch.receiveddate.blank? && assetsearch.receiveddate2.blank?
+    - else
+      .col-md-12
+        .col-md-8
+          %hr
+    
+    %dt=(t 'equery.total')
+    %dd=@assets_by_year.count==0 ? "0" : @assets_by_year.count.to_s+" "+(t 'equery.asset.yearly_report')      
+  
+/display result
+.col-md-4.col-md-offset-3
+  %br
+  - counter=0
+  - if assetsearch.assets.count > 0
+    %table.table.table-condensed.table-bordered.table-hover.equery
+      %head
+        %tr.info
+          %th{width: '10%'} No
+          %th{width: '40%'}=t('equery.asset.year')
+          %th{width: '40%'}=t('equery.links')      
+          %th{width: '10%'}
+      %body
+        - assets.each do |x, current_list|
+          - y=x.size==2 ? ("20"+x) : x
+          - complete_list= Asset.where.not(purchaseprice: nil).where('receiveddate >=? AND receiveddate <=?', Date.new(y.to_i, 1, 1), Date.new(y.to_i, 12, 31))
+          %tr
+            %td=counter+=1
+            %td=y
+            %td= link_to (fa_icon "file-pdf-o")+" KEW-PA 8", kewpa8_asset_assets_path(format: "pdf", search_year: y)
+            %td
+              - if current_list.count < complete_list.count
+                .centre.text-red *
+                
+.col-md-6.col-md-offset-2
+  .row
+    .small.text-red=t('equery.asset.partial')
+              
+  .right{style:"padding: 0 10px; margin:0;"}= paginate assets, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
+ 
+.row
+  .col-md-8.col-md-offset-1
+    %hr
+  .col-md-6.col-md-offset-3
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('asset.title')}", "/equery_reports?query_module=2", class: 'btn btn-primary'
+      %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_assetsearch_path(searchtype: assetsearch.search_type),  :class => 'btn btn-default'

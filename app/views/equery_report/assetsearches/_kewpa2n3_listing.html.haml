@@ -67,10 +67,11 @@
       %head
         %tr.info
           %th{width: '4%'} No
-          %th{width: '24%'}=t('asset.assetcode')
-          %th{width: '25%'}=t('equery.asset.asset_name')
-          %th{width: '13%'}=t('asset.purchasedate')
-          %th{width: '13%'}=t('asset.purchaseprice')
+          %th{width: '22%'}=t('asset.assetcode')
+          %th{width: '23%'}=t('equery.asset.asset_name')
+          %th{width: '10%'}=t('asset.purchasedate')
+          %th{width: '10%'}=t('asset.receiveddate')
+          %th{width: '10%'}=t('asset.purchaseprice')
           %th{width: '12%'}=t('equery.links')
              
       %body
@@ -83,6 +84,7 @@
               %td=asset.assetcode
               %td=asset.name.blank? ? asset.typename : asset.name+": "+asset.typename
               %td=asset.purchasedate.try(:strftime, '%d-%m-%Y')
+              %td=asset.receiveddate.try(:strftime, '%d-%m-%Y')
               %td=ringgols(asset.purchaseprice)
               %td.centre
                 - if asset.assettype==1
