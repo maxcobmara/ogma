@@ -286,7 +286,7 @@ class Assetsearch < ActiveRecord::Base
     end
   end
   
-  #COMBINE - (kewpa6: loanedasset==1, kewpa7: category==1, alldefectasset==1)
+  #COMBINE - (kewpa6: loanedasset==1, kewpa7: category==1, kewpa9: alldefectasset==1, kewpa13/14: maintainable==true)
   def search_type_conditions
     if search_type==4         #kewpa6
       ids=AssetLoan.pluck(:asset_id).uniq
@@ -294,6 +294,8 @@ class Assetsearch < ActiveRecord::Base
       ids=AssetPlacement.joins(:asset).pluck(:asset_id).uniq.compact+Asset.where.not(location_id: nil).pluck(:id)
     elsif search_type==7   #kewpa9
       ids=AssetDefect.pluck(:asset_id).uniq
+    elsif search_type==8 || search_type==9
+      ajob=['is_maintainable=?', true]
     end
     if [4, 5, 7].include?(search_type)
       if ids.count > 0
@@ -305,6 +307,8 @@ class Assetsearch < ActiveRecord::Base
       else
         [" (id=?)", 0]  # NOTE - refer above
       end
+    else
+      ajob
     end
   end
   
@@ -359,17 +363,27 @@ class Assetsearch < ActiveRecord::Base
   end
   #C) kewpa 9 - ends here
   
-  def maintainable_conditions
-      ['is_maintainable is TRUE'] unless maintainable.blank?# && maintainable==false
-  end
-  
+  #D) kewpa 13 & 14 - starts here
   def maintname_conditions
-      ["is_maintainable is TRUE AND (name ILIKE ? OR typename ILIKE ? OR modelname ILIKE ?)", "%#{maintname}%", "%#{maintname}%", "%#{maintname}%"] unless maintname.blank? 
+    unless maintname.blank?
+      if maintname.include?("|")
+        a,b,c=maintname.split(" | ")
+        ["(name ILIKE ? OR typename ILIKE ? OR modelname ILIKE ?)", "%#{a}%", "%#{b}%", "%#{c}%"] 
+      else
+        ["(name ILIKE ? OR typename ILIKE ? OR modelname ILIKE ?)", "%#{maintname}%", "%#{maintname}%", "%#{maintname}%"] 
+      end
+      #["is_maintainable is TRUE AND (name ILIKE ? OR typename ILIKE ? OR modelname ILIKE ?)", "%#{maintname}%", "%#{maintname}%", "%#{maintname}%"] 
+    end
   end
-  
-  def maintcode_conditions
-      ['is_maintainable is TRUE AND assetcode ILIKE ?', "%#{maintcode}%"] unless maintcode.blank?
-  end
+#   def maintainable_conditions
+#       ['is_maintainable is TRUE'] unless maintainable.blank?# && maintainable==false
+#   end
+   
+#   def maintcode_conditions
+#       ['is_maintainable is TRUE AND assetcode ILIKE ?', "%#{maintcode}%"] unless maintcode.blank?
+#   end
+   #D) kewpa 13 & 14 ends here
+ 
   
   def disposal_details
     a='id=? ' if AssetDisposal.all.map(&:asset_id).uniq.count!=0

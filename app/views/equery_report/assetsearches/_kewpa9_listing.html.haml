@@ -79,7 +79,7 @@
               - if no==0
                 - no+=1
                 %td{rowspan: "#{defects.count}"}=counter+=1
-                %td{rowspan: "#{defects.count}"}=asset.assetcode
+                %td{rowspan: "#{defects.count}"}=link_to asset.assetcode, asset_asset_path(asset)
                 %td{rowspan: "#{defects.count}"}=asset.name.blank? ? asset.typename : asset.name+": "+asset.typename
                 %td{rowspan: "#{defects.count}"}
                   - unless asset.assignedto_id.blank?

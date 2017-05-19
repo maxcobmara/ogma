@@ -5172,6 +5172,7 @@ ms_MY:
       kewpa7_list_all: Senarai Penuh (Penempatan Aset)
       kewpa8_list_all: Senarai Penuh (Laporan Tahunan Harta Modal dan Inventori)
       kewpa9_list_all: Senarai Penuh (Aduan Kerosakan Aset Alih)
+      kewpa13n14_list_all: Senarai Penuh (Aset Alih yang Memerlukan Penyelenggaraan)
       fixed_acr: H
       inv_acr: I
       #leave_unselected_kewpa6: "Nyahpilihkan semua medan untuk papar SEMUA rekod peminjaman aset (KEW-PA 6) yang wujud."

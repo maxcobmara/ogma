@@ -81,7 +81,7 @@
           - for asset in massets
             %tr
               %td=counter+=1
-              %td=asset.assetcode
+              %td=link_to asset.assetcode, asset_asset_path(asset)
               %td=asset.name.blank? ? asset.typename : asset.name+": "+asset.typename
               %td=asset.purchasedate.try(:strftime, '%d-%m-%Y')
               %td=asset.receiveddate.try(:strftime, '%d-%m-%Y')

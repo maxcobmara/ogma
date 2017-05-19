@@ -175,7 +175,11 @@ class Asset::AssetsController < ApplicationController
   end
   
   def kewpa13
-    @assets = Asset.where('is_maintainable = ?', true).order(assetcode: :asc)
+    if params[:ids]
+      @assets=Asset.where(id: params[:ids]).order(assetcode: :asc)
+    else
+      @assets = Asset.where('is_maintainable = ?', true).order(assetcode: :asc)
+    end
     respond_to do |format|
       format.pdf do
         pdf = Kewpa13Pdf.new(@assets, view_context)
