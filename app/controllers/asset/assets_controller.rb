@@ -145,8 +145,25 @@ class Asset::AssetsController < ApplicationController
   end
   
   def kewpa8
-    @fa = Asset.where(assettype: 1).where('purchasedate <=?', Date.today)
-    @inv =  Asset.where(assettype: 2).where('purchasedate <=?', Date.today)
+    if params[:search_year]
+      begin_year=Date.new(params[:search_year].to_i, 1, 1)
+      end_year=Date.new(params[:search_year].to_i, 12, 31)
+#       if current_user.college.code=='amsas'
+        @fa=Asset.hm.where('receiveddate >=? and receiveddate <=?', begin_year, end_year)
+        @inv=Asset.inv.where('receiveddate >=? and receiveddate <=?', begin_year, end_year)
+#       else
+#         @fa=Asset.hm.where('purchasedate >=? and purchasedate <=?', begin_year, end_year)
+#         @inv=Asset.inv.where('purchasedate >=? and purchasedate <=?', begin_year, end_year)
+#       end
+    else
+#       if current_user.college.code=='amsas' 
+        @fa = Asset.where(assettype: 1).where('receiveddate <=?', Date.today)
+        @inv =  Asset.where(assettype: 2).where('receiveddate <=?', Date.today)
+#       else
+#         @fa = Asset.where(assettype: 1).where('purchasedate <=?', Date.today)
+#         @inv =  Asset.where(assettype: 2).where('purchasedate <=?', Date.today)
+#       end
+    end
     respond_to do |format|
       format.pdf do
         pdf = Kewpa8Pdf.new(@fa, @inv, view_context, current_user.college)

@@ -15,7 +15,7 @@
     .col-sm-8.col-md-offset-2
       .row
         .col-sm-offset-3
-          .small=t('equery.leaves_all_blank_all_records')
+          .small=t('equery.leaves_all_blank_all_records') unless @searchtype.to_i==6
         .col-md-offset-1
           %hr
         .form-group

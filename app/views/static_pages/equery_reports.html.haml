@@ -98,7 +98,19 @@
                 %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 5)
               %tr
                 %td.centre=no+=1
-                %td KEW.PA-8 (Laporan Tahunan Harta Modal Dan Inventori Bagi Tahun .........)
+                %td 
+                  KEW.PA-8 (Laporan Tahunan Harta Modal Dan Inventori Bagi Tahun .........)
+                  %br
+                  - yeartab=[]
+                  /=Asset.where.not(purchaseprice: nil).where.not(receiveddate: nil).map{|d|d.receiveddate.strftime('%Y-%m-%d')}
+                  - for x in Asset.where.not(purchaseprice: nil).where.not(receiveddate: nil).map{|d|d.receiveddate.strftime('%Y-%m-%d').split("-")[0]}
+                    - if x.size==2
+                      - yeartab << "20"+x
+                    - else
+                      - yeartab << x
+                  |
+                  - yeartab.uniq.sort.each do |ytab|
+                    = link_to "#{ytab} | ", kewpa8_asset_assets_path(format: "pdf", search_year: ytab)
                 %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 6)
               %tr
                 %td.centre=no+=1
