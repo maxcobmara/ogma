@@ -1,0 +1,114 @@
+/additional heading
+.col-md-8.col-md-offset-2
+  %dl.dl-horizontal
+
+    / loandate, loandate2, returndate, returndate2, expectedreturndate, expectedreturndate2
+    
+    - if assetsearch.assetcode.blank? && assetsearch.loandate.blank? && assetsearch.loandate2.blank? && assetsearch.returndate.blank? && assetsearch.returndate2.blank? && assetsearch.expectedreturndate.blank? && assetsearch.expectedreturndate2.blank?
+      %div.result-all=t 'equery.asset.kewpa6_list_all'
+    - else
+      %div.result-search=t 'equery.search_by'
+            
+    %br
+    
+    - unless assetsearch.assetcode.blank?
+      %dt=t('asset.assetcode')
+      %dd=assetsearch.assetcode
+
+    - if assetsearch.loandate.blank? == false || assetsearch.loandate2.blank? == false
+      %dt=t('equery.asset.loan_date')
+      %dd
+        - unless assetsearch.loandate.blank?
+          =assetsearch.loandate.strftime('%d-%m-%Y')
+        - unless assetsearch.loandate2.blank?
+          - if assetsearch.loandate.blank? == false
+            =(t 'to')+" " 
+          - else
+            =(t 'equery.upto')+" "
+          =assetsearch.loandate2.strftime('%d-%m-%Y')
+        - else
+          =(t 'equery.onwards')
+          
+    - if assetsearch.returndate.blank? == false || assetsearch.returndate2.blank? == false
+      %dt=t('equery.asset.return_date')
+      %dd
+        - unless assetsearch.returndate.blank?
+          =assetsearch.returndate.strftime('%d-%m-%Y')
+        - unless assetsearch.returndate2.blank?
+          - if assetsearch.returndate.blank? == false
+            =(t 'to')+" " 
+          - else
+            =(t 'equery.upto')+" "
+          =assetsearch.returndate2.strftime('%d-%m-%Y')
+        - else
+          =(t 'equery.onwards')
+          
+    - if assetsearch.expectedreturndate.blank? == false || assetsearch.expectedreturndate2.blank? == false
+      %dt=t('equery.asset.expected_return_date')
+      %dd
+        - unless assetsearch.expectedreturndate.blank?
+          =assetsearch.expectedreturndate.strftime('%d-%m-%Y')
+        - unless assetsearch.expectedreturndate2.blank?
+          - if assetsearch.expectedreturndate.blank? == false
+            =(t 'to')+" " 
+          - else
+            =(t 'equery.upto')+" "
+          =assetsearch.expectedreturndate2.strftime('%d-%m-%Y')
+        - else
+          =(t 'equery.onwards')
+
+    - if assetsearch.loandate.blank? && assetsearch.loandate2.blank? && assetsearch.returndate.blank? && assetsearch.returndate2.blank? && assetsearch.expectedreturndate.blank? && assetsearch.expectedreturndate2.blank?
+    - else
+      .col-md-12
+        .col-md-8
+          %hr
+          
+    %dt=(t 'equery.total')
+    %dd
+      =assetsearch.assets.count==0 ? assetsearch.assets.count : assetsearch.assets.count.to_s+" "+(t 'records')
+      =assetsearch.assets.group_by(&:assettype).count==2 ? "(#{t('equery.asset.fixed_acr')} / #{t('equery.asset.inv_acr')}  : #{assetsearch.assets.hm.count} / #{assetsearch.assets.inv.count})" : ""
+
+/display result
+.col-md-9.col-md-offset-1
+  %br
+  - counter=0
+  /- if params[:page]
+  /  - cnt=(params[:page].to_i-1)*10
+  /- else
+  /  - cnt=0
+  - if assetsearch.assets.count > 0
+    %table.table.table-condensed.table-bordered.table-hover.equery
+      %head
+        %tr.info
+          %th{width: '4%'} No
+          %th{width: '20%'}=t('asset.assetcode')
+          %th{width: '20%'}=t('equery.asset.asset_name')
+          %th{width: '22%'}=t('equery.asset.person_in_charge')
+          %th{width: '13%'}=t('equery.asset.total_transactions')
+          %th{width: '12%'}=t('equery.links')
+             
+      %body
+        - assets.group_by(&:assettype).each do |asset_type, massets|
+          %tr.warning
+            %td.system{colspan: 6}=asset_type==1 ? (t 'asset.fixed') : (t 'asset.inventory')
+          - for asset in massets
+            %tr
+              %td=counter+=1
+              %td=asset.assetcode
+              %td=asset.name.blank? ? asset.typename : asset.name+": "+asset.typename
+              %td=assetsearch.college.code=='amsas' ? asset.assignedto.staff_with_rank : asset.assignedto.staff_name_with_position
+              %td.centre=AssetLoan.where(asset_id: asset).count
+              %td.centre=link_to (fa_icon "file-pdf-o")+" KEW-PA 6", kewpa6_asset_asset_path(format: "pdf", id: asset)
+
+      %br
+
+  .right{style:"padding: 0 10px; margin:0;"}= paginate assets, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
+  
+    
+.row
+  .col-md-8.col-md-offset-1
+    %hr
+  .col-md-6.col-md-offset-3
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('asset.title')}", "/equery_reports?query_module=2", class: 'btn btn-primary'
+      %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_assetsearch_path(searchtype: assetsearch.search_type),  :class => 'btn btn-default'

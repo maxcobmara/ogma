@@ -5097,7 +5097,8 @@ ms_MY:
     #listing: Senaraikan
     links: Pautan
     #for_selected_date: "bagi tarikh dipilih."
-    search_by: Kriteria Carian #Carian Mengikut
+    search_by: Kriteria Carian
+    search_by2: Carian Mengikut
     result: Hasil Carian
     print_result: Cetak Hasil Carian
     #data_not_available: Tiada data
@@ -5165,6 +5166,10 @@ ms_MY:
       asset_type: Jenis Aset
       type_select: "Masukkan 'H' untuk senaraikan kesemua rekod 'Harta Modal' atau 'I' untuk senaraikan kesemua rekod 'Inventori' "
       list_all: "Senarai Penuh Aset (Harta Modal & Inventori)"
+      kewpa4_list_all: Senarai Penuh Aset (Harta Modal)
+      kewpa5_list_all: Senarai Penuh Aset (Inventori)
+      kewpa6_list_all: "Senarai Penuh (Pergerakan Aset : Peminjaman)"
+      kewpa7_list_all: Senarai Penuh (Penempatan Aset)
       fixed_acr: H
       inv_acr: I
       #leave_unselected_kewpa6: "Nyahpilihkan semua medan untuk papar SEMUA rekod peminjaman aset (KEW-PA 6) yang wujud."
@@ -5174,11 +5179,13 @@ ms_MY:
       #leave_blank_disposal_certificate: "Kosongkan semua medan untuk papar SEMUA Sijil Pelupusan Aset"
       #leave_blank_preliminary_losses: "Kosongkan semua medan untuk papar SEMUA Laporan Awalan untuk Kehilangan Aset"
       #leave_blank_final_losses: "Kosongkan semua medan untuk papar SEMUA Laporan Akhir untuk Kehilangan Aset"
-      #loan_date: Tarikh pinjam
-      #return_date: Tarikh pulang
-      #expected_return_date: Tarikh perlu dipulangkan
-      #person_in_charge: "Pegawai Bertanggungjawab "
-      #asset_location: Lokasi Aset
+      datetype: Jenis Tarikh
+      loan_date: Tarikh dikeluarkan (dipinjam)
+      return_date: Tarikh pulang
+      expected_return_date: Tarikh jangka dipulangkan 
+      person_in_charge: "Pegawai Bertanggungjawab "
+      asset_location: Lokasi Aset
+      total_transactions: Jumlah Transaksi
       #select_year: Pilih tahun
       #defected_asset: Aset Rosak
       #person: Kakitangan

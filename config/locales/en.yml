@@ -5180,7 +5180,8 @@ en:
     #listing: Listing
     links: links
     #for_selected_date: "for selected date."
-    search_by: Search By
+    search_by: Search Criteria
+    search_by2: Search By
     result: Search Result
     print_result: Print Search Result
     #data_not_available: Data not available
@@ -5247,6 +5248,10 @@ en:
       asset_type: Asset Type
       type_select: "Insert 'H' for listing of all 'Fixed Asset' records or 'I' for listing of all 'Inventory' records"
       list_all: "List of All Asset (Fixed Asset & Inventory)"
+      kewpa4_list_all: List of All Asset (Fixed Asset)
+      kewpa5_list_all: List of All Asset (Inventory)
+      kewpa6_list_all: "List of All (Asset Movement : Loan)"
+      kewpa7_list_all: List of All Asset Location
       fixed_acr: Fixed Asset
       inv_acr: Inventory
       #leave_unselected_kewpa6: "Leave all fields 'unselected' to display ALL existing asset loan (KEW-PA 6)"
@@ -5256,11 +5261,13 @@ en:
       #leave_blank_disposal_certificate: "Leave all fields 'blank' to view ALL Certificate of Asset Disposal"
       #leave_blank_preliminary_losses: "Leave all fields 'blank' to view ALL Preliminary Report for Asset Losses"
       #leave_blank_final_losses: "Leave all fields 'blank' to view ALL Final Refor for Asset Losses"
-      #loan_date: Loan date
-      #return_date: Return Date
-      #expected_return_date: Expected return date
-      #person_in_charge: "Person in-charge "
-      #asset_location: Asset Location
+      datetype: Type of date
+      loan_date: Loan date
+      return_date: Return Date
+      expected_return_date: Expected return date
+      person_in_charge: "Person in-charge "
+      asset_location: Asset Location
+      total_transactions: Total Transactions
       #select_year: Select year
       #defected_asset: Defected Asset
       #person: Person

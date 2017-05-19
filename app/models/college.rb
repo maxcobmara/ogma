@@ -58,6 +58,7 @@ class College < ActiveRecord::Base
   has_many :studentdisciplinesearches
   has_many :studentcounselingsearches
   has_many :stationerysearches
+  has_many :assetsearches
   # staffs
   
   serialize :data, Hash

@@ -7,6 +7,10 @@ class Assetsearch < ActiveRecord::Base
   
   #:assetcode, :assettype, :name, :purchaseprice, :purchasedate, :startdate, :enddate, :category, :assignedto, :bookable, :loandate, :returndate, :location, :defect_asset, :defect_reporter, :defect_processor, :defect_process, :maintainable, :maintname, :maintcode, :disposal, :disposaltype, :discardoption, :disposalreport, :disposalcert, :disposalreport2, :loss_start, :loss_end, :loss_cert, :loanedasset, :alldefectasset, :purchaseprice2, :purchasedate2, :receiveddate, :receiveddate2, :loandate2, :returndate2, :expectedreturndate, :expectedreturndate2
   
+  belongs_to :college
+  
+  attr_accessor :datetype, :locationtype
+  
   def assets
     @assets ||= find_assets
   end
@@ -43,13 +47,11 @@ class Assetsearch < ActiveRecord::Base
   end
   
   def assetcode_conditions
-    #["assetcode =?", assetcode] unless assetcode.blank?    #OK -but did not work if only part of assetcode was entered
     ["assetcode ILIKE ?", "%#{assetcode}%"] unless assetcode.blank?   #ok 
   end
   
   def name_conditions
-    ["name ILIKE ?", "%#{name}%"] unless name.blank?    #ok
-    #["purchaseprice>=?", name] unless name.blank?      #ok 
+    ["name ILIKE ?", "%#{name}%"] unless name.blank?    
   end
 
   def purchaseprice_conditions
@@ -58,7 +60,6 @@ class Assetsearch < ActiveRecord::Base
 
   def purchasedate_conditions
     ["purchasedate>=?", purchasedate] unless purchasedate.blank?
-    #["purchasedate>=?", "2011-10-19"] unless purchasedate.blank?        #["purchasedate>=?", name] unless name.blank?        #ok
   end  
   
   def purchaseprice2_conditions
@@ -85,105 +86,229 @@ class Assetsearch < ActiveRecord::Base
     ["receiveddate<=?", receiveddate2] unless receiveddate2.blank?
   end
   
+  def assettype_conditions
+     ["assettype =?", assettype] unless assettype.blank?
+  end
+  
+  # NOTE - working with date range (2 dates fields) - 19May2017
+  #a) date fields in ASSET table - do as usual (refer above : purchasedate(startdate & enddate), receiveddate(receiveddate & receiveddate2)
+  #b) date fields in ASSET'S joins table(s) - to ensure AND applied between date range (1st & 2nd date) use below approach (loandate & loandate2 - refer additional ids assignment required for loandate in loandate2, (also applied to expectedreturndate2) which represent existance of both dates)
+  
+  #A) kewpa 6 - shall limit result to existing asset loan only
+#   def loanedasset_conditions
+#     if loanedasset==1                                             #*******************search_type==4
+#       ids=AssetLoan.pluck(:asset_id).uniq
+#       if ids.count > 0
+#         a="id=?" 
+#         0.upto(ids.count-2) do |x|
+#           a+=" OR id=? "
+#         end
+#         ["("+a+")", ids] 
+#       else
+#         [" (id=?)", 0]  # NOTE - refer above
+#       end
+#     end
+#   end
+  
   #======FOR ASSET LOAN - KEWPA 6---
   #AND is_approved!=?
   #@loanable = AssetLoan.find(:all, :conditions => ['asset_id=? AND is_approved!=?',params[:id], false], :order=>'returned_on ASC')
   #=================================
-  #====loandate
-  def loandetails
-    a='id=? ' if AssetLoan.where('loaned_on>=? AND is_approved!=?',loandate, false).map(&:asset_id).uniq.count!=0
-    #0.upto(AssetLoan.where('loaned_on=?',"2013-04-23").map(&:id).uniq.count-2) do |l|
-    0.upto(AssetLoan.where('loaned_on>=? AND is_approved!=?',loandate, false).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if (loandate.blank? == false && loanedasset == 1) #0)  #unless loandate.blank?
-  end
-    
-  def loandate_conditions  #one date only
-    ["( "+loandetails+")",AssetLoan.where('loaned_on>=? AND is_approved!=?',loandate,false).map(&:asset_id).uniq] if (loandate.blank? == false && loanedasset == 1)#0)  #unless loandate.blank?
-    #[loandetails,AssetLoan.where('loaned_on=?',"2013-04-23").map(&:id).uniq] unless loandate.blank?
-    #['id=? OR id=? OR id=? OR id=? OR id=? OR id=? OR id=? ',[37, 38, 39, 40, 41, 42, 43]]  #["loandate=?", loandate] unless enddate.blank?
-  end
-  #====loandate
-  #====loandate2
-  def loandate2_details
-    a='id=? ' if AssetLoan.where('loaned_on<=? AND is_approved!=?',loandate2, false).map(&:asset_id).uniq.count!=0
-    0.upto(AssetLoan.where('loaned_on<=? AND is_approved!=?',loandate2, false).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if (loandate2.blank? == false && loanedasset == 1) #0)  #unless loandate.blank?
-  end
 
-  def loandate2_conditions  #one date only
-    ["( "+loandate2_details+")",AssetLoan.where('loaned_on<=? AND is_approved!=?',loandate2, false).map(&:asset_id).uniq] if (loandate2.blank? == false && loanedasset == 1)#0)  #unless loandate.blank?
-  end
-  #====loandate2
-  #====returndate
-  def loandetails2
-    a='id=? ' if AssetLoan.where('returned_on>=? AND is_approved!=?',returndate, false).map(&:asset_id).uniq.count!=0
-    0.upto(AssetLoan.where('returned_on>=? AND is_approved!=?',returndate, false).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if (returndate.blank? == false && loanedasset == 1)  #0) #unless returndate.blank?
-  end
-
-  def returndate_conditions  #one date only
-    ["( "+loandetails2+")",AssetLoan.where('returned_on>=? AND is_approved!=?',returndate, false).map(&:asset_id).uniq] if (returndate.blank? == false && loanedasset == 1)  #0)#unless returndate.blank? 
-  end
-  #====returndate
-  #====returndate2
-  def returndate2_details
-    a='id=? ' if AssetLoan.where('returned_on<=? AND is_approved!=?',returndate2, false).map(&:asset_id).uniq.count!=0
-    0.upto(AssetLoan.where('returned_on<=? AND is_approved!=?',returndate2, false).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if (returndate2.blank? == false && loanedasset == 1)  #0) #unless returndate.blank?
-  end
-
-  def returndate2_conditions  #one date only
-    ["("+returndate2_details+")",AssetLoan.where('returned_on<=? AND is_approved!=?',returndate2,false).map(&:asset_id).uniq] if (returndate2.blank? == false && loanedasset == 1)  #0)#unless returndate.blank? 
-  end
-  #====returndate2
-  #====expectedreturndate
-  def expectedreturndate_details
-    a='id=? ' if AssetLoan.where('expected_on>=? AND is_approved!=?',expectedreturndate, false).map(&:asset_id).uniq.count!=0
-    0.upto(AssetLoan.where('expected_on>=? AND is_approved!=?',expectedreturndate,false).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if (expectedreturndate.blank? == false && loanedasset == 1)  #0) #unless returndate.blank?
-  end
-
-  def expectedreturndate_conditions  #one date only
-    ["( "+expectedreturndate_details+")",AssetLoan.where('expected_on>=? AND is_approved!=?',expectedreturndate,false).map(&:asset_id).uniq] if (expectedreturndate.blank? == false && loanedasset == 1)  #0)#unless returndate.blank? 
-  end
-  #====expectedreturndate
-  #====expectedreturndate2
-  def expectedreturndate2_details
-    a='id=? ' if AssetLoan.where('expected_on<=? AND is_approved!=?',expectedreturndate2,false).map(&:asset_id).uniq.count!=0
-    0.upto(AssetLoan.where('expected_on<=? AND is_approved!=?',expectedreturndate2, false).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if (expectedreturndate2.blank? == false && loanedasset == 1)  #0) #unless returndate.blank?
-  end
-
-  def expectedreturndate2_conditions  #one date only
-    ["( "+expectedreturndate2_details+")",AssetLoan.where('expected_on<=? AND is_approved!=?',expectedreturndate2,false).map(&:asset_id).uniq] if (expectedreturndate2.blank? == false && loanedasset == 1)  #0)#unless returndate.blank? 
-  end
-  #====expectedreturndate2
-    
-  #----newly added-30July2013
-  #---tick to display all asset loan records---
-  def loanedasset_details
-    a='id=? ' if AssetLoan.all.map(&:asset_id).uniq.count!=0
-    0.upto(AssetLoan.all.map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
+  def loandate_conditions
+    unless loandate.blank?
+      if loandate2.blank?
+        ids=AssetLoan.where('loaned_on>=? AND is_approved!=?', loandate, false).pluck(:asset_id).uniq 
+        if ids.count > 0
+          a="id=?" 
+          0.upto(ids.count-2) do |x|
+            a+=" OR id=? "
+          end
+          ["("+a+")", ids] 
+        else
+          [" (id=?)", 0]  # NOTE - refer above
+        end
+      end
     end
-    return a if loanedasset == 1 
   end
   
-  def loanedasset_conditions
-    ["( "+loanedasset_details+")", AssetLoan.all.map(&:asset_id).uniq] if loanedasset == 1
+  def loandate2_conditions
+    unless loandate2.blank? 
+      if loandate.blank?
+        ids=AssetLoan.where('loaned_on<=? AND is_approved!=?', loandate2, false).pluck(:asset_id).uniq 
+      else
+        ids=AssetLoan.where('loaned_on<=? AND loaned_on >=? AND is_approved!=?', loandate2, loandate, false).pluck(:asset_id).uniq 
+      end
+      if ids.count > 0
+          a="id=?" 
+          0.upto(ids.count-2) do |x|
+            a+=" OR id=? "
+          end
+          ["("+a+")", ids] 
+        else
+          [" (id=?)", 0]  # NOTE - refer above
+        end
+    end
   end
+  
+  def returndate_conditions
+    unless returndate.blank?
+      ids=AssetLoan.where('returned_on>=? AND is_approved!=?', returndate, false).pluck(:asset_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
+  end
+  
+  def returndate2_conditions
+    unless returndate2.blank?
+      if returndate.blank?
+        ids=AssetLoan.where('returned_on<=? AND is_approved!=?', returndate2, false).pluck(:asset_id).uniq
+      else
+        ids=AssetLoan.where('returned_on<=? AND returned_on>=? AND is_approved!=?', returndate2, returndate, false).pluck(:asset_id).uniq
+      end
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
+  end
+
+  def expectedreturndate_conditions
+    unless expectedreturndate.blank?
+      ids=AssetLoan.where('expected_on>=? AND is_approved!=?', expectedreturndate, false).pluck(:asset_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
+  end
+  
+  def expectedreturndate2_conditions
+    unless expectedreturndate2.blank?
+      if expectedreturndate.blank?
+        ids=AssetLoan.where('expected_on<=? AND is_approved!=?', expectedreturndate2, false).pluck(:asset_id).uniq
+      else
+        ids=AssetLoan.where('expected_on<=? AND expected_on>=? AND is_approved!=?', expectedreturndate2, expectedreturndate, false).pluck(:asset_id).uniq
+      end
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
+  end  
+  #A) kewpa 6 - ends here
+
+  #B) kewpa 7 - to include asset_placement records & shall limit result to existing asset w location
+#   def category_conditions
+#     if category==1                                                                           #*******************search_type==5
+#       ids=AssetPlacement.joins(:asset).pluck(:asset_id).uniq.compact+Asset.where.not(location_id: nil).pluck(:id)
+#       if ids.count > 0
+#           a="id=?" 
+#           0.upto(ids.count-2) do |x|
+#             a+=" OR id=? "
+#           end
+#           ["("+a+")", ids] 
+#       else
+#           [" (id=?)", 0]  # NOTE - refer above
+#       end
+#     end
+#   end
+  
+  def location_conditions
+    unless location.blank?
+      assets_of_location=Asset.where(location_id: location)
+      placements=AssetPlacement.joins(:asset)
+      placements_of_location=placements.where(location_id: location)
+      if assets_of_location.count > 0
+        ["location_id=?", location] 
+      elsif placements_of_location.count > 0
+        ids=placements.pluck(:asset_id)
+	if ids.count > 0
+          a="id=?" 
+          0.upto(ids.count-2) do |x|
+            a+=" OR id=? "
+          end
+          ["("+a+")", ids] 
+        else
+          [" (id=?)", 0]  # NOTE - refer above
+        end
+      end
+    end
+  end
+  #B) kewpa 7 - ends here
+  
+  #multi-usage
+  def assignedto_conditions 
+    unless assignedto.blank?
+      #kewpa7 - start
+      if search_type==5
+        staff_ids=Asset.where.not(location_id: nil).pluck(:assignedto_id)                                                 #staff_ids of asset w location
+        ids=AssetPlacement.joins(:asset).where.not(staff_id: nil).pluck(:asset_id).uniq.compact            #asset_ids of placement containing 'peg bertanggungjawab'
+        if ids.count > 0
+          a="id=?" 
+          0.upto(ids.count-2) do |x|
+            a+=" OR id=? "
+          end
+          if staff_ids.include?(assignedto)
+            ["(assignedto_id=? OR "+a+")", assignedto, ids]
+          else
+            ["("+a+")", ids] 
+          end
+        else
+          ["assignedto_id=?", assignedto]
+        end
+      else
+        ["assignedto_id=?", assignedto] unless assignedto.blank?  #use this condition WITH FILTER FOR asset in ASSETDEFECT DB only - in show page.
+      end
+      #kewpa7 - end
+    end
+  end
+  
+  #COMBINE - (kewpa6: loanedasset==1, kewpa7: category==1)
+  def search_type_conditions
+    if search_type==4         #kewpa6
+      ids=AssetLoan.pluck(:asset_id).uniq
+    elsif search_type==5   #kewpa7
+      ids=AssetPlacement.joins(:asset).pluck(:asset_id).uniq.compact+Asset.where.not(location_id: nil).pluck(:id)
+    end
+    if [4, 5].include?(search_type)
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
+  end
+  
+  
+  
+  #----newly added-30July2013
   #---tick to display all asset defect records---
   def alldefectasset_details
     a='id=? ' if AssetDefect.all.map(&:asset_id).uniq.count!=0
@@ -200,10 +325,6 @@ class Assetsearch < ActiveRecord::Base
 
 
   
-  def assettype_conditions
-     ["assettype =?", assettype] unless assettype.blank?
-  end
-  
   #def assignedtodetails
    # a='assignedto_id=? AND id=? ' if AssetDefect.all.map(&:asset_id).count!=0
     #0.upto(AssetDefect.all.map(&:asset_id).count-2) do |l|  
@@ -212,20 +333,9 @@ class Assetsearch < ActiveRecord::Base
     #return a unless assignedto.blank?
   #end
   
-  def assignedto_conditions 
-    #if category == 5  #KEW-PA 7 (search by : assignedto)
-        #["assignedto_id=?", assignedto] unless assignedto.blank? 
-    #else              #KEW-PA 9 (search by : assignedto)
-        #[assignedtodetails, assignedto,AssetDefect.all.map(&:asset_id)] unless assignedto.blank? 
-    #end
-    ["assignedto_id=?", assignedto] unless assignedto.blank?  #use this condition WITH FILTER FOR asset in ASSETDEFECT DB only - in show page.
-  end
-
+  
 
   
-  def location_conditions
-    ["location_id=?", location] unless location.blank?
-  end
   
   def defect_asset_conditions
     ["id=?", AssetDefect.find(defect_asset).asset_id] unless defect_asset.blank? 

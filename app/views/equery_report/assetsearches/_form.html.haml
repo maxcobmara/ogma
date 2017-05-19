@@ -17,8 +17,10 @@
             = render partial: 'kewpa2n3_form', locals: {f: f}
           - elsif @searchtype.to_i==2 || @searchtype.to_i==3
             = render partial: 'kewpa4n5_form', locals: {f: f}
-          - elsif @searchtype=='4' || @searchtype==4
-          - elsif @searchtype=='5' || @searchtype==5
+          - elsif @searchtype.to_i==4
+            = render partial: 'kewpa6_form', locals: {f: f}
+          - elsif @searchtype.to_i==5
+            = render partial: 'kewpa7_form', locals: {f: f}
           - elsif @searchtype=='6' || @searchtype==6
           - elsif @searchtype=='7' || @searchtype==7
           - elsif @searchtype=='8' || @searchtype==8

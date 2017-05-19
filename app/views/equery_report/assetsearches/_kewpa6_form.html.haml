@@ -1,0 +1,75 @@
+/= f.hidden_field :loanedasset, value: 1
+.form-group
+  .col-sm-2.control-label
+    =f.label  (t 'asset.assetcode')
+  .col-md-5
+    = f.text_field :assetcode, class: 'form-control', data: {autocomplete_source: Asset.where(id: AssetLoan.pluck(:asset_id)).pluck(:assetcode).sort}
+    .small.text-blue=current_user.college.code=='kskbjb' ? "(Format : KKM/BPL/010619/H/10/395)" : "(Format: JPM/APMM/PL/H/2004/01-05)"
+            
+.row
+  .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
+              
+.row
+  .col-md-8
+    %hr
+    
+.form-group
+  .col-sm-2.control-label
+    =f.label t('equery.asset.datetype')
+  .col-md-5
+    = f.select :datetype, options_for_select([[(t 'equery.asset.loan_date'),'Loan Date'],[(t 'equery.asset.return_date'),'Return Date'],[(t 'equery.asset.expected_return_date'), 'Expected Return Date']]), {include_blank: (t 'select')}, class: 'selectpicker'
+    
+.form-group#span-loan{style: 'display: none;'}   
+  .col-sm-2.control-label
+    =f.label (t 'equery.asset.loan_date')
+  .col-md-5
+    .input-group
+      = f.text_field :loandate, class: 'form-control date_picker_reverse'    
+      .input-group-addon=t('to')
+      = f.text_field :loandate2, class: 'form-control date_picker_reverse'
+  
+.form-group#span-return{style: 'display: none;'}      
+  .col-sm-2.control-label
+    = f.label (t 'equery.asset.return_date')
+  .col-md-5
+    .input-group
+      = f.text_field :returndate, class: 'form-control date_picker_reverse'    
+      .input-group-addon=t('to')
+      = f.text_field :returndate2, class: 'form-control date_picker_reverse'
+  
+.form-group#span-expected-return{style: 'display: none;'}             
+  .col-sm-2.control-label
+    =f.label (t 'equery.asset.expected_return_date')
+  .col-md-5
+    .input-group
+      = f.text_field :expectedreturndate, class: 'form-control date_picker_reverse'    
+      .input-group-addon=t('to')
+      = f.text_field :expectedreturndate2, class: 'form-control date_picker_reverse'
+
+.row
+  .col-md-8
+    %hr
+    
+:javascript
+
+  $("#assetsearch_datetype").change(function(){
+    var selected_date=$("#assetsearch_datetype :selected").val();
+    if (selected_date=='Loan Date')
+    {  
+      $("#span-loan").show('slide'); 
+      $("#span-return").hide();
+      $("#span-expected-return").hide();
+    }
+    else if (selected_date=='Return Date')
+    {  
+      $("#span-return").show('slide'); 
+      $("#span-loan").hide();
+      $("#span-expected-return").hide();
+    }
+    else if (selected_date=='Expected Return Date')
+    {  
+      $("#span-expected-return").show('slide'); 
+      $("#span-loan").hide();
+      $("#span-return").hide();
+    }
+  });

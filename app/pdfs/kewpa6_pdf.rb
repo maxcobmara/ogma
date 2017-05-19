@@ -100,7 +100,7 @@ class Kewpa6Pdf < Prawn::Document
     end                                                                           #for test - hide this line 100
     header +
       @groupped_assetloans.map do |asset_loan|
-      ["#{@pg*(counter += 1)}", "#{asset_loan.staff.name}", "#{asset_loan.loaned_on.try(:strftime, "%d/%m/%y")}", " #{asset_loan.expected_on.try(:strftime, "%d/%m/%y")}", "","#{asset_loan.loanofficer.name}", 
+      ["#{@pg*(counter += 1)}", "#{asset_loan.try(:staff).try(:name)}", "#{asset_loan.loaned_on.try(:strftime, "%d/%m/%y")}", " #{asset_loan.expected_on.try(:strftime, "%d/%m/%y")}", "","#{asset_loan.try(:loanofficer).try(:name)}", 
         "#{asset_loan.approved_date.try(:strftime, "%d/%m/%y")}", "#{asset_loan.receivedofficer.try(:name)}", "#{asset_loan.returned_on.try(:strftime, "%d/%m/%y")}", "" ]
       end 
   end
