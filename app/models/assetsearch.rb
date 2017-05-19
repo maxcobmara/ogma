@@ -7,6 +7,8 @@ class Assetsearch < ActiveRecord::Base
   
   #:assetcode, :assettype, :name, :purchaseprice, :purchasedate, :startdate, :enddate, :category, :assignedto, :bookable, :loandate, :returndate, :location, :defect_asset, :defect_reporter, :defect_processor, :defect_process, :maintainable, :maintname, :maintcode, :disposal, :disposaltype, :discardoption, :disposalreport, :disposalcert, :disposalreport2, :loss_start, :loss_end, :loss_cert, :loanedasset, :alldefectasset, :purchaseprice2, :purchasedate2, :receiveddate, :receiveddate2, :loandate2, :returndate2, :expectedreturndate, :expectedreturndate2
   
+  belongs_to :college
+  
   attr_accessor :datetype, :locationtype
   
   def assets
@@ -45,13 +47,11 @@ class Assetsearch < ActiveRecord::Base
   end
   
   def assetcode_conditions
-    #["assetcode =?", assetcode] unless assetcode.blank?    #OK -but did not work if only part of assetcode was entered
     ["assetcode ILIKE ?", "%#{assetcode}%"] unless assetcode.blank?   #ok 
   end
   
   def name_conditions
-    ["name ILIKE ?", "%#{name}%"] unless name.blank?    #ok
-    #["purchaseprice>=?", name] unless name.blank?      #ok 
+    ["name ILIKE ?", "%#{name}%"] unless name.blank?    
   end
 
   def purchaseprice_conditions
@@ -60,7 +60,6 @@ class Assetsearch < ActiveRecord::Base
 
   def purchasedate_conditions
     ["purchasedate>=?", purchasedate] unless purchasedate.blank?
-    #["purchasedate>=?", "2011-10-19"] unless purchasedate.blank?        #["purchasedate>=?", name] unless name.blank?        #ok
   end  
   
   def purchaseprice2_conditions
@@ -86,6 +85,30 @@ class Assetsearch < ActiveRecord::Base
   def receiveddate2_conditions  #between 2 dates
     ["receiveddate<=?", receiveddate2] unless receiveddate2.blank?
   end
+  
+  def assettype_conditions
+     ["assettype =?", assettype] unless assettype.blank?
+  end
+  
+  # NOTE - working with date range (2 dates fields) - 19May2017
+  #a) date fields in ASSET table - do as usual (refer above : purchasedate(startdate & enddate), receiveddate(receiveddate & receiveddate2)
+  #b) date fields in ASSET'S joins table(s) - to ensure AND applied between date range (1st & 2nd date) use below approach (loandate & loandate2 - refer additional ids assignment required for loandate in loandate2, (also applied to expectedreturndate2) which represent existance of both dates)
+  
+  #A) kewpa 6 - shall limit result to existing asset loan only
+#   def loanedasset_conditions
+#     if loanedasset==1                                             #*******************search_type==4
+#       ids=AssetLoan.pluck(:asset_id).uniq
+#       if ids.count > 0
+#         a="id=?" 
+#         0.upto(ids.count-2) do |x|
+#           a+=" OR id=? "
+#         end
+#         ["("+a+")", ids] 
+#       else
+#         [" (id=?)", 0]  # NOTE - refer above
+#       end
+#     end
+#   end
   
   #======FOR ASSET LOAN - KEWPA 6---
   #AND is_approved!=?
@@ -114,7 +137,7 @@ class Assetsearch < ActiveRecord::Base
       if loandate.blank?
         ids=AssetLoan.where('loaned_on<=? AND is_approved!=?', loandate2, false).pluck(:asset_id).uniq 
       else
-	ids=AssetLoan.where('loaned_on<=? AND loaned_on >=? AND is_approved!=?', loandate2, loandate, false).pluck(:asset_id).uniq 
+        ids=AssetLoan.where('loaned_on<=? AND loaned_on >=? AND is_approved!=?', loandate2, loandate, false).pluck(:asset_id).uniq 
       end
       if ids.count > 0
           a="id=?" 
@@ -145,7 +168,11 @@ class Assetsearch < ActiveRecord::Base
   
   def returndate2_conditions
     unless returndate2.blank?
-      ids=AssetLoan.where('returned_on<=? AND is_approved!=?', returndate2, false).pluck(:asset_id).uniq
+      if returndate.blank?
+        ids=AssetLoan.where('returned_on<=? AND is_approved!=?', returndate2, false).pluck(:asset_id).uniq
+      else
+        ids=AssetLoan.where('returned_on<=? AND returned_on>=? AND is_approved!=?', returndate2, returndate, false).pluck(:asset_id).uniq
+      end
       if ids.count > 0
         a="id=?" 
         0.upto(ids.count-2) do |x|
@@ -175,7 +202,11 @@ class Assetsearch < ActiveRecord::Base
   
   def expectedreturndate2_conditions
     unless expectedreturndate2.blank?
-      ids=AssetLoan.where('expected_on<=? AND is_approved!=?', expectedreturndate2, false).pluck(:asset_id).uniq
+      if expectedreturndate.blank?
+        ids=AssetLoan.where('expected_on<=? AND is_approved!=?', expectedreturndate2, false).pluck(:asset_id).uniq
+      else
+        ids=AssetLoan.where('expected_on<=? AND expected_on>=? AND is_approved!=?', expectedreturndate2, expectedreturndate, false).pluck(:asset_id).uniq
+      end
       if ids.count > 0
         a="id=?" 
         0.upto(ids.count-2) do |x|
@@ -186,78 +217,24 @@ class Assetsearch < ActiveRecord::Base
         [" (id=?)", 0]  # NOTE - refer above
       end
     end
-  end
+  end  
+  #A) kewpa 6 - ends here
 
-  #kewpa 6
-  def loanedasset_conditions
-    if loanedasset==1
-      ids=AssetLoan.pluck(:asset_id).uniq
-      if ids.count > 0
-        a="id=?" 
-        0.upto(ids.count-2) do |x|
-          a+=" OR id=? "
-        end
-        ["("+a+")", ids] 
-      else
-        [" (id=?)", 0]  # NOTE - refer above
-      end
-    end
-  end
-  
-    
-  #----newly added-30July2013
-  #---tick to display all asset defect records---
-  def alldefectasset_details
-    a='id=? ' if AssetDefect.all.map(&:asset_id).uniq.count!=0
-    0.upto(AssetDefect.all.map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end
-    return a if alldefectasset == 1 
-  end
-  
-  def alldefectasset_conditions
-    ["( "+ alldefectasset_details+")", AssetDefect.all.map(&:asset_id).uniq] if alldefectasset == 1
-  end
-  #----newly added-30July2013
-
-
-  
-  def assettype_conditions
-     ["assettype =?", assettype] unless assettype.blank?
-  end
-  
-  #def assignedtodetails
-   # a='assignedto_id=? AND id=? ' if AssetDefect.all.map(&:asset_id).count!=0
-    #0.upto(AssetDefect.all.map(&:asset_id).count-2) do |l|  
-    #  a=a+'OR id=? '
-    #end 
-    #return a unless assignedto.blank?
-  #end
-  
-  def assignedto_conditions 
-    #if category == 5  #KEW-PA 7 (search by : assignedto)
-        #["assignedto_id=?", assignedto] unless assignedto.blank? 
-    #else              #KEW-PA 9 (search by : assignedto)
-        #[assignedtodetails, assignedto,AssetDefect.all.map(&:asset_id)] unless assignedto.blank? 
-    #end
-    ["assignedto_id=?", assignedto] unless assignedto.blank?  #use this condition WITH FILTER FOR asset in ASSETDEFECT DB only - in show page.
-  end
-
-  #to include asset_placement records - KEWPA 7
-  def category_conditions
-    if category==1
-      ids=AssetPlacement.joins(:asset).pluck(:asset_id).uniq.compact+Asset.where.not(location_id: nil).pluck(:id)
-      if ids.count > 0
-          a="id=?" 
-          0.upto(ids.count-2) do |x|
-            a+=" OR id=? "
-          end
-          ["("+a+")", ids] 
-      else
-          [" (id=?)", 0]  # NOTE - refer above
-      end
-    end
-  end
+  #B) kewpa 7 - to include asset_placement records & shall limit result to existing asset w location
+#   def category_conditions
+#     if category==1                                                                           #*******************search_type==5
+#       ids=AssetPlacement.joins(:asset).pluck(:asset_id).uniq.compact+Asset.where.not(location_id: nil).pluck(:id)
+#       if ids.count > 0
+#           a="id=?" 
+#           0.upto(ids.count-2) do |x|
+#             a+=" OR id=? "
+#           end
+#           ["("+a+")", ids] 
+#       else
+#           [" (id=?)", 0]  # NOTE - refer above
+#       end
+#     end
+#   end
   
   def location_conditions
     unless location.blank?
@@ -280,6 +257,83 @@ class Assetsearch < ActiveRecord::Base
       end
     end
   end
+  #B) kewpa 7 - ends here
+  
+  #multi-usage
+  def assignedto_conditions 
+    unless assignedto.blank?
+      #kewpa7 - start
+      if search_type==5
+        staff_ids=Asset.where.not(location_id: nil).pluck(:assignedto_id)                                                 #staff_ids of asset w location
+        ids=AssetPlacement.joins(:asset).where.not(staff_id: nil).pluck(:asset_id).uniq.compact            #asset_ids of placement containing 'peg bertanggungjawab'
+        if ids.count > 0
+          a="id=?" 
+          0.upto(ids.count-2) do |x|
+            a+=" OR id=? "
+          end
+          if staff_ids.include?(assignedto)
+            ["(assignedto_id=? OR "+a+")", assignedto, ids]
+          else
+            ["("+a+")", ids] 
+          end
+        else
+          ["assignedto_id=?", assignedto]
+        end
+      else
+        ["assignedto_id=?", assignedto] unless assignedto.blank?  #use this condition WITH FILTER FOR asset in ASSETDEFECT DB only - in show page.
+      end
+      #kewpa7 - end
+    end
+  end
+  
+  #COMBINE - (kewpa6: loanedasset==1, kewpa7: category==1)
+  def search_type_conditions
+    if search_type==4         #kewpa6
+      ids=AssetLoan.pluck(:asset_id).uniq
+    elsif search_type==5   #kewpa7
+      ids=AssetPlacement.joins(:asset).pluck(:asset_id).uniq.compact+Asset.where.not(location_id: nil).pluck(:id)
+    end
+    if ids.count > 0
+      a="id=?" 
+      0.upto(ids.count-2) do |x|
+        a+=" OR id=? "
+      end
+      ["("+a+")", ids] 
+    else
+      [" (id=?)", 0]  # NOTE - refer above
+    end
+  end
+  
+  
+  
+  #----newly added-30July2013
+  #---tick to display all asset defect records---
+  def alldefectasset_details
+    a='id=? ' if AssetDefect.all.map(&:asset_id).uniq.count!=0
+    0.upto(AssetDefect.all.map(&:asset_id).uniq.count-2) do |l|  
+      a=a+'OR id=? '
+    end
+    return a if alldefectasset == 1 
+  end
+  
+  def alldefectasset_conditions
+    ["( "+ alldefectasset_details+")", AssetDefect.all.map(&:asset_id).uniq] if alldefectasset == 1
+  end
+  #----newly added-30July2013
+
+
+  
+  #def assignedtodetails
+   # a='assignedto_id=? AND id=? ' if AssetDefect.all.map(&:asset_id).count!=0
+    #0.upto(AssetDefect.all.map(&:asset_id).count-2) do |l|  
+    #  a=a+'OR id=? '
+    #end 
+    #return a unless assignedto.blank?
+  #end
+  
+  
+
+  
   
   def defect_asset_conditions
     ["id=?", AssetDefect.find(defect_asset).asset_id] unless defect_asset.blank? 

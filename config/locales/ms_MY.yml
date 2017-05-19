@@ -5180,11 +5180,12 @@ ms_MY:
       #leave_blank_preliminary_losses: "Kosongkan semua medan untuk papar SEMUA Laporan Awalan untuk Kehilangan Aset"
       #leave_blank_final_losses: "Kosongkan semua medan untuk papar SEMUA Laporan Akhir untuk Kehilangan Aset"
       datetype: Jenis Tarikh
-      loan_date: Tarikh pinjam
+      loan_date: Tarikh dikeluarkan (dipinjam)
       return_date: Tarikh pulang
-      expected_return_date: Tarikh perlu dipulangkan
+      expected_return_date: Tarikh jangka dipulangkan 
       person_in_charge: "Pegawai Bertanggungjawab "
       asset_location: Lokasi Aset
+      total_transactions: Jumlah Transaksi
       #select_year: Pilih tahun
       #defected_asset: Aset Rosak
       #person: Kakitangan

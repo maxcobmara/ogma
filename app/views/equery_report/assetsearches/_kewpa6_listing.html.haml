@@ -81,10 +81,10 @@
       %head
         %tr.info
           %th{width: '4%'} No
-          %th{width: '24%'}=t('asset.assetcode')
-          %th{width: '25%'}=t('equery.asset.asset_name')
-          %th{width: '13%'}=t('asset.purchasedate')
-          %th{width: '13%'}=t('asset.purchaseprice')
+          %th{width: '20%'}=t('asset.assetcode')
+          %th{width: '20%'}=t('equery.asset.asset_name')
+          %th{width: '22%'}=t('equery.asset.person_in_charge')
+          %th{width: '13%'}=t('equery.asset.total_transactions')
           %th{width: '12%'}=t('equery.links')
              
       %body
@@ -95,9 +95,9 @@
             %tr
               %td=counter+=1
               %td=asset.assetcode
-              %td=asset.name
-              %td=asset.purchasedate.try(:strftime, '%d-%m-%Y')
-              %td=ringgols(asset.purchaseprice)
+              %td=asset.name.blank? ? asset.typename : asset.name+": "+asset.typename
+              %td=assetsearch.college.code=='amsas' ? asset.assignedto.staff_with_rank : asset.assignedto.staff_name_with_position
+              %td.centre=AssetLoan.where(asset_id: asset).count
               %td.centre=link_to (fa_icon "file-pdf-o")+" KEW-PA 6", kewpa6_asset_asset_path(format: "pdf", id: asset)
 
       %br

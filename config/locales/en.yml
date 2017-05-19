@@ -5267,6 +5267,7 @@ en:
       expected_return_date: Expected return date
       person_in_charge: "Person in-charge "
       asset_location: Asset Location
+      total_transactions: Total Transactions
       #select_year: Select year
       #defected_asset: Defected Asset
       #person: Person
