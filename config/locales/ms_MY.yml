@@ -5092,7 +5092,7 @@ ms_MY:
     leaves_all_blank_all_records: "'Kosongkan' semua medan dan klik 'Cari' untuk papar SEMUA rekod."
     #leaves_all_blank_all_records_tick: "'Kosongkan' semua medan, pilih / nyahpilih kotak semak dan klik 'Cari' untuk papar SEMUA rekod."
     #leaves_blank_unselected: "Kosongkan / nyahpilih semua medan untuk papar SEMUA rekod."
-    #select_record: Pilih rekod mengikut
+    select_record: Pilih rekod mengikut
     #data_based_existing_records: " adalah bergantung kepada rekod - rekod yang wujud."
     #listing: Senaraikan
     links: Pautan
@@ -5171,6 +5171,7 @@ ms_MY:
       kewpa6_list_all: "Senarai Penuh (Pergerakan Aset : Peminjaman)"
       kewpa7_list_all: Senarai Penuh (Penempatan Aset)
       kewpa8_list_all: Senarai Penuh (Laporan Tahunan Harta Modal dan Inventori)
+      kewpa9_list_all: Senarai Penuh (Aduan Kerosakan Aset Alih)
       fixed_acr: H
       inv_acr: I
       #leave_unselected_kewpa6: "Nyahpilihkan semua medan untuk papar SEMUA rekod peminjaman aset (KEW-PA 6) yang wujud."
@@ -5191,14 +5192,17 @@ ms_MY:
       year: Tahun
       yearly_report: Laporan Tahunan Harta Modal dan Inventori
       partial: "* Hasil carian hanya merangkumi sebahagian daripada rekod harta modal dan inventori bagi tahun berkenaan."
-      #defected_asset: Aset Rosak
-      #person: Kakitangan
-      #process_type: Jenis Proses
+      defected_asset: Aset Rosak
+      person: Kakitangan
+      process_type: Jenis Proses
       #select_asset: Pilih aset
       #select_person: Pilih kakitangan
       #select_defect_process: Pilih proses kerosakan
-      #reported_by: Dilaporkan oleh
-      #processed_by: Diproses oleh
+      reported_by: Dilaporkan oleh
+      processed_by: Diproses oleh
+      defects: " rekod kerosakan bagi "
+      asset_records: rekod aset
+      reported_on: Tarikh dilaporkan
       #all_asset_defects: SEMUA rekod kerosakan aset
       #all_asset_maintenance: SEMUA rekod aset untuk diselenggara
       #maintained_by: Aset yang diselenggara mengikut 

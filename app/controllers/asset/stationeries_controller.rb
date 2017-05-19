@@ -96,6 +96,6 @@ class Asset::StationeriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def stationery_params
-      params.require(:stationery).permit(:code, :category, :unittype, :maxquantity, :minquantity, :college_id,[ :data => {}], damages_attributes: [:id, :description,:reported_on,:document_id,:location_id], stationery_adds_attributes: [:id, :_destroy, :lpono, :document, :quantity, :unitcost, :received], stationery_uses_attributes: [:id, :_destroy, :issuedby, :receivedby, :quantity, :issuedate])
+      params.require(:stationery).permit(:code, :category, :unittype, :maxquantity, :minquantity, :college_id, {:data=>[]}, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id], stationery_adds_attributes: [:id, :_destroy, :lpono, :document, :quantity, :unitcost, :received], stationery_uses_attributes: [:id, :_destroy, :issuedby, :receivedby, :quantity, :issuedate])
     end
 end

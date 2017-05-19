@@ -9,7 +9,7 @@ class Assetsearch < ActiveRecord::Base
   
   belongs_to :college
   
-  attr_accessor :datetype, :locationtype
+  attr_accessor :datetype, :locationtype, :defect_type, :persontype
   
   def assets
     @assets ||= find_assets
@@ -126,7 +126,7 @@ class Assetsearch < ActiveRecord::Base
           end
           ["("+a+")", ids] 
         else
-          [" (id=?)", 0]  # NOTE - refer above
+          [" (id=?)", 0]  # NOTE - refer stationerysearch
         end
       end
     end
@@ -286,14 +286,16 @@ class Assetsearch < ActiveRecord::Base
     end
   end
   
-  #COMBINE - (kewpa6: loanedasset==1, kewpa7: category==1)
+  #COMBINE - (kewpa6: loanedasset==1, kewpa7: category==1, alldefectasset==1)
   def search_type_conditions
     if search_type==4         #kewpa6
       ids=AssetLoan.pluck(:asset_id).uniq
     elsif search_type==5   #kewpa7
       ids=AssetPlacement.joins(:asset).pluck(:asset_id).uniq.compact+Asset.where.not(location_id: nil).pluck(:id)
+    elsif search_type==7   #kewpa9
+      ids=AssetDefect.pluck(:asset_id).uniq
     end
-    if [4, 5].include?(search_type)
+    if [4, 5, 7].include?(search_type)
       if ids.count > 0
         a="id=?" 
         0.upto(ids.count-2) do |x|
@@ -306,83 +308,56 @@ class Assetsearch < ActiveRecord::Base
     end
   end
   
-  
-  
-  #----newly added-30July2013
-  #---tick to display all asset defect records---
-  def alldefectasset_details
-    a='id=? ' if AssetDefect.all.map(&:asset_id).uniq.count!=0
-    0.upto(AssetDefect.all.map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end
-    return a if alldefectasset == 1 
-  end
-  
-  def alldefectasset_conditions
-    ["( "+ alldefectasset_details+")", AssetDefect.all.map(&:asset_id).uniq] if alldefectasset == 1
-  end
-  #----newly added-30July2013
-
-
-  
-  #def assignedtodetails
-   # a='assignedto_id=? AND id=? ' if AssetDefect.all.map(&:asset_id).count!=0
-    #0.upto(AssetDefect.all.map(&:asset_id).count-2) do |l|  
-    #  a=a+'OR id=? '
-    #end 
-    #return a unless assignedto.blank?
-  #end
-  
-  
-
-  
-  
+  #C) kewpa 9 - starts here
   def defect_asset_conditions
     ["id=?", AssetDefect.find(defect_asset).asset_id] unless defect_asset.blank? 
   end
   
-  
-  def defect_details
-     a='id=? ' if AssetDefect.where('reported_by=?',defect_reporter).map(&:asset_id).uniq.count!=0
-     0.upto(AssetDefect.where('reported_by=?',defect_reporter).map(&:asset_id).uniq.count-2) do |l|  
-       a=a+'OR id=? '
-     end 
-     return a unless defect_reporter.blank?
-  end
-  
-
-  
   def defect_reporter_conditions
-    [defect_details, AssetDefect.find(:all, :conditions=>['reported_by=?',defect_reporter]).map(&:asset_id).uniq] unless defect_reporter.blank?
-    #["id=?",31] unless defect_reporter.blank?
+    unless defect_reporter.blank?
+      ids=AssetDefect.where('reported_by=?',defect_reporter).map(&:asset_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
   end
   
-  def defect_details2
-      a='id=? ' if AssetDefect.where('processed_by=?',defect_processor).map(&:asset_id).uniq.count!=0
-      0.upto(AssetDefect.where('processed_by=?',defect_processor).map(&:asset_id).uniq.count-2) do |l|  
-        a=a+'OR id=? '
-      end 
-      return a unless defect_processor.blank?
-  end
-
   def defect_processor_conditions
-    [defect_details2, AssetDefect.where('processed_by=?',defect_processor).map(&:asset_id).uniq] unless defect_processor.blank?
-    # ["id=?", AssetDefect.find(defect_processor).asset_id] unless defect_asset.blank?
+    unless defect_processor.blank?
+      ids=AssetDefect.where('processed_by=?',defect_processor).map(&:asset_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
   end
   
-  #%%%%%%%%%%%%%%%%%%%%%%%%%
-  def defectprocess_details
-      a='id=? ' if AssetDefect.where('process_type=?',defect_process).map(&:asset_id).uniq.count!=0
-      0.upto(AssetDefect.where('process_type=?',defect_process).map(&:asset_id).uniq.count-2) do |l|  
-        a=a+'OR id=? '
-      end 
-      return a if defect_process=='dispose' || defect_process=='repair' #unless defect_process.blank?
-  end  
-  
-  def defect_process_conditions    
-    [defectprocess_details, AssetDefect.where('process_type=?',defect_process).map(&:asset_id).uniq] if defect_process=='dispose' || defect_process=='repair'    #unless defect_process.blank?
+  def defect_process_conditions
+    unless defect_process.blank?
+      ids=AssetDefect.where('process_type=?',defect_process).map(&:asset_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
   end
-  #%%%%%%%%%%%%%%%%%%%%%%%%%
+  #C) kewpa 9 - ends here
   
   def maintainable_conditions
       ['is_maintainable is TRUE'] unless maintainable.blank?# && maintainable==false

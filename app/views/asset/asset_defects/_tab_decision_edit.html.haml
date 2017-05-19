@@ -7,9 +7,9 @@
   .col-sm-2.control-label
     = f.label t 'asset.defect.decision_by', for: :decision_by
   .col-md-4
-    = f.collection_select :decision_by, Staff.all.order(name: :asc), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@defective.decision_by},{class: 'selectpicker', "data-width"=>'230px'}          
+    = f.collection_select :decision_by, Staff.all.order(name: :asc), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@defective.decision_by},{class: 'selectpicker', "data-width"=>"auto"}          
 .form-group
   .col-sm-2.control-label
     = f.label t 'asset.defect.decision_on', for: :decision_on
   .col-md-2
-    = f.text_field :decision_on, class: 'date_picker form-control' 
+    = f.text_field :decision_on, class: 'date_picker_reverse form-control' 
