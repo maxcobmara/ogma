@@ -27,17 +27,14 @@
     - elsif assetsearch.search_type==8 || assetsearch.search_type==9
       = render partial: 'kewpa13n14_listing', locals: {assetsearch: assetsearch, assets: assets}
         
-    - elsif assetsearch.search_type==10 || assetsearch.search_type==13
-      = render partial: 'kewpa16n19_listing', locals: {assetsearch: assetsearch, assets: assets}
+    - elsif assetsearch.search_type==10
+      = render partial: 'kewpa16_listing', locals: {assetsearch: assetsearch, assets: assets}
           
     - elsif assetsearch.search_type==11
       = render partial: 'kewpa17_listing', locals: {assetsearch: assetsearch, assets: assets}
-        
-    - elsif assetsearch.search_type==12
-      /kewpa 18
           
-      /- elsif assetsearch.search_type==13
-      /  /kewpa 19
+    - elsif assetsearch.search_type==12 || assetsearch.search_type==13
+      = render partial: 'kewpa18n19_listing', locals: {assetsearch: assetsearch, assets: assets}
           
     - elsif assetsearch.search_type==14
       = render partial: 'kewpa20_listing', locals: {assetsearch: assetsearch, assets: assets}

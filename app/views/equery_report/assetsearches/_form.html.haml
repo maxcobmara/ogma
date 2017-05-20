@@ -27,13 +27,16 @@
             = render partial: 'kewpa9_form', locals: {f: f}
           - elsif @searchtype.to_i==8 || @searchtype.to_i==9
             = render partial: 'kewpa13n14_form', locals: {f: f}
-          - elsif @searchtype.to_i==10 || @searchtype.to_i==13
-            = render partial: 'kewpa16n19_form', locals: {f: f}
+          - elsif @searchtype.to_i==10
+            = render partial: 'kewpa16_form', locals: {f: f}
           - elsif @searchtype.to_i==11
             = render partial: 'kewpa17_form', locals: {f: f} 
+          - elsif @searchtype.to_i==12
+            = render partial: 'kewpa18_form', locals: {f: f} 
+          - elsif @searchtype.to_i==13
+            = render partial: 'kewpa19_form', locals: {f: f}
           - elsif @searchtype.to_i==14
             = render partial: 'kewpa20_form', locals: {f: f} 
-          - elsif @searchtype=='12' || @searchtype==12
           - elsif @searchtype=='15' || @searchtype==15
           - elsif @searchtype=='16' || @searchtype==16
           - elsif @searchtype=='17' || @searchtype==17

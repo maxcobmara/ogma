@@ -5258,6 +5258,7 @@ en:
       kewpa16_list_all: List of All Asset Disposal (Confirmation of Disposal)
       kewpa19_list_all: List of All Asset Disposal (Certificate of Disposal)
       kewpa17_list_all: List of All Asset Disposal (Asset Examiner Board Report)
+      kewpa18_list_all: List of All Asset Disposal (Certificate of Witnesses for Discard of Asset)
       kewpa20_list_all: List of All Asset Disposal (Asset Disposal Yearly Report)
       fixed_acr: Fixed Asset
       inv_acr: Inventory
