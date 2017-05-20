@@ -1,15 +1,16 @@
 class Kewpa17Pdf < Prawn::Document
-  def initialize(disposal, lastitem, view)
+  def initialize(disposal, lastitem, view, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :landscape})
     @disposals = disposal
     @disposal_end = lastitem
     @view = view
+    @college = college
     font "Times-Roman"
     text "KEW.PA-17", :align => :right, :size => 16, :style => :bold
     move_down 20
     text "LAPORAN LEMBAGA PEMERIKSA ASET ALIH KERAJAAN", :align => :center, :size => 14, :style => :bold
     move_down 20
-    text "KEMENTERIAN/JABATAN: KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 10
+    text "KEMENTERIAN/JABATAN: #{@college.name.upcase}", :align => :left, :size => 10
     heading_table
     heading_table2
     table1
@@ -83,8 +84,7 @@ class Kewpa17Pdf < Prawn::Document
             quan = "#{disposal.try(:asset).try(:quantity)}"
           end
          
-          header << ["#{counter += 1}", "#{disposal.try(:asset).try(:assignedto).try(:positions).try(:first).try(:unit) unless disposal.asset.assignedto.try(:positions).blank?}", "#{disposal.try(:asset).try(:assetcode)} #{disposal.try(:asset).try(:name)}", "" , quan ,"#{disposal.try(:asset).try(:purchasedate).try(:strftime, "%d/%m/%y")}", 
-          "#{Date.today - disposal.try(:asset).try(:purchasedate)} hari", @view.currency(disposal.try(:asset).try(:purchaseprice).to_f), @view.currency(total.to_f), @view.currency(disposal.current_value.to_f), @view.currency(totalcurrent.to_f), disposal.try(:current_condition), disposal.justify1_disposal+"<br>"+disposal.justify2_disposal+"<br>"+disposal.justify3_disposal ] if counter < 14
+          header << ["#{counter += 1}", "#{disposal.try(:asset).try(:assignedto).try(:positions).try(:first).try(:unit) unless disposal.asset.assignedto.try(:positions).blank?}", "#{disposal.try(:asset).try(:assetcode)} #{disposal.try(:asset).try(:name)}", "" , quan ,"#{disposal.try(:asset).try(:purchasedate).try(:strftime, "%d/%m/%y")}", "#{Date.today - disposal.try(:asset).try(:purchasedate)} hari", @view.currency(disposal.try(:asset).try(:purchaseprice).to_f), @view.currency(total.to_f), @view.currency(disposal.current_value.to_f), @view.currency(totalcurrent.to_f), disposal.try(:current_condition), disposal.justify1_disposal+"<br>"+disposal.justify2_disposal+"<br>" +disposal.justify3_disposal ] if counter < 14
         end    
       header
   end

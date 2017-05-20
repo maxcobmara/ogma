@@ -1,8 +1,9 @@
 class Kewpa20Pdf < Prawn::Document
-  def initialize(disposal, view)
+  def initialize(disposal, view, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :landscape })
     @disposals = disposal
     @view = view
+    @college=college
     font "Times-Roman"
     text "KEW.PA-20", :align => :right, :size => 16, :style => :bold
     move_down 20
@@ -84,7 +85,7 @@ class Kewpa20Pdf < Prawn::Document
     end
       header = [[ 'Bil', 'KEMENTERIAN/ JABATAN', "JUMLAH NILAI PEROLEHAN ASAL (RM)", 'HASIL PELUPUSAN (RM)', 'JUALAN', 'PINDAHAN','MUSNAH',
         'KAEDAH LAIN'],
-        ["1", "Kolej Sains Kesihatan Bersekutu Johor Bahru", @view.currency(asal.to_f), @view.currency(current.to_f) , @view.currency(musnah.to_f), @view.currency(jualan.to_f), @view.currency(pindahan.to_f), @view.currency(lain.to_f)  ]]
+        ["1", "#{@college.name}", @view.currency(asal.to_f), @view.currency(current.to_f) , @view.currency(jualan.to_f), @view.currency(pindahan.to_f), @view.currency(musnah.to_f),  @view.currency(lain.to_f)  ]]
         
 end
 

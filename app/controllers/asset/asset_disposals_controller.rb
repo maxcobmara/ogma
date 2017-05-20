@@ -119,7 +119,7 @@ class Asset::AssetDisposalsController < ApplicationController
     end
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa17Pdf.new(@disposals,@disposal_last,  view_context)
+        pdf = Kewpa17Pdf.new(@disposals,@disposal_last,  view_context, current_user.college)
         send_data pdf.render, filename: "kewpa17-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -135,7 +135,7 @@ class Asset::AssetDisposalsController < ApplicationController
     end
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa20Pdf.new(@disposals, view_context)
+        pdf = Kewpa20Pdf.new(@disposals, view_context, current_user.college)
         send_data pdf.render, filename: "kewpa20-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

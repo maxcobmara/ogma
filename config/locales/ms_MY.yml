@@ -5174,7 +5174,9 @@ ms_MY:
       kewpa9_list_all: Senarai Penuh (Aduan Kerosakan Aset Alih)
       kewpa13n14_list_all: Senarai Penuh (Aset Alih yang Memerlukan Penyelenggaraan)
       kewpa16_list_all: Senarai Penuh (Perakuan Pelupusan (PEP) Aset Alih Kerajaan)
-      kewpa19_list_all: Senari Penuh (Sijil Pelupusan Aset Alih Kerajaan)
+      kewpa19_list_all: Senarai Penuh (Sijil Pelupusan Aset Alih Kerajaan)
+      kewpa17_list_all: Senarai Penuh (Laporan Lembaga Pemeriksa Aset Alih Kerajaan)
+      kewpa20_list_all: Senarai Penuh (Laporan Tahunan Pemusnahan Aset Alih Kerajaan)
       fixed_acr: H
       inv_acr: I
       #leave_unselected_kewpa6: "Nyahpilihkan semua medan untuk papar SEMUA rekod peminjaman aset (KEW-PA 6) yang wujud."
@@ -5206,6 +5208,7 @@ ms_MY:
       defects: " rekod kerosakan bagi "
       asset_records: rekod aset
       reported_on: Tarikh dilaporkan
+      disposalreport_for: Laporan untuk 
       #all_asset_defects: SEMUA rekod kerosakan aset
       #all_asset_maintenance: SEMUA rekod aset untuk diselenggara
       #maintained_by: Aset yang diselenggara mengikut 
