@@ -20,6 +20,3 @@
     =f.label t('equery.asset.asset_name')+" / "+t('equery.asset.asset_type')+" / Model"
   .col-md-5
     = f.text_field :maintname, class: 'form-control', data: {autocomplete_source: Asset.all.map(&:name_type_model).sort}
-                
-.row
-  .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase

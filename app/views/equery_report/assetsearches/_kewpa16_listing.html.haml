@@ -6,7 +6,7 @@
     /assetcode, maintname, disposalcert (disposalcert no longer use - 20May2017)
 
     - if assetsearch.assetcode.blank? && assetsearch.maintname.blank? 
-      %div.result-all=assetsearch.search_type==10 ? (t 'equery.asset.kewpa16_list_all') : (t 'equery.asset.kewpa19_list_all')
+      %div.result-all=(t 'equery.asset.kewpa16_list_all')
     - else
       %div.result-search=t 'equery.search_by'
             
@@ -41,17 +41,10 @@
           %th{width: '15%'}=t('asset.assetcode')
           %th{width: '22%'}=t('equery.asset.asset_name')+" / "+t('asset.typename')+" / Model"
           %th{width: '12%'}=t('equery.asset.asset_location')
-          - if assetsearch.search_type==10
-            %th{width: '16%'}=t('asset.purchaseprice')
-            %th{width: '16%'}=t('asset.disposal.current_value')
-          - elsif assetsearch.search_type==13
-            %th{width: '8%'}=t('asset.purchaseprice')
-            %th{width: '8%'}=t('asset.disposal.current_value')
-          - if assetsearch.search_type==10
-            %th{width: '15%'}=(fa_icon "file-pdf-o")+" "+t('equery.links')
-          - elsif assetsearch.search_type==13
-            %th{colspan: 2}=(fa_icon "file-pdf-o")+" "+t('equery.links')
-             
+          %th{width: '16%'}=t('asset.purchaseprice')
+          %th{width: '16%'}=t('asset.disposal.current_value')
+          %th{width: '15%'}=(fa_icon "file-pdf-o")+" "+t('equery.links')
+
       %body
         - for asset in assets
           %tr
@@ -69,16 +62,8 @@
                     %li=placement.location.location_list
             %td=ringgols(asset.purchaseprice)
             %td=ringgols(asset.asset_disposals.first.current_value)
-            - if assetsearch.search_type==10
-              %td{width: '22%'}=link_to "KEW-PA 16", kewpa16_asset_disposal_path(format: "pdf", id: asset.asset_disposals.first)
-            - elsif assetsearch.search_type==13
-              %td.centre{width: '8%'}=link_to "KEW-PA 16", kewpa16_asset_disposal_path(format: "pdf", id: asset.asset_disposals.first)
-              %td.centre{width: '14%'}
-                - if asset.asset_disposals.first.is_disposed==true
-                  =link_to "KEW-PA 19", kewpa19_asset_disposal_path(format: "pdf", id: asset.asset_disposals.first)
-                  - disposetype=asset.asset_disposals.first.disposal_type
-                  =disposetype.blank? ? "" : " - "+t('asset.disposal.'+disposetype)
-               
+            %td=link_to "KEW-PA 16", kewpa16_asset_disposal_path(format: "pdf", id: asset.asset_disposals.first)
+            
       %br
 
   .right{style:"padding: 0 10px; margin:0;"}= paginate assets, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

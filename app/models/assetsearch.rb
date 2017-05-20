@@ -298,14 +298,16 @@ class Assetsearch < ActiveRecord::Base
       ajob=['is_maintainable=?', true]
     elsif search_type==10                                    #kewpa16
       ids=AssetDisposal.pluck(:asset_id).uniq
-    elsif search_type==13                                    #kewpa 19
+    elsif search_type==12                                    #kewpa18
+      ids=AssetDisposal.where(is_disposed: true).where(disposal_type: 'discard').pluck(:asset_id).uniq
+    elsif search_type==13                                  #kewpa19
       ids=AssetDisposal.where(is_disposed: true).pluck(:asset_id).uniq
     elsif search_type==11                                    #kewpa17
       ids=AssetDisposal.where('is_disposed is not TRUE').pluck(:asset_id).uniq
-    elsif search_type==14                                    #kewpa20
-      ids=AssetDisposal.where('is_disposed=? AND disposed_on is not null', true).pluck(:asset_id).uniq
+    elsif search_type==14                                    #kewpa20 
+      ids=AssetDisposal.where('is_disposed=? AND disposed_on is not null', true).pluck(:asset_id).uniq          #("View & Close"-> is_disposed & disposed_on)
     end
-    if [4, 5, 7, 10, 13, 11, 14].include?(search_type)
+    if [4, 5, 7, 10, 12, 13, 11, 14].include?(search_type)
       if ids.count > 0
         a="id=?" 
         0.upto(ids.count-2) do |x|
@@ -485,17 +487,22 @@ class Assetsearch < ActiveRecord::Base
   end
   #H) kewpa 20 - ends here
   
-  def discardoption_details
-    a='id=? ' if AssetDisposal.where('discard_options=?',discardoption).map(&:asset_id).uniq.count!=0
-    0.upto(AssetDisposal.where('discard_options=?',discardoption).map(&:asset_id).uniq.count-2) do |l|  
-        a=a+'OR id=? '
-    end 
-    return a unless discardoption.blank?
-  end
-  
+  #I) kewpa 18 - starts here
   def discardoption_conditions
-    [discardoption_details, AssetDisposal.where('discard_options=?',discardoption).map(&:asset_id).uniq] unless discardoption.blank?
+    unless discardoption.blank?
+      ids=AssetDisposal.where('discard_options=?',discardoption).pluck(:asset_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
   end
+  #I) kewpa 18 - ends here
   
   def loss_start_details
     a='id=? ' if AssetLoss.all.map(&:asset_id).count!=0
