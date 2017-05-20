@@ -5,10 +5,13 @@ class Asset::AssetDefectsController < ApplicationController
   before_action :set_admin, only: [:index, :edit, :show]
 
   def index
+    ids=AssetDefect.where('decision is not true').select(:created_at).uniq.pluck(:id)
     if @is_admin
-      @search = AssetDefect.where('decision is not true').search(params[:q])
+      #@search = AssetDefect.where('decision is not true').search(params[:q])
+      @search=AssetDefect.where(id: ids).search(params[:q])
     else
-      @search = AssetDefect.where('decision is not true').sstaff2(current_user.userable.id).search(params[:q])
+      #@search = AssetDefect.where('decision is not true').sstaff2(current_user.userable.id).search(params[:q])
+      @search=AssetDefect.where(id: ids).sstaff2(current_user.userable.id).search(params[:q])
     end
     ##@search = AssetDefect.where.not(decision: true).search(params[:q])
     #@search = AssetDefect.where('decision is not true').search(params[:q])
@@ -99,7 +102,7 @@ class Asset::AssetDefectsController < ApplicationController
     
     def set_admin
       roles = @current_user.roles.pluck(:authname)
-      if roles.include?("administration") || roles.include?("asset_administrator") || roles.include?("asset_defect_module_admin") || roles.include?("asset_defect_module_viewer") || roles.include?("asset_defect_module_user")
+      if roles.include?("developer") || roles.include?("administration") || roles.include?("asset_administrator") || roles.include?("asset_defect_module_admin") || roles.include?("asset_defect_module_viewer") || roles.include?("asset_defect_module_user")
         @is_admin=true
       end
     end

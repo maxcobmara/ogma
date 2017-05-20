@@ -31,7 +31,7 @@ class AssetDisposal < ActiveRecord::Base
       disposal_type=='others'
     end
 
-#TODO    
+# TODO    
 #     def disposal_type_is_discard?
 #       disposal_type=='discard'
 #     end

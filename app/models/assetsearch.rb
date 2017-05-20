@@ -288,16 +288,18 @@ class Assetsearch < ActiveRecord::Base
   
   #COMBINE - (kewpa6: loanedasset==1, kewpa7: category==1, kewpa9: alldefectasset==1, kewpa13/14: maintainable==true)
   def search_type_conditions
-    if search_type==4         #kewpa6
+    if search_type==4                                           #kewpa6
       ids=AssetLoan.pluck(:asset_id).uniq
-    elsif search_type==5   #kewpa7
+    elsif search_type==5                                      #kewpa7
       ids=AssetPlacement.joins(:asset).pluck(:asset_id).uniq.compact+Asset.where.not(location_id: nil).pluck(:id)
-    elsif search_type==7   #kewpa9
+    elsif search_type==7                                      #kewpa9
       ids=AssetDefect.pluck(:asset_id).uniq
-    elsif search_type==8 || search_type==9
+    elsif search_type==8 || search_type==9        #kewpa13 & 14
       ajob=['is_maintainable=?', true]
+    elsif search_type==10 || search_type==13    #kewpa16 & 19
+      ids=AssetDisposal.pluck(:asset_id).uniq
     end
-    if [4, 5, 7].include?(search_type)
+    if [4, 5, 7, 10, 13].include?(search_type)
       if ids.count > 0
         a="id=?" 
         0.upto(ids.count-2) do |x|
@@ -384,18 +386,19 @@ class Assetsearch < ActiveRecord::Base
 #   end
    #D) kewpa 13 & 14 ends here
  
-  
-  def disposal_details
-    a='id=? ' if AssetDisposal.all.map(&:asset_id).uniq.count!=0
-    0.upto(AssetDisposal.all.map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a unless disposal.blank?
-  end
-  
-  def disposal_conditions
-      [" ("+disposal_details+")", AssetDisposal.all.map(&:asset_id).uniq] unless disposal.blank?
-  end
+  #E) kewpa 16 - starts here
+  #use of maintname & assetcode
+#   def disposal_details
+#     a='id=? ' if AssetDisposal.all.map(&:asset_id).uniq.count!=0
+#     0.upto(AssetDisposal.all.map(&:asset_id).uniq.count-2) do |l|  
+#       a=a+'OR id=? '
+#     end 
+#     return a unless disposal.blank?
+#   end
+#   
+#   def disposal_conditions
+#       [" ("+disposal_details+")", AssetDisposal.all.map(&:asset_id).uniq] unless disposal.blank?
+#   end
   
   def disposalcert_details
     a='id=? ' if AssetDisposal.where('is_disposed is TRUE').map(&:asset_id).uniq.count!=0
@@ -408,6 +411,9 @@ class Assetsearch < ActiveRecord::Base
   def disposalcert_conditions
     [" ("+disposalcert_details+")", AssetDisposal.where('is_disposed is TRUE').map(&:asset_id).uniq] unless disposalcert.blank?
   end
+  #E) kewpa 16 - ends here
+  
+  
   
   def disposalreport_details
     a='id=? ' if AssetDisposal.find(disposalreport.to_s.split(",")).map(&:asset_id).uniq.count!=0

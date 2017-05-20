@@ -5255,6 +5255,8 @@ en:
       kewpa8_list_all: List of All Fixed Asset & Inventory Yearly Report
       kewpa9_list_all: List of All Defected Asset
       kewpa13n14_list_all: List of All Asset (Require Maintenance)
+      kewpa16_list_all: List of All Asset Disposal (Confirmation of Disposal)
+      kewpa19_list_all: List of All Asset Disposal (Certificate of Disposal)
       fixed_acr: Fixed Asset
       inv_acr: Inventory
       #leave_unselected_kewpa6: "Leave all fields 'unselected' to display ALL existing asset loan (KEW-PA 6)"
