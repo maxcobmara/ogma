@@ -10,7 +10,7 @@
           .col-sm-2.control-label
             = f.label :asset_id
           .col-md-5
-            = f.collection_select :asset_id, Asset.where('id IN (?)',@disposal.for_disposal).order(assetcode: :asc), :id, :code_asset, {:include_blank =>t('helpers.prompt.select_marked_asset'), :selected => @disposal.asset_id},{class: 'selectpicker', "data-width"=>'550px'} 
+            = f.collection_select :asset_id, Asset.where('id IN (?)',@disposal.for_disposal).order(assetcode: :asc), :id, :code_typename_serial_no, {:include_blank =>t('helpers.prompt.select_marked_asset'), :selected => @disposal.asset_id},{class: 'selectpicker', "data-width"=>'550px'} 
 
       #details.tab-pane.active
         %br

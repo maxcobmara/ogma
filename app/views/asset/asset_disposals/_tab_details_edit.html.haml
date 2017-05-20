@@ -52,7 +52,7 @@
     .col-sm-2.control-label 
       %b= t 'asset.disposal.board_examiners'
     .col-md-3
-      =f.text_field :checked_on, class: 'date_picker form-control', placeholder: 'Select Examination Date'
+      =f.text_field :checked_on, class: 'date_picker_reverse form-control', placeholder: 'Select Examination Date'
   .form-group
     .col-sm-2.control-label
       = f.label :examiner1
@@ -82,7 +82,7 @@
       = f.check_box :is_checked, :id => 'is_checked' 
     .col-md-2
       .span_is_checked{:style=>"display: none;"}
-        = f.text_field :checked_on, class: 'date_picker form-control', placeholder: 'Date checked'
+        = f.text_field :checked_on, class: 'date_picker_reverse form-control', placeholder: 'Date checked'
   .form-group
     .col-sm-2.control-label
       .span_is_checked{:style=>"display: none;"}

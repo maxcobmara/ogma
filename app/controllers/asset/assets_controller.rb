@@ -218,9 +218,7 @@ class Asset::AssetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_params
-      params.require(:asset).permit(:assetcode, :assettype, :assignedto_id, :bookable, :cardno, :cardno2,  :category_id, :engine_no, :engine_type_id, :is_maintainable, 
-        :locassigned, :location_id, :manufacturer_id, :country_id, :mark_as_lost, :mark_disposal, :modelname, :name, :purchasedate, :purchaseprice, :quantity, :quantity_type, 
-        :receiveddate, :receiver_id, :registration, :serialno, :status, :subcategory, :supplier_id, :typename, :warranty_length, :warranty_length_type, :college_id, {:data=>[]}, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id], asset_placements_attributes: [:id, :_destroy, :location_id, :staff_id, :reg_on, :quantity])
+      params.require(:asset).permit(:assetcode, :assettype, :assignedto_id, :bookable, :cardno, :cardno2,  :category_id, :engine_no, :engine_type_id, :is_maintainable, :is_disposed, :locassigned, :location_id, :manufacturer_id, :country_id, :mark_as_lost, :mark_disposal, :modelname, :name, :purchasedate, :purchaseprice, :quantity, :quantity_type, :receiveddate, :receiver_id, :registration, :serialno, :status, :subcategory, :supplier_id, :typename, :warranty_length, :warranty_length_type, :college_id, {:data=>[]}, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id], asset_placements_attributes: [:id, :_destroy, :location_id, :staff_id, :reg_on, :quantity])
     end
 end
 

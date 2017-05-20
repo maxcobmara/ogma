@@ -23,14 +23,15 @@
             = render partial: 'kewpa7_form', locals: {f: f}
           - elsif @searchtype.to_i==6
             = render partial: 'kewpa8_form', locals: {f: f}
-          - elsif @searchtype.to_i
+          - elsif @searchtype.to_i==7
             = render partial: 'kewpa9_form', locals: {f: f}
           - elsif @searchtype.to_i==8 || @searchtype.to_i==9
             = render partial: 'kewpa13n14_form', locals: {f: f}
-          - elsif @searchtype=='10' || @searchtype==10
+          - elsif @searchtype.to_i==10 || @searchtype.to_i==13
+            = render partial: 'kewpa16n19_form', locals: {f: f}
           - elsif @searchtype=='11' || @searchtype==11
           - elsif @searchtype=='12' || @searchtype==12
-          - elsif @searchtype=='13' || @searchtype==13
+            /- elsif @searchtype=='13' || @searchtype==13
           - elsif @searchtype=='14' || @searchtype==14
           - elsif @searchtype=='15' || @searchtype==15
           - elsif @searchtype=='16' || @searchtype==16
