@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170517091433) do
+ActiveRecord::Schema.define(version: 20170520152241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -420,9 +420,7 @@ ActiveRecord::Schema.define(version: 20170517091433) do
     t.integer  "disposal"
     t.string   "disposaltype"
     t.string   "discardoption"
-    t.string   "disposalreport"
     t.integer  "disposalcert"
-    t.string   "disposalreport2"
     t.integer  "loss_start"
     t.integer  "loss_end"
     t.integer  "loss_cert"
@@ -441,6 +439,10 @@ ActiveRecord::Schema.define(version: 20170517091433) do
     t.integer  "college_id"
     t.string   "data"
     t.integer  "search_type"
+    t.date     "disposalreport_start"
+    t.date     "disposalreport_end"
+    t.date     "examine_start"
+    t.date     "examine_end"
   end
 
   create_table "assettracks", force: true do |t|

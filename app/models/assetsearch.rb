@@ -296,10 +296,16 @@ class Assetsearch < ActiveRecord::Base
       ids=AssetDefect.pluck(:asset_id).uniq
     elsif search_type==8 || search_type==9        #kewpa13 & 14
       ajob=['is_maintainable=?', true]
-    elsif search_type==10 || search_type==13    #kewpa16 & 19
+    elsif search_type==10                                    #kewpa16
       ids=AssetDisposal.pluck(:asset_id).uniq
+    elsif search_type==13                                    #kewpa 19
+      ids=AssetDisposal.where(is_disposed: true).pluck(:asset_id).uniq
+    elsif search_type==11                                    #kewpa17
+      ids=AssetDisposal.where('is_disposed is not TRUE').pluck(:asset_id).uniq
+    elsif search_type==14                                    #kewpa20
+      ids=AssetDisposal.where('is_disposed=? AND disposed_on is not null', true).pluck(:asset_id).uniq
     end
-    if [4, 5, 7, 10, 13].include?(search_type)
+    if [4, 5, 7, 10, 13, 11, 14].include?(search_type)
       if ids.count > 0
         a="id=?" 
         0.upto(ids.count-2) do |x|
@@ -386,7 +392,7 @@ class Assetsearch < ActiveRecord::Base
 #   end
    #D) kewpa 13 & 14 ends here
  
-  #E) kewpa 16 - starts here
+  #E) kewpa 16 - starts here - NOTE - refer COMBINE section (search_type)
   #use of maintname & assetcode
 #   def disposal_details
 #     a='id=? ' if AssetDisposal.all.map(&:asset_id).uniq.count!=0
@@ -399,46 +405,85 @@ class Assetsearch < ActiveRecord::Base
 #   def disposal_conditions
 #       [" ("+disposal_details+")", AssetDisposal.all.map(&:asset_id).uniq] unless disposal.blank?
 #   end
-  
-  def disposalcert_details
-    a='id=? ' if AssetDisposal.where('is_disposed is TRUE').map(&:asset_id).uniq.count!=0
-    0.upto(AssetDisposal.where('is_disposed is TRUE').map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a unless disposalcert.blank?
-  end
-  
-  def disposalcert_conditions
-    [" ("+disposalcert_details+")", AssetDisposal.where('is_disposed is TRUE').map(&:asset_id).uniq] unless disposalcert.blank?
-  end
   #E) kewpa 16 - ends here
+  #F) kewpa 19 - starts here - NOTE - refer COMBINE section (search_type)
+#   def disposalcert_details
+#     a='id=? ' if AssetDisposal.where('is_disposed is TRUE').map(&:asset_id).uniq.count!=0
+#     0.upto(AssetDisposal.where('is_disposed is TRUE').map(&:asset_id).uniq.count-2) do |l|  
+#       a=a+'OR id=? '
+#     end 
+#     return a unless disposalcert.blank?
+#   end
+#   
+#   def disposalcert_conditions
+#     [" ("+disposalcert_details+")", AssetDisposal.where('is_disposed is TRUE').map(&:asset_id).uniq] unless disposalcert.blank?
+#   end
+  #F) kewpa 19 - ends here
   
-  
-  
-  def disposalreport_details
-    a='id=? ' if AssetDisposal.find(disposalreport.to_s.split(",")).map(&:asset_id).uniq.count!=0
-    0.upto(AssetDisposal.find(disposalreport.to_s.split(",")).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a unless disposalreport.blank?
-  end  
-  
-  def disposalreport_conditions
-    #['id=? OR id=?',AssetDisposal.find(discardoption.to_s.split(",")).map(&:asset_id)] unless discardoption.blank?
-    [disposalreport_details,AssetDisposal.find(disposalreport.to_s.split(",")).map(&:asset_id).uniq] unless disposalreport.blank?
+  #G) kewpa 17 - starts here NOTE - totally new fields, verified_on means disposal is processed & verified, & awaiting 4 final approval for dispose process
+  ##checked_on --> examination date, whereas verified_on-> date verified that examination has taken place
+  def examine_start_conditions
+    unless examine_start.blank?
+      ids=AssetDisposal.where('verified_on >=?', examine_start).pluck(:asset_id).uniq  
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
   end
   
-  def disposalreport2_details
-    a='id=? ' if AssetDisposal.find(disposalreport2.to_s.split(",")).map(&:asset_id).uniq.count!=0
-    0.upto(AssetDisposal.find(disposalreport2.to_s.split(",")).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a unless disposalreport2.blank?
-  end  
-  
-  def disposalreport2_conditions
-    [disposalreport2_details,AssetDisposal.find(disposalreport2.to_s.split(",")).map(&:asset_id).uniq] unless disposalreport2.blank?
+  def examine_end_conditions
+    unless examine_end.blank?
+      ids=AssetDisposal.where('verified_on <=?', examine_end).pluck(:asset_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
   end
+  #G) kewpa 17 - ends here
+  
+  #H) kewpa 20 - starts here NOTE - rename & chg field type: disposalreport, disposalreport2 to disposalreport_start, disposalreport_end  & string->date
+  def disposalreport_start_conditions
+    unless disposalreport_start.blank?
+      ids=AssetDisposal.where('disposed_on >=?', disposalreport_start).pluck(:asset_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
+  end
+  
+  def disposalreport_end_conditions
+    unless disposalreport_end.blank?
+      ids=AssetDisposal.where('disposed_on <=?', disposalreport_end).pluck(:asset_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
+  end
+  #H) kewpa 20 - ends here
   
   def discardoption_details
     a='id=? ' if AssetDisposal.where('discard_options=?',discardoption).map(&:asset_id).uniq.count!=0

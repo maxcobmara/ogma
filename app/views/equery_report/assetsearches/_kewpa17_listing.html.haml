@@ -1,0 +1,83 @@
+/additional heading
+.col-md-8.col-md-offset-2
+  %dl.dl-horizontal
+
+    /examine_start & examine_end - kewpa17
+
+    - if assetsearch.disposalreport_start.blank? && assetsearch.disposalreport_end.blank? 
+      %div.result-all=(t 'equery.asset.kewpa17_list_all') 
+    - else
+      %div.result-search=t 'equery.search_by'
+            
+    %br
+                   
+    - if assetsearch.examine_start.blank? ==false || assetsearch.examine_end.blank? ==false
+      %dt=t 'equery.asset.disposalreport_for'
+      %dd
+        - unless assetsearch.examine_start.blank?
+          =assetsearch.examine_start.strftime('%d-%m-%Y')
+        - unless assetsearch.examine_end.blank?
+          - if assetsearch.examine_start.blank? == false
+            =(t 'to')+" " 
+          - else
+            =(t 'equery.upto')+" "
+          =assetsearch.examine_end.strftime('%d-%m-%Y')
+        - else
+          =(t 'equery.onwards')
+
+    - if assetsearch.examine_start.blank? ==false || assetsearch.examine_end.blank? ==false
+    - else
+      .col-md-12
+        .col-md-8
+          %hr
+          
+    %dt=(t 'equery.total')
+    %dd=assetsearch.assets.count==0 ? assetsearch.assets.count : assetsearch.assets.count.to_s+" "+(t 'records')
+
+/display result
+.col-md-9.col-md-offset-1
+  %br
+  - counter=0
+  - if assetsearch.assets.count > 0
+    - disposal_ids=assetsearch.assets.map{|x|x.asset_disposals.first.id}
+    .right=link_to (fa_icon "file-pdf-o")+" KEW-PA 17", kewpa17_asset_disposals_path(format: "pdf", disposalids: disposal_ids)
+    %table.table.table-condensed.table-bordered.table-hover.equery
+      %head
+        %tr.info
+          %th{width: '4%'} No
+          %th{width: '12%'}=t('asset.assetcode')
+          %th{width: '18%'}=t('equery.asset.asset_name')+" / "+t('asset.typename')+" / Model"
+          %th{width: '13%'}=t('equery.asset.asset_location')
+          %th{width: '11%'}=t('asset.purchaseprice')
+          %th{width: '11%'}=t('asset.disposal.current_value')
+             
+      %body
+        - for asset in assets
+          %tr
+            %td=counter+=1
+            %td=link_to asset.assetcode, asset_asset_path(asset)
+            %td=asset.name.blank? ? asset.typename : asset.name+": "+asset.typename
+            - asset_wlocation=Asset.wlocation.pluck(:id)
+            - asset_wplacement=Asset.wplacement.pluck(:id)
+            %td
+              - if asset_wlocation.include?(asset.id) 
+                =asset.hmlocation.try(:location_list)
+              - elsif asset_wplacement.include?(asset.id)
+                %ol
+                  - for placement in asset.asset_placements.sort_by{|x|x.location.combo_code}
+                    %li=placement.location.location_list
+            %td=ringgols(asset.purchaseprice)
+            %td=ringgols(asset.asset_disposals.first.current_value)
+             
+      %br
+
+  .right{style:"padding: 0 10px; margin:0;"}= paginate assets, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
+  
+    
+.row
+  .col-md-8.col-md-offset-1
+    %hr
+  .col-md-6.col-md-offset-3
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('asset.title')}", "/equery_reports?query_module=2", class: 'btn btn-primary'
+      %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_assetsearch_path(searchtype: assetsearch.search_type),  :class => 'btn btn-default'

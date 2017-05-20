@@ -1,0 +1,8 @@
+.form-group              
+  .col-sm-2.control-label
+    %b= t('equery.asset.disposalreport_for')
+  .col-md-5
+    .input-group
+      = f.text_field :examine_start, class: 'form-control date_picker_reverse'    
+      .input-group-addon=t('to')
+      = f.text_field :examine_end, class: 'form-control date_picker_reverse'

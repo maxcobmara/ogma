@@ -39,7 +39,7 @@
             %td= link_to disposal.asset.assetcode, asset_disposal_path(disposal)
             %td= "#{disposal.asset.try(:typename)} - #{disposal.asset.name} - #{disposal.asset.modelname}"  
             %td= disposal.qty
-            %td= disposal.asset.try(:purchasedate).strftime("%d %b %Y")
+            %td= disposal.asset.try(:purchasedate).try(:strftime, "%d %b %Y")
             %td= disposal.disposed_on.try(:strftime, "%d %b %Y")
             %td= ringgols(disposal.total_current_value)
             %td= disposal.justify1_disposal
