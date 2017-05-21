@@ -306,8 +306,12 @@ class Assetsearch < ActiveRecord::Base
       ids=AssetDisposal.where('is_disposed is not TRUE').pluck(:asset_id).uniq
     elsif search_type==14                                    #kewpa20 
       ids=AssetDisposal.where('is_disposed=? AND disposed_on is not null', true).pluck(:asset_id).uniq          #("View & Close"-> is_disposed & disposed_on)
+    elsif search_type==15
+      ids=AssetLoss.pluck(:asset_id).uniq
+    elsif search_type==16
+      ids=AssetLoss.where('endorsed_on IS NOT NULL').pluck(:asset_id).uniq
     end
-    if [4, 5, 7, 10, 12, 13, 11, 14].include?(search_type)
+    if [4, 5, 7, 10, 12, 13, 11, 14, 15, 16].include?(search_type)
       if ids.count > 0
         a="id=?" 
         0.upto(ids.count-2) do |x|

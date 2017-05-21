@@ -1,6 +1,6 @@
 class Kewpa30Pdf < Prawn::Document
   def initialize(asset_loss, view)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 50, left_margin: 40, page_size: 'A4', page_layout: :portrait })
     @asset_loss = asset_loss
     @view = view
 

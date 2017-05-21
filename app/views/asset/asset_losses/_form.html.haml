@@ -23,20 +23,20 @@
             .col-sm-2.control-label
               = f.label t 'asset.loss.asset_name', for: :asset_id
             .col-md-2
-              = f.collection_select :asset_id, Asset.where('mark_as_lost is true'), :id, :code_asset, {:include_blank =>true},{class: 'selectpicker', "data-width"=>'410px'} 
+              = f.collection_select :asset_id, Asset.where('mark_as_lost is true'), :id, :code_typename_serial_no, {:include_blank =>(t 'select')},{class: 'selectpicker', "data-width"=>'410px'} 
                 
           .form-group
             .col-sm-2.control-label
               = f.label t 'asset.loss.loss_location', for: :location_id
             .col-md-4
-              = f.collection_select :location_id, Location.all.order(combo_code: :asc), :id, :location_list, {:include_blank => true}, {class: 'selectpicker', "data-width"=>'410px'}
+              = f.collection_select :location_id, Location.all.order(combo_code: :asc), :id, :location_list, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
               .help-block.small= t('asset.loss.loss_location_long')
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'asset.loss.loss_date_time', for: :lost_at
             .col-md-4
-              = f.text_field :lost_at, :order => [:day, :month, :year,], class: 'datetime_picker form-control'
+              = f.text_field :lost_at, class: 'datetime_picker_reverse form-control'
               .help-block.small= t('asset.loss.loss_date_time')
               
           .form-group
@@ -50,7 +50,7 @@
             .col-sm-2.control-label
               = f.label t 'asset.loss.last', for: :last_handled_by
             .col-md-4
-              = f.collection_select :last_handled_by, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank => true}, {class: 'selectpicker', "data-width"=>'410px'}
+              = f.collection_select :last_handled_by, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
               .help-block.small= t('asset.loss.last_long')
               
           .form-group

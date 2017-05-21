@@ -70,13 +70,26 @@
                     %li=placement.location.location_list
             %td=ringgols(asset.purchaseprice)
             %td=ringgols(asset.asset_disposals.first.current_value)
-            %td.centre{width: '8%'}=link_to "KEW-PA 18", kewpa16_asset_disposal_path(format: "pdf", id: asset.asset_disposals.first)
-            %td.centre{width: '14%'}
-              - if asset.asset_disposals.first.is_disposed==true
-                =link_to "KEW-PA 19", kewpa19_asset_disposal_path(format: "pdf", id: asset.asset_disposals.first)
-                - disposetype=asset.asset_disposals.first.disposal_type
-                =disposetype.blank? ? "" : " - "+t('asset.disposal.'+disposetype)
-                =disposetype=='discard' ? "("+(t 'asset.disposal.'+asset.asset_disposals.first.discard_options)+")" : ""
+            - if assetsearch.search_type==12
+              %th.warning.centre{width: '8%'}=link_to "KEW-PA 18", kewpa18_asset_disposal_path(format: "pdf", id: asset.asset_disposals.first)
+            - else
+              %td.centre{width: '8%'}=link_to "KEW-PA 18", kewpa18_asset_disposal_path(format: "pdf", id: asset.asset_disposals.first)
+            
+            - if assetsearch.search_type==13
+              %th.warning.centre{width: '14%'}
+                - if asset.asset_disposals.first.is_disposed==true
+                  =link_to "KEW-PA 19", kewpa19_asset_disposal_path(format: "pdf", id: asset.asset_disposals.first)
+                  - disposetype=asset.asset_disposals.first.disposal_type
+                  =disposetype.blank? ? "" : " - "+t('asset.disposal.'+disposetype)
+                  =disposetype=='discard' ? "("+(t 'asset.disposal.'+asset.asset_disposals.first.discard_options)+")" : ""
+                
+            - else
+              %td.centre{width: '14%'}
+                - if asset.asset_disposals.first.is_disposed==true
+                  =link_to "KEW-PA 19", kewpa19_asset_disposal_path(format: "pdf", id: asset.asset_disposals.first)
+                  - disposetype=asset.asset_disposals.first.disposal_type
+                  =disposetype.blank? ? "" : " - "+t('asset.disposal.'+disposetype)
+                  =disposetype=='discard' ? "("+(t 'asset.disposal.'+asset.asset_disposals.first.discard_options)+")" : ""
                
       %br
 

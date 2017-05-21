@@ -2446,6 +2446,7 @@ ms_MY:
       initial: "Pengurusan Kehilangan Aset - Awalan"
       report_code: Laporan Kod Kehilangan Dalaman 
       hod: Ketua Jabatan 
+      hod_endorsement: Pengesahan Ketua Jabatan
       endorsed: Disahkan oleh Ketua Jabatan pada
       purchasedate: Tarikh Pembelian 
       purchaseprice: Harga Pembelian
@@ -5178,6 +5179,9 @@ ms_MY:
       kewpa17_list_all: Senarai Penuh (Laporan Lembaga Pemeriksa Aset Alih Kerajaan)
       kewpa18_list_all: Senarai Penuh (Sijil Penyaksian Pemusnahan Aset Alih Kerajaan)
       kewpa20_list_all: Senarai Penuh (Laporan Tahunan Pemusnahan Aset Alih Kerajaan)
+      kewpa28_list_all: Senarai Penuh (Laporan Awal Kehilangan Aset Alih Kerajaan)
+      kewpa30_list_all: Senarai Penuh (Laporan Akhir Kehilangan Aset Alih Kerajaan)
+      kewpa31_list_all: Senarai Penuh (Sijil Hapus Kira Aset Alih Kerajaan)
       fixed_acr: H
       inv_acr: I
       #leave_unselected_kewpa6: "Nyahpilihkan semua medan untuk papar SEMUA rekod peminjaman aset (KEW-PA 6) yang wujud."

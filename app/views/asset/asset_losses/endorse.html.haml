@@ -1,0 +1,88 @@
+- model_class = AssetLoss
+.page-header
+  %h1
+    = t 'edit'
+    = @asset_loss.asset.assetcode
+
+.row
+  = form_for @asset_loss,  html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    
+    .row
+      .col-md-10.col-md-offset-1
+        / Nav tabs
+        %ul.nav.nav-tabs
+          %li= link_to (t "asset.loss.register"), "#details", "data-toggle" => "tab"
+          %li= link_to (t "asset.loss.actions"), "#initial", "data-toggle" => "tab"
+          %li.active=link_to (t "asset.loss.hod_endorsement"), "#endorsement", "data-toggle" => "tab"
+      
+        / Tab Panes
+        .tab-content{style:"padding-top:1em"}
+          .col-md-offset-2
+            %dl.dl-horizontal
+              %dt= t 'asset.assetcode'
+              %dd= link_to @asset_loss.asset.try(:assetcode), (asset_asset_path(@asset_loss.asset_id)) rescue nil
+            #details.tab-pane.fade.in
+              %dl.dl-horizontal
+                %dt= t 'asset.loss.report_code'
+                %dd= @asset_loss.try(:report_code)
+                %dt= t 'asset.loss.hod'
+                %dd= @asset_loss.try(:hod).try(:staff_name_with_position)
+                %dt= t 'asset.loss.endorsed'
+                %dd= @asset_loss.try(:endorsed_on).try(:strftime,"%d-%b-%Y")
+
+            #initial.tab-pane.fade.in
+              %dl.dl-horizontal
+                %dt= t 'asset.loss.loss_type'
+                %dd= @asset_loss.try(:loss_type)
+                %dt= t 'asset.loss.quantity'
+                %dd= @asset_loss.try(:asset).try(:quantity)
+                %dt= t 'asset.loss.brand'
+                %dd= @asset_loss.try(:asset).try(:name)
+                %dt= t 'asset.loss.model'
+                %dd= @asset_loss.try(:asset).try(:modelname)
+                %dt= t 'asset.loss.receive_date'
+                %dd= @asset_loss.try(:asset).try(:receiveddate)
+                %dt= t 'asset.loss.purchasedate'
+                %dd= check_kin {tarikh(@asset_loss.asset.purchasedate)}
+                %dt= t 'asset.loss.purchaseprice'
+                %dd= check_kin {ringgols(@asset_loss.asset.purchaseprice)}
+                %dt= t 'asset.loss.loss_location'
+                %dd= check_kin {@asset_loss.location.location_list}
+                %dt= t 'asset.loss.loss_date_time'
+                %dd= @asset_loss.try(:lost_at).try(:strftime,"%I:%M%p  %d-%b-%Y")
+                %dt= t 'asset.loss.how'
+                %dd= @asset_loss.try(:how_desc)
+                %dt= t 'asset.loss.last'
+                %dd= check_kin {@asset_loss.handled_by.staff_name_with_position }
+                %dt= t 'asset.loss.case'
+                %dd= @asset_loss.try(:is_prima_facie?) ? "Yes" : "No" 
+                %dt= t 'asset.loss.any_action'
+                %dd= @asset_loss.try(:is_staff_action?) ? "Yes" : "No"
+                %dt= t 'asset.loss.police_report'
+                %dd= @asset_loss.try(:is_police_report_made?) ? ("Yes, Police Report No :" +  @asset_loss.try(:police_report_code )) : "No"
+                %dt= t 'asset.loss.preventive_measures'
+                %dd= @asset_loss.try(:preventive_measures)
+                %dt= t 'asset.loss.new_measures'
+                %dd= @asset_loss.try(:new_measures)
+                %dt= t 'asset.loss.other_notes'
+                %dd= @asset_loss.try(:notes)
+          #endorsement.tab-pane.fade.in.active
+            .col-md-offset-3
+              .form-group
+                .col-sm-2.control-label
+                  = f.label t 'asset.loss.hod', for: :report_code
+                .col-md-2
+                  = f.collection_select :endorsed_hod_by, Staff.where(id: Position.roots.first.staff_id), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'selectpicker'}
+              .form-group
+                .col-sm-2.control-label
+                  = f.label t 'asset.loss.endorsed' 
+                .col-md-2  
+                  = f.text_field :endorsed_on, value: Date.today.strftime('%d-%m-%Y'), class: 'form-control date_picker_reverse'
+       
+    .col-md-offset-1
+      .form-group
+        .col-sm-offset-4.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.endorse', :default => t("helpers.links.endorse")), asset_losses_path(@asset_loss), :class => 'btn btn-default'
+        .col-sm-2
+          = f.submit t('update'), class: "btn btn-primary"

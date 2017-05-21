@@ -1,6 +1,6 @@
 class Asset::AssetLossesController < ApplicationController
   filter_access_to :index, :new, :create, :kewpa28, :kewpa29, :kewpa30, :kewpa31, :attribute_check => false
-  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
+  filter_access_to :show, :edit, :update, :endorse, :destroy, :attribute_check => true
   before_action :set_lost, only: [:show, :edit, :update, :destroy]
   
   def index

@@ -197,6 +197,7 @@ Ogma::Application.routes.draw do
       get :kewpa28
       get :kewpa29
       get :kewpa30
+      get :endorse
     end
     collection do
       get :kewpa31

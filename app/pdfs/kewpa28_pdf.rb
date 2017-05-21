@@ -1,6 +1,6 @@
 class Kewpa28Pdf < Prawn::Document
   def initialize(asset_loss, view, lead)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 50,left_margin: 50, page_size: 'A4', page_layout: :portrait })
     @asset_loss = asset_loss
     @view = view
     @lead = lead
@@ -71,9 +71,9 @@ class Kewpa28Pdf < Prawn::Document
         move_down 50
         text "#{'.'*45}", :align => :left, :size => 12, :indent_paragraphs => 250
         text "Tandatangan Ketua Jabatan", :align => :left, :size => 12, :indent_paragraphs => 250
-        text "Nama        :	#{@asset_loss.hod.name}", :align => :left, :size => 12, :indent_paragraphs => 250
-        text "Jawatan     :	#{@lead.name}", :align => :left, :size => 12, :indent_paragraphs => 250
-        text "Tarikh      :	#{@asset_loss.endorsed_on.try(:strftime, "%d/%m/%y")}", :align => :left, :size => 12, :indent_paragraphs => 250
+        text "Nama        :	#{@asset_loss.try(:hod).try(:name)}", :align => :left, :size => 12, :indent_paragraphs => 250
+        text "Jawatan     :	#{@lead.try(:name)}", :align => :left, :size => 12, :indent_paragraphs => 250
+        text "Tarikh      :	#{@asset_loss.try(:endorsed_on).try(:strftime, "%d/%m/%y")}", :align => :left, :size => 12, :indent_paragraphs => 250
         text "Cop Jabatan :	    ", :align => :left, :size => 12, :indent_paragraphs => 250
         #END - last item + SIGNATORY PART on last page 
    
