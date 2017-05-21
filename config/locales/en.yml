@@ -2588,6 +2588,11 @@ en:
       model: Model
       receive_date: Receive Date
       quantity: Quantity
+      writeoff_checked: Writeoff checked asset
+      writeoff_title: Asset Write-Off
+      writeoff_approval_letter: Write-Off Approval Letter from Treasury
+      writeoff: Write-Off
+      approval_refno: Approval Reference
       
     loan:
       title: Asset Loan

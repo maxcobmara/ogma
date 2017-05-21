@@ -1,0 +1,67 @@
+/additional heading
+.col-md-8.col-md-offset-2
+  %dl.dl-horizontal
+
+    - if assetsearch.loss_cert.blank? 
+      %div.result-all=(t 'equery.asset.kewpa31_list_all')
+    - else
+      %div.result-search=t 'equery.search_by'
+            
+    %br
+                   
+    - unless assetsearch.loss_cert.blank?
+      - approval_letter=Document.find(assetsearch.loss_cert)
+      %dt= (t 'asset.loss.writeoff_approval_letter')
+      %dd=approval_letter.doc_details+" ("+approval_letter.letterdt.strftime('%d-%m-%Y')+")"
+
+    - if assetsearch.loss_cert.blank? 
+    - else
+      .col-md-12
+        .col-md-8
+          %hr
+          
+    %dt=(t 'equery.total')
+    %dd=assetsearch.assets.count==0 ? assetsearch.assets.count : assetsearch.assets.count.to_s+" "+(t 'records')
+
+/display result
+.col-md-9.col-md-offset-1
+  %br
+  - counter=0
+  - if assetsearch.assets.count > 0
+    - assets.each do |document, loss_assets|
+      .right=link_to (fa_icon "file-pdf-o")+" KEW-PA 31", kewpa31_asset_losses_path(format: "pdf", id: document)
+      %table.table.table-condensed.table-bordered.table-hover.equery
+        %head
+          %tr.info
+            %th{width: '4%'} No
+            %th{width: '15%'}=t('asset.assetcode')
+            %th{width: '21%'}=t('equery.asset.asset_name')+" / "+t('asset.typename')+" / Model"
+            %th{width: '10%'}=(t 'asset.loss.est_value')
+            %th{width: '10%'}=t('asset.purchaseprice')
+            %th{width: '15%'}=(t 'asset.loss.loss_location')
+            %th{width: '15%'}=(t 'asset.loss.loss_date_time')
+          %tr.warning
+            %th.centre{colspan: 7}=(t 'asset.loss.writeoff_approval_letter')+" : "+document.doc_details
+        %body
+          - for asset_loss in loss_assets
+            %tr
+              %td=counter+=1
+              %td=link_to asset_loss.asset.assetcode, asset_asset_path(asset_loss.asset)
+              %td=asset_loss.asset.name.blank? ? asset_loss.asset.typename : asset_loss.asset.name+": "+asset_loss.asset.typename
+              %td=ringgols(asset_loss.est_value)
+              %td=ringgols(asset_loss.asset.purchaseprice)
+              %td=asset_loss.try(:location).try(:name)
+              %td=asset_loss.lost_at.strftime('%d %b %Y - %H:%M') unless asset_loss.lost_at.nil?
+              
+      %br
+
+  .right{style:"padding: 0 10px; margin:0;"}= paginate assets, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
+  
+    
+.row
+  .col-md-8.col-md-offset-1
+    %hr
+  .col-md-6.col-md-offset-3
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('asset.title')}", "/equery_reports?query_module=2", class: 'btn btn-primary'
+      %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_assetsearch_path(searchtype: assetsearch.search_type),  :class => 'btn btn-default'

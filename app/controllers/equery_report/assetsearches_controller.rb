@@ -21,6 +21,9 @@ class EqueryReport::AssetsearchesController < ApplicationController
       #kewpa 8 (group by year)
       @assets_by_year=(@assetsearch.assets.sort_by{|x|x.receiveddate}.group_by{|d|d.receiveddate.strftime('%Y-%m-%d').split("-")[0]}).to_a
       @assets=Kaminari.paginate_array(@assets_by_year).page(params[:page]).per(20)
+    elsif @assetsearch.search_type==17 #kewpa31
+      @assets_by_treasury=AssetLoss.joins(:asset).where(asset_id: @assetsearch.assets.pluck(:id)).group_by{|x|x.document}.to_a
+      @assets=Kaminari.paginate_array(@assets_by_treasury).page(params[:page]).per(2)
     else
       @assets=@assetsearch.assets.order(assettype: :asc, assetcode: :asc).page(params[:page]).per(20)
     end

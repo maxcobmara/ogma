@@ -6,35 +6,49 @@
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_asset_loss_path
   %ul.nav.navbar-nav.navbar-right
-    %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    /TODO - fix this - not working %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "bogus"
     %li.dropdown
-      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#", class: 'bogus'}
         = fa_icon "print", text: (t 'actions.print')
         
 .row.filter{style: "display:none;"}
   .col-md-2
   
 .row
-  %table.table-striped.table-hover.ogma
-    %thead
-      %tr
-        %th &nbsp;
-        %th=t 'asset.loss.loss_type'
-        %th= sort_link(@search, :est_value, (t 'asset.loss.est_value'))
-        %th= sort_link(@search, :asset_name, (t 'asset.loss.asset_name'))
-        %th= sort_link(@search, :location_name, (t 'asset.loss.loss_location')) 
-        %th= sort_link(@search, :lost_at, (t 'asset.loss.loss_date_time'))
-        %th{style: "width:33%;"}= sort_link(@search, :document_refno, (t 'asset.loss.treasury_approval'))
-    %tbody
-      = render "index_search"
-      - @asset_loss.each do |asset_loss|
+  = form_tag edit_multiple_asset_losses_path, :method => :put, :id => "form1" do 
+    %table.table-striped.table-hover.ogma
+      %thead
         %tr
-          %td= check_box_tag "asset_loss_ids[]", asset_loss.id, :class => "check"
-          %td= asset_loss.loss_type.capitalize
-          %td= ringgols(asset_loss.est_value)
-          %td= link_to asset_loss.asset.code_asset, asset_loss_path(asset_loss) 
-          %td= asset_loss.try(:location).try(:name)	  
-          %td= asset_loss.lost_at.strftime('%d %b %Y - %H:%M') unless asset_loss.lost_at.nil?
-          %td= asset_loss.try(:document).try(:refno)
+          %th{width: '5%'} &nbsp;
+          %th{width: '17%'}=t 'asset.loss.loss_type'
+          %th{width: '18%'}= sort_link(@search, :est_value, (t 'asset.loss.est_value'))
+          %th{width: '20%'}= sort_link(@search, :asset_name, (t 'asset.loss.asset_name'))
+          %th{width: '20%'}= sort_link(@search, :location_name, (t 'asset.loss.loss_location')) 
+          %th{width: '20%'}= sort_link(@search, :lost_at, (t 'asset.loss.loss_date_time'))
+      %tbody
+        = render "index_search"
+        - @asset_losses.group_by{|x|x.document}.each do |approval_document, asset_losses|
+          %tr
+            %td.group{colspan: 6}
+              - unless approval_document.blank?
+                =approval_document.doc_details+" : "
+                =link_to (fa_icon "file-pdf-o")+" KEW-PA 31", kewpa31_asset_losses_path(format: "pdf", id: approval_document)
+              - else
+                =t('not_applicable')
+          - for asset_loss in asset_losses
+            %tr
+              %td= check_box_tag "asset_loss_ids[]", asset_loss.id, :class => "check"
+              %td= asset_loss.loss_type.capitalize
+              %td= ringgols(asset_loss.est_value)
+              %td= link_to asset_loss.asset.code_asset, asset_loss_path(asset_loss) 
+              %td= asset_loss.try(:location).try(:name)	  
+              %td= asset_loss.lost_at.strftime('%d %b %Y - %H:%M') unless asset_loss.lost_at.nil?
+              
+        /TODO - check all / uncheck all checkbox
+        
+    .row 
+      .col-md-3.col-md-offset-1= submit_tag (t 'asset.loss.writeoff_checked'), :name => :loss_submit_button, class: "btn btn-default"
+
           
 

@@ -1,22 +1,13 @@
 class Asset::AssetLossesController < ApplicationController
-  filter_access_to :index, :new, :create, :kewpa28, :kewpa29, :kewpa30, :kewpa31, :attribute_check => false
+  filter_access_to :index, :new, :create, :kewpa28, :kewpa29, :kewpa30, :kewpa31, :edit_multiple, :update_multiple, :attribute_check => false
   filter_access_to :show, :edit, :update, :endorse, :destroy, :attribute_check => true
   before_action :set_lost, only: [:show, :edit, :update, :destroy]
   
   def index
     @search = AssetLoss.search(params[:q])
-    @asset_loss = @search.result
+    @asset_losses = @search.result
     # TODO 
-    #1) group result by 'treasury approval no' & display KEWPA31 link accordingly
-    #2) check all / uncheck all, + 'write-off checked' button
-    
-    # @lost_assets = AssetLoss.order(code: :asc).page(params[:page]||1)
-    #@asset_losses = AssetLoss.order('lost_at DESC')
-        #@asset_losses_group_writeoff = @asset_losses.group_by{|x|x.document_id}
-        #respond_to do |format|
-          #format.html # index.html.erb
-          #format.xml  { render :xml => @asset_losses }
-          #end
+    #2) check all / uncheck all
   end
   
   def new
@@ -55,6 +46,40 @@ class Asset::AssetLossesController < ApplicationController
         format.json { render json: @asset_loss.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+  def edit_multiple
+    @assetlosses_ids = params[:asset_loss_ids]
+    unless @assetlosses_ids.blank? 
+      @asset_losses = AssetLoss.where(id: @assetlosses_ids)
+      @asset_losses_count = @asset_losses.count
+      @asset_losses_docs_count = @asset_losses.map(&:endorsed_on).count
+      @edit_type = params[:loss_submit_button]
+       if @edit_type == I18n.t('asset.loss.writeoff_checked') && (@asset_losses_count == @asset_losses_docs_count)
+         ## continue multiple edit (including subject edit here) --> refer view
+       else
+         flash[:error] = I18n.t('asset_losses.hod_endorsement_compulsory')
+         redirect_to asset_losses_path
+        end    # end for if @edit_type=="Edit Checked"
+    else    
+        flash[:notice] = I18n.t('select_one')
+        redirect_to asset_losses_path
+    end
+  end
+  
+  def update_multiple
+    #raise params.inspect
+    @assetlosses_ids = params[:asset_loss_ids]
+    @document_id = params[:asset_loss][:document_id]
+    @asset_losses = AssetLoss.find(@assetlosses_ids)
+    
+    @asset_losses.each_with_index do |asset_loss, index| 
+        asset_loss.is_writeoff = true
+        asset_loss.document_id = @document_id 
+        asset_loss.save
+    end
+    #flash[:notice] = I18n.t('asset_losses.writeoff_updated')
+    redirect_to asset_losses_path
   end
   
   def destroy
@@ -109,7 +134,7 @@ class Asset::AssetLossesController < ApplicationController
    @asset_losses = AssetLoss.where('document_id=?', @document_id).order(created_at: :desc) 
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa31Pdf.new(@asset_losses, view_context, @lead)
+        pdf = Kewpa31Pdf.new(@asset_losses, view_context, @lead, @document_id)
         send_data pdf.render, filename: "kewpa31-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
