@@ -200,6 +200,8 @@ Ogma::Application.routes.draw do
       get :endorse
     end
     collection do
+       put :edit_multiple
+       post :update_multiple
       get :kewpa31
     end
   end

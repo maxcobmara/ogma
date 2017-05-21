@@ -2479,6 +2479,11 @@ ms_MY:
       model: Model
       receive_date: Tarikh Terima
       quantity: Kuantiti
+      writeoff_checked: Hapuskira aset yang dipilih
+      writeoff_title: Hapuskira Aset
+      writeoff_approval_letter: Surat Kelulusan Hapuskira dari Perbendaharaan
+      writeoff: Hapuskira
+      approval_refno: Rujukan Kelulusan
     
     loan:
       title: Peminjaman Aset

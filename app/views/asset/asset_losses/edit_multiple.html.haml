@@ -1,0 +1,51 @@
+- model_class = AssetLoss
+.page-header
+  %h1
+    
+
+.row
+  = form_for [:asset, @asset_losses[0]], url: update_multiple_asset_losses_path, html: {:method => :post} do |f|
+    
+    .row
+      .col-md-8.col-md-offset-1
+        / Nav tabs
+        %ul.nav.nav-tabs
+          %li.active=link_to t('asset.loss.treasury_approval') , "#treasury_approval", "data-toggle" => "tab"
+      
+        / Tab Panes
+        .tab-content{style:"padding-top:1em"}
+          #treasury_approval.tab-pane.fade.in.active
+            %BR
+            .col-md-8.col-md-offset-1
+              .form-group
+                .col-md-7.control-label
+                  = f.label t('asset.loss.writeoff_approval_letter')
+                .col-md-5
+                  = f.collection_select :document_id, Document.all.order(letterxdt: :desc), :id, :doc_details, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width" => "auto"}
+              
+            .col-md-8.col-md-offset-3
+              %br
+              - counter=0
+              %table.table.table-bordered
+                %head
+                  %tr.info
+                    %th{width: '5%'} No
+                    %th{width: '35%'}=t('asset.asset_code')
+                    %th{width: '60%'}=t('asset.name')+" | "+(t 'asset.typename')+" | Model"
+                %body
+                  - @asset_losses.each_with_index do |asset_loss, no|
+                    = hidden_field_tag "asset_loss_ids[]", asset_loss.id 
+                    %tr
+                      %td=counter+=1
+                      %td=asset_loss.asset.assetcode
+                      %td=asset_loss.asset.name_type_model
+
+    .col-md-offset-1
+      .form-group
+        .col-sm-offset-4.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_losses_path, :class => 'btn btn-default'
+        .col-sm-2{style: 'padding-left: 50px;'}
+          = f.submit (t 'submit'), class: "btn btn-primary"
+
+
+

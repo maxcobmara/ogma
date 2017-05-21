@@ -1,16 +1,18 @@
 class Kewpa31Pdf < Prawn::Document
-  def initialize(asset_loss, view, lead)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+  def initialize(asset_loss, view, lead, document_id)
+    super({top_margin: 50, left_margin: 50, page_size: 'A4', page_layout: :portrait })
     @asset_losses = asset_loss
     @view = view
     @lead = lead
+    @document_id=document_id
     font "Times-Roman"
     text "KEW.PA-31", :align => :right, :size => 16, :style => :bold
     move_down 20
     text "SIJIL HAPUS KIRA ASET ALIH KERAJAAN", :align => :center, :size => 14, :style => :bold
     move_down 40
-    text "Mejuruk kelulusan Perbendaharaan Bil #{'.'*40} bertarikh 
-    #{'.'*40} Aset berikut telah dihapuskira dan Daftar Harta Modal/Inventori berkenaan telah dikemaskini.", :align => :left, :size => 14
+    reference=Document.where(id: @document_id).first
+    ##{'.'*40}
+    text "Merujuk kelulusan Perbendaharaan Bil <u>#{reference.refno}</u> bertarikh <u>#{reference.letterdt.try(:strftime, '%d-%m-%Y')}</u>. Aset berikut telah dihapuskira dan Daftar Harta Modal/Inventori berkenaan telah dikemaskini.", :align => :left, :size => 14, :inline_format => true
     move_down 20
     table1
     #move_down 500# - for testing 12May2015
@@ -53,8 +55,12 @@ class Kewpa31Pdf < Prawn::Document
   end
   
   def lastitem_row
-    ind_item=@asset_losses.count-1
-    lastitemrow=[["#{ind_item}","#{@asset_losses[ind_item].try(:asset).try(:typename)} #{@asset_losses[ind_item].try(:asset).try(:name)} #{@asset_losses[ind_item].try(:asset).try(:modelname)}","#{@asset_losses[ind_item].try(:asset).try(:assetcode)}"]]
+    if @asset_losses.count > 1
+      ind_item=@asset_losses.count-1
+    else
+      ind_item=1
+    end
+    lastitemrow=[["#{ind_item}","#{@asset_losses[ind_item-1].try(:asset).try(:typename)} #{@asset_losses[ind_item-1].try(:asset).try(:name)} #{@asset_losses[ind_item-1].try(:asset).try(:modelname)}","#{@asset_losses[ind_item-1].try(:asset).try(:assetcode)}"]]
   end
   
   def blank_table
