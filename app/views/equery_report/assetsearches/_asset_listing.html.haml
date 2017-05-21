@@ -39,11 +39,8 @@
     - elsif assetsearch.search_type==14
       = render partial: 'kewpa20_listing', locals: {assetsearch: assetsearch, assets: assets}
           
-    - elsif assetsearch.search_type==15
-      /kewpa 28
-          
-    - elsif assetsearch.search_type==16
-      /kewpa 30
+    - elsif assetsearch.search_type==15 || assetsearch.search_type==16
+      = render partial: 'kewpa28n30_listing', locals: {assetsearch: assetsearch, assets: assets}
           
     - elsif assetsearch.search_type==17
       /kewpa 31

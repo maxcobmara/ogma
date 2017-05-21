@@ -2555,6 +2555,7 @@ en:
       initial: "Asset Loss Management - Initial"
       report_code: Internal Loss Report Code 
       hod: Head of Dept 
+      hod_endorsement: Head of Department Endorsement
       endorsed: Endorsed by Head of Department On 
       purchasedate: Purchase Date 
       purchaseprice: Purchase Price
@@ -5260,6 +5261,9 @@ en:
       kewpa17_list_all: List of All Asset Disposal (Asset Examiner Board Report)
       kewpa18_list_all: List of All Asset Disposal (Certificate of Witnesses for Discard of Asset)
       kewpa20_list_all: List of All Asset Disposal (Asset Disposal Yearly Report)
+      kewpa28_list_all: List of All Asset Loss (Asset Loss Preliminary Report)
+      kewpa30_list_all: List of All Asset Loss (Asset Loss Final Report)
+      kewpa31_list_all: List of All Asset Loss (Asset Write-Off Certificate)
       fixed_acr: Fixed Asset
       inv_acr: Inventory
       #leave_unselected_kewpa6: "Leave all fields 'unselected' to display ALL existing asset loan (KEW-PA 6)"

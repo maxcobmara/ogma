@@ -37,8 +37,8 @@
             = render partial: 'kewpa19_form', locals: {f: f}
           - elsif @searchtype.to_i==14
             = render partial: 'kewpa20_form', locals: {f: f} 
-          - elsif @searchtype=='15' || @searchtype==15
-          - elsif @searchtype=='16' || @searchtype==16
+          - elsif @searchtype.to_i==15 || @searchtype.to_i==16
+            = render partial: 'kewpa28_form', locals: {f: f} 
           - elsif @searchtype=='17' || @searchtype==17
           
           

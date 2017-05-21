@@ -631,7 +631,7 @@ authorization do
     #vehicle reservation - END - full access? - 1 Oct 2016
     has_permission_on :campus_locations, :to => [:manage, :kewpa7, :kewpa10, :kewpa11]
     has_permission_on :asset_asset_disposals, :to =>[:manage, :kewpa17_20, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :dispose, :revalue, :verify, :view_close]
-    has_permission_on :asset_asset_losses, :to => [:manage, :kewpa28, :kewpa29, :kewpa30, :kewpa31] 
+    has_permission_on :asset_asset_losses, :to => [:manage, :endorse, :kewpa28, :kewpa29, :kewpa30, :kewpa31] 
   end
 
   #OK up to here..... 28Jan2016
@@ -2166,13 +2166,13 @@ authorization do
  
   #39-OK - but kewpa31 link not ready (write-off)
   role :asset_losses_module_admin do
-     has_permission_on :asset_asset_losses, :to => [:manage, :kewpa28, :kewpa29, :kewpa30, :kewpa31]
+     has_permission_on :asset_asset_losses, :to => [:manage, :endorse, :kewpa28, :kewpa29, :kewpa30, :kewpa31]
   end
   role :asset_losses_module_viewer do
      has_permission_on :asset_asset_losses, :to => [:read, :kewpa28, :kewpa29, :kewpa30, :kewpa31] 
   end
   role :asset_losses_module_user do
-    has_permission_on :asset_asset_losses, :to => [:read, :update, :kewpa28, :kewpa29, :kewpa30, :kewpa31] 
+    has_permission_on :asset_asset_losses, :to => [:read, :update, :endorse, :kewpa28, :kewpa29, :kewpa30, :kewpa31] 
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - assetown[1].disabled=true as the only owner is asset_administrator
 
