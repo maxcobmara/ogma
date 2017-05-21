@@ -1,0 +1,5 @@
+.form-group
+  .col-md-5.control-label
+    =f.label  (t 'asset.loss.writeoff_approval_letter')
+  .col-md-7
+    = f.collection_select :loss_cert, Document.where(id: AssetLoss.pluck(:document_id)), :id, :doc_details, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width" => "auto"}

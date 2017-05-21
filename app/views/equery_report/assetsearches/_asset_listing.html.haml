@@ -43,12 +43,4 @@
       = render partial: 'kewpa28n30_listing', locals: {assetsearch: assetsearch, assets: assets}
           
     - elsif assetsearch.search_type==17
-      /kewpa 31
-     
-        
-        
-
-
-/       .right{style:"padding: 0 10px; margin:0;"}= paginate assets, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
-        
-         
+      = render partial: 'kewpa31_listing', locals: {assetsearch: assetsearch, assets: assets}

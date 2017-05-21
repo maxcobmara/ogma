@@ -31,8 +31,11 @@
         - @asset_losses.group_by{|x|x.document}.each do |approval_document, asset_losses|
           %tr
             %td.group{colspan: 6}
-              =approval_document.doc_details+" : "
-              =link_to (fa_icon "file-pdf-o")+" KEW-PA 31", kewpa31_asset_losses_path(format: "pdf", id: approval_document)
+              - unless approval_document.blank?
+                =approval_document.doc_details+" : "
+                =link_to (fa_icon "file-pdf-o")+" KEW-PA 31", kewpa31_asset_losses_path(format: "pdf", id: approval_document)
+              - else
+                =t('not_applicable')
           - for asset_loss in asset_losses
             %tr
               %td= check_box_tag "asset_loss_ids[]", asset_loss.id, :class => "check"

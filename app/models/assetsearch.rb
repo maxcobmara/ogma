@@ -310,8 +310,10 @@ class Assetsearch < ActiveRecord::Base
       ids=AssetLoss.pluck(:asset_id).uniq
     elsif search_type==16
       ids=AssetLoss.where('endorsed_on IS NOT NULL').pluck(:asset_id).uniq
+    elsif search_type==17
+      ids=AssetLoss.where('document_id IS NOT NULL').pluck(:asset_id).uniq
     end
-    if [4, 5, 7, 10, 12, 13, 11, 14, 15, 16].include?(search_type)
+    if [4, 5, 7, 10, 12, 13, 11, 14, 15, 16, 17].include?(search_type)
       if ids.count > 0
         a="id=?" 
         0.upto(ids.count-2) do |x|
@@ -508,53 +510,22 @@ class Assetsearch < ActiveRecord::Base
   end
   #I) kewpa 18 - ends here
   
-  def loss_start_details
-    a='id=? ' if AssetLoss.all.map(&:asset_id).count!=0
-    0.upto(AssetLoss.all.map(&:asset_id).count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a if loss_start== 1 #unless loss_start.blank? 
-  end  
-  
-  def loss_start_conditions
-    [" ("+loss_start_details+")",AssetLoss.all.map(&:asset_id)] unless loss_start.blank?
-  end
-  
-  def loss_end_details
-    a='id=? ' if AssetLoss.where('endorsed_on IS NOT NULL').map(&:asset_id).count!=0
-    0.upto(AssetLoss.where('endorsed_on IS NOT NULL').map(&:asset_id).count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a unless loss_end.blank?
-  end  
-  
-  def loss_end_conditions
-    [" ("+loss_end_details+")",AssetLoss.where('endorsed_on IS NOT NULL').map(&:asset_id)] unless loss_end.blank?
-  end
-  
-  def loss_cert_details
-    a='id=? ' if AssetLoss.where('document_id=?', loss_cert).map(&:asset_id).uniq.count!=0
-    0.upto(AssetLoss.where('document_id=?', loss_cert).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a unless loss_cert.blank?
-  end
-  
+  #J) kewpa 31 - starts here
   def loss_cert_conditions
-    [loss_cert_details,AssetLoss.where('document_id=?', loss_cert).map(&:asset_id)] unless loss_cert.blank?
+    unless loss_cert.blank?
+      ids=AssetLoss.where('document_id=?', loss_cert).pluck(:asset_id).uniq
+      if ids.count > 0
+        a="id=?" 
+        0.upto(ids.count-2) do |x|
+          a+=" OR id=? "
+        end
+        ["("+a+")", ids] 
+      else
+        [" (id=?)", 0]  # NOTE - refer above
+      end
+    end
   end
-  
-  #def disposaltype_details
-    #a='id=? ' if AssetDisposal.find(:all, :conditions=>['disposal_type=?', disposaltype]).map(&:asset_id).uniq.count!=0
-    #0.upto(AssetDisposal.find(:all, :conditions=>['disposal_type=?', disposaltype]).map(&:asset_id).uniq.count-2) do |l|  
-        #a=a+'OR id=? '
-    #end 
-    #return a unless disposaltype.blank?
-  #end
-  
-  #def disposaltype_conditions
-   # [disposaltype_details, AssetDisposal.find(:all, :conditions=>['disposal_type=?',disposaltype]).map(&:asset_id)] unless disposaltype.blank?
-  #end
+  #J) kewpa 31 - ends here
     
   def orders
     "assetcode ASC"# "staffgrade_id ASC"
