@@ -69,7 +69,7 @@
             =h @leaveforstaff.approver2? ? (t 'approved') : (t 'staff_leave.reject')
 
         %dt= t 'staff_leave.approval_name'
-        %dd=h  @leaveforstaff.approval2_id.blank? ? (t 'not_required') : @leaveforstaff.endorser
+        %dd=h  @leaveforstaff.approval2_id.blank? ? (t 'not_required') : @leaveforstaff.approver
   
         %dt= t 'staff_leave.approve_date'
         %dd=h @leaveforstaff.approval2date.try(:strftime, "%d %b %Y")

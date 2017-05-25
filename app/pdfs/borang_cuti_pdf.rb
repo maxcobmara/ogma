@@ -39,7 +39,7 @@ class Borang_cutiPdf < Prawn::Document
   end
   
   def table_approver
-    data=[[{content: "Kepada : <u>#{@leaveforstaff.approver.staff_with_rank if !@leaveforstaff.approval2_id.blank?}</u>", colspan: 2}], 
+    data=[[{content: "Kepada : <u>#{@leaveforstaff.try(:approver).try(:staff_with_rank) if !@leaveforstaff.approval2_id.blank?}</u>", colspan: 2}], 
           [{content: "(Pegawai Yang Meluluskan Cuti)", colspan: 2}], 
           ["Permohonan cuti di atas <b> #{'Disokong' if @college.code=='kskbjb' && @leaveforstaff.approval1?}#{'Tidak Disokong' if @college.code=='kskbjb' && !@leaveforstaff.approval1?}#{'Disokong' if @college.code!='kskbjb' && @leaveforstaff.approval1? && !@leaveforstaff.approval1_id.blank?}#{'Tidak Disokong' if @college.code!='kskbjb' && !@leaveforstaff.approval1?}#{'Tidak diperlukan' if  @college.code!='kskbjb' && @leaveforstaff.approval1? && @leaveforstaff.approval1_id.blank?}</b>", ""],
           ["Tarikh : #{@leaveforstaff.approval1? ? @leaveforstaff.approval1date.strftime('%d-%m-%Y') : '-'}", "_________________________________"],["", "Tandatangan Ketua Bahagian / Unit"],

@@ -29,15 +29,15 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th=t 'staff.staff_attendance.flag'
-        %th= sort_link(@search, :thumb_id, (t 'staff_attendance.thumb_id'))
-        %th= sort_link(@search, :logged_at, (t 'staff_attendance.logged_in'))
-        %th= sort_link(@search, :logged_at, (t 'staff_attendance.logged_out'))
-        %th= sort_link(@search, :shift, (t 'staff_attendance.shift'))
-        %th= sort_link(@search, :late, (t 'staff_attendance.late'))
-        %th= sort_link(@search, :early, (t 'staff_attendance.early'))
-        %th= sort_link(@search, :action, (t 'staff_attendance.action'))
-        %th= sort_link(@search, :ignore, (t 'staff_attendance.ignore'))
+        %th{width: '10%'}=t 'staff.staff_attendance.flag'
+        %th{width: '25%'}= sort_link(@search, :thumb_id, (t 'staff_attendance.thumb_id'))
+        %th{width: '10%'}= sort_link(@search, :logged_at, (t 'staff_attendance.logged_in'))
+        %th{width: '10%'}= sort_link(@search, :logged_at, (t 'staff_attendance.logged_out'))
+        %th{width: '13%'}= sort_link(@search, :shift, (t 'staff_attendance.shift'))
+        %th{width: '8%'}= sort_link(@search, :late, (t 'staff_attendance.late'))
+        %th{width: '8%'}= sort_link(@search, :early, (t 'staff_attendance.early'))
+        %th{width: '8%'}= sort_link(@search, :action, (t 'staff_attendance.action'))
+        %th{width: '8%'}= sort_link(@search, :ignore, (t 'staff_attendance.ignore'))
     %tbody
       = render "index_search"
       = form_tag actionable_staff_staff_attendances_path, :method => :put do
