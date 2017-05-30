@@ -56,9 +56,12 @@ jQuery ->
       
   equipments = $('#repositorysearch_equipment').html()
   $('#repositorysearch_document_subtype').change ->
+    vesselname = $('#repositorysearch_vessel').val()
+    documenttype = $('#repositorysearch_document_type').val()
     systemname = $('#repositorysearch_document_subtype :selected').text()
     escaped_systemname = systemname.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g, '\\$1')
-    options = $(equipments).filter("optgroup[label=#{escaped_systemname}]").html()
+    combine2=vesselname+documenttype+": "+escaped_systemname
+    options = $(equipments).filter("optgroup[label='#{combine2}']").html()
     if options
       $('#repositorysearch_equipment').html(options)
       $('#repositorysearch_equipment').parent().show()
