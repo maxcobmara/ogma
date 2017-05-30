@@ -888,14 +888,14 @@ class Repository < ActiveRecord::Base
   def self.docsubtype_per_doctype
     ab=[]
     Repository.digital_library.group_by{|x|x.vessel_class}.sort.each do |vessel_class, repositories|
-      for a_vessel in Repository.vessel_names
+      for a_vessel in Repository.vessel_list2[vessel_class.to_i-1][1]  # Repository.vessel_names
         repositories.group_by(&:document_type).each do |dt, rs|
           a=[[I18n.t('select'), ""]]
           for repository in rs
             unless repository.vessel.blank? #specific
-              a << [repository.render_subdocument, repository.document_subtype] if repository.render_vessel==a_vessel && dt==repository.document_type
+              a << [repository.render_subdocument, repository.document_subtype] if repository.render_vessel==a_vessel 
             else #master
-              a << [repository.render_subdocument, repository.document_subtype] if dt==repository.document_type
+              a << [repository.render_subdocument, repository.document_subtype] if repository.vessel_class==vessel_class 
             end
           end
           ab << [a_vessel+": "+((Repository.document.find_all{|disp, value| value == dt }).map {|disp, value| disp}[0]), a.uniq]
@@ -908,17 +908,36 @@ class Repository < ActiveRecord::Base
   #usage - repositorysearches/_form --> display list based on current saved records only
   def self.equipment_per_docsubtype
     ab=[]
+#     Repository.digital_library.group_by{|x|x.vessel_class}.sort.each do |vessel_class, repositories|
+#         repositories.group_by(&:document_subtype).each do |dst, rs|
+#           a=[[I18n.t('select'), ""]]
+#           rs.group_by(&:vessel).each do |ves, repos|
+#             for repository in repos
+#               a << [repository.render_equipment, repository.equipment]
+#             end
+#           end
+#           ab << [((Repository.subdocument.find_all{|disp, value| value == dst }).map {|disp, value| disp}[0]), a.uniq]
+#         end
+#     end
+    ######
     Repository.digital_library.group_by{|x|x.vessel_class}.sort.each do |vessel_class, repositories|
-        repositories.group_by(&:document_subtype).each do |dst, rs|
-          a=[[I18n.t('select'), ""]]
-          rs.group_by(&:vessel).each do |ves, repos|
-            for repository in repos
-              a << [repository.render_equipment, repository.equipment]
+      for a_vessel in Repository.vessel_list2[vessel_class.to_i-1][1]  # Repository.vessel_names
+        repositories.group_by(&:document_type).each do |dtype, rss|
+          rss.group_by(&:document_subtype).each do |dst, rs|
+            a=[[I18n.t('select'), ""]]
+            for repository in rs
+              unless repository.vessel.blank? #specific
+                a << [repository.render_equipment, repository.equipment] if repository.render_vessel==a_vessel 
+              else #master
+                a << [repository.render_equipment, repository.equipment] if repository.vessel_class==vessel_class 
+              end
             end
+            ab << [a_vessel+dtype+": "+((Repository.subdocument.find_all{|disp, value| value == dst }).map {|disp, value| disp}[0]), a.uniq]
           end
-          ab << [((Repository.subdocument.find_all{|disp, value| value == dst }).map {|disp, value| disp}[0]), a.uniq]
-        end
+	end
+      end
     end
+    ######
     ab
   end
   
