@@ -43,13 +43,15 @@
           %td
           %td{colspan: 2}="<u>#{(t 'column')} : #{(t 'repositories.e_document')}</u>".html_safe
           %td
+          %td{colspan: 8}="<u>#{(t 'document_hierachy')}</u>".html_safe
         %tr
           %td.centre{width: '5%', style: 'color: black;'}=fa_icon("plus-circle")
-          %td{width: '20%'}=(t 'repositories.loan_allowed')
+          %td{width: '15%'}=(t 'repositories.loan_allowed')
           %td{width: '5%'}
           %td.centre{width: '5%', style: 'color: black;'}=fa_icon("file-pdf-o")
-          %td{width: '20%'}=(t 'repositories.available')
-          %td{width: '45%'}
+          %td{width: '15%'}=(t 'repositories.available')
+          %td{width: '5%'}
+          /%td{width: '40%'}
         %tr
           %td.centre.text-red=fa_icon("exclamation-circle")
           %td=(t 'repositories.loan_prohibited')
@@ -57,6 +59,22 @@
           %td.centre.text-red=fa_icon("chain-broken")
           %td=(t 'repositories.not_available')
           %td
+          %td{width: '4%', style: 'padding-left: 10px;'} Vessel
+          %td{width: '2%', style: 'padding-left: 10px;'} -->
+          %td{width: '8%', style: 'padding-left: 10px;'} Document Type
+          %td{width: '2%', style: 'padding-left: 10px;'} -->
+          %td{width: '15%', style: 'padding-left: 10px;'} Documentation Group / System
+          %td{width: '2%', style: 'padding-left: 10px;'} -->
+          %td{width: '7%', style: 'padding-left: 10px;'} Equipment
+          %td{width: '10%'}
+          /%td{width: '4%', style: 'background-color: #999; color: white; font-weight: bold; padding-left: 10px;'} Vessel
+          /%td{width: '2%', style: 'background-color: #999; color: white; font-weight: bold; padding-left: 10px;'} 
+          /%td{width: '8%', style: 'background-color: #999; color: black; font-weight: bold; padding-left: 10px;'} Document Type
+          /%td{width: '2%', style: 'background-color: #999; color: white; font-weight: bold; padding-left: 10px;'} 
+          /%td{width: '15%', style: 'background-color: #999; color: blue; font-weight: bold; padding-left: 10px;'} Documentation Group / System
+          /%td{width: '2%', style: 'background-color: #999; color: white; font-weight: bold; padding-left: 10px;'} 
+          /%td{width: '7%', style: 'background-color: #999; color: #fcdcbe; font-style: italic; padding-left: 10px;'} Equipment
+          /%td{width: '10%'}
             
   %table.table-striped.table-hover.ogma
     %thead
