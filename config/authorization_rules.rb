@@ -1253,18 +1253,18 @@ authorization do
   #6-OK - all 4 - 5Feb2016
   #6-OK - for read, but for manage with restrictions as of super admin (processing_level_1, processing_level_2: penyokong, pelulus)
   role :staff_leaves_module_admin do
-     has_permission_on :staff_leaveforstaffs, :to => [:manage, :processing_level_1, :processing_level_2, :leaveforstaff_list]
+     has_permission_on :staff_leaveforstaffs, :to => [:manage, :processing_level_1, :processing_level_2, :leaveforstaff_list, :borang_cuti]
   end
   role :staff_leaves_module_viewer do
-     has_permission_on :staff_leaveforstaffs, :to =>[:read, :leaveforstaff_list]
+     has_permission_on :staff_leaveforstaffs, :to =>[:read, :leaveforstaff_list, :borang_cuti]
   end
   role :staff_leaves_module_user do
-     has_permission_on :staff_leaveforstaffs, :to =>[:read, :update, :leaveforstaff_list]
+     has_permission_on :staff_leaveforstaffs, :to =>[:read, :update, :leaveforstaff_list, :borang_cuti]
   end
   role :staff_leaves_module_member do
     #own record
     has_permission_on :staff_leaveforstaffs, :to => :create                                                                       # A staff can register for leave
-    has_permission_on :staff_leaveforstaffs, :to => [:read, :leaveforstaff_list] do                                                                    # Staff can view his leave 
+    has_permission_on :staff_leaveforstaffs, :to => [:read, :leaveforstaff_list, :borang_cuti] do                                                                    # Staff can view his leave 
       if_attribute :staff_id => is {user.userable.id}
     end
     has_permission_on :staff_leaveforstaffs, :to => :delete, :join_by => :and do                                      # Staff can delete as long as it is not processed yet
@@ -1272,7 +1272,7 @@ authorization do
       if_attribute :approval1 => is_not {true}
     end
     #own (approver - Penyokong)
-    has_permission_on :staff_leaveforstaffs, :to => [:read, :leaveforstaff_list], :join_by => :or do                                            # Penyokong and pelulus can view staff leave
+    has_permission_on :staff_leaveforstaffs, :to => [:read, :leaveforstaff_list, :borang_cuti], :join_by => :or do                                            # Penyokong and pelulus can view staff leave
       if_attribute :approval1_id => is {user.userable.id}
       if_attribute :approval2_id => is {user.userable.id}
     end
@@ -2582,7 +2582,7 @@ authorization do
   
   #58 - OK 21 Sept2016
   role :instructor_appraisals_module_admin do
-    has_permission_on :staff_instructor_appraisals , :to => [:manage, :instructorevaluation, :instructorevaluation_report, :instructorevaluation_list]
+    has_permission_on :staff_instructor_appraisals , :to => [:manage, :instructorevaluation, :instructorevaluation_report, :instructorevaluation_list, :qc_appraisal]
   end
   role :instructor_appraisals_module_viewer do
     has_permission_on :staff_instructor_appraisals, :to => [:menu, :show, :instructorevaluation, :instructorevaluation_report, :instructorevaluation_list]
@@ -2610,7 +2610,7 @@ authorization do
     has_permission_on :staff_instructor_appraisals, :to => [:instructorevaluation_report , :instructorevaluation_list]
   end
   role :instructor_appraisals_module_user do
-    has_permission_on :staff_instructor_appraisals, :to => [:menu, :read, :update, :instructorevaluation, :instructorevaluation_report, :instructorevaluation_list]
+    has_permission_on :staff_instructor_appraisals, :to => [:menu, :read, :update, :qc_appraisal, :instructorevaluation, :instructorevaluation_report, :instructorevaluation_list]
   end
   
   #59 OK 21 Sept2016 - Bhg Kawalan Mutu / Kompetensi - seperti Nazir Sekolah

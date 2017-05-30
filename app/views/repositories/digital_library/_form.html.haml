@@ -12,15 +12,17 @@
         = f.label t 'repositories.document_subtype', for: :document_subtype
       .col-md-5
         =f.select :document_subtype, Repository.subdocument, {include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
+        /@repository.document_subtype
         - unless @repository.category.blank?
           %br
-          %i.small.text-red
-            ='Previous data : '+@repository.render_subdocument_old+" - "+@repository.document_subtype
-            %br
-            ="Ref : "
-            %ul
-              - Repository.subdocument_old.sort_by{|x, y|y.to_i}.each do |x,y|
-                %li="#{y} = #{x}"
+          %i.small.text-red#show
+            ='Previous data : '+@repository.render_subdocument_old+" - "+@repository.category.to_s
+            #display_prev_legend{style: 'display: none;'}
+              /%br
+              ="Ref : "
+              %ul
+                - Repository.subdocument_old.sort_by{|x, y|y.to_i}.each do |x,y|
+                  %li="#{y} = #{x}"
       
     .form-group
       .col-sm-2.control-label
@@ -184,4 +186,8 @@
     { $(".span_vessel").show(); }
     else
     { $(".span_vessel").hide(); }
+  });
+  
+  $("#show").click(function(){
+    $("#display_prev_legend").toggle();
   });

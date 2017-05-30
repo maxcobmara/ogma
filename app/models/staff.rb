@@ -355,6 +355,18 @@ class Staff < ActiveRecord::Base
      docfiler=documentfiller.count
      docprep=documentpreparer.count
      doccc=documentfirstcirculate.count
+     
+     # TODO include these as well
+#      reporters 
+#      asset_disposal
+#      processors
+#      verifiers
+#      revaluers
+#      asset_loans
+#      assignedto_assetloans
+#      released_assetloans
+#      approved_assetloans
+#      returned_assetloans
   
      if evc > 0
        errors.add(:base, "#{I18n.t('exam.evaluate_course.title')} : #{evc} #{I18n.t('actions.records')}")

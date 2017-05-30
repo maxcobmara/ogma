@@ -162,9 +162,9 @@ class Kewpa3Pdf < Prawn::Document
     
     left_title = [ ["Tarikh","Rujukan","Kaedah Pelupusan", "Kuantiti", "Lokasi", "Tandatangan"]] 
     
-    unless @asset.asset_disposal.blank?
+    unless @asset.asset_disposals.count==0
       data2 = []
-      @asset.asset_disposal.map do |asset_disposal|
+      @asset.asset_disposals.map do |asset_disposal|
         disposal_type = "Musnah" if asset_disposal.disposal_type == "discard"
         disposal_type = "Jual" if asset_disposal.disposal_type == "sold"
         disposal_type = "Stok" if asset_disposal.disposal_type == "stock"
