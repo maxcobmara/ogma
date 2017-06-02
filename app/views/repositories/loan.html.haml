@@ -42,7 +42,8 @@
                 .col-sm-2.control-label
                   =f.label (t 'repositories.loaner')
                 .col-md-4
-                  = f.collection_select :loaner, Visitor.all, :id, :name,{include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width" => "auto"}
+                  /= f.collection_select :loaner, Visitor.all, :id, :name,{include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width" => "auto"}
+                  = f.collection_select :loaner, Visitor.all, :id, :visitor_with_title_rank,{include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width" => "auto"}
             
               .form-group
                 .col-sm-2.control-label

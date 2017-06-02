@@ -4435,11 +4435,11 @@ en:
       web: Web
       
     visitors:
-      title: Membership (Visitor)
-      list: Membership List (Visitors)
-      new: New Membership (Visitor)
-      edit: Edit Membership (Visitor)
-      details: Membership Details (Visitor)
+      title: Membership (Guests)
+      list: Membership List (Guests)
+      new: New Membership (Guest)
+      edit: Edit Membership (Guest)
+      details: Membership Details (Guest)
       name: Name
       icno: MyKad No
       rank_id: Rank
