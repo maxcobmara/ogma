@@ -16,10 +16,12 @@
           = f.text_field :icno, class: 'form-control mandatory', maxlength: 12
           .help-block.small Format:79XXXXXXXXXX
 
-      .form-group
-        %label.col-sm-2.control-label= f.label t 'campus.visitors.rank_id', for: :rank_id
-        .col-md-3
-          = f.collection_select :rank_id, Rank.order(id: :asc), :id, :short_full_name, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+      - if current_user.college.code=='amsas'
+        .form-group
+          %label.col-sm-2.control-label= f.label t 'campus.visitors.rank_id', for: :rank_id
+          .col-md-3
+            = f.collection_select :rank_id, Rank.where('name ILIKE(?)', "%Maritim%").order(id: :asc), :id, :short_full_name, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+            /= f.collection_select :rank_id, Rank.where.not('name ILIKE(?)', "%Maritim%").order(id: :asc), :id, :short_full_name, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
       .form-group
         %label.col-sm-2.control-label= f.label t 'campus.visitors.position', for: :position
