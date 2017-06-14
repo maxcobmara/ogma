@@ -19,7 +19,7 @@
       %ul.dropdown-menu
         - Librarytransaction.overdue.group_by{|x|x.returnduedate.year}.each do |reportyear, transactions|
           %li= link_to  (fa_icon "file-pdf-o", text: (t 'library.transaction.latereturn_report')+": "+reportyear.to_s),  latereturn_report_library_librarytransactions_path(report_year: reportyear, format: 'pdf')
-
+/test
 = render 'shared/flashes'
 
 .row
