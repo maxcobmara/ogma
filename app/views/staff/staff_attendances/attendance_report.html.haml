@@ -31,7 +31,7 @@
                 .col-sm-2.control-label
                   %b= t 'staff_attendance.daily_date', for: :daily_date
                 .col-md-3
-                  = text_field_tag(:daily_date, '', class: 'form-control date_picker')
+                  = text_field_tag(:daily_date, '', class: 'form-control date_picker_reverse')
                 /.col-md-7
                 /  &nbsp;
             %BR
@@ -49,7 +49,7 @@
                 .col-sm-2.control-label
                   %b= t 'staff_attendance.weekly_date', for: :weekly_date
                 .col-md-3
-                  = text_field_tag(:weekly_date, '', class: 'form-control date_picker')
+                  = text_field_tag(:weekly_date, '', class: 'form-control date_picker_reverse')
                 /.col-md-7
                 /  &nbsp;
             %BR
@@ -65,7 +65,7 @@
                 .col-sm-2.control-label
                   %b= t 'staff_attendance.monthly_date', for: :monthly_date
                 .col-md-3
-                  = text_field_tag(:monthly_date, '', class: 'form-control date_picker')
+                  = text_field_tag(:monthly_date, '', class: 'form-control date_picker_reverse')
                 /.col-md-7
                 /  &nbsp;
             %BR
@@ -91,7 +91,7 @@
                 .col-sm-2.control-label
                   %b= t 'staff_attendance.monthly_list', for: :monthly_list
                 .col-md-3
-                  = text_field_tag(:monthly_list, '', class: 'form-control date_picker')
+                  = text_field_tag(:monthly_list, '', class: 'form-control date_picker_reverse')
                 .col-md-7
                   &nbsp;
                   
@@ -118,7 +118,7 @@
                 .col-sm-2.control-label
                   %b= t 'staff_attendance.monthly_list', for: :monthly_list
                 .col-md-3
-                  = text_field_tag(:monthly_list2, '', class: 'form-control date_picker')
+                  = text_field_tag(:monthly_list2, '', class: 'form-control date_picker_reverse')
                 .col-md-7
                   &nbsp;
             %BR

@@ -258,10 +258,12 @@ class Staff::StaffAttendancesController < ApplicationController
   end
   
   def attendance_report 
-    @udept=Position.unit_department2 #Position.unit_department
+    #@udept=Position.unit_department2 <--  be4 AMSAS - data entry(org chart) #Position.unit_department
     if current_user.college.code=='amsas'
-      @udept_staffs=StaffAttendance.get_thumb_ids_unit_names_amsas
+      @udept=Position.department_list(current_user.college.code)
+      @udept_staffs=Position.thumbids_per_department #<--  be4 AMSAS - data entry(org chart) #StaffAttendance.get_thumb_ids_unit_names_amsas
     else
+      @udept=Position.unit_department2
       @udept_staffs=Position.unit_department_staffs2 #Position.unit_department_staffs
     end
   end
@@ -295,11 +297,15 @@ class Staff::StaffAttendancesController < ApplicationController
     elsif commit==t('staff_attendance.monthly_listing')
       if params[:monthly_list].blank? || params[:unit_department].blank? || params[:staff].blank?
         redirect_to(attendance_report_staff_staff_attendances_path, :notice => I18n.t('staff_attendance.compulsory_listing'))
+      elsif params[:staff]==(t 'select')
+	redirect_to(attendance_report_staff_staff_attendances_path, :notice => I18n.t('staff_attendance.compulsory_listing'))
       else
         redirect_to monthly_listing_staff_staff_attendances_path(:monthly_list => params[:monthly_list], :unit_department => params[:unit_department], :staff => params[:staff] ,format: 'pdf' )
       end
     elsif commit==t('staff_attendance.monthly_details')
       if params[:monthly_list2].blank? || params[:unit_department].blank? || params[:staff2].blank? || params[:details_type].blank?
+        redirect_to(attendance_report_staff_staff_attendances_path, :notice => I18n.t('staff_attendance.compulsory_details'))
+      elsif params[:staff2]==(t 'select')
         redirect_to(attendance_report_staff_staff_attendances_path, :notice => I18n.t('staff_attendance.compulsory_details'))
       else
         redirect_to monthly_details_staff_staff_attendances_path(:monthly_list2 => params[:monthly_list2], :unit_department => params[:unit_department], :staff2 => params[:staff2], :details_type => params[:details_type], format: 'pdf' )
@@ -417,8 +423,12 @@ class Staff::StaffAttendancesController < ApplicationController
     monthly_list=params[:monthly_list].to_time
     monthly_start=monthly_list.beginning_of_month
     monthly_end=monthly_list.end_of_month
-    staff=params[:staff].to_i
-    thumb_id=Staff.find(staff).thumb_id
+    unless current_user.college.code=='amsas'
+      staff=params[:staff].to_i   #  <--  be4 AMSAS - data entry(org chart) 
+      thumb_id=Staff.find(staff).thumb_id 
+    else
+      thumb_id=params[:staff].to_i
+    end
     unit_dept=params[:unit_department]
     @staff_attendances=StaffAttendance.where('thumb_id=? and logged_at >=? and logged_at <=?', thumb_id, monthly_start, monthly_end).order('logged_at ASC, log_type ASC')
     respond_to do |format|
@@ -435,8 +445,12 @@ class Staff::StaffAttendancesController < ApplicationController
     monthly_list2=params[:monthly_list2].to_time
     monthly_start=monthly_list2.beginning_of_month
     monthly_end=monthly_list2.end_of_month
-    staff2=params[:staff2].to_i
-    thumb_id=Staff.find(staff2).thumb_id
+    unless current_user.college.code=='amsas'
+      staff2=params[:staff2].to_i   #  <--  be4 AMSAS - data entry(org chart) 
+      thumb_id=Staff.find(staff2).thumb_id 
+    else
+      thumb_id=params[:staff2].to_i
+    end
     unit_dept=params[:unit_department]
     list_type=params[:details_type]
     @staff_attendances=StaffAttendance.where('thumb_id=? and logged_at >=? and logged_at <=?', thumb_id, monthly_start, monthly_end).order('logged_at ASC, log_type ASC')

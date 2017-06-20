@@ -85,9 +85,9 @@ class Laporan_harian_punchcardPdf < Prawn::Document
     end
     
     if @staff_attendances.count > 0
-      header + attendance_list + non_attend_list+ [["", "", "", ""]]
+      header + attendance_list + non_attend_list+ [["", "", "", ""], ["", "", "", ""]]
     else
-      header+non_attend_list+[["", "", "", ""]]
+      header+non_attend_list+[["", "", "", ""], ["", "", "", ""]]
     end
   end
 
