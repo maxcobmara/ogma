@@ -23,10 +23,10 @@
               %dt= t 'staff_leave.endorser_decision'
               %dd
                 - if @leaveforstaff.college.code=='kskbjb'
-                  = @leaveforstaff.approval1? && @leaveforstaff.approval1_id!=nil ? t('staff_leave.approved')+t("by2")+@leaveforstaff.seconder.name+t("on2")+@leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : t("staff_leave.rejected") 
+                  = @leaveforstaff.approval1? && @leaveforstaff.approval1_id!=nil ? t('staff_leave.endorsed')+t("by2")+@leaveforstaff.seconder.name+t("on2")+@leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : t("staff_leave.rejected") 
                 - else
                   - if @leaveforstaff.approval1?
-                    =@leaveforstaff.approval1_id!=nil ? t('staff_leave.approved')+t("by2")+@leaveforstaff.seconder.name+t("on2")+@leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : (t 'not_required')
+                    =@leaveforstaff.approval1_id!=nil ? t('staff_leave.endorsed')+t("by2")+@leaveforstaff.seconder.name+t("on2")+@leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : (t 'not_required')
                   - else
                     =t("staff_leave.rejected") 
                 

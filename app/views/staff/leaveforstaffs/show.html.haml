@@ -26,15 +26,21 @@
         %dt
           =(t 'staff_leave.leave_balance')
           %br=(t 'staff_leave.balance_before')
-        %dd= @leaveforstaff.applicant.appointdt.nil? ? (t 'staff_leave.appointdt_not_exist') : @leaveforstaff.balance_before
-        
+        %dd
+          - if !@leaveforstaff.applicant.appointdt.nil? && !@leaveforstaff.applicant.staffgrade.nil?
+            =@leaveforstaff.balance_before
+          - else
+            - if @leaveforstaff.applicant.appointdt.nil?
+              .text-red=(t 'staff_leave.appointdt_not_exist')
+            - if @leaveforstaff.applicant.staffgrade.nil?
+              .text-red=(t 'staff_leave.staffgrade_not_define')
         %dt
           = (t 'staff_leave.leave_balance')
           %br=(t 'staff_leave.balance_after')
-        %dd= @leaveforstaff.applicant.appointdt.nil? ? (t 'staff_leave.appointdt_not_exist') : @leaveforstaff.balance_after
+        %dd= @leaveforstaff.applicant.appointdt.nil? ? (t 'staff_leave.appointdt_not_exist') : @leaveforstaff.balance_after unless @leaveforstaff.applicant.staffgrade.nil?
    
         %dt= t 'staff_leave.entitlement'
-        %dd= @leaveforstaff.applicant.appointdt.nil? ? (t 'staff_leave.appointdt_not_exist') : @leaveforstaff.leave_balance.to_s+"/"+@leaveforstaff.cuti_rehat_entitlement.to_s
+        %dd= @leaveforstaff.applicant.appointdt.nil? ? (t 'staff_leave.appointdt_not_exist') : @leaveforstaff.leave_balance.to_s+"/"+@leaveforstaff.cuti_rehat_entitlement.to_s unless @leaveforstaff.applicant.staffgrade.nil?
         
   #approve.tab-pane.fade
     .col-md-8.col-md-offset-1
@@ -69,7 +75,7 @@
             =h @leaveforstaff.approver2? ? (t 'approved') : (t 'staff_leave.reject')
 
         %dt= t 'staff_leave.approval_name'
-        %dd=h  @leaveforstaff.approval2_id.blank? ? (t 'not_required') : @leaveforstaff.approver
+        %dd=h  @leaveforstaff.approval2_id.blank? ? (t 'not_required') : @leaveforstaff.approver.staff_with_rank_position
   
         %dt= t 'staff_leave.approve_date'
         %dd=h @leaveforstaff.approval2date.try(:strftime, "%d %b %Y")
@@ -86,10 +92,10 @@
       /  = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_leaveforstaff_path(@leaveforstaff), :class => 'btn btn-primary'
       /- if @current_user.userable_id == @leaveforstaff.approval1_id
       - permitted_to? :processing_level_1, :staff_leaveforstaffs do
-        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.endorse'), processing_level_1_staff_leaveforstaff_path(@leaveforstaff),  :class => 'btn btn-primary'
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.endorse'), processing_level_1_staff_leaveforstaff_path(@leaveforstaff),  :class => 'btn btn-primary' unless @leaveforstaff.approval1_id.blank?
       /- if @current_user.userable_id == @leaveforstaff.approval2_id
       - permitted_to? :processing_level_2, :staff_leaveforstaffs do
-        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.approve'), processing_level_2_staff_leaveforstaff_path(@leaveforstaff),  :class => 'btn btn-primary'
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.approve'), processing_level_2_staff_leaveforstaff_path(@leaveforstaff),  :class => 'btn btn-primary' unless @leaveforstaff.approval2_id.blank?
       - permitted_to? :delete, :staff_leaveforstaffs do
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
           staff_leaveforstaff_path(@leaveforstaff),                                                                                                    |

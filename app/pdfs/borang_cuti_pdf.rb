@@ -64,7 +64,7 @@ class Borang_cutiPdf < Prawn::Document
   
   def table_official_use
     data=[[{content: "UNTUK KEGUNAAN PEJABAT", colspan: 2}],
-          [{content: "Baki cuti pemohon <u> #{@leaveforstaff.applicant.appointdt.nil? ? (t 'staff_leave.appointdt_not_exist') : @leaveforstaff.balance_after} </u> hari (Diisi dan ditandatangan ringkas sebelum borang diserahkan kepada pemohon). Pemohon diberitahu dan cuti direkod. Tindakan ini hendaklah diambil setelah cuti diluluskan.", colspan: 2}], ["Tarikh : #{Date.today.strftime('%d-%m-%Y')}", "_________________________________"],
+          [{content: "Baki cuti pemohon <u> #{@leaveforstaff.applicant.appointdt.nil? ? (t 'staff_leave.appointdt_not_exist') : @leaveforstaff.balance_after unless @leaveforstaff.applicant.staffgrade.nil?} </u> hari (Diisi dan ditandatangan ringkas sebelum borang diserahkan kepada pemohon). Pemohon diberitahu dan cuti direkod. Tindakan ini hendaklah diambil setelah cuti diluluskan.", colspan: 2}], ["Tarikh : #{Date.today.strftime('%d-%m-%Y')}", "_________________________________"],
           ["", "b.p Pegawai Pentadbiran"]
          ]
     table(data, :column_widths => [300, 210], :cell_style => { :size => 10, :inline_format => :true,  :borders=>[], :padding => [5,0,0,0]}) do
@@ -81,7 +81,7 @@ class Borang_cutiPdf < Prawn::Document
   
   def table_reply_applicant
     data=[[{content: "Kepada : <u>#{@leaveforstaff.applicant.staff_with_rank}</u><br>(Nama Pemohon)", colspan: 2}],
-          [{content: "Permohonan cuti tuan/puan telah diluluskan selama <u> #{@leaveforstaff.try(:leave_for)} </u> hari dari #{@leaveforstaff.leavestartdate.strftime('%d-%m-%Y')} hingga #{@leaveforstaff.leavenddate.strftime('%d-%m-%Y')}.<br>Baki cuti rehat <u> #{ @leaveforstaff.applicant.appointdt.nil? ? (t 'staff_leave.appointdt_not_exist') : @leaveforstaff.balance_after} </u> hari.", colspan: 2}], ["Tarikh :   #{Date.today.strftime('%d-%m-%Y')}", "_________________________________"],
+          [{content: "Permohonan cuti tuan/puan telah diluluskan selama <u> #{@leaveforstaff.try(:leave_for)} </u> hari dari #{@leaveforstaff.leavestartdate.strftime('%d-%m-%Y')} hingga #{@leaveforstaff.leavenddate.strftime('%d-%m-%Y')}.<br>Baki cuti rehat <u> #{ @leaveforstaff.applicant.appointdt.nil? ? (t 'staff_leave.appointdt_not_exist') : @leaveforstaff.balance_after unless @leaveforstaff.applicant.staffgrade.nil?} </u> hari.", colspan: 2}], ["Tarikh :   #{Date.today.strftime('%d-%m-%Y')}", "_________________________________"],
           ["", "b.p Pegawai Pentadbiran"]
          ]
     table(data, :column_widths => [300, 210], :cell_style => { :size => 10, :inline_format => :true,  :borders=>[], :padding => [5,0,0,0]}) do
