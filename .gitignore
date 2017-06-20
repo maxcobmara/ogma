@@ -37,3 +37,5 @@ tmp/
 tmp/**/*
 *.directory
 *.fuse_*
+
+icms_runner_wo_update.sh

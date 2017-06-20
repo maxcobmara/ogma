@@ -1908,7 +1908,7 @@ ms_MY:
     approval1_id: Penyokong
     approval2_id: Pelulus
     approver_decision: Keputusan Pelulus
-    approval_name: Nama Yang Meluluskan
+    approval_name: Diluluskan Oleh
     approve_date: Tarikh Diluluskan
     endorser_decision: Keputusan Sokongan Ketua Unit
     endorsed_name: Disokong Oleh
@@ -1925,9 +1925,11 @@ ms_MY:
     reject: Menolak
     support: Menyokong
     supported: Disokong
+    endorsed: Disokong
     approved: Diluluskan
     rejected: Ditolak
     appointdt_not_exist: "Sila kemaskini 'Tarikh Lantikan Pertama' dalam submodul 'Maklumat Kakitangan'"
+    staffgrade_not_define: "Sila kemaskini 'Gred Jawatan' dalam submodul 'Maklumat Kakitangan'"
     leave_balance: Baki Cuti Rehat
     balance_before: "(sebelum cuti ini diambil)"
     balance_after: "(selepas cuti ini diambil)"

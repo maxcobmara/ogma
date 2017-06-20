@@ -183,7 +183,15 @@ class RepositoriesController < ApplicationController
       @repos=[]
       @rep=[]
       @per_vessel=Hash.new
-      @actual_records.group_by{|x|x.vessel_class}.sort.each do |vessel_class, mrepositories|
+      
+      ###Rails console - try this at iMac on 20th June 2017
+      #2.1.4 :022 >Repository.digital_library.to_a.group_by{|x|x.vessel_class}.keys
+      #=> ["2"] 
+      #2.1.4 :023 > Repository.digital_library.to_a.group_by{|x|x.vessel_class}.values
+      #=> [[#<Repository id: 50, title: "test", staff_id: 3, category: nil, uploaded_file_name: nil, uploaded_content_type: nil, uploaded_file_size: nil, uploaded_updated_at: nil, college_id: nil, data: {:vessel=>"", :document_type=>"1", :document_subtype=>"1", :refno=>"", :publish_date=>"", :total_pages=>"", :copies=>"", :location=>"", :classification=>"", :vessel_class=>"2", :code=>"6e4d2474835777a0", :equipment=>""}, created_at: "2017-06-19 03:55:16", updated_at: "2017-06-19 03:55:16">]]
+      ###
+      
+      @actual_records.to_a.group_by{|x|x.vessel_class}.sort.each do |vessel_class, mrepositories|
         if params[:ids]
           if params[:vessel_id]!='0'
             current_vessel_list=vessel_class_name
