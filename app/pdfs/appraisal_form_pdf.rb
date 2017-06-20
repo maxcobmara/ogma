@@ -170,7 +170,7 @@ def color
     move_down 20
     data1 = [['	i.', "Nama : #{@staff_appraisal.appraised.name} "],
       ["ii.","Jawatan dan Gred : #{@staff_appraisal.appraised.positions[0].try(:name)} .. #{@staff_appraisal.appraised.staffgrade.name}"],
-      ["iii.", "Kementerian/Jabatan : Kolej Sains Kesihatan Bersekutu Johor Bahru"]]
+      ["iii.", "Kementerian/Jabatan : #{@curr_user.college.name}"]]
       
           table(data1 , :column_widths => [30,490], :cell_style => { :size => 10}) do
           row(0).column(0).borders = [:left, :top]
@@ -894,7 +894,7 @@ def bahagian8
   move_down 20
   data1 = [[ "Nama PPP :", "#{@staff_appraisal.eval1_officer.name}"],
             ["Jawatan :", "#{@staff_appraisal.eval1_officer.positions.first.name}"],
-             ["Kementerian /Jabatan : ","Kolej Sains Kesihatan Bersekutu Johor Bahru"],
+             ["Kementerian /Jabatan : ","#{@curr_user.college.name}"],
            ["No. K.P : ","#{@staff_appraisal.eval1_officer.formatted_mykad}"]]
              
        table(data1 , :column_widths => [150,371], :cell_style => { :size => 11}) do
@@ -934,7 +934,7 @@ def bahagian9
   move_down 20
   data1 = [[ "Nama PPK :", "#{@staff_appraisal.eval2_officer.try(:name)}"],
             ["Jawatan :", "#{@staff_appraisal.eval2_officer.try(:positions).try(:first).try(:name)}"],
-             ["Kementerian /Jabatan : ","Kolej Sains Kesihatan Bersekutu Johor Bahru"],
+             ["Kementerian /Jabatan : ","#{@curr_user.college.name}"],
            ["No. K.P : ","#{@staff_appraisal.eval2_officer.try(:formatted_mykad)}"]]
              
        table(data1 , :column_widths => [150,371], :cell_style => { :size => 11}) do

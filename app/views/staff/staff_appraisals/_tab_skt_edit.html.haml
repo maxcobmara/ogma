@@ -28,7 +28,7 @@
         = f.check_box :is_skt_submit, :id => 'is_skt_submit'
       .col-md-2
         #span_skt_submit{:style=>"display: none;"}
-          = f.text_field :skt_submit_on, :class => 'date_picker_reverse form-control', :value => Date.today
+          = f.text_field :skt_submit_on, :class => 'date_picker_reverse form-control', :value => Date.today.strftime('%d-%m-%Y')
     .form-group
       .col-sm-2
         &nbsp;
