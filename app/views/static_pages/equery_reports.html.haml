@@ -193,6 +193,40 @@
                 %td= link_to (t 'student.counseling.title')+" ("+(t 'student.counseling.feedback_to')+")", student_student_counseling_sessions_path
                 %td.centre= link_to (fa_icon "search"), new_equery_report_studentcounselingsearch_path(searchstudentcounselingtype: 1)
           
+            ////
+          - elsif @query_module=='5'
+            - permitted_to? :read, :weeklytimetablesearches do
+              %tr
+                %td.group{colspan: 3}= (t 'equery.module')+" : "+t('training.title')
+
+                /permitted_to? :read, :weeklytimetablesearches do
+                %tr
+                  %td=no+=1
+                  %td= link_to (t 'training.weeklytimetable.title'), training_weeklytimetables_path
+                  %td.centre= link_to (fa_icon "search"), new_equery_report_weeklytimetablesearch_path(searchweeklytimetabletype: 1)
+
+                - permitted_to? :read, :curriculumsearches do
+                  %tr
+                    %td=no+=1
+                    %td= link_to (t 'training.programme.title'), training_programmes_path
+                    %td.centre= link_to (fa_icon "search"), new_equery_report_curriculumsearch_path(searchcurriculumtype: 1)
+
+                - permitted_to? :read, :lessonplansearches do
+                  %tr
+                    %td=no+=1
+                    %td
+                      = link_to (t 'training.lesson_plan.title'), training_lesson_plans_path
+                      \/
+                      = link_to (t 'training.lesson_plan.reporting'), index_report_training_lesson_plans_path
+                    %td.centre= link_to (fa_icon "search"), new_equery_report_lessonplansearch_path(searchlessonplantype: 1)
+
+                - permitted_to? :read, :personalizetimetablesearches do
+                  %tr
+                    %td=no+=1
+                    %td= link_to (t 'menu.personalised_timetable'), personalize_index_training_weeklytimetables_path
+                    %td.centre= link_to (fa_icon "search"), new_equery_report_personalizetimetablesearch_path(searchpersonalizetimetabletype: 1)
+
+            ////
           - elsif @query_module=='7'
             %tr
               %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'library.title')

@@ -600,6 +600,38 @@ class Weeklytimetable < ActiveRecord::Base
     return a_eis_friday.compact << @eis_friday if item_type==4
   end
   
+  #equery
+  def self.validintake_timetable
+    #timetable INTAKE must match with PROGRAMME, to exclude prev data entry (wrongly match data [intake_id<->programme_id])
+    #valid_intakes=[]
+    wt_valid_intakes=[]
+    weeklytimetables = Weeklytimetable.all
+    weeklytimetables.each do |y|
+        intakes_of_prog = Intake.where(programme_id: y.programme_id).map(&:id)
+        #valid_intakes << y.intake_id if intakes_of_prog.include?(y.intake_id)
+	wt_valid_intakes << y.id if intakes_of_prog.include?(y.intake_id) #collect WT ids yg guna intake yg betul bkn collect
+    end
+    wt_valid_intakes.uniq
+  end
+  
+  #usage - weeklytimetablesearches/_form
+  def self.lecturer_per_intake(curr_college)
+    ab=[]
+    if curr_college=='amsas'
+      intakeprogramme_list=Weeklytimetable.all.group_by{|x|x.schedule_intake.siri_programmelist}
+    else
+      intakeprogramme_list=Weeklytimetable.all.group_by{|x|x.schedule_intake.programmelist_group_intake}
+    end
+    intakeprogramme_list.sort.each do |intake_details, wts|
+      a=[[I18n.t('select'), ""]]
+      wts.group_by{|x|x.schedule_creator}.sort.each do |creator, wts2|
+	a << [creator.name, creator.id ]
+      end
+      ab << [intake_details, a]
+    end
+    ab
+  end
+  
   private
     def intake_must_match_with_programme
       if college_id!=2

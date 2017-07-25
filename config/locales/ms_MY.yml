@@ -5288,17 +5288,19 @@ ms_MY:
     student_discipline:
       search: Carian Kes Disiplin Pelajar
       list_all: Senarai Penuh Kes Disiplin Pelajar
-    #weeklytimetable:
-      #search: Carian Jadual Waktu Mingguan
+    weeklytimetable:
+      search: Carian Jadual Waktu Mingguan
+      list_all:  Senarai Penuh Jadual Waktu Mingguan
       #search_by: Carian Jadual Waktu Mingguan Mengikut
-      #intake_programme: "Ambilan - Program"
-      #programme: Program
+      intake_programme: "Ambilan - Program"
+      programme: Program
+      intake: Ambilan
       #select_by_programme: "untuk pilihan mengikut Program. "
       #select_by_intake_programme: "untuk pilihan mengikut Ambilan - Program. "
-      #startdate: Tarikh Mula
-      #enddate: Tarikh Tamat
-      #preparedby: Disediakan Oleh
-      #endorsedby: Diluluskan Oleh
+      startdate: Tarikh Mula
+      enddate: Tarikh Tamat
+      preparedby: Disediakan Oleh
+      endorsedby: Diluluskan Oleh
       #links: Pautan
       #select_programme_first: "Pilih 'Program' terlebih dahulu"
       #select_intake_programme_first: "Pilih 'Ambilan - Program' terlebih dahulu"
@@ -5309,10 +5311,11 @@ ms_MY:
       #search_by_startdate: "Carian mengikut (Tarikh Mula)"
       #search_by_enddate: "Carian mengikut (Tarikh Tamat)"
       #total_weeklytimetables: Jumlah Jadual Waktu Mingguan
-      #approved: Diluluskan
-      #rejected: Ditolak
-      #submitted: Dihantar
-      #timetable: Jadual Waktu
+      approved: Diluluskan
+      rejected: Ditolak
+      submitted: Dihantar
+      not_submitted: Belum Dihantar
+      timetable: Jadual Waktu
     #personalize_timetable:
       #search: Carian Jadual Waktu Individu
       #search_by: Carian Jadual Waktu Individu Mengikut
