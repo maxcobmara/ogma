@@ -4,6 +4,7 @@
 #Ignore Configs
 #Gemfile.lock
 config/database.yml
+config/database2.yml
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
