@@ -1,0 +1,108 @@
+/ Nav tabs
+%ul.nav.nav-tabs
+  %li.active= link_to  (t 'equery.result'), "#search", "data-toggle" => "tab"
+
+/ display 
+.tab-content{style:"padding-top:1em"}
+  #search_details.tab-pane.active  
+        
+    /additional heading
+    .col-md-8.col-md-offset-2
+      %dl.dl-horizontal
+
+        - if weeklytimetablesearch.intake_id.blank? && weeklytimetablesearch.preparedby.blank? && weeklytimetablesearch.startdate.blank? && weeklytimetablesearch.enddate.blank? 
+          %div.result-all=t 'equery.weeklytimetable.list_all'
+        - else
+          %div.result-search=t 'equery.search_by'
+            
+        %br
+                   
+        - unless weeklytimetablesearch.intake_id.blank?
+          - selected_intake=Intake.where(id: weeklytimetablesearch.intake_id).first
+          %dt=(t 'equery.weeklytimetable.intake_programme')
+          %dd=weeklytimetablesearch.college.code=='amsas' ? selected_intake.siri_programmelist : selected_intake.programmelist_group_intake
+
+        - unless weeklytimetablesearch.preparedby.blank?
+          %dt=(t 'equery.weeklytimetable.preparedby')
+          %dd=Staff.find(weeklytimetablesearch.preparedby).staff_with_rank
+              
+        - if !weeklytimetablesearch.startdate.blank? || !weeklytimetablesearch.enddate.blank?
+          %dt=(t 'equery.weeklytimetable.startdate')
+          %dd
+            - start_date=weeklytimetablesearch.startdate.try(:strftime, "%d-%m-%Y") 
+            - startend_date=weeklytimetablesearch.enddate.try(:strftime, "%d-%m-%Y")
+            =(t 'from')+" "
+            = !weeklytimetablesearch.startdate.blank? ? start_date : startend_date
+            =(t 'to')+" "
+            = !weeklytimetablesearch.enddate.blank? ? startend_date : Date.today.strftime("%d-%m-%Y")
+        
+        - if weeklytimetablesearch.intake_id.blank? && weeklytimetablesearch.preparedby.blank? && weeklytimetablesearch.startdate.blank? && weeklytimetablesearch.enddate.blank? 
+        - else
+          .col-md-12
+            .col-md-8
+              %hr
+          
+        %dt=(t 'equery.total')
+        %dd=weeklytimetablesearch.weeklytimetables.count==0 ? weeklytimetablesearch.weeklytimetables.count : weeklytimetablesearch.weeklytimetables.count.to_s+" "+(t 'records')
+
+    /display result
+    .col-md-11
+      %br
+      - if weeklytimetablesearch.weeklytimetables.count > 0
+        .right= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  weeklytimetable_report_training_weeklytimetables_path(params.merge(format: 'pdf' ))
+        %table.table.table-bordered.table-condensed.table-hover.equery
+          %head
+            %tr.info
+              %th{width: '4%'} No
+              - if current_user.college.code=='amsas'
+                %th{width: '14%'} Format
+              - else
+                %th{width: '5%'} Semester
+                %th{width: '5%'}=t('training.academic_session.title')
+              %th{width: '6%'}=t('training.weeklytimetable.week')
+              %th{width: '8%'}=t('equery.weeklytimetable.startdate')
+              %th{width: '8%'}=t('equery.weeklytimetable.enddate')
+              %th{width: '20%'}=t('equery.weeklytimetable.preparedby')
+              %th{width: '20%'}=t('equery.weeklytimetable.endorsedby')
+              %th{width: '10%'} Status
+              %th{width: '10%'}=t('equery.view')
+          %body
+            - if params[:page]
+              - cnt=(params[:page].to_i-1)*10
+            - else
+              - cnt=0
+            - weeklytimetables.group_by{|x|x.schedule_intake}.each do |sintake, weeklytimetable_list|
+              %tr.warning
+                %td.document{colspan: 11}=sintake.college.code=='amsas' ? sintake.siri_programmelist : sintake.programmelist_group_intake
+              - for weeklytimetable in weeklytimetable_list
+                %tr
+                  %td.centre=cnt+=1
+                  - if current_user.college.code=='amsas'
+                    %td=h weeklytimetable.timetable_monthurs.name.include?('BK-LAT') ? weeklytimetable.timetable_monthurs.name[0,16] : weeklytimetable.timetable_monthurs.name
+                  - else
+                    %td=weeklytimetable.semester
+                    %td=weeklytimetable.academic_semester.semester
+                  %td.centre
+                    =weeklytimetable.week.to_s
+                    - unless weeklytimetable.semester.blank?
+                      =" / "+weeklytimetable.academic_semester.total_week
+                  %td=weeklytimetable.startdate.try(:strftime, '%d-%m-%Y')
+                  %td=weeklytimetable.enddate.try(:strftime, '%d-%m-%Y')
+                  %td=weeklytimetable.schedule_creator.staff_with_rank
+                  %td=h weeklytimetable.schedule_approver.try(:staff_with_rank)
+                  %td.centre
+                    - if weeklytimetable.hod_approved==true
+                      %b=t('equery.weeklytimetable.approved')
+                    - else
+                      - if weeklytimetable.hod_approved==false &&weeklytimetable.hod_rejected==true
+                        .text-red="#{(t 'equery.weeklytimetable.rejected')} (#{weeklytimetable.reason})"
+                      - else
+                        - if weeklytimetable.is_submitted==true
+                          =t('equery.weeklytimetable.submitted')
+                        - else
+                          =t('equery.weeklytimetable.not_submitted')
+                  %td.centre
+                    - if weeklytimetable.hod_approved==true
+                      = link_to  (t 'equery.weeklytimetable.timetable'), weekly_timetable_training_weeklytimetable_path(weeklytimetable, format: "pdf")
+                      
+      .right{style:"padding: 0 10px; margin:0;"}= paginate weeklytimetables, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

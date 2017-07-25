@@ -5370,17 +5370,19 @@ en:
     student_discipline:
       search: Student Discipline Cases Search
       list_all: List of All Student Discipline Cases
-    #weeklytimetable:
-      #search: Weekly Timetable Search
+    weeklytimetable:
+      search: Weekly Timetable Search
+      list_all: List of All Weeklytimetable
       #search_by: Search Weekly Timetable By
-      #intake_programme: "Intake - Programme"
-      #programme: Programme
+      intake_programme: "Intake - Programme"
+      programme: Programme
+      intake: Intake
       #select_by_programme: "to select by Programme. "
       #select_by_intake_programme: "to select by Intake - Programme. "
-      #startdate: Start Date
-      #enddate: End Date
-      #preparedby: Prepared By
-      #endorsedby: Endorsed By
+      startdate: Start Date
+      enddate: End Date
+      preparedby: Prepared By
+      endorsedby: Endorsed By
       #links: Links
       #select_programme_first: "Select a 'Programme' first"
       #select_intake_programme_first: "Select 'Intake - Programme' first"
@@ -5391,10 +5393,11 @@ en:
       #search_by_startdate: "Search by (Start Date)"
       #search_by_enddate: "Search by (End Date)"
       #total_weeklytimetables: Total Weeklytimetables
-      #approved: Approved
-      #rejected: Rejected
-      #submitted: Submitted
-      #timetable: Timetable
+      approved: Approved
+      rejected: Rejected
+      submitted: Submitted
+      not_submitted: Not Submitted
+      timetable: Timetable
     #personalize_timetable:
       #search: Personalize Timetable Search
       #search_by: Search Personalize Timetable By

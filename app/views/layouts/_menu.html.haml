@@ -459,7 +459,11 @@
           
           - if (permitted_to? :create, :equery_report_studentsearches) || (permitted_to? :read, :equery_report_studentattendancesearches) || (permitted_to? :read, :equery_report_studentdisciplinesearches) || (permitted_to? :read, :equery_report_studentcounselingsearches)
             %li= link_to content_tag(:i, "", :class => "icon-numb")+(t 'student.title'), "/equery_reports?query_module=4"
-          
+          //
+          - if  (permitted_to? :create, :weeklytimetablesearches) || (permitted_to? :create, :curriculumsearches) || (permitted_to? :create, :lessonplansearches) || (permitted_to? :create, :personalizetimetablesearches)
+            %li= link_to content_tag(:i, "", :class => "icon-numb")+(t 'menu.training'),  "/equery_reports?query_module=5"
+
+          //
           - permitted_to? :read, :library_books do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'library.title'), "/equery_reports?query_module=7"
           - permitted_to? :read, :repositories do

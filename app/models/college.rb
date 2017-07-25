@@ -59,6 +59,10 @@ class College < ActiveRecord::Base
   has_many :studentcounselingsearches
   has_many :stationerysearches
   has_many :assetsearches
+  has_many :weeklytimetablesearches
+  has_many :lessonplansearches
+  has_many :curriculumsearches
+  has_many :personalizetimetablesearches
   has_many :asset_defects
   # staffs
   
