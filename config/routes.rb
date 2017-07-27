@@ -415,6 +415,7 @@ Ogma::Application.routes.draw do
     resources :programmes do
       collection do
         get :programme_report
+        get :programme_report2
       end
     end
     resources :intakes do

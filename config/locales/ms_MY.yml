@@ -595,6 +595,9 @@ ms_MY:
   not_applicable: Tidak berkaitan
   none: Tiada
   proceed: Teruskan
+  included: Disertakan
+  not_included: Tidak Disertakan
+  remarks: Catatan
  
   actions:
     new: Baru
@@ -5366,19 +5369,22 @@ ms_MY:
       #not_submit: Tidak dihantar
       #view_plan: Papar Pelan
       #view_report: Papar Laporan
-    #curriculum:
-      #search: Carian Sukatan Kurikulum
+    curriculum:
+      search: Carian Sukatan Kurikulum
+      list_all:  Senarai Penuh Sukatan Kurikulum
+      programme_only: "Bagi paparan lengkap sebuah program, pilih medan program <b>sahaja</b> dan klik 'Cari'."
       #search_by: Carian Sukatan Kurikulum Mengikut
       #select_programme_first: "Pilih 'Program' terlebih dahulu"
       #atleast_programme_semester: "Sila pilih sekurang-kurangnya Program dan Semester dan klik 'Cari'."
       #select_prog_and_sem: "Sila pilih sekurang-kurangnya Program dan Semester untuk membuat carian."
-      #tick_include_subject_topic: "Pilih kotak-kotak semak di atas untuk menyertakan 'Subjek' dan 'Topik dan Subtopik' dalam hasil carian."
-      #programme: Program
-      #subject: Subjek
+      tick_include_subject_topic: "Pilih kotak-kotak semak di bawah untuk menyertakan 'Subjek' dan 'Topik dan Subtopik' dalam hasil carian."
+      programme: Program
+      subject: Subjek
       #commonsubject: Subjek Asas
       #topic_subtopic: "Topik dan Subtopik"
-      #topic: Topik
+      topic: "Topik / Subtopik"
       #subtopic: Subtopik
+      module: Modul
       #semester: Semester
       #total_curriculums: Jumlah
       #code: Kod

@@ -71,7 +71,7 @@ class Programme_reportPdf < Prawn::Document
 	 #2nd level
 	 count=0
 	 programme.descendants.at_depth(1).sort_by(&:code).each do |node|
-           body << ["", "",{content: "#{count+=1}) #{node.subject_list if node.course_type=='Subject'}#{node.name if node.course_type=='Semester'}", colspan: 6}, node.credits, node.render_status, node.total_duration2, "#{node.lecture_d.blank? ? '-' : node.lecture_d.try(:strftime, '%H:%M')}", "#{node.tutorial.blank? ? '-' : node.tutorial_d.try(:strftime, '%H:%M') }", "#{node.practical_d.blank? ? '-' : node.practical_d.try(:strftime, '%H:%M')}"] 
+           body << ["", "",{content: "#{count+=1}) #{node.subject_list if node.course_type=='Subject'}#{node.name if node.course_type=='Semester'  || node.course_type=='Module'}", colspan: 6}, node.credits, node.render_status, node.total_duration2, "#{node.lecture_d.blank? ? '-' : node.lecture_d.try(:strftime, '%H:%M')}", "#{node.tutorial.blank? ? '-' : node.tutorial_d.try(:strftime, '%H:%M') }", "#{node.practical_d.blank? ? '-' : node.practical_d.try(:strftime, '%H:%M')}"] 
 
 	   #####7th level(kskbjb), 6th level(amsas)
 	   2.upto(level).each do |counting|

@@ -614,6 +614,9 @@ en:
   not_applicable: Not applicable
   none: None
   proceed: Proceed
+  included: Included
+  not_included: Not Included
+  remarks: Remarks
 
   actions:
     new: New
@@ -5448,19 +5451,22 @@ en:
       #not_submit: Not Submit
       #view_plan: View Plan
       #view_report: View Report
-    #curriculum:
-      #search: "Curriculum Details Search"
+    curriculum:
+      search: "Curriculum Details Search"
+      list_all: List of All Curriculum
+      programme_only: "For complete listing of a programme, select programme field <b>only</b> dan klik 'Search'."
       #search_by: Search Curriculum Details By
       #select_programme_first: "Select a 'Programme' first"
       #atleast_programme_semester: "Please select at least a Programme and a Semester and click 'Search'."
       #select_prog_and_sem: "Please select at least a Programme and a Semester for searching."
-      #tick_include_subject_topic: "Tick above checkboxes to include 'Subject' and 'Topic and Subtopic' in your search result."
-      #programme: Programme
-      #subject: Subject
+      tick_include_subject_topic: "Tick below checkboxes to include 'Subject' and 'Topic and Subtopic' in your search result."
+      programme: Programme
+      subject: Subject
       #commonsubject: Common Subject
       #topic_subtopic: "Topic and Subtopic"
-      #topic: Topic
+      topic: "Topic / Subtopic"
       #subtopic: Subtopic
+      module: Module
       #semester: Semester
       #total_curriculums: Total
       #code: Code

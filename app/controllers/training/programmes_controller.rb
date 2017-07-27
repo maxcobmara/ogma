@@ -103,6 +103,18 @@ class Training::ProgrammesController < ApplicationController
     end
   end
   
+  def programme_report2
+    @programmes = Programme.where(id: params[:ids]).order(:combo_code)
+    respond_to do |format|
+      format.pdf do
+        pdf = Programme_report2Pdf.new(@programmes, view_context, current_user.college)
+        send_data pdf.render, filename: "programme_report2-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+                                                       
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_programme
