@@ -1,0 +1,133 @@
+/ Nav tabs
+%ul.nav.nav-tabs
+  %li.active= link_to  (t 'equery.result'), "#search", "data-toggle" => "tab"
+
+/ display 
+.tab-content{style:"padding-top:1em"}
+  #search_details.tab-pane.active  
+        
+    /additional heading
+    .col-md-8.col-md-offset-2
+      %dl.dl-horizontal
+
+        - if curriculumsearch.programme_id.blank? && curriculumsearch.semester.blank? && curriculumsearch.subject==0 && curriculumsearch.topic==0
+          %div.result-all=t 'equery.curriculum.list_all'
+        - else
+          %div.result-search=t 'equery.search_by'
+            
+        %br
+        
+        - unless curriculumsearch.programme_id.blank?
+          %dt=(t 'equery.curriculum.programme_id')
+          %dd=Programme.find(curriculumsearch.programme_id).programme_list
+          
+        - unless curriculumsearch.semester.blank?
+          %dt=current_user.college.code=='amsas' ? (t 'equery.curriculum.module') : "Semester"
+          %dd=Programme.find(curriculumsearch.semester).name
+                 
+          %dt=(t 'equery.curriculum.subject')
+          %dd=curriculumsearch.subject==1 ? (t 'included') : (t 'not_included')
+        
+          %dt=(t 'equery.curriculum.topic')
+          %dd=curriculumsearch.topic==1 ? (t 'included') : (t 'not_included')
+
+        - if curriculumsearch.programme_id.blank? && curriculumsearch.semester.blank? && curriculumsearch.subject==0 && curriculumsearch.topic==0
+        - else
+          .col-md-12
+            .col-md-8
+              %hr
+          
+        %dt=(t 'equery.total')
+        %dd=curriculumsearch.curriculums.count==0 ? curriculumsearch.curriculums.count : curriculumsearch.curriculums.count.to_s+" "+(t 'records')
+
+    /display result
+    .col-md-11
+      %br
+      - if curriculumsearch.curriculums.count > 0
+        .right
+          = link_to  (fa_icon "file-pdf-o", text: (t 'print')), programme_report2_training_programmes_path(format: 'pdf', ids: curriculumsearch.curriculums.pluck(:id))
+          /= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  programme_report_training_programmes_path(params.merge(format: 'pdf' ))
+          /link_to (fa_icon "print", text: (t 'equery.print_result')), repository_list2_repositories_path(format: 'pdf', ids: @repositorysearch.repositories.pluck(:id), vessel_id: vesselid)
+        %table.table.table-bordered.table-condensed.table-hover.equery
+          %head
+            %tr.info
+              %th{colspan: 4, width: '12%'} No
+              %th{width: '42%'}=current_user.college.code=='amsas' ? (t 'training.programme.combo_code_amsas') : (t 'training.programme.combo_code')
+              %th{width: '8%'}=(t 'training.programme.course_type')
+              %th{width: '6%'}= (t 'training.programme.credits')
+              %th{width: '6%'} Status
+              %th{width: '8%'}=(t 'training.programme.duration')
+              %th{width: '6%'}=(t 'training.programme.lecture') 
+              %th{width: '6%'}=(t 'training.programme.tutorial')
+              %th{width: '6%'}=(t 'training.programme.practical')
+          %body
+            /- if params[:page]
+            /  -  cnt=(params[:page].to_i-1)*10
+            /- else
+            /  - cnt=0
+            - cnt=0
+            - curriculums.group_by(&:root).sort.each do |course, clms| 
+              %tr.warning
+                %td.document{colspan: 12}= course.programme_list
+              - for clm in Programme.where(id: clms.map(&:id)).at_depth(1).sort_by(&:code)
+                %tr.active
+                  %th=cnt+=1
+                  %th{colspan: 4}=clm.name
+                  %th=clm.course_type
+                  %th.centre=clm.credits if clm.credits != 0 
+                  %th=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == clm.status}).map {|disp, value| disp} }[0]
+                  %th=h clm.try(:total_duration) if clm.duration?
+                  %td.centre -
+                  %td.centre -
+                  %td.centre -
+                - onesource=Programme.where(id: clms.map(&:id)).at_depth(2).sort_by(&:code)
+                - cnt2=0
+                - for clmone in onesource
+                  - if clmone.parent_id==clm.id
+                    %tr
+                      %td=cnt+=1
+                      %td=cnt2+=1
+                      %td{colspan: 3}=clmone.name
+                      %td=clmone.course_type
+                      %td.centre=clmone.credits if clmone.credits != 0 
+                      %td=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == clmone.status}).map {|disp, value| disp} }[0]
+                      %td=h clmone.try(:total_duration) if clmone.duration?
+                      %td=h clmone.lecture_duration if clmone.lecture_d?
+                      %td=h clmone.tutorial_duration if clmone.tutorial_d?
+                      %td=h clmone.practical_duration if clmone.practical_d?
+                    ///
+                    - twosource=Programme.where(id: clms.map(&:id)).at_depth(3).sort_by(&:code)
+                    - cnt3=0
+                    - for clmtwo in twosource
+                      - if clmtwo.parent_id==clmone.id
+                        %tr
+                          %td
+                          %td
+                          %td=(cnt3+=1).to_s+")"
+                          %td{colspan: 2}=clmtwo.name
+                          %td=clmtwo.course_type
+                          %td.centre=clmtwo.credits if clmtwo.credits != 0 
+                          %td=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == clmtwo.status}).map {|disp, value| disp} }[0]
+                          %td=h clmtwo.try(:total_duration) if clmtwo.duration?
+                          %td=h clmtwo.lecture_duration if clmtwo.lecture_d?
+                          %td=h clmtwo.tutorial_duration if clmtwo.tutorial_d?
+                          %td=h clmtwo.practical_duration if clmtwo.practical_d?
+                        ///
+                        - threesource=Programme.where(id: clms.map(&:id)).at_depth(4).sort_by(&:code)
+                        - cnt4=0
+                        - for clmthree in threesource
+                          - if clmthree.parent_id==clmtwo.id
+                            %tr
+                              %td
+                              %td
+                              %td="("+(cnt4+=1).to_s+")"
+                              %td=clmthree.name
+                              %td=clmthree.course_type
+                              %td.centre=clmthree.credits if clmthree.credits != 0 
+                              %td=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == clmthree.status}).map {|disp, value| disp} }[0]
+                              %td=h clmthree.try(:total_duration) if clmthree.duration?
+                              %td=h clmthree.lecture_duration if clmthree.lecture_d?
+                              %td=h clmthree.tutorial_duration if clmthree.tutorial_d?
+                              %td=h clmthree.practical_duration if clmthree.practical_d?
+    
+      /.right{style:"padding: 0 10px; margin:0;"}= paginate curriculums, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

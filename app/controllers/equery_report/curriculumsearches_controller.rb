@@ -5,7 +5,20 @@ class EqueryReport::CurriculumsearchesController < ApplicationController
     @searchcurriculumtype = params[:searchcurriculumtype]
     @curriculumsearch = Curriculumsearch.new
   end
+  
+  def create
+    if @curriculumsearch.save
+        redirect_to equery_report_curriculumsearch_path(@curriculumsearch)
+    else
+        render :action => 'new'
+    end
+  end
 
+  def show
+    @curriculumsearch = Curriculumsearch.find(params[:id])
+    @curriculums=@curriculumsearch.curriculums#.page(params[:page]).per(10)
+  end
+       
 #   def create
 #     #raise params.inspect
 #     @searchstudenttype = params[:method]

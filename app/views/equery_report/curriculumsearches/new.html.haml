@@ -1,1 +1,59 @@
- 
+- model_class = Curriculumsearch
+.page-header
+  %h1=t('equery.curriculum.search')
+
+= render 'shared/flashes'
+
+.row.fluid
+  = form_for [:equery_report, @curriculumsearch], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = render :partial => 'form', :locals => {:f => f}
+    = f.hidden_field :college_id, value: current_user.college_id
+
+    .col-sm-8.col-md-offset-1
+      .row
+        .col-sm-offset-5
+          .small=t('equery.leaves_all_blank_all_records')
+        .col-sm-offset-4
+          %hr
+        .form-group
+          .col-sm-offset-6.col-sm-1
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), "/equery_reports?query_module=5", :class => 'btn btn-default'
+          .col-sm-offset-1.col-sm-2
+            = f.submit (t 'search') , class: "btn btn-primary", id: 'submit_button'
+            
+:javascript
+
+  $("input[id='curriculumsearch_topic']").click(function() {  
+    if($('#curriculumsearch_topic').is(':checked')) 
+    { 
+      var check_subject2=document.getElementById('curriculumsearch_subject');
+      check_subject2.checked=true;
+    }
+  });
+  
+  $("input[id='curriculumsearch_subject']").click(function() {  
+    if($('#curriculumsearch_topic').is(':checked')) 
+    {
+      var check_subject3=document.getElementById('curriculumsearch_subject');
+      if (check_subject3.checked==false)
+      {  check_subject3.checked=true; }
+    }
+  });
+  
+  $("#submit_button").click(function(event){
+    /*var aa=$('#curriculumsearch_semester :selected').text();*/
+    
+    var bb=$('#curriculumsearch_semester :selected').val();
+    var check_subject=document.getElementById('curriculumsearch_subject');
+    var check_topic=document.getElementById('curriculumsearch_topic');
+    var def_text=$('#sem_module').val();
+    
+    if ((bb=="") && (check_subject.checked==true || check_topic.checked==true))
+    { alert("#{t('select')} "+def_text);
+      event.preventDefault();}
+    
+  });
+  
+  
+  

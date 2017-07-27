@@ -461,7 +461,7 @@
             %li= link_to content_tag(:i, "", :class => "icon-numb")+(t 'student.title'), "/equery_reports?query_module=4"
           //
           - if  (permitted_to? :create, :weeklytimetablesearches) || (permitted_to? :create, :curriculumsearches) || (permitted_to? :create, :lessonplansearches) || (permitted_to? :create, :personalizetimetablesearches)
-            %li= link_to content_tag(:i, "", :class => "icon-numb")+(t 'menu.training'),  "/equery_reports?query_module=5"
+            %li= link_to content_tag(:i, "", :class => "icon-numb")+(t 'training.title'),  "/equery_reports?query_module=5"
 
           //
           - permitted_to? :read, :library_books do

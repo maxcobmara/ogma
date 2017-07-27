@@ -7,11 +7,6 @@ class EqueryReport::WeeklytimetablesearchesController < ApplicationController
   end
   
   def create
-#     @searchweeklytimetabletype = params[:method]
-#     if (@searchweeklytimetabletype == '1' || @searchweeklytimetabletype == 1)
-#         @weeklytimetablesearch = Weeklytimetablesearch.new(params[:weeklytimetablesearch])
-#     end
-    
     if @weeklytimetablesearch.save
         redirect_to equery_report_weeklytimetablesearch_path(@weeklytimetablesearch)
     else
