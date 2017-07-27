@@ -18,7 +18,7 @@
         %br
         
         - unless curriculumsearch.programme_id.blank?
-          %dt=(t 'equery.curriculum.programme_id')
+          %dt=(t 'equery.curriculum.programme')
           %dd=Programme.find(curriculumsearch.programme_id).programme_list
           
         - unless curriculumsearch.semester.blank?
@@ -38,16 +38,13 @@
               %hr
           
         %dt=(t 'equery.total')
-        %dd=curriculumsearch.curriculums.count==0 ? curriculumsearch.curriculums.count : curriculumsearch.curriculums.count.to_s+" "+(t 'records')
+        %dd=curriculumsearch.curriculums.count==0 ? curriculumsearch.curriculums.count : curriculumsearch.curriculums.count.to_s+" "+(t 'records')+" ("+curriculumsearch.curriculums.roots.count.to_s+" "+(t 'equery.curriculum.programme')+") "
 
     /display result
     .col-md-11
       %br
       - if curriculumsearch.curriculums.count > 0
-        .right
-          = link_to  (fa_icon "file-pdf-o", text: (t 'print')), programme_report2_training_programmes_path(format: 'pdf', ids: curriculumsearch.curriculums.pluck(:id))
-          /= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  programme_report_training_programmes_path(params.merge(format: 'pdf' ))
-          /link_to (fa_icon "print", text: (t 'equery.print_result')), repository_list2_repositories_path(format: 'pdf', ids: @repositorysearch.repositories.pluck(:id), vessel_id: vesselid)
+        .right= link_to (fa_icon "file-pdf-o", text: (t 'print')), programme_report2_training_programmes_path(format: 'pdf', ids: curriculumsearch.curriculums.pluck(:id))
         %table.table.table-bordered.table-condensed.table-hover.equery
           %head
             %tr.info
@@ -61,10 +58,6 @@
               %th{width: '6%'}=(t 'training.programme.tutorial')
               %th{width: '6%'}=(t 'training.programme.practical')
           %body
-            /- if params[:page]
-            /  -  cnt=(params[:page].to_i-1)*10
-            /- else
-            /  - cnt=0
             - cnt=0
             - curriculums.group_by(&:root).sort.each do |course, clms| 
               %tr.warning
@@ -85,7 +78,7 @@
                 - for clmone in onesource
                   - if clmone.parent_id==clm.id
                     %tr
-                      %td=cnt+=1
+                      %td.small.text-grey=cnt+=1
                       %td=cnt2+=1
                       %td{colspan: 3}=clmone.name
                       %td=clmone.course_type
@@ -101,7 +94,7 @@
                     - for clmtwo in twosource
                       - if clmtwo.parent_id==clmone.id
                         %tr
-                          %td
+                          %td.small.text-grey=cnt+=1
                           %td
                           %td=(cnt3+=1).to_s+")"
                           %td{colspan: 2}=clmtwo.name
@@ -118,6 +111,7 @@
                         - for clmthree in threesource
                           - if clmthree.parent_id==clmtwo.id
                             %tr
+                              %td.small.text-grey=cnt+=1
                               %td
                               %td
                               %td="("+(cnt4+=1).to_s+")"
@@ -129,5 +123,3 @@
                               %td=h clmthree.lecture_duration if clmthree.lecture_d?
                               %td=h clmthree.tutorial_duration if clmthree.tutorial_d?
                               %td=h clmthree.practical_duration if clmthree.practical_d?
-    
-      /.right{style:"padding: 0 10px; margin:0;"}= paginate curriculums, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

@@ -15,65 +15,53 @@ class Curriculumsearch < ActiveRecord::Base
     ["id=?", programme_id] unless programme_id.blank?
   end
   
-   def semester_conditions
-     ["id=?", semester] unless semester.blank?
-   end
+  def semester_conditions
+    ["id=?", semester] unless semester.blank?
+  end
    
-   #shared descendants_ids (for subject & topic)
-   ##
-   def descendants_ids
-     unless semester.blank?
-       desc_ids = Programme.find(semester).descendants.map(&:id)
-     else
-       if programme_id.blank?
-         a=[]
-         Programme.roots.each{|x|a+= x.descendants.map(&:id)}
-         desc_ids=a.compact
-       end
-     end
-     desc_ids
-   end
-   ##
+  #shared descendants_ids (for subject & topic)
+  def descendants_ids
+    unless semester.blank?
+      desc_ids = Programme.find(semester).descendants.map(&:id)
+    else
+      if programme_id.blank?
+        a=[]
+        Programme.roots.each{|x|a+= x.descendants.map(&:id)}
+        desc_ids=a.compact
+      else
+        desc_ids = Programme.find(programme_id).descendants.map(&:id).compact
+      end
+    end
+    desc_ids
+  end
+
+  def subject_conditions
+    if (!semester.blank? && subject==1) || (programme_id.blank?)
+      #selection1 (programme_id+semester(modul)+subject) OR selection2(no selection)
+      subjects_ids = Programme.where('id IN(?) and (course_type=? or course_type=?)', descendants_ids, 'Subject', 'Commonsubject')
+    elsif (!programme_id.blank? && subject==0)
+      #inc Module here, selection (programme_id only)
+      subjects_ids = Programme.where(id: descendants_ids).where(course_type: ['Subject', 'Commonsubject', 'Module']) 
+    end
+    if subjects_ids.count > 0
+      a="id=?"
+      0.upto(subjects_ids.count-2).each do |y|
+        a+=" OR id=? " if subjects_ids.count > 1
+      end
+      [a, subjects_ids] if ((!semester.blank? && subject==1) || (!programme_id.blank? && semester.blank? && subject==0))      
+    end
+  end
    
-   def subject_conditions
-#      unless semester.blank?
-#        descendants_ids = Programme.find(semester).descendants.map(&:id)
-#      else
-#        if programme_id.blank?
-# 	 a=[]
-#          Programme.roots.each{|x|a+= x.descendants.map(&:id)}
-# 	 descendants_ids=a.compact
-#        end
-#      end
-     subjects_ids = Programme.where('id IN(?) and (course_type=? or course_type=?)', descendants_ids, 'Subject', 'Commonsubject')
-     if subjects_ids.count > 0
-       a="id=?"
-       0.upto(subjects_ids.count-2).each do |y|
-         a+=" OR id=? " if subjects_ids.count > 1
-       end
-       [a, subjects_ids] if !semester.blank? && subject==1 && subjects_ids.count > 0
-     end
-   end
-   
-   def topic_conditions
-#      unless semester.blank?
-#        descendants_ids = Programme.find(semester).descendants.map(&:id)
-#      else
-#        if programme_id.blank?
-# 	 a=[]
-#          Programme.roots.each{|x|a+= x.descendants.map(&:id)}
-# 	 descendants_ids=a.compact
-#        end
-#      end
-     topics_ids = Programme.where('id IN(?) and (course_type=? or course_type=?)', descendants_ids, 'Topic', 'Subtopic')
-     if topics_ids.count > 0
-       a="id=?"
-       0.upto(topics_ids.count-2).each do |y|
-         a+=" OR id=? " if topics_ids.count
-       end
-       [a, topics_ids] if !semester.blank? && subject==1 && topic==1
-     end
-   end  
+  def topic_conditions
+    topics_ids = Programme.where('id IN(?) and (course_type=? or course_type=?)', descendants_ids, 'Topic', 'Subtopic')
+    if topics_ids.count > 0
+      a="id=?"
+      0.upto(topics_ids.count-2).each do |y|
+        a+=" OR id=? " if topics_ids.count > 1
+      end
+      [a, topics_ids] if ((!semester.blank? && subject==1 && topic==1) || (!programme_id.blank? && semester.blank? && subject==0 && topic==0))
+    end
+  end  
   
   def orders
     "combo_code ASC"

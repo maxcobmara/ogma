@@ -12,8 +12,12 @@
 
     .col-sm-8.col-md-offset-1
       .row
-        .col-sm-offset-5
-          .small=t('equery.leaves_all_blank_all_records')
+        .col-sm-offset-4
+          .small
+            =t('remarks')
+            %ol
+              %li=t('equery.leaves_all_blank_all_records')
+              %li=t('equery.curriculum.programme_only').html_safe
         .col-sm-offset-4
           %hr
         .form-group

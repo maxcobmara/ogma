@@ -597,6 +597,7 @@ ms_MY:
   proceed: Teruskan
   included: Disertakan
   not_included: Tidak Disertakan
+  remarks: Catatan
  
   actions:
     new: Baru
@@ -5371,6 +5372,7 @@ ms_MY:
     curriculum:
       search: Carian Sukatan Kurikulum
       list_all:  Senarai Penuh Sukatan Kurikulum
+      programme_only: "Bagi paparan lengkap sebuah program, pilih medan program <b>sahaja</b> dan klik 'Cari'."
       #search_by: Carian Sukatan Kurikulum Mengikut
       #select_programme_first: "Pilih 'Program' terlebih dahulu"
       #atleast_programme_semester: "Sila pilih sekurang-kurangnya Program dan Semester dan klik 'Cari'."
@@ -5380,7 +5382,7 @@ ms_MY:
       subject: Subjek
       #commonsubject: Subjek Asas
       #topic_subtopic: "Topik dan Subtopik"
-      topic: Topik
+      topic: "Topik / Subtopik"
       #subtopic: Subtopik
       module: Modul
       #semester: Semester

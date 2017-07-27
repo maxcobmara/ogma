@@ -616,6 +616,7 @@ en:
   proceed: Proceed
   included: Included
   not_included: Not Included
+  remarks: Remarks
 
   actions:
     new: New
@@ -5453,6 +5454,7 @@ en:
     curriculum:
       search: "Curriculum Details Search"
       list_all: List of All Curriculum
+      programme_only: "For complete listing of a programme, select programme field <b>only</b> dan klik 'Search'."
       #search_by: Search Curriculum Details By
       #select_programme_first: "Select a 'Programme' first"
       #atleast_programme_semester: "Please select at least a Programme and a Semester and click 'Search'."
@@ -5462,7 +5464,7 @@ en:
       subject: Subject
       #commonsubject: Common Subject
       #topic_subtopic: "Topic and Subtopic"
-      topic: Topic
+      topic: "Topic / Subtopic"
       #subtopic: Subtopic
       module: Module
       #semester: Semester

@@ -46,19 +46,41 @@ class Programme_report2Pdf < Prawn::Document
 	 count=0
 	 #programme.descendants.at_depth(1).sort_by(&:code).each do |node|
 	 for node in Programme.where(id: programmes.map(&:id)).at_depth(1).sort_by(&:code)
-           body << ["", "",{content: "#{count+=1}) #{node.subject_list if node.course_type=='Subject'}#{node.name if node.course_type=='Semester' || node.course_type=='Module'}", colspan: 6}, node.credits, node.render_status, node.total_duration2, "#{node.lecture_d.blank? ? '-' : node.lecture_d.try(:strftime, '%H:%M')}", "#{node.tutorial.blank? ? '-' : node.tutorial_d.try(:strftime, '%H:%M') }", "#{node.practical_d.blank? ? '-' : node.practical_d.try(:strftime, '%H:%M')}"] 
+           body << ["", {content: "#{count+=1}) #{node.subject_list if node.course_type=='Subject'}#{node.name if node.course_type=='Semester' || node.course_type=='Module'}", colspan: 7}, node.credits, node.render_status, node.total_duration2, "#{node.lecture_d.blank? ? '-' : node.lecture_d.try(:strftime, '%H:%M')}", "#{node.tutorial.blank? ? '-' : node.tutorial_d.try(:strftime, '%H:%M') }", "#{node.practical_d.blank? ? '-' : node.practical_d.try(:strftime, '%H:%M')}"] 
+  
+# 	   #####7th level(kskbjb), 6th level(amsas)
+# 	   2.upto(level).each do |counting|
+#              #node.descendants.at_depth(counting).sort_by(&:code).each do |childnode|
+# 	     
+#              asource=Programme.where(id: programmes.map(&:id)).at_depth(counting).sort_by(&:code)
+#              for childnode in asource
+# 	       if childnode.parent_id==node.id
+#                  body << [{content: "", colspan: counting+1}, {content: "- #{childnode.subject_list}", colspan: 8-(counting+1)}, childnode.credits, childnode.render_status, childnode.total_duration2,  "#{childnode.lecture_d.blank? ? '-' : childnode.lecture_d.try(:strftime, '%H:%M')}", "#{childnode.tutorial.blank? ? '-' : childnode.tutorial_d.try(:strftime, '%H:%M') }", "#{childnode.practical_d.blank? ? '-' : childnode.practical_d.try(:strftime, '%H:%M')}"]
+# 	       end
+# 	     end
+# 	   end
 
-	   #####7th level(kskbjb), 6th level(amsas)
-	   2.upto(level).each do |counting|
-             #node.descendants.at_depth(counting).sort_by(&:code).each do |childnode|
-             asource=Programme.where(id: programmes.map(&:id)).at_depth(counting).sort_by(&:code)
-             for childnode in asource
-	       if childnode.parent_id==node.id
-                 body << [{content: "", colspan: counting+1}, {content: "- #{childnode.subject_list}", colspan: 8-(counting+1)}, childnode.credits, childnode.render_status, childnode.total_duration2,  "#{childnode.lecture_d.blank? ? '-' : childnode.lecture_d.try(:strftime, '%H:%M')}", "#{childnode.tutorial.blank? ? '-' : childnode.tutorial_d.try(:strftime, '%H:%M') }", "#{childnode.practical_d.blank? ? '-' : childnode.practical_d.try(:strftime, '%H:%M')}"]
-	       end
-	     end
-	   end
-           
+           onesource=Programme.where(id: programmes.map(&:id)).at_depth(2).sort_by(&:code)
+           for clmone in onesource
+             if clmone.parent_id==node.id
+	        body << [{content: "", colspan: 2}, {content: "- #{clmone.subject_list}", colspan: 6}, clmone.credits, clmone.render_status, clmone.total_duration2,  "#{clmone.lecture_d.blank? ? '-' : clmone.lecture_d.try(:strftime, '%H:%M')}", "#{clmone.tutorial.blank? ? '-' : clmone.tutorial_d.try(:strftime, '%H:%M') }", "#{clmone.practical_d.blank? ? '-' : clmone.practical_d.try(:strftime, '%H:%M')}"]
+
+                twosource=Programme.where(id: programmes.map(&:id)).at_depth(3).sort_by(&:code)
+                for clmtwo in twosource
+                  if clmtwo.parent_id==clmone.id
+                      body << [{content: "", colspan: 3}, {content: "-> #{clmtwo.subject_list}", colspan: 5}, clmtwo.credits, clmtwo.render_status, clmtwo.total_duration2,  "#{clmtwo.lecture_d.blank? ? '-' : clmtwo.lecture_d.try(:strftime, '%H:%M')}", "#{clmtwo.tutorial.blank? ? '-' : clmtwo.tutorial_d.try(:strftime, '%H:%M') }", "#{clmtwo.practical_d.blank? ? '-' : clmtwo.practical_d.try(:strftime, '%H:%M')}"]
+
+                      threesource=Programme.where(id: programmes.map(&:id)).at_depth(4).sort_by(&:code)
+                      for clmthree in threesource
+                        if clmthree.parent_id==clmtwo.id
+	                  body << [{content: "", colspan: 4}, {content: "->> #{clmthree.subject_list}", colspan: 4}, clmthree.credits, clmthree.render_status, clmthree.total_duration2,  "#{clmthree.lecture_d.blank? ? '-' : clmthree.lecture_d.try(:strftime, '%H:%M')}", "#{clmthree.tutorial.blank? ? '-' : clmthree.tutorial_d.try(:strftime, '%H:%M') }", "#{clmthree.practical_d.blank? ? '-' : clmthree.practical_d.try(:strftime, '%H:%M')}"]
+                        end
+                      end
+                  end
+                end
+             end
+           end
+        
          end
 	 body << [{content: "", colspan: 8+6}]
     end
