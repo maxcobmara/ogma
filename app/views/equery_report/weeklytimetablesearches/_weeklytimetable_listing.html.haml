@@ -49,7 +49,7 @@
     .col-md-11
       %br
       - if weeklytimetablesearch.weeklytimetables.count > 0
-        .right= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  weeklytimetable_report_training_weeklytimetables_path(params.merge(format: 'pdf' ))
+        .right= link_to (fa_icon "file-pdf-o", text: (t 'print')), weeklytimetable_report_training_weeklytimetables_path(format: 'pdf', ids: weeklytimetablesearch.weeklytimetables.pluck(:id))
         %table.table.table-bordered.table-condensed.table-hover.equery
           %head
             %tr.info

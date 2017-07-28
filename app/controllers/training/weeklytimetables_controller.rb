@@ -484,8 +484,12 @@ class Training::WeeklytimetablesController < ApplicationController
   end
   
   def weeklytimetable_report
-    @search = Weeklytimetable.search(params[:q])
-    @weeklytimetables = @search.result
+    if params[:q]
+      @search = Weeklytimetable.search(params[:q])
+      @weeklytimetables = @search.result
+    elsif params[:ids]
+      @weeklytimetables = Weeklytimetable.where(id: params[:ids])
+    end
      respond_to do |format|
        format.pdf do
          pdf = Weeklytimetable_reportPdf.new(@weeklytimetables, view_context, current_user.college)
