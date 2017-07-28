@@ -10,6 +10,7 @@
     = render :partial => 'form', :locals => {:f => f}
     = f.hidden_field :college_id, value: current_user.college_id
     = f.hidden_field :validintake, value: 1
+    = f.hidden_field :intake, value: 1
 
     .col-sm-8.col-md-offset-1
       .row
