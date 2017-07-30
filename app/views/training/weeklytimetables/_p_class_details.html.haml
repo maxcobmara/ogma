@@ -1,13 +1,27 @@
-- if j.weeklytimetable_topic.ancestry_depth == 4 
-  .text-left
-    /= j.weeklytimetable_topic.parent.parent.code
-    = j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase
-  = j.weeklytimetable_topic.parent.name
+- if current_user.college.code=="amsas"
+  - if j.weeklytimetable_subject.ancestry_depth == 4 
+    .text-left
+      /= j.weeklytimetable_topic.parent.parent.code
+      = j.weeklytimetable_subject.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_subject.parent.parent.subject_abbreviation.upcase
+    = j.weeklytimetable_subject.parent.name
+  - else
+    .text-left
+      /= j.weeklytimetable_topic.parent.code
+      = j.weeklytimetable_subject.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_subject.parent.subject_abbreviation.upcase
+    = j.weeklytimetable_subject.name
 - else
-  .text-left
-    /= j.weeklytimetable_topic.parent.code
-    = j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase
-  = j.weeklytimetable_topic.name
+  - if j.weeklytimetable_topic.ancestry_depth == 4 
+    .text-left
+      /= j.weeklytimetable_topic.parent.parent.code
+      = j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase
+    = j.weeklytimetable_topic.parent.name
+  - else
+    .text-left
+      /= j.weeklytimetable_topic.parent.code
+      = j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase
+    = j.weeklytimetable_topic.name
+////
+
 %br
 /= j.weeklytimetable_location.try(:name)
 = j.location_desc

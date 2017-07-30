@@ -262,6 +262,9 @@ class PersonalizetimetablePdf < Prawn::Document
     header_col = [""]
     colfriday=1
  
+    #TEMPORARY - 28jULY2017 : TODO - upon confirmation of order, fix this line for err arise for line #306, 353 (include nil)
+    @classes_tospan=[] if @classes_tospan.nil?
+    
     #size & columns count
     #[2]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
     if @college.code=='amsas' && @column_count_monthur > 8

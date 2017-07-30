@@ -1,5 +1,5 @@
 class Training::WeeklytimetablesController < ApplicationController
-    filter_access_to :index, :new, :create, :personalize_index, :weekly_timetable, :personalizetimetable,:personalize_show, :weeklytimetable_report,  :personalize_report, :attribute_check => false
+    filter_access_to :index, :new, :create, :personalize_index, :weekly_timetable, :personalizetimetable, :personalizetimetable_query, :personalize_show, :weeklytimetable_report,  :personalize_report, :attribute_check => false
     filter_access_to :show, :edit, :update, :destroy, :approval, :attribute_check => true
   
   before_action :set_weeklytimetable, only: [:show, :edit, :update, :destroy]
@@ -423,6 +423,7 @@ class Training::WeeklytimetablesController < ApplicationController
     end
   end
 
+  #usage - personalize WT (current_user)
   def personalizetimetable
     @selected_date = params[:id]
     @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?', current_user.userable_id)
@@ -434,7 +435,27 @@ class Training::WeeklytimetablesController < ApplicationController
     respond_to do |format|
       format.pdf do
         pdf = PersonalizetimetablePdf.new(@personalize, view_context, current_user, @selected_date, current_user.college)
-        send_data pdf.render, filename: "timetable_blank-{Date.today}",
+        send_data pdf.render, filename: "personalize-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end  
+  
+  #usage - equery (based on search result of listed lecturer's pWT)
+  def personalizetimetable_query
+    @selected_date = params[:seldate]
+    @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?', params[:lecturer])
+    @all_combine = []
+    @weeklytimetables_details.each do |x|
+        @all_combine << Weeklytimetable.find(x.weeklytimetable.id)
+    end 
+    @personalize = @all_combine.group_by{|t|t.startdate}
+    aa=User.where(userable_type: 'Staff', userable_id: params[:lecturer]).first
+    respond_to do |format|
+      format.pdf do
+        pdf = PersonalizetimetablePdf.new(@personalize, view_context, aa, @selected_date, current_user.college)
+        send_data pdf.render, filename: "personalize_query-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
       end
@@ -444,30 +465,6 @@ class Training::WeeklytimetablesController < ApplicationController
   #23March2013
   def general_timetable
     @weeklytimetable = Weeklytimetable.find(params[:id])
-    render :layout => 'report'
-  end
-  
-  def personalize_timetable
-    @selected_date = params[:id]
-    #---start:added-26Jul2013-for e-query & report manager--
-    if @selected_date
-    else
-        @hihi = params[:locals][:id]
-        @haha = params[:locals][:lecturer_id]
-    end
-    #---end:added-26Jul2013-for e-query & report manager--
-    @weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',User.current_user.staff_id])
-    #---start:added-26Jul2013-for e-query & report manager--
-    if @hihi!=nil
-        @selected_date = @hihi
-        @weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',@haha.to_i])
-    end
-    #---end:added-26Jul2013-for e-query & report manager--
-    @all_combine = []
-    @weeklytimetables_details.each do |x|
-        @all_combine << Weeklytimetable.find(x.weeklytimetable_id)  #Weeklytimetable.find(x.weeklytimetable.id)
-    end 
-    @personalize = @all_combine.group_by{|t|t.startdate}
     render :layout => 'report'
   end
   
@@ -501,14 +498,20 @@ class Training::WeeklytimetablesController < ApplicationController
   end
   
   def personalize_report
-    @search = WeeklytimetableDetail.search(params[:q])
-    @weeklytimetables_details= @search.result.where('lecturer_id=?', current_user.userable_id)
+    if params[:q]
+      lecturer=current_user.userable_id
+      @search = WeeklytimetableDetail.search(params[:q])
+      @weeklytimetables_details= @search.result.where('lecturer_id=?', lecturer)
+    else
+      lecturer=params[:lecturer]
+      @weeklytimetables_details=WeeklytimetableDetail.where(id: params[:ids]).where(lecturer_id: lecturer)
+    end
     all_combine = []
     @weeklytimetables_details.each{|x| all_combine << Weeklytimetable.find(x.weeklytimetable.id)}
     @personalize = all_combine.group_by{|t|t.startdate}
      respond_to do |format|
        format.pdf do
-         pdf = Personalize_reportPdf.new(@personalize, view_context, current_user.college, current_user.userable_id)
+         pdf = Personalize_reportPdf.new(@personalize, view_context, current_user.college, lecturer)
          send_data pdf.render, filename: "personalize_report-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"

@@ -10,7 +10,7 @@ class Personalize_reportPdf < Prawn::Document
   end
   
   def record
-    table(line_item_rows, :column_widths => [30, 180, 60, 65, 65, 360], :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
+    table(line_item_rows, :column_widths => [30, 140, 60, 65, 65, 400], :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
       row(0..1).style size: 11
@@ -37,7 +37,11 @@ class Personalize_reportPdf < Prawn::Document
         combined_wt+=Weeklytimetable.find(x).schedule_programme.programme_list+"<br>"
         slots=Weeklytimetable.find(x).weeklytimetable_details.where(lecturer_id: @userable_id)
         slots.each do |slot|
-          combined_slot+=slot.get_date_day_of_schedule+' ('+slot.get_time_slot+') - '+slot.weeklytimetable_topic.subject_list+' ('+slot.render_class_method.first+') <br>'
+	  if @college.code=='amsas'
+            combined_slot+=slot.get_date_day_of_schedule+' ('+slot.get_time_slot+') - '+slot.weeklytimetable_subject.subject_list+' ('+slot.render_class_method.first+') <br>'
+	  else
+	    combined_slot+=slot.get_date_day_of_schedule+' ('+slot.get_time_slot+') - '+slot.weeklytimetable_topic.subject_list+' ('+slot.render_class_method.first+') <br>'
+	  end
         end
         combined_status+="#{Weeklytimetable.find(x).hod_approved? ? I18n.t('approved')+'<br>' : I18n.t('not_approved')+'<br>'}"
 

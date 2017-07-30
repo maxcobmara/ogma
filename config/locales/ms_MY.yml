@@ -5319,22 +5319,25 @@ ms_MY:
       submitted: Dihantar
       not_submitted: Belum Dihantar
       timetable: Jadual Waktu
-    #personalize_timetable:
-      #search: Carian Jadual Waktu Individu
+    personalize_timetable:
+      search: Carian Jadual Waktu Individu
+      list_all: Senarai Penuh Jadual Waktu Individu
       #search_by: Carian Jadual Waktu Individu Mengikut
       #total_personalize_timetable: Jumlah Jadual Waktu Individu
-      #approved: Diluluskan
-      #rejected: Ditolak
-      #submitted: Telah dihantar
-      #not_submit: Belum dihantar
-      #start_date: Tarikh Mula
+      approved: Diluluskan
+      rejected: Ditolak
+      submitted: Telah dihantar
+      not_submit: Belum dihantar
+      lecturer: Pengajar
+      start_date: Tarikh Mula
       #class_date: Tarikh Kelas
       #search_by_lecturer: Carian mengikut pengajar
-      #date_day: Tarikh Hari
-      #time: Masa
-      #topic: Topik
-      #location: Lokasi
-      #view_timetable: Papar Jadual Waktu Individu
+      date_day: Tarikh Hari
+      time: Masa
+      topic: Topik
+      location: Lokasi
+      created_by: Disediakan oleh
+      view_timetable: Papar Jadual Waktu Individu
       #set_enddate: " disetkan ke tarikh kelas yang terkini dalam rekod."
       #set_startdate: " disetkan ke tarikh kelas yang terawal dalam rekod."
     #lesson_plan:

@@ -6,6 +6,19 @@ class EqueryReport::PersonalizetimetablesearchesController < ApplicationControll
     @personalizetimetablesearch = Personalizetimetablesearch.new
   end
   
+  def create
+    if @personalizetimetablesearch.save
+      redirect_to equery_report_personalizetimetablesearch_path(@personalizetimetablesearch)
+    else
+      render :action => 'new'
+    end
+  end
+
+  def show
+    @personalizetimetablesearch = Personalizetimetablesearch.find(params[:id])
+    @personalizetimetables=@personalizetimetablesearch.personalizetimetables.page(params[:page]).per(10)
+  end
+  
   private
   
   # Never trust parameters from the scary internet, only allow the white list through.
