@@ -46,9 +46,16 @@ class Lesson_reportPdf< Prawn::Document
   end
   
   def table_plan
+    if @lesson_plan.schedule_item.topic==0
+      topic_line=""
+      subject_line="#{@lesson_plan.schedule_item.weeklytimetable_subject.subject_list }"
+    else
+      topic_line="#{@lesson_plan.schedule_item.weeklytimetable_topic.name}"
+      subject_line="#{@lesson_plan.schedule_item.weeklytimetable_topic.full_parent }"
+    end
     data = [["","Nama Pengajar",":","#{@lesson_plan.lessonplan_owner.rank_id? ? @lesson_plan.lessonplan_owner.staff_with_rank : @lesson_plan.lessonplan_owner.name}"],
-                ["","Bidang Subjek",":","#{@lesson_plan.schedule_item.weeklytimetable_topic.full_parent }"],
-                ["","Topik",":","#{@lesson_plan.schedule_item.weeklytimetable_topic.name}"],
+                ["","Bidang Subjek",":", subject_line],
+                ["","Topik",":", topic_line],
                 ["","Tarikh (Mengikut jadual)",":","#{@lesson_plan.schedule_item.get_date_for_lesson_plan }"],
                 ["","Masa",":","#{@lesson_plan.schedule_item.get_start_time+' - '+@lesson_plan.schedule_item.get_end_time}"],
                 ["","Tahun dan Semester Pelatih",":","Tahun #{@lesson_plan.year} Semester #{@lesson_plan.semester}"],
@@ -118,13 +125,18 @@ class Lesson_reportPdf< Prawn::Document
     else
       review_by="Ketua Jabatan"
     end
+    unless @lesson_plan.endorser.blank?
+      endorser="#{@lesson_plan.endorser.rank_id.blank? ? @lesson_plan.endorser.staff_with_rank : @lesson_plan.endorser.name }"
+    else
+      endorser=""
+    end
     data = [["","Tandatangan Pengajar :"],
                 ["","<b>Nama Pengajar :</b> #{@lesson_plan.lessonplan_owner.rank_id? ? @lesson_plan.lessonplan_owner.staff_with_rank : @lesson_plan.lessonplan_owner.name }"],
                 ["","Ulasan #{review_by} : "],
                 ["", "#{@lesson_plan.report_summary }"],
                 ["", ""],
                 ["", "Tandatangan"],
-                ["", "<b>#{review_by} :</b> #{@lesson_plan.endorser.rank_id? ? @lesson_plan.endorser.staff_with_rank : @lesson_plan.endorser.name }"],
+                ["", "<b>#{review_by} :</b> #{endorser}"],
                 ["","<b>Tarikh : </b>#{Date.today.try(:strftime, '%d %b %Y')}"]
              ]
           

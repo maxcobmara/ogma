@@ -1,0 +1,124 @@
+/ Nav tabs
+%ul.nav.nav-tabs
+  %li.active= link_to  (t 'equery.result'), "#search", "data-toggle" => "tab"
+
+/ display 
+.tab-content{style:"padding-top:1em"}
+  #search_details.tab-pane.active  
+        
+    /additional heading
+    .col-md-8.col-md-offset-2
+      %dl.dl-horizontal
+
+        - if lessonplansearch.intake_id.blank? && lessonplansearch.lecturer.blank? && lessonplansearch.subject.blank?
+          %div.result-all=t 'equery.lessonplan.list_all'
+        - else
+          %div.result-search=t 'equery.search_by'
+            
+        %br
+                   
+        - unless lessonplansearch.intake_id.blank?
+          - selected_intake=Intake.where(id: lessonplansearch.intake_id).first
+          %dt=(t 'equery.lesson_plan.intake_programme')
+          %dd=lessonplansearch.college.code=='amsas' ? selected_intake.siri_programmelist : selected_intake.programmelist_group_intake
+
+        - unless lessonplansearch.lecturer.blank?
+          %dt=(t 'equery.lesson_plan.lecturer')
+          %dd=Staff.find(lessonplansearch.lecturer).staff_with_rank
+              
+        - unless lessonplansearch.subject.blank?
+          %dt=(t 'equery.lesson_plan.subject')
+          %dd=Programme.find(lessonplansearch.subject).subject_list
+        
+        - if lessonplansearch.intake_id.blank? && lessonplansearch.lecturer.blank? && lessonplansearch.subject.blank? 
+        - else
+          .col-md-12
+            .col-md-8
+              %hr
+          
+        %dt=(t 'equery.total')
+        %dd=lessonplansearch.lessonplans.count==0 ? lessonplansearch.lessonplans.count : lessonplansearch.lessonplans.count.to_s+" "+(t 'records')
+
+    /display result
+    .col-md-11
+      %br
+      - if lessonplansearch.lessonplans.count > 0
+        .right
+          /= link_to (fa_icon "file-pdf-o", text: (t 'print')), lessonplan_report_training_lessonplans_path(format: 'pdf', ids: lessonplansearch.lessonplans.pluck(:id))
+        %table.table.table-bordered.table-condensed.table-hover.equery
+          %head
+            %tr.info
+              %th{width: '3%'} No
+              %th{width: '7%'}=t('equery.lesson_plan.total_students')
+              - if current_user.college.code=='amsas'
+                %th{width: '30%'}=t('equery.lesson_plan.lecture_title')
+                %th{width: '10%'}=t('equery.lesson_plan.lecture_date')
+              - else
+                %th{width: '8%'}=t('equery.lesson_plan.year_semester')
+                %th{width: '12%'}=t('equery.lesson_plan.topic')
+                %th{width: '20%'}=t('equery.lesson_plan.lecture_title')
+                %th{width: '10%'}=t('equery.lesson_plan.lecture_date')
+              - if current_user.college.code=='amsas'
+                %th{width: '15%'}=t('equery.lesson_plan.start')
+                %th{width: '15%'}=t('equery.lesson_plan.end')
+                %th{width: '20%'}=t('equery.lesson_plan.plan')
+              - else
+                %th{width: '10%'}=t('equery.lesson_plan.start')
+                %th{width: '10%'}=t('equery.lesson_plan.end')
+                %th{width: '10%'}=t('equery.lesson_plan.plan')
+                %th{width: '10%'}=t('equery.lesson_plan.report')
+              - if current_user.college.code=='amsas'
+                - spanning=9
+              - else
+                - spanning=12
+          %body
+            - if params[:page]
+              - cnt=(params[:page].to_i-1)*10
+            - else
+              - cnt=0
+              - lessonplansearch.lessonplans.group_by{|x|x.lessonplan_intake}.each do |sintake, lessonplan_list|
+                %tr.warning
+                  %th.centre{colspan: "#{spanning}"}=current_user.college.code=='amsas' ? sintake.siri_programmelist : sintake.programmelist_group_intake
+                - lessonplan_list.group_by{|y|y.lessonplan_owner}.each do |alecturer, lessonplans|
+                  %tr.warning
+                    %th.centre{colspan: "#{spanning}"}=alecturer.staff_with_rank
+                    - lessonplans.group_by{|t|t.schedule_item.weeklytimetable_subject}.each do |asubject, lps|
+                      %tr.warning
+                        %td.centre{colspan: "#{spanning}"}=asubject.subject_list
+                      - for lp in lps
+                        %tr
+                          %td.centre=cnt+=1
+                          %td=lp.student_qty
+                          - unless current_user.college.code=='amsas'
+                            %td=lp.year_semester
+                            %td=lp.topic
+                          %td=lp.lecture_title
+                          %td=lp.lecture_date.try(:strftime, '%d-%m-%Y')
+                          %td=lp.schedule_item.get_start_time
+                          %td=lp.schedule_item.get_end_time
+                          %td
+                            /unremark to check
+                            /= link_to (t 'training.lesson_plan.title3') , lesson_plan_training_lesson_plan_path(id: lp.id, format: "pdf") 
+                            - if lp.hod_approved==true
+                              %b=t('equery.lesson_plan.approved')
+                              = link_to (t 'training.lesson_plan.title3') , lesson_plan_training_lesson_plan_path(id: lp.id, format: "pdf") 
+                            - else
+                              - if lp.hod_approved==false && lp.hod_rejected==true
+                                .text-red
+                                  =t('equery.lesson_plan.rejected')
+                                  ="("+lp.reason+")"
+                              - elsif lp.hod_approved.blank? && lp.hod_rejected.blank? && lp.is_submitted==true
+                                =t('equery.lesson_plan.submitted') 
+                              - else
+                                =t('equery.lesson_plan.not_submitted') 
+
+                          - unless current_user.college.code=='amsas'
+                            %td
+                              = link_to (t 'training.lesson_plan.reporting'), lesson_report_training_lesson_plan_path(id: lp.id, format: "pdf")
+                              - if lp.report_submit == true 
+                                - if lp.report_endorsed == true
+                                  = t('equery.lesson_plan.endorsed')
+                                  = link_to (t 'training.lesson_plan.reporting'), lesson_report_training_lesson_plan_path(id: lp.id, format: "pdf")
+                                - else
+                                  = t('equery.lesson_plan.submitted')
+                                  = link_to (t 'training.lesson_plan.reporting'), lesson_report_training_lesson_plan_path(id: lp.id, format: "pdf")
