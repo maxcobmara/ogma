@@ -223,7 +223,7 @@
                 - permitted_to? :read, :personalizetimetablesearches do
                   %tr
                     %td=no+=1
-                    %td= link_to (t 'menu.personalised_timetable'), personalize_index_training_weeklytimetables_path
+                    %td= link_to (t 'training.weeklytimetable.personalize_timetable')+(t 'equery.personalize_timetable.owner_only'), personalize_index_training_weeklytimetables_path
                     %td.centre= link_to (fa_icon "search"), new_equery_report_personalizetimetablesearch_path(searchpersonalizetimetabletype: 1)
 
             ////

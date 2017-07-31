@@ -1,1 +1,58 @@
- 
+- model_class = Personalizetimetablesearch
+.page-header
+  %h1=t('equery.personalize_timetable.search')
+
+= render 'shared/flashes'
+
+.row.fluid
+  = form_for [:equery_report, @personalizetimetablesearch], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = render :partial => 'form', :locals => {:f => f}
+    = f.hidden_field :college_id, value: current_user.college_id
+
+    .col-sm-8.col-md-offset-1
+      .row
+        .col-sm-offset-5
+          .small=t('equery.leaves_all_blank_all_records')
+        .col-sm-offset-4
+          %hr
+        .form-group
+          .col-sm-offset-6.col-sm-1
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), "/equery_reports?query_module=5", :class => 'btn btn-default'
+          .col-sm-offset-1.col-sm-2
+            = f.submit (t 'search') , class: "btn btn-primary", id: 'submit_button'
+
+:javascript
+
+  $("#submit_button").click(function(event){
+    var sdt=$('#personalizetimetablesearch_startdate').val();
+    var edt=$('#personalizetimetablesearch_enddate').val();
+    
+    if (edt=="")
+    {
+      var edate=new Date();
+    }
+    else
+    {
+      var enddy=edt.substring(0,2);
+      var endmn=edt.substring(3,5);
+      var endyr=edt.substring(6,10);
+      var edate=new Date(endyr, endmn-1, enddy);
+    }
+    
+    var startdy=sdt.substring(0,2);
+    var startmn=sdt.substring(3,5);
+    var startyr=sdt.substring(6,10);
+    var stdate=new Date(startyr, startmn-1, startdy);
+    
+    
+    var datediffval = (edate - stdate)/864e5;
+    if (datediffval < 0)
+    {  
+      alert("#{t('equery.personalize_timetable.daterange_valid')}"); 
+      event.preventDefault();
+    }
+  });
+  
+/https://www.informationbuilders.com/support/developers/javascript-validate-date-entry
+/https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript

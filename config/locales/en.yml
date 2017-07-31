@@ -5401,24 +5401,29 @@ en:
       submitted: Submitted
       not_submitted: Not Submitted
       timetable: Timetable
-    #personalize_timetable:
-      #search: Personalize Timetable Search
+    personalize_timetable:
+      search: Personalize Timetable Search
+      list_all: List of All Personalize Timetable
+      owner_only: " (Owner only)"
       #search_by: Search Personalize Timetable By
       #total_personalize_timetable: Total of Personalize Timetable
-      #approved: Approved
-      #rejected: Rejected
-      #submitted: Submitted
-      #not_submit: Not Submit
-      #start_date: Start Date
+      approved: Approved
+      rejected: Rejected
+      submitted: Submitted
+      not_submit: Not Submit
+      lecturer: Lecturer
+      start_date: Start Date
       #class_date: Class Date
       #search_by_lecturer: Search by Lecturer
-      #date_day: Date Day
-      #time: Time
-      #topic: Topic
-      #location: Location
-      #view_timetable: View Personalize Timetable
+      date_day: Date Day
+      time: Time
+      topic: Topic
+      location: Location
+      created_by: Created by
+      view_timetable: View Personalize Timetable
       #set_enddate: " set to the latest class date in records."
       #set_startdate: " set to the earliest class date in records."
+      daterange_valid: Start date range must valid
     #lesson_plan:
       #search: "Lesson Plan & Report Search"
       #search_by: "Search Lesson Plan & Report by"

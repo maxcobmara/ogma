@@ -682,7 +682,7 @@ authorization do
    
    #OK FROM here..... 29Jan2016 - start 
    #WT owner
-   has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable, :personalize_report] do    #:read
+   has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalizetimetable, :personalizetimetable_query, :personalize_report] do    #:read
        if_attribute :staff_id => is {user.userable_id}
    end
    
@@ -1888,19 +1888,19 @@ authorization do
   #28-OK but requires additional rules as personalize pages is based on logged-in user (existing one requires lecturer's role)
   role :weeklytimetables_module_admin do
      has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable, :weeklytimetable_report, :approval]
-     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_timetable, :personalize_show, :personalizetimetable, :personalize_report] #do
+     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalizetimetable, :personalizetimetable_query, :personalize_report] #do
 #        if_attribute :prepared_by =>  is {user.userable_id}
 #      end
   end
   role :weeklytimetables_module_viewer do
      has_permission_on :training_weeklytimetables, :to => [:read, :weekly_timetable, :weeklytimetable_report]
-     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_timetable, :personalize_show, :personalizetimetable, :personalize_report] #do
+     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalizetimetable, :personalizetimetable_query, :personalize_report] #do
 #        if_attribute :staff_id =>  is {user.userable_id}
 #      end
   end
   role :weeklytimetables_module_user do
     has_permission_on :training_weeklytimetables, :to => [:read, :update, :approval, :weekly_timetable, :weeklytimetable_report]
-     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_timetable, :personalize_show, :personalizetimetable, :personalize_report]# do
+     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalizetimetable, :personalizetimetable_query, :personalize_report]# do
 #        if_attribute :staff_id =>  is {user.userable_id}
 #      end
   end
@@ -1917,7 +1917,7 @@ authorization do
       if_attribute :prepared_by => is {user.userable_id}
     end
 
-    has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable, :personalize_report] #do
+    has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalizetimetable, :personalizetimetable_query, :personalize_report] #do
 #       if_attribute :staff_id => is {user.userable_id}
 #     end
     #programme mgr (KSKBJB) / Rancang Latihan (Amsas)

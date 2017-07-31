@@ -1,0 +1,96 @@
+/ Nav tabs
+%ul.nav.nav-tabs
+  %li.active= link_to  (t 'equery.result'), "#search", "data-toggle" => "tab"
+
+/ display 
+.tab-content{style:"padding-top:1em"}
+  #search_details.tab-pane.active  
+        
+    /additional heading
+    .col-md-8.col-md-offset-2
+      %dl.dl-horizontal
+
+        - if personalizetimetablesearch.programme_id.blank? && personalizetimetablesearch.lecturer.blank? && personalizetimetablesearch.startdate.blank? && personalizetimetablesearch.enddate.blank? 
+          %div.result-all=t 'equery.personalize_timetable.list_all'
+        - else
+          %div.result-search=t 'equery.search_by'
+            
+        %br
+
+        - unless personalizetimetablesearch.lecturer.blank?
+          %dt=(t 'equery.personalize_timetable.lecturer')
+          %dd=Staff.find(personalizetimetablesearch.lecturer).staff_with_rank
+              
+        - if !personalizetimetablesearch.startdate.blank? || !personalizetimetablesearch.enddate.blank?
+          %dt=(t 'equery.personalize_timetable.start_date')
+          %dd
+            - start_date=personalizetimetablesearch.startdate.try(:strftime, "%d-%m-%Y") 
+            - startend_date=personalizetimetablesearch.enddate.try(:strftime, "%d-%m-%Y")
+            
+            = !personalizetimetablesearch.startdate.blank? ? (t 'from')+" "+start_date+" "+(t 'to')+" " : (t 'equery.upto').titleize
+            = !personalizetimetablesearch.enddate.blank? ? startend_date : Date.today.strftime("%d-%m-%Y")
+        
+        - if personalizetimetablesearch.programme_id.blank? && personalizetimetablesearch.lecturer.blank? && personalizetimetablesearch.startdate.blank? && personalizetimetablesearch.enddate.blank? 
+        - else
+          .col-md-12
+            .col-md-8
+              %hr
+          
+        %dt=(t 'equery.total')
+        %dd=personalizetimetablesearch.personalizetimetables.count==0 ? personalizetimetablesearch.personalizetimetables.count : personalizetimetablesearch.personalizetimetables.count.to_s+" "+(t 'records')
+
+    /display result
+    .col-md-9.col-md-offset-1
+      %br
+      - if personalizetimetablesearch.personalizetimetables.count > 0
+        - cnt=0
+        %table.table.table-bordered.table-condensed.table-hover.equery
+          - personalizetimetablesearch.personalizetimetables.group_by{|x|x.weeklytimetable.startdate}.each do |sdate, pts|
+            %tr.success
+              %th.centre{colspan: 7}="#{t('equery.personalize_timetable.start_date')}: #{sdate.strftime('%d-%m-%Y')}"
+
+            /weekly
+            - pts.group_by{|x|x.weeklytimetable_lecturer}.each do |lecturer, ptimetable|
+              %tr.info
+                %th=cnt+=1
+                %th.centre{colspan: 5}=lecturer.staff_with_rank  
+                %td= link_to (fa_icon "file-pdf-o", text: (t 'print')), personalize_report_training_weeklytimetables_path(format: 'pdf', ids: ptimetable.map(&:id), lecturer: lecturer)
+              - ptimetable.group_by{|y|y.weeklytimetable}.each do |aschedule, schedule_classes|
+                %tr.warning
+                  %th.centre{colspan: 5}=aschedule.main_details_for_weekly_timetable
+                  %td.small{colspan: 2}=(t 'equery.personalize_timetable.created_by')+": "+aschedule.schedule_creator.staff_with_rank
+                %tr.warning
+                  %th{width: '4%'} 
+                  %th{width: '4%'} No
+                  %th{width: '15%'}=t('equery.personalize_timetable.date_day')
+                  %th{width: '10%'}=t('equery.personalize_timetable.time') 
+                  %th{width: '42%'}=t('equery.personalize_timetable.topic')
+                  %th{width: '10%'}=t('equery.personalize_timetable.location')
+                  %th{width: '10%'}Status
+                  
+                - cnt2=0
+                - for aclass in schedule_classes.sort_by{|t|t.get_date_day_of_schedule}
+                  %tr
+                    %td
+                    %td=cnt2+=1
+                    %td=aclass.get_date_day_of_schedule
+                    %td=aclass.get_time_slot
+                    %td=aclass.subject_topic
+                    %td=aclass.location_desc
+                    - if cnt2==1
+                      %td{rowspan: "#{schedule_classes.count}"}
+                        /to check - unremark below 30Jul2017
+                        /= link_to (t 'equery.personalize_timetable.view_timetable'), personalizetimetable_query_training_weeklytimetables_path(seldate: sdate, lecturer: lecturer, format: "pdf")
+                        
+                        - if aschedule.hod_approved == true
+                          .blue=t('equery.personalize_timetable.approved')
+                          - if current_user.userable_id==lecturer || is_admin?(current_user.userable_id)
+                            = link_to (t 'equery.personalize_timetable.view_timetable'), personalizetimetable_query_training_weeklytimetables_path(seldate: sdate, lecturer: lecturer, format: "pdf")
+                        - else
+                          - if aschedule.hod_rejected == true
+                            .text-red=t('equery.personalize_timetable.rejected')
+                          - else
+                            - if aschedule.is_submitted == true
+                              .text-green=t('equery.personalize_timetable.submitted')
+                            - else
+                              =t('equery.personalize_timetable.not_submit')
