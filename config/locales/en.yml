@@ -5433,7 +5433,7 @@ en:
       #search_subject: Search by Subject
       #total_lesson_plan: "Total of Lesson Plans"
       #programme: Programme
-      #subject: Subject
+      subject: Subject
       intake_programme: "Intake - Programme"
       #select_by_programme: "to select by Programme. "
       #select_by_intake_programme: "to select by Intake - Programme. "

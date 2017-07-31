@@ -49,47 +49,6 @@ class Lessonplansearch < ActiveRecord::Base
      end
    end
    
-   def loggedin_staff_details
-     if loggedin_staff==0         
-       all_lecturers = LessonPlan.all.map(&:lecturer)
-       a=" lecturer=? " if all_lecturers.count > 0
-       0.upto(all_lecturers.count-2).each do |cnt|
-         a+=" OR lecturer=? "
-       end
-       b=["("+a+")", all_lecturers] 
-     else
-       if loggedin_staff.to_s.size > 3
-         comb_staff = loggedin_staff.to_s
-         progid=(comb_staff[3, comb_staff.size]).to_i
-         all_intakes = LessonPlan.all.map(&:intake_id)
-         intakes_of_prog = Intake.where('id IN(?) and programme_id=?',all_intakes, progid).map(&:id)
-         a=" intake_id=? " if intakes_of_prog.count > 0
-         0.upto(intakes_of_prog.count-2).each do |cnt|
-           a+=" OR intake_id=? "
-         end
-         b=["("+a+")", intakes_of_prog]
-       else
-         b=["lecturer=?", loggedin_staff]
-       end
-     end
-     return b unless loggedin_staff.blank?
-   end
-   
-   def loggedin_staff_conditions
-     loggedin_staff_details unless loggedin_staff.blank?
-   end
-   
-#    def valid_schedule_conditions
-#      valid_schedule_ids = WeeklytimetableDetail.valid_sch_ids
-#      if valid_schedule_ids.count > 0
-#        a=" schedule=? " if valid_schedule_ids.count > 0
-#        0.upto(valid_schedule_ids.count-2).each do |cnt|
-#          a+=" OR schedule=? "
-#        end
-#        ["("+a+")", valid_schedule_ids] if valid_schedule == 1
-#      end
-#    end 
-   
    #schedule refer 2 classes - WeeklytimetableDetails
    def valid_schedule_conditions
      a="schedule=?" if validintake_data.count > 0
