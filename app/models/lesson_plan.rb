@@ -175,6 +175,28 @@ class LessonPlan < ActiveRecord::Base
     str
   end
   
+  def lecturer_list
+    [lessonplan_owner.staff_with_rank, id]
+  end
+  
+  #usage - lessonplansearches/_form
+  def self.lecturer_per_intake(curr_college)
+    ab=[]
+    if curr_college=='amsas'
+      intakeprogramme_list=LessonPlan.all.group_by{|x|x.lessonplan_intake.siri_programmelist}
+    else
+      intakeprogramme_list=LessonPlan.all.group_by{|x|x.lessonplan_intake.programmelist_group_intake}
+    end
+    intakeprogramme_list.sort.each do |intake_details, lps|
+      a=[[I18n.t('select'), ""]]
+      lps.group_by{|x|x.lessonplan_owner}.sort.each do |owner, wts2|
+	a << [owner.staff_with_rank, owner.id ]
+      end
+      ab << [intake_details, a]
+    end
+    ab
+  end
+  
   private
   
     def schedule_and_plan_owner_must_match

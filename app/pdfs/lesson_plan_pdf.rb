@@ -4,7 +4,11 @@ class Lesson_planPdf< Prawn::Document
     @lesson_plan = lesson_plan
     @view = view
     @college=college
-    @objectives_lines=@lesson_plan.schedule_item.weeklytimetable_topic.topic_details.last.try(:objctives).blank? ? "" : LessonPlan.in_string(@lesson_plan.schedule_item.weeklytimetable_topic.topic_details.last.try(:objctives))
+    if @lesson_plan.schedule_item.topic!=0
+      @objectives_lines=@lesson_plan.schedule_item.weeklytimetable_topic.topic_details.last.try(:objctives).blank? ? "" : LessonPlan.in_string(@lesson_plan.schedule_item.weeklytimetable_topic.topic_details.last.try(:objctives))
+    else
+      @objectives_lines=""  # NOTE temp - 31July2017: rescue for amsas: no value for topic (class schedule by subject)
+    end
     @references_lines=LessonPlan.in_string(@lesson_plan.reference)
     
     font "Times-Roman"
@@ -62,10 +66,17 @@ class Lesson_planPdf< Prawn::Document
   end
   
   def table_details_amsas
+    # NOTE temp - 31July2017: rescue for amsas: no value for topic (class schedule by subject)
+    if @lesson_plan.schedule_item.topic==0
+      topic_line=""
+    else
+      topic_line="#{@lesson_plan.schedule_item.weeklytimetable_topic.full_parent}<br>#{@lesson_plan.schedule_item.weeklytimetable_topic.name}"
+    end
+      
     data = [["", "Nama Pengajar","#{@lesson_plan.lessonplan_owner.rank_id? ? @lesson_plan.lessonplan_owner.staff_with_rank : @lesson_plan.lessonplan_owner.name }"],
-            ["", "Kumpulan Pelatih","#{@lesson_plan.schedule_item.weeklytimetable.schedule_intake.group_with_intake_name}"],
+            ["", "Kumpulan Pelatih","#{@lesson_plan.schedule_item.weeklytimetable.schedule_intake.siri_programmelist}"],
             ["", "Bilangan Pelatih","#{@lesson_plan.student_qty}"],
-            ["", "Topik / Tajuk","#{@lesson_plan.schedule_item.weeklytimetable_topic.full_parent}<br>#{@lesson_plan.schedule_item.weeklytimetable_topic.name}"],
+            ["", "Topik / Tajuk", topic_line],
             ["", "Tarikh & Masa","#{@lesson_plan.schedule_item.get_date_for_lesson_plan} (#{@lesson_plan.schedule_item.get_start_time+' - '+ @lesson_plan.schedule_item.get_end_time})"],
             ["", "Pengetahuan Terdahulu<br><i>(Prerequisite)</i>","#{@lesson_plan.prerequisites}"],
             ["","Objektif Pembelajaran", @objectives_lines],

@@ -5424,8 +5424,8 @@ en:
       #set_enddate: " set to the latest class date in records."
       #set_startdate: " set to the earliest class date in records."
       daterange_valid: Start date range must valid
-    #lesson_plan:
-      #search: "Lesson Plan & Report Search"
+    lesson_plan:
+      search: "Lesson Plan & Report Search"
       #search_by: "Search Lesson Plan & Report by"
       #search_lecturer: Search by Lecturer
       #search_intake: Search by Intake
@@ -5434,26 +5434,26 @@ en:
       #total_lesson_plan: "Total of Lesson Plans"
       #programme: Programme
       #subject: Subject
-      #intake_programme: "Intake - Programme"
+      intake_programme: "Intake - Programme"
       #select_by_programme: "to select by Programme. "
       #select_by_intake_programme: "to select by Intake - Programme. "
       #select_lecturer_first: "Please select a Lecturer to filter by one, OR click 'search' to view result of all available Subjects / Topics."
-      #lecturer: Lecturer
-      #intake: Intake
-      #total_students: Total of Students
-      #year_semester: "Year / Semester"
-      #topic: Topic
-      #lecture_title: Lecture Title
-      #lecture_date: Lecture Date
-      #start: Start
-      #end: End
-      #plan: Lesson Plan
-      #report: Lesson Report
-      #endorsed: Endorsed
-      #approved: Approved
-      #rejected: Rejected
-      #submitted: Submitted
-      #not_submit: Not Submit
+      lecturer: Lecturer
+      intake: Intake
+      total_students: Total of Students
+      year_semester: "Year / Semester"
+      topic: Topic
+      lecture_title: Lecture Title
+      lecture_date: Lecture Date
+      start: Start
+      end: End
+      plan: Lesson Plan
+      report: Lesson Report
+      endorsed: Endorsed
+      approved: Approved
+      rejected: Rejected
+      submitted: Submitted
+      not_submitted: Not Submitted
       #view_plan: View Plan
       #view_report: View Report
     curriculum:
