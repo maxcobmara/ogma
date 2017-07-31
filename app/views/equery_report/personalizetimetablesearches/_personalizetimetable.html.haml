@@ -16,23 +16,18 @@
           %div.result-search=t 'equery.search_by'
             
         %br
-                   
-        /- unless personalizetimetablesearch.programme_id.blank?
-        /  %dt=(t 'equery.personalize_timetable.programme')
-        /  %dd=personalizetimetablesearch.college.code=='amsas' ? selected_intake.siri_programmelist : selected_intake.programmelist_group_intake
 
         - unless personalizetimetablesearch.lecturer.blank?
           %dt=(t 'equery.personalize_timetable.lecturer')
           %dd=Staff.find(personalizetimetablesearch.lecturer).staff_with_rank
               
         - if !personalizetimetablesearch.startdate.blank? || !personalizetimetablesearch.enddate.blank?
-          %dt=(t 'equery.personalize_timetable.startdate')
+          %dt=(t 'equery.personalize_timetable.start_date')
           %dd
             - start_date=personalizetimetablesearch.startdate.try(:strftime, "%d-%m-%Y") 
             - startend_date=personalizetimetablesearch.enddate.try(:strftime, "%d-%m-%Y")
-            =(t 'from')+" "
-            = !personalizetimetablesearch.startdate.blank? ? start_date : startend_date
-            =(t 'to')+" "
+            
+            = !personalizetimetablesearch.startdate.blank? ? (t 'from')+" "+start_date+" "+(t 'to')+" " : (t 'equery.upto').titleize
             = !personalizetimetablesearch.enddate.blank? ? startend_date : Date.today.strftime("%d-%m-%Y")
         
         - if personalizetimetablesearch.programme_id.blank? && personalizetimetablesearch.lecturer.blank? && personalizetimetablesearch.startdate.blank? && personalizetimetablesearch.enddate.blank? 
@@ -99,6 +94,3 @@
                               .text-green=t('equery.personalize_timetable.submitted')
                             - else
                               =t('equery.personalize_timetable.not_submit')
-                     
-            
-/       .right{style:"padding: 0 10px; margin:0;"}= paginate personalizetimetables, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

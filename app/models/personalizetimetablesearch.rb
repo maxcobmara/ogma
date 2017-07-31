@@ -42,7 +42,7 @@ class Personalizetimetablesearch < ActiveRecord::Base
    
    def enddate_conditions
      unless enddate.blank? 
-       searched_slots=WeeklytimetableDetail.joins(:weeklytimetable).where('weeklytimetables.enddate <=?', enddate).map(&:id).uniq
+       searched_slots=WeeklytimetableDetail.joins(:weeklytimetable).where('weeklytimetables.startdate <=?', enddate).map(&:id).uniq
        if searched_slots.count > 0
          a="id=? "
          0.upto(searched_slots.count-2) do |cnt|

@@ -5404,6 +5404,7 @@ en:
     personalize_timetable:
       search: Personalize Timetable Search
       list_all: List of All Personalize Timetable
+      owner_only: " (Owner only)"
       #search_by: Search Personalize Timetable By
       #total_personalize_timetable: Total of Personalize Timetable
       approved: Approved
@@ -5422,6 +5423,7 @@ en:
       view_timetable: View Personalize Timetable
       #set_enddate: " set to the latest class date in records."
       #set_startdate: " set to the earliest class date in records."
+      daterange_valid: Start date range must valid
     #lesson_plan:
       #search: "Lesson Plan & Report Search"
       #search_by: "Search Lesson Plan & Report by"

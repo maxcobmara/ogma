@@ -15,8 +15,6 @@
               .col-sm-2.control-label
                 = f.label (t 'equery.personalize_timetable.lecturer') 
               .col-md-5
-                /- @valid_intakes = Weeklytimetable.validintake_timetable
-                /- valid_timetables = Weeklytimetable.find(:all, :conditions => ['intake_id IN(?)', @valid_intakes])
                 - staff_ids_exist_timetable = WeeklytimetableDetail.where('weeklytimetable_id IN(?)', Weeklytimetable.validintake_timetable).pluck(:lecturer_id) 
                 = f.collection_select :lecturer, Staff.where(id: staff_ids_exist_timetable).sort_by{|x|x.name}, :id, :staff_with_rank, {:include_blank=> (t 'select')}, {class: 'selectpicker', "data-width" => "auto"}
            
@@ -25,7 +23,7 @@
                 = f.label  (t 'equery.personalize_timetable.start_date')
               .col-md-4
                 .input-group
-                  /startdate& enddate - used for WT 'start_date' range
+                  /startdate & enddate - used for WT 'start_date' range
                   = f.text_field :startdate, class: 'form-control date_picker_reverse'
                   .input-group-addon=t('to')
                   = f.text_field :enddate, class: 'form-control date_picker_reverse'
