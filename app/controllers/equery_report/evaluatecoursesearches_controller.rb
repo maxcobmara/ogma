@@ -1,4 +1,4 @@
-class EvaluatecoursesearchesController < ApplicationController
+class EqueryReport::EvaluatecoursesearchesController < ApplicationController
    filter_resource_access
   
   def new
@@ -23,6 +23,6 @@ class EvaluatecoursesearchesController < ApplicationController
   
   # Never trust parameters from the scary internet, only allow the white list through.
     def evaluatecoursesearch_params
-      params.require(:evaluatecoursesearch).permit(:programme_id, :subject_id, :evaldate, :lecturer_id, :invite_lecturer, :evaldate_end, :programme_id2, :is_staff, :college_id, [:data => {}])
+      params.require(:evaluatecoursesearch).permit(:programme_id, :subject_id, :evaldate, :lecturer_id, :invite_lecturer, :evaldate_end, :programme_id2, :is_staff, :visitor_id, :college_id, [:data => {}])
     end
 end

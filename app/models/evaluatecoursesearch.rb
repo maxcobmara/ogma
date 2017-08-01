@@ -1,15 +1,34 @@
 class Evaluatecoursesearch < ActiveRecord::Base
-  attr_accessible :programme_id, :subject_id, :evaldate, :evaldate_end, :lecturer_id, :invite_lecturer, :programme_id2, :is_staff
-  attr_accessor :method
+  attr_accessor :programme_details
+  
+  before_save :update_programme
+  
+  belongs_to :college
   
   def evaluatecourses
     @evaluatecourses ||= find_evaluatecourses
   end
   
+  # TODO - check against kskb data 
+  def update_programme
+    unless subject_id.blank?
+      self.programme_id=Programme.find(subject_id).root_id
+    else
+      ##when subject is not selected
+      unless programme_details.blank?
+        a=programme_details.split(" (")[0]
+        b=programme_details.split(" ")[0]+" "
+        c=a.gsub!(b,"")
+        programmeid=Programme.where(name: c).first.id
+        self.programme_id=programmeid
+      end
+    end
+  end
+  
   private
 
   def find_evaluatecourses
-    EvaluateCourse.find(:all, :conditions => conditions,  :order => orders)   
+    EvaluateCourse.where(conditions).order(orders)   
   end
 
   def programme_id_conditions

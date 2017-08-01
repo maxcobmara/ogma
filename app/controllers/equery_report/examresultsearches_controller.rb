@@ -1,4 +1,4 @@
-class ExamresultsearchesController < ApplicationController
+class EqueryReport::ExamresultsearchesController < ApplicationController
    filter_resource_access
   
   def new

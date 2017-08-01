@@ -5485,6 +5485,7 @@ en:
       #practical: Practical
     exam:
       search: Examination Paper Search
+      list_all: List of All Examination Paper
       #search_by: Search Examination Paper By
       programme_id: Programme
       subject_id: Subject
@@ -5519,14 +5520,21 @@ en:
       #total: Total of Examination Result
       #exam_result: Exam Result
       #exam_slip: Exam Slip
-    #evaluate_course:
-      #search: "Feedback / Course Evaluation Search"
+    evaluate_course:
+      search: "Feedback / Course Evaluation Search"
+      search2: Invitation Lecturer Evaluation Search
+      list_all: List of All Invitation Lecturer Evaluation
       #search_by: "Feedback / Course Evaluation Search by"
       #total: "Total of Feedback / Course Evaluation (by student)"
       #question: Q
       #evaluation_form: Evaluation Form
       #total_scores: Total Scores 
       #average_scores: Average Scores
+      programme_id: Programme
+      subject_id: Subject
+      invite_lecturer: Invitation Lecturer
+      lecturer_id: Pengajar
+      evaldate: Evaluation Date
     #examanalysis:
       #search: Examination Analysis by Paper Search
       #search_by: Search record by

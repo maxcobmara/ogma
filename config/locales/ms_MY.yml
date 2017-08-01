@@ -5405,6 +5405,7 @@ ms_MY:
     exam:
       search: Carian Set Kertas Peperiksaan
       #search_by: Carian Set Kertas Peperiksaan mengikut 
+      list_all:  Senarai Penuh Set Kertas Peperiksaan
       programme_id: Program
       subject_id: Subjek
       created_by: Disediakan Oleh
@@ -5437,14 +5438,21 @@ ms_MY:
       #total: Jumlah Keputusan Peperiksaan
       #exam_result: Keputusan Peperiksaan
       #exam_slip: Slip Peperiksaan
-    #evaluate_course:
-      #search: Carian Maklumbalas / Penilaian Kursus
+    evaluate_course:
+      search: Carian Maklumbalas / Penilaian Kursus
+      search2: Carian Penilaian Pensyarah Jemputan
+      list_all:  Senarai Penuh Penilaian Pensyarah Jemputan
       #search_by: Carian Maklumbalas / Penilaian Kursus mengikut
       #total: "Jumlah Maklumbalas / Penilaian Kursus (oleh pelajar)"
       #question: S
       #evaluation_form: Borang Penilaian
       #total_scores: Jumlah Skor
       #average_scores: Skor Purata
+      programme_id: Program
+      subject_id: Subjek
+      invite_lecturer: Pensyarah Jemputan
+      lecturer_id: Pengajar
+      evaldate: Tarikh Penilaian
     #examanalysis:
       #search: Carian Analisis Peperiksaan Mengikut Kertas Peperiksaan
       #search_by: Carian rekod mengikut

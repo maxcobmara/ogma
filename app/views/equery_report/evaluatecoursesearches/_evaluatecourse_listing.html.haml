@@ -1,1 +1,84 @@
- 
+/ Nav tabs
+%ul.nav.nav-tabs
+  %li.active= link_to  (t 'equery.result'), "#search", "data-toggle" => "tab"
+
+/ display 
+.tab-content{style:"padding-top:1em"}
+  #search_details.tab-pane.active  
+        
+    /additional heading
+    .col-md-8.col-md-offset-2
+      %dl.dl-horizontal
+      
+        /:programme_id, :subject_id, :evaldate, :lecturer_id, :invite_lecturer, :evaldate_end, :programme_id2, :is_staff, :visitor_id
+
+        - if (current_user.college.code=='amsas' && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.visitor_id.blank? && evaluatecoursesearch.evaldate.blank?) || (current_user.college.code=='kskbjb' && evaluatecoursesearch.staff_id==false && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.visitor_id.blank? && evaluatecoursesearch.evaldate.blank?) || (current_user.college.code=='kskbjb' && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.staff_id==true && evaluatecoursesearch.subject_id.blank? && evaluatecoursesearch.evaldate.blank?)
+          %div.result-all=t 'equery.evaluate_course.list_all'
+        - else
+          %div.result-search=t 'equery.search_by'
+            
+        %br
+                   
+        - unless evaluatecoursesearch.programme_id.blank?
+          %dt=(t 'equery.evaluatecourse.programme_id')
+          %dd=Programme.find(evaluatecoursesearch.programme_id).programme_list
+
+        - unless evaluatecoursesearch.subject_id.blank?
+          %dt=(t 'equery.evaluatecourse.subject_id')
+          %dd=Programme.find(evaluatecoursesearch.subject_id).subject_list
+         
+        
+         
+         
+        - unless evaluatecoursesearch.evaldate.blank?
+          %dt=(t 'equery.evaluate_course.evaldate')
+          %dd=evaluatecoursesearch.evaldate.strftime('%d-%m-%Y')
+        
+        - if (current_user.college.code=='amsas' && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.visitor_id.blank? && evaluatecoursesearch.evaldate.blank?) || (current_user.college.code=='kskbjb' && evaluatecoursesearch.staff_id==false && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.visitor_id.blank? && evaluatecoursesearch.evaldate.blank?) || (current_user.college.code=='kskbjb' && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.staff_id==true && evaluatecoursesearch.subject_id.blank? && evaluatecoursesearch.evaldate.blank?)
+        - else
+          .col-md-12
+            .col-md-8
+              %hr
+          
+        %dt=(t 'equery.total')
+        %dd=evaluatecoursesearch.evaluatecourses.count==0 ? evaluatecoursesearch.evaluatecourses.count : evaluatecoursesearch.evaluatecourses.count.to_s+" "+(t 'records')
+
+    /display result
+    .col-md-10.col-md-offset-1
+      %br
+      - if evaluatecoursesearch.evaluatecourses.count > 0
+        /.right= link_to (fa_icon "file-pdf-o", text: (t 'print')), evaluatecourse_list_evaluatecourse_evaluatecourses_path(format: 'pdf', ids: evaluatecoursesearch.evaluatecourses.pluck(:id))          
+        %table.table.table-bordered.table-condensed.table-hover.equery
+          %head
+            %tr.info
+              %th{width: '4%'} No
+              %th{width: '20%'}=t('equery.evaluate_course.programme_id')
+              
+              %th{width: '10%'}=t('equery.view')
+          - cnt=0
+          %body
+            - for evaluatecourse in evaluatecoursesearch.evaluatecourses
+              %tr
+                %td=cnt+=1
+                %td=Programme.find(evaluatecourse.course_id).programme_list
+/                 %td=Programme.find(evaluatecoursepaper.subject_id).subject_list
+/                 %td
+/                   - etype=evaluatecoursepaper.name
+/                   - if etype=="F"
+/                     - etype_name=t('equery.evaluatecourse.final')
+/                   - elsif etype=="M"
+/                     - etype_name=t('equery.evaluatecourse.midsem')
+/                   - else
+/                     - etype_name=t('equey.evaluatecourse.repeat')
+/                   =etype_name
+/                 %td=Staff.find(evaluatecoursepaper.created_by).staff_with_rank
+/                 %td=evaluatecoursepaper.klass_id==1 ? (t 'equery.evaluatecourse.complete_set') : "Template"
+/                 %td=evaluatecoursepaper.evaluatecourse_on.strftime('%d-%m-%Y')
+/                 - @evaluatecourse=evaluatecoursepaper
+/                 %td.centre
+/                   - if @evaluatecourse.klass_id==1
+/                     = link_to (t 'equery.evaluatecourse.evaluatecoursepaper'), evaluatecoursepaper_evaluatecourse_evaluatecourse_path(@evaluatecourse, format: "pdf") 
+/                   - else
+/                     \-
+/             
+/       .right{style:"padding: 0 10px; margin:0;"}= paginate evaluatecourses, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
