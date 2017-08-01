@@ -5402,16 +5402,21 @@ ms_MY:
       #lecture: Kuliah
       #tutorial: Tutorial
       #practical: Amali
-    #exam:
-      #search: Carian Set Kertas Peperiksaan
+    exam:
+      search: Carian Set Kertas Peperiksaan
       #search_by: Carian Set Kertas Peperiksaan mengikut 
-      #programme_id: Program
-      #subject_id: Subjek
-      #prepared_by: Disediakan Oleh
-      #examtype: Jenis Peperiksaan
-      #klass_id: Jenis Kertas Peperiksaan
+      programme_id: Program
+      subject_id: Subjek
+      created_by: Disediakan Oleh
+      examtype: Jenis Peperiksaan
+      klass_id: Jenis Kertas Peperiksaan
+      final: Peperiksaan Akhir Semester
+      midsem: Peperiksaan Pertengahan Semester
+      repeat: Peperiksaan Ulangan
+      complete_set: Set Lengkap
       #klass_id2: "Set Lengkap / Template"
-      #examdate: Tarikh Peperiksaan
+      examdate: Tarikh Peperiksaan
+      exampaper: Set Kertas Peperiksaan
       #total_exam_paper: Jumlah Set Kertas Peperiksaan
       #search_programme: Carian mengikut Program
       #search_subject: Carian mengikut Subjek

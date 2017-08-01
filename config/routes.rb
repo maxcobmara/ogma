@@ -666,6 +666,10 @@ Ogma::Application.routes.draw do
     resources :curriculumsearches
     resources :lessonplansearches
     resources :personalizetimetablesearches
+    resources :examsearches
+    resources :examresultsearches
+    resources :evaluatecoursesearches
+    resources :examanalysissearches
   end
 
   #refer 1)lib/Subdomain.rb & 2)config/application.rb (auto loader for lib files)

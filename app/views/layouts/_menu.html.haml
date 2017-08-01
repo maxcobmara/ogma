@@ -463,6 +463,8 @@
           - if  (permitted_to? :create, :weeklytimetablesearches) || (permitted_to? :create, :curriculumsearches) || (permitted_to? :create, :lessonplansearches) || (permitted_to? :create, :personalizetimetablesearches)
             %li= link_to content_tag(:i, "", :class => "icon-numb")+(t 'training.title'),  "/equery_reports?query_module=5"
 
+          - if (permitted_to? :create, :examsearches) || (permitted_to? :create, :examresultsearches) || (permitted_to? :create, :evaluatecoursesearches) || (permitted_to? :create, :examanalysissearches)
+            %li= link_to content_tag(:i, "", :class => "icon-numb")+(t 'exam.title'), "/equery_reports?query_module=6"
           //
           - permitted_to? :read, :library_books do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'library.title'), "/equery_reports?query_module=7"

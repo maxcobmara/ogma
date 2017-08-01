@@ -185,12 +185,12 @@ class Programme < ActiveRecord::Base
 	pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
 	levelones.group_by(&:course_type).each do |coursetype, level1|
 	  if coursetype=='Module'
-	    for level in level1
+	    for level in level1.sort_by(&:code)
 	      pg_subjects << ["MODULE: #{level.subject_list}"]
-	      Programme.find(level.id).descendants.where(course_type: 'Subject').each{|subject|pg_subjects << [" --- "+subject.subject_list, subject.id]} 
+	      Programme.find(level.id).descendants.where(course_type: 'Subject').sort_by(&:code).each{|subject|pg_subjects << [" --- "+subject.subject_list, subject.id]} 
 	    end
 	  elsif coursetype=='Subject'
-	    Programme.find(prog.id).descendants.where(course_type: 'Subject').each{|subject|pg_subjects << [subject.subject_list, subject.id]} 
+	    Programme.find(prog.id).descendants.where(course_type: 'Subject').sort_by(&:code).each{|subject|pg_subjects << [subject.subject_list, subject.id]} 
 	  end
 	  @groupped_subject << [prog.programme_list, pg_subjects]
 	end

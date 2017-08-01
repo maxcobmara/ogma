@@ -1,0 +1,103 @@
+/ Nav tabs
+%ul.nav.nav-tabs
+  %li.active= link_to  (t 'equery.result'), "#search", "data-toggle" => "tab"
+
+/ display 
+.tab-content{style:"padding-top:1em"}
+  #search_details.tab-pane.active  
+        
+    /additional heading
+    .col-md-8.col-md-offset-2
+      %dl.dl-horizontal
+        /:programme_id, :subject_id, :examtype, :created_by, :klass_id, :examdate, :valid_papertype, :programme_details
+        - if examsearch.programme_id.blank? && examsearch.subject_id.blank? && examsearch.examtype.blank? && examsearch.created_by.blank? && examsearch.klass_id.blank? && examsearch.examdate.blank?
+          %div.result-all=t 'equery.exam.list_all'
+        - else
+          %div.result-search=t 'equery.search_by'
+            
+        %br
+                   
+        - unless examsearch.programme_id.blank?
+          %dt=(t 'equery.exam.programme_id')
+          %dd=Programme.find(examsearch.programme_id).programme_list
+
+        - unless examsearch.subject_id.blank?
+          %dt=(t 'equery.exam.subject_id')
+          %dd=Programme.find(examsearch.subject_id).subject_list
+              
+        - unless examsearch.examtype.blank?
+          %dt=(t 'equery.exam.examtype')
+          %dd
+            - etype=examsearch.examtype.split("-")[0]
+            - if etype=="F"
+              - etype_name=t('equery.exam.final')
+            - elsif etype=="M"
+              - etype_name=t('equery.exam.midsem')
+            - else
+              - etype_name=t('equey.exam.repeat')
+            =etype_name
+          
+        - unless examsearch.created_by.blank?
+          %dt=(t 'equery.exam.prepared_by')
+          %dd=Staff.find(examsearch.created_by).staff_with_rank
+          
+        - unless examsearch.klass_id.blank?
+          %dt=(t 'equery.exam.klass_id')
+          %dd=examsearch.klass_id==1 ? (t 'equery.exam.complete_set') : "Template"
+          
+        - unless examsearch.examdate.blank?
+          %dt=(t 'equery.exam.examdate')
+          %dd=examsearch.examdate.strftime('%d-%m-%Y')
+        
+        - if examsearch.programme_id.blank? && examsearch.subject_id.blank? && examsearch.examtype.blank? && examsearch.created_by.blank? && examsearch.klass_id.blank? && examsearch.examdate.blank?
+        - else
+          .col-md-12
+            .col-md-8
+              %hr
+          
+        %dt=(t 'equery.total')
+        %dd=examsearch.exams.count==0 ? examsearch.exams.count : examsearch.exams.count.to_s+" "+(t 'records')
+
+    /display result
+    .col-md-10.col-md-offset-1
+      %br
+      - if examsearch.exams.count > 0
+        .right= link_to (fa_icon "file-pdf-o", text: (t 'print')), exam_list_exam_exams_path(format: 'pdf', ids: examsearch.exams.pluck(:id))          
+        %table.table.table-bordered.table-condensed.table-hover.equery
+          %head
+            %tr.info
+              %th{width: '4%'} No
+              %th{width: '20%'}=t('equery.exam.programme_id')
+              %th{width: '20%'}=t('equery.exam.subject_id')
+              %th{width: '12%'}=t('equery.exam.examtype')
+              %th{width: '12%'}=t('equery.exam.created_by')
+              %th{width: '12%'}=t('equery.exam.klass_id')
+              %th{width: '10%'}=t('equery.exam.examdate')
+              %th{width: '10%'}=t('equery.view')
+          - cnt=0
+          %body
+            - for exampaper in examsearch.exams.order(exam_on: :desc)
+              %tr
+                %td=cnt+=1
+                %td=Programme.find(exampaper.subject_id).root.programme_list
+                %td=Programme.find(exampaper.subject_id).subject_list
+                %td
+                  - etype=exampaper.name
+                  - if etype=="F"
+                    - etype_name=t('equery.exam.final')
+                  - elsif etype=="M"
+                    - etype_name=t('equery.exam.midsem')
+                  - else
+                    - etype_name=t('equey.exam.repeat')
+                  =etype_name
+                %td=Staff.find(exampaper.created_by).staff_with_rank
+                %td=exampaper.klass_id==1 ? (t 'equery.exam.complete_set') : "Template"
+                %td=exampaper.exam_on.strftime('%d-%m-%Y')
+                - @exam=exampaper
+                %td.centre
+                  - if @exam.klass_id==1
+                    = link_to (t 'equery.exam.exampaper'), exampaper_exam_exam_path(@exam, format: "pdf") 
+                  - else
+                    \-
+            
+      .right{style:"padding: 0 10px; margin:0;"}= paginate exams, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

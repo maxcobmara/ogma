@@ -5483,16 +5483,21 @@ en:
       #lecture: Lecture
       #tutorial: Tutorial
       #practical: Practical
-    #exam:
-      #search: Examination Paper Search
+    exam:
+      search: Examination Paper Search
       #search_by: Search Examination Paper By
-      #programme_id: Programme
-      #subject_id: Subject
-      #prepared_by: Prepared By
-      #examtype: Exam Type
+      programme_id: Programme
+      subject_id: Subject
+      created_by: Prepared By
+      examtype: Exam Type
+      final: Final Examination
+      midsem: Mid Semester Examination
+      repeat: Repeat Examination
+      complete_set: Complete Set
       #klass_id: Paper Type  #template or complete set
       #klass_id2: "Complete Set / Template"
-      #examdate: Examination Date
+      examdate: Examination Date
+      exampaper: Examination Paper Set
       #total_exam_paper: Total Examination Paper
       #search_programme: Search by Programme
       #search_subject: Search by Subject
