@@ -1,5 +1,4 @@
 class Examresultsearch < ActiveRecord::Base
-  attr_accessible :programme_id, :subject_id, :student_id, :semester, :examdts, :examdte
   attr_accessor :method
   
   def examresults

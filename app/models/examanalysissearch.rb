@@ -1,5 +1,4 @@
 class Examanalysissearch < ActiveRecord::Base
-  attr_accessible :examtype, :subject_id, :examon, :exampaper, :programme_id
   attr_accessor :method
   
   def examanalyses
