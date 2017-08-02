@@ -5526,10 +5526,11 @@ en:
       list_all: List of All Invitation Lecturer Evaluation
       #search_by: "Feedback / Course Evaluation Search by"
       #total: "Total of Feedback / Course Evaluation (by student)"
-      #question: Q
-      #evaluation_form: Evaluation Form
-      #total_scores: Total Scores 
-      #average_scores: Average Scores
+      question: Q
+      evaluation_form: Evaluation Form
+      total: Total
+      total_scores: Total Scores 
+      average_scores: Average Scores
       programme_id: Programme
       subject_id: Subject
       invite_lecturer: Invitation Lecturer

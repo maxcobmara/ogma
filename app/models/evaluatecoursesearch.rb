@@ -41,7 +41,7 @@ class Evaluatecoursesearch < ActiveRecord::Base
   
   def is_staff_conditions
     if is_staff==false
-      aa=["visitor_id is not null"]
+      aa=["staff_id is null"] #for checking  aa=["visitor_id is not null"]
     elsif is_staff==true
       aa=["staff_id is not null"]
     end 

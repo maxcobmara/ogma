@@ -12,7 +12,7 @@
       
         /:programme_id, :subject_id, :evaldate, :lecturer_id, :invite_lecturer, :evaldate_end, :programme_id2, :is_staff, :visitor_id
 
-        - if (current_user.college.code=='amsas' && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.visitor_id.blank? && evaluatecoursesearch.evaldate.blank?) || (current_user.college.code=='kskbjb' && evaluatecoursesearch.staff_id==false && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.visitor_id.blank? && evaluatecoursesearch.evaldate.blank?) || (current_user.college.code=='kskbjb' && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.staff_id==true && evaluatecoursesearch.subject_id.blank? && evaluatecoursesearch.evaldate.blank?)
+        - if (current_user.college.code=='amsas' && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.visitor_id.blank? && evaluatecoursesearch.evaldate.blank?) || (current_user.college.code=='kskbjb' && evaluatecoursesearch.is_staff==false &&  evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.visitor_id.blank? && evaluatecoursesearch.evaldate.blank?) || (current_user.college.code=='kskbjb' && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.is_staff==true && evaluatecoursesearch.lecturer_id.blank? && evaluatecoursesearch.subject_id.blank? && evaluatecoursesearch.evaldate.blank?)
           %div.result-all=t 'equery.evaluate_course.list_all'
         - else
           %div.result-search=t 'equery.search_by'
@@ -20,21 +20,27 @@
         %br
                    
         - unless evaluatecoursesearch.programme_id.blank?
-          %dt=(t 'equery.evaluatecourse.programme_id')
+          %dt=(t 'equery.evaluate_course.programme_id')
           %dd=Programme.find(evaluatecoursesearch.programme_id).programme_list
 
-        - unless evaluatecoursesearch.subject_id.blank?
-          %dt=(t 'equery.evaluatecourse.subject_id')
-          %dd=Programme.find(evaluatecoursesearch.subject_id).subject_list
+        - if evaluatecoursesearch.is_staff==false
+          - unless evaluatecoursesearch.visitor_id.blank?
+            %dt=(t 'equery.evaluate_course.invite_lecturer')
+            %dd=Visitor.find(evaluatecoursesearch.visitor_id).name
+        - elsif evaluatecoursesearch.is_staff==true 
+          - unless evaluatecoursesearch.lecturer_id.blank?
+            %dt=(t 'equery.evaluate_course.lecturer_id')
+            %dd=Staff.find(evaluatecoursesearch.lecturer_id).staff_with_rank
          
-        
-         
-         
+          - unless evaluatecoursesearch.subject_id.blank?
+            %dt=(t 'equery.evaluate_course.subject_id')
+            %dd=Programme.find(evaluatecoursesearch.subject_id).subject_list
+          
         - unless evaluatecoursesearch.evaldate.blank?
           %dt=(t 'equery.evaluate_course.evaldate')
           %dd=evaluatecoursesearch.evaldate.strftime('%d-%m-%Y')
         
-        - if (current_user.college.code=='amsas' && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.visitor_id.blank? && evaluatecoursesearch.evaldate.blank?) || (current_user.college.code=='kskbjb' && evaluatecoursesearch.staff_id==false && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.visitor_id.blank? && evaluatecoursesearch.evaldate.blank?) || (current_user.college.code=='kskbjb' && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.staff_id==true && evaluatecoursesearch.subject_id.blank? && evaluatecoursesearch.evaldate.blank?)
+        - if (current_user.college.code=='amsas' && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.visitor_id.blank? && evaluatecoursesearch.evaldate.blank?) || (current_user.college.code=='kskbjb' && evaluatecoursesearch.is_staff==false &&  evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.visitor_id.blank? && evaluatecoursesearch.evaldate.blank?) || (current_user.college.code=='kskbjb' && evaluatecoursesearch.programme_id.blank? && evaluatecoursesearch.is_staff==true && evaluatecoursesearch.lecturer_id.blank? && evaluatecoursesearch.subject_id.blank? && evaluatecoursesearch.evaldate.blank?)
         - else
           .col-md-12
             .col-md-8
@@ -44,41 +50,93 @@
         %dd=evaluatecoursesearch.evaluatecourses.count==0 ? evaluatecoursesearch.evaluatecourses.count : evaluatecoursesearch.evaluatecourses.count.to_s+" "+(t 'records')
 
     /display result
-    .col-md-10.col-md-offset-1
+    .col-md-9.col-md-offset-1
       %br
       - if evaluatecoursesearch.evaluatecourses.count > 0
-        /.right= link_to (fa_icon "file-pdf-o", text: (t 'print')), evaluatecourse_list_evaluatecourse_evaluatecourses_path(format: 'pdf', ids: evaluatecoursesearch.evaluatecourses.pluck(:id))          
         %table.table.table-bordered.table-condensed.table-hover.equery
-          %head
-            %tr.info
-              %th{width: '4%'} No
-              %th{width: '20%'}=t('equery.evaluate_course.programme_id')
-              
-              %th{width: '10%'}=t('equery.view')
           - cnt=0
           %body
-            - for evaluatecourse in evaluatecoursesearch.evaluatecourses
-              %tr
-                %td=cnt+=1
-                %td=Programme.find(evaluatecourse.course_id).programme_list
-/                 %td=Programme.find(evaluatecoursepaper.subject_id).subject_list
-/                 %td
-/                   - etype=evaluatecoursepaper.name
-/                   - if etype=="F"
-/                     - etype_name=t('equery.evaluatecourse.final')
-/                   - elsif etype=="M"
-/                     - etype_name=t('equery.evaluatecourse.midsem')
-/                   - else
-/                     - etype_name=t('equey.evaluatecourse.repeat')
-/                   =etype_name
-/                 %td=Staff.find(evaluatecoursepaper.created_by).staff_with_rank
-/                 %td=evaluatecoursepaper.klass_id==1 ? (t 'equery.evaluatecourse.complete_set') : "Template"
-/                 %td=evaluatecoursepaper.evaluatecourse_on.strftime('%d-%m-%Y')
-/                 - @evaluatecourse=evaluatecoursepaper
-/                 %td.centre
-/                   - if @evaluatecourse.klass_id==1
-/                     = link_to (t 'equery.evaluatecourse.evaluatecoursepaper'), evaluatecoursepaper_evaluatecourse_evaluatecourse_path(@evaluatecourse, format: "pdf") 
-/                   - else
-/                     \-
-/             
-/       .right{style:"padding: 0 10px; margin:0;"}= paginate evaluatecourses, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
+            
+            - groupped_evaluations= evaluatecoursesearch.is_staff==true ? evaluatecoursesearch.evaluatecourses.group_by{|x|x.staffevaluate} : evaluatecoursesearch.evaluatecourses.group_by{|x|x.visitor}
+            
+            - groupped_evaluations.each do |teacher, evaluatecourses|
+              - if evaluatecoursesearch.is_staff==true
+                - aarray=evaluatecourses.group_by{|y|y.subjectevaluate}
+              - elsif evaluatecoursesearch.is_staff==false
+                - aarray=evaluatecourses.group_by{|y|y.invite_lec_topic}  
+              
+              - aarray.each do |subject_topic, evaluations|
+                - if evaluatecoursesearch.is_staff==true
+                  - analysis=AverageCourse.where(subject_id: subject_topic.id).where(lecturer_id: teacher.id)
+                - elsif evaluatecoursesearch.is_staff==false
+                  - analysis=AverageCourse.where(invite_lec_topic: subject_topic).where(visitor_id: teacher.id)
+
+                %tr.info
+                  %th{colspan: 3}=evaluatecourses.first.stucourse.programme_list
+                  %th.centre{colspan: 11}=evaluatecoursesearch.is_staff==true ? subject_topic.subject_list : subject_topic
+                %tr.info
+                  %th{width: '4%'} No
+                  %th{width: '10%'}=t('equery.evaluate_course.evaldate')
+                  %th{width: '26%'}=evaluatecoursesearch.is_staff==true ? t('equery.evaluate_course.lecturer_id') : t('equery.evaluate_course.invite_lecturer')
+                  %th.centre{width: '5%'}=t('equery.evaluate_course.question')+"1"
+                  %th.centre{width: '5%'}=t('equery.evaluate_course.question')+"2"
+                  %th.centre{width: '5%'}=t('equery.evaluate_course.question')+"3"
+                  %th.centre{width: '5%'}=t('equery.evaluate_course.question')+"4"
+                  %th.centre{width: '5%'}=t('equery.evaluate_course.question')+"5"
+                  %th.centre{width: '5%'}=t('equery.evaluate_course.question')+"6"
+                  %th.centre{width: '5%'}=t('equery.evaluate_course.question')+"7"
+                  %th.centre{width: '5%'}=t('equery.evaluate_course.question')+"8"
+                  %th.centre{width: '5%'}=t('equery.evaluate_course.question')+"9"
+                  %th{width: '5%'}=t('equery.evaluate_course.total')
+                  %th{width: '10%'}=t('equery.view')
+
+                - cnt2=0 
+                - for evaluation in evaluations
+                  %tr
+                    %td=cnt+=1
+                    %td=evaluation.evaluate_date.strftime('%d-%m-%Y')
+                    - if cnt2==0
+                      - ecount2=evaluations.count
+                      - ecount=ecount2*1.0
+                      %td{rowspan: "#{ecount2}"}=evaluatecoursesearch.is_staff==true ? evaluation.staffevaluate.staff_with_rank : evaluation.visitor.name
+                      - cnt2+=1
+                    %td.centre=evaluation.ev_obj
+                    %td.centre=evaluation.ev_knowledge
+                    %td.centre=evaluation.ev_deliver
+                    %td.centre=evaluation.ev_content
+                    %td.centre=evaluation.ev_tool
+                    %td.centre=evaluation.ev_topic
+                    %td.centre=evaluation.ev_work
+                    %td.centre=evaluation.ev_note
+                    %td.centre=evaluation.ev_assessment
+                    %td.centre=evaluation.total
+                    - @evaluate_course=evaluation
+                    %td= link_to t('equery.evaluate_course.evaluation_form'), courseevaluation_exam_evaluate_course_path(@evaluate_course, format: "pdf")
+                %tr.warning
+                  %th{colspan: 3, style: 'text-align: right'}=t('equery.evaluate_course.total_scores')
+                  %th.centre=total_obj=evaluations.map(&:ev_obj).sum
+                  %th.centre=total_knowledge=evaluations.map(&:ev_knowledge).sum
+                  %th.centre=total_deliver=evaluations.map(&:ev_deliver).sum
+                  %th.centre=total_content=evaluations.map(&:ev_content).sum
+                  %th.centre=total_tool=evaluations.map(&:ev_tool).sum
+                  %th.centre=total_topic=evaluations.map(&:ev_topic).sum
+                  %th.centre=total_work=evaluations.map(&:ev_work).sum
+                  %th.centre=total_note=evaluations.map(&:ev_note).sum
+                  %th.centre=total_assessment=evaluations.map(&:ev_assessment).sum
+                  %th.centre=subtotal=evaluations.map(&:total).sum
+                  %th{rowspan: 2}=analysis.count==0 ? "" : (link_to (t 'exam.average_course.view_analysis_data'), exam_average_course_path(analysis.first))
+                %tr.warning
+                  %th{colspan: 3, style: 'text-align: right'}=t('equery.evaluate_course.average_scores')
+                  %th.centre=number_with_precision(total_obj/ecount, precision: 2)
+                  %th.centre=number_with_precision(total_knowledge/ecount, precision: 2)
+                  %th.centre=number_with_precision(total_deliver/ecount, precision: 2)
+                  %th.centre=number_with_precision(total_content/ecount, precision: 2)
+                  %th.centre=number_with_precision(total_tool/ecount, precision: 2)
+                  %th.centre=number_with_precision(total_topic/ecount, precision: 2)
+                  %th.centre=number_with_precision(total_work/ecount, precision: 2)
+                  %th.centre=number_with_precision(total_note/ecount, precision: 2)
+                  %th.centre=number_with_precision(total_assessment/ecount, precision: 2)
+                  %th.centre=number_with_precision(subtotal/ecount, precision: 2)
+                  /%th.centre
+                %tr
+                  %th{colspan: 14, style: 'height: 20px;'}

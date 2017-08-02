@@ -5444,10 +5444,11 @@ ms_MY:
       list_all:  Senarai Penuh Penilaian Pensyarah Jemputan
       #search_by: Carian Maklumbalas / Penilaian Kursus mengikut
       #total: "Jumlah Maklumbalas / Penilaian Kursus (oleh pelajar)"
-      #question: S
-      #evaluation_form: Borang Penilaian
-      #total_scores: Jumlah Skor
-      #average_scores: Skor Purata
+      question: S
+      evaluation_form: Borang Penilaian
+      total: Jumlah
+      total_scores: Jumlah Skor
+      average_scores: Skor Purata
       programme_id: Program
       subject_id: Subjek
       invite_lecturer: Pensyarah Jemputan

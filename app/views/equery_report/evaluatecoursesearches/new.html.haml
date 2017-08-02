@@ -7,11 +7,11 @@
 .row.fluid
   = form_for [:equery_report, @evaluatecoursesearch], html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
-    /= render :partial =>"equery_report/evaluatecoursesearches/#{current_user.college.code}/form", :locals => { :f => f}
-    /= f.hidden_field :college_id, value: current_user.college_id
+    = render :partial =>"equery_report/evaluatecoursesearches/#{current_user.college.code}/form", :locals => { :f => f}
+    = f.hidden_field :college_id, value: current_user.college_id
     
-    = render :partial =>"equery_report/evaluatecoursesearches/kskbjb/form", :locals => { :f => f}
-    = f.hidden_field :college_id, value: '1'
+    /= render :partial =>"equery_report/evaluatecoursesearches/kskbjb/form", :locals => { :f => f}
+    /= f.hidden_field :college_id, value: '1'
     
 
     .col-sm-8.col-md-offset-1

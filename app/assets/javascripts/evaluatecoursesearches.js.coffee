@@ -36,7 +36,7 @@ jQuery ->
       $('#span_subject').hide()
     else    
       if college=='2'
-        alert('amsas')
+        #alert('amsas')
         #isstaff=$('#evaluatecoursesearch_is_staff').val()
         #if isstaff == 'true'
         options = $(avisitor).filter("optgroup[label=#{escaped_aprogramme}]").html()
@@ -50,7 +50,7 @@ jQuery ->
           $('#span_visitor').hide()
     
       if college=='1'
-        alert('kskbjb')
+        #alert('kskbjb')
         if $('#is_astaff').is(':checked') 
           options = $(astaff).filter("optgroup[label=#{escaped_aprogramme}]").html()
           if options
