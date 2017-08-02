@@ -192,8 +192,7 @@
                 %td=no+=1
                 %td= link_to (t 'student.counseling.title')+" ("+(t 'student.counseling.feedback_to')+")", student_student_counseling_sessions_path
                 %td.centre= link_to (fa_icon "search"), new_equery_report_studentcounselingsearch_path(searchstudentcounselingtype: 1)
-          
-            ////
+
           - elsif @query_module=='5'
             - permitted_to? :read, :weeklytimetablesearches do
               %tr
@@ -226,7 +225,40 @@
                     %td= link_to (t 'training.weeklytimetable.personalize_timetable')+(t 'equery.personalize_timetable.owner_only'), personalize_index_training_weeklytimetables_path
                     %td.centre= link_to (fa_icon "search"), new_equery_report_personalizetimetablesearch_path(searchpersonalizetimetabletype: 1)
 
-            ////
+            
+            //////	
+          - elsif @query_module=='6'
+            - permitted_to? :read, :examsearches do
+              %tr
+                %td.group{colspan: 3}= (t 'equery.module')+" : "+t('exam.title')
+              %tr
+                %td=no+=1
+                %td= link_to (t 'exam.exams.title'), exam_exams_path
+                %td.centre= link_to (fa_icon "search"), new_equery_report_examsearch_path(searchexamtype: 1)
+
+            - permitted_to? :read, :examresultsearches do 
+              %tr
+                %td=no+=1
+                %td
+                  = link_to (t 'exam.examresult.title2'), exam_examresults_path
+                  |
+                  = link_to (t 'exam.examresult.exam_slip'), index2_exam_examresults_path
+                %td.centre= link_to (fa_icon "search"), new_equery_report_examresultsearch_path(searchexamresulttype: 1)
+                  
+            - permitted_to? :read, :evaluatecoursesearches do
+              - evaluation_title=current_user.college.code=='amsas' ? (t 'exam.evaluate_course.title2') : (t 'exam.evaluate_course.title')
+              %tr
+                %td=no+=1
+                %td= link_to evaluation_title, exam_evaluate_courses_path
+                %td.centre= link_to (fa_icon "search"), new_equery_report_evaluatecoursesearch_path(searchevaluatecoursetype: 1)
+                  
+            - permitted_to? :read, :examanalysissearches do
+              %tr
+                %td=no+=1
+                %td= link_to (t 'exam.examanalysis.title'), exam_examanalyses_path
+                %td.centre= link_to (fa_icon "search"), new_equery_report_examanalysissearch_path(searchexamanalysistype: 1)
+            //////
+            
           - elsif @query_module=='7'
             %tr
               %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'library.title')

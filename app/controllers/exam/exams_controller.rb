@@ -217,7 +217,10 @@ class Exam::ExamsController < ApplicationController
     render :partial => 'view_questions', :layout => false
   end
 
-  def exam_list
+  def exam_list 
+    if params[:ids]
+      @programme_exams=Exam.where(id: params[:ids]).group_by{|x|x.subject.root}
+    end
     respond_to do |format|
       format.pdf do
         pdf = Exam_listPdf.new(@programme_exams, view_context, current_user.college)

@@ -145,6 +145,10 @@ class EvaluateCourse < ActiveRecord::Base
     end
   end
   
+  def total
+    ev_obj+ev_knowledge+ev_deliver+ev_content+ev_tool+ev_topic+ev_work+ev_note+ev_assessment
+  end
+  
   private
     def validate_staff_or_invitation_lecturer_must_exist
       unless college.blank?

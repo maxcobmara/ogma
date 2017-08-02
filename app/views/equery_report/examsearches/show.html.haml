@@ -1,0 +1,16 @@
+- model_class = Examsearch
+.page-header
+  %h1=t('equery.exam.search')
+= render 'shared/flashes'
+
+.row
+  .col-md-offset-1
+    =render partial: 'exam_listing', locals: {examsearch: @examsearch, exams: @exams}
+
+.row
+  .col-md-6.col-md-offset-4
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('exam.title')}", "/equery_reports?query_module=6", class: 'btn btn-primary'
+      %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_examsearch_path(searchexamtype: 1),  :class => 'btn btn-default'
+      

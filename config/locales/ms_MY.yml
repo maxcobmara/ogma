@@ -5402,16 +5402,22 @@ ms_MY:
       #lecture: Kuliah
       #tutorial: Tutorial
       #practical: Amali
-    #exam:
-      #search: Carian Set Kertas Peperiksaan
+    exam:
+      search: Carian Set Kertas Peperiksaan
       #search_by: Carian Set Kertas Peperiksaan mengikut 
-      #programme_id: Program
-      #subject_id: Subjek
-      #prepared_by: Disediakan Oleh
-      #examtype: Jenis Peperiksaan
-      #klass_id: Jenis Kertas Peperiksaan
+      list_all:  Senarai Penuh Set Kertas Peperiksaan
+      programme_id: Program
+      subject_id: Subjek
+      created_by: Disediakan Oleh
+      examtype: Jenis Peperiksaan
+      klass_id: Jenis Kertas Peperiksaan
+      final: Peperiksaan Akhir Semester
+      midsem: Peperiksaan Pertengahan Semester
+      repeat: Peperiksaan Ulangan
+      complete_set: Set Lengkap
       #klass_id2: "Set Lengkap / Template"
-      #examdate: Tarikh Peperiksaan
+      examdate: Tarikh Peperiksaan
+      exampaper: Set Kertas Peperiksaan
       #total_exam_paper: Jumlah Set Kertas Peperiksaan
       #search_programme: Carian mengikut Program
       #search_subject: Carian mengikut Subjek
@@ -5432,14 +5438,23 @@ ms_MY:
       #total: Jumlah Keputusan Peperiksaan
       #exam_result: Keputusan Peperiksaan
       #exam_slip: Slip Peperiksaan
-    #evaluate_course:
-      #search: Carian Maklumbalas / Penilaian Kursus
+    evaluate_course:
+      search: Carian Maklumbalas / Penilaian Kursus
+      search2: Carian Penilaian Pensyarah Jemputan
+      list_all:  Senarai Penuh Penilaian Pensyarah Jemputan
       #search_by: Carian Maklumbalas / Penilaian Kursus mengikut
       #total: "Jumlah Maklumbalas / Penilaian Kursus (oleh pelajar)"
-      #question: S
-      #evaluation_form: Borang Penilaian
-      #total_scores: Jumlah Skor
-      #average_scores: Skor Purata
+      question: S
+      evaluation_form: Borang Penilaian
+      total: Jumlah
+      total_scores: Jumlah Skor
+      average_scores: Skor Purata
+      programme_id: Program
+      subject_id: Subjek
+      invite_lecturer: Pensyarah Jemputan
+      lecturer_id: Pengajar
+      evaldate: Tarikh Penilaian
+      staff_or_invited: "Pilih kotak semak jika Pengajar KSKBJB, nyahpilih jika Pensyarah Jemputan"
     #examanalysis:
       #search: Carian Analisis Peperiksaan Mengikut Kertas Peperiksaan
       #search_by: Carian rekod mengikut
