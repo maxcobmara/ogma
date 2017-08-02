@@ -1,9 +1,7 @@
 - model_class = Evaluatecoursesearch
 .page-header
-  - if current_user.college.code=='amsas'
-    %h1=t('equery.evaluate_course.search2')
-  - else
-    %h1=t('equery.evaluate_course.search')
+  %h1=current_user.college.code=='amsas' ? t('equery.evaluate_course.search2') : t('equery.evaluate_course.search')
+  
 = render 'shared/flashes'
 
 .row

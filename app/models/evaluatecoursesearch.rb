@@ -41,15 +41,15 @@ class Evaluatecoursesearch < ActiveRecord::Base
   
   def is_staff_conditions
     if is_staff==false
-      aa=["invite_lec !=?", ""]
+      aa=["visitor_id is not null"]
     elsif is_staff==true
-      aa=["subject_id is not null"]
+      aa=["staff_id is not null"]
     end 
     return aa if is_staff==true || is_staff==false
   end
   
-  def invite_lecturer_conditions
-    ["invite_lec=?", invite_lecturer] unless invite_lecturer.blank?
+  def visitor_id_conditions
+    ["visitor_id=?", visitor_id] unless visitor_id.blank?
   end
   
   def subject_id_conditions

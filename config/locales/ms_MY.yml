@@ -5453,6 +5453,7 @@ ms_MY:
       invite_lecturer: Pensyarah Jemputan
       lecturer_id: Pengajar
       evaldate: Tarikh Penilaian
+      staff_or_invited: "Pilih kotak semak jika Pengajar KSKBJB, nyahpilih jika Pensyarah Jemputan"
     #examanalysis:
       #search: Carian Analisis Peperiksaan Mengikut Kertas Peperiksaan
       #search_by: Carian rekod mengikut

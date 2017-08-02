@@ -5535,6 +5535,7 @@ en:
       invite_lecturer: Invitation Lecturer
       lecturer_id: Pengajar
       evaldate: Evaluation Date
+      staff_or_invited: "Tick if KSKB lecturers, untick if Invitation Lecturer."
     #examanalysis:
       #search: Examination Analysis by Paper Search
       #search_by: Search record by

@@ -1,0 +1,69 @@
+.row
+  .col-md-10.col-md-offset-2
+    - if @searchevaluatecoursetype=='1' || @searchevaluatecoursetype==1      
+      /:programme_id, :subject_id, :evaldate, :lecturer_id, :invite_lecturer, :evaldate_end, :programme_id2, :is_staff, :visitor_id
+      
+      / Nav tabs
+      %ul.nav.nav-tabs
+        %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
+
+      .tab-content{style:"padding-top:1em"}
+        #search.tab-pane.active
+          %br
+          .col-md-offset-2
+            
+            .form-group
+              .col-sm-2.control-label 
+                /= f.label "Staff"
+              .col-md-6
+                .small
+                  = f.check_box :is_staff, :checked => "checked", :id => 'is_astaff' 
+                  =t('equery.evaluate_course.staff_or_invited')
+                
+            .form-group
+              .col-sm-2.control-label
+                = f.label (t 'equery.evaluate_course.programme_id') 
+              .col-md-5
+                = f.select :programme_details, options_for_select(Programme.roots.map(&:programme_list)), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
+            
+            .form-group#span_visitor
+              .col-sm-2.control-label
+                = f.label (t 'equery.evaluate_course.invite_lecturer')
+              .col-md-4
+                - invite_list=[]
+                - EvaluateCourse.where('visitor_id is not null').group_by{|x|x.stucourse}.each do |course, evaluations|
+                  - aa=[[(t 'select'), ""]]
+                  - evaluations.group_by{|x|x.visitor}.each do |invite, eval_list|
+                    - aa << [invite.name, invite.id]
+                  - invite_list << [course.programme_list, aa]
+                = f.select :visitor_id, grouped_options_for_select(invite_list), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}         
+            
+            .form-group#span_staff
+              .col-sm-2.control-label
+                = f.label (t 'equery.evaluate_course.lecturer_id')
+              .col-md-4
+                - staff_list=[]
+                - EvaluateCourse.where('staff_id is not null').group_by{|x|x.stucourse}.each do |course, evaluations|
+                  - aa=[[(t 'select'), ""]]
+                  - evaluations.group_by{|x|x.staffevaluate}.each do |astaff, eval_list|
+                    - aa << [astaff.staff_with_rank, astaff.id]
+                  - staff_list << [course.programme_list, aa]
+                = f.select :lecturer_id, grouped_options_for_select(staff_list), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
+            
+            .form-group#span_subject
+              .col-sm-2.control-label
+                = f.label (t 'equery.evaluate_course.subject_id')
+              .col-sm-4
+                - subject_list=[]
+                - EvaluateCourse.where('subject_id is not null').group_by{|x|x.staffevaluate}.each do |astaff, evaluations|
+                  - aa=[[(t 'select'), ""]]
+                  - evaluations.group_by{|x|x.subjectevaluate}.each do |asubject, eval_list|
+                    - aa << [asubject.subject_list, asubject.id]
+                  - subject_list << [astaff.id, aa]
+                = f.select :subject_id, grouped_options_for_select(subject_list), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
+
+            .form-group
+              .col-sm-2.control-label
+                = f.label (t 'equery.evaluate_course.evaldate')
+              .col-md-2
+                = f.text_field :evaldate, class: 'form-control date_picker_reverse'
