@@ -2,13 +2,19 @@
 .col-md-11
   %hr
   = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), results_exam_examresults_path(id: @examresult.id, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: (t 'print')
+  - subjects =Programme.find(@examresult.intake.programme_id).descendants.where(course_type: 'Subject').sort_by{|x|[x.parent, x.code]}
+        
   %table.table.table-bordered
     %head
+      %tr
+        %th{colspan: 3}=t('training.programme.module')
+        - subjects.group_by{|x|x.parent_id}.each do |parent, subject_list|
+          %th.centre{colspan: "#{subject_list.count}"}=Programme.find(parent).subject_list
+        %th
       %tr
         %th No
         %th=t('exam.examresult.student')
         %th=t('student.icno')
-        - subjects =Programme.find(@examresult.intake.programme_id).descendants.where(course_type: 'Subject')
         - for subject in subjects
           %th.centre=h subject.code
         %th.centre Status
@@ -33,3 +39,13 @@
               %font{style: "color: red; text-decoration: underline"}=status_viewing
             - else
               %font{style: "color: black;"}=status_viewing
+  .col-md-4
+    .small
+      %table.table.table-bordered.table-condensed
+        - subjects.group_by{|x|x.parent_id}.each do |parent, subject_list|
+          %tr.warning
+            %td=(t 'training.programme.module')+" : "+Programme.find(parent).subject_list
+          - for subject in subject_list
+            %tr
+              %td= subject.subject_list
+  

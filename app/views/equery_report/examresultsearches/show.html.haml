@@ -1,1 +1,16 @@
- 
+- model_class = Examsearch
+.page-header
+  %h1=t('equery.examresult.search')
+= render 'shared/flashes'
+
+.row
+  .col-md-offset-1
+    /= render :partial =>"equery_report/examresultsearches/kskbjb/examresult_listing", locals: {examresultsearch: @examresultsearch, examresults: @examresults}
+    = render :partial =>"equery_report/examresultsearches/#{current_user.college.code}/examresult_listing", locals: {examresultsearch: @examresultsearch, examresults: @examresults}
+.row
+  .col-md-6.col-md-offset-4
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('exam.title')}", "/equery_reports?query_module=6", class: 'btn btn-primary'
+      %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_examresultsearch_path(searchexamresulttype: 1),  :class => 'btn btn-default'
+      

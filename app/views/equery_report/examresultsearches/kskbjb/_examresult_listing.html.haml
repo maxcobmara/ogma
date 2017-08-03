@@ -11,7 +11,7 @@
       %dl.dl-horizontal
         /:intake_id, :subject_id, :student_id, :semester, :examdts, :examdte  
         
-        - if (examresultsearch.college.code=='amsas' && examresultsearch.intake_id.blank? && examresultsearch.examdts.blank? && examresultsearch.examdte.blank? ) || (examresultsearch.college.code=='kskbjb' && examresultsearch.intake_id.blank? && examresultsearch.semester.blank? && examresultsearch.examdts.blank? && examresultsearch.examdte.blank?)
+        - if examresultsearch.intake_id.blank? && examresultsearch.semester.blank? && examresultsearch.examdts.blank? && examresultsearch.examdte.blank?
           %div.result-all=t 'equery.examresult.list_all'
         - else
           %div.result-search=t 'equery.search_by'
@@ -34,7 +34,7 @@
           %dt=(t 'equery.examresult.examdte')
           %dd=examresultsearch.examdte.strftime('%d-%m-%Y')
 
-        - if (examresultsearch.college.code=='amsas' && examresultsearch.intake_id.blank? && examresultsearch.examdts.blank? && examresultsearch.examdte.blank? ) || (examresultsearch.college.code=='kskbjb' && examresultsearch.intake_id.blank? && examresultsearch.semester.blank? && examresultsearch.examdts.blank? && examresultsearch.examdte.blank?)
+        - if examresultsearch.intake_id.blank? && examresultsearch.semester.blank? && examresultsearch.examdts.blank? && examresultsearch.examdte.blank?
         - else
           .col-md-12
             .col-md-8
@@ -48,7 +48,8 @@
       %br
       - if examresultsearch.examresults.count > 0
         - @examresults=examresultsearch.examresults
-        .right= link_to (fa_icon("print", text: (t 'actions.print'))), examresult_list_exam_examresults_path(@examresults, format: 'pdf')
+        - if examresultsearch.student_id!=1
+          .right= link_to (fa_icon("print", text: (t 'actions.print'))), examresult_list_exam_examresults_path(@examresults, format: 'pdf')
         %table.table.table-bordered.table-condensed.table-hover.equery
           %head
             
@@ -63,18 +64,16 @@
                 - cnt=0
               %tr.info
                 %th{width: '4%'} No
-                %th{width: '46%', colspan: 4}=t('equery.examresult.programme')
-                /- unless current_user.college.code=='amsas'
-                /  %th{width: '10%'} Semester
+                %th{width: '56%', colspan: 4}=t('equery.examresult.programme')+" / Semester"
                 %th.centre{width: '10%'}=t('equery.examresult.start')
                 %th.centre{width: '10%'}=t('equery.examresult.end')
                 %th.centre{width: '20%', colspan: 2}=t('equery.links')
               - for examresult in examresults
                 %tr
                   %td=cnt+=1
-                  %td{colspan: 4}=Intake.find(examresult.intake_id).programme.programme_list
-                  /- unless current_user.college.code=='amsas'
-                  /  %td=examresult.semester
+                  %td{colspan: 4}
+                    =Intake.find(examresult.intake_id).programme.programme_list
+                    =" / "+examresult.render_semester.to_s
                   %td.centre=examresult.examdts.try(:strftime, '%d-%m-%Y')
                   %td.centre=examresult.examdte.try(:strftime, '%d-%m-%Y')
                   %td.centre{colspan: 2}=link_to (t 'equery.examresult.exam_result'), results_exam_examresults_path(id: examresult.id, format: "pdf")
@@ -99,7 +98,7 @@
                       %td=h examslip.total
                       %td=h examslip.pngs17
                       %td=h examslip.pngk 
-                      %td=h examslip.remark 
+                      %td=h examslip.render_status
                       %td.centre= link_to (t 'equery.examresult.exam_slip'), examination_slip_exam_examresults_path(id: examslip.id, format: "pdf")
                     
             

@@ -108,7 +108,7 @@ class Examination_slipPdf < Prawn::Document
     header=[["No.", "#{I18n.t('exam.examresult.subject_code_name')}", "#{I18n.t('exam.exammark.total')}", "Status"]]
     data=[]
     count=0
-    for subject in @subjects
+    for subject in @subjects.sort_by{|x|[x.parent_id, x.code]}
       subject_status=""
       grades=Grade.where(student_id: @resultline.student_id).where(subject_id: subject.id)
       if grades.count > 0

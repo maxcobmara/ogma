@@ -14,7 +14,8 @@ class Intake < ActiveRecord::Base
   has_one :examresult
   
   validates :programme_id, :name,:register_on, :description, presence: true # :description, => total division (amsas)
-  validate :staff_id, presence: true, :if => :college_isnot_amsas?
+  validates :staff_id, presence: true, :if => :college_isnot_amsas?
+  validates :name, uniqueness: true
 
   def division=(value)
     data[:division] = value

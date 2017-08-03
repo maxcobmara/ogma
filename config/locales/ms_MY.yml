@@ -5117,8 +5117,8 @@ ms_MY:
     #same_as_above: Sama seperti di atas
     #dated: bertarikh
     #filter_by: Saring mengikut
-    #to_includes: untuk sertakan
-    #in_search_results: "dalam keputusan peperiksaan."
+    to_includes: untuk sertakan
+    in_search_results: "dalam keputusan peperiksaan."
     total: Jumlah
     not_defined: Tidak ditentukan
     not_related: Tidak berkaitan
@@ -5433,11 +5433,22 @@ ms_MY:
       #seq_question_count_not_match: Jumlah turutan soalan berbeza dengan jumlah soalan
     examresult: 
       search: "Carian Keputusan & Slip Peperiksaan"
+      list_all: Senarai Penuh Keputusan & Slip Peperiksaan
+      intake_id: Ambilan - Program
+      exam_date: Tarikh Peperiksaan
+      start: Mula
+      end: Tamat
+      programme: Program
+      intake: "Ambilan : "
+      exam_result: Keputusan Peperiksaan
       #search_by: "Carian Keputusan Peperiksaan Mengikut"
-      #examslip: Slip Peperiksaan Pelajar
+      examslip: Slip Peperiksaan Pelajar
       #total: Jumlah Keputusan Peperiksaan
-      #exam_result: Keputusan Peperiksaan
-      #exam_slip: Slip Peperiksaan
+      exam_slip: Slip Peperiksaan
+      mykad_no: No MyKad
+      matrix_no: No Matrik
+      student: Pelajar
+      total: Jumlah
     evaluate_course:
       search: Carian Maklumbalas / Penilaian Kursus
       search2: Carian Penilaian Pensyarah Jemputan

@@ -13,7 +13,7 @@ class ResultsPdf < Prawn::Document
       bounding_box([680,530], :width => 400, :height => 90) do |y2|
         image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
       end
-      @subjects=Programme.find(prog_id).descendants.where(course_type: 'Subject')
+      @subjects=Programme.find(prog_id).descendants.where(course_type: 'Subject').sort_by{|x|[x.parent_id, x.code]}
       bounding_box([140, 520], :width => 500, :height => 80) do |y2|
         text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)", :align => :center, :size => 11, :style => :bold
 	text "LAPORAN PEMARKAHAN PEPERIKSAAN",  :align => :center, :size => 11, :style => :bold
@@ -269,11 +269,12 @@ class ResultsPdf < Prawn::Document
   def result_table2
     aa=[25, 150, 70]
     bb=0
+    total_lines=@examresult.resultlines.count
     subject_count=@subjects.count
     if subject_count > 6
       for subject in @subjects
-         bb+=30#40
-         aa << 30#40
+         bb+=25#30#40
+         aa << 25#30#40
       end
     else
       for subject in @subjects
@@ -290,7 +291,11 @@ class ResultsPdf < Prawn::Document
       row(0).columns(subject_count+3).valign=:center
       if subject_count > 6
         row(0).columns(3..subject_count+3-1).rotate = 90 #http://stackoverflow.com/questions/40139848/bottom-to-top-text-in-column-of-prawn-table
-        row(0).height=70
+        row(0).height=100
+	####
+	row(1..total_lines).height=45
+	row(1).columns(3..subject_count+3-1).rotate = 90
+	####
       else
         row(0).columns(3..subject_count+3-1).valign=:center
         row(0).height=35
@@ -304,7 +309,7 @@ class ResultsPdf < Prawn::Document
   def line_item_rows2
     aa=["No", "#{I18n.t('exam.examresult.student')}", "#{ I18n.t('student.icno')}"]
     0.upto(@subjects.count-1).each do |cnt|
-       aa << "#{@subjects[cnt].code}"
+       aa << "#{@subjects[cnt].subject_list[0, 40]}"
     end
     counter = counter || 0
     header=[aa+["Status"]]
@@ -314,7 +319,7 @@ class ResultsPdf < Prawn::Document
     for examresultline in @examresult.resultlines.sort_by{|x|x.status}
       details= [count+=1, examresultline.student.student_with_rank, examresultline.student.icno]
       subjectscol=[]
-      for subject in @subjects
+      for subject in @subjects.sort_by
         grades=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id)
         if grades.count > 0
           finalscore=@view.pukka(grades.first.finalscore).to_s+" %"
