@@ -5431,8 +5431,8 @@ ms_MY:
       #sequence_setting_incomplete: Turutan soalan tidak dipilih
       #sequence_not_exist: Turutan soalan tidak wujud
       #seq_question_count_not_match: Jumlah turutan soalan berbeza dengan jumlah soalan
-    #examresult: 
-      #search: "Carian Keputusan & Slip Peperiksaan"
+    examresult: 
+      search: "Carian Keputusan & Slip Peperiksaan"
       #search_by: "Carian Keputusan Peperiksaan Mengikut"
       #examslip: Slip Peperiksaan Pelajar
       #total: Jumlah Keputusan Peperiksaan

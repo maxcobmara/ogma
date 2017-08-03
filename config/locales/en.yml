@@ -5512,8 +5512,8 @@ en:
       #sequence_setting_incomplete: Question sequence not selected
       #sequence_not_exist: Questions sequence not exist
       #seq_question_count_not_match: Total sequence of questions not match with total of questions
-    #examresult:
-      #search: "Examination Result & Slip Search"
+    examresult:
+      search: "Examination Result & Slip Search"
       #search_by: Search Examination Result By
       #select_programme_first: "Select a 'Programme' first"
       #examslip: Student Examination Slip
