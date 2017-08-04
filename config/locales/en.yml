@@ -5199,8 +5199,8 @@ en:
     #same_as_above: Same as above
     #dated: dated
     #filter_by: Filter by
-    #to_includes: to includes
-    #in_search_results: "in search results."
+    to_includes: to includes
+    in_search_results: "in search results."
     total: Total
     not_defined: Not defined
     not_related: Not related
@@ -5512,14 +5512,25 @@ en:
       #sequence_setting_incomplete: Question sequence not selected
       #sequence_not_exist: Questions sequence not exist
       #seq_question_count_not_match: Total sequence of questions not match with total of questions
-    #examresult:
-      #search: "Examination Result & Slip Search"
+    examresult:
+      search: "Examination Result & Slip Search"
+      list_all: List of All Examination Result & Slip
+      intake_id: Intake - Programme
+      exam_date: Examination Date
+      start: Start
+      end: End
+      programme: Programme
+      intake: "Intake : "
+      exam_result: Examination Result
+      mykad_no: MyKad No
+      matrix_no: Matrix No
+      student: Student
+      total: Total
       #search_by: Search Examination Result By
       #select_programme_first: "Select a 'Programme' first"
       #examslip: Student Examination Slip
       #total: Total of Examination Result
-      #exam_result: Exam Result
-      #exam_slip: Exam Slip
+      exam_slip: Exam Slip
     evaluate_course:
       search: "Feedback / Course Evaluation Search"
       search2: Invitation Lecturer Evaluation Search

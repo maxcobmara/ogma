@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170801144339) do
+ActiveRecord::Schema.define(version: 20170803020131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1173,7 +1173,6 @@ ActiveRecord::Schema.define(version: 20170801144339) do
   end
 
   create_table "examresultsearches", force: true do |t|
-    t.integer  "programme_id"
     t.integer  "subject_id"
     t.integer  "student_id"
     t.string   "semester"
@@ -1183,6 +1182,7 @@ ActiveRecord::Schema.define(version: 20170801144339) do
     t.datetime "updated_at"
     t.integer  "college_id"
     t.string   "data"
+    t.integer  "intake_id"
   end
 
   create_table "exams", force: true do |t|

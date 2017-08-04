@@ -16,13 +16,13 @@ class EqueryReport::ExamresultsearchesController < ApplicationController
 
   def show
     @examresultsearch = Examresultsearch.find(params[:id])
-    @examresults=@examresultsearch.examresults#.page(params[:page]).per(10)
+    @examresults=@examresultsearch.examresults.page(params[:page]).per(10)
   end
    
   private
   
   # Never trust parameters from the scary internet, only allow the white list through.
     def examresultsearch_params
-      params.require(:examresultsearch).permit(:programme_id, :subject_id, :student_id, :semester, :examdts, :examdte, :college_id, [:data => {}])
+      params.require(:examresultsearch).permit(:intake_id, :subject_id, :student_id, :semester, :examdts, :examdte, :intake_programme, :college_id, [:data => {}])
     end
 end

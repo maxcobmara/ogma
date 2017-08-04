@@ -15,9 +15,20 @@ class Lessonplansearch < ActiveRecord::Base
   
   def update_intake
     unless intake_programme.blank?
-      siri=intake_programme.split(" |")[0].gsub("Siri ", "")
-      intakeid=Intake.where("name ILIKE(?)", "%#{siri}%").first.id
-      self.intake_id=intakeid
+      if college.code=='amsas'
+        siri=intake_programme.split(" |")[0].gsub("Siri ", "")
+        intakeid=Intake.where("name ILIKE(?)", "%#{siri}%").first.id
+        self.intake_id=intakeid
+      else
+        #2.1.4 :034 > "May 2007 (23)".scan(/\(([^\/.]*)\)/)
+        #=> [["23"]] 
+        #2.1.4 :035 > "May 2007 (23)".split(" (")[0]
+        #=> "May 2007"
+        intake_group=intake_programme.scan(/\(([^\/.]*)\)/)
+        intake_name=intake_programme.split(" (")[0]
+        intakeid=Intake.where("name ILIKE(?) AND description ILIKE(?)", "%#{intake_name}%", "%#{intake_group}%").first.id
+	self.intake_id=intakeid
+      end
     end
   end
   
