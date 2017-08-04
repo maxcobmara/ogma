@@ -5442,7 +5442,7 @@ ms_MY:
       intake: "Ambilan : "
       exam_result: Keputusan Peperiksaan
       #search_by: "Carian Keputusan Peperiksaan Mengikut"
-      examslip: Slip Peperiksaan Pelajar
+      #examslip: Slip Peperiksaan Pelajar
       #total: Jumlah Keputusan Peperiksaan
       exam_slip: Slip Peperiksaan
       mykad_no: No MyKad
