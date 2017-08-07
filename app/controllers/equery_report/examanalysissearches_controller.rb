@@ -16,7 +16,7 @@ class EqueryReport::ExamanalysissearchesController < ApplicationController
 
   def show
     @examanalysissearch = Examanalysissearch.find(params[:id])
-    @examanalysiss=@examanalysissearch.examanalysiss#.page(params[:page]).per(10)
+    @examanalyses=@examanalysissearch.examanalyses.page(params[:page]).per(10)
   end
    
   private

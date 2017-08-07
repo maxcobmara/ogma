@@ -17,7 +17,7 @@ class Examanalysis_listPdf < Prawn::Document
       columns_set= [30, 130, 70, 180, 50, 50]
       setfontsize=9
     else
-      columns_set= [30, 60, 60, 60, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 40, 40]
+      columns_set= [30, 60, 60, 60, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 25, 26]
       setfontsize=8
     end
     row_count=0
@@ -33,6 +33,8 @@ class Examanalysis_listPdf < Prawn::Document
       row(0).align = :center
       row(0..1).font_style = :bold
       row(1).background_color = 'FFE34D'
+      row(1).columns(15..16).rotate = 90
+      row(1).height=40
       column(2..5).align =:center
 
       for programme_row in programme_rows
@@ -64,25 +66,12 @@ class Examanalysis_listPdf < Prawn::Document
     @examanalyses.group_by{|x|x.exampaper.subject.root.programme_list}.each do |programme, examanalyses|
 	    body <<  [{content: "#{programme}", colspan: total_columns}] 
 	    for examanalysis in examanalyses
-	        if @college.code!='kskbjb'
-		  ##
-		  exammarks=examanalysis.exampaper.exammarks
-                  subjectid=examanalysis.exampaper.subject_id
-                  students=Student.where(id: exammarks.pluck(:student_id))
-                  finalscores=[]
-                  students.each{|x|finalscores << Grade.where(student_id: x.id).where(subject_id: subjectid).first.finalscore}
-                  passed=[]
-                  failed=[]
-                  finalscores.each{|y|passed << y if y>=50}
-                  finalscores.each{|z|failed << z if z < 50}
-		  ##
-		end
 	        a=["#{counter += 1}", examanalysis.exampaper.subject.subject_list,  @view.l(examanalysis.exampaper.exam_on), "#{examanalysis.exampaper.render_examtype[0]} #{'<br>'+I18n.t('exam.exams.with_questions') if examanalysis.exampaper.klass_id==1}"]
-		b=[ passed.count, failed.count]
+		
 		if @college.code=='kskbjb'
-	          body << a+[examanalysis.gradeA , examanalysis.gradeAminus, examanalysis.gradeBplus , examanalysis.gradeB, examanalysis.gradeBminus, examanalysis.gradeCplus, examanalysis.gradeC, examanalysis.gradeCminus, examanalysis.gradeDplus, examanalysis.gradeD, examanalysis.gradeE]+b
+	          body << a+[examanalysis.gradeA , examanalysis.gradeAminus, examanalysis.gradeBplus , examanalysis.gradeB, examanalysis.gradeBminus, examanalysis.gradeCplus, examanalysis.gradeC, examanalysis.gradeCminus, examanalysis.gradeDplus, examanalysis.gradeD, examanalysis.gradeE, examanalysis.total_passed, examanalysis.total_failed]
 		else
-		  body << a+b
+		  body << a+[examanalysis.total_passed, examanalysis.total_failed]
 		end
 		counter = counter || 0
 	    end

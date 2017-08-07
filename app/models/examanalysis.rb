@@ -654,8 +654,30 @@ class Examanalysis < ActiveRecord::Base
         csv << d_line
         csv << e_line
       end
-    end
+    end 
   end
   
+  #usage : equery
+  def total_passed
+    passed=[]
+    exammarks=exampaper.exammarks
+    subjectid=exampaper.subject_id
+    Student.where(id: exammarks.pluck(:student_id)).each do |x|
+      finalscore=Grade.where(student_id: x.id).where(subject_id: subjectid).first.finalscore
+      passed << finalscore if finalscore >=50
+    end
+    passed.count
+  end
+  
+  def total_failed
+    failed=[]
+    exammarks=exampaper.exammarks
+    subjectid=exampaper.subject_id
+    Student.where(id: exammarks.pluck(:student_id)).each do |x|
+      finalscore=Grade.where(student_id: x.id).where(subject_id: subjectid).first.finalscore
+      failed << finalscore if finalscore < 50
+    end
+    failed.count
+  end
   
 end

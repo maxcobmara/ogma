@@ -79,18 +79,12 @@
             - for exampaper in examsearch.exams.order(exam_on: :desc)
               %tr
                 %td=cnt+=1
-                %td=Programme.find(exampaper.subject_id).root.programme_list
-                %td=Programme.find(exampaper.subject_id).subject_list
+                %td=exampaper.subject.root.programme_list
                 %td
-                  - etype=exampaper.name
-                  - if etype=="F"
-                    - etype_name=t('equery.exam.final')
-                  - elsif etype=="M"
-                    - etype_name=t('equery.exam.midsem')
-                  - else
-                    - etype_name=t('equey.exam.repeat')
-                  =etype_name
-                %td=Staff.find(exampaper.created_by).staff_with_rank
+                  =exampaper.subject.subject_list
+                  .small.text-grey="(#{(t 'training.programme.module')} : #{exampaper.subject.parent.name})"
+                %td=exampaper.render_examtype[0]
+                %td=exampaper.creator.staff_with_rank
                 %td=exampaper.klass_id==1 ? (t 'equery.exam.complete_set') : "Template"
                 %td=exampaper.exam_on.strftime('%d-%m-%Y')
                 - @exam=exampaper
