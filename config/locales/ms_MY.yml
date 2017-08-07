@@ -5466,8 +5466,17 @@ ms_MY:
       lecturer_id: Pengajar
       evaldate: Tarikh Penilaian
       staff_or_invited: "Pilih kotak semak jika Pengajar KSKBJB, nyahpilih jika Pensyarah Jemputan"
-    #examanalysis:
-      #search: Carian Analisis Peperiksaan Mengikut Kertas Peperiksaan
+    examanalysis:
+      search: Carian Analisa Peperiksaan Mengikut Kertas Peperiksaan
+      list_all: Senarai Penuh Analisa Peperiksaan Mengikut Kertas Peperiksaan
+      programme_id: Program
+      subject_id: Subjek
+      examon: Tarikh Peperiksaan
+      examtype: Jenis Peperiksaan
+      passed: Lulus
+      failed: Gagal
+      analysis: Analisa
+      grade: Gred
       #search_by: Carian rekod mengikut
       #total: Jumlah Analisis Peperiksaan
     book:

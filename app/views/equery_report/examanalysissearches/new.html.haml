@@ -1,1 +1,28 @@
- 
+- model_class = Examanalysissearch
+.page-header
+  %h1=t('equery.examanalysis.search')
+
+= render 'shared/flashes'
+
+.row.fluid
+  = form_for [:equery_report, @examanalysissearch], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = render :partial => 'form', locals: {f: f}
+    = f.hidden_field :college_id, value: current_user.college_id
+    
+    /= render :partial =>"equery_report/examanalysissearches/#{current_user.college.code}/form", :locals => { :f => f}
+    /= render :partial =>"equery_report/examanalysissearches/kskbjb/form", :locals => { :f => f}
+    /= f.hidden_field :college_id, value: '1'
+    
+
+    .col-sm-8.col-md-offset-1
+      .row
+        .col-sm-offset-5
+          .small=t('equery.leaves_all_blank_all_records')
+        .col-sm-offset-4
+          %hr
+        .form-group
+          .col-sm-offset-6.col-sm-1
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), "/equery_reports?query_module=6", :class => 'btn btn-default'
+          .col-sm-offset-1.col-sm-2
+            = f.submit (t 'search') , class: "btn btn-primary"

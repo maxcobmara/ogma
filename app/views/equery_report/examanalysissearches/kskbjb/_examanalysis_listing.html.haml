@@ -1,0 +1,100 @@
+/ Nav tabs
+%ul.nav.nav-tabs
+  %li.active= link_to  (t 'equery.result'), "#search", "data-toggle" => "tab"
+
+/ display 
+.tab-content{style:"padding-top:1em"}
+  #search_details.tab-pane.active  
+        
+    /additional heading
+    .col-md-8.col-md-offset-2
+      %dl.dl-horizontal
+        /:programme_id, :examtype, :subject_id, :examon, :exampaper
+        
+        - if examanalysissearch.programme_id.blank? && examanalysissearch.subject_id.blank? && examanalysissearch.examon.blank?
+          %div.result-all=t 'equery.examanalysis.list_all'
+        - else
+          %div.result-search=t 'equery.search_by'
+            
+        %br
+                   
+        - unless examanalysissearch.programme_id.blank?
+          %dt=(t 'equery.examanalysis.programme_id')
+          %dd=Programme.find(examanalysissearch.programme_id).programme_list
+
+        - unless examanalysissearch.subject_id.blank?
+          %dt=(t 'equery.examanalysis.subject_id')
+          %dd=Programme.find(examanalysissearch.subject_id).subject_list
+          
+        - unless examanalysissearch.examon.blank?
+          %dt=(t 'equery.examanalysis.examon')
+          %dd=examanalysissearch.examon.strftime('%d-%m-%Y')
+        
+        - if examanalysissearch.programme_id.blank? && examanalysissearch.subject_id.blank? && examanalysissearch.examon.blank?
+        - else
+          .col-md-12
+            .col-md-8
+              %hr
+          
+        %dt=(t 'equery.total')
+        %dd=examanalysissearch.examanalyses.count==0 ? examanalysissearch.examanalyses.count : examanalysissearch.examanalyses.count.to_s+" "+(t 'records')
+
+    /display result
+    .col-md-10.col-md-offset-1
+      %br
+      - if examanalysissearch.examanalyses.count > 0
+        .right= link_to (fa_icon "file-pdf-o", text: (t 'print')), examanalysis_list_exam_examanalyses_path(format: 'pdf', ids: examanalysissearch.examanalyses.pluck(:id))     
+        %table.table.table-bordered.table-condensed.table-hover.equery
+          %head
+            %tr.info
+              %th{width: '4%'} No
+              %th{width: '15%'}=t('equery.examanalysis.subject_id')
+              %th{width: '8%'}=t('equery.examanalysis.examon')
+              %th{width: '8%'}=t('equery.examanalysis.examtype')
+              %th.centre{width: '5%'}=t('equery.examanalysis.grade')+" A"
+              %th.centre{width: '5%'}=t('equery.examanalysis.grade')+" A-"
+              %th.centre{width: '5%'}=t('equery.examanalysis.grade')+" B+"
+              %th.centre{width: '5%'}=t('equery.examanalysis.grade')+" B"
+              %th.centre{width: '5%'}=t('equery.examanalysis.grade')+" B-"
+              %th.centre{width: '5%'}=t('equery.examanalysis.grade')+" C+"
+              %th.centre{width: '5%'}=t('equery.examanalysis.grade')+" C"
+              %th.centre{width: '5%'}=t('equery.examanalysis.grade')+" C-"
+              %th.centre{width: '5%'}=t('equery.examanalysis.grade')+" D+"
+              %th.centre{width: '5%'}=t('equery.examanalysis.grade')+" D"
+              %th.centre{width: '5%'}=t('equery.examanalysis.grade')+" E"
+              %th.centre{width: '5%'}=t('equery.examanalysis.passed')
+              %th.centre{width: '5%'}=t('equery.examanalysis.failed')
+          - cnt=0
+          %body
+            - examanalysissearch.examanalyses.group_by{|x|x.exampaper.subject.root}.each do |programme, examanalyses|
+              %tr.info
+                %th.centre.group{colspan: 17}
+                  %span=programme.programme_list
+              - for examanalysis in examanalyses.sort_by{|x|x.exampaper.exam_on}
+                %tr
+                  %td=cnt+=1
+                  %td
+                    =examanalysis.exampaper.subject.subject_list
+                    /below: works only with kskbjb data, otherwise replace Semester with Module for checking - 7Aug2017
+                    .small.text-grey="(Semester : #{examanalysis.exampaper.subject.ancestors.where(course_type: 'Semester').first.name})"
+                    
+                  %td.centre=examanalysis.exampaper.exam_on.strftime('%d-%m-%Y')
+                  %td
+                    =h examanalysis.exampaper.render_examtype[0]
+                    - if examanalysis.exampaper.klass_id==1
+                      .text-blue=t('exam.exams.with_questions')
+                  %td.centre=examanalysis.gradeA
+                  %td.centre=examanalysis.gradeAminus
+                  %td.centre=examanalysis.gradeBplus
+                  %td.centre=examanalysis.gradeB
+                  %td.centre=examanalysis.gradeBminus 
+                  %td.centre=examanalysis.gradeCplus
+                  %td.centre=examanalysis.gradeC 
+                  %td.centre=examanalysis.gradeCminus
+                  %td.centre=examanalysis.gradeDplus
+                  %td.centre=examanalysis.gradeD 
+                  %td.centre=examanalysis.gradeE
+                  %td.centre=examanalysis.total_passed
+                  %td.centre=examanalysis.total_failed
+                 
+      .right{style:"padding: 0 10px; margin:0;"}= paginate examanalyses, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

@@ -1,73 +1,88 @@
 class Examanalysissearch < ActiveRecord::Base
-  attr_accessor :method
+  attr_accessor :programme_details
+  
+  before_save :update_programme
+  
+  belongs_to :college
   
   def examanalyses
     @examanalyses ||= find_examanalyses
   end
   
+  # TODO - check against kskb data 
+  def update_programme
+    unless subject_id.blank?
+      self.programme_id=Programme.find(subject_id).root_id
+    else
+      ##when subject is not selected
+      unless programme_details.blank?
+        a=programme_details.split(" (")[0]
+        b=programme_details.split(" ")[0]+" "
+        c=a.gsub!(b,"")
+        programmeid=Programme.where(name: c).first.id
+        self.programme_id=programmeid
+      end
+    end
+  end
+  
   private
 
-  def find_examanalyses
-    Examanalysis.find(:all, :conditions => conditions,  :order => orders)   
-  end
-
-  #def exampaper_conditions
-    #["exam_id=?", exampaper] unless exampaper.blank?      
-  #end
-
-	def subject_id_details
-	    a='exam_id=? ' if Exam.find(:all, :conditions=>['subject_id=?',subject_id]).map(&:id).uniq.count!=0
-      0.upto(Exam.find(:all, :conditions=>['subject_id=?',subject_id]).map(&:id).uniq.count-2) do |l|  
-        a=a+'OR exam_id=? '
-      end 
-      return a unless subject_id.blank?
-	end
-	 
-  def subject_id_conditions
-    [" ("+subject_id_details+")", Exam.find(:all, :conditions=>['subject_id=?',subject_id]).map(&:id)] unless subject_id.blank?      
-  end
+    def find_examanalyses
+      Examanalysis.where(conditions).order(orders)   
+    end
+    
+    def subject_id_conditions
+      unless subject_id.blank?
+        exam_ids= Exam.where('subject_id=?', subject_id).map(&:id).uniq
+        if exam_ids.count > 0
+          a="exam_id=? " 
+          0.upto(exam_ids.count-2).each do |x|
+            a+=" OR exam_id=? " if exam_ids.count > 1
+          end
+          ["("+a+")", exam_ids] 
+        else
+          ["exam_id=?", nil]
+        end
+      end
+    end
   
-  #----
-  def programme_id_details
-	    a='exam_id=? ' if Exam.find(:all, :conditions=>['subject_id IN(?)',Programme.find(programme_id).descendants.at_depth(2).map(&:id)]).map(&:id).uniq.count!=0
-      0.upto(Exam.find(:all, :conditions=>['subject_id IN(?)',Programme.find(programme_id).descendants.at_depth(2).map(&:id)]).map(&:id).uniq.count-2) do |l|  
-        a=a+'OR exam_id=? '
-      end 
-      return a unless programme_id.blank?
-	end
+    #ignore programme_id if subject_id exist
+    def programme_id_conditions
+      unless programme_id.blank? 
+        if subject_id.blank?
+          subject_ids=Programme.find(programme_id).descendants.where(course_type: 'Subject').pluck(:id)
+          exam_ids= Exam.where(subject_id: subject_ids).map(&:id).uniq
+          if exam_ids.count > 0
+            a="exam_id=? " 
+            0.upto(exam_ids.count-2).each do |x|
+              a+=" OR exam_id=? " if exam_ids.count > 1
+            end
+            ["("+a+")", exam_ids]  
+          else
+            ["exam_id=?", nil]
+          end
+        end
+      end
+    end
   
-  def programme_id_conditions
-    [" ("+programme_id_details+")", Exam.find(:all, :conditions=>['subject_id IN(?)',Programme.find(programme_id).descendants.at_depth(2).map(&:id)]).map(&:id)] unless programme_id.blank?     
-  end 
-  #----
+    def examon_conditions
+      unless examon.blank?
+        exam_ids=Exam.where('exam_on=?',examon).map(&:id).uniq
+        if exam_ids.count > 0
+          a='exam_id=? ' 
+          0.upto(exam_ids.count-2) do |l|  
+            a=a+'OR exam_id=? ' if exam_ids.count > 1
+          end 
+          [" ("+a+")", exam_ids]
+        else
+          ["exam_id=?", nil]
+        end
+      end
+    end
   
-  def examtype_details
-      a='exam_id=? ' if Exam.find(:all, :conditions=>['name=?',examtype]).map(&:id).uniq.count!=0
-      0.upto(Exam.find(:all, :conditions=>['name=?',examtype]).map(&:id).uniq.count-2) do |l|  
-        a=a+'OR exam_id=? '
-      end 
-      return a unless examtype.blank?
-  end
-  
-  def examtype_conditions
-    [" ("+examtype_details+")", Exam.find(:all, :conditions=>['name=?',examtype]).map(&:id) ] unless examtype.blank?
-  end
-  
-  def examon_details
-	    a='exam_id=? ' if Exam.find(:all, :conditions=>['exam_on=?',examon]).map(&:id).uniq.count!=0
-      0.upto(Exam.find(:all, :conditions=>['exam_on=?',examon]).map(&:id).uniq.count-2) do |l|  
-        a=a+'OR exam_id=? '
-      end 
-      return a if (Exam.find(:all, :conditions=>['exam_on=?',examon]).map(&:id).uniq.count!=0) #unless examon.blank? && Exam.find_by_exam_on(examon).count==0
-	end
-  
-  def examon_conditions
-    [" ("+examon_details+")", Exam.find(:all, :conditions=>['exam_on=?',examon]).map(&:id)] if (Exam.find(:all, :conditions=>['exam_on=?',examon]).map(&:id).uniq.count!=0)#unless examon.blank? && Exam.find_by_exam_on(examon).count==0     
-  end
-  
-  def orders
-     "id ASC"
-  end  
+    def orders
+       "id ASC"
+    end  
 
    def conditions
      [conditions_clauses.join(' AND '), *conditions_options] #works like OR?????

@@ -19,7 +19,7 @@
           %dd=h paper.subject_id? ? paper.subject.root.programme_list : "" 
     
           %dt= t 'exam.exams.subject_id'
-          %dd=h paper.subject_id? ? paper.subject.subject_list : ""
+          %dd=h paper.subject_id? ? paper.subject.subject_list+" (#{(t 'training.programme.module')} : #{paper.subject.parent.name.titleize})" : ""
     
           - intake=Exammark.set_intake_group(paper.exam_on.year, paper.exam_on.month, paper.subject.parent.code,@current_user).to_date
           %dt=t 'exam.exammark.intake'

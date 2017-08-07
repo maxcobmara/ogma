@@ -30,7 +30,7 @@ class Questionanalysis_listPdf < Prawn::Document
     bounding_box([20, 450], :width => 500, :height => 30) do |y2|
       text "KURSUS : #{@examanalysis.exampaper.subject.root.programme_list.upcase} ", :size => 9
       move_down 3
-      text "KELAS : #{@examanalysis.exampaper.subject.subject_list.upcase}", :size => 9
+      text "KELAS : #{@examanalysis.exampaper.subject.subject_list.upcase} (#{(I18n.t 'training.programme.module').upcase} : #{@examanalysis.exampaper.subject.parent.name})", :size => 9
     end  
     bounding_box([345, 450], :width => 500, :height => 30) do |y2|
       text "PEPERIKSAAN : #{@examanalysis.exampaper.render_full_name.upcase} ",  :size => 9
