@@ -6,7 +6,7 @@
       %td{:rowspan=>"#{@qcount[3]}"} ACQ
   %td=count+1
   %td
-    =@examquestions.acqq[count].question if @examquestions.count>0
+    =@examquestions.acqq[count].question.html_safe if @examquestions.count>0
     - if @examtemplates
       \-
   %td

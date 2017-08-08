@@ -34,23 +34,24 @@
         %th.centre Status
       - prog_id=Intake.find(@resultline.examresult.intake_id).programme_id
       - subjects=Programme.find(prog_id).descendants.where(course_type: 'Subject')
-      - @no=0
-      - for subject in subjects 
-        - grades=Grade.where(student_id: @resultline.student.id).where(subject_id: subject.id)
-        - if grades.count > 0
-          - finalscore=number_with_precision(grades.first.finalscore, precision: 2).to_s+" %"
-          - if grades.first.finalscore > 50
-            - subject_status=t('exam.examresult.passed')
+      - no=0
+      - subjects.group_by{|x|x.parent_id}.each do |amodule, gsubjects|
+        - for subject in gsubjects.sort_by(&:code)
+          - grades=Grade.where(student_id: @resultline.student.id).where(subject_id: subject.id)
+          - if grades.count > 0
+            - finalscore=number_with_precision(grades.first.finalscore, precision: 2).to_s+" %"
+            - if grades.first.finalscore > 50
+              - subject_status=t('exam.examresult.passed')
+            - else
+              - subject_status=t('exam.examresult.failed')
           - else
-            - subject_status=t('exam.examresult.failed')
-        - else
-          - finalscore=""
-          - subject_status=""
-        %tr
-          %td=@no+=1
-          %td= ('<b>'+subject.code+'</b> - '+subject.name).html_safe
-          %td.centre=finalscore
-          %td.centre=subject_status
+            - finalscore=""
+            - subject_status=""
+          %tr
+            %td=no+=1
+            %td= ('<b>'+subject.code+'</b> - '+subject.name).html_safe
+            %td.centre=finalscore
+            %td.centre=subject_status
       %tr
         %td{colspan: 2} 
           %strong STATUS KESELURUHAN

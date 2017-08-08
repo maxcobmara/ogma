@@ -4,7 +4,7 @@
     %td 1
     %td
       - if @examquestions.count>0
-        =simple_format(@examquestions.mcqq[0].question)
+        =@examquestions.mcqq[0].question.html_safe
       /- else
       /  \-
     %td{:rowspan=>"#{@examquestions.mcqq.count}"}
