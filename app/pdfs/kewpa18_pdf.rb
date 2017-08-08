@@ -1,12 +1,13 @@
 class Kewpa18Pdf < Prawn::Document
-  def initialize(disposal, view)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+  def initialize(disposal, view, college)
+    super({left_margin: 50, top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @disposal = disposal
     @view = view
+    @college = college
     font "Times-Roman"
     text "KEW.PA-18", :align => :right, :size => 16, :style => :bold
     move_down 20
-    text "KEMENTERIAN/JABATAN : KKM/KSKBJB", :align => :left, :size => 14
+    text "KEMENTERIAN/JABATAN : #{@college.code=='kskbjb' ? 'KKM/KSKBJB' : 'PPLAPMM/AMSAS'}", :align => :left, :size => 14
     move_down 20
     text "SIJIL PENYAKSIAN PEMUSNAHAN ASET ALIH KERAJAAN MALAYSIA", :align => :center, :size => 14, :style => :bold
     move_down 20
@@ -33,7 +34,7 @@ class Kewpa18Pdf < Prawn::Document
              ["Tarikh : #{@disposal.discarded_on.try(:strftime, "%d/%m/%y")}","","Tarikh : #{@disposal.discarded_on.try(:strftime, "%d/%m/%y")}",""],
              ["Cop :","","Cop :", ""]]
              
-    table(data1, :column_widths => [180, 80, 180], :cell_style => { :size => 14})  do
+    table(data1, :column_widths => [210, 60, 210], :cell_style => { :size => 13})  do
       row(0).columns(0).borders = [:bottom]
       row(0).columns(1).borders = [ ]
       row(0).columns(2).borders = [:bottom]

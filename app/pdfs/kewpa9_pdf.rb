@@ -21,29 +21,29 @@ class Kewpa9Pdf < Prawn::Document
   end
   
   def table1
-    data1 = [["1. Jenis Aset", ": #{@defective.try(:asset).try(:typename)}"],
-             ["2. Keterangan Aset", ": #{@defective.try(:asset).try(:name)}"],
-             ["3. No Siri Pendaftaran", ": #{@defective.try(:asset).try(:assetcode)}"],
-             ["4. Kos Penyelenggaraan Terdahulu", ": #{@defective.try(:asset).try(:maint).try(:maintcost)}"],
-             ["5. Pengguna Terakhir", ": #{@defective.reporter.try(:name)}  #{@defective.reporter.try(:position_old)}"],
-             ["6. Tarikh Kerosakan", ": #{@defective.created_at.try(:strftime, "%d/%m/%y")}"],
-             ["7. Perihal Kerosakan", ":"],
-             ["#{@defective.description}",""]]
+    data1 = [[{content: "1. Jenis Aset", colspan: 2}, ": #{@defective.try(:asset).try(:typename)}"],
+             [{content: "2. Keterangan Aset", colspan: 2},": #{@defective.try(:asset).try(:name)}"],
+             [{content: "3. No Siri Pendaftaran", colspan: 2},": #{@defective.try(:asset).try(:assetcode)}"],
+             [{content: "4. Kos Penyelenggaraan Terdahulu", colspan: 2},": #{@defective.try(:asset).try(:maint).try(:maintcost)}"],
+             [{content: "5. Pengguna Terakhir", colspan: 2},": #{@defective.reporter.try(:name)}  #{@defective.reporter.try(:position_old)}"],
+             [{content: "6. Tarikh Kerosakan", colspan: 2},": #{@defective.created_at.try(:strftime, "%d/%m/%y")}"],
+             [{content: "7. Perihal Kerosakan", colspan: 2},":"],
+             ["", "- #{@defective.description}",""]]
              
-             table(data1, :column_widths => [180, 320], :cell_style => { :size => 11}) do
+             table(data1, :column_widths => [15, 165, 320], :cell_style => { :size => 11}) do
                row(0..7).borders = [ ]
-               row(7).align = :center
+               row(7).align = :left
              end
   end
   
   def table2
-    data1 = [["8. Syor Pegawai Aset", ":"],
-             ["#{@defective.process_type}",""],
-             ["#{@defective.recommendation}",""]]
+    data1 = [[{content: "8. Syor Pegawai Aset", colspan: 2}, ":"],
+             ["", "- #{@defective.process_type}",""],
+             ["", "- #{@defective.recommendation}",""]]
              
-             table(data1, :column_widths => [180, 320], :cell_style => { :size => 11}) do
+             table(data1, :column_widths => [15, 165, 320], :cell_style => { :size => 11}) do
                row(0..2).borders = [ ]
-               row(1..2).align = :center
+               row(1..2).align = :left
              end
              move_down 20
   end
@@ -55,11 +55,12 @@ class Kewpa9Pdf < Prawn::Document
       text "Tarikh : #{@defective.processed_on.try(:strftime, "%d/%m/%y")}", :align => :left, :size => 11
       move_down 20
       text "Bahagian II (Keputusan Ketua Jabatan)", :align => :left, :size => 11
-      text "- #{@defective.decision}", :align => :left, :size => 11
+      move_down 10
+      text "#{@defective.decision? ? I18n.t('approved') : I18n.t('not_approved')}", :align => :left, :size => 11
       move_down 40
       text "Tandatangan : ", :align => :left, :size => 11
-      text "Nama : #{@lead.try(:staff).try(:name)}", :align => :left, :size => 11
-      text "Jawatan : #{@lead.try(:name)}", :align => :left, :size => 11
-      text "Tarikh :", :align => :left, :size => 11
+      text "Nama : #{@lead.try(:name)}", :align => :left, :size => 11
+      text "Jawatan : #{@lead.try(:positions).try(:first).try(:name)}", :align => :left, :size => 11
+      text "Tarikh : #{@defective.decision_on.try(:strftime, '%d/%m/%Y')}", :align => :left, :size => 11
   end
 end

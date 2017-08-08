@@ -49,7 +49,7 @@
       - if examresultsearch.examresults.count > 0
         - @examresults=examresultsearch.examresults
         - if examresultsearch.student_id!=1
-          .right= link_to (fa_icon("print", text: (t 'actions.print'))), examresult_list_exam_examresults_path(@examresults, format: 'pdf')
+          .right= link_to (fa_icon "print", text: (t 'equery.print_result')), examresult_list_exam_examresults_path(@examresults, format: 'pdf')
         %table.table.table-bordered.table-condensed.table-hover.equery
           %head
             

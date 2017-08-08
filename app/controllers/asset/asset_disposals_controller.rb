@@ -147,7 +147,7 @@ class Asset::AssetDisposalsController < ApplicationController
     @disposal = AssetDisposal.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa16Pdf.new(@disposal, view_context)
+        pdf = Kewpa16Pdf.new(@disposal, view_context, current_user.college)
         send_data pdf.render, filename: "kewpa16-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -159,7 +159,7 @@ class Asset::AssetDisposalsController < ApplicationController
     @disposal = AssetDisposal.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa18Pdf.new(@disposal, view_context)
+        pdf = Kewpa18Pdf.new(@disposal, view_context, current_user.college)
         send_data pdf.render, filename: "kewpa18-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -172,7 +172,7 @@ class Asset::AssetDisposalsController < ApplicationController
     @disposal = AssetDisposal.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa19Pdf.new(@disposal, view_context, @lead)
+        pdf = Kewpa19Pdf.new(@disposal, view_context, @lead, current_user.college)
         send_data pdf.render, filename: "kewpa19-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

@@ -45,9 +45,11 @@
       - if personalizetimetablesearch.personalizetimetables.count > 0
         - cnt=0
         %table.table.table-bordered.table-condensed.table-hover.equery
-          - personalizetimetablesearch.personalizetimetables.group_by{|x|x.weeklytimetable.startdate}.each do |sdate, pts|
+          /- personalizetimetablesearch.personalizetimetables.group_by{|x|x.weeklytimetable.startdate}.each do |sdate, pts|
+          - personalizetimetables.each do |pts|
             %tr.success
-              %th.centre{colspan: 7}="#{t('equery.personalize_timetable.start_date')}: #{sdate.strftime('%d-%m-%Y')}"
+              /%th.centre{colspan: 7}="#{t('equery.personalize_timetable.start_date')}: #{sdate.strftime('%d-%m-%Y')}"
+              %th.centre{colspan: 7}="#{t('equery.personalize_timetable.start_date')}: #{pts.first.weeklytimetable.startdate.strftime('%d-%m-%Y')}"
 
             /weekly
             - pts.group_by{|x|x.weeklytimetable_lecturer}.each do |lecturer, ptimetable|
@@ -94,3 +96,5 @@
                               .text-green=t('equery.personalize_timetable.submitted')
                             - else
                               =t('equery.personalize_timetable.not_submit')
+
+        .right{style:"padding: 0 10px; margin:0;"}= paginate personalizetimetables, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

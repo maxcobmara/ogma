@@ -56,7 +56,7 @@ class Personalizetimetablesearch < ActiveRecord::Base
    end
    
    def orders
-     "id ASC"
+     "lecturer_id ASC, id ASC"
    end  
 
    def conditions

@@ -5426,6 +5426,7 @@ en:
       daterange_valid: Start date range must valid
     lesson_plan:
       search: "Lesson Plan & Report Search"
+      list_all: List of All Lesson Plan & Report
       #search_by: "Search Lesson Plan & Report by"
       #search_lecturer: Search by Lecturer
       #search_intake: Search by Intake
@@ -5548,6 +5549,7 @@ en:
       lecturer_id: Pengajar
       evaldate: Evaluation Date
       staff_or_invited: "Tick if KSKB lecturers, untick if Invitation Lecturer."
+      analysis_data: Analysis Data
     examanalysis:
       search: Examination Analysis by Paper Search
       list_all: List of All Examination Analysis by Paper

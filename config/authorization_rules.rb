@@ -632,6 +632,7 @@ authorization do
     has_permission_on :campus_locations, :to => [:manage, :kewpa7, :kewpa10, :kewpa11]
     has_permission_on :asset_asset_disposals, :to =>[:manage, :kewpa17_20, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :dispose, :revalue, :verify, :view_close]
     has_permission_on :asset_asset_losses, :to => [:manage, :endorse, :edit_multiple, :update_multiple, :kewpa28, :kewpa29, :kewpa30, :kewpa31] 
+    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show]
   end
 
   #OK up to here..... 28Jan2016
@@ -794,6 +795,11 @@ authorization do
 #      if_attribute :editor_id => is {user.userable.id}
 #      if_attribute :qstatus => is {"Re-Edit"}
 #    end
+   
+   has_permission_on :equery_report_weeklytimetablesearches, :to => [:new, :create, :show]
+   has_permission_on :equery_report_curriculumsearches, :to => [:new, :create, :show]
+   has_permission_on :equery_report_lessonplansearches, :to => [:new, :create, :show]
+   has_permission_on :equery_report_personalizetimetablesearches, :to => [:new, :create, :show]
   end
  
   #OK - 29Jan2016 - this role + programme mgr (exam parts) works fine as of latest Nov 2015-Jan 2016 accepted unless stated below..
@@ -830,6 +836,11 @@ authorization do
     has_permission_on :exam_examanalyses, :to => [:edit, :update, :delete, :analysis_data, :examanalysis_list, :questionanalysis_list] do
       if_attribute :exam_id => is_in {user.by_programme_exams}  
     end
+    
+    has_permission_on :equery_report_examsearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_examresultsearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_evaluatecoursesearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_examanalysissearches, :to => [:new, :create, :show]
   end
 
   #28Dec2015- confirmed by EN Ahmad - access for Examination modules restricted ONLY for Exam Admin (except for Programme Mgr : Examresult by Prog, Examanalysis, Examquestions & Course Evaluation)
@@ -907,6 +918,15 @@ authorization do
     end
     
     has_permission_on :training_trainingnotes, :to => :menu
+    
+    has_permission_on :equery_report_weeklytimetablesearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_curriculumsearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_lessonplansearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_personalizetimetablesearches, :to => [:new, :create, :show]
+    
+    has_permission_on :equery_report_examresultsearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_evaluatecoursesearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_examanalysissearches, :to => [:new, :create, :show]
   end
   
  #Group Library   -------------------------------------------------------------------------------
@@ -1791,9 +1811,11 @@ authorization do
        if_attribute :hod_approved => is {true}
        if_attribute :report_submit => is {true}
      end
+     has_permission_on :equery_report_lessonplansearches, :to => [:new, :create, :show]
   end
   role :lesson_plans_module_viewer do
      has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lessonplan_listing, :lesson_report]
+     has_permission_on :equery_report_lessonplansearches, :to => [:new, :create, :show]
   end
   role :lesson_plans_module_user do
      #NO CREATE & DELETE
@@ -1822,6 +1844,7 @@ authorization do
        if_attribute :hod_approved => is {true}
        if_attribute :report_submit => is {true}
      end
+     has_permission_on :equery_report_lessonplansearches, :to => [:new, :create, :show]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[0].disabled=true as the only owner of this module requires 'Lecturer' & 'Programme Manager' role 
 #   role :lesson_plans_module_member do
@@ -1876,12 +1899,15 @@ authorization do
   #27 - 3/4 OK (Admin/Viewer/User) - 9Feb2016
   role :programmes_module_admin do
     has_permission_on :training_programmes, :to => [:manage, :programme_report]
+    has_permission_on :equery_report_curriculumsearches, :to => [:new, :create, :show]
   end
   role :programmes_module_viewer do
     has_permission_on :training_programmes, :to => [:read, :programme_report]
+    has_permission_on :equery_report_curriculumsearches, :to => [:new, :create, :show]
   end
   role :programmes_module_user do
     has_permission_on :training_programmes, :to => [:read, :update, :programme_report]
+    has_permission_on :equery_report_curriculumsearches, :to => [:new, :create, :show]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[6].disabled=true as the only owner of this module requires 'Programme Manager' role
   
@@ -1891,18 +1917,24 @@ authorization do
      has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalizetimetable, :personalizetimetable_query, :personalize_report] #do
 #        if_attribute :prepared_by =>  is {user.userable_id}
 #      end
+     has_permission_on :equery_report_weeklytimetablesearches, :to => [:new, :create, :show]
+     has_permission_on :equery_report_personalizetimetablesearches, :to => [:new, :create, :show]
   end
   role :weeklytimetables_module_viewer do
      has_permission_on :training_weeklytimetables, :to => [:read, :weekly_timetable, :weeklytimetable_report]
      has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalizetimetable, :personalizetimetable_query, :personalize_report] #do
 #        if_attribute :staff_id =>  is {user.userable_id}
 #      end
+     has_permission_on :equery_report_weeklytimetablesearches, :to => [:new, :create, :show]
+     has_permission_on :equery_report_personalizetimetablesearches, :to => [:new, :create, :show]
   end
   role :weeklytimetables_module_user do
     has_permission_on :training_weeklytimetables, :to => [:read, :update, :approval, :weekly_timetable, :weeklytimetable_report]
      has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalizetimetable, :personalizetimetable_query, :personalize_report]# do
 #        if_attribute :staff_id =>  is {user.userable_id}
 #      end
+     has_permission_on :equery_report_weeklytimetablesearches, :to => [:new, :create, :show]
+     has_permission_on :equery_report_personalizetimetablesearches, :to => [:new, :create, :show]
   end
   role :weeklytimetables_module_member do
     #own (lecturer / coordinator) - lecturer role?, Coordinator may use this to manage Weeklytimetable
@@ -1931,6 +1963,8 @@ authorization do
       if_attribute :is_submitted => is {true}
       if_attribute :endorsed_by => is {user.userable_id}
     end
+    has_permission_on :equery_report_weeklytimetablesearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_personalizetimetablesearches, :to => [:new, :create, :show]
   end
   #####end for Training modules####################################
   #####start of Library modules####################################
@@ -1991,17 +2025,21 @@ authorization do
   #32-OK - 10Feb2016
   role :examresults_module_admin do
      has_permission_on :exam_examresults, :to => [:manage, :index2, :show2, :show3, :results, :examination_slip, :examination_transcript, :examresult_list]
+     has_permission_on :equery_report_examresultsearches, :to => [:new, :create, :show]
   end
   role :examresults_module_viewer do
      has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :show2, :show3, :results, :examination_slip, :examination_transcript, :examresult_list]
+     has_permission_on :equery_report_examresultsearches, :to => [:new, :create, :show]
   end
   role :examresults_module_user do
     has_permission_on :exam_examresults, :to => [:menu, :read, :update, :index2, :show2, :show3, :results, :examination_slip, :examination_transcript, :examresult_list]
+    has_permission_on :equery_report_examresultsearches, :to => [:new, :create, :show]
   end
   role :examresults_module_member do
     has_permission_on :exam_examresults, :to => [:manage, :index2, :show2, :show3, :results, :examination_slip, :examination_transcript, :examresult_list] do
       if_attribute :programme_id => is_in {Programme.where(name: Position.where(staff_id: user.userable.id).first.unit).pluck(:id)}
     end
+    has_permission_on :equery_report_examresultsearches, :to => [:new, :create, :show]
   end
   
   #33-OK
@@ -2046,12 +2084,15 @@ authorization do
   #35 OK - 10Feb2016
   role :exam_analysis_module_admin do
      has_permission_on :exam_examanalyses, :to => [:manage, :analysis_data, :examanalysis_list, :questionanalysis_list]
+     has_permission_on :equery_report_examanalysissearches, :to => [:new, :create, :show]
   end
   role :exam_analysis_module_viewer do
      has_permission_on :exam_examanalyses, :to => [:menu, :read, :analysis_data, :examanalysis_list, :questionanalysis_list]
+     has_permission_on :equery_report_examanalysissearches, :to => [:new, :create, :show]
   end
   role :exam_analysis_module_user do
      has_permission_on :exam_examanalyses, :to => [:menu, :read, :update, :analysis_data, :examanalysis_list, :questionanalysis_list]
+     has_permission_on :equery_report_examanalysissearches, :to => [:new, :create, :show]
   end
   role :exam_analysis_module_member do
     #own (exam admin - creator)
@@ -2063,22 +2104,27 @@ authorization do
     has_permission_on :exam_examanalyses, :to => [:menu, :read] do
       if_attribute :exam_id => is_in {user.by_programme_exams}  
     end
+    has_permission_on :equery_report_examanalysissearches, :to => [:new, :create, :show]
   end
   
   #36-OK - 9Feb2016
   role :exampaper_module_admin do
      has_permission_on :exam_exams, :to => [:manage, :exampaper, :question_selection, :exam_list]
+     has_permission_on :equery_report_examsearches, :to => [:new, :create, :show]
   end
   role :exampaper_module_viewer do
      has_permission_on :exam_exams, :to => [:menu, :read, :exampaper, :exam_list]
+     has_permission_on :equery_report_examsearches, :to => [:new, :create, :show]
   end
   role :exampaper_module_user do
     has_permission_on :exam_exams, :to => [:menu, :read, :update, :exampaper, :exam_list]
+    has_permission_on :equery_report_examsearches, :to => [:new, :create, :show]
   end
   role :exampaper_module_member do
     has_permission_on :exam_exams, :to => [:menu, :read, :update, :exampaper, :exam_list] do
       if_attribute :created_by => is_in {user.unit_members}
     end
+    has_permission_on :equery_report_examsearches, :to => [:new, :create, :show]
   end
   
   #37-OK - 3/4 OK (Admin, Viewer, User) - revised on 19Feb2016, disable Member (use 'Lecturer' role instead)
@@ -2102,12 +2148,15 @@ authorization do
   #50 OK but (Admin/Viewer/User-may be assigned to anybody-All records whereas MEMBER - must be assigned to lecturers to get this programme mgr's access)
   role :course_evaluation_module_admin do
     has_permission_on :exam_evaluate_courses, :to => [:manage, :courseevaluation, :evaluation_report]
+    has_permission_on :equery_report_evaluatecoursesearches, :to => [:new, :create, :show]
   end
   role :course_evaluation_module_viewer do
     has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation, :evaluation_report]
+    has_permission_on :equery_report_evaluatecoursesearches, :to => [:new, :create, :show]
   end
   role :course_evaluation_module_user do
     has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation, :evaluation_report, :update]
+    has_permission_on :equery_report_evaluatecoursesearches, :to => [:new, :create, :show]
   end
   role :course_evaluation_module_member do
     #own record (student)
@@ -2120,18 +2169,22 @@ authorization do
     has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation, :evaluation_report] do
       if_attribute :course_id => is_in {user.evaluations_of_programme}
     end
+    has_permission_on :equery_report_evaluatecoursesearches, :to => [:new, :create, :show]
   end
   
   # TODO - check if this is working correctly
   #58-updated 16Oct2016
   role :course_average_module_admin do
     has_permission_on :exam_average_courses, :to => [:manage, :evaluation_analysis]
+    has_permission_on :equery_report_evaluatecoursesearches, :to => [:new, :create, :show]
   end
   role :course_average_module_viewer do
     has_permission_on :exam_average_courses, :to => [:read, :evaluation_analysis]
+    has_permission_on :equery_report_evaluatecoursesearches, :to => [:new, :create, :show]
   end
   role :course_average_module_user do
     has_permission_on :exam_average_courses, :to => [:read, :update, :evaluation_analysis]
+    has_permission_on :equery_report_evaluatecoursesearches, :to => [:new, :create, :show]
   end
   role :course_average_module_member do
     #evaluated lecturer
@@ -2143,6 +2196,7 @@ authorization do
       if_attribute :principal_id => is{user.userable_id}
       if_attribute :support_justify => is {nil}
     end
+    has_permission_on :equery_report_evaluatecoursesearches, :to => [:new, :create, :show]
   end
   #end for Examination modules####################################
   #start of Assets modules#######################################
@@ -2327,16 +2381,20 @@ authorization do
   #43 3/4 OK (Admin/User/Member), Viewer - restricted access for document containing pricing details : cost/maintenance
   role :asset_list_module_admin do
     has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables]
+    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show]
   end
   #restriction - no PDF allowed : contains pricing details 2, 3, 4, 5 & 8 (kos perolehan) 13 & 14 (maintenance) 
   role :asset_list_module_viewer do
-    has_permission_on :asset_assets, :to => [:read, :kewpa6, :loanables] 
+    has_permission_on :asset_assets, :to => [:read, :kewpa6, :loanables]
+    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show]
   end
   role :asset_list_module_user do
     has_permission_on :asset_assets, :to => [:read, :update, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables]
+    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show]
   end
   role :asset_list_module_member do
     has_permission_on :asset_assets, :to => [:read, :loanables]
+    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show]
   end
   #end for Assets modules#######################################
   #start of Support table / E FIlling modules##################################

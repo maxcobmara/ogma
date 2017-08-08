@@ -62,7 +62,7 @@
     .col-md-10.col-md-offset-1
       %br
       - if examsearch.exams.count > 0
-        .right= link_to (fa_icon "file-pdf-o", text: (t 'print')), exam_list_exam_exams_path(format: 'pdf', ids: examsearch.exams.pluck(:id))          
+        .right= link_to (fa_icon "print", text: (t 'equery.print_result')), exam_list_exam_exams_path(format: 'pdf', ids: examsearch.exams.pluck(:id))          
         %table.table.table-bordered.table-condensed.table-hover.equery
           %head
             %tr.info
@@ -90,7 +90,7 @@
                 - @exam=exampaper
                 %td.centre
                   - if @exam.klass_id==1
-                    = link_to (t 'equery.exam.exampaper'), exampaper_exam_exam_path(@exam, format: "pdf") 
+                    = link_to (fa_icon "file-pdf-o", text: (t 'equery.exam.exampaper')), exampaper_exam_exam_path(@exam, format: "pdf") 
                   - else
                     \-
             

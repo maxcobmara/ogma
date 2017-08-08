@@ -1,8 +1,9 @@
 class Kewpa16Pdf < Prawn::Document
-  def initialize(disposal, view)
+  def initialize(disposal, view, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @disposals = disposal
     @view = view
+    @college = college
     font "Times-Roman"
     text "KEW.PA-16", :align => :right, :size => 14, :style => :bold
     move_down 20
@@ -20,8 +21,12 @@ class Kewpa16Pdf < Prawn::Document
   end
   
   def table1
-    data = [["Kementerian/Jabatan", ": Kementerian Kesihatan Malaysia - Kolej Sains Kesihatan Bersekutu Johor"],
-             ["Alamat", ": Persiaran Kempas, Johor Baru"]]    
+    addr_arry=@college.address.split(",")
+    beginname=addr_arry.first
+    b=beginname+", "
+    addr=@college.address.gsub(b, "").gsub!("\r\n","")
+    data = [["Kementerian/Jabatan", ": #{beginname} - #{@college.name}"],
+             ["Alamat", ": #{addr}"]]    
     table(data, :column_widths => [120, ], :cell_style => { :size => 9})  do
       row(0..1).borders = [ ]
     end

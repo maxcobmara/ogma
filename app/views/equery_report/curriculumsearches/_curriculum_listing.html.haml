@@ -44,7 +44,7 @@
     .col-md-11
       %br
       - if curriculumsearch.curriculums.count > 0
-        .right= link_to (fa_icon "file-pdf-o", text: (t 'print')), programme_report2_training_programmes_path(format: 'pdf', ids: curriculumsearch.curriculums.pluck(:id))
+        .right= link_to (fa_icon "print", text: (t 'equery.print_result')), programme_report2_training_programmes_path(format: 'pdf', ids: curriculumsearch.curriculums.pluck(:id))
         %table.table.table-bordered.table-condensed.table-hover.equery
           %head
             %tr.info

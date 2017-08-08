@@ -16,7 +16,12 @@ class EqueryReport::PersonalizetimetablesearchesController < ApplicationControll
 
   def show
     @personalizetimetablesearch = Personalizetimetablesearch.find(params[:id])
-    @personalizetimetables=@personalizetimetablesearch.personalizetimetables.page(params[:page]).per(10)
+    arr=[]
+    @personalizetimetablesearch.personalizetimetables.group_by{|x|[x.weeklytimetable.startdate]}.each do |wtid, pwts|
+      arr << pwts
+    end
+    @personalizetimetables=Kaminari.paginate_array(arr).page(params[:page]||1) 
+    #@personalizetimetables=@personalizetimetablesearch.personalizetimetables.page(params[:page]).per(2)
   end
   
   private

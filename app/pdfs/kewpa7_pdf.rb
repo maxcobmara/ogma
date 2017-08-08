@@ -12,14 +12,21 @@ class Kewpa7Pdf < Prawn::Document
     text "SENARAI ASET ALIH KERAJAAN", :align => :center, :size => 14, :style => :bold
     description
     heading
+    ###
+    @hm=Asset.where(location_id: @location.id)
+    hm_list if @hm.count > 1
+    ###
     asset_list if @asset_placements.count > 1
     #move_down 500
     if y < 360
       start_new_page
       heading
     end
-    asset_last if @asset_placements.count > 0
-    blank_rows if @asset_placements.count < 14 #4
+    if (@asset_placements.count+@hm.count) < 2 
+      asset_last if @asset_placements.count > 0
+      hm_last if @hm.count > 0
+    end
+    blank_rows if (@asset_placements.count+@hm.count) < 14 #4
     signature_block
     row_only_block
     note_block
@@ -47,6 +54,27 @@ class Kewpa7Pdf < Prawn::Document
       header = true
     end
   end
+  
+  #####
+  def hm_list
+    table(line_item_rows_hm, :column_widths => [30, 130, 250, 115], :cell_style => { :size => 10, :height => 20})  do
+      columns(1).borders = [:top, :left, :bottom]
+      columns(2).borders = [:top, :right, :bottom]
+      columns(3).align = :center
+      self.row_colors = ["FEFEFE", "FFFFFF"]
+      self.width = 525
+    end
+  end
+  
+  def line_item_rows_hm
+    counter = counter || 0
+    c=[]
+    @hm.each do |asset|
+      c <<  ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "1"]
+    end
+    c
+  end
+  #####
 
   def asset_list
     table(line_item_rows, :column_widths => [30, 130, 250, 115], :cell_style => { :size => 10, :height => 20})  do
@@ -64,6 +92,19 @@ class Kewpa7Pdf < Prawn::Document
     @asset_placements.each do |asset_placement|
       a << ["#{counter += 1}", "#{asset_placement.asset.assetcode}", "#{asset_placement.asset.typename} #{asset_placement.asset.name} #{asset_placement.asset.modelname}","#{asset_placement.asset.assettype==1 ? 1 : asset_placement.quantity}"] if counter < @asset_placements.count-1
     end  
+  end
+  
+  def hm_last
+    ccount=@hm.count
+    asset=@hm[ccount-1]
+    hm_last_row =[["#{ccount}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "1"]]
+    
+    table(hm_last_row, :column_widths => [30, 130, 250, 115], :cell_style => { :size => 10, :height => 20}) do
+      columns(1).borders = [:top, :left, :bottom]
+      columns(2).borders = [:top, :right, :bottom]
+      columns(3).align = :center
+      self.width = 525
+    end
   end
   
   def asset_last
@@ -91,7 +132,11 @@ class Kewpa7Pdf < Prawn::Document
   
   def b_rows
     b=[]
-    0.upto(13-@asset_placements.count-1) do |count|
+    ap=0
+    hm=0
+    ap=@asset_placements.count#-1 if @asset_placements.count > 0
+    hm=@hm.count#-1 if @hm.count > 0
+    0.upto(13-ap-hm) do |count|
       b+= [ ["","","",""]]
     end
     b

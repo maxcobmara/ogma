@@ -11,7 +11,7 @@
       %dl.dl-horizontal
 
         - if lessonplansearch.intake_id.blank? && lessonplansearch.lecturer.blank? && lessonplansearch.subject.blank?
-          %div.result-all=t 'equery.lessonplan.list_all'
+          %div.result-all=t 'equery.lesson_plan.list_all'
         - else
           %div.result-search=t 'equery.search_by'
             

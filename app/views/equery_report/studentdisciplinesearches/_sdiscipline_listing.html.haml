@@ -62,11 +62,11 @@
               %th{width: '20%'}=t('student.students.name')
               %th{width: '12%'}=studentdisciplinesearch.college.code=='kskbjb' ? (t 'student.students.matrixno') : (t 'student.students.apmmno')
               %th{width: '10%'}=t('student.discipline.infraction_id')
-              %th{width: '10%'}=t('student.discipline.reported_on')
-              %th{width: '14%'}=t('student.discipline.location_id')
+              %th{width: '8%'}=t('student.discipline.reported_on')
+              %th{width: '12%'}=t('student.discipline.location_id')
               %th{width: '6%'} Status
-              %th{width: '10%'}=t('student.discipline.action_by')
-              %th{width: '4%'}=t('student.discipline.counselor_feedback')
+              %th{width: '8%'}=t('student.discipline.action_by')
+              %th{width: '10%'}=t('student.discipline.counselor_feedback')
           %body
             - if params[:page]
               - cnt=(params[:page].to_i-1)*10
@@ -85,7 +85,7 @@
                       .centre
                         %b=student.student_with_rank
                         | 
-                        %span{style: 'font-style: italic;'}=link_to (t "student.discipline.report_title")+" - "+total_recs, anacdotal_report_student_student_discipline_cases_path(student: student.id, coverage: "logged", format: 'pdf')
+                        %span{style: 'font-style: italic;'}=link_to (fa_icon "file-pdf-o", text: (t "student.discipline.report_title")+" - "+total_recs), anacdotal_report_student_student_discipline_cases_path(student: student.id, coverage: "logged", format: 'pdf')
                      
                   - for student_discipline in student_disciplines.sort_by{|u|u.student.name}
                     %tr
@@ -95,7 +95,7 @@
                       %td=student_discipline.student.matrixno
                       %td=student_discipline.render_infraction
                       %td=student_discipline.reported_on.try(:strftime, '%d %b %Y')
-                      %td=student_discipline.location.name
+                      %td=student_discipline.location.combo_code
                       %td=link_to student_discipline.render_status, student_student_discipline_case_path(student_discipline)
                       %td
                         - if current_user.college.code=='kskbjb'
@@ -112,7 +112,7 @@
                             =h student_discipline.render_action_by
                       %td
                         - unless student_discipline.counselor_feedback.blank?
-                          =link_to (t 'student.discipline.counselor_feedback'), feedback_referrer_student_student_counseling_sessions_path(format: 'pdf', id: student_discipline.id)
+                          =link_to (fa_icon "file-pdf-o", text: (t 'student.discipline.counselor_feedback')), feedback_referrer_student_student_counseling_sessions_path(format: 'pdf', id: student_discipline.id)
                         - else
                           =t 'not_applicable'
             
