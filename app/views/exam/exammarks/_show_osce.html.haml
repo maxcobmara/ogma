@@ -7,7 +7,7 @@
   %td=count+1
   %td
     - if @examquestions.count>0
-      =simple_format(@examquestions.osceq[count].question) 
+      =@examquestions.osceq[count].question.html_safe
     - else
       \-
   %td

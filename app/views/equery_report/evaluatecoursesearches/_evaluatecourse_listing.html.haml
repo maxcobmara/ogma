@@ -124,7 +124,8 @@
                   %th.centre=total_note=evaluations.map(&:ev_note).sum
                   %th.centre=total_assessment=evaluations.map(&:ev_assessment).sum
                   %th.centre=subtotal=evaluations.map(&:total).sum
-                  %th{rowspan: 2}=analysis.count==0 ? "" : (link_to (t 'exam.average_course.view_analysis_data'), exam_average_course_path(analysis.first))
+                  - @average_course=analysis.first
+                  %th{rowspan: 2}=analysis.count==0 ? "" : (link_to (t 'exam.average_course.view_analysis_data'), evaluation_analysis_exam_average_course_path(@average_course, format: "pdf"))
                 %tr.warning
                   %th{colspan: 3, style: 'text-align: right'}=t('equery.evaluate_course.average_scores')
                   %th.centre=number_with_precision(total_obj/ecount, precision: 2)
