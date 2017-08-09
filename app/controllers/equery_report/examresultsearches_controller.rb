@@ -16,7 +16,14 @@ class EqueryReport::ExamresultsearchesController < ApplicationController
 
   def show
     @examresultsearch = Examresultsearch.find(params[:id])
-    @examresults=@examresultsearch.examresults.page(params[:page]).per(10)
+    if @examresultsearch.student_id==0
+      @examresults=@examresultsearch.examresults.page(params[:page]).per(10)
+    elsif @examresultsearch.student_id==1
+      @examresults=@examresultsearch.examresults
+      @arr = @examresults.map(&:resultlines).flatten
+      @resultlines=Kaminari.paginate_array(@arr).page(params[:page]).per(10) 
+    end
+    
   end
    
   private

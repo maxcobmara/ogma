@@ -5343,6 +5343,7 @@ ms_MY:
       #set_enddate: " disetkan ke tarikh kelas yang terkini dalam rekod."
       #set_startdate: " disetkan ke tarikh kelas yang terawal dalam rekod."
       daterange_valid: Julat tarikh mula mestilah sah
+      classes: kelas
     lesson_plan:
       search: "Carian Pelan Pengajaran & Pembelajaran dan Laporan Pengajaran"
       list_all: Senarai Penuh Pelan Pengajaran & Pembelajaran dan Laporan Pengajaran

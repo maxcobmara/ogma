@@ -5424,6 +5424,7 @@ en:
       #set_enddate: " set to the latest class date in records."
       #set_startdate: " set to the earliest class date in records."
       daterange_valid: Start date range must valid
+      classes: classes
     lesson_plan:
       search: "Lesson Plan & Report Search"
       list_all: List of All Lesson Plan & Report

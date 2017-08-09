@@ -16,7 +16,7 @@ class EqueryReport::LessonplansearchesController < ApplicationController
 
   def show
     @lessonplansearch = Lessonplansearch.find(params[:id])
-    @lessonplans=@lessonplansearch.lessonplans
+    @lessonplans=@lessonplansearch.lessonplans.page(params[:page]).per(10)
   end
   
   private

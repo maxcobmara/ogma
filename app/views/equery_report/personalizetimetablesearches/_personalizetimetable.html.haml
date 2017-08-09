@@ -37,7 +37,7 @@
               %hr
           
         %dt=(t 'equery.total')
-        %dd=personalizetimetablesearch.personalizetimetables.count==0 ? personalizetimetablesearch.personalizetimetables.count : personalizetimetablesearch.personalizetimetables.count.to_s+" "+(t 'records')
+        %dd=personalizetimetablesearch.personalizetimetables.count==0 ? personalizetimetablesearch.personalizetimetables.count : personalizetimetablesearch.personalizetimetables.count.to_s+" "+(t 'records')+" ("+(t 'equery.personalize_timetable.classes')+") "+(t 'for')+" "+personalizetimetablesearch.personalizetimetables.group_by{|x|x.weeklytimetable_lecturer}.count.to_s+" "+(t 'equery.personalize_timetable.lecturer')
 
     /display result
     .col-md-9.col-md-offset-1

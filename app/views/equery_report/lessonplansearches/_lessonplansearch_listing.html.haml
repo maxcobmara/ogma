@@ -76,49 +76,58 @@
               - cnt=(params[:page].to_i-1)*10
             - else
               - cnt=0
-              - lessonplansearch.lessonplans.group_by{|x|x.lessonplan_intake}.each do |sintake, lessonplan_list|
+              
+            /- lessonplansearch.lessonplans.group_by{|x|x.lessonplan_intake}.each do |sintake, lessonplan_list|
+            - lessonplans.group_by{|x|x.lessonplan_intake}.each do |sintake, lessonplan_list|
+              %tr.warning
+                %th.centre{colspan: "#{spanning}"}=current_user.college.code=='amsas' ? sintake.siri_programmelist : sintake.programmelist_group_intake
+              - lessonplan_list.group_by{|y|y.lessonplan_owner}.each do |alecturer, lessonplans|
                 %tr.warning
-                  %th.centre{colspan: "#{spanning}"}=current_user.college.code=='amsas' ? sintake.siri_programmelist : sintake.programmelist_group_intake
-                - lessonplan_list.group_by{|y|y.lessonplan_owner}.each do |alecturer, lessonplans|
-                  %tr.warning
-                    %th.centre{colspan: "#{spanning}"}=alecturer.staff_with_rank
-                    - lessonplans.group_by{|t|t.schedule_item.weeklytimetable_subject}.each do |asubject, lps|
-                      %tr.warning
-                        %td.centre{colspan: "#{spanning}"}=asubject.subject_list
-                      - for lp in lps
-                        %tr
-                          %td.centre=cnt+=1
-                          %td=lp.student_qty
-                          - unless current_user.college.code=='amsas'
-                            %td=lp.year_semester
-                            %td=lp.topic
-                          %td=lp.lecture_title
-                          %td=lp.lecture_date.try(:strftime, '%d-%m-%Y')
-                          %td=lp.schedule_item.get_start_time
-                          %td=lp.schedule_item.get_end_time
-                          %td
-                            /unremark to check
-                            /= link_to (t 'training.lesson_plan.title3') , lesson_plan_training_lesson_plan_path(id: lp.id, format: "pdf") 
-                            - if lp.hod_approved==true
-                              %b=t('equery.lesson_plan.approved')
-                              = link_to (t 'training.lesson_plan.title3') , lesson_plan_training_lesson_plan_path(id: lp.id, format: "pdf") 
+                  %th.centre{colspan: "#{spanning}"}=alecturer.staff_with_rank
+                  - lessonplans.group_by{|t|t.schedule_item.weeklytimetable_subject}.each do |asubject, lps|
+                    %tr.warning
+                      %td.centre.text-blue{colspan: "#{spanning}"}
+                        - if current_user.college.code=='amsas'  
+                          =asubject.subject_list
+                          .small.text-grey="(#{(t 'training.programme.module')} : #{asubject.parent.name})"
+                        - else
+                          =asubject.subject_list
+                    - for lp in lps
+                      %tr
+                        %td.centre=cnt+=1
+                        %td=lp.student_qty
+                        - unless current_user.college.code=='amsas'
+                          %td=lp.year_semester
+                          %td=lp.topic
+                        %td=lp.lecture_title
+                        %td=lp.lecture_date.try(:strftime, '%d-%m-%Y')
+                        %td=lp.schedule_item.get_start_time
+                        %td=lp.schedule_item.get_end_time
+                        %td
+                          /unremark to check
+                          /= link_to (t 'training.lesson_plan.title3') , lesson_plan_training_lesson_plan_path(id: lp.id, format: "pdf") 
+                          - if lp.hod_approved==true
+                            %b=t('equery.lesson_plan.approved')
+                            = link_to (t 'training.lesson_plan.title3') , lesson_plan_training_lesson_plan_path(id: lp.id, format: "pdf") 
+                          - else
+                            - if lp.hod_approved==false && lp.hod_rejected==true
+                              .text-red
+                                =t('equery.lesson_plan.rejected')
+                                ="("+lp.reason+")"
+                            - elsif lp.hod_approved.blank? && lp.hod_rejected.blank? && lp.is_submitted==true
+                              =t('equery.lesson_plan.submitted') 
                             - else
-                              - if lp.hod_approved==false && lp.hod_rejected==true
-                                .text-red
-                                  =t('equery.lesson_plan.rejected')
-                                  ="("+lp.reason+")"
-                              - elsif lp.hod_approved.blank? && lp.hod_rejected.blank? && lp.is_submitted==true
-                                =t('equery.lesson_plan.submitted') 
-                              - else
-                                =t('equery.lesson_plan.not_submitted') 
+                              =t('equery.lesson_plan.not_submitted') 
 
-                          - unless current_user.college.code=='amsas'
-                            %td
-                              = link_to (t 'training.lesson_plan.reporting'), lesson_report_training_lesson_plan_path(id: lp.id, format: "pdf")
-                              - if lp.report_submit == true 
-                                - if lp.report_endorsed == true
-                                  = t('equery.lesson_plan.endorsed')
-                                  = link_to (t 'training.lesson_plan.reporting'), lesson_report_training_lesson_plan_path(id: lp.id, format: "pdf")
-                                - else
-                                  = t('equery.lesson_plan.submitted')
-                                  = link_to (t 'training.lesson_plan.reporting'), lesson_report_training_lesson_plan_path(id: lp.id, format: "pdf")
+                        - unless current_user.college.code=='amsas'
+                          %td
+                            = link_to (t 'training.lesson_plan.reporting'), lesson_report_training_lesson_plan_path(id: lp.id, format: "pdf")
+                            - if lp.report_submit == true 
+                              - if lp.report_endorsed == true
+                                = t('equery.lesson_plan.endorsed')
+                                = link_to (t 'training.lesson_plan.reporting'), lesson_report_training_lesson_plan_path(id: lp.id, format: "pdf")
+                              - else
+                                = t('equery.lesson_plan.submitted')
+                                = link_to (t 'training.lesson_plan.reporting'), lesson_report_training_lesson_plan_path(id: lp.id, format: "pdf")
+
+        .right{style:"padding: 0 10px; margin:0;"}= paginate lessonplans, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

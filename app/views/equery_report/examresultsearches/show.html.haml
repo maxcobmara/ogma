@@ -6,7 +6,10 @@
 .row
   .col-md-offset-1
     /= render :partial =>"equery_report/examresultsearches/kskbjb/examresult_listing", locals: {examresultsearch: @examresultsearch, examresults: @examresults}
-    = render :partial =>"equery_report/examresultsearches/#{current_user.college.code}/examresult_listing", locals: {examresultsearch: @examresultsearch, examresults: @examresults}
+    - if @examresultsearch.student_id==1 && current_user.college.code=='amsas'
+      = render :partial =>"equery_report/examresultsearches/#{current_user.college.code}/resultline_listing", locals: {examresultsearch: @examresultsearch, resultlines: @resultlines}
+    - else
+      = render :partial =>"equery_report/examresultsearches/#{current_user.college.code}/examresult_listing", locals: {examresultsearch: @examresultsearch, examresults: @examresults}
 .row
   .col-md-6.col-md-offset-4
     %hr

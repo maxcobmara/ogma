@@ -226,7 +226,7 @@ class Exam::ExamresultsController < ApplicationController
           end
         end
         #INDEX use
-        @search = Examresult.search(params[:q])
+        @search = Examresult.order(id: :asc).search(params[:q])
         @examresults = @search.result.search2(programme_id)
         @examresults = @examresults.page(params[:page]||1)
         #INDEX2 use

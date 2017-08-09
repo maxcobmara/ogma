@@ -71,15 +71,13 @@
               - semno= exam.subject.parent.code.to_i%2 == 0 ? '2' : '1'
               %td{:align=>"center"}=h exam.subject_id? ? exam.syear + semno : "" 
             %td=h exam.subject.try(:root).try(:programme_list)
-            %td=h exam.subject.try(:subject_list)
+            %td
+              =h exam.subject.try(:subject_list)
+              .small.text-grey="(#{I18n.t('training.programme.module')} : #{exam.subject.parent.subject_list})"
             %td=h exam.exam_on.try(:strftime, '%d %b %Y')
             %td=h exam.timing
             %td=h exam.creator_details 
-            %td
-              - if exam.duration!=nil
-                =h (exam.duration/60).to_i.to_s+" hours "+(exam.duration%60).to_i.to_s+" mins"
-              - else
-                =h (((exam.endtime - exam.starttime)/60) / 60).to_i.to_s+" hours "+ (((exam.endtime - exam.starttime)/60) % 60).to_i.to_s+" mins"
+            %td=h exam.duration_in_str
             %td{:align=>"center"}=h exam.total_marks
             - if current_user.college.code=="kskbjb"
               %td{:align=>"center"}

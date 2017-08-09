@@ -1,46 +1,56 @@
 - model_class = Exam
+- prog_id=Intake.find(@examresult.intake_id).programme_id
+- subjects=Programme.find(prog_id).descendants.where(course_type: 'Subject')
+- students = @examresult.retrieve_student
+
 .col-md-11
   %hr  
-  %table.table.table-bordered
+  %table.table.table-bordered.table-hover.table-condensed
     %head
-      %tr
-        %th &nbsp;
-        %th=t('exam.examresult.student')
-        %th=t('student.icno')
-        - prog_id=Intake.find(@examresult.intake_id).programme_id
-        - subjects=Programme.find(prog_id).descendants.where(course_type: 'Subject')
-        - students = @examresult.retrieve_student
-        - for subject in subjects
-          %th.centre{width: '5%'}=h subject.name
-        %th.centre Status
+      %tr.info
+        %th{width: '4%', rowspan: 2} &nbsp;
+        %th{width: '20%', rowspan: 2, style: 'vertical-align: middle'}=t('exam.examresult.student')
+        %th{rowspan: 2, style: 'vertical-align: middle'}=t('student.icno')
+        - subjects.group_by{|x|x.parent}.each do |amodule, subjects2|
+          %td{colspan: "#{subjects2.count}"}
+            %b=(t 'training.programme.module')+" : "+amodule.subject_list.upcase+" (%)"
+            %br
+            - for subject in subjects2.sort_by(&:code)
+              .small=(subject.subject_list+"<br>").html_safe
+        %th.centre{width: '5%', rowspan: 2}Status
+      %tr.info
+        - subjects.group_by{|x|x.parent}.each do |amodule, subjects2|
+          - for subject in subjects2.sort_by(&:code)
+            %th.centre{width: '5%', style: 'vertical-align: middle'}=h subject.code
     %body
       - if students.count > 0 
         - 0.upto(students.count-1).each do |no|
           - value_id = @examresult.resultlines[no].id if @examresult.resultlines[no]
           
           %tr
-            %td=no+1
+            %td.warning=no+1
             = hidden_field "examresult[resultlines_attributes][#{no}]", :id, :size =>8, :value=> value_id
             = hidden_field "examresult[resultlines_attributes][#{no}]", :student_id, :size =>8, :value=>students[no].id
-            %td=students[no].student_with_rank
-            %td=students[no].icno 
+            %td.warning=students[no].student_with_rank
+            %td.warning=students[no].icno 
             - @subject_status=[]
-            - for subject in subjects
-              - grades=Grade.where(subject_id: subject.id).where(student_id: students[no].id)
-              - if grades.count > 0
-                - finalscore=grades.first.finalscore
-                //- exampaper_ids=Exam.where(subject_id: subject.id).pluck(:id)
-                //- exammarks=Exammark.where(exam_id: exampaper_ids).where(student_id: students[no].id)
-                //- fullmarks=Exammark.fullmarks(exammarks.first.exam_id)
-                /- if finalscore > 50
-                /  - @subject_status << "3"
-                /- else
-                /  - @subject_status << "4"
-              - else
-                - finalscore=0
-                /- @subject_status << "0"
+            - subjects.group_by{|x|x.parent}.each do |amodule, subjects2|
+              - for subject in subjects2.sort_by(&:code)
+                - grades=Grade.where(subject_id: subject.id).where(student_id: students[no].id)
+                - if grades.count > 0
+                  - finalscore=grades.first.finalscore
+                  //- exampaper_ids=Exam.where(subject_id: subject.id).pluck(:id)
+                  //- exammarks=Exammark.where(exam_id: exampaper_ids).where(student_id: students[no].id)
+                  //- fullmarks=Exammark.fullmarks(exammarks.first.exam_id)
+                  /- if finalscore > 50
+                  /  - @subject_status << "3"
+                  /- else
+                  /  - @subject_status << "4"
+                - else
+                  - finalscore=0
+                  /- @subject_status << "0"
               
-              %td=finalscore==0 ? "" : number_with_precision(finalscore, precision: 2).to_s+" %"
+                %td.centre=finalscore==0 ? "" : number_with_precision(finalscore, precision: 2)
             - if @examresult.resultlines.count > 0
               %td= select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+DropDown::RESULT_STATUS_CONTRA, @examresult.resultlines[no].status), {class: 'selectpicker', "data-width" => "auto"}
             - else
