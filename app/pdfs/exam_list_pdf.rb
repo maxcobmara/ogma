@@ -18,7 +18,7 @@ class Exam_listPdf < Prawn::Document
     else
       colwidths=[30, 20, 130, 120, 120, 60, 70, 90, 70, 50]
     end
-    row_count=2                 #rows for document header / title
+    row_count=2                #rows for document header / title
     col_redmark=[]
     @programme_exams.each do |programme, exams|
         exams.each_with_index do |exam, cnt|
@@ -28,6 +28,7 @@ class Exam_listPdf < Prawn::Document
         end
 	row_count+=exams.count
     end
+    
     table(line_item_rows, :column_widths => colwidths, :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
@@ -35,8 +36,8 @@ class Exam_listPdf < Prawn::Document
       row(0).align = :center
       row(0..1).font_style = :bold
       row(1).background_color = 'FFE34D'
-      row(2..3).column(0).borders=[:top, :left, :bottom]
-      row(2..3).column(1).borders=[:top, :bottom, :right]
+      row(2..row_count-1).column(0).borders=[:top, :left, :bottom]
+      row(2..row_count-1).column(1).borders=[:top, :bottom, :right]
       for redmark in col_redmark
         row(redmark).column(1).text_color ='EC0C16'
       end
@@ -58,7 +59,12 @@ class Exam_listPdf < Prawn::Document
     @programme_exams.each do |programme, exams|
         for exam in exams
           a=["#{counter += 1}", "#{exam.complete_paper==false ? '*' : ''}",  "#{exam.render_examtype.first}<br>#{I18n.t('exam.exams.with_questions') if exam.klass_id == 1}"]
-          b=[exam.subject.try(:root).try(:programme_list), exam.subject.try(:subject_list), exam.exam_on.try(:strftime, '%d-%m-%Y'), exam.timing, exam.creator_details, "#{exam.duration!=nil ? (exam.duration/60).to_i.to_s+' '+I18n.t('time.hours')+' '+(exam.duration%60).to_i.to_s+' '+I18n.t('time.minutes') : (((exam.endtime - exam.starttime)/60) / 60).to_i.to_s+' '+I18n.t('time.hours')+' '+ (((exam.endtime - exam.starttime)/60) % 60).to_i.to_s+' '+I18n.t('time.minutes')}", exam.total_marks]
+          if @college.code=='amsas'
+            asubject="#{exam.subject.try(:subject_list)}<br>(#{I18n.t('training.programme.module')} : #{exam.subject.parent.subject_list})"
+          else
+            asubject=exam.subject.try(:subject_list)
+          end
+          b=[exam.subject.try(:root).try(:programme_list), asubject, exam.exam_on.try(:strftime, '%d-%m-%Y'), exam.timing, exam.creator_details, exam.duration_in_str, exam.total_marks]
           if @college.code=="kskbjb" 
             semno= exam.subject.parent.code.to_i%2 == 0 ? '2' : '1'
             if exam.sequ!=nil

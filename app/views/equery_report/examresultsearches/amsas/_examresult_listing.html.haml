@@ -9,36 +9,7 @@
     /additional heading
     .col-md-8.col-md-offset-2
       %dl.dl-horizontal
-        /:intake_id, :subject_id, :student_id, :semester, :examdts, :examdte  
-        
-        - if examresultsearch.intake_id.blank? && examresultsearch.examdts.blank? && examresultsearch.examdte.blank?
-          %div.result-all=t 'equery.examresult.list_all'
-        - else
-          %div.result-search=t 'equery.search_by'
-            
-        %br
-                   
-        - unless examresultsearch.intake_id.blank?
-          %dt=(t 'equery.examresult.programme_id')
-          %dd=examresultsearch.college.code=='amsas' ? Intake.find(examresultsearch.intake_id).siri_programmelist : Intake.find(examresultsearch.intake_id).programmelist_group_intake
-
-        - unless examresultsearch.semester.blank?
-          %dt Semester
-          %dd=examresultsearch.semester
-          
-        - unless examresultsearch.examdts.blank?
-          %dt=(t 'equery.examresult.examdts')
-          %dd=examresultsearch.examdts.strftime('%d-%m-%Y')
-          
-        - unless examresultsearch.examdte.blank?
-          %dt=(t 'equery.examresult.examdte')
-          %dd=examresultsearch.examdte.strftime('%d-%m-%Y')
-
-        - if examresultsearch.intake_id.blank? && examresultsearch.examdts.blank? && examresultsearch.examdte.blank?
-        - else
-          .col-md-12
-            .col-md-8
-              %hr
+        = render :partial => "equery_report/examresultsearches/#{current_user.college.code}/search_criteria", locals: {examresultsearch: examresultsearch, examresults: examresults}
           
         %dt=(t 'equery.total')
         %dd=examresultsearch.examresults.count==0 ? examresultsearch.examresults.count : examresultsearch.examresults.count.to_s+" "+(t 'records')
@@ -47,12 +18,9 @@
     .col-md-11
       %br
       - if examresultsearch.examresults.count > 0
-        - @examresults=examresultsearch.examresults
-        - if examresultsearch.student_id!=1
-          .right= link_to (fa_icon("print", text: (t 'actions.print'))), examresult_list_exam_examresults_path(@examresults, format: 'pdf')
+        .right= link_to (fa_icon "print", text: (t 'equery.print_result')), examresult_list_exam_examresults_path(@examresults, format: 'pdf')
         %table.table.table-bordered.table-condensed.table-hover.equery
           %head
-            
           %body
             - examresultsearch.examresults.group_by{|x|x.intake_id}.each do |result_intake, examresults|
               - subjects =Programme.find(Intake.find(result_intake).programme_id).descendants.where(course_type: 'Subject').sort_by{|x|[x.parent, x.code]}
@@ -60,43 +28,11 @@
               - half=total_columns/2
               %tr.info
                 %th.centre{colspan: "#{total_columns}"}=(t 'equery.examresult.intake')+Intake.find(result_intake).siri_programmelist
-              
               - cnt=0
               - for examresult in examresults
                 %tr.success
                   %th=cnt+=1
                   %th.centre{colspan: "#{half}"}=(t 'equery.examresult.exam_date')+" : "+examresult.examdts.try(:strftime, '%d-%m-%Y')+" - "+examresult.examdte.try(:strftime, '%d-%m-%Y')
                   %th.centre{colspan: "#{half-1}"}=link_to (fa_icon("print", text: (t 'equery.examresult.exam_result'))), results_exam_examresults_path(id: examresult.id, format: "pdf")
-                  
-                - if examresultsearch.student_id==1
-                  %tr.warning
-                    %th{colspan: 3}=t('training.programme.module')
-                    - subjects.group_by{|x|x.parent_id}.each do |parent, subject_list|
-                      %th.centre{colspan: "#{subject_list.count}"}=Programme.find(parent).subject_list+" (%)"
-                    %th.centre{rowspan: 2} Status
-                    %th.centre{rowspan: 2}=t('equery.links')
-                    %tr.warning
-                      %th No
-                      %th=t('exam.examresult.student')
-                      %th=t('student.icno')
-                      - for subject in subjects
-                        %th.centre=h subject.code
-                 
-                    - cnt2=0
-                    - for examslip in examresult.resultlines
-                      %tr
-                        %td=cnt2+=1
-                        %td=formatted_mykad(examslip.student.icno)
-                        %td=examslip.student.student_with_rank
-                        - for subject in subjects
-                          - grades=Grade.where(subject_id: subject.id).where(student_id: examslip.student_id)
-                          %td.centre
-                            - if grades.count > 0 
-                              - finalscore=grades.first.finalscore
-                              .small
-                                /=number_with_precision(grades.first.finalscore, precision: 2)
-                                =pukka(finalscore)
-                        %td.centre=h examslip.render_status
-                        %td.centre= link_to (fa_icon("print", text: (t 'equery.examresult.exam_slip'))), examination_slip_exam_examresults_path(id: examslip.id, format: "pdf")
-            
+
       .right{style:"padding: 0 10px; margin:0;"}= paginate examresults, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

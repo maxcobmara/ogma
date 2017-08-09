@@ -62,36 +62,36 @@
     .col-md-10.col-md-offset-1
       %br
       - if examsearch.exams.count > 0
-        .right= link_to (fa_icon "file-pdf-o", text: (t 'print')), exam_list_exam_exams_path(format: 'pdf', ids: examsearch.exams.pluck(:id))          
+        .right= link_to (fa_icon "print", text: (t 'equery.print_result')), exam_list_exam_exams_path(format: 'pdf', ids: examsearch.exams.pluck(:id))          
         %table.table.table-bordered.table-condensed.table-hover.equery
           %head
-            %tr.info
-              %th{width: '4%'} No
-              %th{width: '20%'}=t('equery.exam.programme_id')
-              %th{width: '20%'}=t('equery.exam.subject_id')
-              %th{width: '12%'}=t('equery.exam.examtype')
-              %th{width: '12%'}=t('equery.exam.created_by')
-              %th{width: '12%'}=t('equery.exam.klass_id')
-              %th{width: '10%'}=t('equery.exam.examdate')
-              %th{width: '10%'}=t('equery.view')
           - cnt=0
           %body
-            - for exampaper in examsearch.exams.order(exam_on: :desc)
-              %tr
-                %td=cnt+=1
-                %td=exampaper.subject.root.programme_list
-                %td
-                  =exampaper.subject.subject_list
-                  .small.text-grey="(#{(t 'training.programme.module')} : #{exampaper.subject.parent.name})"
-                %td=exampaper.render_examtype[0]
-                %td=exampaper.creator.staff_with_rank
-                %td=exampaper.klass_id==1 ? (t 'equery.exam.complete_set') : "Template"
-                %td=exampaper.exam_on.strftime('%d-%m-%Y')
-                - @exam=exampaper
-                %td.centre
-                  - if @exam.klass_id==1
-                    = link_to (t 'equery.exam.exampaper'), exampaper_exam_exam_path(@exam, format: "pdf") 
-                  - else
-                    \-
+            - exams.group_by{|x|x.subject.root}.each do |course, exampapers|
+              %tr.info
+                %th.centre{colspan: 6}=course.programme_list
+              - exampapers.group_by{|y|y.subject}.each do |asubject, exampapers2|
+                %tr.info
+                  %th.centre{colspan: 6}="#{(t 'training.programme.module')} : #{asubject.parent.name} - "+asubject.subject_list
+                %tr.warning
+                  %th{width: '4%'} No
+                  %th{width: '12%'}=t('equery.exam.examtype')
+                  %th{width: '12%'}=t('equery.exam.created_by')
+                  %th{width: '12%'}=t('equery.exam.klass_id')
+                  %th{width: '10%'}=t('equery.exam.examdate')
+                  %th{width: '10%'}=t('equery.view')
+                - for exampaper in exampapers2.sort_by(&:exam_on)
+                  %tr
+                    %td=cnt+=1
+                    %td=exampaper.render_examtype[0]
+                    %td=exampaper.creator.staff_with_rank
+                    %td=exampaper.klass_id==1 ? (t 'equery.exam.complete_set') : "Template"
+                    %td=exampaper.exam_on.strftime('%d-%m-%Y')
+                    - @exam=exampaper
+                    %td.centre
+                      - if @exam.klass_id==1
+                        = link_to (fa_icon "file-pdf-o", text: (t 'equery.exam.exampaper')), exampaper_exam_exam_path(@exam, format: "pdf") 
+                      - else
+                        \-
             
       .right{style:"padding: 0 10px; margin:0;"}= paginate exams, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

@@ -46,12 +46,12 @@
               %head
                 %tr.bg-grey
                   %th{width: '5%'} No
-                  %th{width: '33%'}=t('equery.ptdo.staff')
+                  %th{width: '30%'}=t('equery.ptdo.staff')
                   %th{width: '15%'}=t('equery.ptdo.icno')
                   %th{width: '20%'}=t('equery.ptdo.department')
                   %th{width: '22%'}=t('equery.ptdo.position')
                   %th{width: '10%'}=t('equery.ptdo.total_days')
-                  %th{width: '5%'}=t('ptdos.download')
+                  %th{width: '8%'}=t('equery.view')
               %body
                 - nos=0
                 - @ptdosearch.ptdos.sort_by{|y|y.staff.name}.group_by{|x|x.staff_id}.each do |staffid, attended_trainings| 
@@ -63,7 +63,7 @@
                     %td=Ptdo.staff_unit(curr_staff)
                     %td=curr_staff.try(:position).try(:name)
                     %td.centre=Ptdo.staff_total_days(attended_trainings.map(&:id)) 
-                    %td.centre= link_to  (fa_icon "file-pdf-o"), training_report_staff_training_ptdos_path(format: 'pdf', staff_id: staffid)
+                    %td.centre= link_to (fa_icon "file-pdf-o"), training_report_staff_training_ptdos_path(format: 'pdf', staff_id: staffid)
 
 .row
   .col-md-6.col-md-offset-3

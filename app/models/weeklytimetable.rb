@@ -348,7 +348,7 @@ class Weeklytimetable < ActiveRecord::Base
 #   end
 
   def main_details_for_weekly_timetable
-    "#{schedule_programme.programme_list}"+" Intake : "+"#{schedule_intake.name}" +" - (Week : "+"#{startdate.strftime('%d-%m-%Y')}"+" - "+"#{enddate.strftime('%d-%m-%Y')}"+")" 
+    "#{schedule_programme.programme_list}"+" #{I18n.t('training.weeklytimetable.intake')} : "+"#{schedule_intake.name}" +" - (#{I18n.t('training.weeklytimetable.week')} : "+"#{startdate.strftime('%d-%m-%Y')}"+" - "+"#{enddate.strftime('%d-%m-%Y')}"+")" 
   end
   
   def hods        

@@ -108,7 +108,7 @@
                  
               %td.centre
                 - if asset_wlocation.include?(asset.id) 
-                  =link_to (fa_icon "file-pdf-o")+" KEW-PA 7", kewpa7_campus_location_path(format: "pdf", id: asset)
+                  =link_to (fa_icon "file-pdf-o")+" KEW-PA 7", kewpa7_campus_location_path(format: "pdf", id: asset.location_id)
                 - elsif asset_wplacement.include?(asset.id)
                   %ol
                     - for placement in asset.asset_placements.sort_by{|x|x.location.combo_code}

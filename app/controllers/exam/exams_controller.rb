@@ -219,7 +219,7 @@ class Exam::ExamsController < ApplicationController
 
   def exam_list 
     if params[:ids]
-      @programme_exams=Exam.where(id: params[:ids]).group_by{|x|x.subject.root}
+      @programme_exams=Exam.where(id: params[:ids]).order(subject_id: :asc, exam_on: :desc).group_by{|x|x.subject.root}
     end
     respond_to do |format|
       format.pdf do
@@ -278,7 +278,7 @@ class Exam::ExamsController < ApplicationController
           end
         end
         if @programme_id
-          @search = Exam.search(params[:q])
+          @search = Exam.order(subject_id: :asc, exam_on: :desc).search(params[:q])
           @exams = @search.result.search2(@programme_id)
           @exams = @exams.page(params[:page]||1)
           @programme_exams = @exams.group_by{|x|x.subject.root}

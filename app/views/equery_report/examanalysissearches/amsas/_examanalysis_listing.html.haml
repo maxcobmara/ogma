@@ -43,7 +43,7 @@
     .col-md-10.col-md-offset-1
       %br
       - if examanalysissearch.examanalyses.count > 0
-        .right= link_to (fa_icon "file-pdf-o", text: (t 'print')), examanalysis_list_exam_examanalyses_path(format: 'pdf', ids: examanalysissearch.examanalyses.pluck(:id))     
+        .right= link_to (fa_icon "print", text: (t 'equery.print_result')), examanalysis_list_exam_examanalyses_path(format: 'pdf', ids: examanalysissearch.examanalyses.pluck(:id))     
         %table.table.table-bordered.table-condensed.table-hover.equery
           %head
             %tr.info
@@ -74,7 +74,7 @@
                   %td.centre=examanalysis.total_passed
                   %td.centre=examanalysis.total_failed
                   - @examanalysis=examanalysis
-                  %td.centre= link_to (t 'equery.examanalysis.analysis'), questionanalysis_list_exam_examanalyses_path(id: examanalysis.id, format: "pdf")
+                  %td.centre= link_to (fa_icon "file-pdf-o", text: (t 'equery.examanalysis.analysis')), questionanalysis_list_exam_examanalyses_path(id: examanalysis.id, format: "pdf")
                  
             
       .right{style:"padding: 0 10px; margin:0;"}= paginate examanalyses, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'

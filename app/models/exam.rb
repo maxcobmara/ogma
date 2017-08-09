@@ -519,6 +519,21 @@ class Exam < ActiveRecord::Base
     end
     sesi
   end
+  
+  #usage - index & pdf (exam_list)
+  def duration_in_str
+    if duration!=nil
+      total_hours=(duration/60).to_i
+      total_minutes=(duration%60).to_i
+    else
+      total_hours=(((endtime - starttime)/60) / 60).to_i
+      total_minutes= (((endtime - starttime)/60) % 60).to_i
+    end
+    str=""
+    str+=total_hours.to_s+" "+I18n.t('time.hours')+" " if total_hours > 0
+    str+=total_minutes.to_s+" "+I18n.t('time.minutes') if total_minutes > 0
+    str
+  end
 
 #   def self.csv(options={})
 #     CSV.generate(options) do |csv|

@@ -37,7 +37,7 @@
                 %td.centre= link_to (fa_icon "search"), new_equery_report_ptdosearch_path
           
           - elsif @query_module=='2'
-            - permitted_to? :read, :stationerysearches do 
+            - permitted_to? :create, :equery_report_stationerysearches do 
               %tr
                 %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'asset.title')
               %tr
@@ -46,8 +46,8 @@
                 %td.centre= link_to (fa_icon "search"), new_equery_report_stationerysearch_path(searchstationerytype: 1)
 
             /////////////////////
-            - permitted_to? :read, :assetsearches do
-              - unless permitted_to? :read, :stationerysearches
+            - permitted_to? :create, :equery_report_assetsearches do
+              - unless permitted_to? :read, :equery_report_stationerysearches
                 %tr
                   %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'asset.title')
               %tr
@@ -177,24 +177,24 @@
                 %td=no+=1 
                 %td= link_to (t 'student.students.title'), students_path
                 %td.centre= link_to (fa_icon "search"), new_equery_report_studentsearch_path(searchstudenttype: 1)
-            - permitted_to? :read, :equery_report_studentattendancesearches do
+            - permitted_to? :create, :equery_report_studentattendancesearches do
               %tr
                 %td=no+=1
                 %td= link_to (t 'student.attendance.title'), student_student_attendances_path
                 %td.centre= link_to (fa_icon "search"), new_equery_report_studentattendancesearch_path(searchstudentattendancetype: 1)
-            - permitted_to? :read, :equery_report_studentdisciplinesearches do
+            - permitted_to? :create, :equery_report_studentdisciplinesearches do
               %tr
                 %td=no+=1
                 %td= link_to (t 'student.discipline.title')+" ("+(t 'student.discipline.counselor_feedback')+")", student_student_discipline_cases_path
                 %td.centre= link_to (fa_icon "search"), new_equery_report_studentdisciplinesearch_path(searchstudentdisciplinetype: 1)
-            - permitted_to? :read, :equery_report_studentcounselingsearches do
+            - permitted_to? :create, :equery_report_studentcounselingsearches do
               %tr
                 %td=no+=1
                 %td= link_to (t 'student.counseling.title')+" ("+(t 'student.counseling.feedback_to')+")", student_student_counseling_sessions_path
                 %td.centre= link_to (fa_icon "search"), new_equery_report_studentcounselingsearch_path(searchstudentcounselingtype: 1)
 
           - elsif @query_module=='5'
-            - permitted_to? :read, :weeklytimetablesearches do
+            - permitted_to? :create, :equery_report_weeklytimetablesearches do
               %tr
                 %td.group{colspan: 3}= (t 'equery.module')+" : "+t('training.title')
 
@@ -204,13 +204,13 @@
                   %td= link_to (t 'training.weeklytimetable.title'), training_weeklytimetables_path
                   %td.centre= link_to (fa_icon "search"), new_equery_report_weeklytimetablesearch_path(searchweeklytimetabletype: 1)
 
-                - permitted_to? :read, :curriculumsearches do
+                - permitted_to? :create, :equery_report_curriculumsearches do
                   %tr
                     %td=no+=1
                     %td= link_to (t 'training.programme.title'), training_programmes_path
                     %td.centre= link_to (fa_icon "search"), new_equery_report_curriculumsearch_path(searchcurriculumtype: 1)
 
-                - permitted_to? :read, :lessonplansearches do
+                - permitted_to? :create, :equery_report_lessonplansearches do
                   %tr
                     %td=no+=1
                     %td
@@ -219,7 +219,7 @@
                       = link_to (t 'training.lesson_plan.reporting'), index_report_training_lesson_plans_path
                     %td.centre= link_to (fa_icon "search"), new_equery_report_lessonplansearch_path(searchlessonplantype: 1)
 
-                - permitted_to? :read, :personalizetimetablesearches do
+                - permitted_to? :create, :equery_report_personalizetimetablesearches do
                   %tr
                     %td=no+=1
                     %td= link_to (t 'training.weeklytimetable.personalize_timetable')+(t 'equery.personalize_timetable.owner_only'), personalize_index_training_weeklytimetables_path
@@ -228,7 +228,7 @@
             
             //////	
           - elsif @query_module=='6'
-            - permitted_to? :read, :examsearches do
+            - permitted_to? :create, :equery_report_examsearches do
               %tr
                 %td.group{colspan: 3}= (t 'equery.module')+" : "+t('exam.title')
               %tr
@@ -236,7 +236,7 @@
                 %td= link_to (t 'exam.exams.title'), exam_exams_path
                 %td.centre= link_to (fa_icon "search"), new_equery_report_examsearch_path(searchexamtype: 1)
 
-            - permitted_to? :read, :examresultsearches do 
+            - permitted_to? :create, :equery_report_examresultsearches do 
               %tr
                 %td=no+=1
                 %td
@@ -245,14 +245,14 @@
                   = link_to (t 'exam.examresult.exam_slip'), index2_exam_examresults_path
                 %td.centre= link_to (fa_icon "search"), new_equery_report_examresultsearch_path(searchexamresulttype: 1)
                   
-            - permitted_to? :read, :evaluatecoursesearches do
+            - permitted_to? :create, :equery_report_evaluatecoursesearches do
               - evaluation_title=current_user.college.code=='amsas' ? (t 'exam.evaluate_course.title2') : (t 'exam.evaluate_course.title')
               %tr
                 %td=no+=1
                 %td= link_to evaluation_title, exam_evaluate_courses_path
                 %td.centre= link_to (fa_icon "search"), new_equery_report_evaluatecoursesearch_path(searchevaluatecoursetype: 1)
                   
-            - permitted_to? :read, :examanalysissearches do
+            - permitted_to? :create, :equery_report_examanalysissearches do
               %tr
                 %td=no+=1
                 %td= link_to (t 'exam.examanalysis.title'), exam_examanalyses_path

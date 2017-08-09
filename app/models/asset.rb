@@ -21,7 +21,7 @@ class Asset < ActiveRecord::Base
   has_many :asset_defects
   has_many :maints
   has_many :asset_loans
-  has_many :asset_disposals
+  has_many :asset_disposals #kewpa3 - multiple
   has_many :asset_loss
   has_many :location_damages
   

@@ -69,7 +69,7 @@ class Examsearch < ActiveRecord::Base
    end
   
   def orders
-    "exam_on DESC"
+    "subject_id ASC, exam_on DESC"
   end  
 
   def conditions

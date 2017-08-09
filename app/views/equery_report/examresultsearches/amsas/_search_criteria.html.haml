@@ -1,0 +1,26 @@
+/:intake_id, :subject_id, :student_id, :semester, :examdts, :examdte  
+        
+- if examresultsearch.intake_id.blank? && examresultsearch.examdts.blank? && examresultsearch.examdte.blank?
+  %div.result-all=t 'equery.examresult.list_all'
+- else
+  %div.result-search=t 'equery.search_by'
+            
+%br
+                   
+- unless examresultsearch.intake_id.blank?
+  %dt=(t 'equery.examresult.programme_id')
+  %dd=examresultsearch.college.code=='amsas' ? Intake.find(examresultsearch.intake_id).siri_programmelist : Intake.find(examresultsearch.intake_id).programmelist_group_intake
+          
+- unless examresultsearch.examdts.blank?
+  %dt=(t 'equery.examresult.examdts')
+  %dd=examresultsearch.examdts.strftime('%d-%m-%Y')
+          
+- unless examresultsearch.examdte.blank?
+  %dt=(t 'equery.examresult.examdte')
+  %dd=examresultsearch.examdte.strftime('%d-%m-%Y')
+
+- if examresultsearch.intake_id.blank? && examresultsearch.examdts.blank? && examresultsearch.examdte.blank?
+- else
+  .col-md-12
+    .col-md-8
+      %hr

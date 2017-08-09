@@ -5343,8 +5343,10 @@ ms_MY:
       #set_enddate: " disetkan ke tarikh kelas yang terkini dalam rekod."
       #set_startdate: " disetkan ke tarikh kelas yang terawal dalam rekod."
       daterange_valid: Julat tarikh mula mestilah sah
+      classes: kelas
     lesson_plan:
       search: "Carian Pelan Pengajaran & Pembelajaran dan Laporan Pengajaran"
+      list_all: Senarai Penuh Pelan Pengajaran & Pembelajaran dan Laporan Pengajaran
       #search_by: "Carian Pelan & Laporan Pengajaran Mengikut"
       #search_lecturer: Carian Mengikut Pengajar
       #search_intake: Carian Mengikut Ambilan
@@ -5466,6 +5468,7 @@ ms_MY:
       lecturer_id: Pengajar
       evaldate: Tarikh Penilaian
       staff_or_invited: "Pilih kotak semak jika Pengajar KSKBJB, nyahpilih jika Pensyarah Jemputan"
+      analysis_data: Data Analisa
     examanalysis:
       search: Carian Analisa Peperiksaan Mengikut Kertas Peperiksaan
       list_all: Senarai Penuh Analisa Peperiksaan Mengikut Kertas Peperiksaan

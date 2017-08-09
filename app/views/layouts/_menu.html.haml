@@ -451,19 +451,19 @@
           - if (permitted_to? :create, :equery_report_staffsearch2s) || (permitted_to? :create, :equery_report_staffattendancesearches) || (permitted_to? :create, :equery_report_ptdosearches)
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'staff.title'), "/equery_reports?query_module=1"
             
-          - if (permitted_to? :read, :assetsearches) || (permitted_to? :read, :stationerysearches)
+          - if (permitted_to? :create, :equery_report_assetsearches) || (permitted_to? :create, :equery_report_stationerysearches)
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'asset.title'), "/equery_reports?query_module=2"
             
           - permitted_to? :create, :equery_report_documentsearches do
             %li= link_to content_tag(:i, "", :class => "icon-numb")+('E-Filing'), "/equery_reports?query_module=3"
           
-          - if (permitted_to? :create, :equery_report_studentsearches) || (permitted_to? :read, :equery_report_studentattendancesearches) || (permitted_to? :read, :equery_report_studentdisciplinesearches) || (permitted_to? :read, :equery_report_studentcounselingsearches)
+          - if (permitted_to? :create, :equery_report_studentsearches) || (permitted_to? :read, :equery_report_studentattendancesearches) || (permitted_to? :create, :equery_report_studentdisciplinesearches) || (permitted_to? :create, :equery_report_studentcounselingsearches)
             %li= link_to content_tag(:i, "", :class => "icon-numb")+(t 'student.title'), "/equery_reports?query_module=4"
           //
-          - if  (permitted_to? :create, :weeklytimetablesearches) || (permitted_to? :create, :curriculumsearches) || (permitted_to? :create, :lessonplansearches) || (permitted_to? :create, :personalizetimetablesearches)
+          - if (permitted_to? :create, :equery_report_weeklytimetablesearches) || (permitted_to? :create, :equery_report_curriculumsearches) || (permitted_to? :create, :equery_report_lessonplansearches) || (permitted_to? :create, :equery_report_personalizetimetablesearches)
             %li= link_to content_tag(:i, "", :class => "icon-numb")+(t 'training.title'),  "/equery_reports?query_module=5"
 
-          - if (permitted_to? :create, :examsearches) || (permitted_to? :create, :examresultsearches) || (permitted_to? :create, :evaluatecoursesearches) || (permitted_to? :create, :examanalysissearches)
+          - if (permitted_to? :create, :equery_report_examsearches) || (permitted_to? :create, :equery_report_examresultsearches) || (permitted_to? :create, :equery_report_evaluatecoursesearches) || (permitted_to? :create, :equery_report_examanalysissearches)
             %li= link_to content_tag(:i, "", :class => "icon-numb")+(t 'exam.title'), "/equery_reports?query_module=6"
           //
           - permitted_to? :read, :library_books do

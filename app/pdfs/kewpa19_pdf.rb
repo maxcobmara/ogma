@@ -1,17 +1,18 @@
 class Kewpa19Pdf < Prawn::Document
-  def initialize(disposal, view, lead)
+  def initialize(disposal, view, lead, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @disposal = disposal
     @view = view
     @lead = lead
+    @college=college
     font "Times-Roman"
     text "KEW.PA-19", :align => :right, :size => 16, :style => :bold
     move_down 20
-    text "KEMENTERIAN/JABATAN : KKM/KSKNJB", :align => :left, :size => 14
+    text "KEMENTERIAN/JABATAN : #{@college.code=='kskbjb' ? 'KKM/KSKBJB' : 'PPLAPMM/AMSAS'}", :align => :left, :size => 14
     move_down 20
     text "SIJIL PELUPUSAN ASET KERAJAAN MALAYSIA", :align => :center, :size => 14, :style => :bold
     move_down 20
-    text "Merujuk surat kelulusan No rujukan   <b>#{@disposal.document.try(:refno)}</b>  , bertarikh   <b>#{@disposal.document.try(:letterdt).try(:strftime, "%d-%m-%Y")}</b> , 
+    text "Merujuk surat kelulusan No rujukan   <b>#{@disposal.document.try(:refno)}</b> , bertarikh   <b>#{@disposal.document.try(:letterdt).try(:strftime, "%d-%m-%Y")}</b> , 
     saya mengesahkan tindakan pelupusan telah dilaksanakan seperti berikut :-", :align => :left, :size => 10, :inline_format => true
     move_down 10
     text "1.  Aset berikut telah dilupuskan secara pindahan/hadiah." , :align => :left, :width => 200, :size => 10
@@ -36,7 +37,7 @@ class Kewpa19Pdf < Prawn::Document
     move_down 10
     text "5.  Aset berikut telah dimasukkan ke dalam stok.", :align => :left, :width => 200, :size => 10
     text "Bilangan item : <b>#{@disposal.quantity}</b>", :align => :left, :width => 200, :size => 10, :indent_paragraphs => 13, :inline_format => true
-    text "Salinan Kad Kawalan Stok Disertakan)", :align => :left, :width => 200, :size => 10, :indent_paragraphs => 13
+    text "(Salinan Kad Kawalan Stok Disertakan)", :align => :left, :width => 200, :size => 10, :indent_paragraphs => 13
     move_down 40
     table1
    

@@ -43,7 +43,7 @@
     .col-md-10.col-md-offset-1
       %br
       - if examanalysissearch.examanalyses.count > 0
-        .right= link_to (fa_icon "file-pdf-o", text: (t 'print')), examanalysis_list_exam_examanalyses_path(format: 'pdf', ids: examanalysissearch.examanalyses.pluck(:id))     
+        .right= link_to (fa_icon "print", text: (t 'equery.print_result')), examanalysis_list_exam_examanalyses_path(format: 'pdf', ids: examanalysissearch.examanalyses.pluck(:id))     
         %table.table.table-bordered.table-condensed.table-hover.equery
           %head
             %tr.info

@@ -71,8 +71,12 @@ class Asset::AssetDefectsController < ApplicationController
   end
 
   def kewpa9
-    @lead = Position.where(name: 'Pengarah').first
     @defective = AssetDefect.find(params[:id])
+    if current_user.college.code=='kskbjb '
+      @lead = Position.where(name: 'Pengarah').first.staff
+    else
+      @lead=@defective.confirmer
+    end
     respond_to do |format|
       format.pdf do
         pdf = Kewpa9Pdf.new(@defective, view_context, @lead)
