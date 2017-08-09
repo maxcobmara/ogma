@@ -21,8 +21,10 @@
         %table.table.table-bordered.table-condensed.table-hover.equery
           %head
           %body
-            - cnt2=0
-            
+            - if params[:page]
+              - cnt2=(params[:page].to_i-1)*10
+            - else
+              - cnt2=0
             - resultlines.group_by{|x|x.examresult.intake_id}.each do |result_intake, resultlines2|
               - subjects =Programme.find(Intake.find(result_intake).programme_id).descendants.where(course_type: 'Subject').sort_by{|x|[x.parent, x.code]}
               - total_columns=subjects.count+5
