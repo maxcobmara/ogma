@@ -27,25 +27,11 @@
               %tr.info
                 %th.centre{colspan: 4}=(t 'equery.examresult.intake')+Intake.find(result_intake).programmelist_group_intake
                 - cnt=0
-              /%tr.info
-              /  %th{width: '4%'} No
-              /  %th{width: '56%'}=t('equery.examresult.programme')+" / Semester"
-              /  %th.centre{width: '10%'}=t('equery.examresult.start')
-              /  %th.centre{width: '10%'}=t('equery.examresult.end')
-              /  %th.centre{width: '20%', colspan: 2}=t('equery.links')
               - for examresult in examresults
                 %tr.success
                   %th=cnt+=1
                   %th.centre="Semester : "+examresult.render_semester.to_s
                   %th.centre=(t 'equery.examresult.exam_date')+" : "+examresult.examdts.try(:strftime, '%d-%m-%Y')+" - "+examresult.examdte.try(:strftime, '%d-%m-%Y')
                   %th.centre=link_to (fa_icon("print", text: (t 'equery.examresult.exam_result'))), results_exam_examresults_path(id: examresult.id, format: "pdf")
-                /%tr
-                /  %td=cnt+=1
-                /  %td{colspan: 4}
-                /    =Intake.find(examresult.intake_id).programme.programme_list
-                /    =" / "+examresult.render_semester.to_s
-                /  %td.centre=examresult.examdts.try(:strftime, '%d-%m-%Y')
-                /  %td.centre=examresult.examdte.try(:strftime, '%d-%m-%Y')
-                /  %td.centre{colspan: 2}=link_to (fa_icon "print", text: (t 'equery.examresult.exam_result')), results_exam_examresults_path(id: examresult.id, format: "pdf")
             
       .right{style:"padding: 0 10px; margin:0;"}= paginate examresults, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
