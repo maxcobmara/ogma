@@ -1,94 +1,87 @@
 .row
   .col-md-10.col-md-offset-1
     %br
-            
-    - if @searchstationerytype=='1' || @searchstationerytype==1
-      = f.hidden_field :method, value: @searchstationerytype
-            
-      / Nav tabs
-      %ul.nav.nav-tabs
-        %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
 
-      .tab-content{style:"padding-top:1em"}
-        #search.tab-pane.active
-          .col-md-offset-1
-            %br
-            %h5
-              ="<b><u>#{t('equery.links')} #{t('equery.stationery.report')}</u></b> : ".html_safe
-              &nbsp;&nbsp;&nbsp;
-              - existing_years=(StationeryAdd.all.map{|x|x.received.year}+StationeryUse.all.map{|x|x.issuedate.year}).uniq.sort
-              - existing_years.each_with_index do |existyear, no|
-                =link_to (fa_icon "file-pdf-o", text: existyear), kewps13_asset_stationeries_path(:format => 'pdf', :yyear => existyear)
-                ="  |  " if no < existing_years.uniq.count-1   
+    .tab-content{style:"padding-top:1em"}
+      #search.tab-pane.active
+        .col-md-offset-1
+          %br
+          %h5
+            ="<b><u>#{t('equery.links')} - #{t('equery.stationery.report')}</u></b> : ".html_safe
+            &nbsp;&nbsp;&nbsp;
+            - existing_years=(StationeryAdd.all.map{|x|x.received.year}+StationeryUse.all.map{|x|x.issuedate.year}).uniq.sort
+            - existing_years.each_with_index do |existyear, no|
+              =link_to (fa_icon "file-pdf-o", text: existyear), kewps13_asset_stationeries_path(:format => 'pdf', :yyear => existyear)
+              ="  |  " if no < existing_years.uniq.count-1   
           
-          .col-md-offset-3
-            %br
+        .col-md-offset-3
+          %br
             
-            %span{style: 'text-decoration: underline;'}=t 'equery.stationery.search_product'
-            %BR
-            .form-group
-              .col-sm-2.control-label
-                %b= (t 'stationery.code')+" / "+(t 'stationery.category')
-              .col-md-5
-                = f.text_field :product, class: 'form-control', data: {autocomplete_source: Stationery.all.map(&:details)}
+          %span{style: 'text-decoration: underline;'}=t 'equery.stationery.search_product'
+          %BR
+          .form-group
+            .col-sm-2.control-label
+              %b= (t 'stationery.code')+" / "+(t 'stationery.category')
+            .col-md-5
+              = f.text_field :product, class: 'form-control', data: {autocomplete_source: Stationery.all.map(&:details)}
  
-            .row  
-              .col-md-8
-                .text-red.centre=t('or').upcase
-                %hr
+          .row  
+            .col-md-8
+              .text-red.centre=t('or').upcase
+              %hr
                
-            %span{style: 'text-decoration: underline;'}=t 'equery.stationery.search_additions'
-            %BR
-            .form-group
-              .col-sm-2.control-label.intake_span
-                %b= (t 'stationery.supplier_name')+" / "+(t 'stationery.lpono')
-              .col-md-5
-                = f.text_field :document, class: 'form-control', data: {autocomplete_source: StationeryAdd.all.map(&:details)}
+          %span{style: 'text-decoration: underline;'}=t 'equery.stationery.search_additions'
+          %BR
+          .form-group
+            .col-sm-2.control-label.intake_span
+              %b= (t 'stationery.supplier_name')+" / "+(t 'stationery.lpono')
+            .col-md-5
+              = f.text_field :document, class: 'form-control', data: {autocomplete_source: StationeryAdd.all.map(&:details)}
  
-            .form-group
-              .col-sm-2.control-label
-                = f.label t('stationery.received_date')
-              .col-md-4
-                .input-group
-                  = f.text_field :received, class: 'form-control date_picker_reverse'
-                  .input-group-addon=t('to')
-                  = f.text_field :received2, class: 'form-control date_picker_reverse'
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('stationery.received_date')
+            .col-md-4
+              .input-group
+                = f.text_field :received, class: 'form-control date_picker_reverse'
+                .input-group-addon=t('to')
+                = f.text_field :received2, class: 'form-control date_picker_reverse'
                   
-            .row  
-              .col-md-8
-                .text-red.centre=t('or').upcase
-                %hr
+          .row  
+            .col-md-8
+              .text-red.centre=t('or').upcase
+              %hr
                 
-            %span{style: 'text-decoration: underline;'}=t 'equery.stationery.search_deductions'
-            %BR
-            .form-group
-              .col-sm-2.control-label
-                = f.label (t 'stationery.issues_by')
-              .col-md-4
-                - issuer=StationeryUse.where.not(issuedby: nil).pluck(:issuedby)
-                - if current_user.college.code=='amsas'
-                  =f.collection_select :issuedby, Staff.where(id: issuer).order(name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'form-control selectpicker'}
-                - else
-                  =f.collection_select :issuedby, Staff.where(id: issuer).order(name: :asc), :id, :staff_name_with_position, {include_blank: (t 'select')}, {class: 'form-control selectpicker'}
+          %span{style: 'text-decoration: underline;'}=t 'equery.stationery.search_deductions'
+          %BR
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'stationery.issues_by')
+            .col-md-4
+              - issuer=StationeryUse.where.not(issuedby: nil).pluck(:issuedby)
+              - if current_user.college.code=='amsas'
+                =f.collection_select :issuedby, Staff.where(id: issuer).order(name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'form-control selectpicker'}
+              - else
+                =f.collection_select :issuedby, Staff.where(id: issuer).order(name: :asc), :id, :staff_name_with_position, {include_blank: (t 'select')}, {class: 'form-control selectpicker'}
               
-            .form-group
-              .col-sm-2.control-label
-                = f.label (t 'stationery.received_by')
-              .col-md-4 
-                - receiver=StationeryUse.where.not(receivedby: nil).pluck(:receivedby)
-                - if current_user.college.code=='amsas'
-                  = f.collection_select :receivedby, Staff.where(id: receiver).order(name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'form-control selectpicker'}
-                - else
-                  = f.collection_select :receivedby, Staff.where(id: receiver).order(name: :asc), :id, :staff_name_with_position, {include_blank: (t 'select')}, {class: 'form-control selectpicker'}
-                  
-              
-            .form-group
-              .col-sm-2.control-label
-                = f.label t('stationery.issue_date')
-              .col-md-4
-                .input-group
-                  = f.text_field :issuedate, class: 'form-control date_picker_reverse'
-                  .input-group-addon=t('to')
-                  = f.text_field :issuedate2, class: 'form-control date_picker_reverse'
-    
-     
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'stationery.received_by')
+            .col-md-4 
+              - receiver=StationeryUse.where.not(receivedby: nil).pluck(:receivedby)
+              - if current_user.college.code=='amsas'
+                = f.collection_select :receivedby, Staff.where(id: receiver).order(name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'form-control selectpicker'}
+              - else
+                = f.collection_select :receivedby, Staff.where(id: receiver).order(name: :asc), :id, :staff_name_with_position, {include_blank: (t 'select')}, {class: 'form-control selectpicker'}
+                               
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('stationery.issue_date')
+            .col-md-4
+              .input-group
+                = f.text_field :issuedate, class: 'form-control date_picker_reverse'
+                .input-group-addon=t('to')
+                = f.text_field :issuedate2, class: 'form-control date_picker_reverse'     

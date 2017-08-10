@@ -19,7 +19,7 @@
             %tr
               %td.centre=no+=1
               %td= link_to (t "stationery.title_menu"), asset_stationeries_path
-              %td.centre= link_to (fa_icon "search"), new_equery_report_stationerysearch_path(searchstationerytype: 1)
+              %td.centre= link_to (fa_icon "search"), new_equery_report_stationerysearch_path
 
           /////////////////////
           - permitted_to? :create, :equery_report_assetsearches do
@@ -29,7 +29,8 @@
             %tr
               %td.centre=no+=1
               %td= link_to "KEW.PA-2 (Daftar Harta Modal) / KEW.PA-3 (Daftar Inventori)", asset_assets_path
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 1)
+              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path
+              /(searchtype: 1)
             /%tr
             /  %td.centre=no+=1
             /  %td= link_to "KEW.PA-3 (Daftar Inventori)", asset_assets_path
@@ -48,7 +49,8 @@
                 |
                 - yeartab.uniq.sort.each do |ytab|
                   = link_to "#{ytab} | ", kewpa4_asset_assets_path(format: "pdf", search_year: ytab)
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 2)
+              %td.centre= link_to (fa_icon "search"), new_hm_equery_report_assetsearches_path
+              /(searchtype: 2)
             %tr
               %td.centre=no+=1
               %td
@@ -63,15 +65,18 @@
                 |
                 - yeartab.uniq.sort.each do |ytab|
                   = link_to "#{ytab} | ", kewpa5_asset_assets_path(format: "pdf", search_year: ytab)
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 3)
+              %td.centre= link_to (fa_icon "search"), new_inv_equery_report_assetsearches_path
+              /(searchtype: 3)
             %tr
               %td.centre=no+=1
               %td KEW.PA-6 (Daftar Pergerakan Harta Modal dan Inventori)
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 4)
+              %td.centre= link_to (fa_icon "search"), new_loan_equery_report_assetsearches_path
+              /(searchtype: 4)
             %tr
               %td.centre=no+=1
               %td KEW.PA-7 (Senarai Aset Alih Kerajaan (mengikut lokasi))
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 5)
+              %td.centre= link_to (fa_icon "search"), new_location_equery_report_assetsearches_path
+              /(searchtype: 5)
             %tr
               %td.centre=no+=1
               %td 
@@ -87,49 +92,61 @@
                 |
                 - yeartab.uniq.sort.each do |ytab|
                   = link_to "#{ytab} | ", kewpa8_asset_assets_path(format: "pdf", search_year: ytab)
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 6)
+              %td.centre= link_to (fa_icon "search"), new_yearly_report_equery_report_assetsearches_path
+              /(searchtype: 6)
             %tr
               %td.centre=no+=1
               %td KEW.PA-9 (Borang Aduan Kerosakan Aset Alih Kerajaan)
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 7)
+              %td.centre= link_to (fa_icon "search"), new_defect_equery_report_assetsearches_path
+              /(searchtype: 7)
             %tr
               %td.centre=no+=1
               %td KEW.PA-13 (Senarai Aset Alih Kerajaan yang Memerlukan Penyelenggaraan)
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 8)
+              %td.centre= link_to (fa_icon "search"), new_maintenance_list_equery_report_assetsearches_path
+              /(searchtype: 8)
             %tr
               %td.centre=no+=1
               %td KEW.PA-14 (Daftar Penyelenggaraan Harta Modal)
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 9)
+              %td.centre= link_to (fa_icon "search"), new_maintenance_equery_report_assetsearches_path
+              /(searchtype: 9)
             %tr
               %td.centre=no+=1
               %td KEW.PA-16 (Perakuan Pelupusan (PEP) Aset Alih Kerajaan)
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 10)
+              %td.centre= link_to (fa_icon "search"), new_pep_equery_report_assetsearches_path
+              /(searchtype: 10)
             %tr
               %td.centre=no+=1
               %td KEW.PA-17 (Laporan Lembaga Pemeriksa Aset Alih Kerajaan)
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 11)
+              %td.centre= link_to (fa_icon "search"), new_examiner_report_equery_report_assetsearches_path
+              /(searchtype: 11)
             %tr
               %td.centre=no+=1
               %td KEW.PA-18 (Sijil Penyaksian Pemusnahan Aset Alih Kerajaan)
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 12)
+              %td.centre= link_to (fa_icon "search"), new_destroy_certificate_equery_report_assetsearches_path
+              /(searchtype: 12)
             %tr
               %td.centre=no+=1
               %td KEW.PA-19 (Sijil Pelupusan Pemusnahan Aset Alih Kerajaan)
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 13)
+              %td.centre= link_to (fa_icon "search"), new_destroy_witness_equery_report_assetsearches_path
+              /(searchtype: 13)
             %tr
               %td.centre=no+=1
               %td KEW.PA-20 (Laporan Tahunan Pemusnahan Aset Alih Kerajaan)
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 14)
+              %td.centre= link_to (fa_icon "search"), new_yearly_destroy_equery_report_assetsearches_path
+              /(searchtype: 14)
             %tr
               %td.centre=no+=1
               %td KEW.PA-28 (Laporan Awal Kehilangan Aset Alih Kerajaan)
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 15)
+              %td.centre= link_to (fa_icon "search"), new_initial_loss_equery_report_assetsearches_path
+              /(searchtype: 15)
             %tr
               %td.centre=no+=1
               %td KEW.PA-30 (Laporan Akhir Kehilangan Aset Alih Kerajaan)
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 16)
+              %td.centre= link_to (fa_icon "search"), new_final_loss_equery_report_assetsearches_path
+              /(searchtype: 16)
             %tr
               %td.centre=no+=1
               %td KEW.PA-31 (Sijil Hapus Kira Aset Alih Kerajaan)
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 17)
+              %td.centre= link_to (fa_icon "search"), new_writeoff_certificate_equery_report_assetsearches_path
+              /(searchtype: 17)
                 

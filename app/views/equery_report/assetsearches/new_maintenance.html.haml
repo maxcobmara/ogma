@@ -1,6 +1,6 @@
 - model_class = Assetsearch
 .page-header
-  - search_name=(Assetsearch::SEARCH_TYPE.find_all{|disp, value| value==1}).map{|disp, value| disp}[0]
+  - search_name=(Assetsearch::SEARCH_TYPE.find_all{|disp, value| value==9}).map{|disp, value| disp}[0]
   %h1=t('equery.asset.search')+" : KEW-PA "+search_name
 
 = render 'shared/flashes'
@@ -9,9 +9,8 @@
   = form_for [:equery_report, @assetsearch], html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
     = f.hidden_field :college_id, value: current_user.college_id
-    = f.hidden_field :search_type, value: 1
+    = f.hidden_field :search_type, value: 9
     /= render :partial => 'form', :locals => {:f => f}
-    
     ///////////////////////////////////////////////////////////
     .row
       .col-md-10.col-md-offset-1
@@ -24,7 +23,7 @@
           #search.tab-pane.active
             .col-md-offset-3
               %br
-              = render partial: 'kewpa2n3_form', locals: {f: f}
+              = render partial: 'kewpa13n14_form', locals: {f: f}
     ///////////////////////////////////////////////////////////
     
     .col-sm-8.col-md-offset-2

@@ -3,13 +3,10 @@ class EqueryReport::StationerysearchesController < ApplicationController
   
   def new
     @stationerysearch = Stationerysearch.new
-    @searchstationerytype = params[:searchstationerytype]
   end
 
   def create
-    if (@searchstationerytype == '1' || @searchstationerytype == 1)
-      @stationerysearch = Stationerysearch.new(stationerysearch_params)
-    end
+    @stationerysearch = Stationerysearch.new(stationerysearch_params)
     if @stationerysearch.save
       redirect_to equery_report_stationerysearch_path(@stationerysearch)
     else

@@ -670,7 +670,26 @@ Ogma::Application.routes.draw do
     resources :studentdisciplinesearches
     resources :studentcounselingsearches
     resources :stationerysearches
-    resources :assetsearches
+    resources :assetsearches do
+      collection do
+        get :new_hm
+	get :new_inv
+	get :new_loan
+	get :new_location
+	get :new_yearly_report
+	get :new_defect 
+	get :new_maintenance_list
+	get :new_maintenance
+	get :new_pep
+	get :new_examiner_report
+	get :new_destroy_certificate
+	get :new_destroy_witness
+	get :new_yearly_destroy
+	get :new_initial_loss
+	get :new_final_loss
+	get :new_writeoff_certificate
+      end
+    end
     resources :weeklytimetablesearches
     resources :curriculumsearches
     resources :lessonplansearches
