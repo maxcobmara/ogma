@@ -1,0 +1,21 @@
+- provide(:title, (t 'equery.list'))
+.page-header
+  %h1=t ('equery.list')
+  
+.tab-content
+  .col-md-7.col-md-offset-2
+    #home.tab-pane.fade.in.active
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th.centre{width: '10%'} No
+            %th{width: '70%'}=t 'equery.reports'
+            %th.centre{width: '20%'}=t 'equery.advance_search' 
+        %body
+          - no=0
+          %tr
+            %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'document.title')
+          %tr
+            %td.centre=no+=1 
+            %td= link_to (t 'document.title'), documents_path
+            %td.centre= link_to (fa_icon "search"), new_equery_report_documentsearch_path

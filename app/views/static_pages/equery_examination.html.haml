@@ -1,0 +1,44 @@
+- provide(:title, (t 'equery.list'))
+.page-header
+  %h1=t ('equery.list')
+  
+.tab-content
+  .col-md-7.col-md-offset-2
+    #home.tab-pane.fade.in.active
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th.centre{width: '10%'} No
+            %th{width: '70%'}=t 'equery.reports'
+            %th.centre{width: '20%'}=t 'equery.advance_search' 
+        %body
+          - no=0
+          - permitted_to? :create, :equery_report_examsearches do
+            %tr
+              %td.group{colspan: 3}= (t 'equery.module')+" : "+t('exam.title')
+            %tr
+              %td.centre=no+=1
+              %td= link_to (t 'exam.exams.title'), exam_exams_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_examsearch_path
+
+          - permitted_to? :create, :equery_report_examresultsearches do 
+            %tr
+              %td.centre=no+=1
+              %td
+                = link_to (t 'exam.examresult.title2'), exam_examresults_path
+                |
+                = link_to (t 'exam.examresult.exam_slip'), index2_exam_examresults_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_examresultsearch_path
+                  
+          - permitted_to? :create, :equery_report_evaluatecoursesearches do
+            - evaluation_title=current_user.college.code=='amsas' ? (t 'exam.evaluate_course.title2') : (t 'exam.evaluate_course.title')
+            %tr
+              %td.centre=no+=1
+              %td= link_to evaluation_title, exam_evaluate_courses_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_evaluatecoursesearch_path
+                  
+          - permitted_to? :create, :equery_report_examanalysissearches do
+            %tr
+              %td.centre=no+=1
+              %td= link_to (t 'exam.examanalysis.title'), exam_examanalyses_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_examanalysissearch_path

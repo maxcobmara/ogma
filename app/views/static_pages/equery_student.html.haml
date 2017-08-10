@@ -1,0 +1,38 @@
+- provide(:title, (t 'equery.list'))
+.page-header
+  %h1=t ('equery.list')
+  
+.tab-content
+  .col-md-7.col-md-offset-2
+    #home.tab-pane.fade.in.active
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th.centre{width: '10%'} No
+            %th{width: '70%'}=t 'equery.reports'
+            %th.centre{width: '20%'}=t 'equery.advance_search' 
+        %body
+          - no=0
+          - permitted_to? :read, :students do
+            %tr
+              %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'student.title')
+          - permitted_to? :create, :equery_report_studentsearches do
+            %tr
+              %td.centre=no+=1 
+              %td= link_to (t 'student.students.title'), students_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_studentsearch_path
+          - permitted_to? :create, :equery_report_studentattendancesearches do
+            %tr
+              %td.centre=no+=1
+              %td= link_to (t 'student.attendance.title'), student_student_attendances_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_studentattendancesearch_path
+          - permitted_to? :create, :equery_report_studentdisciplinesearches do
+            %tr
+              %td.centre=no+=1
+              %td= link_to (t 'student.discipline.title')+" ("+(t 'student.discipline.counselor_feedback')+")", student_student_discipline_cases_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_studentdisciplinesearch_path
+          - permitted_to? :create, :equery_report_studentcounselingsearches do
+            %tr
+              %td.centre=no+=1
+              %td= link_to (t 'student.counseling.title')+" ("+(t 'student.counseling.feedback_to')+")", student_student_counseling_sessions_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_studentcounselingsearch_path

@@ -1,23 +1,17 @@
 class EqueryReport::StudentdisciplinesearchesController < ApplicationController
-  
   filter_resource_access
   
   def new
-    @searchstudentdisciplinetype = params[:searchstudentdisciplinetype]
     @studentdisciplinesearch = Studentdisciplinesearch.new
   end
 
   def create
-    @searchstudentdisciplinetype = params[:method]
-    if (@searchstudentdisciplinetype == '1' || @searchstudentdisciplinetype == 1)
-        @studentdisciplinesearch = Studentdisciplinesearch.new(params[:studentdisciplinesearch])
+    @studentdisciplinesearch = Studentdisciplinesearch.new(params[:studentdisciplinesearch])
+    if @studentdisciplinesearch.save
+      redirect_to equery_report_studentdisciplinesearch_path(@studentdisciplinesearch)
+    else
+      render :action => 'new'
     end
-      if @studentdisciplinesearch.save
-        redirect_to equery_report_studentdisciplinesearch_path(@studentdisciplinesearch)
-      else
-        render :action => 'new'
-      end
-   
   end
 
   def show

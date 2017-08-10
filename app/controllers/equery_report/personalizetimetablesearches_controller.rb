@@ -2,7 +2,6 @@ class EqueryReport::PersonalizetimetablesearchesController < ApplicationControll
   filter_resource_access
     
   def new
-    @searchpersonalizetimetabletype = params[:searchpersonalizetimetabletype]
     @personalizetimetablesearch = Personalizetimetablesearch.new
   end
   

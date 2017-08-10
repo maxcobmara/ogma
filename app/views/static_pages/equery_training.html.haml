@@ -1,0 +1,45 @@
+- provide(:title, (t 'equery.list'))
+.page-header
+  %h1=t ('equery.list')
+  
+.tab-content
+  .col-md-7.col-md-offset-2
+    #home.tab-pane.fade.in.active
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th.centre{width: '10%'} No
+            %th{width: '70%'}=t 'equery.reports'
+            %th.centre{width: '20%'}=t 'equery.advance_search' 
+        %body
+          - no=0
+          - permitted_to? :create, :equery_report_weeklytimetablesearches do
+            %tr
+              %td.group{colspan: 3}= (t 'equery.module')+" : "+t('training.title')
+
+            /permitted_to? :read, :weeklytimetablesearches do
+            %tr
+              %td.centre=no+=1
+              %td= link_to (t 'training.weeklytimetable.title'), training_weeklytimetables_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_weeklytimetablesearch_path
+
+            - permitted_to? :create, :equery_report_curriculumsearches do
+              %tr
+                %td.centre=no+=1
+                %td= link_to (t 'training.programme.title'), training_programmes_path
+                %td.centre= link_to (fa_icon "search"), new_equery_report_curriculumsearch_path
+
+            - permitted_to? :create, :equery_report_lessonplansearches do
+              %tr
+                %td.centre=no+=1
+                %td
+                  = link_to (t 'training.lesson_plan.title'), training_lesson_plans_path
+                  \/
+                  = link_to (t 'training.lesson_plan.reporting'), index_report_training_lesson_plans_path
+                %td.centre= link_to (fa_icon "search"), new_equery_report_lessonplansearch_path
+
+            - permitted_to? :create, :equery_report_personalizetimetablesearches do
+              %tr
+                %td.centre=no+=1
+                %td= link_to (t 'training.weeklytimetable.personalize_timetable')+(t 'equery.personalize_timetable.owner_only'), personalize_index_training_weeklytimetables_path
+                %td.centre= link_to (fa_icon "search"), new_equery_report_personalizetimetablesearch_path

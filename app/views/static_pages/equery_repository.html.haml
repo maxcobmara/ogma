@@ -1,0 +1,23 @@
+- provide(:title, (t 'equery.list'))
+.page-header
+  %h1=t ('equery.list')
+  
+.tab-content
+  .col-md-7.col-md-offset-2
+    #home.tab-pane.fade.in.active
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th.centre{width: '10%'} No
+            %th{width: '70%'}=t 'equery.reports'
+            %th.centre{width: '20%'}=t 'equery.advance_search' 
+        %body
+          - no=0
+          %tr
+            %td.centre=no+=1
+            %td= link_to (t 'repositories.list'), repositories_path
+            %td.centre= link_to (fa_icon "search"), new_equery_report_repositorysearch_path
+          %tr
+            %td.centre=no+=1
+            %td= link_to (t 'repositories.list2'), index2_repositories_path
+            %td.centre= link_to (fa_icon "search"), new_digital_library_equery_report_repositorysearches_path

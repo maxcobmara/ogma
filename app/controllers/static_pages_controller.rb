@@ -28,9 +28,34 @@ class StaticPagesController < ApplicationController
     end
   end
   
-  def equery_reports
-    unless params[:query_module].blank?
-      @query_module=params[:query_module]
-    end
+#   def equery_reports
+#     unless params[:query_module].blank?
+#       @query_module=params[:query_module]
+#     end
+#   end
+  
+  def equery_staff
   end
+  
+  def equery_assets
+  end
+  
+  def efiling
+  end
+  
+  def student
+  end
+  
+  def training
+  end
+  
+  def examination
+  end
+  
+  def library
+  end
+  
+  def repository
+  end
+  
 end

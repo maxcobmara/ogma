@@ -652,9 +652,18 @@ Ogma::Application.routes.draw do
     resources :staffsearch2s 
     resources :staffattendancesearches
     resources :ptdosearches
-    resources :booksearches
+    resources :booksearches do
+      collection do
+	get :new_stock_list
+	get :new_book_summary
+      end
+    end
     resources :librarytransactionsearches
-    resources :repositorysearches
+    resources :repositorysearches do
+      collection do
+	get :new_digital_library
+      end
+    end
     resources :documentsearches
     resources :studentsearches
     resources :studentattendancesearches
@@ -692,7 +701,15 @@ Ogma::Application.routes.draw do
   match '/asset_report', to: 'static_pages#asset_report', via: 'get'
   match '/fetch_items', to: 'exam/exams#question_selection', via: 'get'
   #match '/rules_regulations', to: 'static_pages#rules_regulations', via: 'get'
-  match '/equery_reports', to: 'static_pages#equery_reports', via: 'get'
+  #match '/equery_reports', to: 'static_pages#equery_reports', via: 'get'
+  match '/equery_reports/staff', to: 'static_pages#equery_staff', via: 'get'
+  match '/equery_reports/assets', to: 'static_pages#equery_assets', via: 'get'
+  match '/equery_reports/efiling', to: 'static_pages#equery_efiling', via: 'get'
+  match '/equery_reports/student', to: 'static_pages#equery_student', via: 'get'
+  match '/equery_reports/training', to: 'static_pages#equery_training', via: 'get'
+  match '/equery_reports/examination', to: 'static_pages#equery_examination', via: 'get'
+  match '/equery_reports/library', to: 'static_pages#equery_library', via: 'get'
+  match '/equery_reports/repository', to: 'static_pages#equery_repository', via: 'get'
   match '/library_main', to: 'static_pages#library', via: 'get'
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,0 +1,37 @@
+- provide(:title, (t 'equery.list'))
+.page-header
+  %h1=t ('equery.list')
+  
+.tab-content
+  .col-md-7.col-md-offset-2
+    #home.tab-pane.fade.in.active
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th.centre{width: '10%'} No
+            %th{width: '70%'}=t 'equery.reports'
+            %th.centre{width: '20%'}=t 'equery.advance_search' 
+        %body
+          - no=0
+          %tr
+            %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'library.title')
+          %tr
+            %td.centre=no+=1 
+            %td= link_to (t 'library.book.list'), library_books_path
+            %td.centre= link_to (fa_icon "search"), new_equery_report_booksearch_path
+
+          - permitted_to? :create, :equery_report_librarytransactionsearches do
+            /booksearches part
+            %tr
+              %td.centre=no+=1
+              %td= link_to (t 'library.book.stock_listing'), stock_listing_library_books_path(params.merge(format: 'pdf'))
+              %td.centre= link_to (fa_icon "search"), new_stock_list_equery_report_booksearches_path
+            %tr
+              %td.centre=no+=1 
+              %td= link_to (t 'library.book.book_summary'), book_summary_library_books_path(params.merge(format: 'pdf'))
+              %td.centre= link_to (fa_icon "search"), new_book_summary_equery_report_booksearches_path
+            /librarytransactionsearches part
+            %tr
+              %td.centre=no+=1
+              %td= link_to (t "library.transaction.analysis_statistic"), analysis_statistic_library_librarytransactions_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_librarytransactionsearch_path

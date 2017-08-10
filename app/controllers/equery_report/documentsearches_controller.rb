@@ -2,28 +2,11 @@ class EqueryReport::DocumentsearchesController < ApplicationController
   filter_resource_access
   
   def new
-    if params[:searchdoctype]
-      @searchdoctype = params[:searchdoctype]
-    elsif params[:documentsearch][:method]
-      @searchdoctype = params[:documentsearch][:method]
-    end
     @documentsearch = Documentsearch.new
   end
 
   def create
-    #raise params.inspect
-    @searchdoctype = params[:documentsearch][:method]
-    if (@searchdoctype == '1' || @searchdoctype == 1)
-        #@closed = params[:documentsearch][:closed]
-        @documentsearch = Documentsearch.new(params[:documentsearch])
-      
-#         if @closed == "Yes"
-#             @documentsearch.closed = true
-#         elsif @closed == "No"
-#             @documentsearch.closed = false
-#         end
-    end
-   
+    @documentsearch = Documentsearch.new(params[:documentsearch])
     if @documentsearch.save
       redirect_to equery_report_documentsearch_path(@documentsearch)
     else

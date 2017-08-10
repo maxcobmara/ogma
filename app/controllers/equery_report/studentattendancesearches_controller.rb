@@ -2,21 +2,16 @@ class EqueryReport::StudentattendancesearchesController < ApplicationController
   filter_resource_access
   
   def new
-      @studentattendancesearch = Studentattendancesearch.new
-      @searchstudentattendancetype = params[:searchstudentattendancetype]
+    @studentattendancesearch = Studentattendancesearch.new
   end
 
   def create
-      #raise params.inspect
-      @searchstudentattendancetype = params[:method]
-      if (@searchstudentattendancetype == '1' || @searchstudentattendancetype == 1)
-          @studentattendancesearch = Studentattendancesearch.new(params[:studentattendancesearch])
-      end
-      if @studentattendancesearch.save
-          redirect_to equery_report_studentattendancesearch_path(@studentattendancesearch)
-      else
-          render :action => 'new'
-      end
+    @studentattendancesearch = Studentattendancesearch.new(params[:studentattendancesearch])
+    if @studentattendancesearch.save
+      redirect_to equery_report_studentattendancesearch_path(@studentattendancesearch)
+    else
+      render :action => 'new'
+    end
   end
 
   def show

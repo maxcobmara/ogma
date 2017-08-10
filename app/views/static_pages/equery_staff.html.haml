@@ -1,0 +1,36 @@
+- provide(:title, (t 'equery.list'))
+.page-header
+  %h1=t ('equery.list')
+  
+.tab-content
+  .col-md-7.col-md-offset-2
+    #home.tab-pane.fade.in.active
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th.centre{width: '10%'} No
+            %th{width: '70%'}=t 'equery.reports'
+            %th.centre{width: '20%'}=t 'equery.advance_search' 
+        %body
+          - no=0
+          %tr
+            %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'staff.title')
+          - permitted_to? :create, :equery_report_staffsearch2s do
+            %tr
+              %td.centre=no+=1
+              %td= link_to (t "position.index"), staff_positions_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_staffsearch2_path
+          - permitted_to? :create, :equery_report_staffattendancesearches do
+            %tr
+              %td.centre=no+=1
+              %td
+                = (link_to t('staff_attendance.status_pcard'), '/attendance/status')
+                |
+                = link_to t('staff_attendance.report'), attendance_report_staff_staff_attendances_path
+              %td.centre= link_to (fa_icon "search"), new_equery_report_staffattendancesearch_path
+              /%td.centre= link_to (fa_icon "search"), "#", class: "bogus"
+          - permitted_to? :create, :equery_report_ptdosearches do
+            %tr
+              %td.centre=no+=1
+              %td= link_to (t 'staff.training.application_status.viewsummary'), show_total_days_staff_training_ptdos_path(:id=>current_user.userable_id)
+              %td.centre= link_to (fa_icon "search"), new_equery_report_ptdosearch_path

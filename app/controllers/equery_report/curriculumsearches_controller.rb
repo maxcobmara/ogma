@@ -2,7 +2,6 @@ class EqueryReport::CurriculumsearchesController < ApplicationController
   filter_resource_access
   
   def new
-    @searchcurriculumtype = params[:searchcurriculumtype]
     @curriculumsearch = Curriculumsearch.new
   end
   
@@ -16,7 +15,7 @@ class EqueryReport::CurriculumsearchesController < ApplicationController
 
   def show
     @curriculumsearch = Curriculumsearch.find(params[:id])
-    @curriculums=@curriculumsearch.curriculums#.page(params[:page]).per(10)
+    @curriculums=@curriculumsearch.curriculums
   end
    
   private
