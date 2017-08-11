@@ -4560,6 +4560,7 @@ en:
     others: Others
     total: Total
     document_subtype: Documentation Group
+    document_hierarchy: Document Hierarchy
     
     #old system---
     propulsion: Propulsion Systems #Main Propulsion System
@@ -5343,7 +5344,7 @@ en:
       search: Student Attendance Search
       schedule_class: "Schedule / Class "
       student: Student
-      list all: List of All Student Attendances
+      list_all: List of All Student Attendances
       #date: Date
       #time: Time
       #subject_topic: "Subject : Topic"
