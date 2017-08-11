@@ -1017,6 +1017,7 @@ authorization do
     has_permission_on :student_tenants, :to => [:manage, :index_staff, :reports,:census_level, :room_map, :room_map2, :statistics, :return_key, :return_key2, :census, :tenant_report, :tenant_report_staff, :laporan_penginapan, :laporan_penginapan2]
     has_permission_on :campus_bookingfacilities, :to => [:index, :show, :update, :approval_facility, :booking_facility]
     has_permission_on :campus_visitors, :to => :manage
+    has_permission_on :equery_report_assetsearches, :to => [:new_location, :create, :show]
   end
   role :warden do
     has_permission_on :campus_locations, :to => [:read, :kewpa7] #:core - NOTE - kewpa7 visible to all (sticked on wall)

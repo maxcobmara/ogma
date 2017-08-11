@@ -29,7 +29,7 @@
     - permitted_to? :manage, :library_librarytransactions do
       %li= link_to content_tag(:li, fa_icon("th-list", text: (t 'library.transaction.title'))), repository_loan_library_librarytransactions_path
   %ul.nav.navbar-nav.navbar-right
-    %li= link_to content_tag(:li, fa_icon("search-plus", text: (t 'equery.title2'))), new_equery_report_repositorysearch_path(searchrepotype: '2')
+    %li= link_to content_tag(:li, fa_icon("search-plus", text: (t 'equery.title2'))), new_digital_library_equery_report_repositorysearches_path
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')), repository_list2_repositories_path(params.merge(format: 'pdf' ))
 
@@ -43,7 +43,7 @@
           %td
           %td{colspan: 2}="<u>#{(t 'column')} : #{(t 'repositories.e_document')}</u>".html_safe
           %td
-          %td{colspan: 8}="<u>#{(t 'document_hierachy')}</u>".html_safe
+          %td{colspan: 8}="<u>#{(t 'repositories.document_hierarchy')}</u>".html_safe
         %tr
           %td.centre{width: '5%', style: 'color: black;'}=fa_icon("plus-circle")
           %td{width: '15%'}=(t 'repositories.loan_allowed')

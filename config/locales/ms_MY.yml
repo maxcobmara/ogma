@@ -4480,6 +4480,7 @@ ms_MY:
     others: Lain - lain
     total: Jumlah
     document_subtype: Kumpulan Dokumentasi
+    document_hierarchy: Hierarki Dokumen
     
     #old system---
     propulsion: Sistem Penggerak #Utama
