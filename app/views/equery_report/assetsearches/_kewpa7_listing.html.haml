@@ -97,7 +97,7 @@
               %td
                 - if asset_wlocation.include?(asset.id) 
                   - unless asset.assignedto_id.blank?
-                    =current_user.college.code=='amsas' ? asset.assignedto.staff_with_rank : asset.assignedto.staff_name_with_position
+                    =current_user.college.code=='amsas' ? asset.assignedto.try(:staff_with_rank) : asset.assignedto.try(:staff_name_with_position)
                   - else
                     /location MUST exist, as this is for kew-pa 7, but 'person_in_charge' data may not available
                     .centre="-"

@@ -57,11 +57,10 @@
 /display result
 .col-md-9.col-md-offset-1
   %br
-  - counter=0
-  /- if params[:page]
-  /  - cnt=(params[:page].to_i-1)*10
-  /- else
-  /  - cnt=0
+  - if params[:page]
+    - counter=(params[:page].to_i-1)*20
+  - else
+    - counter=0
   - if assetsearch.assets.count > 0
     %table.table.table-condensed.table-bordered.table-hover.equery
       %head
@@ -77,7 +76,7 @@
       %body
         - assets.group_by(&:assettype).each do |asset_type, massets|
           %tr.warning
-            %td.system{colspan: 6}=asset_type==1 ? (t 'asset.fixed') : (t 'asset.inventory')
+            %td.system{colspan: 7}=asset_type==1 ? (t 'asset.fixed') : (t 'asset.inventory')
           - for asset in massets
             %tr
               %td=counter+=1

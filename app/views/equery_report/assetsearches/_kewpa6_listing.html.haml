@@ -96,7 +96,7 @@
               %td=counter+=1
               %td=link_to asset.assetcode, asset_asset_path(asset)
               %td=asset.name.blank? ? asset.typename : asset.name+": "+asset.typename
-              %td=assetsearch.college.code=='amsas' ? asset.assignedto.staff_with_rank : asset.assignedto.staff_name_with_position
+              %td=assetsearch.college.code=='amsas' ? asset.assignedto.try(:staff_with_rank) : asset.assignedto.try(:staff_name_with_position)
               %td.centre=AssetLoan.where(asset_id: asset).count
               %td.centre=link_to (fa_icon "file-pdf-o")+" KEW-PA 6", kewpa6_asset_asset_path(format: "pdf", id: asset)
 

@@ -84,6 +84,6 @@
                   - if counter2==1 
                     %td{rowspan: "#{scounselings.count}", style: 'text-align: center; vertical-align: middle;'} 
                       - unless session.student_discipline_case.counselor_feedback.blank? 
-                        = link_to (t 'equery.student_counseling.feedback_referrer'), feedback_referrer_student_student_counseling_sessions_path(format: 'pdf', id: session.case_id)
+                        = link_to (fa_icon "file-pdf-o", text: (t 'equery.student_counseling.feedback_referrer')), feedback_referrer_student_student_counseling_sessions_path(format: 'pdf', id: session.case_id)
             
       .right{style:"padding: 0 10px; margin:0;"}= paginate @bycases, :theme => 'twitter-bootstrap-3', :pagination_class => 'pagination-sm'
