@@ -169,7 +169,7 @@ $(document).ready(function(e) {
       timepicker: false,
       autoclose: true,
       onSelectDate: function(dp, $input) {
-        $input.val($input.val().substr(0,4) + '-01-01');
+        $input.val('01-01-'+$input.val().substr(6,10));
       }
   });
   $(function() {

@@ -68,7 +68,7 @@
           - if sas.count < 30 
             - stu_cnt=0
           
-          .right=link_to (fa_icon "print", text: (t 'equery.print_result')), student_attendan_form_student_student_attendances_path(format: 'pdf', ids: sas.map(&:id))     
+          .right=link_to (fa_icon "print", text: (t 'equery.print_result')), student_attendan_form_student_student_attendances_path(format: 'pdf', ids: sas.map(&:id))  
           %table.table.table-bordered.table-condensed.table-hover
             %head
               %tr.info
@@ -80,12 +80,12 @@
                     .right=t('equery.student_attendance.attendance_percentage')
                     .left="#{(t 'equery.student_attendance.attendance')} : #{attend} / #{total_student}"
                 %th.centre= number_with_precision(((attend.to_i) / total_student.to_f* 100).to_f, precision: 2).to_s+" %" if studentattendancesearch.student_id.blank?
-              %tr.info
-                %th.centre No
-                %th.centre=t('student.students.icno')
-                %th.centre=studentattendancesearch.college.code='amsas' ? (t 'student.students.apmmno') : (t 'student.students.matrixno')
-                %th.centre=t('student.students.name')
-                %th &nbsp;
+              %tr
+                %th.info.centre No
+                %th.info.centre=t('student.students.icno')
+                %th.info.centre=studentattendancesearch.college.code='amsas' ? (t 'student.students.apmmno') : (t 'student.students.matrixno')
+                %th.info.centre=t('student.students.name')
+                %th.warning.centre=sas.count.to_s+" / "+all_classes[sclass].count.to_s
       
             %body     
               -  for sa in sas.sort_by{|x|x.student.name}
