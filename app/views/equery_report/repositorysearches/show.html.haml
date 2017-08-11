@@ -22,7 +22,6 @@
   .col-md-6.col-md-offset-3
     %hr
     .form-actions
-      /= link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')}", "/equery_reports?query_module=8", class: 'btn btn-primary'
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')}", "/equery_reports/repository", class: 'btn btn-primary'
       
       - if @repositorysearch.repotype=='1'

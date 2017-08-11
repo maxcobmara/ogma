@@ -1,6 +1,5 @@
 .row
   .col-md-10.col-md-offset-1
-    /- if @searchbooktype=='1' || @searchbooktype==1 
     = f.hidden_field :stock_summary, :value=> 1
       
     / Nav tabs
@@ -34,67 +33,3 @@
               = f.label (t 'library.book.publisher')
             .col-md-4
               = f.text_field :publisher, class: 'form-control', data: {autocomplete_source: Book.order(title: :asc).pluck(:publisher).uniq}
-               
-/     - elsif @searchbooktype=='2' || @searchbooktype==2 
-/       =f.hidden_field :stock_summary, :value=> 2
-/ 
-/       / Nav tabs
-/       %ul.nav.nav-tabs
-/         %li.active= link_to (t 'library.book.stock_listing'),"#search", "data-toggle" => "tab"
-/ 
-/       .tab-content{style:"padding-top:1em"}
-/         #search.tab-pane.active
-/           %br
-/           .col-md-offset-2
-/             =(t 'equery.search_by')
-/             .form-group
-/               .col-sm-2.control-label
-/                 %b
-/                   = (t 'library.book.classno')
-/                   = current_user.college.code=='kskbjb' ? " (LC / NLM)" : " (DDC)"
-/               .col-md-4
-/                 = f.text_field :classno, class: 'form-control'
-/                 .small 
-/                   - if current_user.college.code=='kskbjb'
-/                     LC - Library of Congress
-/                     %br NLM - National Library of Medicine
-/                   - else
-/                     DDC - Dewey Decimal Classification
-/ 
-/             .form-group
-/               .col-sm-2.control-label
-/                 = f.label (t 'library.book.accessionno')
-/               .col-md-4
-/                 .input-group
-/                   = f.text_field :accessionno_start, :size=>10, class: 'form-control'
-/                   .input-group-addon=t('to')
-/                   = f.text_field :accessionno_end, :size=>10, class: 'form-control'
-/                   
-/     - elsif @searchbooktype=='3' || @searchbooktype==3
-/       =f.hidden_field :stock_summary, :value=> 3
-/ 
-/       / Nav tabs
-/       %ul.nav.nav-tabs
-/         %li.active= link_to (t 'library.book.book_summary'), "#search", "data-toggle" => "tab"
-/ 
-/       .tab-content{style:"padding-top:1em"}
-/         #search.tab-pane.active
-/           %br
-/           .col-md-offset-2
-/             =(t 'equery.search_by')
-/             .form-group
-/               .col-sm-2.control-label
-/                 %b
-/                   = (t 'library.book.classno')
-/                   = current_user.college.code=='kskbjb' ? " (LC / NLM)" : " (DDC)"
-/               .col-md-4
-/                 = f.text_field :classno, class: 'form-control'
-/                 .small=current_user.college.code=='kskbjb' ? ("LC - Library of Congress <br> NLM - National Library of Medicine").html_safe : "DDC - Dewey Decimal Classification"
-/             .form-group
-/               .col-sm-2.control-label
-/                 = f.label (t 'library.book.accessionno') 
-/               .col-md-4
-/                 .input-group
-/                   = f.text_field :accessionno_start, :size=>10, class: 'form-control'
-/                   .input-group-addon=t('to')
-/                   = f.text_field :accessionno_end, :size=>10, class: 'form-control'

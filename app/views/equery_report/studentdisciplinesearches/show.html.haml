@@ -11,7 +11,6 @@
   .col-md-6.col-md-offset-4
     %hr
     .form-actions
-      /= link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('student.title')}", "/equery_reports?query_module=4", class: 'btn btn-primary'
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left") +" #{t('equery.title')} - #{t('student.title')}", "/equery_reports/student", class: 'btn btn-primary'
       %span{style: 'padding-left: 20px;'}= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), new_equery_report_studentdisciplinesearch_path(searchstudentdisciplinetype: 1),  :class => 'btn btn-default'
       

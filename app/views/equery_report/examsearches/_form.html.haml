@@ -8,7 +8,7 @@
         For checking only
         - for exm in Exam.all
           %br
-          = "MODULE: "+exm.subject.parent.subject_list+" --- "+exm.subject.subject_list+" : "+exm.subject_id.to_s
+          = (t 'training.programme.module').upcase+" : "+exm.subject.parent.subject_list+" --- "+exm.subject.subject_list+" : "+exm.subject_id.to_s
       %br
 
     ///////
