@@ -1,82 +1,94 @@
-.form-group
-  .col-sm-2.control-label
-    =f.label  (t 'asset.assetcode')
-  .col-md-5
-    = f.text_field :assetcode, class: 'form-control', data: {autocomplete_source: Asset.where(id: AssetDefect.pluck(:asset_id)).pluck(:assetcode).sort}
-    .small.text-blue=current_user.college.code=='kskbjb' ? "(Format : KKM/BPL/010619/H/10/395)" : "(Format: JPM/APMM/PL/H/2004/01-05)"
+.row
+  .col-md-10.col-md-offset-1
+    %br
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #search.tab-pane.active
+        .col-md-offset-3
+          %br
+          
+          .form-group
+            .col-sm-2.control-label
+              =f.label  (t 'asset.assetcode')
+            .col-md-5
+              =f.text_field :assetcode, class: 'form-control', data: {autocomplete_source: Asset.where(id: AssetDefect.pluck(:asset_id)).pluck(:assetcode).sort}
+              .small.text-blue=current_user.college.code=='kskbjb' ? "(Format : KKM/BPL/010619/H/10/395)" : "(Format: JPM/APMM/PL/H/2004/01-05)"
             
-.row
-  .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
+          .row
+            .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
               
-.row
-  .col-md-8
-    %hr
+          .row
+            .col-md-8
+              %hr
     
-.form-group
-  .col-sm-2.control-label
-    =f.label t('equery.select_record')
-  .col-md-5
-    = f.select :defect_type, options_for_select([[(t 'equery.asset.defected_asset'),'Defected Asset'],[(t 'equery.asset.person'),'Person'],[(t 'equery.asset.process_type'),'Process Type']]), {include_blank: (t 'select')}, {class: 'selectpicker'}
+          .form-group
+            .col-sm-2.control-label
+              =f.label t('equery.select_record')
+            .col-md-5
+              =f.select :defect_type, options_for_select([[(t 'equery.asset.defected_asset'),'Defected Asset'],[(t 'equery.asset.person'),'Person'],[(t 'equery.asset.process_type'),'Process Type']]), {include_blank: (t 'select')}, {class: 'selectpicker'}
  
-.form-group.bong3{style: "display: none;"}
-  .col-sm-2.control-label
-    =f.label (t 'equery.asset.defected_asset')
-  .col-md-5
-    = f.collection_select :defect_asset, AssetDefect.all.order(asset_id: :asc), :id, :asset_code, {include_blank: (t 'select')}, {class: 'selectpicker'}
-    /id refers to asset_defect ID
+          .form-group.bong3{style: "display: none;"}
+            .col-sm-2.control-label
+              =f.label (t 'equery.asset.defected_asset')
+            .col-md-5
+              = f.collection_select :defect_asset, AssetDefect.all.order(asset_id: :asc), :id, :asset_code, {include_blank: (t 'select')}, {class: 'selectpicker'}
+              /id refers to asset_defect ID
     
-.form-group.koik3{style: "display: none;"}
-  .col-sm-2.control-label
-    =f.label (t 'equery.asset.person')
-  .col-md-9
-    .form-inline
-      .form-group
-        =t('equery.asset.reported_by')+" | "
-        = f.radio_button :persontype, 1, :id => 'button_report',  :class => 'radio_defect_options' 
-      .form-group
-        =t('equery.asset.person_in_charge')+" | "
-        = f.radio_button :persontype, 2, :id => 'button_incharge',  :class => 'radio_defect_options'
-      .form-group
-        =t('equery.asset.processed_by')
-        = f.radio_button :persontype, 3, :id => 'button_process',  :class => 'radio_defect_options'
+          .form-group.koik3{style: "display: none;"}
+            .col-sm-2.control-label
+              =f.label (t 'equery.asset.person')
+            .col-md-9
+              .form-inline
+                .form-group
+                  =t('equery.asset.reported_by')+" | "
+                  = f.radio_button :persontype, 1, :id => 'button_report',  :class => 'radio_defect_options' 
+                .form-group
+                  =t('equery.asset.person_in_charge')+" | "
+                  = f.radio_button :persontype, 2, :id => 'button_incharge',  :class => 'radio_defect_options'
+                .form-group
+                  =t('equery.asset.processed_by')
+                  = f.radio_button :persontype, 3, :id => 'button_process',  :class => 'radio_defect_options'
 
 
-.form-group.chup3{style: "display: none;"}
-  .col-sm-2.control-label
-    =f.label (t 'equery.asset.process_type')
-  .col-md-5
-    /AssetDefect.select(:process_type).uniq.pluck(:process_type).compact
-    =f.select :defect_process,  AssetDefect.select(:process_type).uniq.pluck(:process_type).compact.map{|x|[(t 'asset.defect.'+x), x]},{:include_blank => (t 'select')}, {class: 'selectpicker'}
+          .form-group.chup3{style: "display: none;"}
+            .col-sm-2.control-label
+              =f.label (t 'equery.asset.process_type')
+            .col-md-5
+              /AssetDefect.select(:process_type).uniq.pluck(:process_type).compact
+              =f.select :defect_process,  AssetDefect.select(:process_type).uniq.pluck(:process_type).compact.map{|x|[(t 'asset.defect.'+x), x]},{:include_blank => (t 'select')}, {class: 'selectpicker'}
 
-.form-group.report_item{style: "display: none;"}
-  .col-sm-2.control-label
-    = f.label t('equery.asset.reported_by')
-  .col-md-6
-    - if current_user.college.code=='amsas'
-      = f.collection_select :defect_reporter, AssetDefect.select(:reported_by).uniq, :reported_by, :reported_name_rank, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=> "auto"}
-    - else
-      = f.collection_select :defect_reporter, AssetDefect.select(:reported_by).uniq, :reported_by, :reported_name_position, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=> "auto"}
+          .form-group.report_item{style: "display: none;"}
+            .col-sm-2.control-label
+              = f.label t('equery.asset.reported_by')
+            .col-md-6
+              - if current_user.college.code=='amsas'
+                = f.collection_select :defect_reporter, AssetDefect.select(:reported_by).uniq, :reported_by, :reported_name_rank, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=> "auto"}
+              - else
+                = f.collection_select :defect_reporter, AssetDefect.select(:reported_by).uniq, :reported_by, :reported_name_position, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=> "auto"}
  
-.form-group.incharge_item{style: "display: none;"}
-  .col-sm-2.control-label
-    =f.label t('equery.asset.person_in_charge')
-  .col-md-6
-    = f.collection_select :assignedto, Staff.find(AssetDefect.incharge_staffs), :id, :name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=> "auto"}
+          .form-group.incharge_item{style: "display: none;"}
+            .col-sm-2.control-label
+              =f.label t('equery.asset.person_in_charge')
+            .col-md-6
+              = f.collection_select :assignedto, Staff.find(AssetDefect.incharge_staffs), :id, :name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=> "auto"}
     
-.form-group.process_item{style: "display: none;"}
-  .col-sm-2.control-label
-    =f.label t('equery.asset.processed_by')
-  .col-md-6
-    - if current_user.college.code=='amsas'
-      = f.collection_select :defect_processor, AssetDefect.where("processed_by is not null").select(:processed_by).uniq, :processed_by, :processor_name_rank,{:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=> "auto"}
-    - else
-      = f.collection_select :defect_processor, AssetDefect.where("processed_by is not null").select(:processed_by).uniq, :processed_by, :processor_name_position,{:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=> "auto"}
+          .form-group.process_item{style: "display: none;"}
+            .col-sm-2.control-label
+              =f.label t('equery.asset.processed_by')
+            .col-md-6
+              - if current_user.college.code=='amsas'
+                = f.collection_select :defect_processor, AssetDefect.where("processed_by is not null").select(:processed_by).uniq, :processed_by, :processor_name_rank,{:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=> "auto"}
+              - else
+                = f.collection_select :defect_processor, AssetDefect.where("processed_by is not null").select(:processed_by).uniq, :processed_by, :processor_name_position,{:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=> "auto"}
     
-/= f.check_box :alldefectasset 
+          /= f.check_box :alldefectasset 
 
-.row
-  .col-md-8
-    %hr
+          .row
+            .col-md-8
+              %hr
     
 :javascript
   $('#assetsearch_defect_type').change(function() {

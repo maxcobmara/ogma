@@ -1,14 +1,27 @@
-= render partial: 'code_name_form', locals:{ f: f}
 .row
-  .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
+  .col-md-10.col-md-offset-1
+    %br
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #search.tab-pane.active
+        .col-md-offset-3
+          %br
+          = render partial: 'code_name_form', locals:{ f: f}
+          
+          .row
+            .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
               
-.row
-  .col-md-8
-    %hr
+          .row
+            .col-md-8
+              %hr
    
-/ t('equery.asset.certificate_witness')
-.form-group
-  .col-sm-2.control-label
-    =f.label (t 'asset.disposal.discard_options')
-  .col-md-5
-    = f.select :discardoption, options_for_select([[(t 'asset.disposal.bury'),"bury"],[(t 'asset.disposal.burn') ,"burn"],[(t 'asset.disposal.throw') , "throw"],[(t 'asset.disposal.sink') ,"sink"]]), {:include_blank => (t 'select') }, {class: 'selectpicker'}
+          / t('equery.asset.certificate_witness')
+          .form-group
+            .col-sm-2.control-label
+              =f.label (t 'asset.disposal.discard_options')
+            .col-md-5
+              = f.select :discardoption, options_for_select([[(t 'asset.disposal.bury'),"bury"],[(t 'asset.disposal.burn') ,"burn"],[(t 'asset.disposal.throw') , "throw"],[(t 'asset.disposal.sink') ,"sink"]]), {:include_blank => (t 'select') }, {class: 'selectpicker'}
+

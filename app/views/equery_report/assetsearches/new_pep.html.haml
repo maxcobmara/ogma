@@ -10,21 +10,8 @@
     = render 'shared/error_messages', object: f.object
     = f.hidden_field :college_id, value: current_user.college_id
     = f.hidden_field :search_type, value: 10
-    /= render :partial => 'form', :locals => {:f => f}
-    ///////////////////////////////////////////////////////////
-    .row
-      .col-md-10.col-md-offset-1
-        %br
-        / Nav tabs
-        %ul.nav.nav-tabs
-          %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
-
-        .tab-content{style:"padding-top:1em"}
-          #search.tab-pane.active
-            .col-md-offset-3
-              %br
-              = render partial: 'kewpa16_form', locals: {f: f}
-    ///////////////////////////////////////////////////////////
+    = render partial: 'kewpa16_form', locals: {f: f}
+    /=render partial: 'form', locals: {f: f}
     
     .col-sm-8.col-md-offset-2
       .row

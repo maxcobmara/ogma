@@ -1,50 +1,62 @@
-/= f.hidden_field :category, value: 1
-.form-group
-  .col-sm-2.control-label
-    =f.label  (t 'asset.assetcode')
-  .col-md-5
-    = f.text_field :assetcode, class: 'form-control', data: {autocomplete_source: (Asset.wlocation.pluck(:assetcode)+Asset.wplacement.pluck(:assetcode)).uniq.sort}
-    .small.text-blue=current_user.college.code=='kskbjb' ? "(Format : KKM/BPL/010619/H/10/395)" : "(Format: JPM/APMM/PL/H/2004/01-05)"
+.row
+  .col-md-10.col-md-offset-1
+    %br
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #search.tab-pane.active
+        .col-md-offset-3
+          %br
+          
+          /= f.hidden_field :category, value: 1
+          .form-group
+            .col-sm-2.control-label
+              =f.label  (t 'asset.assetcode')
+            .col-md-5
+              = f.text_field :assetcode, class: 'form-control', data: {autocomplete_source: (Asset.wlocation.pluck(:assetcode)+Asset.wplacement.pluck(:assetcode)).uniq.sort}
+              .small.text-blue=current_user.college.code=='kskbjb' ? "(Format : KKM/BPL/010619/H/10/395)" : "(Format: JPM/APMM/PL/H/2004/01-05)"
             
-.row
-  .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
+          .row
+            .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
               
-.row
-  .col-md-8
-    %hr
+          .row
+            .col-md-8
+              %hr
     
-.form-group
-  .col-sm-2.control-label
-    =f.label t('equery.search_by2')
-  .col-md-5
-    = f.select :locationtype, options_for_select([[(t 'equery.asset.person_in_charge'),'Person In-Charge'],[(t 'equery.asset.asset_location'),'Asset Location']]), {include_blank: (t 'select')}, {class: 'selectpicker'}
+          .form-group
+            .col-sm-2.control-label
+              =f.label t('equery.search_by2')
+            .col-md-5
+              = f.select :locationtype, options_for_select([[(t 'equery.asset.person_in_charge'),'Person In-Charge'],[(t 'equery.asset.asset_location'),'Asset Location']]), {include_blank: (t 'select')}, {class: 'selectpicker'}
  
-/hm-1, inv-multiple(repeating)
-/ - hml=Asset.where.not(location_id: nil)
-/ - invl=AssetPlacement.joins(:asset)
-/ = asset_locations=(hml.pluck(:location_id)+invl.pluck(:location_id)).compact
-/ = asset_incharges=(hml.pluck(:assignedto_id)+invl.pluck(:staff_id)).compact
+          /hm-1, inv-multiple(repeating)
+          / - hml=Asset.where.not(location_id: nil)
+          / - invl=AssetPlacement.joins(:asset)
+          / = asset_locations=(hml.pluck(:location_id)+invl.pluck(:location_id)).compact
+          / = asset_incharges=(hml.pluck(:assignedto_id)+invl.pluck(:staff_id)).compact
 
-.form-group#span-incharge{style: 'display: none;'}   
-  .col-sm-2.control-label
-    =f.label (t 'equery.asset.person_in_charge')
-  .col-md-5
-    /asset_incharges
-    - if current_user.college.code=='amsas'
-      = f.collection_select :assignedto, Staff.where(id: Asset.assigned_administrators), :id, :staff_with_rank, {include_blank: (t 'select')}, class: 'selectpicker'
-    - else 
-      = f.collection_select :assignedto, Staff.where(id: Asset.assigned_administrators), :id, :staff_name_with_position, {include_blank: (t 'select')}, class: 'selectpicker'
+          .form-group#span-incharge{style: 'display: none;'}   
+            .col-sm-2.control-label
+              =f.label (t 'equery.asset.person_in_charge')
+            .col-md-5
+              /asset_incharges
+              - if current_user.college.code=='amsas'
+                = f.collection_select :assignedto, Staff.where(id: Asset.assigned_administrators), :id, :staff_with_rank, {include_blank: (t 'select')}, class: 'selectpicker'
+              - else 
+                = f.collection_select :assignedto, Staff.where(id: Asset.assigned_administrators), :id, :staff_name_with_position, {include_blank: (t 'select')}, class: 'selectpicker'
   
-.form-group#span-location{style: 'display: none;'}      
-  .col-sm-2.control-label
-    = f.label (t 'equery.asset.asset_location')
-  .col-md-5
-    /asset_locations
-    =f.collection_select :location, Location.where(id: Asset.assigned_locations).order(combo_code: :asc), :id, :location_list, {include_blank: (t 'select')}, class: 'selectpicker'
+          .form-group#span-location{style: 'display: none;'}      
+            .col-sm-2.control-label
+              = f.label (t 'equery.asset.asset_location')
+            .col-md-5
+              /asset_locations
+              =f.collection_select :location, Location.where(id: Asset.assigned_locations).order(combo_code: :asc), :id, :location_list, {include_blank: (t 'select')}, class: 'selectpicker'
 
-.row
-  .col-md-8
-    %hr
+          .row
+            .col-md-8
+              %hr
     
 :javascript
 
