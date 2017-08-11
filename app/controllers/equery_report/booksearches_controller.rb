@@ -1,8 +1,16 @@
 class EqueryReport::BooksearchesController < ApplicationController
-  filter_resource_access
+  filter_access_to :new, :create, :new_stock_list, :new_book_summary, :attribute_check => false
+  filter_access_to :show, :attribute_check => true
   
   def new
-    @searchbooktype = params[:searchbooktype]
+    @booksearch = Booksearch.new
+  end
+  
+  def new_stock_list
+    @booksearch = Booksearch.new
+  end
+  
+  def new_book_summary
     @booksearch = Booksearch.new
   end
 

@@ -2,17 +2,11 @@ class EqueryReport::StudentsearchesController < ApplicationController
   filter_resource_access
   
   def new
-    @searchstudenttype = params[:searchstudenttype]
     @studentsearch = Studentsearch.new
   end
 
   def create
-    #raise params.inspect
-    @searchstudenttype = params[:method]
-    if (@searchstudenttype == '1' || @searchstudenttype == 1)
-        @studentsearch = Studentsearch.new(params[:studentsearch])
-    end
-    
+    @studentsearch = Studentsearch.new(params[:studentsearch])    
     if @studentsearch.save
         redirect_to equery_report_studentsearch_path(@studentsearch)
     else

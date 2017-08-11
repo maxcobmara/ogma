@@ -2,7 +2,6 @@ class EqueryReport::ExamsearchesController < ApplicationController
    filter_resource_access
   
   def new
-    @searchexamtype = params[:searchexamtype]
     @examsearch = Examsearch.new
   end
   

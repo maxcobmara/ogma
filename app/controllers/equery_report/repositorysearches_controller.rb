@@ -1,9 +1,13 @@
 class EqueryReport::RepositorysearchesController < ApplicationController
-  filter_resource_access
+  filter_access_to :new, :create, :new_digital_library, :attribute_check => false
+  filter_access_to :show, :attribute_check => true
   
   def new
     @repositorysearch = Repositorysearch.new
-    @reposearch=params[:searchrepotype]
+  end
+  
+  def new_digital_library
+    @repositorysearch = Repositorysearch.new
   end
   
   def create

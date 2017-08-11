@@ -1,41 +1,53 @@
-.form-group
-  .col-sm-2.control-label
-    =f.label t('asset.purchaseprice')
-  .col-md-2
-    .input-group
-      .input-group-addon RM
-      = f.text_field :purchaseprice, class: 'form-control'
-  .col-md-1
-    =t('to')
-  .col-md-2 
-    .input-group
-      .input-group-addon RM
-      = f.text_field :purchaseprice2, class: 'form-control'
-
 .row
-  .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
+  .col-md-10.col-md-offset-1
+    %br
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
 
-.form-group              
-  .col-sm-2.control-label
-    %b= t('asset.purchasedate')
-  .col-md-5
-    .input-group
-      = f.text_field :startdate, class: 'form-control date_picker_reverse'    
-      .input-group-addon=t('to')
-      = f.text_field :enddate, class: 'form-control date_picker_reverse'
+    .tab-content{style:"padding-top:1em"}
+      #search.tab-pane.active
+        .col-md-offset-3
+          %br
+          
+          .form-group
+            .col-sm-2.control-label
+              =f.label t('asset.purchaseprice')
+            .col-md-2
+              .input-group
+                .input-group-addon RM
+                = f.text_field :purchaseprice, class: 'form-control'
+            .col-md-1
+              =t('to')
+            .col-md-2 
+              .input-group
+                .input-group-addon RM
+                = f.text_field :purchaseprice2, class: 'form-control'
+
+          .row
+            .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
+
+          .form-group              
+            .col-sm-2.control-label
+              %b= t('asset.purchasedate')
+            .col-md-5
+              .input-group
+                = f.text_field :startdate, class: 'form-control date_picker_reverse'    
+                .input-group-addon=t('to')
+                = f.text_field :enddate, class: 'form-control date_picker_reverse'
   
-.row
-  .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
+          .row
+            .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase
   
-.form-group              
-  .col-sm-2.control-label
-    %b= t('asset.receiveddate')
-  .col-md-5
-    .input-group
-      = f.text_field :receiveddate, class: 'form-control date_picker_reverse'    
-      .input-group-addon=t('to')
-      = f.text_field :receiveddate2, class: 'form-control date_picker_reverse'
+          .form-group              
+            .col-sm-2.control-label
+              %b= t('asset.receiveddate')
+            .col-md-5
+              .input-group
+                = f.text_field :receiveddate, class: 'form-control date_picker_reverse'    
+                .input-group-addon=t('to')
+                = f.text_field :receiveddate2, class: 'form-control date_picker_reverse'
 
-.row
-  .col-md-8
-    %hr
+          .row
+            .col-md-8
+              %hr

@@ -2,7 +2,6 @@ class EqueryReport::LessonplansearchesController < ApplicationController
   filter_resource_access
     
   def new
-    @searchlessonplantype = params[:searchlessonplantype]
     @lessonplansearch = Lessonplansearch.new
   end
   

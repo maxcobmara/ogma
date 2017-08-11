@@ -5189,7 +5189,7 @@ en:
     select_record: Select record by
     #data_based_existing_records: " data are based on existing records."
     #listing: Listing
-    links: links
+    links: Links
     #for_selected_date: "for selected date."
     search_by: Search Criteria
     search_by2: Search By
@@ -5609,7 +5609,7 @@ en:
       search_additions: Search by office supplies (addition records)
       search_deductions: Search by office supplies (deduction records)
       list_all: List of All Office Supplies
-      #report: "Yearly Stock Report (KEWPS 13)"
+      report: "Yearly Stock Report (KEWPS 13)"
       #by_stock: By stock
       #total: Total all office supplies
       #leaves_all_blank_all_records: "Leaves ALL fields 'blank'/unselected and click 'Search' to display ALL record of office supplies."

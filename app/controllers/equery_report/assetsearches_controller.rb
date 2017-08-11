@@ -1,8 +1,72 @@
 class EqueryReport::AssetsearchesController < ApplicationController
-  filter_resource_access
+  filter_access_to :new, :create, :new_hm, :new_inv, :new_loan, :new_location, :new_yearly_report, :new_defect, :new_maintenance_list, :new_maintenance, :new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :new_initial_loss, :new_final_loss, :new_writeoff_certificate, :attribute_check => false
+  filter_access_to :show, :attribute_check => true
   
   def new
-    @searchtype = params[:searchtype]
+    @assetsearch = Assetsearch.new
+  end
+  
+  def new_hm
+    @assetsearch = Assetsearch.new
+  end
+  
+  def new_inv
+    @assetsearch = Assetsearch.new
+  end
+  
+  def new_loan
+    @assetsearch = Assetsearch.new
+  end
+
+  def new_location
+    @assetsearch = Assetsearch.new
+  end
+  #6
+  def new_yearly_report
+    @assetsearch = Assetsearch.new
+  end
+  
+  def new_defect
+    @assetsearch = Assetsearch.new
+  end
+  #8
+  def new_maintenance_list
+    @assetsearch = Assetsearch.new
+  end
+  #9
+  def new_maintenance
+    @assetsearch = Assetsearch.new
+  end
+  
+  def new_pep
+    @assetsearch = Assetsearch.new
+  end
+  #11
+  def new_examiner_report
+    @assetsearch = Assetsearch.new
+  end
+  #12
+  def new_destroy_certificate
+    @assetsearch = Assetsearch.new
+  end
+  #13  
+  def new_destroy_witness
+    @assetsearch = Assetsearch.new
+  end
+  
+  def new_yearly_destroy
+    @assetsearch = Assetsearch.new
+  end
+  #15
+  def new_initial_loss
+    @assetsearch = Assetsearch.new
+  end
+  
+  def new_final_loss
+    @assetsearch = Assetsearch.new
+  end
+  
+  def new_writeoff_certificate
     @assetsearch = Assetsearch.new
   end
 

@@ -2,7 +2,6 @@ class EqueryReport::EvaluatecoursesearchesController < ApplicationController
    filter_resource_access
   
   def new
-    @searchevaluatecoursetype = params[:searchevaluatecoursetype]
     @evaluatecoursesearch = Evaluatecoursesearch.new
   end
   

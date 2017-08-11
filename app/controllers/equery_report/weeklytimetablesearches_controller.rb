@@ -2,7 +2,6 @@ class EqueryReport::WeeklytimetablesearchesController < ApplicationController
   filter_resource_access
     
   def new
-    @searchweeklytimetabletype = params[:searchweeklytimetabletype]
     @weeklytimetablesearch = Weeklytimetablesearch.new
   end
   

@@ -3,14 +3,10 @@ class EqueryReport::StudentcounselingsearchesController < ApplicationController
   
   def new
     @studentcounselingsearch = Studentcounselingsearch.new
-    @searchstudentcounselingtype = params[:searchstudentcounselingtype]
   end
 
   def create
-    @searchstudentcounselingtype = params[:method]
-    if (@searchstudentcounselingtype == '1' || @searchstudentcounselingtype == 1)
-      @studentcounselingsearch = Studentcounselingsearch.new(params[:studentcounselingsearch])
-    end
+    @studentcounselingsearch = Studentcounselingsearch.new(params[:studentcounselingsearch])
     if @studentcounselingsearch.save
       redirect_to equery_report_studentcounselingsearch_path(@studentcounselingsearch)
     else

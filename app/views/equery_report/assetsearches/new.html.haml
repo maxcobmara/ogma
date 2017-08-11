@@ -1,6 +1,6 @@
 - model_class = Assetsearch
 .page-header
-  - search_name=(Assetsearch::SEARCH_TYPE.find_all{|disp, value| value==@searchtype.to_i}).map{|disp, value| disp}[0]
+  - search_name=(Assetsearch::SEARCH_TYPE.find_all{|disp, value| value==1}).map{|disp, value| disp}[0]
   %h1=t('equery.asset.search')+" : KEW-PA "+search_name
 
 = render 'shared/flashes'
@@ -8,18 +8,20 @@
 .row.fluid
   = form_for [:equery_report, @assetsearch], html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
-    = render :partial => 'form', :locals => {:f => f}
     = f.hidden_field :college_id, value: current_user.college_id
-    = f.hidden_field :search_type, value: @searchtype.to_i
+    = f.hidden_field :search_type, value: 1
+    = render partial: 'kewpa2n3_form', locals: {f: f}
+    /= render :partial => 'form', :locals => {:f => f}
     
     .col-sm-8.col-md-offset-2
       .row
         .col-sm-offset-3
-          .small=t('equery.leaves_all_blank_all_records') unless @searchtype.to_i==6
+          .small=t('equery.leaves_all_blank_all_records') 
+          /unless @searchtype.to_i==6
         .col-md-offset-1
           %hr
         .form-group
           .col-sm-offset-4.col-sm-1
-            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), "/equery_reports?query_module=2", :class => 'btn btn-default'
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), "/equery_reports/assets", :class => 'btn btn-default'
           .col-sm-offset-1.col-sm-2
             = f.submit (t 'search') , class: "btn btn-primary"

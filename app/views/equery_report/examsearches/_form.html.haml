@@ -1,86 +1,85 @@
 .row
   .col-md-10.col-md-offset-2
-    - if @searchexamtype=='1' || @searchexamtype==1      
-      /:programme_id, :subject_id, :examtype, :created_by, :klass_id, :examdate, :valid_papertype, :programme_details
+    /:programme_id, :subject_id, :examtype, :created_by, :klass_id, :examdate, :valid_papertype, :programme_details
       
-      /////// 
-      - if current_user.college.code=='amsas'
-        .small.text-grey
-          For checking only
-          - for exm in Exam.all
-            %br
-            = "MODULE: "+exm.subject.parent.subject_list+" --- "+exm.subject.subject_list+" : "+exm.subject_id.to_s
-        %br
-
-      ///////
-      
-      / Nav tabs
-      %ul.nav.nav-tabs
-        %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
-
-      .tab-content{style:"padding-top:1em"}
-        #search.tab-pane.active
+    /////// 
+    - if current_user.college.code=='amsas'
+      .small.text-grey
+        For checking only
+        - for exm in Exam.all
           %br
-          .col-md-offset-2
-            .form-group
-              .col-sm-2.control-label
-                = f.label (t 'equery.exam.programme_id') 
-              .col-md-5
-                = f.select :programme_details, options_for_select(Programme.roots.map(&:programme_list)), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
+          = (t 'training.programme.module').upcase+" : "+exm.subject.parent.subject_list+" --- "+exm.subject.subject_list+" : "+exm.subject_id.to_s
+      %br
+
+    ///////
+      
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'equery.search_by'),"#search", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #search.tab-pane.active
+        %br
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'equery.exam.programme_id') 
+            .col-md-5
+              = f.select :programme_details, options_for_select(Programme.roots.map(&:programme_list)), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
                 
-            .form-group
-              .col-sm-2.control-label
-                = f.label (t 'equery.exam.subject_id') 
-              .col-md-5
-                = f.select :subject_id, grouped_options_for_select(Programme.subject_groupbyprogramme2), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'equery.exam.subject_id') 
+            .col-md-5
+              = f.select :subject_id, grouped_options_for_select(Programme.subject_groupbyprogramme2), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
                 
-            .form-group
-              .col-sm-2.control-label
-                = f.label (t 'equery.exam.created_by')
-              .col-md-4
-                - creator_list=[]
-                - Exam.all.group_by{|x|x.subject}.each do |asubject, exms|
-                  - aa=[[(t 'select'), ""]]
-                  - exms.group_by{|y|y.creator}.each do |acreator, exms_list|
-                    - aa << [acreator.staff_with_rank, acreator.id]
-                  - creator_list << [asubject.id, aa]
-                = f.select :created_by, grouped_options_for_select(creator_list), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'equery.exam.created_by')
+            .col-md-4
+              - creator_list=[]
+              - Exam.all.group_by{|x|x.subject}.each do |asubject, exms|
+                - aa=[[(t 'select'), ""]]
+                - exms.group_by{|y|y.creator}.each do |acreator, exms_list|
+                  - aa << [acreator.staff_with_rank, acreator.id]
+                - creator_list << [asubject.id, aa]
+              = f.select :created_by, grouped_options_for_select(creator_list), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
             
-            .form-group
-              .col-sm-2.control-label
-                = f.label (t 'equery.exam.examtype')
-              .col-md-4
-                - examtype_list=[]
-                - Exam.all.group_by{|t|t.creator}.each do |acreator, exms|
-                  - aa=[[(t 'select'), ""]]
-                  - exms.group_by{|u|u.name}.each do |etype, exms_list|
-                    - if etype=="F"
-                      - etype_name=t('equery.exam.final')
-                    - elsif etype=="M"
-                      - etype_name=t('equery.exam.midsem')
-                    - else
-                      - etype_name=t('equey.exam.repeat')
-                    - aa << [etype_name, etype+"-"+acreator.id.to_s]
-                  - examtype_list << [acreator.id, aa]
-                = f.select :examtype, grouped_options_for_select(examtype_list), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'equery.exam.examtype')
+            .col-md-4
+              - examtype_list=[]
+              - Exam.all.group_by{|t|t.creator}.each do |acreator, exms|
+                - aa=[[(t 'select'), ""]]
+                - exms.group_by{|u|u.name}.each do |etype, exms_list|
+                  - if etype=="F"
+                    - etype_name=t('equery.exam.final')
+                  - elsif etype=="M"
+                    - etype_name=t('equery.exam.midsem')
+                  - else
+                    - etype_name=t('equey.exam.repeat')
+                  - aa << [etype_name, etype+"-"+acreator.id.to_s]
+                - examtype_list << [acreator.id, aa]
+              = f.select :examtype, grouped_options_for_select(examtype_list), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
                 
-            .form-group
-              .col-sm-2.control-label
-                = f.label (t 'equery.exam.klass_id')
-              .col-md-4
-                /klass_id==0 (complete paper)
-                - papertype_list=[]
-                - Exam.all.group_by{|t|t.creator}.each do |acreator, exms2|
-                  - exms2.group_by{|u|u.name}.each do |etype, exms|
-                    - aa=[[(t 'select'), ""]]
-                    - exms.group_by{|u|u.klass_id}.each do |ptype, exms_list|
-                      - ptype_name=ptype==1 ? (t 'equery.exam.complete_set') : "Template"
-                      - aa << [ptype_name, ptype]
-                    - papertype_list << [etype+"-"+acreator.id.to_s, aa]
-                = f.select :klass_id, grouped_options_for_select(papertype_list), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'equery.exam.klass_id')
+            .col-md-4
+              /klass_id==0 (complete paper)
+              - papertype_list=[]
+              - Exam.all.group_by{|t|t.creator}.each do |acreator, exms2|
+                - exms2.group_by{|u|u.name}.each do |etype, exms|
+                  - aa=[[(t 'select'), ""]]
+                  - exms.group_by{|u|u.klass_id}.each do |ptype, exms_list|
+                    - ptype_name=ptype==1 ? (t 'equery.exam.complete_set') : "Template"
+                    - aa << [ptype_name, ptype]
+                  - papertype_list << [etype+"-"+acreator.id.to_s, aa]
+              = f.select :klass_id, grouped_options_for_select(papertype_list), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
     
-            .form-group
-              .col-sm-2.control-label
-                = f.label (t 'equery.exam.examdate')
-              .col-md-2
-                = f.text_field :examdate, class: 'form-control date_picker_reverse'
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'equery.exam.examdate')
+            .col-md-2
+              = f.text_field :examdate, class: 'form-control date_picker_reverse'
