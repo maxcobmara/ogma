@@ -31,7 +31,7 @@ authorization do
    end
    has_permission_on :campus_pages, :to =>[:manage, :page_list, :flexible]
    has_permission_on :repositories, :to => [:manage, :download, :repository_list, :repository_list2, :index2, :new2, :loan]
-   has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
+   has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show, :new_digital_library]
    has_permission_on :staff_mentors, :to => :manage
     
   #by existing roles?
@@ -489,7 +489,7 @@ authorization do
    end
    has_permission_on :campus_pages, :to => :flexipage                                                      # A staff can view pages (ie. library rules & regulations)
    has_permission_on :repositories, :to => [:read, :create, :download, :repository_list, :repository_list2, :index2, :new2]
-   has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
+   has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show, :new_digital_library]
    has_permission_on :repositories, :to => :update do
      if_attribute :staff_id => is {user.userable.id}
    end
@@ -632,7 +632,7 @@ authorization do
     has_permission_on :campus_locations, :to => [:manage, :kewpa7, :kewpa10, :kewpa11]
     has_permission_on :asset_asset_disposals, :to =>[:manage, :kewpa17_20, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :dispose, :revalue, :verify, :view_close]
     has_permission_on :asset_asset_losses, :to => [:manage, :endorse, :edit_multiple, :update_multiple, :kewpa28, :kewpa29, :kewpa30, :kewpa31] 
-    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show, :new_hm, :new_inv, :new_loan, :new_location, :new_yearly_report, :new_defect, :new_maintenance_list, :new_maintenance, :new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :new_initial_loss, :new_final_loss, :new_writeoff_certificate]
   end
 
   #OK up to here..... 28Jan2016
@@ -940,7 +940,7 @@ authorization do
     has_permission_on :campus_pages, :to => :update do
       if_attribute :id => is_in {Page.where('(name ILIKE(?) or title ILIKE(?) or name ILIKE(?) or title ILIKE(?)) and admin=?', '%library%', '%library%', '%perpustakaan%', '%perpustakaan%', true).pluck(:id)}
     end
-    has_permission_on :equery_report_booksearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_booksearches, :to => [:new, :create, :show, :new_stock_list, :new_book_summary]
     has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
     ##additional roles for librarian --> making 'loan' for digital library (marine documentation) - 4May2017
     has_permission_on :repositories, :to => [:manage, :download, :repository_list, :repository_list2, :index2, :new2, :loan]
@@ -1116,21 +1116,21 @@ authorization do
     has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff, :staff_list] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
     has_permission_on :campus_pages, :to => :flexipage
     has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2, :loan]
-    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show, :new_digital_library]
     has_permission_on :equery_report_staffsearch2s, :to => [:new, :create, :show]
   end
   role :staffs_module_viewer do
     has_permission_on :staff_staffs, :to => [:read, :borang_maklumat_staff, :staff_list]
     has_permission_on :campus_pages, :to => :flexipage
     has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2]
-    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show, :new_digital_library]
     has_permission_on :equery_report_staffsearch2s, :to => [:new, :create, :show]
   end
   role :staffs_module_user do
     has_permission_on :staff_staffs, :to => [:read, :update, :borang_maklumat_staff, :staff_list]
     has_permission_on :campus_pages, :to => :flexipage
     has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2]
-    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show, :new_digital_library]
     has_permission_on :equery_report_staffsearch2s, :to => [:new, :create, :show]
   end
   role :staffs_module_member do
@@ -1139,7 +1139,7 @@ authorization do
     end
     has_permission_on :campus_pages, :to => :flexipage
     has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2]
-    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show, :new_digital_library]
   end
   
   #2)OK - all 4 - 4Feb2016
@@ -1989,15 +1989,15 @@ authorization do
   #30-OK
   role :library_books_module_admin do
      has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import, :stock_listing, :book_summary]
-     has_permission_on :equery_report_booksearches, :to => [:new, :create, :show]
+     has_permission_on :equery_report_booksearches, :to => [:new, :create, :show, :new_stock_list, :new_book_summary]
   end
   role :library_books_module_viewer do
      has_permission_on :library_books, :to => [:read, :stock_listing, :book_summary]
-     has_permission_on :equery_report_booksearches, :to => [:new, :create, :show]
+     has_permission_on :equery_report_booksearches, :to => [:new, :create, :show, :new_stock_list, :new_book_summary]
   end
   role :library_books_module_user do
     has_permission_on :library_books, :to => [:read, :update, :stock_listing, :book_summary]
-    has_permission_on :equery_report_booksearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_booksearches, :to => [:new, :create, :show, :new_stock_list, :new_book_summary]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - lbrary[0].disabled=true as the only owner of this module requires 'Librarian' role
 #   role :library_books_module_member do
@@ -2381,20 +2381,20 @@ authorization do
   #43 3/4 OK (Admin/User/Member), Viewer - restricted access for document containing pricing details : cost/maintenance
   role :asset_list_module_admin do
     has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables]
-    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show, :new_hm, :new_inv, :new_loan, :new_location, :new_yearly_report, :new_defect, :new_maintenance_list, :new_maintenance, :new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :new_initial_loss, :new_final_loss, :new_writeoff_certificate]
   end
   #restriction - no PDF allowed : contains pricing details 2, 3, 4, 5 & 8 (kos perolehan) 13 & 14 (maintenance) 
   role :asset_list_module_viewer do
     has_permission_on :asset_assets, :to => [:read, :kewpa6, :loanables]
-    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show, :new_hm, :new_inv, :new_loan, :new_location, :new_yearly_report, :new_defect, :new_maintenance_list, :new_maintenance, :new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :new_initial_loss, :new_final_loss, :new_writeoff_certificate]
   end
   role :asset_list_module_user do
     has_permission_on :asset_assets, :to => [:read, :update, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables]
-    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show, :new_hm, :new_inv, :new_loan, :new_location, :new_yearly_report, :new_defect, :new_maintenance_list, :new_maintenance, :new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :new_initial_loss, :new_final_loss, :new_writeoff_certificate]
   end
   role :asset_list_module_member do
     has_permission_on :asset_assets, :to => [:read, :loanables]
-    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show, :new_hm, :new_inv, :new_loan, :new_location, :new_yearly_report, :new_defect, :new_maintenance_list, :new_maintenance, :new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :new_initial_loss, :new_final_loss, :new_writeoff_certificate]
   end
   #end for Assets modules#######################################
   #start of Support table / E FIlling modules##################################
