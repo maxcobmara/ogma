@@ -314,7 +314,7 @@ authorization do
      if_attribute :is_approved => is_not {true}
    end
    
-   has_permission_on :asset_assets, :to => [:read, :loanables]                                                  # A staff may read(w/o price): defect, writeoff, loan, location dmg
+   has_permission_on :asset_assets, :to => [:read, :loanables, :loanable_list]                            # A staff may read(w/o price): defect, writeoff, loan, location dmg
    has_permission_on :asset_asset_defects, :to => [:create, :defect_list]                                   # A staff can register & update defect
    has_permission_on :asset_asset_defects, :to => :read do
      if_attribute :reported_by => is {user.userable.id}
@@ -623,7 +623,7 @@ authorization do
   #Group Assets  -------------------------------------------------------------------------------
   role :asset_administrator do
     has_permission_on :asset_assetcategories, :to => :manage
-    has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables]
+    has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables, :loanable_list]
     has_permission_on :asset_asset_defects, :to =>[:read, :kewpa9, :defect_list]
     has_permission_on :asset_asset_defects, :to =>[:update, :process2], :join_by => :and do #3nov2013, 21Jan2016
       if_attribute :is_processed => is_not {true}
@@ -2512,7 +2512,7 @@ authorization do
   #43-OK, but for read - price is hidden & visible only to those with update access
   #43 3/4 OK (Admin/User/Member), Viewer - restricted access for document containing pricing details : cost/maintenance
   role :asset_list_module_admin do
-    has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables]
+    has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables, :loanable_list]
     has_permission_on :equery_report_assetsearches, :to => [:create, :new_asset, :new_hm, :new_inv, :new_loan, :new_yearly_report, :new_maintenance_list, :new_maintenance]
     has_permission_on :equery_report_assetsearches, :to => :show do
       if_attribute :search_type => is_in {[1, 2, 3, 4, 6, 8, 9]} #1-kw2&kw3, 2-kw4, 3-kw5, 4-loan(kw6), 6-yerlyreport(kw8), 8-maintls(kw13), 9-maint(kw14)
@@ -2520,21 +2520,21 @@ authorization do
   end
   #restriction - no PDF allowed : contains pricing details 2, 3, 4, 5 & 8 (kos perolehan) 13 & 14 (maintenance) 
   role :asset_list_module_viewer do
-    has_permission_on :asset_assets, :to => [:read, :kewpa6, :loanables]
+    has_permission_on :asset_assets, :to => [:read, :kewpa6, :loanables, :loanable_list]
     has_permission_on :equery_report_assetsearches, :to => [:create, :new_loan]
     has_permission_on :equery_report_assetsearches, :to => :show do
       if_attribute :search_type => is_in {[4]} #4-loan(kw6)
     end
   end
   role :asset_list_module_user do
-    has_permission_on :asset_assets, :to => [:read, :update, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables]
+    has_permission_on :asset_assets, :to => [:read, :update, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables, :loanable_list]
     has_permission_on :equery_report_assetsearches, :to => [:create, :new_asset, :new_hm, :new_inv, :new_loan, :new_yearly_report, :new_maintenance_list, :new_maintenance]
     has_permission_on :equery_report_assetsearches, :to => :show do
       if_attribute :search_type => is_in {[1, 2, 3, 4, 6, 8, 9]} #1-kw2&kw3, 2-kw4, 3-kw5, 4-loan(kw6), 6-yerlyreport(kw8), 8-maintls(kw13), 9-maint(kw14)
     end    
   end
   role :asset_list_module_member do
-    has_permission_on :asset_assets, :to => [:read, :loanables]
+    has_permission_on :asset_assets, :to => [:read, :loanables, :loanable_list]
   end
   #end for Assets modules#######################################
   #start of Support table / E FIlling modules##################################

@@ -171,6 +171,7 @@ Ogma::Application.routes.draw do
         get   :inventory
         post  :inventory
         get :loanables
+        get :loanable_list
         get :kewpa4
         get :kewpa5
         get :kewpa8

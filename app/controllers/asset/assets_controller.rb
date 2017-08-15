@@ -1,7 +1,8 @@
 class Asset::AssetsController < ApplicationController
-  filter_access_to :index, :new, :create, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables, :attribute_check => false
+  filter_access_to :index, :new, :create, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables, :loanable_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_asset, only: [:show, :edit, :update, :destroy]
+  before_action :set_loanables, only: [:loanables, :loanable_list]
   
   def index
     #all staff @ user w menu(index) access; can view full list of asset w 'purchase details' hidden
@@ -203,11 +204,18 @@ class Asset::AssetsController < ApplicationController
   end  
   
   def loanables
-   loaned = AssetLoan.where('is_returned IS NOT true').pluck(:asset_id)
-   loaned = [0] if loaned == []    
-   @search = Asset.search(params[:q])
-   @loanables = @search.result.where('assignedto_id is not null and bookable = ? and assets.id NOT IN (?) ', true, loaned)
    @loanables = @loanables.order(assetcode: :asc).page(params[:page]||1)    
+  end
+  
+  def loanable_list
+    respond_to do |format|
+      format.pdf do
+        pdf = Loanable_listPdf.new(@loanables, view_context, current_user.college)
+        send_data pdf.render, filename: "loanable_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
   end
   
   private
@@ -219,6 +227,13 @@ class Asset::AssetsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_params
       params.require(:asset).permit(:assetcode, :assettype, :assignedto_id, :bookable, :cardno, :cardno2,  :category_id, :engine_no, :engine_type_id, :is_maintainable, :is_disposed, :locassigned, :location_id, :manufacturer_id, :country_id, :mark_as_lost, :mark_disposal, :modelname, :name, :purchasedate, :purchaseprice, :quantity, :quantity_type, :receiveddate, :receiver_id, :registration, :serialno, :status, :subcategory, :supplier_id, :typename, :warranty_length, :warranty_length_type, :college_id, {:data=>[]}, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id], asset_placements_attributes: [:id, :_destroy, :location_id, :staff_id, :reg_on, :quantity])
+    end
+    
+    def set_loanables
+      loaned = AssetLoan.where('is_returned IS NOT true').pluck(:asset_id)
+      loaned = [0] if loaned == []    
+      @search = Asset.search(params[:q])
+      @loanables = @search.result.where('assignedto_id is not null and bookable = ? and assets.id NOT IN (?) ', true, loaned)
     end
 end
 
