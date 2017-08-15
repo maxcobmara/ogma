@@ -1,5 +1,5 @@
 .mp-level
-  %h2.icon.icon-world Menu
+  %h2.icon.icon-world Menu Student
   %ul
     /1) Staffs module - no access
     /2) Assets module - no access
@@ -23,14 +23,14 @@
               %li=link_to content_tag(:i, "", :class => "icon-numb") + t("staff.mentors.title"), staff_mentors_path
 
     /6) Training module
-    /- permitted_to? :menu, :training_trainingnotes do
-    /  %li.icon.icon-left
-    /    = link_to content_tag(:i, "", :class => "icon-numb") +  t("training.title"), '#'
-    /    .mp-level
-    /      %h2.icon= t ("training.title")
-    /      %a.mp-back{:href => "#"}= t 'helpers.links.back'
-    /      %ul
-    /        %li= link_to content_tag(:i, "", :class => "icon-numb") + t('training.trainingnote.title2'), training_trainingnotes_path
+    - permitted_to? :menu, :training_trainingnotes do
+      %li.icon.icon-left
+        = link_to content_tag(:i, "", :class => "icon-numb") +  t("training.title"), '#'
+        .mp-level
+          %h2.icon= t ("training.title")
+          %a.mp-back{:href => "#"}= t 'helpers.links.back'
+          %ul
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + t('training.trainingnote.title2'), training_trainingnotes_path
 
     /7) Exams module
     - permitted_to? :index, :exam_evaluate_courses do

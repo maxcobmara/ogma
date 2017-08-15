@@ -1007,7 +1007,7 @@ authorization do
       has_permission_on :exam_examresults, :to => [:menu, :index2, :show2, :examination_slip, :examination_transcript] do
 	if_attribute :id => is_in {user.userable.resultlines.pluck(:examresult_id)}
       end
-      has_permission_on :training_trainingnotes, :to => [:read , :download, :trainingnote_report]
+      has_permission_on :training_trainingnotes, :to => [:menu, :read , :download, :trainingnote_report]
   end
   
   role :student_administrator do
