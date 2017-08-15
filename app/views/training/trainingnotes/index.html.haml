@@ -4,30 +4,39 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_training_trainingnote_path
+    - permitted_to?  :create, :training_trainingnotes do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_training_trainingnote_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')), trainingnote_report_training_trainingnotes_path(params.merge(format: 'pdf' ))
+    - permitted_to?  :trainingnote_report, :training_trainingnotes do
+      %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')), trainingnote_report_training_trainingnotes_path(params.merge(format: 'pdf' ))
 
 .row.filter{style: "display:none;"}
   .col-md-2
     
 .row
-  .col-md-12
-    .alert.alert-warning
-      %strong=t 'training.trainingnote.remark_title'
-      =" ("+(t 'training.trainingnote.plan')+(t 'training.trainingnote.plan_remark')+")"
-      %ol
-        %li= fa_icon("check-square")+" "+(t 'training.trainingnote.plan_remark1')
-        %li= fa_icon("check-square-o")+" "+(t 'training.trainingnote.plan_remark2')
+  - if is_student?
+    -colspanning=6
+    -colsize='30%'
+  - elsif is_staff?
+    - colspanning=7
+    -colsize='27%'
+    .col-md-12
+      .alert.alert-warning
+        %strong=t 'training.trainingnote.remark_title'
+        =" ("+(t 'training.trainingnote.plan')+(t 'training.trainingnote.plan_remark')+")"
+        %ol
+          %li= fa_icon("check-square")+" "+(t 'training.trainingnote.plan_remark1')
+          %li= fa_icon("check-square-o")+" "+(t 'training.trainingnote.plan_remark2')
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th{width: '3%'}=t 'training.trainingnote.plan'
+        - if is_staff?
+          %th{width: '3%'}=t 'training.trainingnote.plan'
         /%th{width: '10%'}=t 'training.trainingnote.programme'
         /%th{width: '10%'}=t 'training.trainingnote.subject'
         /%th{width: '10%'}= sort_link(@search, :topic_subtopic, (t 'training.trainingnote.topic_subtopic'))
-        %th{width: '27%'}= sort_link(@search, :title, (t 'training.trainingnote.title'))
+        %th{width: "#{colsize}"}= sort_link(@search, :title, (t 'training.trainingnote.title'))
         %th{width: '16%'}= sort_link(@search, :reference, (t 'training.trainingnote.reference'))
         %th{width: '4%'}= sort_link(@search, :version, (t 'training.trainingnote.version'))
         %th{width: '7%'}= sort_link(@search, :release, (t 'training.trainingnote.release'))
@@ -38,27 +47,29 @@
     = render "index_search"
     - @trainingnotes2.where('topicdetail_id is not null').group_by{|r|r.topicdetail.subject_topic.root}.sort.reverse.each do |prog, notes_byprog|
       %tr
-        %td.group{colspan: 10}= prog.programme_list
+        %td.group{colspan: "#{colspanning}"}= prog.programme_list
       - notes_byprog.sort_by{|u|u.topicdetail.subject_topic.parent.code}.group_by{|t|t.topicdetail.subject_topic.subject_of_topic_subtopic}.each do |subject, notes_bysubject|
         %tr
-          %td.group{colspan: 10}=subject.subject_list
+          %td.group{colspan: "#{colspanning}"}=subject.subject_list
         - notes_bysubject.sort_by{|u|u.topicdetail.subject_topic.code}.group_by{|u|u.topicdetail.subject_topic}.each do |topic, trainingnotes|
           - if trainingnotes.count > 1
             %tr
-              %td.group{colspan: 10}=(t 'training.trainingnote.topic_subtopic').upcase+": "+topic.subject_list
+              %td.group{colspan: "#{colspanning}"}=(t 'training.trainingnote.topic_subtopic').upcase+": "+topic.subject_list
           - for trainingnote in trainingnotes
             - if trainingnote.topicdetail.topic_code
               %tr
-                %td
-                  - if trainingnote.timetable_id?
-                    = link_to content_tag(:i, "", :class => "fa fa-check-square"), training_lesson_plan_path(LessonPlan.where(schedule: trainingnote.timetable_id).first.id)
-                  - else
-                    = trainingnote.lesson_plan_trainingnotes.count > 0 ? fa_icon("check-square-o") :  fa_icon("minus")
+                - if is_staff?
+                  %td
+                    - if trainingnote.timetable_id?
+                      = link_to content_tag(:i, "", :class => "fa fa-check-square"), training_lesson_plan_path(LessonPlan.where(schedule: trainingnote.timetable_id).first.id)
+                    - else
+                      = trainingnote.lesson_plan_trainingnotes.count > 0 ? fa_icon("check-square-o") :  fa_icon("minus")
                 /%td=prog.programme_list
                 /%td=subject.subject_list 
                 /%td=topic.subject_list
                 %td
-                  =h link_to trainingnote.title, training_trainingnote_path(trainingnote)
+                  - notes_title=trainingnote.title.blank? ? "<#{(t 'training.trainingnote.title2')} - #{(t 'helpers.links.links')}>" : trainingnote.title 
+                  =h link_to notes_title, training_trainingnote_path(trainingnote)
                   - if trainingnote.topicdetail_id==nil && y.timetable_id!=nil
                     %font{:color=>'blue'}
                       %b Topic Detail
@@ -116,48 +127,8 @@
         /      /%BR
         /      %td= y.note_creator.rank_id? ? y.note_creator.staff_with_rank : y.note_creator.try(:name)
 
-    
-    /NOTE - this part shall cater for existing Training Notes without Topic Detail - applied only to KSKBJB
-    /as for AMSAS - latest codes updates -- New Training Note (Topic selection - filtered by Topic Detail record)
-    /TODO - to remove this part when no longer required
-    %tr
-      %td.group{colspan: 10, style: 'background-color: #D2D2D2; color: red;'}=t('training.trainingnote.topicdetail_not_exist')
-    - for tnote in @trainingnotes2.where('topicdetail_id is null')
-      %tr
-        %td
-          - if tnote.timetable_id?
-            = fa_icon("check-square") 
-          - else
-            - if tnote.lesson_plan_trainingnotes.count > 0
-              = fa_icon("check-square-o")
-            - else
-              = fa_icon("minus")
-        /%td &nbsp;
-        /%td &nbsp;
-        /%td &nbsp;
-        %td
-          =h link_to tnote.title, training_trainingnote_path(tnote)
-          /- if tnote.topicdetail_id.blank? && tnote.timetable_id!=nil
-          - if tnote.topicdetail_id.blank? 
-            %br
-            = link_to "#{(t 'training.trainingnote.create_one')}", new_training_topicdetail_path
-            =t('training.trainingnote.tomatch')
-
-            - if tnote.timetable_id!=nil
-              - @topic=WeeklytimetableDetail.find(tnote.timetable_id).topic
-              %br
-              ="("+(t 'training.trainingnote.topic')+" : "+Programme.find(@topic).semester_subject_topic+")"
-
-        %td=tnote.reference
-        %td=tnote.version
-        %td=tnote.release.try(:strftime, '%d %b %Y')
-        %td=tnote.document_file_name
-        /= link_to image_tag('attach.png'), prog.document.url
-        /&nbsp; 
-        /= link_to prog.document_file_name,prog.document.url
-        /%BR
-        %td= tnote.staff_id? ? tnote.note_creator.staff_with_rank : ""
-     
+    - if current_user.college.code=='kskbjb'
+      =render partial: "training/trainingnotes/kskbjb/index", locals: {:trainingnotes2 => @trainingnotes2}
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @trainingnotes2, :theme => 'twitter-bootstrap-3'
  

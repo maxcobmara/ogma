@@ -118,7 +118,7 @@
     
     respond_to do |format|
       format.pdf do
-        pdf = Trainingnote_reportPdf.new(@trainingnotes, @trainingnotes2, view_context, current_user.college)
+        pdf = Trainingnote_reportPdf.new(@trainingnotes, @trainingnotes2, view_context, current_user)
         send_data pdf.render, filename: "trainingnote_report-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
@@ -134,22 +134,32 @@
     
     #set programme
     def set_data_index_new_edit
-      @position_exist = @current_user.userable.positions
-      if @position_exist     
-        @lecturer_programme = @current_user.userable.positions.first.unit
-        unless @lecturer_programme.nil? 
-          @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
-        end
-        unless @programme.nil?
-          @programme_id = @programme.id
-        else
-          if @lecturer_programme != 'Pos Basik' && @position_exist.first.name=='Pengajar' #== 'Commonsubject' 
-            @programme_id = '1'
+      if current_user.userable_type=='Staff'
+        @position_exist = current_user.userable.positions
+        if @position_exist     
+          @lecturer_programme = current_user.userable.positions.first.unit
+          unless @lecturer_programme.nil? 
+            @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
+          end
+          unless @programme.nil?
+            @programme_id = @programme.id
           else
-            @programme_id = '0'
+            if @lecturer_programme != 'Pos Basik' && @position_exist.first.name=='Pengajar' #== 'Commonsubject' 
+              @programme_id = '1'
+            else
+              @programme_id = '0'
+            end
           end
         end
-      end 
+      elsif current_user.userable_type=='Student'
+	intake=Student.where(id: current_user.userable_id).first.intake_id
+	stu_prog=Programme.where(id: Intake.find(intake).programme_id).first
+	if stu_prog
+	  @programme_id=stu_prog.id
+	else
+	  @programme_id='0'
+	end
+      end
     end
     
     #set appropiate data
