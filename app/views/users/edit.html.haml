@@ -1568,7 +1568,7 @@ $(function(){
       }
     }
     
-    /*when role : STUDENT is selected, uncheck all exams modules*/
+    /* when role : STUDENT is selected, uncheck all exams modules + 15Aug2017 : uncheck training notes (viewer) */
     if(inputElements[2].checked){
       for(i=0; i<1; i++){
         courseevalmg[i].disabled=true;
@@ -1579,6 +1579,10 @@ $(function(){
       }
       studentown[4].disabled=true;
       studentown[0].disabled=true;
+      /*disable viewer for training notes*/
+
+      trainingrd[0].checked=false;
+      trainingrd[0].disabled=true;
     }
     
     /*disable this main checkbox if no file module selected*/
@@ -3369,7 +3373,7 @@ $(function(){
       etrainingm[6].disabled=false;
       
       /* When PROGRAMME MANAGER is not selected, hide access for ALL unless assign role as STUDENT*/
-      if(inputElements[2].checked)
+      if(inputElements[20].checked)
       {
         courseevalmg[0].disabled=false;
         courseevalrd[0].disabled=false;
@@ -3394,7 +3398,7 @@ $(function(){
       {  trainingmg[6].disabled=false;}
     }
     
-    /*when role : STUDENT is selected, uncheck course evaluation, student info(O), student leaves(O)*/
+    /*when role : STUDENT is selected, uncheck course evaluation, student info(O), student leaves(O), 15Aug2017-training notes(R)*/
     if(inputElements[2].checked){
       for(i=0; i<1; i++){
         courseevalmg[i].checked=false;
@@ -3416,6 +3420,9 @@ $(function(){
       }
       studentown[4].disabled=true;
       studentown[0].disabled=true;
+      /*disable viewer for training notes*/
+      trainingrd[0].checked=false;
+      trainingrd[0].disabled=true;
     }
     
     
