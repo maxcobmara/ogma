@@ -17,10 +17,13 @@ class Accession < ActiveRecord::Base
     #as borrower of reserved book
     curr_usrable_id=User.find(query).userable_id
     Accession.where.not(data: nil).each do |reserve|
-      loan=reserve.librarytransactions.last
-      brwtype=loan.ru_staff
-      acc_ids << reserve.id if brwtype==true && curr_usrable_id==loan.staff_id
-      acc_ids << reserve.id if brwtype==false && curr_usrable_id==loan.student_id
+      #loan=reserve.librarytransactions.last
+      loan=Librarytransaction.joins(:accession).where('ru_staff is not null').where('accession_id=?', reserve.id).order(checkoutdate: :desc).first
+      if loan
+        brwtype=loan.ru_staff
+        acc_ids << reserve.id if brwtype==true && curr_usrable_id==loan.staff_id
+        acc_ids << reserve.id if brwtype==false && curr_usrable_id==loan.student_id
+      end
     end
     where(id: acc_ids)
   end

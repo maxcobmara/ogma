@@ -1,6 +1,12 @@
 .mp-level
-  %h2.icon.icon-world Menu Student
+  %h2.icon.icon-world Menu
   %ul
+    /1) Staffs module - no access
+    /2) Assets module - no access
+    /3) Location module -  no access
+    /4) E-Filing module - no access
+    
+    /5) Students module
     - permitted_to? :show, :students do
       %li.icon.icon-left
         = link_to content_tag(:i, "", :class => "icon-numb") + t("student.title"), '#'
@@ -16,6 +22,17 @@
             - permitted_to? :read, :staff_mentors do
               %li=link_to content_tag(:i, "", :class => "icon-numb") + t("staff.mentors.title"), staff_mentors_path
 
+    /6) Training module
+    /- permitted_to? :menu, :training_trainingnotes do
+    /  %li.icon.icon-left
+    /    = link_to content_tag(:i, "", :class => "icon-numb") +  t("training.title"), '#'
+    /    .mp-level
+    /      %h2.icon= t ("training.title")
+    /      %a.mp-back{:href => "#"}= t 'helpers.links.back'
+    /      %ul
+    /        %li= link_to content_tag(:i, "", :class => "icon-numb") + t('training.trainingnote.title2'), training_trainingnotes_path
+
+    /7) Exams module
     - permitted_to? :index, :exam_evaluate_courses do
       %li.icon.icon-left
         = link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.title"), '#'
@@ -48,7 +65,8 @@
               - else
                 -course_evaluation=(t "exam.evaluate_course.title")
               %li= link_to content_tag(:i, "", :class => "icon-numb") + course_evaluation, exam_evaluate_courses_path
-              
+
+    /8) Library module          
     - permitted_to? :read, :library_books do  
       %li.icon.icon-left
         //= link_to content_tag(:i, "", :class => "book") + (t "library.title"), '#'
@@ -61,23 +79,25 @@
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.rules_regulations"), flexipage_campus_page_path(74)
             - permitted_to? :read, :library_books do  
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.list"), library_books_path
-            /temporary for Digital Library
-            /- permitted_to? :read, :repositories do
-            /  %li=link_to content_tag(:i, "", :class => "icon-numb") + t('repositories.list2'), index2_repositories_path
-            /- permitted_to? :read, :library_librarytransactions do 
-            /  %li.icon.icon-left
-            /    = link_to content_tag(:i, "", :class => "icon-numb")+(t "library.transaction.title"), '#'
-            /    .mp-level
-            /      %h2.icon=(t "library.transaction.title")
-            /      %a.mp-back{:href => "#"}=t('back')
-            /      %ul
-            /        %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.book2"), library_librarytransactions_path
-            /        %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "repositories.list2"), repository_loan_library_librarytransactions_path
-            /- permitted_to? :manage, :library_librarytransactions do
-            /  %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.manager"), manager_library_librarytransactions_path
-            /- permitted_to? :analysis_statistic, :library_librarytransactions do 
-            /  %li= link_to content_tag(:i, "", :class => "icon_numb") + (t "library.transaction.analysis_statistic"), analysis_statistic_library_librarytransactions_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.help"), flexipage_campus_page_path(80)
-            /- if current_user.userable_type=='Staff'
-            /  - if current_user.userable.coemail.include?("teknikpadu.com")
-            /    %li=link_to content_tag(:i, "", :class => "icon-numb") + (t 'library.main'), library_main_path
+
+    /9) Administration module       
+    %li.icon.icon-left
+      = link_to content_tag(:i, "", :class => "icon-numb") + t('administration.title'), '#'
+      .mp-level
+        %h2.icon= t('administration.title')
+        %a.mp-back{:href => "#"}=t('back')
+        %ul
+          - if user_signed_in?
+            %li= link_to t('activerecord.attributes.user.change_password'), edit_user_registration_path(current_user.id)
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Release Notes", '#'
+
+    /10) Equery module    
+    %li.icon.icon-left
+      = link_to content_tag(:i, "", :class => "icon-numb") + t('equery.title'), '#'
+      .mp-level
+        %h2.icon= t('equery.title')
+        %a.mp-back{:href => "#"}=t('back')
+        %ul
+          - permitted_to? :read, :library_books do
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'library.title'), "/equery_reports/library"
