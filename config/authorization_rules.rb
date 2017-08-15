@@ -315,7 +315,7 @@ authorization do
    end
    
    has_permission_on :asset_assets, :to => [:read, :loanables]                                                  # A staff may read(w/o price): defect, writeoff, loan, location dmg
-   has_permission_on :asset_asset_defects, :to => :create                                                        # A staff can register & update defect
+   has_permission_on :asset_asset_defects, :to => [:create, :defect_list]                                   # A staff can register & update defect
    has_permission_on :asset_asset_defects, :to => :read do
      if_attribute :reported_by => is {user.userable.id}
    end
@@ -624,7 +624,7 @@ authorization do
   role :asset_administrator do
     has_permission_on :asset_assetcategories, :to => :manage
     has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables]
-    has_permission_on :asset_asset_defects, :to =>[:read, :kewpa9]
+    has_permission_on :asset_asset_defects, :to =>[:read, :kewpa9, :defect_list]
     has_permission_on :asset_asset_defects, :to =>[:update, :process2], :join_by => :and do #3nov2013, 21Jan2016
       if_attribute :is_processed => is_not {true}
     end
@@ -2452,21 +2452,21 @@ authorization do
   #42-OK
   #42 3/4 OK (Admin/Viewer/User) - Member : workable for reporter & decisioner only
   role :asset_defect_module_admin do
-    has_permission_on :asset_asset_defects, :to => [:manage, :process2, :decision, :kewpa9]
+    has_permission_on :asset_asset_defects, :to => [:manage, :process2, :decision, :kewpa9, :defect_list]
     has_permission_on :equery_report_assetsearches, :to => [:new_defect, :create]
     has_permission_on :equery_report_assetsearches, :to => :show do
       if_attribute :search_type => is_in {[7]} #7-defect(kw9)
     end
   end
   role :asset_defect_module_viewer do
-    has_permission_on :asset_asset_defects, :to => [:read, :kewpa9]
+    has_permission_on :asset_asset_defects, :to => [:read, :kewpa9, :defect_list]
     has_permission_on :equery_report_assetsearches, :to => [:new_defect, :create]
     has_permission_on :equery_report_assetsearches, :to => :show do
       if_attribute :search_type => is_in {[7]} #7-defect(kw9)
     end
   end
   role :asset_defect_module_user do
-    has_permission_on :asset_asset_defects, :to => [:read, :update, :process2, :decision, :kewpa9]
+    has_permission_on :asset_asset_defects, :to => [:read, :update, :process2, :decision, :kewpa9, :defect_list]
     has_permission_on :equery_report_assetsearches, :to => [:new_defect, :create]
     has_permission_on :equery_report_assetsearches, :to => :show do
       if_attribute :search_type => is_in {[7]} #7-defect(kw9)
@@ -2475,7 +2475,7 @@ authorization do
   # NOTE - workable only for defect reporter & decisioner, still require 'Asset Administrator' role for 1st time access of defectives one, for processing purpose.
   role :asset_defect_module_member do
     #own records (Staff role)
-    has_permission_on :asset_asset_defects, :to => :create                                                        # A staff can register & update defect
+    has_permission_on :asset_asset_defects, :to => [:create, :defect_list]                                 # A staff can register & update defect
     has_permission_on :asset_asset_defects, :to => :read do
       if_attribute :reported_by => is {user.userable.id}
     end

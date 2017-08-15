@@ -464,8 +464,8 @@
         %ul
           - if (permitted_to? :create, :equery_report_staffsearch2s) || (permitted_to? :create, :equery_report_staffattendancesearches) || (permitted_to? :create, :equery_report_ptdosearches)
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'staff.title'), "/equery_reports/staff"
-            
-          - if (permitted_to? :create, :equery_report_assetsearches) || (permitted_to? :create, :equery_report_stationerysearches)
+          
+          - if (permitted_to? :create, :equery_report_assetsearches) ||   (permitted_to? :create, :equery_report_stationerysearches)
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'asset.title'), "/equery_reports/assets"
             
           - permitted_to? :create, :equery_report_documentsearches do
