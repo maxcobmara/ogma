@@ -191,6 +191,9 @@ Ogma::Application.routes.draw do
         get :process2
         get :decision
       end
+      collection do
+	get :defect_list
+      end
     end
     resources :asset_losses,    as: :losses do
     member do

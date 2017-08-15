@@ -1,8 +1,8 @@
 class Asset::AssetDefectsController < ApplicationController
-  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :index, :new, :create, :defect_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :kewpa9, :decision, :process2, :attribute_check => true
   before_action :set_defective, only: [:show, :edit, :update, :destroy]
-  before_action :set_admin, only: [:index, :edit, :show]
+  before_action :set_admin, only: [:index, :edit, :show, :defect_list]
 
   def index
     ids=AssetDefect.where('decision is not true').select(:created_at).uniq.pluck(:id)
@@ -81,6 +81,29 @@ class Asset::AssetDefectsController < ApplicationController
       format.pdf do
         pdf = Kewpa9Pdf.new(@defective, view_context, @lead)
          send_data pdf.render, filename: "kewpa9-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
+  def defect_list 
+    ids=AssetDefect.where('decision is not true').select(:created_at).uniq.pluck(:id)
+    if @is_admin
+      #@search = AssetDefect.where('decision is not true').search(params[:q])
+      @search=AssetDefect.where(id: ids).search(params[:q])
+    else
+      #@search = AssetDefect.where('decision is not true').sstaff2(current_user.userable.id).search(params[:q])
+      @search=AssetDefect.where(id: ids).sstaff2(current_user.userable.id).search(params[:q])
+    end
+    ##@search = AssetDefect.where.not(decision: true).search(params[:q])
+    #@search = AssetDefect.where('decision is not true').search(params[:q])
+    @assets = @search.result
+    @defective = @assets.order(created_at: :desc)
+    respond_to do |format|
+      format.pdf do
+        pdf = Defect_listPdf.new(@defective, view_context, current_user.college)
+        send_data pdf.render, filename: "exam_list-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
       end

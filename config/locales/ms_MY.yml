@@ -2374,6 +2374,7 @@ ms_MY:
     
     defect:
       title: Kerosakan Aset
+      list: Senarai Kerosakan Aset
       details: Perincian Kerosakan
       notes: Catatan
       new: Laporan Kerosakan Baru

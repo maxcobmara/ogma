@@ -2482,6 +2482,7 @@ en:
     
     defect:
       title: Asset Defect
+      list: Asset Defect Listing
       details: Defect Details
       notes: Notes
       new: New Defect Report

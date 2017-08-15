@@ -6,7 +6,8 @@
   %ul.nav.navbar-nav
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    /%li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  defect_list_asset_defects_path(params.merge(format: 'pdf' ))
 
 .row
   %table.table-striped.table-hover.ogma
@@ -14,7 +15,7 @@
       %tr
         %th{width: '25%'}= sort_link(@search, :asset_assetcode, (t 'asset.assetcode'))
         %th{width: '30%'}= t('asset.category.type_name_model')
-        %th{width: '15%'}= sort_link(@search, :asset_serialno, (t 'asset.serialno'))
+        %th{width: '15%'}= sort_link(@search, :asset_serialno, (t 'asset.serial_no'))
         %th{width: '15%'}= sort_link(@search, :asset_location_location_name, (t 'location.title'))
         %th{width: '15%'}= t('asset.defect.notes')
     %tbody
