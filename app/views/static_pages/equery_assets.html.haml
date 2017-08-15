@@ -21,21 +21,15 @@
               %td= link_to (t "stationery.title_menu"), asset_stationeries_path
               %td.centre= link_to (fa_icon "search"), new_equery_report_stationerysearch_path
 
-          /////////////////////
-          /TODO -- create includes new!, must differentiate here! - 11 August 2017
-          - permitted_to? :create, :equery_report_assetsearches do
-            - unless permitted_to? :read, :equery_report_stationerysearches
+          - permitted_to? :new_asset, :equery_report_assetsearches do
+            - unless permitted_to? :create, :equery_report_stationerysearches
               %tr
                 %td.group{colspan: 3}= (t 'equery.module')+" : "+(t 'asset.title')
             %tr
               %td.centre=no+=1
               %td= link_to "KEW.PA-2 (Daftar Harta Modal) / KEW.PA-3 (Daftar Inventori)", asset_assets_path
-              %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path
+              %td.centre= link_to (fa_icon "search"), new_asset_equery_report_assetsearches_path
               /(searchtype: 1)
-            /%tr
-            /  %td.centre=no+=1
-            /  %td= link_to "KEW.PA-3 (Daftar Inventori)", asset_assets_path
-            /  %td.centre= link_to (fa_icon "search"), new_equery_report_assetsearch_path(searchtype: 1)
             
             - permitted_to? :new_hm, :equery_report_assetsearches do
               %tr

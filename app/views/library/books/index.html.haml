@@ -5,7 +5,7 @@
 
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    - if current_user.userable.coemail.include?('teknikpadu.com')
+    - if current_user.userable_type=='Staff' && current_user.userable.coemail.include?('teknikpadu.com')
       %li=link_to fa_icon("backward"), library_main_path, {title: (t 'library.main')}
     - permitted_to? :create, :library_books do
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_library_book_path

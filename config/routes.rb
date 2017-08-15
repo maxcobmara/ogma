@@ -672,6 +672,7 @@ Ogma::Application.routes.draw do
     resources :stationerysearches
     resources :assetsearches do
       collection do
+	get :new_asset
         get :new_hm
 	get :new_inv
 	get :new_loan

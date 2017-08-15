@@ -1,8 +1,12 @@
 class EqueryReport::AssetsearchesController < ApplicationController
-  filter_access_to :new, :create, :new_hm, :new_inv, :new_loan, :new_location, :new_yearly_report, :new_defect, :new_maintenance_list, :new_maintenance, :new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :new_initial_loss, :new_final_loss, :new_writeoff_certificate, :attribute_check => false
+  filter_access_to :new, :create, :new_asset, :new_hm, :new_inv, :new_loan, :new_location, :new_yearly_report, :new_defect, :new_maintenance_list, :new_maintenance, :new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :new_initial_loss, :new_final_loss, :new_writeoff_certificate, :attribute_check => false
   filter_access_to :show, :attribute_check => true
   
-  def new
+#   def new
+#     @assetsearch = Assetsearch.new
+#   end
+  
+  def new_asset
     @assetsearch = Assetsearch.new
   end
   
@@ -75,7 +79,7 @@ class EqueryReport::AssetsearchesController < ApplicationController
     if @assetsearch.save
       redirect_to equery_report_assetsearch_path(@assetsearch)
     else
-      render :action => 'new'
+      render :action => 'new' # TODO - what about other search type?
     end
   end
 

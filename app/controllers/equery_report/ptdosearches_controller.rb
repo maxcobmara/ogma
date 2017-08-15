@@ -33,7 +33,7 @@ class EqueryReport::PtdosearchesController < ApplicationController
   
     # Never trust parameters from the scary internet, only allow the white list through.
     def ptdosearch_params
-      params.require(:ptdosearch).permit(:attended_courses,:department, :staff_name, :staff_id, :icno, :schedulestart_start, :schedulestart_end, :college_id, [:data => {}])
+      params.require(:ptdosearch).permit(:searchby_post_id, :department, :staff_name, :staff_id, :icno, :schedulestart_start, :schedulestart_end, :college_id, [:data => {}])
     end
     
 end

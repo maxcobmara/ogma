@@ -1,0 +1,83 @@
+.mp-level
+  %h2.icon.icon-world Menu Student
+  %ul
+    - permitted_to? :show, :students do
+      %li.icon.icon-left
+        = link_to content_tag(:i, "", :class => "icon-numb") + t("student.title"), '#'
+        .mp-level
+          %h2.icon=t "student.title"
+          %a.mp-back{:href => "#"}=t('back')
+          %ul
+            - permitted_to? :update, :students do
+              - if current_user.userable_type=="Student"
+                %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), student_path(current_user.userable.id)
+            - permitted_to? :menu, :student_leaveforstudents do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.leaveforstudent.title"), student_leaveforstudents_path
+            - permitted_to? :read, :staff_mentors do
+              %li=link_to content_tag(:i, "", :class => "icon-numb") + t("staff.mentors.title"), staff_mentors_path
+
+    - permitted_to? :index, :exam_evaluate_courses do
+      %li.icon.icon-left
+        = link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.title"), '#'
+        .mp-level
+          %h2.icon=(t "exam.title")
+          %a.mp-back{:href => "#"}= t 'helpers.links.back'
+          %ul
+            - permitted_to? :menu, :exam_examresults do
+              %li.icon.icon-left
+                = link_to (t "exam.management"), '#'
+                .mp-level
+                  %h2.icon= t "exam.management"
+                  %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                  %ul
+                    %li.icon.icon-left
+                      = link_to (t "exam.result"), '#'
+                      .mp-level
+                        %h2.icon= t "exam.result"
+                        %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                        %ul
+                          - permitted_to? :examination_slip, :exam_examresults do
+                            - if current_user.college.code=="kskbjb"
+                              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examresult.exam_slip_transcript"), index2_exam_examresults_path
+                            - elsif current_user.college.code=="amsas"
+                              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examresult.exam_slip"), index2_exam_examresults_path
+
+            - permitted_to? :read, :exam_evaluate_courses do
+              - if current_user.college.code=='amsas'
+                - course_evaluation=(t "exam.evaluate_course.title2")
+              - else
+                -course_evaluation=(t "exam.evaluate_course.title")
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + course_evaluation, exam_evaluate_courses_path
+              
+    - permitted_to? :read, :library_books do  
+      %li.icon.icon-left
+        //= link_to content_tag(:i, "", :class => "book") + (t "library.title"), '#'
+        = link_to (fa_icon "book", text: (t "library.title")), '#'
+        .mp-level
+          %h2.icon= fa_icon "book", text: (t "library.title")
+          %a.mp-back{:href => "#"}=t('back')
+          %ul
+            /%li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.rules_regulations"), rules_regulations_path
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.rules_regulations"), flexipage_campus_page_path(74)
+            - permitted_to? :read, :library_books do  
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.list"), library_books_path
+            /temporary for Digital Library
+            /- permitted_to? :read, :repositories do
+            /  %li=link_to content_tag(:i, "", :class => "icon-numb") + t('repositories.list2'), index2_repositories_path
+            /- permitted_to? :read, :library_librarytransactions do 
+            /  %li.icon.icon-left
+            /    = link_to content_tag(:i, "", :class => "icon-numb")+(t "library.transaction.title"), '#'
+            /    .mp-level
+            /      %h2.icon=(t "library.transaction.title")
+            /      %a.mp-back{:href => "#"}=t('back')
+            /      %ul
+            /        %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.book2"), library_librarytransactions_path
+            /        %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "repositories.list2"), repository_loan_library_librarytransactions_path
+            /- permitted_to? :manage, :library_librarytransactions do
+            /  %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.manager"), manager_library_librarytransactions_path
+            /- permitted_to? :analysis_statistic, :library_librarytransactions do 
+            /  %li= link_to content_tag(:i, "", :class => "icon_numb") + (t "library.transaction.analysis_statistic"), analysis_statistic_library_librarytransactions_path
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.help"), flexipage_campus_page_path(80)
+            /- if current_user.userable_type=='Staff'
+            /  - if current_user.userable.coemail.include?("teknikpadu.com")
+            /    %li=link_to content_tag(:i, "", :class => "icon-numb") + (t 'library.main'), library_main_path

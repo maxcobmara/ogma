@@ -185,7 +185,7 @@
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "document.title"), documents_path
             - permitted_to? :read, :cofiles do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "cofile.title"), cofiles_path
-
+    /NOTE - min access by staff 
     /- permitted_to? :menu, :student_student_discipline_cases do
     /NOTE - min access - by student
     - permitted_to? :show, :students do
@@ -195,9 +195,11 @@
           %h2.icon=t "student.title"
           %a.mp-back{:href => "#"}=t('back')
           %ul
+            /NOTE - remove below to 'views/layouts/_student_menu.html.haml'
             - permitted_to? :update, :students do
               - if current_user.userable_type=="Student"
                 %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), student_path(current_user.userable.id)
+            /////////
             - permitted_to? :read, :students do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), students_path
             - permitted_to? :reports, :students do
@@ -284,7 +286,7 @@
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t('training.weeklytimetable.personalize'), personalize_index_training_weeklytimetables_path
             
             
-
+    /NOTE - min access by related staff
     //- permitted_to? :menu, :exam_exams do
     /NOTE - min access by student
     - permitted_to? :index, :exam_evaluate_courses do
@@ -307,8 +309,6 @@
                     %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.exam_template.title"), exam_exam_templates_path
                     %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.exams.title"), exam_exams_path
  
-            /- permitted_to? :menu, :exam_examresults do
-            /activate above, once examresult for student access ready
             - permitted_to? :menu, :exam_examresults do
               %li.icon.icon-left
                 = link_to (t "exam.management"), '#'
@@ -376,8 +376,9 @@
             - permitted_to? :analysis_statistic, :library_librarytransactions do 
               %li= link_to content_tag(:i, "", :class => "icon_numb") + (t "library.transaction.analysis_statistic"), analysis_statistic_library_librarytransactions_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.help"), flexipage_campus_page_path(80)
-            - if current_user.userable.coemail.include?("teknikpadu.com")
-              %li=link_to content_tag(:i, "", :class => "icon-numb") + (t 'library.main'), library_main_path
+            - if current_user.userable_type=='Staff'
+              - if current_user.userable.coemail.include?("teknikpadu.com")
+                %li=link_to content_tag(:i, "", :class => "icon-numb") + (t 'library.main'), library_main_path
    
             
 
