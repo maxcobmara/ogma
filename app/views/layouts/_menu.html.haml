@@ -370,24 +370,28 @@
             - permitted_to? :read, :library_books do  
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.list"), library_books_path
             /temporary for Digital Library
-            - permitted_to? :read, :repositories do
+            - permitted_to? :index2, :repositories do
               %li=link_to content_tag(:i, "", :class => "icon-numb") + t('repositories.list2'), index2_repositories_path
             - permitted_to? :read, :library_librarytransactions do 
-              %li.icon.icon-left
-                = link_to content_tag(:i, "", :class => "icon-numb")+(t "library.transaction.title"), '#'
-                .mp-level
-                  %h2.icon=(t "library.transaction.title")
-                  %a.mp-back{:href => "#"}=t('back')
-                  %ul
-                    %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.book2"), library_librarytransactions_path
-                    %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "repositories.list2"), repository_loan_library_librarytransactions_path
+              - if permitted_to? :repository_loan, :library_librarytransactions
+                %li.icon.icon-left
+                  = link_to content_tag(:i, "", :class => "icon-numb")+(t "library.transaction.title"), '#'
+                  .mp-level
+                    %h2.icon=(t "library.transaction.title")
+                    %a.mp-back{:href => "#"}=t('back')
+                    %ul
+                      %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.book2"), library_librarytransactions_path
+                      %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "repositories.list2"), repository_loan_library_librarytransactions_path
+              - else
+                %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.title"), library_librarytransactions_path
             - permitted_to? :manage, :library_librarytransactions do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.manager"), manager_library_librarytransactions_path
             - permitted_to? :analysis_statistic, :library_librarytransactions do 
               %li= link_to content_tag(:i, "", :class => "icon_numb") + (t "library.transaction.analysis_statistic"), analysis_statistic_library_librarytransactions_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.help"), flexipage_campus_page_path(80)
-            - if current_user.userable_type=='Staff'
-              - if current_user.userable.coemail.include?("teknikpadu.com")
+            /temporary for Digital Library
+            - permitted_to? :index2, :repositories do
+              - if is_staff? && current_user.userable.coemail.include?("teknikpadu.com")
                 %li=link_to content_tag(:i, "", :class => "icon-numb") + (t 'library.main'), library_main_path
    
             
@@ -480,5 +484,9 @@
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'library.title'), "/equery_reports/library"
               
           - permitted_to? :read, :repositories do
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t 'repositories.equery'), "/equery_reports/repository"
+            - if permitted_to? :new_digital_library, :equery_report_repositorysearches
+              - repo_label=(t 'repositories.equery')
+            - else
+              - repo_label=(t 'repositories.equery_iso')
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + repo_label, "/equery_reports/repository"
           

@@ -4529,6 +4529,7 @@ en:
   repositories:
     title: "MS:ISO Document Repository"
     list: "MS:ISO Document Repository List"
+    equery_iso: "Repository (MS:ISO)"
     equery: "Repository (MS:ISO / Technical)"
     document_title: Document Title
     details: "MS:ISO Document Repository Details"

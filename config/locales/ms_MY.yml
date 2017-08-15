@@ -4449,6 +4449,7 @@ ms_MY:
   repositories:
     title: "Repositori Dokumen MS:ISO"
     list: "Senarai Repositori (Dokumen MS:ISO)"
+    equery_iso: "Repositori (MS:ISO)"
     equery: "Repositori (MS:ISO / Teknikal)"
     document_title: Tajuk dokumen
     details: "Butiran Repositori Dokumen MS:ISO"
