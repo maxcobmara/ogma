@@ -87,6 +87,7 @@ class ApplicationController < ActionController::Base
       @conversation ||= mailbox.conversations.find(params[:id])
     end
     
+    #ref: https://makandracards.com/makandra/1353-make-actionmailer-use-the-current-request-host-and-protocol-for-url-generation
     def make_action_mailer_use_request_host_and_protocol
       ActionMailer::Base.default_url_options[:protocol]=request.protocol
       ActionMailer::Base.default_url_options[:host]=request.host_with_port
