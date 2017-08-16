@@ -12,7 +12,7 @@ class Librarytransaction < ActiveRecord::Base
 
   before_save :set_fine_paid_value_exist, :set_default_finepaydate, :set_default_checkoutdate_returnduedate, :set_returneddate_for_single_return
   after_save :update_book_status, :remove_reservation_fr_accs
-  before_destroy :update_book_status2
+  before_destroy :update_book_status2, :restrict_deletion_if_reserved
   
   attr_accessor :booktitle, :staf_who, :student_who, :newduedate, :late_days_count
   
@@ -278,6 +278,12 @@ class Librarytransaction < ActiveRecord::Base
     def validate_due_date_before_checkout_date
       if checkoutdate && returnduedate
         errors.add(:base, "Your must borrow before you return it") if returnduedate < checkoutdate
+      end
+    end
+
+    def restrict_deletion_if_reserved
+      unless accession.reservations.blank?
+        return false
       end
     end
 

@@ -12,7 +12,11 @@
     //.container
     #mp-pusher.mp-pusher
       .nav#mp-menu.mp-menu
-        = render 'layouts/menu'
+        /= render 'layouts/menu'
+        - if user_signed_in? && is_student?
+          = render 'layouts/student_menu'
+        - else
+          = render 'layouts/menu'
       .scroller
         .scroller-inner
           .content.clearfix

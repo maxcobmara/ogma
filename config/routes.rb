@@ -171,6 +171,7 @@ Ogma::Application.routes.draw do
         get   :inventory
         post  :inventory
         get :loanables
+        get :loanable_list
         get :kewpa4
         get :kewpa5
         get :kewpa8
@@ -190,6 +191,9 @@ Ogma::Application.routes.draw do
         get :kewpa9
         get :process2
         get :decision
+      end
+      collection do
+	get :defect_list
       end
     end
     resources :asset_losses,    as: :losses do
@@ -672,6 +676,7 @@ Ogma::Application.routes.draw do
     resources :stationerysearches
     resources :assetsearches do
       collection do
+	get :new_asset
         get :new_hm
 	get :new_inv
 	get :new_loan

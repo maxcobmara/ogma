@@ -30,8 +30,8 @@ authorization do
      if_attribute :id => is {user.college_id}
    end
    has_permission_on :campus_pages, :to =>[:manage, :page_list, :flexible]
-   has_permission_on :repositories, :to => [:manage, :download, :repository_list, :repository_list2, :index2, :new2, :loan]
-   has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show, :new_digital_library]
+   has_permission_on :repositories, :to => [:manage, :download, :repository_list] #, :repository_list2, :index2, :new2, :loan]
+   has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show] #, :new_digital_library]
    has_permission_on :staff_mentors, :to => :manage
     
   #by existing roles?
@@ -165,6 +165,18 @@ authorization do
       if_attribute :final_approve => is_not {true}
       if_attribute :college_id => is {College.where(code: 'amsas').first.id}
     end
+    
+   # Equery - staffattendancesearches & ptdosearches by STAFF role - 14Aug2017
+   has_permission_on :equery_report_staffattendancesearches, :to => [:new, :create]
+   has_permission_on :equery_report_staffattendancesearches, :to => :show do
+     if_attribute :thumb_id => is {user.userable.thumb_id}
+   end
+   has_permission_on :equery_report_ptdosearches, :to => [:new, :create]
+   has_permission_on :equery_report_ptdosearches, :to => [:show], :join_by => :or do
+     if_attribute :staff_id => is {user.userable_id}    
+     if_attribute :staff_id => is_in {user.director_subordinates}   
+   end
+   ####
  
    #instructor Appraisal
    has_permission_on :staff_instructor_appraisals, :to => :menu
@@ -302,8 +314,8 @@ authorization do
      if_attribute :is_approved => is_not {true}
    end
    
-   has_permission_on :asset_assets, :to => [:read, :loanables]                                                  # A staff may read(w/o price): defect, writeoff, loan, location dmg
-   has_permission_on :asset_asset_defects, :to => :create                                                        # A staff can register & update defect
+   has_permission_on :asset_assets, :to => [:read, :loanables, :loanable_list]                            # A staff may read(w/o price): defect, writeoff, loan, location dmg
+   has_permission_on :asset_asset_defects, :to => [:create, :defect_list]                                   # A staff can register & update defect
    has_permission_on :asset_asset_defects, :to => :read do
      if_attribute :reported_by => is {user.userable.id}
    end
@@ -389,7 +401,13 @@ authorization do
      if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
    end
    # NOTE - vehicle reservation - ends here - 30September2016
-    
+   
+   #equery-assetsearch by STAFF role - 14Aug2017
+   has_permission_on :equery_report_assetsearches, :to => [:new_defect, :new_loan, :new_location, :create]
+   has_permission_on :equery_report_assetsearches, :to => :show do
+     if_attribute :search_type => is_in {[4, 5, 7]} #4-loan(kw6), 5-location(kw7), 7-defect(kw9)
+   end
+   
    has_permission_on :student_student_discipline_cases, :to => [:menu, :create]                     # A staff can register discipline case
    has_permission_on :student_student_discipline_cases, :to => :delete, :join_by => :and do   # reporter can remove case before action type entered by Programme Mgr
      if_attribute :reported_by => is {user.userable.id}
@@ -427,6 +445,9 @@ authorization do
       if_attribute :case_id =>  is_in {StudentDisciplineCase.sstaff2(user.userable_id).pluck(:id)} # /TPHEP & Comandant should hv access
    end
 
+   #equery-studentdisciplinesearches by STAFF role - 14Aug2017
+   has_permission_on :equery_report_studentdisciplinesearches, :to => [:new, :create, :show]
+   
    has_permission_on :campus_locations, :to => [:read, :kewpa7]                                          # A staff can read+kewpa7 all location inc. staff & student residences
    
    has_permission_on :events, :to => [:create, :read]                                                             # A staff can read, create but update own
@@ -488,8 +509,8 @@ authorization do
      if_attribute :id => is_in {user.members_of_msg_group}
    end
    has_permission_on :campus_pages, :to => :flexipage                                                      # A staff can view pages (ie. library rules & regulations)
-   has_permission_on :repositories, :to => [:read, :create, :download, :repository_list, :repository_list2, :index2, :new2]
-   has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show, :new_digital_library]
+   has_permission_on :repositories, :to => [:read, :create, :download, :repository_list] #, :repository_list2, :index2, :new2]
+   has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show] #, :new_digital_library]
    has_permission_on :repositories, :to => :update do
      if_attribute :staff_id => is {user.userable.id}
    end
@@ -602,8 +623,8 @@ authorization do
   #Group Assets  -------------------------------------------------------------------------------
   role :asset_administrator do
     has_permission_on :asset_assetcategories, :to => :manage
-    has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables]
-    has_permission_on :asset_asset_defects, :to =>[:read, :kewpa9]
+    has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables, :loanable_list]
+    has_permission_on :asset_asset_defects, :to =>[:read, :kewpa9, :defect_list]
     has_permission_on :asset_asset_defects, :to =>[:update, :process2], :join_by => :and do #3nov2013, 21Jan2016
       if_attribute :is_processed => is_not {true}
     end
@@ -632,7 +653,8 @@ authorization do
     has_permission_on :campus_locations, :to => [:manage, :kewpa7, :kewpa10, :kewpa11]
     has_permission_on :asset_asset_disposals, :to =>[:manage, :kewpa17_20, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :dispose, :revalue, :verify, :view_close]
     has_permission_on :asset_asset_losses, :to => [:manage, :endorse, :edit_multiple, :update_multiple, :kewpa28, :kewpa29, :kewpa30, :kewpa31] 
-    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show, :new_hm, :new_inv, :new_loan, :new_location, :new_yearly_report, :new_defect, :new_maintenance_list, :new_maintenance, :new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :new_initial_loss, :new_final_loss, :new_writeoff_certificate]
+    
+    has_permission_on :equery_report_assetsearches, :to => [:create, :show, :new_asset, :new_hm, :new_inv, :new_loan, :new_location, :new_yearly_report, :new_defect, :new_maintenance_list, :new_maintenance, :new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :new_initial_loss, :new_final_loss, :new_writeoff_certificate]
   end
 
   #OK up to here..... 28Jan2016
@@ -927,6 +949,16 @@ authorization do
     has_permission_on :equery_report_examresultsearches, :to => [:new, :create, :show]
     has_permission_on :equery_report_evaluatecoursesearches, :to => [:new, :create, :show]
     has_permission_on :equery_report_examanalysissearches, :to => [:new, :create, :show]
+    
+    #equery search-14Aug2017
+    has_permission_on :equery_report_ptdosearches, :to => [:new, :create]
+    has_permission_on :equery_report_ptdosearches, :to => :show do
+      if_attribute :searchby_post_id => is_in {Position.where(staff_id: user.unit_members).pluck(:id)}
+    end
+    has_permission_on :equery_report_staffattendancesearches, :to => [:new, :create]
+    has_permission_on :equery_report_staffattendancesearches, :to => :show do
+      if_attribute :thumb_id => is_in {user.unit_members_thumb}
+    end
   end
   
  #Group Library   -------------------------------------------------------------------------------
@@ -934,7 +966,7 @@ authorization do
   role :librarian do
     has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import, :check_availability, :stock_listing, :book_summary]
     has_permission_on :library_accessions, :to =>[:read, :reservation, :update, :reservation_list]
-    has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :document_extending, :document_returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :repository_loan, :latereturn_report, :latereturn_technical_report]
+    has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :document_extending, :document_returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :latereturn_report, :latereturn_technical_report] #, repository_loan]
     has_permission_on :students, :to => [:read, :borang_maklumat_pelajar, :student_list]
     has_permission_on :equery_report_studentsearches, :to => [:new, :create, :show]
     has_permission_on :campus_pages, :to => :update do
@@ -943,7 +975,7 @@ authorization do
     has_permission_on :equery_report_booksearches, :to => [:new, :create, :show, :new_stock_list, :new_book_summary]
     has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
     ##additional roles for librarian --> making 'loan' for digital library (marine documentation) - 4May2017
-    has_permission_on :repositories, :to => [:manage, :download, :repository_list, :repository_list2, :index2, :new2, :loan]
+    has_permission_on :repositories, :to => [:manage, :download, :repository_list] #, :repository_list2, :index2, :new2, :loan]
     has_permission_on :campus_visitors, :to => :manage
   end
 
@@ -975,9 +1007,7 @@ authorization do
       has_permission_on :exam_examresults, :to => [:menu, :index2, :show2, :examination_slip, :examination_transcript] do
 	if_attribute :id => is_in {user.userable.resultlines.pluck(:examresult_id)}
       end
-      
-      # TODO - disable 'module viewer' training notes -> when student role is selected 16Oct2016
-      has_permission_on :training_trainingnotes, :to => [:read , :download, :trainingnote_report]
+      has_permission_on :training_trainingnotes, :to => [:menu, :read , :download, :trainingnote_report]
   end
   
   role :student_administrator do
@@ -1017,7 +1047,10 @@ authorization do
     has_permission_on :student_tenants, :to => [:manage, :index_staff, :reports,:census_level, :room_map, :room_map2, :statistics, :return_key, :return_key2, :census, :tenant_report, :tenant_report_staff, :laporan_penginapan, :laporan_penginapan2]
     has_permission_on :campus_bookingfacilities, :to => [:index, :show, :update, :approval_facility, :booking_facility]
     has_permission_on :campus_visitors, :to => :manage
-    has_permission_on :equery_report_assetsearches, :to => [:new_location, :create, :show]
+    has_permission_on :equery_report_assetsearches, :to => [:new_location, :create]
+    has_permission_on :equery_report_assetsearches, :to => :show do
+      if_attribute :search_type => is_in {[5]} #5-location(kw7)
+    end
   end
   role :warden do
     has_permission_on :campus_locations, :to => [:read, :kewpa7] #:core - NOTE - kewpa7 visible to all (sticked on wall)
@@ -1035,6 +1068,10 @@ authorization do
     has_permission_on :equery_report_studentattendancesearches, :to => [:new, :create, :show]
     has_permission_on :equery_report_studentcounselingsearches, :to => [:new, :create, :show]
     has_permission_on :equery_report_studentdisciplinesearches, :to => [:new, :create, :show]
+    has_permission_on :equery_report_assetsearches, :to => [:new_location, :create]
+    has_permission_on :equery_report_assetsearches, :to => :show do
+      if_attribute :search_type => is_in {[5]} #5-location(kw7)
+    end
   end
   
   role :unit_leader do
@@ -1051,6 +1088,16 @@ authorization do
     has_permission_on :training_programmes, :to => :manage, :join_by => :and do                     # only for Ketua Subjek Asas
       if_attribute :name => is {user.userable.positions.first.unit}
       if_attribute :course_type => is {"Commonsubject"}
+    end
+    
+    #equery search-14Aug2017
+    has_permission_on :equery_report_ptdosearches, :to => [:new, :create]
+    has_permission_on :equery_report_ptdosearches, :to => :show do
+      if_attribute :searchby_post_id => is_in {Position.where(staff_id: user.unit_members).pluck(:id)}
+    end
+    has_permission_on :equery_report_staffattendancesearches, :to => [:new, :create]
+    has_permission_on :equery_report_staffattendancesearches, :to => :show do
+      if_attribute :thumb_id => is_in {user.unit_members_thumb}
     end
   end
   
@@ -1081,6 +1128,22 @@ authorization do
     has_permission_on :staff_staff_fingerprints, :to => :approval do
       if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
     end
+    
+    #equery search-14Aug2017
+    has_permission_on :equery_report_ptdosearches, :to => [:new, :create] 
+    has_permission_on :equery_report_ptdosearches, :to => :show , :join_by => :and do
+      if_attribute :searchby_post_id => is_in {[ Position.where(name: "Timbalan Pengarah (Pengurusan)").first.id]+[Position.roots.first.id] }
+      if_attribute :college_id =>  is {College.where(code: 'kskbjb').first.id}
+    end
+    has_permission_on :equery_report_ptdosearches, :to => :show , :join_by => :and do
+      if_attribute :searchby_post_id => is {Position.roots.first.id}
+      if_attribute :college_id =>  is {College.where(code: 'amsas').first.id}
+    end
+    has_permission_on :equery_report_staffattendancesearches, :to => [:new, :create]
+    has_permission_on :equery_report_staffattendancesearches, :to => :show do
+      if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
+    end
+    
   end
   
   role :e_filing do
@@ -1116,22 +1179,22 @@ authorization do
   role :staffs_module_admin do
     has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff, :staff_list] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
     has_permission_on :campus_pages, :to => :flexipage
-    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2, :loan]
-    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show, :new_digital_library]
+    has_permission_on :repositories, :to => [:menu, :download, :repository_list]#, :loan, :repository_list2, :index2, :new2]
+    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show] #, :new_digital_library]
     has_permission_on :equery_report_staffsearch2s, :to => [:new, :create, :show]
   end
   role :staffs_module_viewer do
     has_permission_on :staff_staffs, :to => [:read, :borang_maklumat_staff, :staff_list]
     has_permission_on :campus_pages, :to => :flexipage
-    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2]
-    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show, :new_digital_library]
+    has_permission_on :repositories, :to => [:menu, :download, :repository_list] #, :repository_list2, :index2, :new2]
+    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show] #, :new_digital_library]
     has_permission_on :equery_report_staffsearch2s, :to => [:new, :create, :show]
   end
   role :staffs_module_user do
     has_permission_on :staff_staffs, :to => [:read, :update, :borang_maklumat_staff, :staff_list]
     has_permission_on :campus_pages, :to => :flexipage
-    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2]
-    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show, :new_digital_library]
+    has_permission_on :repositories, :to => [:menu, :download, :repository_list] #, :repository_list2, :index2, :new2]
+    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show] #, :new_digital_library]
     has_permission_on :equery_report_staffsearch2s, :to => [:new, :create, :show]
   end
   role :staffs_module_member do
@@ -1139,8 +1202,8 @@ authorization do
       if_attribute :id => is {user.userable.id}
     end
     has_permission_on :campus_pages, :to => :flexipage
-    has_permission_on :repositories, :to => [:menu, :download, :repository_list, :repository_list2, :index2, :new2]
-    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show, :new_digital_library]
+    has_permission_on :repositories, :to => [:menu, :download, :repository_list] #, :repository_list2, :index2, :new2]
+    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show] #, :new_digital_library]
   end
   
   #2)OK - all 4 - 4Feb2016
@@ -1649,12 +1712,24 @@ authorization do
   #18 - 3/4 OK (Admin, Viewer, User) - 9Feb2016
   role :locations_module_admin do
     has_permission_on :campus_locations, :to => [:manage, :statistic_level, :statistic_block, :census_level2, :kewpa7, :kewpa10, :kewpa11]
+    has_permission_on :equery_report_assetsearches, :to => [:new_location, :create]
+    has_permission_on :equery_report_assetsearches, :to => :show do
+      if_attribute :search_type => is_in {[5]} #5-location(kw7)
+    end
   end
   role :locations_module_viewer do
     has_permission_on :campus_locations, :to => [:read, :statistic_level, :statistic_block, :census_level2, :kewpa7, :kewpa10, :kewpa11] 
+    has_permission_on :equery_report_assetsearches, :to => [:new_location, :create]
+    has_permission_on :equery_report_assetsearches, :to => :show do
+      if_attribute :search_type => is_in {[5]} #5-location(kw7)
+    end
   end
   role :locations_module_user do
     has_permission_on :campus_locations, :to => [:read, :update, :statistic_level, :statistic_block, :census_level2, :kewpa7, :kewpa10, :kewpa11] 
+    has_permission_on :equery_report_assetsearches, :to => [:new_location, :create]
+    has_permission_on :equery_report_assetsearches, :to => :show do
+      if_attribute :search_type => is_in {[5]} #5-location(kw7)
+    end
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - locationown[1].disabled=true) as the owner of this module requires 'Asset Administrator' / 'Facilities Administrator' role & 'Staff' / 'Warden' requires read only
 #   role :locations_module_member do
@@ -1972,15 +2047,15 @@ authorization do
   #29-OK, extend, return completed
   #29 - 3/4 OK (Admin/Viewer/User)
   role :library_transactions_module_admin do
-    has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :document_extending, :document_returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :repository_loan, :latereturn_report, :latereturn_technical_report] 
+    has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :document_extending, :document_returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :latereturn_report, :latereturn_technical_report] #, :repository_loan]
     has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
   end
   role :library_transactions_module_viewer do
-    has_permission_on :library_librarytransactions, :to => [:read, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :repository_loan, :latereturn_report, :latereturn_technical_report] 
+    has_permission_on :library_librarytransactions, :to => [:read, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :latereturn_report, :latereturn_technical_report]  #, :repository_loan]
     has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
   end
   role :library_transactions_module_user do
-    has_permission_on :library_librarytransactions, :to => [:read, :update, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :repository_loan, :latereturn_report, :latereturn_technical_report]
+    has_permission_on :library_librarytransactions, :to => [:read, :update, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext, :latereturn_report, :latereturn_technical_report] #, :repository_loan]
     has_permission_on :equery_report_librarytransactionsearches, :to => [:new, :create, :show]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - lbrary[0].disabled=true as the only owner of this module requires 'Librarian' role
@@ -2222,12 +2297,24 @@ authorization do
   #39-OK - but kewpa31 link not ready (write-off)
   role :asset_losses_module_admin do
      has_permission_on :asset_asset_losses, :to => [:manage, :endorse, :edit_multiple, :update_multiple, :kewpa28, :kewpa29, :kewpa30, :kewpa31]
+     has_permission_on :equery_report_assetsearches, :to => [:new_initial_loss, :new_final_loss, :new_writeoff_certificate, :create]
+     has_permission_on :equery_report_assetsearches, :to => [:show] do
+       if_attribute :search_type => is_in {[15, 16, 17]} #15-initial loss(kw28), 16-final loss(kw30), 17-writeoff(kw31)
+     end
   end
   role :asset_losses_module_viewer do
      has_permission_on :asset_asset_losses, :to => [:read, :kewpa28, :kewpa29, :kewpa30, :kewpa31] 
+     has_permission_on :equery_report_assetsearches, :to => [:new_initial_loss, :new_final_loss, :new_writeoff_certificate, :create]
+     has_permission_on :equery_report_assetsearches, :to => [:show] do
+       if_attribute :search_type => is_in {[15, 16, 17]} #15-initial loss(kw28), 16-final loss(kw30), 17-writeoff(kw31)
+     end
   end
   role :asset_losses_module_user do
     has_permission_on :asset_asset_losses, :to => [:read, :update, :endorse, :edit_multiple, :update_multiple, :kewpa28, :kewpa29, :kewpa30, :kewpa31] 
+     has_permission_on :equery_report_assetsearches, :to => [:new_initial_loss, :new_final_loss, :new_writeoff_certificate, :create]
+     has_permission_on :equery_report_assetsearches, :to => [:show] do
+       if_attribute :search_type => is_in {[15, 16, 17]} #15-initial loss(kw28), 16-final loss(kw30), 17-writeoff(kw31)
+     end
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - assetown[1].disabled=true as the only owner is asset_administrator
 
@@ -2236,12 +2323,24 @@ authorization do
   #40 - Revision 1Oct2016: Vehicle reservation added
   role :asset_loans_module_admin do
      has_permission_on :asset_asset_loans, :to => [:manage, :approval, :vehicle_endorsement, :vehicle_approval, :vehicle_return, :lampiran_a, :vehicle_reservation]
+     has_permission_on :equery_report_assetsearches, :to => [:new_loan, :create]
+     has_permission_on :equery_report_assetsearches, :to => [:show] do
+       if_attribute :search_type => is_in {[4]} #4-loan(kw6)
+     end
   end
   role :asset_loans_module_viewer do
      has_permission_on :asset_asset_loans, :to => [:read, :lampiran_a, :vehicle_reservation]
+     has_permission_on :equery_report_assetsearches, :to => [:new_loan, :create]
+     has_permission_on :equery_report_assetsearches, :to => [:show] do
+       if_attribute :search_type => is_in {[4]} #4-loan(kw6)
+     end
   end
   role :asset_loans_module_user do
     has_permission_on :asset_asset_loans, :to => [:read, :approval, :vehicle_endorsement, :vehicle_approval, :vehicle_return, :update, :lampiran_a, :vehicle_reservation]
+     has_permission_on :equery_report_assetsearches, :to => [:new_loan, :create]
+     has_permission_on :equery_report_assetsearches, :to => [:show] do
+       if_attribute :search_type => is_in {[4]} #4-loan(kw6)
+     end
   end
   role :asset_loans_module_member do
     #own record (staff - loaner / unit members) - NOTE - applied to both : Vehicle & Other Asset Loan/Reservation
@@ -2320,35 +2419,63 @@ authorization do
     #  if_attribute :is_approved => is_not {true}
     #  if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
     #end
+     has_permission_on :equery_report_assetsearches, :to => [:new_loan, :create]
+     has_permission_on :equery_report_assetsearches, :to => [:show] do
+       if_attribute :search_type => is_in {[4]} #4-loan(kw6)
+     end
   end
   
   #41-OK
   role :asset_disposals_module_admin do
      has_permission_on :asset_asset_disposals, :to =>[:manage, :kewpa17_20, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :dispose, :revalue, :verify, :view_close]
+     has_permission_on :equery_report_assetsearches, :to => [:new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :create]
+     has_permission_on :equery_report_assetsearches, :to => [:show] do
+       if_attribute :search_type => is_in {[10, 11, 12, 13, 14]} #10-pep(kw16), 11-examiner(kw17), 12-d_cert(kw18), 13-d_witness(kw19), 14-yearlyreport(kw20)
+     end
   end
   role :asset_disposals_module_viewer do
      has_permission_on :asset_asset_disposals, :to => [:read, :kewpa17_20, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19]
+     has_permission_on :equery_report_assetsearches, :to => [:new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :create]
+     has_permission_on :equery_report_assetsearches, :to => [:show] do
+       if_attribute :search_type => is_in {[10, 11, 12, 13, 14]} #10-pep(kw16), 11-examiner(kw17), 12-d_cert(kw18), 13-d_witness(kw19), 14-yearlyreport(kw20)
+     end
   end
   role :asset_disposals_module_user do
      has_permission_on :asset_asset_disposals, :to =>[:read, :update, :kewpa17_20, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :dispose, :revalue, :verify, :view_close]
+     has_permission_on :equery_report_assetsearches, :to => [:new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :create]
+     has_permission_on :equery_report_assetsearches, :to => [:show] do
+       if_attribute :search_type => is_in {[10, 11, 12, 13, 14]} #10-pep(kw16), 11-examiner(kw17), 12-d_cert(kw18), 13-d_witness(kw19), 14-yearlyreport(kw20)
+     end
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - assetown[1].disabled=true as the only owner is asset_administrator
 
   #42-OK
   #42 3/4 OK (Admin/Viewer/User) - Member : workable for reporter & decisioner only
   role :asset_defect_module_admin do
-    has_permission_on :asset_asset_defects, :to => [:manage, :process2, :decision, :kewpa9]
+    has_permission_on :asset_asset_defects, :to => [:manage, :process2, :decision, :kewpa9, :defect_list]
+    has_permission_on :equery_report_assetsearches, :to => [:new_defect, :create]
+    has_permission_on :equery_report_assetsearches, :to => :show do
+      if_attribute :search_type => is_in {[7]} #7-defect(kw9)
+    end
   end
   role :asset_defect_module_viewer do
-    has_permission_on :asset_asset_defects, :to => [:read, :kewpa9]
+    has_permission_on :asset_asset_defects, :to => [:read, :kewpa9, :defect_list]
+    has_permission_on :equery_report_assetsearches, :to => [:new_defect, :create]
+    has_permission_on :equery_report_assetsearches, :to => :show do
+      if_attribute :search_type => is_in {[7]} #7-defect(kw9)
+    end
   end
   role :asset_defect_module_user do
-    has_permission_on :asset_asset_defects, :to => [:read, :update, :process2, :decision, :kewpa9]
+    has_permission_on :asset_asset_defects, :to => [:read, :update, :process2, :decision, :kewpa9, :defect_list]
+    has_permission_on :equery_report_assetsearches, :to => [:new_defect, :create]
+    has_permission_on :equery_report_assetsearches, :to => :show do
+      if_attribute :search_type => is_in {[7]} #7-defect(kw9)
+    end
   end
   # NOTE - workable only for defect reporter & decisioner, still require 'Asset Administrator' role for 1st time access of defectives one, for processing purpose.
   role :asset_defect_module_member do
     #own records (Staff role)
-    has_permission_on :asset_asset_defects, :to => :create                                                        # A staff can register & update defect
+    has_permission_on :asset_asset_defects, :to => [:create, :defect_list]                                 # A staff can register & update defect
     has_permission_on :asset_asset_defects, :to => :read do
       if_attribute :reported_by => is {user.userable.id}
     end
@@ -2376,26 +2503,38 @@ authorization do
     has_permission_on :asset_asset_defects, :to =>[:update, :process2], :join_by => :and do #3nov2013, 21Jan2016
       if_attribute :is_processed => is_not {true}
     end
+    has_permission_on :equery_report_assetsearches, :to => [:new_defect, :create]
+    has_permission_on :equery_report_assetsearches, :to => :show do
+      if_attribute :search_type => is_in {[7]} #7-defect(kw9)
+    end
   end
   
   #43-OK, but for read - price is hidden & visible only to those with update access
   #43 3/4 OK (Admin/User/Member), Viewer - restricted access for document containing pricing details : cost/maintenance
   role :asset_list_module_admin do
-    has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables]
-    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show, :new_hm, :new_inv, :new_loan, :new_location, :new_yearly_report, :new_defect, :new_maintenance_list, :new_maintenance, :new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :new_initial_loss, :new_final_loss, :new_writeoff_certificate]
+    has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables, :loanable_list]
+    has_permission_on :equery_report_assetsearches, :to => [:create, :new_asset, :new_hm, :new_inv, :new_loan, :new_yearly_report, :new_maintenance_list, :new_maintenance]
+    has_permission_on :equery_report_assetsearches, :to => :show do
+      if_attribute :search_type => is_in {[1, 2, 3, 4, 6, 8, 9]} #1-kw2&kw3, 2-kw4, 3-kw5, 4-loan(kw6), 6-yerlyreport(kw8), 8-maintls(kw13), 9-maint(kw14)
+    end
   end
   #restriction - no PDF allowed : contains pricing details 2, 3, 4, 5 & 8 (kos perolehan) 13 & 14 (maintenance) 
   role :asset_list_module_viewer do
-    has_permission_on :asset_assets, :to => [:read, :kewpa6, :loanables]
-    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show, :new_hm, :new_inv, :new_loan, :new_location, :new_yearly_report, :new_defect, :new_maintenance_list, :new_maintenance, :new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :new_initial_loss, :new_final_loss, :new_writeoff_certificate]
+    has_permission_on :asset_assets, :to => [:read, :kewpa6, :loanables, :loanable_list]
+    has_permission_on :equery_report_assetsearches, :to => [:create, :new_loan]
+    has_permission_on :equery_report_assetsearches, :to => :show do
+      if_attribute :search_type => is_in {[4]} #4-loan(kw6)
+    end
   end
   role :asset_list_module_user do
-    has_permission_on :asset_assets, :to => [:read, :update, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables]
-    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show, :new_hm, :new_inv, :new_loan, :new_location, :new_yearly_report, :new_defect, :new_maintenance_list, :new_maintenance, :new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :new_initial_loss, :new_final_loss, :new_writeoff_certificate]
+    has_permission_on :asset_assets, :to => [:read, :update, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables, :loanable_list]
+    has_permission_on :equery_report_assetsearches, :to => [:create, :new_asset, :new_hm, :new_inv, :new_loan, :new_yearly_report, :new_maintenance_list, :new_maintenance]
+    has_permission_on :equery_report_assetsearches, :to => :show do
+      if_attribute :search_type => is_in {[1, 2, 3, 4, 6, 8, 9]} #1-kw2&kw3, 2-kw4, 3-kw5, 4-loan(kw6), 6-yerlyreport(kw8), 8-maintls(kw13), 9-maint(kw14)
+    end    
   end
   role :asset_list_module_member do
-    has_permission_on :asset_assets, :to => [:read, :loanables]
-    has_permission_on :equery_report_assetsearches, :to => [:new, :create, :show, :new_hm, :new_inv, :new_loan, :new_location, :new_yearly_report, :new_defect, :new_maintenance_list, :new_maintenance, :new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :new_initial_loss, :new_final_loss, :new_writeoff_certificate]
+    has_permission_on :asset_assets, :to => [:read, :loanables, :loanable_list]
   end
   #end for Assets modules#######################################
   #start of Support table / E FIlling modules##################################

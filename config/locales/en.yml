@@ -847,7 +847,7 @@ en:
     rule17: "E-Filing modules (Events, Bulletins, Files, Local Messaging) requires access to Documents modules (Admin/Viewer/User/Member) to be activated."
     rule18: "Support Tables :"
     rule18a: "Activate 'Banks', 'Titles', 'Staff Shifts', 'Ranks', 'Employment Grades' & Post Information' in addition to access by Staffs modules."
-    rule18b: "Activate 'Travel Claims Transport Groups' & 'Travel Claim Mileage Rates'in addition to access by Travel Claims modules."
+    rule18b: "Activate 'Travel Claims Transport Groups' & 'Travel Claim Mileage Rates' in addition to access by Travel Claims modules."
     rule18c: "Activate 'Asset Categories' in addition to access by 'Asset List' modules."
     rule18d: "Activate 'Visitors' in addition to access by 'Course Evaluation (Programme)' modules."
     rule18d2: "Activate 'Visitors' in addition to access by 'Invitation Lecturer Evaluation' modules."
@@ -2482,6 +2482,7 @@ en:
     
     defect:
       title: Asset Defect
+      list: Asset Defect Listing
       details: Defect Details
       notes: Notes
       new: New Defect Report
@@ -4529,6 +4530,7 @@ en:
   repositories:
     title: "MS:ISO Document Repository"
     list: "MS:ISO Document Repository List"
+    equery_iso: "Repository (MS:ISO)"
     equery: "Repository (MS:ISO / Technical)"
     document_title: Document Title
     details: "MS:ISO Document Repository Details"

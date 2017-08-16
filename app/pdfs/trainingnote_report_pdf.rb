@@ -1,15 +1,18 @@
 class Trainingnote_reportPdf < Prawn::Document
-  def initialize(trainingnotes, trainingnotes2, view, college)
+  def initialize(trainingnotes, trainingnotes2, view, curr_user)
     super({top_margin: 30,  bottom_margin: 35, page_size: 'A4', page_layout: :landscape })
     @trainingnotes = trainingnotes
     @trainingnotes2 = trainingnotes2
     @view = view
-    @college=college
+    @college=curr_user.college
+    @curr_user=curr_user
     font "Helvetica"
     record
     page_count.times do |i|
       go_to_page(i+1)
-      footer
+      if curr_user.userable_type=='Staff'
+        footer
+      end
     end
   end
 

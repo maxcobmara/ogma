@@ -1,0 +1,41 @@
+/NOTE - this part shall cater for existing Training Notes without Topic Detail - applied only to KSKBJB
+/as for AMSAS - latest codes updates -- New Training Note (Topic selection - filtered by Topic Detail record)
+/TODO - to remove this part when no longer required
+%tr
+  %td.group{colspan: 10, style: 'background-color: #D2D2D2; color: red;'}=t('training.trainingnote.topicdetail_not_exist')
+- for tnote in trainingnotes2.where('topicdetail_id is null')
+  %tr
+    - if is_staff?
+      %td
+        - if tnote.timetable_id?
+          = fa_icon("check-square") 
+        - else
+          - if tnote.lesson_plan_trainingnotes.count > 0
+            = fa_icon("check-square-o")
+          - else
+            = fa_icon("minus")
+    /%td &nbsp;
+    /%td &nbsp;
+    /%td &nbsp;
+    %td
+      =h link_to tnote.title, training_trainingnote_path(tnote)
+      /- if tnote.topicdetail_id.blank? && tnote.timetable_id!=nil
+      - if tnote.topicdetail_id.blank? 
+        %br
+        = link_to "#{(t 'training.trainingnote.create_one')}", new_training_topicdetail_path
+        =t('training.trainingnote.tomatch')
+
+        - if tnote.timetable_id!=nil
+          - @topic=WeeklytimetableDetail.find(tnote.timetable_id).topic
+          %br
+          ="("+(t 'training.trainingnote.topic')+" : "+Programme.find(@topic).semester_subject_topic+")"
+
+    %td=tnote.reference
+    %td=tnote.version
+    %td=tnote.release.try(:strftime, '%d %b %Y')
+    %td=tnote.document_file_name
+    /= link_to image_tag('attach.png'), prog.document.url
+    /&nbsp; 
+    /= link_to prog.document_file_name,prog.document.url
+    /%BR
+    %td= tnote.staff_id? ? tnote.note_creator.staff_with_rank : ""

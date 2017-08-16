@@ -17,7 +17,8 @@
             %td.centre=no+=1
             %td= link_to (t 'repositories.list'), repositories_path
             %td.centre= link_to (fa_icon "search"), new_equery_report_repositorysearch_path
-          %tr
-            %td.centre=no+=1
-            %td= link_to (t 'repositories.list2'), index2_repositories_path
-            %td.centre= link_to (fa_icon "search"), new_digital_library_equery_report_repositorysearches_path
+          - permitted_to? :new_digital_library, :equery_report_repositorysearches do
+            %tr
+              %td.centre=no+=1
+              %td= link_to (t 'repositories.list2'), index2_repositories_path
+              %td.centre= link_to (fa_icon "search"), new_digital_library_equery_report_repositorysearches_path

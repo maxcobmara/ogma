@@ -11,8 +11,10 @@ class Ptdosearch < ActiveRecord::Base
   def set_staff_data
     unless staff_name.blank?
       a,b = staff_name.split("  ")
+      staff_icno=a.gsub("-","")
       self.staff_name=b
-      self.icno=a.gsub("-","")
+      self.icno=staff_icno
+      self.staff_id=Staff.where(icno: staff_icno).first.id
     end
     if schedulestart_start.blank? && !schedulestart_end.blank?
       self.schedulestart_start=schedulestart_end
@@ -26,13 +28,12 @@ class Ptdosearch < ActiveRecord::Base
   private
 
   def find_ptdos
-    #Ptdo.find(:all, :conditions => conditions,  :order => orders)   
-    Ptdo.where(conditions).order(orders)
+    Ptdo.where(conditions).where('(final_approve is true AND trainee_report is not null)').order(orders)
   end
  
-  def attended_courses_conditions
-   ['(final_approve is true AND trainee_report is not null)',] if attended_courses==1
-  end
+#   def attended_courses_conditions
+#    ['(final_approve is true AND trainee_report is not null)',] if attended_courses==1
+#   end
   
 #WORKING : Department part - hide 29April2015
 #   def department_conditions

@@ -7,7 +7,10 @@
     .tab-content{style:"padding-top:1em"}
       #search.tab-pane.active
         %br
-        = f.hidden_field :attended_courses, value: 1 
+        /= f.hidden_field :attended_courses, value: 1 
+        /NOTE - refer auth rules, capture position id instead
+        - if current_user.userable.positions.count > 0
+          = f.hidden_field :searchby_post_id, value: current_user.userable.positions.first.id
         .col-md-offset-2
           .form-group
             .col-sm-2.control-label

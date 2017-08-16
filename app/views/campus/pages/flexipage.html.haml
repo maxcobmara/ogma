@@ -2,7 +2,7 @@
 .page-header
   %h1=@page.title
 = render 'shared/flashes'
-- if current_user.userable.coemail.include?('teknikpadu.com')
+- if current_user.userable_type=='Staff' && current_user.userable.coemail.include?('teknikpadu.com')
   =link_to fa_icon("backward"), library_main_path, {title: (t 'library.main')}
 .row
   .col-md-6.col-md-offset-3
