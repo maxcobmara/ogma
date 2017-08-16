@@ -1,0 +1,32 @@
+- model_class = Position
+.page-header
+  %h1= t('position.listing')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    - permitted_to? :create, :staff_positions do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new')+" (root)")), new_staff_position_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li.dropdown
+      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+        = fa_icon "print", text: (t 'actions.print')
+        %b.caret
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th{width: '30%'}= sort_link(@search, :code, (t 'staff.titles.titlecode'))
+        %th{width: '40%'}= sort_link(@search, :name, (t 'staff.titles.name'))
+        %th{width: '30%'}=(t 'staff.titles.berhormat')
+
+    %tbody
+    = render "index_search"
+    - @titles.each do |title|
+      %tr
+        %td=title.titlecode
+        %td=link_to title.name, staff_title_path(title)
+        %td=title.berhormat==true ? fa_icon("check") : fa_icon("times")
+
+  .right{style:"padding:0 30px; margin:0;"}= paginate @titles, :theme => 'twitter-bootstrap-3'

@@ -1266,7 +1266,7 @@ en:
     passportno: " (or passport no for non-citizens)"
     name: Name
     code: Staff Code
-    account: Akaun
+    account: Account
     no_account: "This staff did not have any ICMS account."
     thumb: Thumb ID
     shift: Staff Shift
@@ -1327,11 +1327,12 @@ en:
     position_id: Position
     reports_to: Reports To 
     messages: Messages
+    settings: Settings
     search:
       ic_no: Staff Search
 
     titles:
-      title: Title
+      title: Staff Title
       list: Title List
       new: New Title
       edit: Edit Title
