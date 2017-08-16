@@ -1299,6 +1299,7 @@ ms_MY:
     position_id: Jawatan
     reports_to: Melapor Kepada
     messages: Pemesejan
+    settings: Tetapan
     search:
       ic_no: Carian Kakitangan
     

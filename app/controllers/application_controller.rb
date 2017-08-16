@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   before_filter { |c| Authorization.current_user = c.current_user }
   before_filter :setup_college_scope
+  before_filter :make_action_mailer_use_request_host_and_protocol
   helper :bootstrap_icon, :devise
   helper_method :mailbox, :conversation
 
@@ -84,5 +85,11 @@ class ApplicationController < ActionController::Base
     end
     def conversation
       @conversation ||= mailbox.conversations.find(params[:id])
+    end
+    
+    #ref: https://makandracards.com/makandra/1353-make-actionmailer-use-the-current-request-host-and-protocol-for-url-generation
+    def make_action_mailer_use_request_host_and_protocol
+      ActionMailer::Base.default_url_options[:protocol]=request.protocol
+      ActionMailer::Base.default_url_options[:host]=request.host_with_port
     end
 end
