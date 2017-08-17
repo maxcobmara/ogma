@@ -12,9 +12,14 @@
             - permitted_to? :read, :staff_staffs do
               %li= link_to t('staff.list'), staff_infos_path
             - permitted_to? :read, :staff_positions do
-              /Task & Responsibilities
-              %li= link_to content_tag(:i, "", :class => "icon-numb") + t("position.index"), staff_positions_path
-              %li= link_to content_tag(:i, "", :class => "icon-numb") + "Position Listing", listing_staff_positions_path
+              %li.icon.icon-left
+                = link_to t('position.title'), '#'
+                .mp-level
+                  %h2.icon=t('position.title')
+                  %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                  %ul
+                    %li= link_to content_tag(:i, "", :class => "icon-numb") + t("position.index"), staff_positions_path
+                    %li= link_to content_tag(:i, "", :class => "icon-numb") + t("position.list"), listing_staff_positions_path
             - permitted_to? :manager, :staff_staff_attendances do
               %li.icon.icon-left
                 = link_to t('staff_attendance.title'), '#'

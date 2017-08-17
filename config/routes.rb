@@ -18,7 +18,8 @@ Ogma::Application.routes.draw do
         get :maklumat_perjawatan
         get :maklumat_perjawatan_excel
         get :organisation_chart
-	get :listing
+        get :listing
+        get :position_list
       end
     end
     resources :staff_appraisals do

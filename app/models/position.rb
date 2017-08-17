@@ -359,11 +359,11 @@ class Position < ActiveRecord::Base
     a
   end
   
-  def self.repeated_post(ancs, post, anch, hp)
+  def self.nested_post(ancs, post, anch, hp)
     a=""
     pp_count=-1
     post.descendants.at_depth(ancs).order(code: :asc).each do |pp|
-      unless pp.name.include?("Jangan Delete Dulu")
+      unless pp.name.include?("Jangan Delete Dulu")  #remark this line for checking
       
         pp_count+=1
         anch2=""
@@ -380,10 +380,20 @@ class Position < ActiveRecord::Base
         <span class='min_grade'>#{pp.try(:staffgrade).try(:name)}</span>
         <span class='unit_name'> #{pp.unit}</span><span class='staff'>#{pp.blank? ? '-' : pp.try(:staff).try(:staff_with_rank)}</span>"
          a+="</span>"  #ending for span Collapsable
-         a+="<ul id=#{id2} class='non_bulleted'>"+Position.repeated_post(ancs+1, pp, anch2, hp) +"</ul><span class='divider2'></span></li>"
+         a+="<ul id=#{id2} class='non_bulleted'>"+Position.nested_post(ancs+1, pp, anch2, hp) +"</ul><span class='divider2'></span></li>"
        
-      end
+      end   #remark this line for checking
     end   
+    a
+  end
+  
+  def self.nested_post_pdf(ancs, post)
+    #a=[["aa"], ["bb"], ["cc"]]
+    a=[]
+    post.descendants.at_depth(ancs).order(code: :asc).each do |pp|
+      a << ["#{pp.combo_code} #{pp.name}"]
+      a+=Position.nested_post_pdf(ancs+1, pp)
+    end
     a
   end
   

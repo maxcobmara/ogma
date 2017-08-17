@@ -8,10 +8,7 @@
     - permitted_to? :create, :staff_positions do
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new')+" ("+(t 'position.root')+")")), new_staff_position_path
   %ul.nav.navbar-nav.navbar-right
-    %li.dropdown
-      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-        = fa_icon "print", text: (t 'actions.print')
-        %b.caret
+    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')), position_list_staff_positions_path(params.merge(format: 'pdf' ))
 
 .row
   .col-md-12
@@ -45,14 +42,13 @@
 
 /Positions - ancestry_depth=0
 %ul#programme_tree
-  /NOTE - current status - applicable to 1 root record only - 17Aug2017
-  /- count=-1
+  - count=0
   - @positions.group_by(&:root).sort.each do |root_post, positions| 
-    /- count+=1
+    - count+=1
     %li
       %span.Collapsable
         - if root_post.descendants.count > 0
-          %span{id: "anchor_#{1}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
+          %span{id: "anchor_#{count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
         - else
           = fa_icon("minus-square-o")
         %span.programme_list
@@ -64,11 +60,11 @@
         %span.staff=h root_post.staff.blank? ? "-" : root_post.staff.staff_with_rank
       
       /Positions - ancestry_depth > 0
-      - ancs=1
-      - anch=1
-      %ul{id: "tree_#{ancs}", class: 'non_bulleted'}=Position.repeated_post(ancs, root_post, anch, hp).html_safe
-      
-      
+      /NOTE - ancs=1, anch=1
+      - ancs=count
+      - anch=count
+      %ul{id: "tree_#{ancs}", class: 'non_bulleted'}=Position.nested_post(ancs, root_post, anch, hp).html_safe
+
 
 //=========================
 /Programme @ 1st level
