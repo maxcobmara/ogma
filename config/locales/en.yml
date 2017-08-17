@@ -2067,6 +2067,7 @@ en:
     tasks_main: Main Tasks
     tasks_other: Other Tasks
     grade_id: Minimum Grade Requirement
+    min_grade: Minimum Grade
     staff_id: Staff
     is_acting: Is Acting 
     postinfo_id: Position Info

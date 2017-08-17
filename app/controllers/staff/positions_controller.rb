@@ -9,6 +9,15 @@ class Staff::PositionsController < ApplicationController
     render :layout => 'basic'
   end
   
+  def listing
+    if current_user.roles.pluck(:authname).include?("developer")
+      @positions = Position.order("combo_code ASC")
+    else
+      @positions = Position.where.not('name ILIKE(?)', "%Jangan Delete Dulu%").order("combo_code ASC")
+    end
+    
+  end
+  
   def new
     @position=Position.new(:parent_id => params[:parent_id])
     respond_to do |format|

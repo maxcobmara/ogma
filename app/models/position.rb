@@ -358,6 +358,56 @@ class Position < ActiveRecord::Base
     end
     a
   end
+  
+#   - if root_post.descendants.count > 0
+#           %span{id: "anchor_#{count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
+#         - else
+#           = fa_icon("minus-square-o")
+# 	  
+# 	 
+  
+  
+  def self.jab(ancs, post, anch) #anchor_#{ancs}
+    a=""
+    pp_count=-1
+    post.descendants.at_depth(ancs).order(code: :asc).each do |pp|
+      pp_count+=1
+      #anch=anch+"_#{pp_count}"
+      #anch2="#{ancs}_#{pp_count}"
+      anch2=""
+      anch2+="#{anch}_#{pp_count}"
+      idnye="anchor_#{anch2}"
+      id2="tree_#{anch2}"
+      if pp.descendants.count > 0
+        aaa="<span id=#{idnye} class='ancmain'><a href='#'><i class='fa fa-plus-square-o'></i></a></span>"
+      else
+        aaa="<i class='fa fa-minus-square-o'></i>"
+      end
+      a+="<li><span class='Collapsable'>#{aaa}
+      <span class='programme_list'>&nbsp;&nbsp;<b>#{pp.combo_code}</b> - #{pp.name} ====>#{anch2}: #{idnye})</span>
+      <span class='min_grade'>#{pp.try(:staffgrade).try(:name)}</span>
+      <span class='unit_name'> #{pp.unit}</span><span class='staff'>#{pp.blank? ? '-' : pp.try(:staff).try(:staff_with_rank)}</span>"
+       a+="</span>"  #ending for span Collapsable
+
+       a+="<ul id=#{id2} class='non_bulleted'>"+Position.jab(ancs+1, pp, anch2) +"</ul></li>"
+    end   
+    a
+  end
+#   {id: "tree_#{count}", class: 'non_bulleted'}
+#   def self.jab(ancs, post)
+#     a=""
+#     post.descendants.at_depth(ancs).order(code: :asc).each do |pp|
+#       if pp.descendants.count > 0
+#         aaa="<span id='anchor_ancs' class='ancmain'><a href='#'><i class='fa fa-plus-square-o'></i>
+# </a></span>"
+#       end
+#       a+="<li><span class='Collapsable'>#{aaa} <span class='programme_list'>#{pp.combo_code} - #{pp.name}</span><span class='min_grade'>#{pp.try(:staffgrade).try(:name)}</span><span class='unit_name'> #{pp.unit}</span><span class='staff'>#{pp.blank? ? '-' : pp.try(:staff).try(:staff_with_rank)}</span>"
+#       a+="<ul>"+Position.jab(ancs+1, pp) +"</ul>"
+#       a+="</span></li>"
+#     end   
+#     a
+#   end
+  
 
 end
 

@@ -1963,6 +1963,7 @@ ms_MY:
     tasks_main: Tugas Utama
     tasks_other: Lain - lain Tugas
     grade_id: Gred Minima Diperlukan
+    min_grade: Gred Minima
     staff_id: Staf
     is_acting: Bertindak Sebagai 
     postinfo_id: Butiran Perjawatan
