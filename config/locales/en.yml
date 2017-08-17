@@ -2077,6 +2077,17 @@ en:
     no_staff: No Staff
     get_all: Get all 
     get_matched: Get Matched
+    root: root
+    remark_title: Remark
+    remark_text1: Click
+    remark_text2: to
+    remark_text3: display
+    remark_text4: hide
+    remark_text5: descendants of a node.
+    remark_text6: To create a new 
+    remark_text7: descendant 
+    remark_text8: node (other than root), select 'New node' in a parent node 'Show' page.
+    remark_text9: "Click at 'Position' to display 'Show' page."
     
   staff_attendance:
     title: Staff Attendance

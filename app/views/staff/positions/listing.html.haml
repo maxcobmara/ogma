@@ -1,29 +1,58 @@
 - model_class = Position
 .page-header
-  %h1= t('position.listing')
+  %h1= t('position.list')
+- hp=request.host_with_port
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
     - permitted_to? :create, :staff_positions do
-      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new')+" (root)")), new_staff_position_path
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new')+" ("+(t 'position.root')+")")), new_staff_position_path
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li.dropdown
       %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
         = fa_icon "print", text: (t 'actions.print')
         %b.caret
 
-/////////////
-//===============
-/Programme @ 1st level
+.row
+  .col-md-12
+    .alert.alert-warning
+      %strong=t 'position.remark_title'
+      %ol
+        %li 
+          =t 'position.remark_text1'
+          &nbsp;
+          = fa_icon("plus-square-o")
+          \/
+          = fa_icon("plus-square")
+          &nbsp;
+          =t 'position.remark_text2'
+          %u=t 'position.remark_text3'
+          \/ 
+          %u=t 'position.remark_text4'
+          =t 'position.remark_text5'
+        %li=(t 'position.remark_text9')
+        %li 
+          =t 'position.remark_text6'
+          %i=t 'position.remark_text7'
+          =t 'position.remark_text8'
+      
+%ul#header_tree
+  %li
+    %span.combo_code= t('position.name')
+    %span.min_grade=t('position.min_grade')
+    %span.unit_name Unit
+    %span.staff=t('position.staff_id')
+
+/Positions - ancestry_depth=0
 %ul#programme_tree
-  - count=-1
+  /NOTE - current status - applicable to 1 root record only - 17Aug2017
+  /- count=-1
   - @positions.group_by(&:root).sort.each do |root_post, positions| 
-    - count+=1
+    /- count+=1
     %li
       %span.Collapsable
         - if root_post.descendants.count > 0
-          %span{id: "anchor_#{count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
+          %span{id: "anchor_#{1}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
         - else
           = fa_icon("minus-square-o")
         %span.programme_list
@@ -33,233 +62,174 @@
         %span.min_grade=h root_post.try(:staffgrade).try(:name)
         %span.unit_name=h root_post.unit
         %span.staff=h root_post.staff.blank? ? "-" : root_post.staff.staff_with_rank
-        /- anch="anchor_#{1}"
-        - anch=1
-      %ul{id: "tree_#{1}", class: 'non_bulleted'}=Position.jab(1, root_post, anch).html_safe
-        
-      /%ul
-      /  - root_post.descendants.at_depth(1).order(code: :asc).each do |pp|
-      /    %li
-      /      %span.programme_list=pp.combo_code
-      /      %ul
-      /        - pp.descendants.at_depth(2).order(code: :asc).each do |p2|
-      /          %li
-      /            %span.programme_list=p2.combo_code
-      /            %ul
-       
-            
--max_ancestry=@positions.pluck(:ancestry_depth).uniq.max
-%ul#programme_tree
-  - count=-1
-  - @positions.group_by(&:root_id).sort.each do |rootid, positions| 
-    - count+=1
-    %li
-      - course_rec = Position.where(id: rootid)[0]
-      %span.Collapsable
-        - if course_rec.descendants.count > 0
-          %span{id: "anchor_#{count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
-        - else
-          = fa_icon("minus-square-o")
-        %span.programme_list
-          &nbsp;&nbsp;
-          %strong=course_rec.combo_code
-          = link_to course_rec.name, staff_position_path(course_rec)
-        %span.min_grade=h course_rec.try(:staffgrade).try(:name)
-        %span.unit_name=h course_rec.unit
-        %span.staff=h course_rec.staff.blank? ? "-" : course_rec.staff.staff_with_rank
-   
       
-      /Semester @ 2nd level
-      %ul{id: "tree_#{count}", class: 'non_bulleted'}
-        - positions.each do |post|
-          - sem_count=-1
-          - post.descendants.at_depth(1).sort_by(&:code).each do |semester|
-            - unless semester.name.include?("Jangan Delete Dulu")
-              - sem_count+=1
-              %li
-                %span.Collapsable
-                  - if semester.descendants.count > 0
-                    %span{id: "anchor_#{count}_#{sem_count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
-                  - else
-                    = fa_icon("minus-square-o")
-                  %span.programme_list
-                    &nbsp;&nbsp;
-                    %strong=semester.combo_code
-                    \-
-                    = link_to semester.name, staff_position_path(semester)
-                  %span.min_grade=h semester.try(:staffgrade).try(:name)
-                  %span.unit_name=h semester.unit
-                  %span.staff=h semester.staff.blank? ? "-" : semester.staff.staff_with_rank
-                  
-//==============
+      /Positions - ancestry_depth > 0
+      - ancs=1
+      - anch=1
+      %ul{id: "tree_#{ancs}", class: 'non_bulleted'}=Position.repeated_post(ancs, root_post, anch, hp).html_safe
+      
+      
 
-%ul#header_tree
-  %li
-    %span.combo_code= t('position.name')
-    %span.min_grade=t('position.min_grade')
-    %span.unit_name Unit
-    %span.staff=t('position.staff_id')
-    
-
+//=========================
 /Programme @ 1st level
-%ul#programme_tree
-  - count=-1
-  - @positions.group_by(&:root_id).sort.each do |course,programmes| 
-    - count+=1
-    %li
-      - course_rec = Position.where(id:course)[0]
-      %span.Collapsable
-        - if course_rec.descendants.count > 0
-          %span{id: "anchor_#{count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
-        - else
-          = fa_icon("minus-square-o")
-        %span.programme_list
-          &nbsp;&nbsp;
-          %strong=course_rec.combo_code
-          = link_to course_rec.name, staff_position_path(course_rec)
-        %span.min_grade=h course_rec.try(:staffgrade).try(:name)
-        %span.unit_name=h course_rec.unit
-        %span.staff=h course_rec.staff.blank? ? "-" : course_rec.staff.staff_with_rank
-    
-      /Semester @ 2nd level
-      %ul{id: "tree_#{count}", class: 'non_bulleted'}
-        - programmes.each do |programme|
-          - sem_count=-1
-          - programme.descendants.at_depth(1).sort_by(&:code).each do |semester|
-            - unless semester.name.include?("Jangan Delete Dulu")
-              - sem_count+=1
-              %li
-                %span.Collapsable
-                  - if semester.descendants.count > 0
-                    %span{id: "anchor_#{count}_#{sem_count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
-                  - else
-                    = fa_icon("minus-square-o")
-                  %span.programme_list
-                    &nbsp;&nbsp;
-                    %strong=semester.combo_code
-                    \-
-                    = link_to semester.name, staff_position_path(semester)
-                  %span.min_grade=h semester.try(:staffgrade).try(:name)
-                  %span.unit_name=h semester.unit
-                  %span.staff=h semester.staff.blank? ? "-" : semester.staff.staff_with_rank
-        
-                /Subject @ 3rd level
-                %ul{id: "tree_#{count}_#{sem_count}", class: 'non_bulleted'}
-                  - subject_count=-1
-                  - semester.descendants.at_depth(2).sort_by(&:code).each do |subject|
-                    - subject_count+=1
-                    %li 
-                      %span.Collapsable
-                        - if subject.descendants.count > 0
-                          %span{id: "anchor_#{count}_#{sem_count}_#{subject_count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
-                        - else
-                          = fa_icon("minus-square-o")
-                        %span.programme_list
-                          &nbsp;&nbsp;
-                          %strong=subject.combo_code
-                          \-
-                          = link_to subject.name, staff_position_path(subject)
-                        %span.min_grade=h subject.try(:staffgrade).try(:name)
-                        %span.unit_name=h subject.unit
-                        %span.staff=h subject.staff.blank? ? "-" : subject.staff.staff_with_rank
-                       
-                      /Topic @ 4th level
-                      %ul{id: "tree_#{count}_#{sem_count}_#{subject_count}", class: 'non_bulleted'}
-                        - topic_count=-1
-                        - subject.descendants.at_depth(3).sort_by(&:code).each do |topic|
-                          - topic_count+=1
-                          %li
-                            %span.Collapsable
-                              - if topic.descendants.count > 0
-                                %span{id: "anchor_#{count}_#{sem_count}_#{subject_count}_#{topic_count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
-                              - else
-                                = fa_icon("minus-square-o")
-                              %span.programme_list
-                                &nbsp;&nbsp;
-                                %strong=topic.combo_code
-                                \-
-                                = link_to topic.name, staff_position_path(topic)
-                              %span.min_grade=h topic.try(:staffgrade).try(:name)
-                              %span.unit_name=h topic.unit
-                              %span.staff=h topic.staff.blank? ? "-" : topic.staff.staff_with_rank  
-                        
-                            /Subtopic @ 5th level
-                            %ul{id: "tree_#{count}_#{sem_count}_#{subject_count}_#{topic_count}", class: 'non_bulleted'}
-                              - subtopic_count=-1
-                              - topic.descendants.at_depth(4).sort_by(&:code).each do |subtopic|
-                                - subtopic_count+=1
-                                %li
-                                  %span.Collapsable
-                                    - if subtopic.descendants.count > 0
-                                      %span{id: "anchor_#{count}_#{sem_count}_#{subject_count}_#{topic_count}_#{subtopic_count}", class: "ancmain"}
-                                        = link_to fa_icon("plus-square-o"), "#"
-                                    - else
-                                      = fa_icon("minus-square-o")
-                                    %span.programme_list
-                                      &nbsp;&nbsp;
-                                      %strong=subtopic.combo_code
-                                      \-
-                                      = link_to subtopic.name, staff_position_path(subtopic)
-                                    %span.min_grade=h subtopic.try(:staffgrade).try(:name)
-                                    %span.unit_name=h subtopic.unit
-                                    %span.staff=h subtopic.staff.blank? ? "-" : subtopic.staff.staff_with_rank
-                                    
-                                  /SubSubTopic @6th level
-                                  %ul{id: "tree_#{count}_#{sem_count}_#{subject_count}_#{topic_count}_#{subtopic_count}", class: 'non_bulleted'}
-                                    - subsubtopic_count=-1
-                                    - subtopic.descendants.at_depth(5).sort_by(&:code).each do |subsubtopic|
-                                      - subsubtopic_count+=1
-                                      %li
-                                        %span.Collapsable
-                                          - if subsubtopic.descendants.count > 0
-                                            %span{id: "anchor_#{count}_#{sem_count}_#{subject_count}_#{topic_count}_#{subtopic_count}_#{subsubtopic_count}", class: "ancmain"}
-                                              = link_to fa_icon("plus-square-o"), "#"
-                                          - else
-                                            = fa_icon("minus-square-o")
-                                          %span.programme_list
-                                            &nbsp;&nbsp;
-                                            %strong=subtopic.combo_code
-                                            \-
-                                            = link_to subsubtopic.name, staff_position_path(subsubtopic)
-                                          %span.min_grade=h subsubtopic.try(:staffgrade).try(:name)
-                                          %span.unit_name=h subsubtopic.unit
-                                          %span.staff=h subsubtopic.staff.blank? ? "-" : subsubtopic.staff.staff_with_rank
-                                            
-                                    %span.divider2
-                              %span.divider2
-                        %span.divider2
-                  %span.divider2
-        %span.divider
-%BR
+/ %ul#programme_tree
+/   - count=-1
+/   - @positions.group_by(&:root_id).sort.each do |course,programmes| 
+/     - count+=1
+/     %li
+/       - course_rec = Position.where(id:course)[0]
+/       %span.Collapsable
+/         - if course_rec.descendants.count > 0
+/           %span{id: "anchor_#{count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
+/         - else
+/           = fa_icon("minus-square-o")
+/         %span.programme_list
+/           &nbsp;&nbsp;
+/           %strong=course_rec.combo_code
+/           = link_to course_rec.name, staff_position_path(course_rec)
+/         %span.min_grade=h course_rec.try(:staffgrade).try(:name)
+/         %span.unit_name=h course_rec.unit
+/         %span.staff=h course_rec.staff.blank? ? "-" : course_rec.staff.staff_with_rank
+/     
+/       /Semester @ 2nd level
+/       %ul{id: "tree_#{count}", class: 'non_bulleted'}
+/         - programmes.each do |programme|
+/           - sem_count=-1
+/           - programme.descendants.at_depth(1).sort_by(&:code).each do |semester|
+/             - unless semester.name.include?("Jangan Delete Dulu")
+/               - sem_count+=1
+/               %li
+/                 %span.Collapsable
+/                   - if semester.descendants.count > 0
+/                     %span{id: "anchor_#{count}_#{sem_count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
+/                   - else
+/                     = fa_icon("minus-square-o")
+/                   %span.programme_list
+/                     &nbsp;&nbsp;
+/                     %strong=semester.combo_code
+/                     \-
+/                     = link_to semester.name, staff_position_path(semester)
+/                   %span.min_grade=h semester.try(:staffgrade).try(:name)
+/                   %span.unit_name=h semester.unit
+/                   %span.staff=h semester.staff.blank? ? "-" : semester.staff.staff_with_rank
+/         
+/                 /Subject @ 3rd level
+/                 %ul{id: "tree_#{count}_#{sem_count}", class: 'non_bulleted'}
+/                   - subject_count=-1
+/                   - semester.descendants.at_depth(2).sort_by(&:code).each do |subject|
+/                     - subject_count+=1
+/                     %li 
+/                       %span.Collapsable
+/                         - if subject.descendants.count > 0
+/                           %span{id: "anchor_#{count}_#{sem_count}_#{subject_count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
+/                         - else
+/                           = fa_icon("minus-square-o")
+/                         %span.programme_list
+/                           &nbsp;&nbsp;
+/                           %strong=subject.combo_code
+/                           \-
+/                           = link_to subject.name, staff_position_path(subject)
+/                         %span.min_grade=h subject.try(:staffgrade).try(:name)
+/                         %span.unit_name=h subject.unit
+/                         %span.staff=h subject.staff.blank? ? "-" : subject.staff.staff_with_rank
+/                        
+/                       /Topic @ 4th level
+/                       %ul{id: "tree_#{count}_#{sem_count}_#{subject_count}", class: 'non_bulleted'}
+/                         - topic_count=-1
+/                         - subject.descendants.at_depth(3).sort_by(&:code).each do |topic|
+/                           - topic_count+=1
+/                           %li
+/                             %span.Collapsable
+/                               - if topic.descendants.count > 0
+/                                 %span{id: "anchor_#{count}_#{sem_count}_#{subject_count}_#{topic_count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
+/                               - else
+/                                 = fa_icon("minus-square-o")
+/                               %span.programme_list
+/                                 &nbsp;&nbsp;
+/                                 %strong=topic.combo_code
+/                                 \-
+/                                 = link_to topic.name, staff_position_path(topic)
+/                               %span.min_grade=h topic.try(:staffgrade).try(:name)
+/                               %span.unit_name=h topic.unit
+/                               %span.staff=h topic.staff.blank? ? "-" : topic.staff.staff_with_rank  
+/                         
+/                             /Subtopic @ 5th level
+/                             %ul{id: "tree_#{count}_#{sem_count}_#{subject_count}_#{topic_count}", class: 'non_bulleted'}
+/                               - subtopic_count=-1
+/                               - topic.descendants.at_depth(4).sort_by(&:code).each do |subtopic|
+/                                 - subtopic_count+=1
+/                                 %li
+/                                   %span.Collapsable
+/                                     - if subtopic.descendants.count > 0
+/                                       %span{id: "anchor_#{count}_#{sem_count}_#{subject_count}_#{topic_count}_#{subtopic_count}", class: "ancmain"}
+/                                         = link_to fa_icon("plus-square-o"), "#"
+/                                     - else
+/                                       = fa_icon("minus-square-o")
+/                                     %span.programme_list
+/                                       &nbsp;&nbsp;
+/                                       %strong=subtopic.combo_code
+/                                       \-
+/                                       = link_to subtopic.name, staff_position_path(subtopic)
+/                                     %span.min_grade=h subtopic.try(:staffgrade).try(:name)
+/                                     %span.unit_name=h subtopic.unit
+/                                     %span.staff=h subtopic.staff.blank? ? "-" : subtopic.staff.staff_with_rank
+/                                     
+/                                   /SubSubTopic @6th level
+/                                   %ul{id: "tree_#{count}_#{sem_count}_#{subject_count}_#{topic_count}_#{subtopic_count}", class: 'non_bulleted'}
+/                                     - subsubtopic_count=-1
+/                                     - subtopic.descendants.at_depth(5).sort_by(&:code).each do |subsubtopic|
+/                                       - subsubtopic_count+=1
+/                                       %li
+/                                         %span.Collapsable
+/                                           - if subsubtopic.descendants.count > 0
+/                                             %span{id: "anchor_#{count}_#{sem_count}_#{subject_count}_#{topic_count}_#{subtopic_count}_#{subsubtopic_count}", class: "ancmain"}
+/                                               = link_to fa_icon("plus-square-o"), "#"
+/                                           - else
+/                                             = fa_icon("minus-square-o")
+/                                           %span.programme_list
+/                                             &nbsp;&nbsp;
+/                                             %strong=subtopic.combo_code
+/                                             \-
+/                                             = link_to subsubtopic.name, staff_position_path(subsubtopic)
+/                                           %span.min_grade=h subsubtopic.try(:staffgrade).try(:name)
+/                                           %span.unit_name=h subsubtopic.unit
+/                                           %span.staff=h subsubtopic.staff.blank? ? "-" : subsubtopic.staff.staff_with_rank
+/                                             
+/                                     %span.divider2
+/                               %span.divider2
+/                         %span.divider2
+/                   %span.divider2
+/         %span.divider
+/ %BR
            
 
 /////////////
-.row
-  %table.table-striped.table-hover.ogma
-    %thead
-      %tr
-        %th{width: '2%'}
-        %th{width: '4%'}
-        %th{width: '6%'}
-        %th{width: '8%'}
-        %th{width: '10%'}
-        %th{width: '12%'}
-        %th{width: '32%'}
-        %th{width: '28%'}
-    %tbody
-      = max_ancestry=@positions.pluck(:ancestry_depth).uniq.max
-      - @positions.each do |post|
-        - spanning=max_ancestry-post.ancestry_depth
-        - gap=post.ancestry_depth
-        %tr
-          /%td=post.ancestry_depth
-          - if post.is_root?
-            %td=post.combo_code
-          - else
-            %td{colspan: "#{gap}"}
-            %td=post.combo_code
-          %td{colspan: "#{spanning+1}"}=post.name
-          %td=post.unit
+/ .row
+/   %table.table-striped.table-hover.ogma
+/     %thead
+/       %tr
+/         %th{width: '2%'}
+/         %th{width: '4%'}
+/         %th{width: '6%'}
+/         %th{width: '8%'}
+/         %th{width: '10%'}
+/         %th{width: '12%'}
+/         %th{width: '32%'}
+/         %th{width: '28%'}
+/     %tbody
+/       = max_ancestry=@positions.pluck(:ancestry_depth).uniq.max
+/       - @positions.each do |post|
+/         - spanning=max_ancestry-post.ancestry_depth
+/         - gap=post.ancestry_depth
+/         %tr
+/           /%td=post.ancestry_depth
+/           - if post.is_root?
+/             %td=post.combo_code
+/           - else
+/             %td{colspan: "#{gap}"}
+/             %td=post.combo_code
+/           %td{colspan: "#{spanning+1}"}=post.name
+/           %td=post.unit
 
 
 :javascript
@@ -270,16 +240,15 @@
   $(".Collapsable").click(toggle);
   $(".Collapsable").each(toggle);
 
-  var coursecount=document.getElementById("course_count").value;
-  /*alert(coursecount);*/
  
+ 
+
   $('.ancmain').click(function(){
     /*alert($(this).attr('id'));*/
     var thisid=$(this).attr('id');
     var aaa=thisid.substring(7, thisid.length)
     var anc=document.getElementById("anchor_"+aaa);
     /*alert(anc.innerHTML);*/
-    /*alert(aaa);*/
     if($('#tree_'+aaa).css('display')=='none')
     {
       anc.innerHTML='<a href="#"><i class="fa fa-plus-square"></i></a>';
