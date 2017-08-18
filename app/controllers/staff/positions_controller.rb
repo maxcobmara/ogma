@@ -1,12 +1,16 @@
 class Staff::PositionsController < ApplicationController
   #filter_access_to :all
-  filter_access_to :index, :new, :create, :organisation_chart, :maklumat_perjawatan, :maklumat_perjawatan_excel, :attribute_check => false
+  filter_access_to :index, :new, :create, :organisation_chart, :maklumat_perjawatan, :maklumat_perjawatan_excel, :position_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_position, only: [:show, :edit, :update, :destroy]
   
   def index
     @positions = Position.order("combo_code ASC")#.where("ancestry_depth < ?", 2)
     render :layout => 'basic'
+  end
+  
+  def listing
+    @positions = Position.order("combo_code ASC")
   end
   
   def new
@@ -110,6 +114,18 @@ class Staff::PositionsController < ApplicationController
         send_data pdf.render, filename: "organisation_chart-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
+      end
+    end
+  end
+  
+  def position_list
+    @positions = Position.order("combo_code ASC")
+    respond_to do |format|
+      format.pdf do
+        pdf = Position_listPdf.new(@positions, view_context, current_user.college)
+        send_data pdf.render, filename: "position_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
       end
     end
   end

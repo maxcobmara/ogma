@@ -358,6 +358,43 @@ class Position < ActiveRecord::Base
     end
     a
   end
+  
+  def self.nested_post(ancs, post, anch, hp)
+    a=""
+    pp_count=-1
+    post.descendants.at_depth(ancs).order(code: :asc).each do |pp|
+      unless pp.name.include?("Jangan Delete Dulu")  #remark this line for checking
+      
+        pp_count+=1
+        anch2=""
+        anch2+="#{anch}_#{pp_count}"
+        id1="anchor_#{anch2}"
+        id2="tree_#{anch2}"
+        if pp.descendants.count > 0
+          aaa="<span id=#{id1} class='ancmain'><a href='#'><i class='fa fa-plus-square-o'></i></a></span>"
+        else
+          aaa="<i class='fa fa-minus-square-o'></i>"
+        end
+        a+="<li><span class='Collapsable'>#{aaa}
+        <span class='programme_list'>&nbsp;&nbsp;<b>#{pp.combo_code}</b> - <a href='http://#{hp}/staff/positions/#{pp.id}'> #{pp.name}</a></span>
+        <span class='min_grade'>#{pp.try(:staffgrade).try(:name)}</span>
+        <span class='unit_name'> #{pp.unit}</span><span class='staff'>#{pp.blank? ? '-' : pp.try(:staff).try(:staff_with_rank)}</span>"
+         a+="</span>"  #ending for span Collapsable
+         a+="<ul id=#{id2} class='non_bulleted'>"+Position.nested_post(ancs+1, pp, anch2, hp) +"</ul><span class='divider2'></span></li>"
+       
+      end   #remark this line for checking
+    end   
+    a
+  end
+  
+  def self.nested_post_pdf(ancs, post)
+    a=[]
+    post.descendants.at_depth(ancs).order(code: :asc).each_with_index do |pp|
+      a << ["#{pp.combo_code}", pp.name, pp.try(:staffgrade).try(:name), pp.unit, "#{pp.staff.blank? ? "-" : pp.try(:staff).try(:staff_with_rank)}"]
+      a+=Position.nested_post_pdf(ancs+1, pp)
+    end
+    a  #return must be in this format -> #a=[["aa"], ["bb"], ["cc"]]
+  end
 
 end
 

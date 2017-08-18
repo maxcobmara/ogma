@@ -1963,6 +1963,7 @@ ms_MY:
     tasks_main: Tugas Utama
     tasks_other: Lain - lain Tugas
     grade_id: Gred Minima Diperlukan
+    min_grade: Gred Minima
     staff_id: Staf
     is_acting: Bertindak Sebagai 
     postinfo_id: Butiran Perjawatan
@@ -1972,6 +1973,18 @@ ms_MY:
     no_staff: Tiada Staff
     get_all: Semua
     get_matched: Sepadan
+    root: nod utama
+    remark_title: Rujukan
+    remark_text1: Klik
+    remark_text2: untuk
+    remark_text3: papar
+    remark_text4: sorok
+    remark_text5: nod - nod warisan.
+    remark_text6: Bagi mencipta nod
+    remark_text7: waris
+    remark_text8: baru (selain nod asas), pilih 'Nod Baru' dalam laman 'Papar' nod induk.
+    remark_text9: "Klik pada 'Jawatan' untuk ke laman 'Papar'."
+    remark_text9_amsas: "Klik pada 'Jawatan' untuk ke laman 'Papar'."
        
   staff_attendance:
     title: Kedatangan Staf
