@@ -25,6 +25,12 @@
         %li= link_to  (fa_icon "file-pdf-o", text: (t 'library.book.book_summary')),  book_summary_library_books_path(params.merge(format: 'pdf' ))
 
 .row
+  .col-md-12
+    .alert.alert-warning
+      %strong=t('library.book.reservation_allowed')
+      %ul
+        %li=t('library.book.reservation_allowed1')+("(Status : <span style='color: blue;'>Available</span>)").html_safe
+        %li=t('library.book.reservation_allowed2')+"(Status : On-loan)"
   %table.table-striped.table-hover.ogma
     %thead
       %tr
@@ -43,7 +49,9 @@
         - if current_user.college.code=='amsas'
           %th{width: '6%'}= t 'library.book.quantity'
           %th{width: '10%'}= sort_link(@search, :accessionno, (t 'library.book.accessionno'))
-        %th{width: '10%'}= sort_link(@search, :status, (t 'library.book.status'))
+        %th{width: '10%'}
+          = sort_link(@search, :status, (t 'library.book.status'))
+          =" / "+(t 'library.book.reservation')
         %th{width: '5%'}= t 'library.book.require_update'
         /%th{:style=>"width: 10px;"}= t 'library.book.require_update'
     

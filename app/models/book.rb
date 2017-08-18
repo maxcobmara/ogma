@@ -145,18 +145,26 @@ class Book < ActiveRecord::Base
   
   STATUS = [
           #  Displayed       stored in db
-          [ I18n.t('library.book.available'),1 ],
-          [ I18n.t('library.book.on_loan'),2 ],
-          [ I18n.t('library.book.fixed'), 3 ],
-          [ I18n.t('library.book.disposed'), 4 ]
+#           [ I18n.t('library.book.available'),1 ],
+#           [ I18n.t('library.book.on_loan'),2 ],
+#           [ I18n.t('library.book.fixed'), 3 ],
+#           [ I18n.t('library.book.disposed'), 4 ]
+          [ 'Available', 1 ],
+          [ 'On-loan', 2 ],
+          [ 'Fixed', 3 ],
+          [ 'Disposed', 4 ]
   ] 
   
   STATUS_AMSAS = [
           #  Displayed       stored in db
-          [ I18n.t('library.book.available'),1 ],
-          [ I18n.t('library.book.on_loan'),2 ],
-          [ I18n.t('library.book.weeding'), 4 ],
-          [ I18n.t('library.book.reference'), 3 ]
+#           [ I18n.t('library.book.available'),1 ],
+#           [ I18n.t('library.book.on_loan'),2 ],
+#           [ I18n.t('library.book.weeding'), 4 ],
+#           [ I18n.t('library.book.reference'), 3 ]
+           [ 'Available', 1 ],
+           [ 'On-loan', 2 ],
+           [ 'Weeding', 4 ],
+           [ 'Reference', 3 ]
   ] 
   
 #   1) Available / Ada

@@ -3449,6 +3449,10 @@ en:
       weeding: Weeding
       reference: Reference
       image: Image
+      reservation: Reservation
+      reservation_allowed: "Reservation only allowed for :"
+      reservation_allowed1: "On-loan books (by other user)."
+      reservation_allowed2: "Returned books, awaiting for collection by current reserver."
       require_update: "Physical Description (Require Update?)"
       excel_format: Excel Format (Sample)
       import_excel: Import Book From Excel File
