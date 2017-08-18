@@ -388,15 +388,13 @@ class Position < ActiveRecord::Base
   end
   
   def self.nested_post_pdf(ancs, post)
-    #a=[["aa"], ["bb"], ["cc"]]
     a=[]
-    post.descendants.at_depth(ancs).order(code: :asc).each do |pp|
-      a << ["#{pp.combo_code} #{pp.name}"]
+    post.descendants.at_depth(ancs).order(code: :asc).each_with_index do |pp|
+      a << ["#{pp.combo_code}", pp.name, pp.try(:staffgrade).try(:name), pp.unit, "#{pp.staff.blank? ? "-" : pp.try(:staff).try(:staff_with_rank)}"]
       a+=Position.nested_post_pdf(ancs+1, pp)
     end
-    a
+    a  #return must be in this format -> #a=[["aa"], ["bb"], ["cc"]]
   end
-  
 
 end
 
