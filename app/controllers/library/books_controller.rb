@@ -194,7 +194,7 @@ class Library::BooksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
-      params.require(:book).permit(:tagno, :controlno,:isbn,:bookcode,:accessionno,:catsource,:classlcc,:classddc,:title,:author,:publisher,:description, :loantype,:mediatype,:status,:series,:location,:topic,:orderno,:purchaseprice,:purchasedate,:receiveddate,:receiver_id,:supplier_id,:issn, :edition, :photo, :photo_file_name, :photo_content_type,:photo_file_size,:photo_updated_at, :publish_date,:publish_location, :language, :links, :subject, :quantity, :roman, :size, :pages, :bibliography,:indice,:notes,:backuproman,:finance_source, accessions_attributes: [:id, :_destroy, :accession_no, :order_no, :received_by, :status, :college_id, {:data => []}])
+      params.require(:book).permit(:tagno, :controlno,:isbn,:bookcode,:accessionno,:catsource,:classlcc,:classddc,:title,:author,:publisher,:description, :loantype,:mediatype,:status,:series,:location,:topic,:orderno,:purchaseprice,:purchasedate,:receiveddate,:receiver_id,:supplier_id,:issn, :edition, :photo, :photo_file_name, :photo_content_type,:photo_file_size,:photo_updated_at, :publish_date,:publish_location, :language, :links, :subject, :quantity, :roman, :size, :pages, :bibliography,:indice,:notes,:backuproman,:finance_source, :college_id, accessions_attributes: [:id, :_destroy, :accession_no, :order_no, :received_by, :status, :college_id, {:data => []}])
     end
   
 end
