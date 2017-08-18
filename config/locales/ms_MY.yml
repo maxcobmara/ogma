@@ -3344,6 +3344,10 @@ ms_MY:
       weeding: Hapuskira
       reference: Rujukan
       image: Imej
+      reservation: Tempahan
+      reservation_allowed: "Tempahan hanya dibenarkan bagi : "
+      reservation_allowed1: "Buku yang sedang dipinjam oleh pengguna lain."
+      reservation_allowed2: "Buku yang telah dipulangkan dan sedang dalam proses pinjaman oleh penempah sedia ada."
       require_update: "Deskripsi Fizikal (Perlu Dikemaskini?)"
       excel_format: Sampel Format Excel
       import_excel: Import Buku Dari Fail Excel
