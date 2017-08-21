@@ -26,7 +26,7 @@ class Loanable_listPdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header=[[{content: "#{I18n.t('asset.defect.list').upcase}<br> #{@college.name.upcase}", colspan: 7}],
+    header=[[{content: "#{I18n.t('asset.loan.application').upcase}<br> #{@college.name.upcase}", colspan: 7}],
             ["No", I18n.t('asset.assetcode'),  I18n.t('asset.category.title2'),  I18n.t('asset.name'),  I18n.t('asset.model'),  I18n.t('asset.serial_no'),  "#{I18n.t('asset.loan.loaned_by')} / #{ I18n.t('asset.loan.responsible_unit')}"]]
     header +
     @loanables.map do |loanable|
