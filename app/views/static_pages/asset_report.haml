@@ -24,7 +24,7 @@
         %tr
           %td.centre=no+=1
           %td Daftar Harta Modal
-          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-2a")), asset_path("kewpas/kewpa2.pdf") 	  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-2")), asset_path("kewpas/kewpa2.pdf") 	  
           %td.centre{rowspan: 2, style: 'vertical-align: middle;'}
             - permitted_to? :manage, :asset_assets do
               = link_to (t 'asset.title'), asset_assets_path
@@ -152,17 +152,13 @@
           %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-13")), asset_path("kewpas/kewpa13.pdf")	  
           %td.centre{rowspan: 2, style: 'vertical-align: middle'}
             - permitted_to? :manage, :asset_assets do
-              /= link_to (t 'helpers.links.links'), 'asset/assets/kewpa13.pdf'
               = link_to (t 'asset.title'), asset_assets_path
              
         %tr
           %td.centre=no+=1
           %td Daftar Penyelenggaraan Harta Modal
           %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-14")), asset_path("kewpas/kewpa14.pdf")
-          /%td.centre
-          /  - permitted_to? :manage, :asset_assets do
-          /    = link_to (t 'helpers.links.links'), 'asset/assets/kewpa14.pdf'
-  
+ 
         %tr
           %td.centre=no+=1
           %td Lantikan sebagai Pemeriksa Pelupusan Aset Alih Kerajaan
