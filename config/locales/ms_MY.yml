@@ -2457,6 +2457,7 @@ ms_MY:
  
     loss:
       title: "Kehilangan & Hapus Kira"
+      list: "Senarai Kehilangan & Hapus Kira"
       loss_type: Jenis Kehilangan
       est_value: Nilai Anggaran
       asset_name: Nama Aset

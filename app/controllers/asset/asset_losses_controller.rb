@@ -1,13 +1,10 @@
 class Asset::AssetLossesController < ApplicationController
-  filter_access_to :index, :new, :create, :kewpa28, :kewpa29, :kewpa30, :kewpa31, :edit_multiple, :update_multiple, :attribute_check => false
+  filter_access_to :index, :new, :create, :kewpa28, :kewpa29, :kewpa30, :kewpa31, :edit_multiple, :update_multiple, :lost_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :endorse, :destroy, :attribute_check => true
   before_action :set_lost, only: [:show, :edit, :update, :destroy]
+  before_action :set_losses, only: [:index, :loss_list]
   
   def index
-    @search = AssetLoss.search(params[:q])
-    @asset_losses = @search.result
-    # TODO 
-    #2) check all / uncheck all
   end
   
   def new
@@ -130,8 +127,8 @@ class Asset::AssetLossesController < ApplicationController
   
   def kewpa31
     @lead = Position.find(1)
-   @document_id = params[:id]
-   @asset_losses = AssetLoss.where('document_id=?', @document_id).order(created_at: :desc) 
+    @document_id = params[:id]
+    @asset_losses = AssetLoss.where('document_id=?', @document_id).order(created_at: :desc) 
     respond_to do |format|
       format.pdf do
         pdf = Kewpa31Pdf.new(@asset_losses, view_context, @lead, @document_id)
@@ -141,11 +138,27 @@ class Asset::AssetLossesController < ApplicationController
       end
     end
   end
+
+  def loss_list
+    respond_to do |format|
+      format.pdf do
+        pdf = Loss_listPdf.new(@asset_losses, view_context, current_user.college)
+        send_data pdf.render, filename: "loss_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
   
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_lost
       @lost = AssetLoss.find(params[:id])
+    end
+    
+    def set_losses
+      @search = AssetLoss.search(params[:q])
+      @asset_losses = @search.result
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -206,9 +206,10 @@ Ogma::Application.routes.draw do
       get :endorse
     end
     collection do
-       put :edit_multiple
-       post :update_multiple
+      put :edit_multiple
+      post :update_multiple
       get :kewpa31
+      get :loss_list
     end
   end
     resources :asset_disposals, as: :disposals do

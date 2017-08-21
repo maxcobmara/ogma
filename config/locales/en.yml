@@ -2564,6 +2564,7 @@ en:
       
     loss:
       title: "Loss & Write Offs"
+      list: "Loss & Write Offs Listing"
       loss_type: Loss Type
       est_value: Estimated Value
       asset_name: Asset Name
