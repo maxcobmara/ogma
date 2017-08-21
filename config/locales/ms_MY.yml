@@ -599,6 +599,8 @@ ms_MY:
   included: Disertakan
   not_included: Tidak Disertakan
   remarks: Catatan
+  form: Borang
+  module: Modul
  
   actions:
     new: Baru

@@ -3,275 +3,277 @@
 .page-header
   %h1=t ('asset.kewpa_download_linklist')
 
-.tab-content
-  #home.tab-pane.fade.in.active
+.row
+  .col-md-8.col-md-offset-2
     %table.table-striped.table-hover.ogma
       %thead
         %tr
-          %th=t ('asset.filename')
-          %th=t ('asset.description')
-          %th=t ('asset.type')
-          %th=t ('asset.link')
-		  		  
+          %th.centre{width: '8%'} No
+          %th{width: '50%'}=(t 'asset.description')+" "+(t 'form')
+          %th.centre{width: '22%'}=(t 'download')+" "+(t 'pdf_format')
+          %th.centre{width: '20%'}=(t 'asset.link')+" / "+(t 'module')
+  
+      - no=0
       %tbody
         %tr
-          %td KEW.PA-1
+          %td.centre.centre=no+=1
           %td Borang Laporan Penerimaan Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/KEWPA01.pdf")
-          %td	  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-1")), asset_path("kewpas/KEWPA01.pdf")
+          %td.centre -
 
         %tr
-          %td KEW.PA-2a
+          %td.centre=no+=1
           %td Daftar Harta Modal
-          %td= link_to "PDF", asset_path("kewpas/kewpa2.pdf") 	  
-          %td
-            - permitted_to? :manage, :assets do
-              = link_to "link", asset_assets_path
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-2a")), asset_path("kewpas/kewpa2.pdf") 	  
+          %td.centre{rowspan: 2, style: 'vertical-align: middle;'}
+            - permitted_to? :manage, :asset_assets do
+              = link_to (t 'asset.title'), asset_assets_path
 
         %tr
-          %td KEW.PA-2b
-          %td Daftar Harta Modal
-          %td= link_to "PDF", asset_path("kewpas/kewpa2b.pdf")  	  
-          %td
-            - permitted_to? :manage, :assets do
-              = link_to "link", asset_assets_path
-		  	  
-        %tr
-          %td KEW.PA-3
+          %td.centre=no+=1
           %td Daftar Inventori
-          %td= link_to "PDF", asset_path("kewpas/kewpa3.pdf")	  
-          %td
-            - permitted_to? :manage, :assets do
-              = link_to "link", asset_assets_path
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-3")), asset_path("kewpas/kewpa3.pdf")	  
+  
         %tr
-          %td KEW.PA-4
+          %td.centre=no+=1
           %td Senarai Daftar Harta Modal
-          %td= link_to "PDF", asset_path("kewpas/kewpa4.pdf")
-          %td
-            - permitted_to? :manage, :assets do
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-4")), asset_path("kewpas/kewpa4.pdf")
+          %td.centre
+            - permitted_to? :manage, :asset_assets do
               .btn-group.dropdown
                 %button.btn.dropdown-toggle{"data-toggle" => "dropdown"}
-                  .span.caret
+                  .small 
+                    Senarai Daftar HM
+                    .span.caret
+                    
                 %ul.dropdown-menu.pull-right.action_menu
-                  %li= link_to "all", :controller => 'asset/assets', :action => "kewpa4", :search => '0', :format => 'pdf'
-                  - yeartab.each do |yeartab|
-                    %li= link_to "20#{yeartab}", :controller => 'asset/assets', :action => "kewpa4", :search => "#{yeartab}", :format => 'pdf'
+                  %li= link_to (t 'all_records'), :controller => 'asset/assets', :action => "kewpa4", :search => '0', :format => 'pdf'
+                  - yeartab=[]
+                  - for x in Asset.hm.map{|d| d.assetcode.split("/")[4]}
+                    - if x.size==2
+                      - yeartab << "20"+x
+                    - else
+                      - yeartab << x
+                  - yeartab.uniq.sort.each do |ytab|
+                    %li= link_to "KEW.PA 4 (#{ytab})", kewpa4_asset_assets_path(format: "pdf", search_year: ytab)
 
-		    
-		  
         %tr
-          %td KEW.PA-5
+          %td.centre=no+=1
           %td Senarai Daftar Inventori
-          %td= link_to "PDF", asset_path("kewpas/kewpa5.pdf")
-          %td
-            - permitted_to? :manage, :assets do
+          %td.centre.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-5")), asset_path("kewpas/kewpa5.pdf")
+          %td.centre
+            - permitted_to? :manage, :asset_assets do
               .btn-group.dropdown
                 %button.btn.dropdown-toggle{"data-toggle" => "dropdown"}
-                  .span.caret
+                  .small
+                    Senarai Daftar Inventori
+                    .span.caret
                 %ul.dropdown-menu.pull-right.action_menu
-                  %li= link_to "all", :controller => 'asset/assets', :action => "kewpa5", :search => '0', :format => 'pdf'
-                  - yeartab.each do |yeartab|
-                    %li= link_to "20#{yeartab}", :controller => 'asset/assets', :action => "kewpa5", :search => "#{yeartab}", :format => 'pdf'	  		  
-		  
+                  %li= link_to (t 'all_records'), :controller => 'asset/assets', :action => "kewpa5", :search => '0', :format => 'pdf'
+                  - yeartab=[]
+                  - for x in Asset.inv.map{|d| d.assetcode.split("/")[4]}
+                    - if x.size==2
+                      - yeartab << "20"+x
+                    - else
+                      - yeartab << x
+                  - yeartab.uniq.sort.each do |ytab|
+                    %li= link_to "KEW.PA 5 (#{ytab})", kewpa5_asset_assets_path(format: "pdf", search_year: ytab)
+  
         %tr
-          %td KEW.PA-6
+          %td.centre=no+=1
           %td Daftar Pergerakan Daftar Harta Modal dan Inventori
-          %td= link_to "PDF", asset_path("kewpas/kewpa06.pdf")	  
-          %td
-            - permitted_to? :manage, :assets do
-              = link_to "link", asset_assets_path
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-6")), asset_path("kewpas/kewpa06.pdf")	  
+          %td.centre
+            - permitted_to? :manage, :asset_assets do
+              = link_to (t 'asset.loan.title'), asset_assets_path
+
         %tr
-          %td KEW.PA-7
+          %td.centre=no+=1
           %td Senarai Aset Alih Kerajaan (mengikut lokasi)
-          %td= link_to "PDF", asset_path("kewpas/kewpa7.pdf")		  
-          %td
-            - permitted_to? :manage, :locations do
-              = link_to "link", 'campus/locations'
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-7")), asset_path("kewpas/kewpa7.pdf")		  
+          %td.centre
+            - permitted_to? :manage, :campus_locations do
+              = link_to (t 'location.title'), 'campus/locations'
+
         %tr
-          %td KEW.PA-8
+          %td.centre=no+=1
           %td Laporan Tahunan Harta Modal Dan Inventori Bagi Tahun .........
-          %td= link_to "PDF", asset_path("kewpas/kewpa8.pdf")
-          %td 
-            - permitted_to? :manage, :assets do
-              = link_to "link", kewpa8_asset_assets_path(format: 'pdf')
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-8")), asset_path("kewpas/kewpa8.pdf")
+          %td.centre
+            - permitted_to? :manage, :asset_assets do
+              /= link_to (t 'helpers.links.links'), kewpa8_asset_assets_path(format: 'pdf')
+              .btn-group.dropdown
+                %button.btn.dropdown-toggle{"data-toggle" => "dropdown"}
+                  .small
+                    Laporan Tahunan
+                    .span.caret
+                %ul.dropdown-menu.pull-right.action_menu
+                  %li= link_to (t 'all_records'), :controller => 'asset/assets', :action => "kewpa8", :search => '0', :format => 'pdf'
+                  - yeartab=[]
+                  - for x in Asset.inv.map{|d| d.assetcode.split("/")[4]}
+                    - if x.size==2
+                      - yeartab << "20"+x
+                    - else
+                      - yeartab << x
+                  - yeartab.uniq.sort.each do |ytab|
+                    %li= link_to "KEW.PA 8 (#{ytab})", kewpa8_asset_assets_path(format: "pdf", search_year: ytab)
  
         %tr
-          %td KEW.PA-9
+          %td.centre=no+=1
           %td Borang Aduan Kerosakan Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa9.pdf")		  
-          %td
-            - permitted_to? [:manage, :kewpa9], :asset_defects do
-              = link_to "link", 'asset/asset_defects'
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-9")), asset_path("kewpas/kewpa9.pdf")		  
+          %td.centre
+            - permitted_to? [:create, :kewpa9], :asset_asset_defects do
+              = link_to (t 'asset.defect.title'), 'asset/asset_defects'
+
         %tr
-          %td KEW.PA-10
+          %td.centre=no+=1
           %td Laporan Pemeriksaan Harta Modal
-          %td= link_to "PDF", asset_path("kewpas/kewpa10.pdf")
-          %td
-            - permitted_to? :manage, :locations do
-              = link_to "link", 'campus/locations'		  
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-10")), asset_path("kewpas/kewpa10.pdf")
+          %td.centre{rowspan: 2, style: 'vertical-align: middle;'}
+            - permitted_to? :manage, :campus_locations do
+              = link_to (t 'location.title'), 'campus/locations'
+
         %tr
-          %td KEW.PA-11
+          %td.centre=no+=1
           %td Laporan Pemeriksaan Inventori
-          %td= link_to "PDF", asset_path("kewpas/kewpa11.pdf")
-          %td
-            - permitted_to? :manage, :locations do
-              = link_to "link", 'campus/locations'		  
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-11")), asset_path("kewpas/kewpa11.pdf")
+          
+
         %tr
-          %td KEW.PA-12
+          %td.centre=no+=1
           %td Sijil Tahunan Pemeriksaan Harta Modal & Inventori
-          %td= link_to "PDF", asset_path("kewpas/kewpa12.pdf")
-          %td 		  
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-12")), asset_path("kewpas/kewpa12.pdf")
+          %td.centre -
+
         %tr
-          %td KEW.PA-13
+          %td.centre=no+=1
           %td Senarai Aset Alih Kerajaan yang Memerlukan Penyelenggaraan
-          %td= link_to "PDF", asset_path("kewpas/kewpa13.pdf")	  
-          %td
-            - permitted_to? :manage, :assets do
-              = link_to "link", 'asset/assets/kewpa13.pdf'
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-13")), asset_path("kewpas/kewpa13.pdf")	  
+          %td.centre{rowspan: 2, style: 'vertical-align: middle'}
+            - permitted_to? :manage, :asset_assets do
+              /= link_to (t 'helpers.links.links'), 'asset/assets/kewpa13.pdf'
+              = link_to (t 'asset.title'), asset_assets_path
+             
         %tr
-          %td KEW.PA-14
+          %td.centre=no+=1
           %td Daftar Penyelenggaraan Harta Modal
-          %td= link_to "PDF", asset_path("kewpas/kewpa14.pdf")	  
-          %td
-            - permitted_to? :manage, :assets do
-              = link_to "link", 'asset/assets/kewpa14.pdf'
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-14")), asset_path("kewpas/kewpa14.pdf")
+          /%td.centre
+          /  - permitted_to? :manage, :asset_assets do
+          /    = link_to (t 'helpers.links.links'), 'asset/assets/kewpa14.pdf'
+  
         %tr
-          %td KEW.PA-15
+          %td.centre=no+=1
           %td Lantikan sebagai Pemeriksa Pelupusan Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path(" ")	  
-          %td 		  
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-15")), asset_path("kewpas/kewpa15.pdf")
+          %td.centre -
+
         %tr
-          %td KEW.PA-16
-          %td Daftar Penyelenggaraan Harta Modal
-          %td= link_to "PDF", asset_path("kewpas/kewpa16.pdf")
-          %td
-            - permitted_to? :manage, :asset_disposals do
-              = link_to "link", 'asset/asset_disposals'		  
-		  
+          %td.centre=no+=1
+          %td Perakuan Pelupusan (PEP) Aset Alih kerajaan
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-16")), asset_path("kewpas/kewpa16.pdf")
+          %td.centre{rowspan: 5, style: 'vertical-align: middle;'}
+            - permitted_to? :manage, :asset_asset_disposals do
+              = link_to (t 'asset.disposal.title'), 'asset/asset_disposals'
+
         %tr
-          %td KEW.PA-17
+          %td.centre=no+=1
           %td Laporan Lembaga Pemeriksa Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa17.pdf")	  
-          %td
-            - permitted_to? :manage, :asset_disposals do
-              = link_to "link", 'asset/asset_disposals/kewpa17.pdf'
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-17")), asset_path("kewpas/kewpa17.pdf")
+ 
         %tr
-          %td KEW.PA-18
+          %td.centre=no+=1
           %td Sijil Penyaksian Pemusnahan Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa18.pdf")
-          %td
-            - permitted_to? :manage, :asset_disposals do
-              = link_to "link", 'asset/asset_disposals'			  
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-18")), asset_path("kewpas/kewpa18.pdf")
+
         %tr
-          %td KEW.PA-19
+          %td.centre=no+=1
           %td Sijil Pelupusan Pemusnahan Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa19.pdf")
-          %td
-            - permitted_to? :manage, :asset_disposals do
-              = link_to "link", 'asset/asset_disposals'			  
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-19")), asset_path("kewpas/kewpa19.pdf")
+
         %tr
-          %td KEW.PA-20
-          %td Laporan Tahunan Pemusnahan Aset Alih Kerajaan		  
-          %td= link_to "PDF", asset_path("kewpas/kewpa20.pdf")
-          %td
-            - permitted_to? :manage, :asset_disposals do
-              = link_to "link", 'asset/asset_disposals/kewpa20.pdf'		  
-		  
+          %td.centre=no+=1
+          %td Laporan Tahunan Pemusnahan Aset Alih Kerajaan  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-20")), asset_path("kewpas/kewpa20.pdf")
+
         %tr
-          %td KEW.PA-21
+          %td.centre=no+=1
           %td Kenyataan Tawaran Tender Pelupusan Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa21.pdf")	  
-          %td 
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-21")), asset_path("kewpas/kewpa21.pdf")	  
+          %td.centre -
+
         %tr
-          %td KEW.PA-22
+          %td.centre=no+=1
           %td Borang Tender Pelupusan Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa22.pdf")		  
-          %td 
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-22")), asset_path("kewpas/kewpa22.pdf")		  
+          %td.centre -
+
         %tr
-          %td KEW.PA-23
+          %td.centre=no+=1
           %td Jadual Tender Pelupusan Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa23.pdf")	  
-          %td 
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-23")), asset_path("kewpas/kewpa23.pdf")	  
+          %td.centre -
+
         %tr
-          %td KEW.PA-24
+          %td.centre=no+=1
           %td Kenyataan Tawaran Sebutharga Pelupusan Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa24.pdf")		  
-          %td 
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-24")), asset_path("kewpas/kewpa24.pdf")		  
+          %td.centre -
+
         %tr
-          %td KEW.PA-25
+          %td.centre=no+=1
           %td Borang Sebutharga Pelupusan Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa25.pdf")		  
-          %td 
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-25")), asset_path("kewpas/kewpa25.pdf")		  
+          %td.centre -
+
         %tr
-          %td KEW.PA-26
+          %td.centre=no+=1
           %td Jadual Sebutharga Pelupusan Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa26.pdf")	  
-          %td 
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-26")), asset_path("kewpas/kewpa26.pdf")	  
+          %td.centre -
+
         %tr
-          %td KEW.PA-27
+          %td.centre=no+=1
           %td Kenyataan Jualan Lelong Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa27.pdf")		  
-          %td 	
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-27")), asset_path("kewpas/kewpa27.pdf")		  
+          %td.centre -
+
         %tr
-          %td KEW.PA-27(A)
+          %td.centre=no+=1
           %td Senarai Aset Yang Dilelong
-          %td= link_to "PDF", asset_path("kewpas/kewpa27a.pdf")		  
-          %td 	
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-27(A)")), asset_path("kewpas/kewpa27a.pdf")		  
+          %td.centre -
+
         %tr
-          %td KEW.PA-28
+          %td.centre=no+=1
           %td Laporan Awal Kehilangan Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa28.pdf")		  
-          %td
-            - permitted_to? :manage, :asset_losses do
-              = link_to "link", 'asset/asset_losses'	
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-28")), asset_path("kewpas/kewpa28.pdf")		  
+          %td.centre
+            - permitted_to? :manage, :asset_asset_losses do
+              = link_to (t 'asset.loss.title'), 'asset/asset_losses'
+  
         %tr
-          %td KEW.PA-29
+          %td.centre=no+=1
           %td Perlantikan Jawatankuasa Penyiasat Kehilangan Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa29.pdf")	  
-          %td
-            - permitted_to? :manage, :asset_losses do
-              = link_to "link", 'asset/asset_losses'	 	
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-29")), asset_path("kewpas/kewpa29.pdf")	  
+          %td.centre - 
+
         %tr
-          %td KEW.PA-30
+          %td.centre=no+=1
           %td Laporan Akhir Kehilangan Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa30.pdf")		  
-          %td
-            - permitted_to? :manage, :asset_losses do
-              = link_to "link", 'asset/asset_losses'	 	
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-30")), asset_path("kewpas/kewpa30.pdf")		  
+          %td.centre{rowspan: 2, style: 'vertical-align: middle'}
+            - permitted_to? :manage, :asset_asset_losses do
+              = link_to (t 'asset.loss.title'), 'asset/asset_losses'	 	
+
         %tr
-          %td KEW.PA-31
+          %td.centre=no+=1
           %td Sijil Hapus Kira Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa31.pdf")	  
-          %td
-            - permitted_to? :manage, :asset_losses do
-              = link_to "link", 'asset/asset_losses'	 	
-		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-31")), asset_path("kewpas/kewpa31.pdf")
+
         %tr
-          %td KEW.PA-32
+          %td.centre=no+=1
           %td Laporan Tindakan Surcaj/Tatatertib Aset Alih Kerajaan
-          %td= link_to "PDF", asset_path("kewpas/kewpa32.pdf")	  
-          %td 			  		  		  		  		  		  	  		  		  		  		  		  		  		  		  		  		  		  		  		  		  		  		  		  		  	  		  			  		  
+          %td.centre= link_to (fa_icon("file-pdf-o", text: "KEW.PA-32")), asset_path("kewpas/kewpa32.pdf")	  
+          %td.centre -
