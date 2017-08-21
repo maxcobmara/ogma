@@ -339,7 +339,7 @@ authorization do
    # NOTE - Index - list display -> model - SAMPLE (Position Id=77, assign (1)staff_id=118:rosilah, (2)unit='Unit Tenaga Pengajar & Pengurusan Aset' / unit='kenderaan & dot'
    # NOTE - applied to both : Vehicle & Other Asset Loan/Reservation
    has_permission_on :asset_asset_loans, :to => :create                                                          # A staff can create loan
-   has_permission_on :asset_asset_loans, :to =>:read, :join_by => :or do 
+   has_permission_on :asset_asset_loans, :to =>[:read, :loan_list], :join_by => :or do 
      if_attribute :staff_id => is {user.userable.id}
      if_attribute :hod => is {user.userable.id}
    end
@@ -628,7 +628,7 @@ authorization do
     has_permission_on :asset_asset_defects, :to =>[:update, :process2], :join_by => :and do #3nov2013, 21Jan2016
       if_attribute :is_processed => is_not {true}
     end
-    has_permission_on :asset_asset_loans, :to => [:read, :create, :lampiran_a, :vehicle_reservation] #create added to work with Staffs Modules
+    has_permission_on :asset_asset_loans, :to => [:read, :create, :lampiran_a, :vehicle_reservation, :loan_list] #create added to work with Staffs Modules
     has_permission_on :asset_asset_loans, :to => [:update, :approval] , :join_by => :and do
       if_attribute :is_returned => is_not {true}
       if_attribute :asset_id => is_in {Asset.otherasset.pluck(:id)}
@@ -2322,21 +2322,21 @@ authorization do
   #40 - OK 10Feb2016
   #40 - Revision 1Oct2016: Vehicle reservation added
   role :asset_loans_module_admin do
-     has_permission_on :asset_asset_loans, :to => [:manage, :approval, :vehicle_endorsement, :vehicle_approval, :vehicle_return, :lampiran_a, :vehicle_reservation]
+     has_permission_on :asset_asset_loans, :to => [:manage, :approval, :vehicle_endorsement, :vehicle_approval, :vehicle_return, :lampiran_a, :vehicle_reservation, :loan_list]
      has_permission_on :equery_report_assetsearches, :to => [:new_loan, :create]
      has_permission_on :equery_report_assetsearches, :to => [:show] do
        if_attribute :search_type => is_in {[4]} #4-loan(kw6)
      end
   end
   role :asset_loans_module_viewer do
-     has_permission_on :asset_asset_loans, :to => [:read, :lampiran_a, :vehicle_reservation]
+     has_permission_on :asset_asset_loans, :to => [:read, :lampiran_a, :vehicle_reservation, :loan_list]
      has_permission_on :equery_report_assetsearches, :to => [:new_loan, :create]
      has_permission_on :equery_report_assetsearches, :to => [:show] do
        if_attribute :search_type => is_in {[4]} #4-loan(kw6)
      end
   end
   role :asset_loans_module_user do
-    has_permission_on :asset_asset_loans, :to => [:read, :approval, :vehicle_endorsement, :vehicle_approval, :vehicle_return, :update, :lampiran_a, :vehicle_reservation]
+    has_permission_on :asset_asset_loans, :to => [:read, :approval, :vehicle_endorsement, :vehicle_approval, :vehicle_return, :update, :lampiran_a, :vehicle_reservation, :loan_list]
      has_permission_on :equery_report_assetsearches, :to => [:new_loan, :create]
      has_permission_on :equery_report_assetsearches, :to => [:show] do
        if_attribute :search_type => is_in {[4]} #4-loan(kw6)
@@ -2345,7 +2345,7 @@ authorization do
   role :asset_loans_module_member do
     #own record (staff - loaner / unit members) - NOTE - applied to both : Vehicle & Other Asset Loan/Reservation
     has_permission_on :asset_asset_loans, :to => :create                                                          # A staff can create loan
-    has_permission_on :asset_asset_loans, :to =>:read do 
+    has_permission_on :asset_asset_loans, :to => [:read, :loan_list] do 
       if_attribute :staff_id => is {user.userable.id}
     end
    # NOTE - Other Asset Loan, INDEX - as in model/controller

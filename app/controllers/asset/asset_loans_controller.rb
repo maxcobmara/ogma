@@ -1,21 +1,12 @@
 class Asset::AssetLoansController < ApplicationController
-  filter_access_to :index, :new, :create, :lampiran_a,  :attribute_check => false
+  filter_access_to :index, :new, :create, :lampiran_a, :loan_list, :attribute_check => false
   filter_access_to :edit, :show, :update, :destroy, :approval, :vehicle_endorsement, :vehicle_approval, :vehicle_return, :vehicle_reservation, :attribute_check => true
   before_action :set_asset_loan, only: [:show, :edit, :update, :destroy, :vehicle_endorsement, :vehicle_approval, :vehicle_return]
+  before_action :set_asset_loans, only: [:index, :loan_list]
 
   # GET /asset_loans
   # GET /asset_loans.xml
   def index
-    roles = @current_user.roles.pluck(:authname)
-    @is_admin = true if roles.include?("developer") || roles.include?("administration") || roles.include?("asset_administrator") || roles.include?("asset_loans_module")
-    if @is_admin
-      @search = AssetLoan.search(params[:q])
-    else
-      @search = AssetLoan.sstaff2(current_user.userable.id).search(params[:q])
-    end 
-    @asset_loans = @search.result
-    @asset_loans = @asset_loans.order(created_at: :desc).page(params[:page]||1)
-    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @asset_loans }
@@ -147,11 +138,33 @@ class Asset::AssetLoansController < ApplicationController
      end 
   end
   
+  def loan_list
+    respond_to do |format|
+       format.pdf do
+         pdf = Loan_listPdf.new(@asset_loans, view_context, current_user.college)
+         send_data pdf.render, filename: "loan_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_asset_loan
       @asset_loan = AssetLoan.find(params[:id])
-      
+    end
+    
+    def set_asset_loans
+      roles = @current_user.roles.pluck(:authname)
+      @is_admin = true if roles.include?("developer") || roles.include?("administration") || roles.include?("asset_administrator") || roles.include?("asset_loans_module")
+      if @is_admin
+        @search = AssetLoan.search(params[:q])
+      else
+        @search = AssetLoan.sstaff2(current_user.userable.id).search(params[:q])
+      end 
+      @asset_loans = @search.result
+      @asset_loans = @asset_loans.order(created_at: :desc).page(params[:page]||1)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

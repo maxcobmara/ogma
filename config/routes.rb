@@ -237,6 +237,9 @@ Ogma::Application.routes.draw do
         get :vehicle_return
         get :vehicle_reservation
       end
+      collection do
+        get :loan_list
+      end
     end
     resources :assetcategories
   end

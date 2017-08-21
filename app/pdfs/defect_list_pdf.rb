@@ -35,7 +35,7 @@ class Defect_listPdf < Prawn::Document
   end
   
   def footer
-    draw_text "#{page_number} / #{page_count}",  :size => 8, :at => [720,-5]
+    draw_text "#{page_number} / #{page_count}",  :size => 8, :at => [500,-5]
   end
 
 end
