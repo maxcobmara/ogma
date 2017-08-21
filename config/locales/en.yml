@@ -617,6 +617,8 @@ en:
   included: Included
   not_included: Not Included
   remarks: Remarks
+  form: Form
+  module: Module
 
   actions:
     new: New
