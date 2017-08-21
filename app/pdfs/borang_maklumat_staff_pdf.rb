@@ -1,11 +1,9 @@
 class Borang_maklumat_staffPdf < Prawn::Document
   def initialize(staff, view, college)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 50, left_margin: 50, page_size: 'A4', page_layout: :portrait })
     @staff = staff
     @view = view
-
-    
-    
+    @college = college
     font "Times-Roman"
     text "#{college.name.upcase}", :align => :center, :size => 14, :style => :bold
     move_down 5
@@ -17,14 +15,13 @@ class Borang_maklumat_staffPdf < Prawn::Document
     table_loan
     table3
     table4
-    
   end
   
     def table1
       
       data =[["Butiran Peribadi", ""],
             ["1. MyKad No", ": #{@staff.icno}"],
-            ["2. Nama", ": #{@staff.name}"],
+            ["2. Nama", ": #{@college.code=='amsas' ? @staff.staff_with_rank : @staff.name}"],
             ["3. Staff Code", ": #{@staff.code}"],
             ["4. No Fail Peribadi", ": #{@staff.fileno}"],
             ["5. Jawatan",": #{@staff.positions.name}"],

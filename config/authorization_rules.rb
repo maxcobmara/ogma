@@ -574,7 +574,7 @@ authorization do
      has_permission_on :staff_fingerprints, :to => [:manage, :approval, :index_admin]
      has_permission_on :staff_staff_shifts, :to => :manage
      has_permission_on :staff_titles, :to => :manage
-     has_permission_on :staff_positions, :to =>[:manage, :maklumat_perjawatan, :organisation_chart]
+     has_permission_on :staff_positions, :to =>[:manage, :maklumat_perjawatan, :organisation_chart, :position_list]
      has_permission_on :banks, :to => :manage
      has_permission_on :insurance_companies, :to => :manage
      has_permission_on :staff_employgrades, :to => [:manage, :employgrade_list]
@@ -652,7 +652,7 @@ authorization do
     #vehicle reservation - END - full access? - 1 Oct 2016
     has_permission_on :campus_locations, :to => [:manage, :kewpa7, :kewpa10, :kewpa11]
     has_permission_on :asset_asset_disposals, :to =>[:manage, :kewpa17_20, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :dispose, :revalue, :verify, :view_close]
-    has_permission_on :asset_asset_losses, :to => [:manage, :endorse, :edit_multiple, :update_multiple, :kewpa28, :kewpa29, :kewpa30, :kewpa31] 
+    has_permission_on :asset_asset_losses, :to => [:manage, :endorse, :edit_multiple, :update_multiple, :kewpa28, :kewpa29, :kewpa30, :kewpa31, :loss_list] 
     
     has_permission_on :equery_report_assetsearches, :to => [:create, :show, :new_asset, :new_hm, :new_inv, :new_loan, :new_location, :new_yearly_report, :new_defect, :new_maintenance_list, :new_maintenance, :new_pep, :new_examiner_report, :new_destroy_certificate, :new_destroy_witness, :new_yearly_destroy, :new_initial_loss, :new_final_loss, :new_writeoff_certificate]
   end
@@ -1208,16 +1208,16 @@ authorization do
   
   #2)OK - all 4 - 4Feb2016
   role :positions_module_admin do
-     has_permission_on :staff_positions, :to => [:manage, :organisation_chart]
+     has_permission_on :staff_positions, :to => [:manage, :organisation_chart, :position_list]
   end
   role :positions_module_viewer do
-     has_permission_on :staff_positions, :to => [:read, :organisation_chart]
+     has_permission_on :staff_positions, :to => [:read, :organisation_chart, :position_list]
   end
   role :positions_module_user do
-     has_permission_on :staff_positions, :to => [:read, :update, :organisation_chart]
+     has_permission_on :staff_positions, :to => [:read, :update, :organisation_chart, :position_list]
   end
   role :positions_module_member do
-    has_permission_on :staff_positions, :to =>  [:read, :update, :organisation_chart] do
+    has_permission_on :staff_positions, :to =>  [:read, :update, :organisation_chart, :position_list] do
       if_attribute :staff_id => is {user.userable.id}
     end
   end
@@ -2296,21 +2296,21 @@ authorization do
  
   #39-OK - but kewpa31 link not ready (write-off)
   role :asset_losses_module_admin do
-     has_permission_on :asset_asset_losses, :to => [:manage, :endorse, :edit_multiple, :update_multiple, :kewpa28, :kewpa29, :kewpa30, :kewpa31]
+     has_permission_on :asset_asset_losses, :to => [:manage, :endorse, :edit_multiple, :update_multiple, :kewpa28, :kewpa29, :kewpa30, :kewpa31, :loss_list]
      has_permission_on :equery_report_assetsearches, :to => [:new_initial_loss, :new_final_loss, :new_writeoff_certificate, :create]
      has_permission_on :equery_report_assetsearches, :to => [:show] do
        if_attribute :search_type => is_in {[15, 16, 17]} #15-initial loss(kw28), 16-final loss(kw30), 17-writeoff(kw31)
      end
   end
   role :asset_losses_module_viewer do
-     has_permission_on :asset_asset_losses, :to => [:read, :kewpa28, :kewpa29, :kewpa30, :kewpa31] 
+     has_permission_on :asset_asset_losses, :to => [:read, :kewpa28, :kewpa29, :kewpa30, :kewpa31, :loss_list] 
      has_permission_on :equery_report_assetsearches, :to => [:new_initial_loss, :new_final_loss, :new_writeoff_certificate, :create]
      has_permission_on :equery_report_assetsearches, :to => [:show] do
        if_attribute :search_type => is_in {[15, 16, 17]} #15-initial loss(kw28), 16-final loss(kw30), 17-writeoff(kw31)
      end
   end
   role :asset_losses_module_user do
-    has_permission_on :asset_asset_losses, :to => [:read, :update, :endorse, :edit_multiple, :update_multiple, :kewpa28, :kewpa29, :kewpa30, :kewpa31] 
+    has_permission_on :asset_asset_losses, :to => [:read, :update, :endorse, :edit_multiple, :update_multiple, :kewpa28, :kewpa29, :kewpa30, :kewpa31, :loss_list] 
      has_permission_on :equery_report_assetsearches, :to => [:new_initial_loss, :new_final_loss, :new_writeoff_certificate, :create]
      has_permission_on :equery_report_assetsearches, :to => [:show] do
        if_attribute :search_type => is_in {[15, 16, 17]} #15-initial loss(kw28), 16-final loss(kw30), 17-writeoff(kw31)

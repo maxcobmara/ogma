@@ -6,11 +6,8 @@
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_asset_loss_path
   %ul.nav.navbar-nav.navbar-right
-    /TODO - fix this - not working %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "bogus"
-    %li.dropdown
-      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#", class: 'bogus'}
-        = fa_icon "print", text: (t 'actions.print')
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li= link_to (fa_icon "file-pdf-o", text: (t 'actions.print')), loss_list_asset_losses_path(params.merge(:format => 'pdf'))
         
 .row.filter{style: "display:none;"}
   .col-md-2
@@ -28,6 +25,7 @@
           %th{width: '20%'}= sort_link(@search, :lost_at, (t 'asset.loss.loss_date_time'))
       %tbody
         = render "index_search"
+        - count=0
         - @asset_losses.group_by{|x|x.document}.each do |approval_document, asset_losses|
           %tr
             %td.group{colspan: 6}
@@ -36,19 +34,63 @@
                 =link_to (fa_icon "file-pdf-o")+" KEW-PA 31", kewpa31_asset_losses_path(format: "pdf", id: approval_document)
               - else
                 =t('not_applicable')
+         
           - for asset_loss in asset_losses
             %tr
-              %td= check_box_tag "asset_loss_ids[]", asset_loss.id, :class => "check"
+              %td{:style=>"text-align: center;"}= check_box_tag "asset_loss_ids[]", asset_loss.id, true, :id => "assetlossidss_#{count}"
               %td= asset_loss.loss_type.capitalize
               %td= ringgols(asset_loss.est_value)
               %td= link_to asset_loss.asset.code_asset, asset_loss_path(asset_loss) 
               %td= asset_loss.try(:location).try(:name)	  
               %td= asset_loss.lost_at.strftime('%d %b %Y - %H:%M') unless asset_loss.lost_at.nil?
-              
-        /TODO - check all / uncheck all checkbox
+            - count+=1
+        
+    .row
+      %br
+      %span{:style=>"position: absolute; left: 40px;"}
+        = check_box_tag :check_all
+        = t('actions.check_all')
+      %br
         
     .row 
+      %br
       .col-md-3.col-md-offset-1= submit_tag (t 'asset.loss.writeoff_checked'), :name => :loss_submit_button, class: "btn btn-default"
 
-          
+
+:javascript
+$(document).ready(function(){
+  var default_check = document.getElementById('check_all');
+  default_check.checked = true;
+  
+  $("input[id='check_all']").change(function() {  
+    var checkbox = document.getElementsByName('asset_loss_ids[]')
+    if($('#check_all').is(':checked')) { 
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('assetlossidss_'+j)
+        cc.checked = true;
+      }
+    }else{
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('assetlossidss_'+j)
+        cc.checked = false;
+      }
+    }
+  });
+
+  $("input[id='check_all']").each(function() {  
+    var checkbox = document.getElementsByName('asset_loss_ids[]')
+    if($('#check_all').is(':checked')) { 
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('assetlossidss_'+j)
+        cc.checked = true;
+      }
+    }else{
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('assetlossidss_'+j)
+        cc.checked = false;
+      }
+    }
+  });
+
+};  
 
