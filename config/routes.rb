@@ -121,7 +121,11 @@ Ogma::Application.routes.draw do
         get :postinfo_list
       end
     end
-    resources :mentors
+    resources :mentors do
+      collection do
+	get :mentormentee_list
+      end
+    end
   end
 
   match '/travel_requests/logs', to: 'staff/travel_requests#travel_log_index', via: 'get'

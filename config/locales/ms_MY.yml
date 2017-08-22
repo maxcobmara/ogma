@@ -1722,6 +1722,8 @@ ms_MY:
       remark: Catatan
       mentee: Mentee
       name_or_rank: Nama atau pangkat
+      redundant_mentees: Mentee mestilah unik
+      existing_mentees: Mentee telah wujud dalam kumpulan Mentor-Mentee lain
       
     staff_appraisal:
       title: Penilaian Prestasi
