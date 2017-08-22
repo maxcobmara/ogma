@@ -191,7 +191,6 @@
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "conversation.local_messaging"), mailbox_inbox_path
             - permitted_to? :read, :bulletins do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "buletin.title"), bulletins_path
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Equery/Reports", '#', class: "bogus"
             - permitted_to? :read, :documents do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "document.title"), documents_path
             - permitted_to? :read, :cofiles do

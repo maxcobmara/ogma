@@ -1,17 +1,13 @@
 class CofilesController < ApplicationController
-  filter_resource_access
+  filter_access_to :index, :new, :create, :cofile_list, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_cofile, only: [:show, :edit, :update, :destroy]
+  before_action :set_cofiles, only: [:index, :cofile_list]
 
   # GET /cofiles
   # GET /cofiles.xml
   def index
-    @search = Cofile.search(params[:q])
-    @cofiles = @search.result
     @cofiles = @cofiles.page(params[:page]||1)
-    #previous
-    #@staff_filtered = Staff.with_permissions_to(:edit).find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['icno LIKE ? or name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
-    #@cofiles_filtered = Cofile.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['cofileno LIKE ? or name ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
-
   end
   
   def new
@@ -30,7 +26,6 @@ class CofilesController < ApplicationController
     end
   end
 
-  
   def edit
     @cofile = Cofile.find(params[:id])
   end
@@ -59,11 +54,30 @@ class CofilesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def cofile_list
+    respond_to do |format|
+      format.pdf do
+        pdf = Cofile_listPdf.new(@cofiles, view_context, current_user.college)
+        send_data pdf.render, filename: "cofile_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
 
 private
     # Use callbacks to share common setup or constraints between actions.
     def set_cofile
       @cofile = Cofile.find(params[:id])
+    end
+    
+    def set_cofiles
+      #previous
+      #@staff_filtered = Staff.with_permissions_to(:edit).find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['icno LIKE ? or name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
+      #@cofiles_filtered = Cofile.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['cofileno LIKE ? or name ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
+      @search = Cofile.search(params[:q])
+      @cofiles = @search.result
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

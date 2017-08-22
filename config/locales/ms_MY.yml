@@ -3138,7 +3138,7 @@ ms_MY:
       
   cofile:
     title: Daftar Fail
-    index: Senarai Fail
+    index: Senarai Daftar Fail
     cofileno: No Fail 
     name: Nama Fail
     location: Lokasi
@@ -3146,11 +3146,11 @@ ms_MY:
     onloan_to: Dipinjamkan Kepada
     onloandt: Tarikh Dipinjam
     control: Tindakan  
-    file_details: Maklumat Fail
+    file_details: Maklumat Daftar Fail
     onloanxdt: Tarikh Dipulangkan
     onloan: Dipinjam
-    new: Fail Baru
-    edit: Sunting Fail
+    new: Daftar Fail Baru
+    edit: Sunting Daftar Fail
   
   library:
     title: Perpustakaan
@@ -3524,15 +3524,15 @@ ms_MY:
   floor: Tingkat
   room: "Unit/Bilik"
 
-  cofiles:
-    index: Indeks File Pendaftaran
-    cofileno: No Cofile
-    name: Nama
-    location: Lokasi
-    owner: Pemilik
-    onloan_to: Dipinjam Kepada
-    onloandt: Tarikh Pinjaman
-    control: Kawalan
+  #cofiles:
+    #index: Indeks Daftar Fail
+    #cofileno: No Fail
+    #name: Nama
+    #location: Lokasi
+    #owner: Pemilik
+    #onloan_to: Dipinjam Kepada
+    #onloandt: Tarikh Pinjaman
+    #control: Kawalan
 
   events:
     campus_events: Acara Kampus

@@ -6,22 +6,19 @@
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_cofile_path
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
-
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li= link_to fa_icon("print", text: (t 'actions.print')), cofile_list_cofiles_path(params.merge(format: 'pdf'))
 
 .row
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :cofileno, (t 'cofiles.cofileno'))
-        %th= sort_link(@search, :name, (t 'cofiles.name'))
-        %th= sort_link(@search, :location, (t 'cofiles.location'))
-        %th= sort_link(@search, :owner, (t 'cofiles.owner'))
-        %th{style: "width:20%;"}= sort_link(@search, :onloan_to, (t 'cofiles.onloan_to'))
-        %th{style: "width:10%;"}= sort_link(@search, :onloandt,(t 'cofiles.onloandt'))
-        //%th.ac{:colspan => "2"}= t 'control'
-		
+        %th{style: "width:16%;"}= sort_link(@search, :cofileno, (t 'cofile.cofileno'))
+        %th{style: "width:26%;"}= sort_link(@search, :name, (t 'cofile.name'))
+        %th{style: "width:12%;"}= sort_link(@search, :location, (t 'cofile.location'))
+        %th{style: "width:18%;"}= sort_link(@search, :owner, (t 'cofile.owner'))
+        %th{style: "width:18%;"}= sort_link(@search, :onloan_to, (t 'cofile.onloan_to'))
+        %th{style: "width:10%;"}= sort_link(@search, :onloandt,(t 'cofile.onloandt'))		
 
     %tbody
     = render "index_search"
@@ -30,11 +27,8 @@
         %td= link_to cofile.cofileno, cofile_path(cofile)
         %td= cofile.name
         %td= cofile.location
-        %td= cofile.college.code=='amsas' ? cofile.owner.staff_with_rank : cofile.owner.mykad_with_staff_name
-        %td= cofile.staffloan_id? ? check_kin {cofile.borrower.mykad_with_staff_name} : ""
-        //%td= cofile.onloan? ? cofile.onloandt : ""
-        %td= cofile.onloandt
-        //%td{:width => "10px"}= link_to fa_icon("eye", :border => 0), :action => 'show', :id => cofile
-        //%td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), cofile, :confirm => 'Are you sure?', :method => :delete
+        %td= cofile.college.code=='amsas' ? cofile.try(:owner).try(:staff_with_rank) : cofile.try(:owner).try(:mykad_with_staff_name)
+        %td= cofile.college.code=='amsas' ? cofile.try(:borrower).try(:staff_with_rank) : cofile.try(:borrower).try(:mykad_with_staff_name)
+        %td= cofile.onloandt.try(:strftime, '%d-%m-%Y')
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @cofiles, :theme => 'twitter-bootstrap-3'

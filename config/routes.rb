@@ -316,7 +316,11 @@ Ogma::Application.routes.draw do
     end
   end
 
-  resources :cofiles
+  resources :cofiles do
+    collection do
+      get :cofile_list
+    end
+  end
 
   resources :documents do
     collection do

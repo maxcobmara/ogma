@@ -1147,7 +1147,7 @@ authorization do
   end
   
   role :e_filing do
-    has_permission_on :cofiles, :to => :manage
+    has_permission_on :cofiles, :to => [:manage, :cofile_list]
     has_permission_on :documents, :to => [:manage, :document_report]
     has_permission_on :equery_report_documentsearches, :to => [:new, :create, :show]
   end
@@ -2574,16 +2574,16 @@ authorization do
 
   #46-OK
   role :files_module_admin do
-     has_permission_on :cofiles, :to => :manage
+     has_permission_on :cofiles, :to => [:manage, :cofile_list]
   end
   role :files_module_viewer do
-     has_permission_on :cofiles, :to => :read
+     has_permission_on :cofiles, :to =>[:read, :cofile_list]
   end
   role :files_module_user do
-    has_permission_on :cofiles, :to => [:read, :update]
+    has_permission_on :cofiles, :to => [:read, :cofile_list, :update]
   end
   role :files_module_member do
-    has_permission_on :cofiles, :to => [:read, :create]
+    has_permission_on :cofiles, :to => [:read, :cofile_list, :create]
     has_permission_on :cofiles, :to => :update do
       if_attribute :owner_id => is {user.userable.id}
     end
