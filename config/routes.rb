@@ -422,7 +422,11 @@ Ogma::Application.routes.draw do
     end
   end
 
-  resources :bulletins
+  resources :bulletins do
+    collection do
+      get :bulletin_list
+    end
+  end
 
   namespace :training do
     resources :programmes do

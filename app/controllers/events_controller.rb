@@ -8,18 +8,6 @@ class EventsController < ApplicationController
   def index
     @events = @events.order(:start_at).reverse_order.page(params[:page]||1)
   end
-
-  def event_list
-    @events=@events.order(:start_at).reverse_order
-    respond_to do |format|
-      format.pdf do
-        pdf = Event_listPdf.new(@events, view_context, current_user.college)
-        send_data pdf.render, filename: "event_list-{Date.today}",
-                               type: "application/pdf",
-                               disposition: "inline"
-      end
-    end
-  end
   
   def calendar
     @events = Event.all
@@ -66,7 +54,6 @@ class EventsController < ApplicationController
     end
   end
 
-
   def destroy
     @event.destroy
 
@@ -78,6 +65,18 @@ class EventsController < ApplicationController
 
   def edit
     @event = Event.find(params[:id])
+  end
+  
+  def event_list
+    @events=@events.order(:start_at).reverse_order
+    respond_to do |format|
+      format.pdf do
+        pdf = Event_listPdf.new(@events, view_context, current_user.college)
+        send_data pdf.render, filename: "event_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
   end
 
   private

@@ -450,11 +450,11 @@ authorization do
    
    has_permission_on :campus_locations, :to => [:read, :kewpa7]                                          # A staff can read+kewpa7 all location inc. staff & student residences
    
-   has_permission_on :events, :to => [:create, :read, :event_list]                                                             # A staff can read, create but update own
+   has_permission_on :events, :to => [:create, :read, :event_list]                                           # A staff can read, create but update own
    has_permission_on :events, :to => :update do
      if_attribute :createdby => is {user.userable.id}
    end
-   has_permission_on :bulletins, :to => :read                                                                          # A staff can read all bulletins
+   has_permission_on :bulletins, :to => [:read, :bulletin_list]                                                  # A staff can read all bulletins
    #local msg r/a??
    
    has_permission_on :documents, :to => :menu                                                                   # A staff can access Index, but listing restricted to roles / if recepients
@@ -2557,16 +2557,16 @@ authorization do
   
   #45-OK
   role :bulletins_module_admin do
-     has_permission_on :bulletins, :to =>:manage
+     has_permission_on :bulletins, :to =>[:manage, :bulletin_list]
   end
   role :bulletins_module_viewer do
-     has_permission_on :bulletins, :to => :read
+     has_permission_on :bulletins, :to => [:read, :bulletin_list]
   end
   role :bulletins_module_user do
-    has_permission_on :bulletins, :to => [:read, :update]
+    has_permission_on :bulletins, :to => [:read, :bulletin_list, :update]
   end
   role :bulletins_module_member do
-    has_permission_on :bulletins, :to => [:create, :read]                                                             # A staff can read, create but update own
+    has_permission_on :bulletins, :to => [:create, :read, :bulletin_list]                                                             # A staff can read, create but update own
     has_permission_on :bulletins, :to => :update do
       if_attribute :postedby_id => is {user.userable.id}
     end

@@ -69,6 +69,7 @@ class College < ActiveRecord::Base
   has_many :examanalysissearches
   has_many :asset_defects
   has_many :events
+  has_many :bulletins
   # staffs
   
   serialize :data, Hash

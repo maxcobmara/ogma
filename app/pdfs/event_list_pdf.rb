@@ -24,13 +24,6 @@ class Event_listPdf < Prawn::Document
     end
   end
 
-#    link_to event.eventname, event_path(event)
-#           %td= event.start_at.try(:strftime, " %d %b %y, %a, %I:%M%p")
-#           %td= event.end_at.try(:strftime, "%d %b %y, %a, %I:%M%p  ")
-#           %td= event.location
-#           %td= event.officiated
-#           %td= event.staff.try(:name)
-# 	  
   def line_item_rows
     counter = counter||0
     header=[[{content: "#{I18n.t('events.list').upcase}<br> #{@college.name.upcase}", colspan: 7}],

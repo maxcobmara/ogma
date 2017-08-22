@@ -1,12 +1,12 @@
 class BulletinsController < ApplicationController
-  filter_resource_access
+  filter_access_to :index, :new, :create, :bulletin_list, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_bulletin, only: [:show, :edit, :update, :destroy]
+  before_action :set_bulletins, only: [:index, :bulletin_list]
   
   # GET /bulletins
   # GET /bulletins.xml
   def index
-    @search = Bulletin.search(params[:q])
-    @bulletins = @search.result
     @bulletins = @bulletins.page(params[:page]||1)
   end
 
@@ -59,23 +59,38 @@ class BulletinsController < ApplicationController
   # DELETE /bulletins/1.xml
   def destroy
     @bulletin.destroy
-
     respond_to do |format|
       format.html { redirect_to(bulletins_url) }
       format.json { head :no_content }
     end
   end
+  
+  def bulletin_list
+    respond_to do |format|
+      format.pdf do
+        pdf = Bulletin_listPdf.new(@bulletins, view_context, current_user.college)
+        send_data pdf.render, filename: "bulletin_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
 
   
-private
+  private
     # Use callbacks to share common setup or constraints between actions.
     def set_bulletin
       @bulletin = Bulletin.find(params[:id])
     end
+    
+    def set_bulletins
+      @search = Bulletin.search(params[:q])
+      @bulletins = @search.result
+    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bulletin_params
-      params.require(:bulletin).permit(:headline, :content, :postedby_id, :publishdt, :data)
+      params.require(:bulletin).permit(:headline, :content, :postedby_id, :publishdt, :data, :college_id, {:data => []})
     end
     
 end
