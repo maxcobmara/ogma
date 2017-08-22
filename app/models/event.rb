@@ -1,9 +1,11 @@
 class Event < ActiveRecord::Base
-
+  include EventsHelper
+  
   paginates_per 15 
   before_save  :titleize_eventname
 
   belongs_to :staff, :foreign_key => 'createdby'
+  belongs_to :college
 
   validates_presence_of :eventname, :start_at, :end_at, :location, :participants, :officiated, :createdby
 

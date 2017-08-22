@@ -1,15 +1,26 @@
 class EventsController < ApplicationController
-  filter_access_to :index, :new, :create, :attribute_check => false  #calendar
+  filter_access_to :index, :new, :create, :event_list, :attribute_check => false  #calendar
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   helper_method :sort_column, :sort_direction
   before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_events, only: [:index, :event_list]
 
   def index
-    @search = Event.search(params[:q])
-    @events = @search.result
     @events = @events.order(:start_at).reverse_order.page(params[:page]||1)
   end
 
+  def event_list
+    @events=@events.order(:start_at).reverse_order
+    respond_to do |format|
+      format.pdf do
+        pdf = Event_listPdf.new(@events, view_context, current_user.college)
+        send_data pdf.render, filename: "event_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
   def calendar
     @events = Event.all
     @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
@@ -74,10 +85,15 @@ class EventsController < ApplicationController
     def set_event
       @event = Event.find(params[:id])
     end
+    
+    def set_events
+      @search = Event.search(params[:q])
+      @events = @search.result
+    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:eventname, :start_at, :end_at, :location, :participants, :officiated, :createdby)# <-- insert editable fields here inside here e.g (:date, :name)
+      params.require(:event).permit(:eventname, :start_at, :end_at, :location, :participants, :officiated, :createdby, :college_id, {:data => []})# <-- insert editable fields here inside here e.g (:date, :name)
     end
 
 end

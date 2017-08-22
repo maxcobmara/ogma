@@ -311,6 +311,9 @@ Ogma::Application.routes.draw do
     member do
       get :calendar
     end
+    collection do
+      get :event_list
+    end
   end
 
   resources :cofiles

@@ -450,7 +450,7 @@ authorization do
    
    has_permission_on :campus_locations, :to => [:read, :kewpa7]                                          # A staff can read+kewpa7 all location inc. staff & student residences
    
-   has_permission_on :events, :to => [:create, :read]                                                             # A staff can read, create but update own
+   has_permission_on :events, :to => [:create, :read, :event_list]                                                             # A staff can read, create but update own
    has_permission_on :events, :to => :update do
      if_attribute :createdby => is {user.userable.id}
    end
@@ -2540,16 +2540,16 @@ authorization do
   #start of Support table / E FIlling modules##################################
   #44-OK
   role :events_module_admin do
-     has_permission_on :events, :to => :manage
+     has_permission_on :events, :to => [:manage, :event_list]
   end
   role :events_module_viewer do
-     has_permission_on :events, :to => :read
+     has_permission_on :events, :to => [:read, :event_list]
   end
   role :events_module_user do
-     has_permission_on :events, :to => [:read, :update]
+     has_permission_on :events, :to => [:read, :update, :event_list]
   end
   role :events_module_member do
-    has_permission_on :events, :to => [:create, :read]                                                             # A staff can read, create but update own
+    has_permission_on :events, :to => [:create, :read, :event_list]                                                             # A staff can read, create but update own
     has_permission_on :events, :to => :update do
       if_attribute :createdby => is {user.userable.id}
     end

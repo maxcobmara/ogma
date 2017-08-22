@@ -2386,7 +2386,7 @@ ms_MY:
     filename: Nama
     type: Jenis
     link: Pautan
-    kewpa_download_linklist: "Muat Turun/Senarai Pautan KEW PA"
+    kewpa_download_linklist: "Muat Turun / Senarai Pautan KEW PA"
     
     defect:
       title: Kerosakan Aset
@@ -5951,7 +5951,7 @@ ms_MY:
         # When no format has been given, it uses default.
         # You can provide other formats here if you like!
       day_names: [Ahad, Isnin, Selasa, Rabu, Khamis, Jumaat, Sabtu]
-      abbr_day_names: [Ahad, Isnin, Selasa, Rabu, Khamis, Jumaat, Sabtu]
+      abbr_day_names: [Ahd, Isn, Sel, Rab, Kha, Jum, Sab]
       #[Aha, Isn, Sel, Rab, Kha, Jum, Sab]
       # Don't forget the nil at the beginning; there's no such thing as a 0th month
       month_names: [~, Januari, Februari, Mac, April, Mei, Jun, Julai, Ogos, September, Oktober, November, Disember]

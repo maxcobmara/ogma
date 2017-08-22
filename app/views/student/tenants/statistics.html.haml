@@ -116,11 +116,18 @@
             %th=(t 'course.name')+" - "+(t 'training.intake.description')
             %th.centre=t('student.tenant.total')
         %tbody
-          - @students_prog.each do |course_id, students|
-            - students.group_by{|k|k.intake}.each do |intake, students2|
+          - if current_user.college.code=='amsas'
+            - allstudents=Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id))
+            - allstudents.group_by{|x|x.intakestudent}.each do |intake, students2|
               %tr
-                %th=students.first.course.name+" - "+students2.first.intake_num
+                %th=intake.siri_programmelist
                 %td.centre=students2.count
+          - else
+            - @students_prog.each do |course_id, students|
+              - students.group_by{|k|k.intake}.each do |intake, students2|
+                %tr
+                  %th=students.first.course.name+" - "+students2.first.intake_num
+                  %td.centre=students2.count
           - if @all_tenants_wostudent.count > 0
             %tr
               %td{style: "color: red;"}=t 'student.tenant.tenancy_details_nil'

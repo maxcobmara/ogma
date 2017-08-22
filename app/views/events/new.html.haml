@@ -9,6 +9,7 @@
     = render 'shared/error_messages', object: f.object
     .col-md-offset-1
       = render :partial => 'form', :locals => {:f => f}
+      = f.hidden_field :college_id, value: current_user.college_id
       .form-group
         .col-sm-offset-3.col-sm-1
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), events_path, :class => 'btn btn-default'
