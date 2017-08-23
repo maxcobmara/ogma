@@ -13,7 +13,7 @@
       %dd= @asset_loan.asset.assetcode
      
       %dt=(t 'asset.loan.loaned_by')+(t 'asset.loan.separator_slash')+(t 'asset.loan.responsible_unit')
-      %dd="#{@asset_loan.try(:owner).try(:staff_with_rank)} / #{@asset_loan.asset.assignedto.try(:positions).first.try(:unit)}"
+      %dd="#{@asset_loan.try(:owner).try(:staff_with_rank)} / #{@asset_loan.try(:asset).try(:assignedto).try(:positions).try(:first).try(:unit)}"
     
   #request.tab-pane.fade.in.active
     = render 'tab_show_request'
