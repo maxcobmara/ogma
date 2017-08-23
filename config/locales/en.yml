@@ -2567,6 +2567,7 @@ en:
       sink: Sink
       view_close: "View & Close"
       disposed_by: View and Close By
+      no_record_selected: "No record selected for KEW.PA-17 / KEW.PA-20 display"
       
     loss:
       title: "Loss & Write Offs"

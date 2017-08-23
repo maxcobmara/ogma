@@ -2460,6 +2460,7 @@ ms_MY:
       sink: Tenggelam
       view_close: "Semak & Tutup"
       disposed_by: Disemak dan Ditutup Oleh
+      no_record_selected: "Tiada rekod dipilih untuk paparan KEW.PA-17 / KEW.PA-20"
  
     loss:
       title: "Kehilangan & Hapus Kira"
