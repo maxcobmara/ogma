@@ -2649,6 +2649,7 @@ en:
       is_approved: "Approved?"
       notify_hod: Notify HOD
       approve_hod: HOD Approval
+      hod: Head of Department
       due_date: Due date
       overdue: Overdue
       assetcode_name: Asset code or name

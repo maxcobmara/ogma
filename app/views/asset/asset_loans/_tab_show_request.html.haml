@@ -15,7 +15,7 @@
     
     - if (@asset_loan.asset.category_id==3 || @asset_loan.asset.category.description.downcase.include?("kenderaan"))
       %dt=t 'asset.loan.driver_id'
-      %dd=@asset_loan.driver.staff_with_rank
+      %dd=@asset_loan.try(:driver).try(:staff_with_rank)
     - else  
       %dt=t 'asset.loan.loantype'
       %dd

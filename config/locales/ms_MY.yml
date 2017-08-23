@@ -2542,6 +2542,7 @@ ms_MY:
       is_approved: "Diluluskan?"
       notify_hod: Makluman Ketua Jabatan
       approve_hod: Kelulusan Ketua Jabatan
+      hod: Ketua Jabatan
       due_date: Tarikh akhir
       overdue: Tamat tempoh
       assetcode_name: Kod atau nama aset
