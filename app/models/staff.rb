@@ -37,11 +37,11 @@ class Staff < ActiveRecord::Base
   has_many :revaluers,  :class_name => 'AssetDisposal', :foreign_key => 'revalued_by'
   
   has_many :asset_loans, :foreign_key => 'staff_id' #peminjam / loaner
-  has_many :assignedto_assetloans, :foreign_key => 'loaned_by'  #bertanggungjawab
-  has_many :released_assetloans, :foreign_key => 'loan_officer' #loan_officer
-  has_many :approved_assetloans, :foreign_key => 'hod' #hod 
-  has_many :returned_assetloans, :foreign_key => 'received_officer' #received_officer
-  has_many :driven_vehicles, :foreign_key => 'driver_id'
+  has_many :assignedto_assetloans, :class_name => 'AssetLoan', :foreign_key => 'loaned_by'  #bertanggungjawab
+  has_many :released_assetloans, :class_name => 'AssetLoan', :foreign_key => 'loan_officer' #loan_officer
+  has_many :approved_assetloans,:class_name => 'AssetLoan',  :foreign_key => 'hod' #hod 
+  has_many :returned_assetloans, :class_name => 'AssetLoan', :foreign_key => 'received_officer' #received_officer
+  has_many :driven_vehicles, :class_name => 'AssetLoan', :foreign_key => 'driver_id'
 
   has_many :timetables
   has_many :prepared_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'prepared_by'
@@ -356,18 +356,21 @@ class Staff < ActiveRecord::Base
      docprep=documentpreparer.count
      doccc=documentfirstcirculate.count
      
+     #asset_loans
+     loan_borrower=asset_loans.count                     #peminjam / loaner
+     loan_resposible=assignedto_assetloans.count #bertanggungjawab
+     loan_officer=released_assetloans.count           #loan_officer
+     loan_hod=approved_assetloans.count              #hod 
+     loan_received=returned_assetloans.count        #received_officer
+     loan_vehicledriver=driven_vehicles.count           #driver
+     
      # TODO include these as well
 #      reporters 
 #      asset_disposal
 #      processors
 #      verifiers
 #      revaluers
-#      asset_loans
-#      assignedto_assetloans
-#      released_assetloans
-#      approved_assetloans
-#      returned_assetloans
-  
+     
      if evc > 0
        errors.add(:base, "#{I18n.t('exam.evaluate_course.title')} : #{evc} #{I18n.t('actions.records')}")
      end
@@ -398,6 +401,26 @@ class Staff < ActiveRecord::Base
      end
      if doccc > 0
        errors.add(:base, "#{I18n.t('document.title')} (#{I18n.t('document.cc1staff_id')}) : #{doccc} #{I18n.t('actions.records')}")
+     end
+     
+     #asset_loans
+     if loan_borrower > 0
+       errors.add(:base, "#{I18n.t('asset.loan.title')} (#{I18n.t('asset.loan.staff_id')}) : #{loan_borrower} #{I18n.t('actions.records')}")
+     end
+     if loan_resposible > 0
+       errors.add(:base, "#{I18n.t('asset.loan.title')} (#{I18n.t('asset.loan.loaned_by')}) : #{loan_resposible} #{I18n.t('actions.records')}")
+     end
+     if loan_officer > 0
+       errors.add(:base, "#{I18n.t('asset.loan.title')} (#{I18n.t('asset.loan.loan_officer')}) : #{loan_officer} #{I18n.t('actions.records')}")
+     end
+     if loan_hod > 0
+       errors.add(:base, "#{I18n.t('asset.loan.title')} (#{I18n.t('asset.loss.hod')}) : #{loan_hod} #{I18n.t('actions.records')}")
+     end
+     if loan_received > 0
+       errors.add(:base, "#{I18n.t('asset.loan.title')} (#{I18n.t('asset.loan.received_officer')}) : #{loan_received} #{I18n.t('actions.records')}")
+     end
+     if loan_vehicledriver > 0
+       errors.add(:base, "#{I18n.t('asset.loan.title')} (#{I18n.t('asset.loan.driver_id')}) : #{loan_vehicledriver} #{I18n.t('actions.records')}")
      end
      
      user=User.where(userable_id: id)
@@ -432,7 +455,7 @@ class Staff < ActiveRecord::Base
        end 
      end
 
-     if evc > 0 || avc > 0 || ins > 0 || avg > 0 || ten > 0 || schmkr > 0 || ownlp > 0 || docfiler > 0 || docprep > 0 || doccc > 0
+     if evc > 0 || avc > 0 || ins > 0 || avg > 0 || ten > 0 || schmkr > 0 || ownlp > 0 || docfiler > 0 || docprep > 0 || doccc > 0 ||  loan_borrower > 0 || loan_hod > 0 || loan_officer > 0 || loan_received > 0 || loan_resposible > 0 || loan_vehicledriver > 0
        return false
      else
        if users.first

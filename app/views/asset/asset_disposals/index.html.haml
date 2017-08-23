@@ -2,21 +2,21 @@
 .page-header
   %h1= t('asset.disposal.title')#, :default => model_class.model_name.human.pluralize
 
+= render 'shared/flashes'
 = form_tag kewpa17_20_asset_disposals_path(:format => 'pdf'), :method => 'get' , :id => 'form1' do
   .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
     %ul.nav.navbar-nav
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_asset_disposal_path
     %ul.nav.navbar-nav.navbar-right
       %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-      %li.dropdown
-        %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-          = fa_icon "print", text: (t 'actions.print')
-          %b.caret
-        %ul.dropdown-menu
-          %li
-            = submit_tag 'KEW.PA-17', class: "btn btn-link"
-          %li
-            = submit_tag 'KEW.PA-20', class: "btn btn-link"
+      - if @disposals.count
+        %li.dropdown
+          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+            = fa_icon "print", text: (t 'actions.print')
+            %b.caret
+          %ul.dropdown-menu
+            %li= submit_tag 'KEW.PA-17', class: "btn btn-link"
+            %li= submit_tag 'KEW.PA-20', class: "btn btn-link"
 
   .row
     %table.table-striped.table-hover.ogma

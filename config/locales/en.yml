@@ -2567,6 +2567,7 @@ en:
       sink: Sink
       view_close: "View & Close"
       disposed_by: View and Close By
+      no_record_selected: "No record selected for KEW.PA-17 / KEW.PA-20 printing"
       
     loss:
       title: "Loss & Write Offs"
@@ -2648,6 +2649,7 @@ en:
       is_approved: "Approved?"
       notify_hod: Notify HOD
       approve_hod: HOD Approval
+      hod: Head of Department
       due_date: Due date
       overdue: Overdue
       assetcode_name: Asset code or name

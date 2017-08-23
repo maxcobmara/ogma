@@ -2460,6 +2460,7 @@ ms_MY:
       sink: Tenggelam
       view_close: "Semak & Tutup"
       disposed_by: Disemak dan Ditutup Oleh
+      no_record_selected: "Tiada rekod dipilih untuk cetakan KEW.PA-17 / KEW.PA-20"
  
     loss:
       title: "Kehilangan & Hapus Kira"
@@ -2541,6 +2542,7 @@ ms_MY:
       is_approved: "Diluluskan?"
       notify_hod: Makluman Ketua Jabatan
       approve_hod: Kelulusan Ketua Jabatan
+      hod: Ketua Jabatan
       due_date: Tarikh akhir
       overdue: Tamat tempoh
       assetcode_name: Kod atau nama aset

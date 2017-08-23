@@ -35,12 +35,13 @@
             - else
               = link_to asset_loan.asset.code_asset, asset_loan_path(asset_loan) 
           %td
-            =asset_loan.staff.staff_with_rank unless asset_loan.staff_id.blank?
+            =asset_loan.try(:staff).try(:staff_with_rank) 
             %br= asset_loan.reasons.capitalize
           %td
-            =h asset_loan.asset.assignedto.staff_with_rank unless asset_loan.asset.assignedto.blank?
+            = asset_loan.asset.assignedto_id
+            =h asset_loan.asset.try(:assignedto).try(:staff_with_rank) 
             %br
-              %b=h asset_loan.asset.assignedto.positions.first.unit unless asset_loan.asset.assignedto.positions.blank?
+              %b=h asset_loan.asset.try(:assignedto).try(:positions).try(:first).try(:unit)
           %td  
             =h asset_loan.loaned_on.try(:strftime, '%d %b %Y')
             %br=h asset_loan.expected_on.try(:strftime, '%d %b %Y')

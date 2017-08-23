@@ -8,6 +8,7 @@ class Asset::AssetDisposalsController < ApplicationController
     @search = AssetDisposal.search(params[:q])
     @disposals = @search.result
     @disposals = @disposals.page(params[:page]||1)  
+    flash.discard
   end
   
   def new
@@ -93,14 +94,15 @@ class Asset::AssetDisposalsController < ApplicationController
       disposed_ids.each do |dp|
         dpids << dp.to_i
       end    
-    end
-    if commit == 'KEW.PA-17' && dpids
-      redirect_to  kewpa17_asset_disposals_path(:format => 'pdf', :disposalids => dpids)
-    elsif commit == 'KEW.PA-20' && dpids
+      if commit == 'KEW.PA-17' && dpids
+        redirect_to  kewpa17_asset_disposals_path(:format => 'pdf', :disposalids => dpids)
+      elsif commit == 'KEW.PA-20' && dpids
       redirect_to kewpa20_asset_disposals_path(:format => 'pdf', :disposalids => dpids)
+      else
+        redirect_to asset_disposals_path
+      end
     else
-      redirect_to asset_disposals_path
-      #flash[:notice]=> "No record selected"
+       redirect_to(asset_disposals_path, :notice => I18n.t('asset.disposal.no_record_selected'))
     end
   end
 
