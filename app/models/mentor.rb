@@ -6,7 +6,7 @@ class Mentor < ActiveRecord::Base
   validates :staff_id, :mentor_date, presence: true
   validates :staff_id, uniqueness: true
   #validates_associated :mentees #effective for checking existing record only
-  validate :mentees_must_uniq #temp
+  validate :mentees_must_uniq
   
   private
     
