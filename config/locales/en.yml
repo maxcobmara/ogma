@@ -2050,6 +2050,7 @@ en:
     balance_after: "(after this leave is taken)"
     leave_already_taken: "Leave already taken for current applied dates!"
     begin_before_ends: "Your leave must begin before it ends"
+    start_end_must_exist: "Leave start date (From) and leave end date (To) must exist"
     submit: Submit
     leave_form: Leave Form
     requestdate: Request Date
@@ -2900,6 +2901,7 @@ en:
       course_details: Course Details
       health_status: Health Status
       qualifications: Qualifications
+      spm_results: SPM / SPMV Results
       guarantor: Guarantor
       contact_information: Contact Information
       mandatory: Mandatory
