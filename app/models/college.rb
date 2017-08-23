@@ -70,6 +70,7 @@ class College < ActiveRecord::Base
   has_many :asset_defects
   has_many :events
   has_many :bulletins
+  has_many :mentors
   # staffs
   
   serialize :data, Hash
