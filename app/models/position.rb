@@ -363,7 +363,7 @@ class Position < ActiveRecord::Base
     a=""
     pp_count=-1
     post.descendants.at_depth(ancs).order(code: :asc).each do |pp|
-      unless pp.name.include?("Jangan Delete Dulu")  #remark this line for checking
+      unless pp.name.include?("Jangan Delete Dulu")  #unremark this line for checking
       
         pp_count+=1
         anch2=""
@@ -390,8 +390,10 @@ class Position < ActiveRecord::Base
   def self.nested_post_pdf(ancs, post)
     a=[]
     post.descendants.at_depth(ancs).order(code: :asc).each_with_index do |pp|
-      a << ["#{pp.combo_code}", pp.name, pp.try(:staffgrade).try(:name), pp.unit, "#{pp.staff.blank? ? "-" : pp.try(:staff).try(:staff_with_rank)}"]
-      a+=Position.nested_post_pdf(ancs+1, pp)
+      unless pp.name.include?("Jangan Delete Dulu")  #unremark this line for checking
+        a << ["#{pp.combo_code}", pp.name, pp.try(:staffgrade).try(:name), pp.unit, "#{pp.staff.blank? ? "-" : pp.try(:staff).try(:staff_with_rank)}"]
+        a+=Position.nested_post_pdf(ancs+1, pp)
+      end
     end
     a  #return must be in this format -> #a=[["aa"], ["bb"], ["cc"]]
   end

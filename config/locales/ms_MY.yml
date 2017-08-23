@@ -1946,6 +1946,7 @@ ms_MY:
     balance_after: "(selepas cuti ini diambil)"
     leave_already_taken: "Cuti telah diambil pada tarikh cuti yang sedang dimohon!"
     begin_before_ends: "Tarikh mula cuti mestilah sebelum cuti berakhir dan selepas tarikh semasa"
+    start_end_must_exist: "Tarikh mula cuti (Darpada) dan tarikh cuti berakhir (Sehingga) mestilah diisi"
     submit: Hantar
     leave_form: Borang Cuti
     requestdate: Tarikh Permohonan
@@ -2794,6 +2795,7 @@ ms_MY:
       course_details: Butiran Kursus
       health_status: Status Kesihatan
       qualifications: Kelayakan
+      spm_results: Keputusan SPM / SPMV
       guarantor: Penjamin
       contact_information: Maklumat Perhubungan dan Penjamin
       mandatory: Mandatori

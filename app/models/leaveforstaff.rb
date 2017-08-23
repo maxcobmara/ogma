@@ -41,22 +41,28 @@ class Leaveforstaff < ActiveRecord::Base
         end
       end
       #current application 
-      c_leavedates = []
-      c_currdate = leavestartdate
-      c_daycount=leavenddate+1-leavestartdate
-      0.upto(c_daycount-1) do |u|
-        if c_currdate  <= leavenddate
-          c_leavedates << c_currdate
-          c_currdate+=1.days
+      if leavenddate && leavestartdate
+        c_leavedates = []
+        c_currdate = leavestartdate
+        c_daycount=leavenddate+1-leavestartdate
+        0.upto(c_daycount-1) do |u|
+          if c_currdate  <= leavenddate
+            c_leavedates << c_currdate
+            c_currdate+=1.days
+          end
         end
-      end
-      duplicates = (e_leavedates & c_leavedates).count
-      if duplicates > 0 && (id.nil? || id.blank?)
-        errors.add(:base, I18n.t('staff_leave.leave_already_taken'))
-        return false
+        duplicates = (e_leavedates & c_leavedates).count
+        if duplicates > 0 && (id.nil? || id.blank?)
+          errors.add(:base, I18n.t('staff_leave.leave_already_taken'))
+          return false
+        else
+          return true
+        end
       else
-        return true
+        errors.add(:base, I18n.t('staff_leave.start_end_must_exist'))
+	return false
       end
+      #current
     end
   
     def moo
