@@ -10,22 +10,18 @@ class Mentor < ActiveRecord::Base
   private
     
     def mentees_must_uniq
-      #exist 
-      a=[]
-      exist_mentees=Mentee.where.not(mentor_id: id).pluck(:student_id)
-      mentees.map(&:student_id).each{|m| a << "<b>Mentor</b>: #{Mentee.where(student_id: m).first.mentor.staff.staff_with_rank}, <b>Mentee</b>: <u>#{Student.find(m).student_with_rank}</u>" if exist_mentees.include?(m)}
-      if a.count > 0
-        a_list=a.join("<br>- ")
-        errors.add(:base, ("#{I18n.t('staff.mentors.existing_mentees') }<br>- #{a_list}").html_safe)
+      current_mentees=mentees.map(&:student_id)
+      if (current_mentees.count!=current_mentees.uniq.count)
+        b=""
+        mentees.group_by(&:student).each{|stu, ms| b+= "<li>#{stu.student_with_rank} (#{I18n.t('selected')} #{ms.count} #{I18n.t('times')})</li>" if ms.count > 1}
+        errors.add(:base, ("#{I18n.t('staff.mentors.redundant_mentees')}<ol>#{b}</ol>").html_safe)
       end
-      #current
-      if (mentees.map(&:student_id).count!=mentees.map(&:student_id).uniq.count)
-	b=[]
-	mentees.group_by(&:student_id).each do |stuid, ms|
-	  b << stuid if ms.count > 1
-	end
-	b_list=b.join("<br>- ")
-        errors.add(:base, ("#{I18n.t('staff.mentors.redundant_mentees')} <br>- #{b_list}").html_safe)
+      
+      existing=Mentee.where.not(mentor_id: id).pluck(:student_id)
+      duplicates=current_mentees & existing
+      if duplicates.count > 0
+        str=Mentee.where(student_id: duplicates).map(&:student_staff).join
+        errors.add(:base, ("#{I18n.t('staff.mentors.existing_mentees')}<ol>#{str}</ol>").html_safe)
       end
     end
     

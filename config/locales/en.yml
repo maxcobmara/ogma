@@ -619,6 +619,8 @@ en:
   remarks: Remarks
   form: Form
   module: Module
+  selected: selected
+  times: times
 
   actions:
     new: New
@@ -1751,7 +1753,7 @@ en:
       mentee: Mentee
       name_or_rank: Name or Rank
       redundant_mentees: Mentee must be unique
-      existing_mentees: Mentee already exist in other Mentor-Mentee group
+      existing_mentees: "Selected mentee(s) already exist in other Mentor-Mentee group :<br>"
     
     staff_appraisal:
       title: Staff Appraisal

@@ -601,6 +601,8 @@ ms_MY:
   remarks: Catatan
   form: Borang
   module: Modul
+  selected: dipilih
+  times: kali
  
   actions:
     new: Baru
@@ -1723,7 +1725,7 @@ ms_MY:
       mentee: Mentee
       name_or_rank: Nama atau pangkat
       redundant_mentees: Mentee mestilah unik
-      existing_mentees: Mentee telah wujud dalam kumpulan Mentor-Mentee lain
+      existing_mentees: "Mentee dipilih telah wujud dalam kumpulan Mentor-Mentee lain :<br>"
       
     staff_appraisal:
       title: Penilaian Prestasi
