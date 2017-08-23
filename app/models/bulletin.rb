@@ -2,6 +2,7 @@ class Bulletin < ActiveRecord::Base
   
   validates_presence_of :headline, :content, :postedby_id, :publishdt
 
+  belongs_to :college
   belongs_to :staff,  :foreign_key => 'postedby_id' 
   # validates_format_of    :headline, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters"
   

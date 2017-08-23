@@ -601,6 +601,8 @@ ms_MY:
   remarks: Catatan
   form: Borang
   module: Modul
+  selected: dipilih
+  times: kali
  
   actions:
     new: Baru
@@ -1722,6 +1724,8 @@ ms_MY:
       remark: Catatan
       mentee: Mentee
       name_or_rank: Nama atau pangkat
+      redundant_mentees: Mentee mestilah unik
+      existing_mentees: "Mentee dipilih telah wujud dalam kumpulan Mentor-Mentee lain :<br>"
       
     staff_appraisal:
       title: Penilaian Prestasi
@@ -2386,7 +2390,7 @@ ms_MY:
     filename: Nama
     type: Jenis
     link: Pautan
-    kewpa_download_linklist: "Muat Turun/Senarai Pautan KEW PA"
+    kewpa_download_linklist: "Muat Turun / Senarai Pautan KEW PA"
     
     defect:
       title: Kerosakan Aset
@@ -3138,7 +3142,7 @@ ms_MY:
       
   cofile:
     title: Daftar Fail
-    index: Senarai Fail
+    index: Senarai Daftar Fail
     cofileno: No Fail 
     name: Nama Fail
     location: Lokasi
@@ -3146,11 +3150,11 @@ ms_MY:
     onloan_to: Dipinjamkan Kepada
     onloandt: Tarikh Dipinjam
     control: Tindakan  
-    file_details: Maklumat Fail
+    file_details: Maklumat Daftar Fail
     onloanxdt: Tarikh Dipulangkan
     onloan: Dipinjam
-    new: Fail Baru
-    edit: Sunting Fail
+    new: Daftar Fail Baru
+    edit: Sunting Daftar Fail
   
   library:
     title: Perpustakaan
@@ -3524,15 +3528,15 @@ ms_MY:
   floor: Tingkat
   room: "Unit/Bilik"
 
-  cofiles:
-    index: Indeks File Pendaftaran
-    cofileno: No Cofile
-    name: Nama
-    location: Lokasi
-    owner: Pemilik
-    onloan_to: Dipinjam Kepada
-    onloandt: Tarikh Pinjaman
-    control: Kawalan
+  #cofiles:
+    #index: Indeks Daftar Fail
+    #cofileno: No Fail
+    #name: Nama
+    #location: Lokasi
+    #owner: Pemilik
+    #onloan_to: Dipinjam Kepada
+    #onloandt: Tarikh Pinjaman
+    #control: Kawalan
 
   events:
     campus_events: Acara Kampus
@@ -5951,7 +5955,7 @@ ms_MY:
         # When no format has been given, it uses default.
         # You can provide other formats here if you like!
       day_names: [Ahad, Isnin, Selasa, Rabu, Khamis, Jumaat, Sabtu]
-      abbr_day_names: [Ahad, Isnin, Selasa, Rabu, Khamis, Jumaat, Sabtu]
+      abbr_day_names: [Ahd, Isn, Sel, Rab, Kha, Jum, Sab]
       #[Aha, Isn, Sel, Rab, Kha, Jum, Sab]
       # Don't forget the nil at the beginning; there's no such thing as a 0th month
       month_names: [~, Januari, Februari, Mac, April, Mei, Jun, Julai, Ogos, September, Oktober, November, Disember]

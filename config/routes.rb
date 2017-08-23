@@ -121,7 +121,11 @@ Ogma::Application.routes.draw do
         get :postinfo_list
       end
     end
-    resources :mentors
+    resources :mentors do
+      collection do
+	get :mentormentee_list
+      end
+    end
   end
 
   match '/travel_requests/logs', to: 'staff/travel_requests#travel_log_index', via: 'get'
@@ -311,9 +315,16 @@ Ogma::Application.routes.draw do
     member do
       get :calendar
     end
+    collection do
+      get :event_list
+    end
   end
 
-  resources :cofiles
+  resources :cofiles do
+    collection do
+      get :cofile_list
+    end
+  end
 
   resources :documents do
     collection do
@@ -419,7 +430,11 @@ Ogma::Application.routes.draw do
     end
   end
 
-  resources :bulletins
+  resources :bulletins do
+    collection do
+      get :bulletin_list
+    end
+  end
 
   namespace :training do
     resources :programmes do

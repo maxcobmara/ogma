@@ -7,7 +7,7 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_asset_loss_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li= link_to (fa_icon "file-pdf-o", text: (t 'actions.print')), loss_list_asset_losses_path(params.merge(:format => 'pdf'))
+    %li= link_to (fa_icon "print", text: (t 'actions.print')), loss_list_asset_losses_path(params.merge(:format => 'pdf'))
         
 .row.filter{style: "display:none;"}
   .col-md-2

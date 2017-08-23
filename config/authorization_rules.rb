@@ -32,7 +32,7 @@ authorization do
    has_permission_on :campus_pages, :to =>[:manage, :page_list, :flexible]
    has_permission_on :repositories, :to => [:manage, :download, :repository_list] #, :repository_list2, :index2, :new2, :loan]
    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show] #, :new_digital_library]
-   has_permission_on :staff_mentors, :to => :manage
+   has_permission_on :staff_mentors, :to => [:manage, :mentormentee_list]
     
   #by existing roles?
 #    includes :staff
@@ -450,11 +450,11 @@ authorization do
    
    has_permission_on :campus_locations, :to => [:read, :kewpa7]                                          # A staff can read+kewpa7 all location inc. staff & student residences
    
-   has_permission_on :events, :to => [:create, :read]                                                             # A staff can read, create but update own
+   has_permission_on :events, :to => [:create, :read, :event_list]                                           # A staff can read, create but update own
    has_permission_on :events, :to => :update do
      if_attribute :createdby => is {user.userable.id}
    end
-   has_permission_on :bulletins, :to => :read                                                                          # A staff can read all bulletins
+   has_permission_on :bulletins, :to => [:read, :bulletin_list]                                                  # A staff can read all bulletins
    #local msg r/a??
    
    has_permission_on :documents, :to => :menu                                                                   # A staff can access Index, but listing restricted to roles / if recepients
@@ -514,7 +514,7 @@ authorization do
    has_permission_on :repositories, :to => :update do
      if_attribute :staff_id => is {user.userable.id}
    end
-   has_permission_on :staff_mentors, :to => [:read, :create]
+   has_permission_on :staff_mentors, :to => [:read, :mentormentee_list, :create]
    has_permission_on :staff_mentors, :to => :update do 
      if_attribute :staff_id => is {user.userable.id}
    end
@@ -997,7 +997,7 @@ authorization do
         if_attribute :studentsubmit => is_not {true}
       end
       has_permission_on :campus_pages, :to => :flexipage
-      has_permission_on :staff_mentors, :to => :read
+      has_permission_on :staff_mentors, :to => [:read, :mentormentee_list]
       has_permission_on :library_books, :to => :read
       has_permission_on :equery_report_booksearches, :to => :new                                    # A student can search for all books (New(direct link) to 2 & 3 still accessible)
       has_permission_on :equery_report_booksearches, :to => [:create, :show] do             # restrict here++(equery_librarytransaction_searches)
@@ -1032,7 +1032,7 @@ authorization do
   end
 
   role :student_counsellor do
-    has_permission_on :student_student_counseling_sessions, :to => [:manage, :feedback_referrer]
+    has_permission_on :student_student_counseling_sessions, :to => [:manage, :feedback_referrer, :counseling_list]
     has_permission_on :student_student_attendances, :to => :read
     has_permission_on :students, :to => [:read, :student_list]
     has_permission_on :equery_report_studentsearches, :to => [:new, :create, :show]
@@ -1062,7 +1062,7 @@ authorization do
     end
     has_permission_on :students, :to => [:read, :student_list]
     has_permission_on :student_student_attendances, :to => :read                                                     #lecturer role - shall override this rule
-    has_permission_on :student_student_counseling_sessions, :to => [:read, :feedback_referrer] 
+    has_permission_on :student_student_counseling_sessions, :to => [:read, :counseling_list, :feedback_referrer] 
     has_permission_on :student_student_discipline_cases, :to => [:menu, :read]
     has_permission_on :equery_report_studentsearches, :to => [:new, :create, :show]
     has_permission_on :equery_report_studentattendancesearches, :to => [:new, :create, :show]
@@ -1147,7 +1147,7 @@ authorization do
   end
   
   role :e_filing do
-    has_permission_on :cofiles, :to => :manage
+    has_permission_on :cofiles, :to => [:manage, :cofile_list]
     has_permission_on :documents, :to => [:manage, :document_report]
     has_permission_on :equery_report_documentsearches, :to => [:new, :create, :show]
   end
@@ -1611,15 +1611,15 @@ authorization do
   #15-OK 
   #15 - 3/4 (Admin, Viewer, User) OK - 8Feb2016
   role :student_counseling_module_admin do
-     has_permission_on :student_student_counseling_sessions, :to => [:manage, :feedback_referrer] 
+     has_permission_on :student_student_counseling_sessions, :to => [:manage, :counseling_list, :feedback_referrer] 
      has_permission_on :equery_report_studentcounselingsearches, :to => [:new, :create, :show]
   end
   role :student_counseling_module_viewer do
-     has_permission_on :student_student_counseling_sessions, :to =>[:read, :feedback_referrer]
+     has_permission_on :student_student_counseling_sessions, :to =>[:read, :counseling_list, :feedback_referrer]
      has_permission_on :equery_report_studentcounselingsearches, :to => [:new, :create, :show]
   end
   role :student_counseling_module_user do
-     has_permission_on :student_student_counseling_sessions, :to =>[:read, :update, :feedback_referrer]
+     has_permission_on :student_student_counseling_sessions, :to =>[:read, :counseling_list, :update, :feedback_referrer]
      has_permission_on :equery_report_studentcounselingsearches, :to => [:new, :create, :show]
   end
 # NOTE - DISABLE(in EACH radio buttons - studentown[2].disabled=true) as the one & only owner of this module is Counsellor, use 'Student Counsellor' role instead.  
@@ -2540,16 +2540,16 @@ authorization do
   #start of Support table / E FIlling modules##################################
   #44-OK
   role :events_module_admin do
-     has_permission_on :events, :to => :manage
+     has_permission_on :events, :to => [:manage, :event_list]
   end
   role :events_module_viewer do
-     has_permission_on :events, :to => :read
+     has_permission_on :events, :to => [:read, :event_list]
   end
   role :events_module_user do
-     has_permission_on :events, :to => [:read, :update]
+     has_permission_on :events, :to => [:read, :update, :event_list]
   end
   role :events_module_member do
-    has_permission_on :events, :to => [:create, :read]                                                             # A staff can read, create but update own
+    has_permission_on :events, :to => [:create, :read, :event_list]                                                             # A staff can read, create but update own
     has_permission_on :events, :to => :update do
       if_attribute :createdby => is {user.userable.id}
     end
@@ -2557,16 +2557,16 @@ authorization do
   
   #45-OK
   role :bulletins_module_admin do
-     has_permission_on :bulletins, :to =>:manage
+     has_permission_on :bulletins, :to =>[:manage, :bulletin_list]
   end
   role :bulletins_module_viewer do
-     has_permission_on :bulletins, :to => :read
+     has_permission_on :bulletins, :to => [:read, :bulletin_list]
   end
   role :bulletins_module_user do
-    has_permission_on :bulletins, :to => [:read, :update]
+    has_permission_on :bulletins, :to => [:read, :bulletin_list, :update]
   end
   role :bulletins_module_member do
-    has_permission_on :bulletins, :to => [:create, :read]                                                             # A staff can read, create but update own
+    has_permission_on :bulletins, :to => [:create, :read, :bulletin_list]                                                             # A staff can read, create but update own
     has_permission_on :bulletins, :to => :update do
       if_attribute :postedby_id => is {user.userable.id}
     end
@@ -2574,16 +2574,16 @@ authorization do
 
   #46-OK
   role :files_module_admin do
-     has_permission_on :cofiles, :to => :manage
+     has_permission_on :cofiles, :to => [:manage, :cofile_list]
   end
   role :files_module_viewer do
-     has_permission_on :cofiles, :to => :read
+     has_permission_on :cofiles, :to =>[:read, :cofile_list]
   end
   role :files_module_user do
-    has_permission_on :cofiles, :to => [:read, :update]
+    has_permission_on :cofiles, :to => [:read, :cofile_list, :update]
   end
   role :files_module_member do
-    has_permission_on :cofiles, :to => [:read, :create]
+    has_permission_on :cofiles, :to => [:read, :cofile_list, :create]
     has_permission_on :cofiles, :to => :update do
       if_attribute :owner_id => is {user.userable.id}
     end

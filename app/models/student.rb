@@ -87,11 +87,19 @@ class Student < ActiveRecord::Base
   end
   
   def student_with_rank
-    "#{rank.try(:shortname)} #{name}"
+    if rank_id.blank? 
+      "#{name}"
+    else
+      "#{rank.try(:shortname)} #{name}"
+    end
   end
   
   def student_with_rank2
-    "#{rank.try(:shortname)} | #{name}"
+    if rank_id.blank? 
+      "#{name}"
+    else
+      "#{rank.try(:shortname)} | #{name}"
+    end
   end
 
   def render_race

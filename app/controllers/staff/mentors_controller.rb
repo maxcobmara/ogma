@@ -1,14 +1,13 @@
 class Staff::MentorsController < ApplicationController
-  filter_resource_access
+  filter_access_to :index, :new, :create, :mentormentee_list, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_mentor, only: [:show, :edit, :update, :destroy]
+  before_action :set_mentors, only: [:index, :mentormentee_list]
+  
   # GET /mentors
   # GET /mentors.xml
-
   def index
-    @search = Mentor.search(params[:q])
-    @mentors = @search.result
     @mentors = @mentors.page(params[:page]||1)
-    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @mentors }
@@ -67,11 +66,27 @@ class Staff::MentorsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+   
+  def mentormentee_list
+    respond_to do |format|
+      format.pdf do
+        pdf = Mentormentee_listPdf.new(@mentors, view_context, current_user.college)
+        send_data pdf.render, filename: "mentormentee_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
   
   private
   # Use callbacks to share common setup or constraints between actions.
     def set_mentor
       @mentor = Mentor.find(params[:id])
+    end
+    
+    def set_mentors
+      @search = Mentor.search(params[:q])
+      @mentors = @search.result
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

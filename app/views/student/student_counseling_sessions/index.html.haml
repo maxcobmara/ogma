@@ -10,7 +10,8 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_student_student_counseling_session_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class:  "index_search_bar"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), counseling_list_student_student_counseling_sessions_path(params.merge(format: 'pdf'))
+    - permitted_to? :counseling_list, :student_student_counseling_sessions do
+      %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), counseling_list_student_student_counseling_sessions_path(params.merge(format: 'pdf'))
 
 .row.filter{style: "display:none;"}
   .col-md-2

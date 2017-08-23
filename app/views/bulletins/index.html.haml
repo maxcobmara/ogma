@@ -6,26 +6,25 @@
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_bulletin_path
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
-
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li= link_to fa_icon("print", text: (t 'actions.print')), bulletin_list_bulletins_path(params.merge(format: 'pdf'))
 
 .row
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :headline, (t 'buletin.headline'))
-        %th= sort_link(@search, :content, (t 'buletin.content'))
-        %th= sort_link(@search, :postedby_id, (t 'buletin.posted_by'))
-        %th{style: "width:20%;"}= sort_link(@search, :publishdt,(t 'buletin.publish_date')) 
+        %th{style: "width:20%;"}= sort_link(@search, :headline, (t 'buletin.headline'))
+        %th{style: "width:45%;"}= sort_link(@search, :content, (t 'buletin.content'))
+        %th{style: "width:25%;"}= sort_link(@search, :postedby_id, (t 'buletin.posted_by'))
+        %th{style: "width:10%;"}= sort_link(@search, :publishdt,(t 'buletin.publish_date')) 
 
     %tbody
     = render "index_search"
     - @bulletins.each do |bulletin|
       %tr
         %td= link_to  bulletin.headline, bulletin_path(bulletin)
-        %td= truncate(bulletin.content, :length => 60)
-        %td= check_kin {bulletin.staff.mykad_with_staff_name}
+        %td= truncate(bulletin.content, :length => 100)
+        %td= current_user.college.code=='amsas' ? bulletin.staff.staff_with_rank : bulletin.staff.try(:mykad_with_staff_name)
         %td= bulletin.publishdt.try(:strftime, '%d-%m-%Y')
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @bulletins, :theme => 'twitter-bootstrap-3'

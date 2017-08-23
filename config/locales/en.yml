@@ -619,6 +619,8 @@ en:
   remarks: Remarks
   form: Form
   module: Module
+  selected: selected
+  times: times
 
   actions:
     new: New
@@ -1750,6 +1752,8 @@ en:
       remark: Remark
       mentee: Mentee
       name_or_rank: Name or Rank
+      redundant_mentees: Mentee must be unique
+      existing_mentees: "Selected mentee(s) already exist in other Mentor-Mentee group :<br>"
     
     staff_appraisal:
       title: Staff Appraisal
@@ -2492,7 +2496,7 @@ en:
     filename: Name
     type: Type
     link: Link
-    kewpa_download_linklist: "KEW PA Download/Link List"
+    kewpa_download_linklist: "KEW PA Download / Link List"
     
     
     defect:
@@ -3245,18 +3249,19 @@ en:
 
   cofile:
     title: File Registry
-    index: List
-    cofileno: Cofile No
-    name: Fail Name
+    index: File Registry Listing
+    cofileno: File No
+    name: File Name
     location: Location
     owner: Owner
     onloan_to: On Loan To
     onloandt: On Loan Date
     control: Control
-    file_details: File Details
+    file_details: File Registry Details
     onloanxdt: On Loan Returned Date
     onloan: On Loan
-    new: New File
+    new: New File Registry
+    edit: Edit File Registry
   
   library:
     title: Library

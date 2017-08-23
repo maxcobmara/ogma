@@ -5,7 +5,7 @@
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav.navbar-right
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li=link_to (fa_icon("file-pdf-o", text: (t 'actions.print'))), loan_list_asset_loans_path(params.merge(format: 'pdf'))
+    %li=link_to (fa_icon("print", text: (t 'actions.print'))), loan_list_asset_loans_path(params.merge(format: 'pdf'))
 
 .row
   %table.table-striped.table-hover.ogma
@@ -35,7 +35,7 @@
             - else
               = link_to asset_loan.asset.code_asset, asset_loan_path(asset_loan) 
           %td
-            =asset_loan.staff.staff_with_rank
+            =asset_loan.staff.staff_with_rank unless asset_loan.staff_id.blank?
             %br= asset_loan.reasons.capitalize
           %td
             =h asset_loan.asset.assignedto.staff_with_rank unless asset_loan.asset.assignedto.blank?

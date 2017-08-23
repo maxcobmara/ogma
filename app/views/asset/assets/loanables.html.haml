@@ -5,7 +5,7 @@
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav.navbar-right
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')), loanable_list_asset_assets_path(params.merge(format: 'pdf' ))
+    %li= link_to  (fa_icon "print", text: (t 'print')), loanable_list_asset_assets_path(params.merge(format: 'pdf' ))
       
 .row
   %table.table-striped.table-hover.ogma
