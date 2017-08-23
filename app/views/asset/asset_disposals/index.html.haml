@@ -9,7 +9,7 @@
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_asset_disposal_path
     %ul.nav.navbar-nav.navbar-right
       %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-      - if @disposals.count
+      - if @disposals.count > 0
         %li.dropdown
           %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
             = fa_icon "print", text: (t 'actions.print')
