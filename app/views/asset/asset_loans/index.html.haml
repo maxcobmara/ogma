@@ -35,7 +35,7 @@
             - else
               = link_to asset_loan.asset.code_asset, asset_loan_path(asset_loan) 
           %td
-            =asset_loan.staff.staff_with_rank
+            =asset_loan.staff.staff_with_rank unless asset_loan.staff_id.blank?
             %br= asset_loan.reasons.capitalize
           %td
             =h asset_loan.asset.assignedto.staff_with_rank unless asset_loan.asset.assignedto.blank?
