@@ -6,5 +6,5 @@
   %dd=@asset_loan.asset.registration
      
   %dt=(t 'asset.loan.loaned_by')+(t 'asset.loan.separator_slash')+(t 'asset.loan.responsible_unit')
-  %dd=h @asset_loan.owner.try(:staff_with_rank)+(t 'asset.loan.separator_slash')+@asset_loan.asset.assignedto.try(:positions).first.try(:unit).to_s
+  %dd="#{@asset_loan.try(:owner).try(:staff_with_rank)} / #{@asset_loan.asset.try(:assignedto).try(:positions).try(:first).try(:unit)}"
   %br
