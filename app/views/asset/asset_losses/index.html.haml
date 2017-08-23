@@ -55,7 +55,8 @@
         
     .row 
       %br
-      .col-md-3.col-md-offset-1= submit_tag (t 'asset.loss.writeoff_checked'), :name => :loss_submit_button, class: "btn btn-default"
+      - if @asset_losses.count > 0
+        .col-md-3.col-md-offset-1= submit_tag (t 'asset.loss.writeoff_checked'), :name => :loss_submit_button, class: "btn btn-default"
 
 
 :javascript
