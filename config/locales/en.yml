@@ -2146,6 +2146,9 @@ en:
     excel_format: Excel Format (Sample)
     date_range1: "Searching 'All Department / Unit' - Attendance records for selected date range (within the latest 2 months)"
     date_range2: "Searching by Department / Unit - Attendance records for selected date range (within the latest 2 years)"
+    limited_two_years: limited to attendance records within the last 2 years
+    limited_two_months: limited to attendance records within the last 2 months
+    search_result: "Search result for : "
     require_complete_data: "-- <Unit / Department> :  Complete staff (Staff Shift and Thumb ID) and positions (staff) data are required for searching to works"
     require_complete_data_manage: "Management of Late / Early Return (attendance) require complete staff (Staff Shift and Thumb ID) and positions (staff) data for ALL staff in your Unit / Department"
     conditions: Conditions for Excel File

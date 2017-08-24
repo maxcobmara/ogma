@@ -2,32 +2,30 @@
   %tr.search_row{style: "display:none;"}
     %td &nbsp;
     %td
-      %br= select_tag('q[keyword_search]',options_for_select(StaffAttendance.get_thumb_ids_unit_names(3).sort),:prompt=>t("helpers.prompt.all_unit"), class: 'form-control selectpicker')
-      /= f.text_field :keyword_search
+      %br= select_tag('q[keyword_search]',options_for_select(StaffAttendance.get_thumb_ids_unit_names(3).sort, @search.keyword_search),:prompt=>t("helpers.prompt.all_unit"), class: 'form-control selectpicker')
       /= select_tag('q[thumb_id_in][]',options_for_select([ [@unit_names[2],y[2]],[@unit_names[3], '756,757'] ] ) )   
     %td
       = t('staff_attendance.from')
-      = f.text_field :logged_at_gt, :size=> 2,  :class =>  'form-control date-picker'
+      = f.text_field :logged_at_gt, :size => 2, :class => 'form-control datetime_picker4_reverse', value: @search.logged_at_gt.try(:strftime, '%d-%m-%Y %H:%M:%S')
     %td
       = t('staff_attendance.to')
-      = f.text_field :logged_at_lteq, :size=>2,  :class => 'form-control date-picker'
+      = f.text_field :logged_at_lteq, :size=>2,  :class => 'form-control datetime_picker4_reverse', value: @search.logged_at_lteq.try(:strftime, '%d-%m-%Y %H:%M:%S')
     /%td= f.text_field :attended_staff_shift_start_at_matches, size: 2,  :class => "form-control"
     /late, early, action, ignore
     %td.input-group
       %span.input-group-btn
         %button.btn.btn-sm.btn-default.right{:type => "submit"}
           %i.fa.fa-search.fa-fw
-    %td{:colspan=>"3"}
-      %ul
-        %li=t('staff_attendance.date_range1')
-        %li=t('staff_attendance.date_range2')
-        %li=t('staff_attendance.require_complete_data')
-
-:javascript  
-  $('.date-picker').datetimepicker({
-   timepicker:true,
-     format: "Y-m-d H:i:s",
-     autoclose: true
-   });    
+    %td{colspan: 4}
+      - unless @search.nil?
+        =t('staff_attendance.search_result')
+        - if @search.keyword_search.nil?
+          %b=t('helpers.prompt.all_unit') 
+          =t('staff_attendance.limited_two_months') 
+        - else
+          %b=StaffAttendance.get_thumb_ids_unit_names(3)[@search.keyword_search.to_i][0]
+          =t('staff_attendance.limited_two_years') 
+        ="(#{@startdate.to_date.try(:strftime, '%d-%m-%Y')} - #{@enddate.to_date.try(:strftime, '%d-%m-%Y')})"
+  
    
  

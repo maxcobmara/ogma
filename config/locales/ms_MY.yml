@@ -2040,8 +2040,11 @@ ms_MY:
     log_in: Log Masuk
     log_out: Log Keluar
     excel_format: Sampel Format Excel
-    date_range1: "Carian 'Semua Jabatan / Unit' - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 bulan terakhir)"
-    date_range2: "Carian mengikut Jabatan / Unit - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 tahun terakhir)"
+    date_range1: "Carian 'Semua Jabatan / Unit' - Rekod kedatangan bagi kemasukan dalam julat tarikh (2 bulan terakhir)"
+    date_range2: "Carian mengikut Jabatan / Unit - Rekod kedatangan bagi kemasukan dalam julat tarikh (2 tahun terakhir)"
+    limited_two_years: tertakluk kepada rekod kedatangan dalam 2 tahun terkini
+    limited_two_months: tertakluk kepada rekod kedatangan dalam 2 bulan terkini
+    search_result: "Hasil carian bagi : "
     require_complete_data: "-- <Unit / Jabatan> : Data kakitangan (Waktu Anjal dan Thumb ID) serta perjawatan (Staf) dalam Jabatan / Unit perlulah lengkap bagi membolehkan carian dilakukan"
     require_complete_data_manage: "Pengurusan Datang Lewat / Pulang Awal memerlukan maklumat lengkap staf (Waktu Anjal Staf dan Thumb ID) dan maklumat perjawatan (staf) bagi semua staf dalam Unit / Jabatan anda"
     conditions: "Syarat - syarat bagi fail Excel"

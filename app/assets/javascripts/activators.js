@@ -112,6 +112,14 @@ $(document).ready(function(e) {
     defaultSeconds: 0,
     autoclose: true
   });
+  $('.datetime_picker4_reverse').datetimepicker({
+    timepicker:true,
+    format:'d-m-Y H:i:s',
+    formatDate:'Y-m-d H:i:s',
+    step: 1,
+    defaultSeconds: 0,
+    autoclose: true
+  });
   $('.time_picker').datetimepicker({
      datepicker:false,
        format:'H:i',
