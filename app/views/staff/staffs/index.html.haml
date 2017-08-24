@@ -8,7 +8,8 @@
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_info_path
   %ul.nav.navbar-nav.navbar-right
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), staff_list_staff_infos_path(params.merge(format: 'pdf'))
+    - permitted_to? :staff_list, :staff_staffs do
+      %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), staff_list_staff_infos_path(params.merge(format: 'pdf'))
 
 .row
   //.right{style:"padding:0 30px; margin:0;"}= paginate @staffs, :theme => 'twitter-bootstrap-3', :pagination_class => "pagination-sm"

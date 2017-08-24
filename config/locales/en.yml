@@ -2098,6 +2098,7 @@ en:
     
   staff_attendance:
     title: Staff Attendance
+    list: Staff Attendance Listing
     new: New Staff Attendance
     edit: Edit Staff Attendance
     list: Staff Attendance List
@@ -2193,6 +2194,8 @@ en:
     compulsory_listing: "Unit / Department, Staff Name and Search Month are compulsory fields for Monthly Listing"
     compulsory_details: "Unit / Department, Staff Name, Search Month and Display Type are compulsory fields for Month Details (inc. Exception)"
     attendance_not_exist: "Attendance records not exist"
+    not_yet_triggered: Not yet triggered
+    not_yet_ignored: Not yet ignored
  
   attendance:
     title: "Manage Lateness & Early Return"

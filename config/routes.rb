@@ -64,6 +64,7 @@ Ogma::Application.routes.draw do
 	get :monthly_listing
         get :monthly_details
         get :manager_admin
+	get :attendance_list
       end
     end
     resources :fingerprints do

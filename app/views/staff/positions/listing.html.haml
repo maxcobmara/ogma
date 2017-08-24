@@ -8,7 +8,8 @@
     - permitted_to? :create, :staff_positions do
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new')+" ("+(t 'position.root')+")")), new_staff_position_path
   %ul.nav.navbar-nav.navbar-right
-    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')), position_list_staff_positions_path(params.merge(format: 'pdf' ))
+    - permitted_to? :position_list, :staff_positions do
+      %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')), position_list_staff_positions_path(params.merge(format: 'pdf' ))
 
 .row
   .col-md-12

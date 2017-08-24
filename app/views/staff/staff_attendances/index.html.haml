@@ -4,16 +4,19 @@
 = render 'shared/flashes'
 
 %div{:style=>"font-size:10px;"}
-  =@startdate.to_s+" - "+@enddate.to_s
+  .text-grey=@startdate.to_s+" - "+@enddate.to_s
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_staff_attendance_path
+    - permitted_to? :create, :staff_staff_attendances do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_staff_attendance_path
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("file-excel-o", text: (t 'actions.import_excel'))), import_excel_staff_staff_attendances_path     
+    - permitted_to? :import_excel, :staff_staff_attendances do
+      %li= link_to content_tag(:li, fa_icon("file-excel-o", text: (t 'actions.import_excel'))), import_excel_staff_staff_attendances_path     
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    - permitted_to? :attendance_list, :staff_staff_attendances do
+      %li= link_to fa_icon("print", text: (t 'actions.print')), attendance_list_staff_staff_attendances_path(params.merge(format: 'pdf'))
   
 /.row.filter{style: "display:none;"}
 /  .col-md-2
@@ -29,7 +32,7 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th{width: '10%'}=t 'staff.staff_attendance.flag'
+        %th{width: '10%'}=t 'staff_attendance.flag'
         %th{width: '25%'}= sort_link(@search, :thumb_id, (t 'staff_attendance.thumb_id'))
         %th{width: '10%'}= sort_link(@search, :logged_at, (t 'staff_attendance.logged_in'))
         %th{width: '10%'}= sort_link(@search, :logged_at, (t 'staff_attendance.logged_out'))
@@ -156,6 +159,7 @@
                     
           /display unit name for non-exist sa
           - if @hula == @last_person_oftheday && (params[:q]==nil || (params[:q][:keyword_search]==nil))
+            aaaa
             - @groupped_sa_fornodata=Array.new(@thumb_ids.count) { Array.new }
             - @group_sa_current_date.each do |stfa|
               - @thumb_ids.each_with_index do |tis,index|

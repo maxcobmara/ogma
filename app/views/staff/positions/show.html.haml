@@ -24,6 +24,8 @@
         - permitted_to? :read, :staff_positions do 
           - if current_user.college.code=="kskbjb"
             = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('.back', :default => t('position.list')), "http://#{request.host}:3000/positions", class: 'btn btn-default'
+          - else
+            = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('.back', :default => t('position.list')), listing_staff_positions_path, class: 'btn btn-default'
           = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('.back', :default => t('position.index')), staff_positions_path, class: 'btn btn-default'
         - permitted_to? :update, :staff_positions do
           = link_to content_tag(:i, "", class: "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_position_path(@position), class: 'btn btn-primary'
