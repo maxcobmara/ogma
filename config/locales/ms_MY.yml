@@ -2094,6 +2094,8 @@ ms_MY:
     attendance_not_exist: "Rekod kedatangan tidak wujud"
     not_yet_triggered: Belum diaktifkan
     not_yet_ignored: Belum diabaikan
+    staff_compulsory_data: "Setiap staf memerlukan data lengkap dalam : (1) <u>Modul Staf</u> (<b>Thumb ID</b> dan <b>Waktu Anjal</b>), (2) <u>Modul Jawatan</u> (<b>Unit</b>)"
+    staff_not_exist: Staf tidak wujud dalam modul Maklumat Staf
   
   attendance:
     title: "Pengurusan Datang Lambat & Pulang Awal"

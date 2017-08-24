@@ -67,15 +67,15 @@
             
           /display date
           %tr
-            %td{:colspan=>"9", :style=>"font-weight: bold; background-color: #D8D8D8;"}
+            %td.group{colspan: 9}
               = t 'staff_attendance.date'
-              =date.to_date.try(:strftime, "%d %b %Y")
+              =date.to_date.try(:strftime, "%d-%m-%Y")
           
           /display unit & its corresponding staff attendances
           - @groupped_sa.each_with_index do |g_sa,ind|
             - if g_sa.count>0 
               %tr
-                %td{:colspan=>"9",:style=>"color: green;font-weight: bold;"}
+                %td.green_text{colspan: 9}
                   = t 'staff_attendance.unit'
                   =@unit_names[ind]
                   /= g_sa.count
@@ -99,19 +99,26 @@
                   - shiftid = StaffShift.shift_id_in_use(curr_date, sa.thumb_id)
               
                   %tr
-                    %td{:style=>"text-align: center;"}
+                    %td.centre
                       =h sa.r_u_late(shiftid) == "flag" ? image_tag("flag_red.png") : "" 
                       =h sa.r_u_early(shiftid) == "flag" ? image_tag("flag_red.png") : "" 
                     %td
                       =h link_to sa.attended.try(:name), staff_staff_attendance_path(sa)
                       ="("+sa.id.to_s+") ("+sa.thumb_id.to_s+")"
                     /%td{:style=>"text-align: center;"}=h sa.log_type == "I" ? sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P') : "" 
-                    %td{:style=>"text-align: center;"}=h sa.log_type == "I" ? sa.logged_at.strftime('%l:%M %P') : "" 
-                    %td{:style=>"text-align: center;"}
+                    %td.centre
+                      - if current_user.college.code=='amsas'
+                        =h sa.log_type == "I" ? sa.logged_at.strftime('%H:%M') : "" 
+                      - else
+                        =h sa.log_type == "I" ? sa.logged_at.strftime('%l:%M %P') : "" 
+                    %td.centre
                       - if sa.log_type == "O" || sa.log_type == "o"
                         /=h sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P')
-                        =h sa.logged_at.strftime('%l:%M %P')
-                    %td{:style=>"text-align: center;"}
+                        - if current_user.college.code=='amsas'
+                          =h sa.logged_at.strftime('%H:%M')
+                        - else
+                          =h sa.logged_at.strftime('%l:%M %P')
+                    %td.centre
                       //working - draft - same result as shiftinuse
                       /- curr_date=sa.logged_at.strftime('%Y-%m-%d')
                       /- astaff=Staff.where('thumb_id=?',sa.thumb_id).first
@@ -125,38 +132,39 @@
                       //Notes: deactivate_date - last date for prev staff_shift
                  
                       /Display shift in use (start time & end time plus 'activation date' [ie. 1 day after deactivate_date of prev shift used])
-                      - shiftinuse= StaffShift.shift_in_use(curr_date,sa.thumb_id)
+                      - shiftinuse= StaffShift.shift_in_use(curr_date, sa.thumb_id)
                       - if shiftinuse.include?("~")==false
                         = shiftinuse
                       - else
                         = shiftinuse.split("~")[0]
-                        %font{size: "-2px", color: "grey"}
-                          %br= shiftinuse.split("~")[1]
-                   
-                    %td{:style=>"text-align: center;"}
+                        %br
+                        .small.text-grey=shiftinuse.split("~")[1]
+                          
+                    %td.centre
                       - if sa.log_type == "I" 
                         - if sa.late_early(shiftid)=="-"
-                          %font{:color=> "black"}-
+                          \-
                         - else
-                          %font{:color=> "red"}= sa.late_early(shiftid)
+                          .text-red= sa.late_early(shiftid)
                       - else
-                        %font{:color=> "black"}-
-                    %td{:style=>"text-align: center;"}
-                      - if sa.log_type == "O" 
+                        \-
+                    %td.centre
+                      /- if sa.log_type == "O" 
+                      - if sa.log_type == "O" || sa.log_type == "o"
                         - if sa.late_early(shiftid)=="-"
-                          %font{:color=> "black"}-
+                          \-
                         - else
-                          %font{:color=> "red"}= sa.late_early(shiftid)
+                          .text-red= sa.late_early(shiftid)
                       - else 
-                        %font{:color=> "black"}-
-                    %td{:style=>"text-align: center;"}
+                        \-
+                    %td.centre
                       - if sa.trigger == nil && sa.r_u_late(shiftid) == "flag"
                         = check_box_tag "triggers[]", sa.id
                       - elsif sa.trigger == nil && sa.r_u_early(shiftid) == "flag"
                         = check_box_tag "triggers[]", sa.id
                       - elsif sa.trigger == true  
                         = image_tag("user_go.png")
-                    %td{:style=>"text-align: center;"}
+                    %td.centre
                       - if sa.trigger == nil && sa.r_u_late(shiftid) == "flag"
                         = check_box_tag "ignores[]", sa.id
                       - elsif sa.trigger == nil && sa.r_u_early(shiftid) == "flag"
@@ -174,11 +182,10 @@
             - @groupped_sa_fornodata.each_with_index do |g_sa2,ind2|
               - if g_sa2.count == 0              
                 %tr
-                  %td{:colspan=>"9",:style=>"color: green;font-weight: bold;"}
+                  %td.green_text{colspan: 9}
                     = t 'staff_attendance.unit'
                     = @unit_names[ind2]
 
-       
         %tr
           %td{:colspan=>"4"} &nbsp;
           %td{:colspan=>"2"}= submit_tag t('actions.save_action')

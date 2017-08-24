@@ -2,6 +2,7 @@ class StaffShift < ActiveRecord::Base
   #has_and_belongs_to_many :staffs
   has_many :staffs
   has_many :shift_histories
+  belongs_to :college
   
   # define scope
   def self.start_at_search(query)
@@ -18,9 +19,14 @@ class StaffShift < ActiveRecord::Base
   end
   
   def start_end
-    "#{start_at.strftime('%l:%M %p')} - #{end_at.strftime('%l:%M %p')}" 
+    if college.code=='amsas'
+      "#{start_at.strftime('%H:%M')} - #{end_at.strftime('%H:%M')}" 
+    else
+      "#{start_at.strftime('%l:%M %p')} - #{end_at.strftime('%l:%M %p')}" 
+    end
   end
   
+  # TODO - check if this method is used anywhere in the syst (other than: staff_attendances/index (shiftinuse)), if not, remove!
   def start_end2
     "#{start_at.strftime('%H:%M')} - #{end_at.strftime('%H:%M')}" 
   end
