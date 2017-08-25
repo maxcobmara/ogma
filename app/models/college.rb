@@ -71,6 +71,7 @@ class College < ActiveRecord::Base
   has_many :events
   has_many :bulletins
   has_many :mentors
+  has_many :staff_shifts
   # staffs
   
   serialize :data, Hash

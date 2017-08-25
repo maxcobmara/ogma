@@ -1980,7 +1980,7 @@ ms_MY:
     no_staff: Tiada Staff
     get_all: Semua
     get_matched: Sepadan
-    root: nod utama
+    root: nod utama / akar
     remark_title: Rujukan
     remark_text1: Klik
     remark_text2: untuk
@@ -1989,12 +1989,13 @@ ms_MY:
     remark_text5: nod - nod warisan.
     remark_text6: Bagi mencipta nod
     remark_text7: waris
-    remark_text8: baru (selain nod asas), pilih 'Nod Baru' dalam laman 'Papar' nod induk.
+    remark_text8: baru (selain nod utama / akar), pilih 'Nod Baru' dalam laman 'Papar' nod induk.
     remark_text9: "Klik pada 'Jawatan' untuk ke laman 'Papar'."
     remark_text9_amsas: "Klik pada 'Jawatan' untuk ke laman 'Papar'."
        
   staff_attendance:
     title: Kedatangan Staf
+    list: Senarai Kedatangan Staf
     new: Kedatangan Staf (Baru)
     edit: Sunting Kedatangan Staf
     list: Senarai Kedatangan Staf
@@ -2039,8 +2040,11 @@ ms_MY:
     log_in: Log Masuk
     log_out: Log Keluar
     excel_format: Sampel Format Excel
-    date_range1: "Carian 'Semua Jabatan / Unit' - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 bulan terakhir)"
-    date_range2: "Carian mengikut Jabatan / Unit - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 tahun terakhir)"
+    date_range1: "Carian 'Semua Jabatan / Unit' - Rekod kedatangan bagi kemasukan dalam julat tarikh (2 bulan terakhir)"
+    date_range2: "Carian mengikut Jabatan / Unit - Rekod kedatangan bagi kemasukan dalam julat tarikh (2 tahun terakhir)"
+    limited_two_years: tertakluk kepada rekod kedatangan dalam 2 tahun terkini
+    limited_two_months: tertakluk kepada rekod kedatangan dalam 2 bulan terkini
+    search_result: "Hasil carian bagi : "
     require_complete_data: "-- <Unit / Jabatan> : Data kakitangan (Waktu Anjal dan Thumb ID) serta perjawatan (Staf) dalam Jabatan / Unit perlulah lengkap bagi membolehkan carian dilakukan"
     require_complete_data_manage: "Pengurusan Datang Lewat / Pulang Awal memerlukan maklumat lengkap staf (Waktu Anjal Staf dan Thumb ID) dan maklumat perjawatan (staf) bagi semua staf dalam Unit / Jabatan anda"
     conditions: "Syarat - syarat bagi fail Excel"
@@ -2088,6 +2092,10 @@ ms_MY:
     compulsory_listing: "Unit / Jabatan, Nama Staf dan Bulan Carian mestilah diisi untuk carian Senarai Bulanan"
     compulsory_details: "Unit / Jabatan, Nama Staf, Bulan Carian dan Jenis Paparan mestilah diisi untuk carian Perincian Bulanan (termasuk Pengecualian)"
     attendance_not_exist: "Rekod kedatangan tidak wujud"
+    not_yet_triggered: Belum diaktifkan
+    not_yet_ignored: Belum diabaikan
+    staff_compulsory_data: "Setiap staf memerlukan data lengkap dalam : (1) <u>Modul Staf</u> (<b>Thumb ID</b> dan <b>Waktu Anjal</b>), (2) <u>Modul Jawatan</u> (<b>Unit</b>)"
+    staff_not_exist: Staf tidak wujud dalam modul Maklumat Staf
   
   attendance:
     title: "Pengurusan Datang Lambat & Pulang Awal"

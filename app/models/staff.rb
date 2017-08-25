@@ -297,7 +297,7 @@ class Staff < ActiveRecord::Base
     end
 
     def staff_thumb
-      "#{name}  (thumb id : #{thumb_id})"
+      "#{staff_with_rank}  (thumb id : #{thumb_id})"
     end
 
 

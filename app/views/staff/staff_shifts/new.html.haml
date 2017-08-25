@@ -16,7 +16,7 @@
         #details.tab-pane.fade.in.active 
           .col-md-6.col-md-offset-2  
             = render 'form', :f => f
-                
+            = f.hidden_field :college_id, value: current_user.college_id   
             %br
 
       .col-md-6.col-md-offset-1

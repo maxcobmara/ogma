@@ -2098,6 +2098,7 @@ en:
     
   staff_attendance:
     title: Staff Attendance
+    list: Staff Attendance Listing
     new: New Staff Attendance
     edit: Edit Staff Attendance
     list: Staff Attendance List
@@ -2143,8 +2144,11 @@ en:
     log_in: Log In
     log_out: Log Out
     excel_format: Excel Format (Sample)
-    date_range1: "Searching 'All Department / Unit' - Attendance records for selected date range (within the latest 2 months)"
-    date_range2: "Searching by Department / Unit - Attendance records for selected date range (within the latest 2 years)"
+    date_range1: "Searching 'All Department / Unit' - Attendance records for selected date range (limited to the latest 2 months)"
+    date_range2: "Searching by Department / Unit - Attendance records for selected date range (limited to the latest 2 years)"
+    limited_two_years: limited to attendance records limited to the latest 2 years
+    limited_two_months: limited to attendance records limited to the latest 2 months
+    search_result: "Search result for : "
     require_complete_data: "-- <Unit / Department> :  Complete staff (Staff Shift and Thumb ID) and positions (staff) data are required for searching to works"
     require_complete_data_manage: "Management of Late / Early Return (attendance) require complete staff (Staff Shift and Thumb ID) and positions (staff) data for ALL staff in your Unit / Department"
     conditions: Conditions for Excel File
@@ -2193,6 +2197,10 @@ en:
     compulsory_listing: "Unit / Department, Staff Name and Search Month are compulsory fields for Monthly Listing"
     compulsory_details: "Unit / Department, Staff Name, Search Month and Display Type are compulsory fields for Month Details (inc. Exception)"
     attendance_not_exist: "Attendance records not exist"
+    not_yet_triggered: Not yet triggered
+    not_yet_ignored: Not yet ignored
+    staff_compulsory_data: "Each staff requires complete data in (1) <u>Staff module</u> (<b>Thumb ID</b> and <b>Shift</b>), (2) <u>Position module</u> (<b>Unit</b>)"
+    staff_not_exist: Staff not exist in Staff Info module
  
   attendance:
     title: "Manage Lateness & Early Return"

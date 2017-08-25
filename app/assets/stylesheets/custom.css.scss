@@ -218,6 +218,10 @@ table.ogma {
     td.damaged{text-align:center; background-color: #FDE7EA; font-weight:bold; color:red; letter-spacing: 6px;}
     tr.search_row {input {font-size:0.9em !important;}
       .search_row {display:none;}}
+    td.yellow_bg{text-align:center; background-color: #F7F3A4;}
+    td.green_bg{text-align:center; background-color: #7C8;}
+    td.red_bg{text-align:center; background-color: #F77;}
+    td.green_text{color: green; font-weight: bold;}
   }
   table.examquestion{
     border:collapse; border-spacing:0;border:0;
