@@ -8,6 +8,13 @@
     %li= link_to  (fa_icon "print", text: (t 'print')), loanable_list_asset_assets_path(params.merge(format: 'pdf' ))
       
 .row
+  .col-md-12
+    .alert.alert-warning
+      %strong=(t 'remarks')+" : "
+      =t('asset.loan.loanable_remarks').html_safe
+      %ul
+        %li=t('asset.loan.remarks1').html_safe
+        %li=t('asset.loan.remarks2').html_safe
   %table.table-striped.table-hover.ogma
     %thead
       %tr

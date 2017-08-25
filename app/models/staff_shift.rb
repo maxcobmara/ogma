@@ -19,7 +19,7 @@ class StaffShift < ActiveRecord::Base
   end
   
   def start_end
-    if college.code=='amsas'
+    if college && college.code=='amsas'
       "#{start_at.strftime('%H:%M')} - #{end_at.strftime('%H:%M')}" 
     else
       "#{start_at.strftime('%l:%M %p')} - #{end_at.strftime('%l:%M %p')}" 

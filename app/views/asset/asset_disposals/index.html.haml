@@ -19,6 +19,10 @@
             %li= submit_tag 'KEW.PA-20', class: "btn btn-link"
 
   .row
+    .col-md-12
+      .alert.alert-warning
+        %strong=(t 'remarks')+" : "
+        =t('asset.disposal.list_defect_to_dispose').html_safe
     %table.table-striped.table-hover.ogma
       %thead
         %tr
