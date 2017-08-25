@@ -1,5 +1,5 @@
 class Staff::StaffAttendancesController < ApplicationController
-  filter_access_to :index, :new, :create, :manager, :manager_admin, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details,  :actionable, :attendance_list, :attribute_check => false
+  filter_access_to :index, :new, :create, :manager, :manager_admin, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details,  :actionable, :attendance_list, :attendance_status_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :approval,  :destroy, :attribute_check => true
   
   before_action :set_staff_attendance, only: [:show, :edit, :update, :destroy]
@@ -161,16 +161,17 @@ class Staff::StaffAttendancesController < ApplicationController
     thumb_ids_in_staff = Staff.where('thumb_id IS NOT NULL').order(:thumb_id).pluck(:thumb_id).uniq
     #@all_dates_staffs = StaffAttendance.where('logged_at>=? and logged_at<? and thumb_id IN(?)',"2012-05-07","2014-01-01", thumb_ids_in_staff).order('logged_at ASC').limit(1500)
     @all_dates_staffs = StaffAttendance.where('logged_at>=? and logged_at<? and thumb_id IN(?)',Date.today-2.years, Date.today+1.day, thumb_ids_in_staff).order('logged_at ASC').limit(15000)
-    @logged_at_list =[]
-    for all_dates_staff in @all_dates_staffs.map(&:logged_at)
-      @logged_at_list << all_dates_staff.in_time_zone('UTC').to_date.beginning_of_month.to_s
-    end
-    @title_for_month= @logged_at_list.uniq
-    @all_thumbs = @all_dates_staffs.map(&:thumb_id).uniq.sort
+#     @logged_at_list =[]
+#     for all_dates_staff in @all_dates_staffs.map(&:logged_at)
+#       @logged_at_list << all_dates_staff.in_time_zone('UTC').to_date.beginning_of_month.to_s
+#     end
+#     @title_for_month= @logged_at_list.uniq
+    @title_for_month=@all_dates_staffs.map{|x|x.logged_at.in_time_zone('UTC').to_date.beginning_of_month.to_s}.uniq
+#     @all_thumbs = @all_dates_staffs.map(&:thumb_id).uniq.sort
 
 
-    @staff_info = Staff.where('thumb_id IN (?)',@all_thumbs).order('thumb_id ASC').select("thumb_id, name,id")
-    @staff_thumb = Staff.where('thumb_id IN (?)',@all_thumbs).order('thumb_id ASC').map(&:thumb_id)
+#     @staff_info = Staff.where('thumb_id IN (?)',@all_thumbs).order('thumb_id ASC').select("thumb_id, name,id")
+#     @staff_thumb = Staff.where('thumb_id IN (?)',@all_thumbs).order('thumb_id ASC').map(&:thumb_id)
     #for checking : @staff_name = Staff.find(:all, :conditions=> ['thumb_id IN (?)',@all_thumbs], :order=>'thumb_id ASC').map(&:staff_thumb)
     @all_dates = @all_dates_staffs.group_by{|x|x.thumb_id}
 
@@ -399,6 +400,23 @@ class Staff::StaffAttendancesController < ApplicationController
       format.pdf do
         pdf = Attendance_listPdf.new(@ooo, @group_sa_by_day, @search, view_context, current_user.college)
         send_data pdf.render, filename: "attendance_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
+  def attendance_status_list
+    thumb_ids_in_staff = Staff.where('thumb_id IS NOT NULL').pluck(:thumb_id).uniq.sort
+    all_dates_staffs = StaffAttendance.where('logged_at>=? and logged_at<? and thumb_id IN(?)',Date.today-2.years, Date.today+1.day, thumb_ids_in_staff).order('logged_at ASC').limit(15000)
+    @all_dates = all_dates_staffs.group_by{|x|x.thumb_id}
+    @title_for_month=all_dates_staffs.map{|x|x.logged_at.in_time_zone('UTC').to_date.beginning_of_month.to_s}.uniq
+    @year_group = @title_for_month.group_by{|x|x.to_date.year}
+
+    respond_to do |format|
+      format.pdf do
+        pdf = Attendance_status_listPdf.new(@all_dates, @title_for_month, @year_group, view_context, current_user.college)
+        send_data pdf.render, filename: "attendance_status_list-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
       end

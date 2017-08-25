@@ -570,7 +570,7 @@ authorization do
   
   role :staff_administrator do
      has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff, :staff_list]
-     has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :actionable, :approval, :manager_admin, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :import_excel, :import, :status, :attendance_list]   #29Apr2013-refer routes.rb
+     has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :actionable, :approval, :manager_admin, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :import_excel, :import, :status, :attendance_list, :attendance_status_list]   #29Apr2013-refer routes.rb
      has_permission_on :staff_fingerprints, :to => [:manage, :approval, :index_admin]
      has_permission_on :staff_staff_shifts, :to => :manage
      has_permission_on :staff_titles, :to => :manage
@@ -1225,16 +1225,16 @@ authorization do
   #3)OK - all 4 - 4Feb2016  
   #NOTE - a) Staff Attendance should come with Fingerprints, StaffShifts
   role :staff_attendances_module_admin do
-    has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :manager_admin, :approval, :actionable, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :attendance_list] 
+    has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :manager_admin, :approval, :actionable, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :attendance_list, :attendance_status_list] 
     has_permission_on :equery_report_staffattendancesearches, :to => [:new, :create, :show]
   end
   role :staff_attendances_module_viewer do
     #1) OK, but if READ only - can only read attendance list for all staff +manage own lateness/early (MANAGER) - as this is default for all staff UNLESS if MANAGE given.
-    has_permission_on :staff_staff_attendances, :to => [:read, :manager, :manager_admin, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :attendance_list]
+    has_permission_on :staff_staff_attendances, :to => [:read, :manager, :manager_admin, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :attendance_list, :attendance_status_list]
     has_permission_on :equery_report_staffattendancesearches, :to => [:new, :create, :show]
   end
   role :staff_attendances_module_user do 
-    has_permission_on :staff_staff_attendances, :to => [:read, :update, :manager, :manager_admin, :approval, :actionable, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :attendance_list]
+    has_permission_on :staff_staff_attendances, :to => [:read, :update, :manager, :manager_admin, :approval, :actionable, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :attendance_list, :attendance_status_list]
     has_permission_on :equery_report_staffattendancesearches, :to => [:new, :create, :show]
   end
   role :staff_attendances_module_member do
