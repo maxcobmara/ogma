@@ -18,14 +18,15 @@ class Attendance_status_listPdf < Prawn::Document
   
   def record
     month_cols=[]
-    total_cols=3+@title_for_month.count
+    mnt_cnt=@title_for_month.count
+    total_cols=3+
     balance=520-210
-    per_col=310/@title_for_month.count
-    0.upto(@title_for_month.count-1).each do |cnt|
+    per_col=310/mnt_cnt
+    0.upto(mnt_cnt-1).each do |cnt|
       month_cols << per_col
     end
     status_bgcolor=@status_bgcolor
-
+    
     table(line_item_rows, :column_widths => [30, 100, 80]+month_cols, :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).align = :center
@@ -36,6 +37,7 @@ class Attendance_status_listPdf < Prawn::Document
       row(0..3).font_style = :bold
       row(2..3).background_color = 'FFE34D'
       row(2..3).columns(3..total_cols-1).align=:center
+      self.width=210+mnt_cnt*per_col
       
       #status_bgcolor={"3, 3"=>"K", "3, 4"=>"K", "3, 5"=>"K", "4, 3"=>"", "4,4"=>"", "4, 5"=>"K"}
       status_bgcolor.keys.each_with_index do |row_col, ind|

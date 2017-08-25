@@ -2518,6 +2518,7 @@ en:
       process: Process
       repair: Repair
       dispose: Dispose
+      report: "To report a defect, select (display) asset in Asset module and click "
       reported_by: Reported By
       is_processed: "Submit Recommendation?"
       processed_by: Processed By
@@ -2577,6 +2578,8 @@ en:
       view_close: "View & Close"
       disposed_by: View and Close By
       no_record_selected: "No record selected for KEW.PA-17 / KEW.PA-20 printing"
+      defect_to_dispose: "Select 'Dispose' action when processing <b>Asset Defect</b> for asset to be appeared in above list"
+      list_defect_to_dispose: "Select 'Dispose' action when processing <b>Asset Defect</b> before proceeding with disposal"
       
     loss:
       title: "Loss & Write Offs"
@@ -2676,6 +2679,9 @@ en:
       approve: Approve
       reject: Reject
       loanable: Loanable Assets
+      loanable_remarks: "Loan of assets only allowed for asset as per listed below. Update list by : "
+      remarks1: "Activate 'bookable' function in <b>Asset</b> module for asset to be listed for loan."
+      remarks2: "<u>On-loan asset</u> must be returned upon loan due date."
       available: "Available?"
       apply: Apply to loan
       driver_id: Driver

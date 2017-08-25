@@ -94,7 +94,7 @@ class AssetLoan < ActiveRecord::Base
     if loaned_by.blank?
       self.loaned_by = asset.assignedto_id
     end
-    self.hod= Staff.joins(:positions).where('positions.unit=?', 'Ketua Tadbir Bantuan Operasi Latihan').first.id
+    self.hod= Staff.joins(:positions).where('positions.unit=?', 'Ketua Tadbir Bantuan Operasi Latihan').first.id rescue Position.roots.first.staff_id
   end
   
   def loaner

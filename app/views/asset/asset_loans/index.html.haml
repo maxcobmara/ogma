@@ -38,10 +38,9 @@
             =asset_loan.try(:staff).try(:staff_with_rank) 
             %br= asset_loan.reasons.capitalize
           %td
-            = asset_loan.asset.assignedto_id
             =h asset_loan.asset.try(:assignedto).try(:staff_with_rank) 
             %br
-              %b=h asset_loan.asset.try(:assignedto).try(:positions).try(:first).try(:unit)
+            %b=h asset_loan.asset.try(:assignedto).try(:positions).try(:first).try(:unit)
           %td  
             =h asset_loan.loaned_on.try(:strftime, '%d %b %Y')
             %br=h asset_loan.expected_on.try(:strftime, '%d %b %Y')
@@ -49,18 +48,18 @@
             - if asset_loan.is_approved == true
               = h asset_loan.approved_date.try(:strftime, '%d %b %Y')
             - elsif asset_loan.is_approved == false
-              %span{:style => "font-weight:bold;color:red;"}=t 'asset.loan.rejected'
+              %b.text-red=t 'asset.loan.rejected'
             - else
-              %span{:style => "font-weight:bold;color:green;"}=t 'asset.loan.pending'
+              %b.text-green=t 'asset.loan.pending'
           %td
             - if asset_loan.is_approved == true && asset_loan.is_returned != true 
               = t 'asset.loan.onloan'
               - if asset_loan.expected_on == Date.today
                 %br
-                  %span{:style =>"font-weight:bold; color:red;"}=t 'asset.loan.due_date'
+                %b.text-red=t 'asset.loan.due_date'
               - elsif asset_loan.expected_on < Date.today
                 %br
-                  %span{:style=>"font-weight:bold; color:red;"}=t 'asset.loan.overdue'
+                %b.text-red=t 'asset.loan.overdue'
             - elsif asset_loan.is_approved == true && asset_loan.is_returned == true
               = t 'asset.loan.is_returned'   
           

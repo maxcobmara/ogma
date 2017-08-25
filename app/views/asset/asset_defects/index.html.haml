@@ -9,6 +9,13 @@
     %li= link_to  (fa_icon "print", text: (t 'print')),  defect_list_asset_defects_path(params.merge(format: 'pdf' ))
 
 .row
+  .col-md-12
+    .alert.alert-warning
+      %strong=(t 'remarks')+" : "
+      =t('asset.defect.report')
+      %button.btn.btn-default.btn-xs
+        %i.fa.fa-bug
+          
   %table.table-striped.table-hover.ogma
     %thead
       %tr

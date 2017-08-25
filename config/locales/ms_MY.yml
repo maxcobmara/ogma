@@ -2411,6 +2411,7 @@ ms_MY:
       process: Proses
       repair: Baiki
       dispose: Lupus
+      report: "Laporkan kerosakan dengan memilih (papar) aset dalam modul Aset dan klik "
       reported_by: Dilaporkan Oleh
       is_processed: "Hantar Cadangan?"
       processed_by: Diproses Oleh
@@ -2470,6 +2471,8 @@ ms_MY:
       view_close: "Semak & Tutup"
       disposed_by: Disemak dan Ditutup Oleh
       no_record_selected: "Tiada rekod dipilih untuk cetakan KEW.PA-17 / KEW.PA-20"
+      defect_to_dispose: "Pilih tindakan 'Lupus' ketika memproses <b>Kerosakan Aset</b> untuk disenaraikan dalam pilihan di atas"
+      list_defect_to_dispose: "Pilih tindakan 'Lupus' ketika memproses </b>Kerosakan Aset</b> sebelum aset dapat dilupuskan"
  
     loss:
       title: "Kehilangan & Hapus Kira"
@@ -2569,6 +2572,9 @@ ms_MY:
       approve: Meluluskan
       reject: Ditolak
       loanable: Senarai Aset Boleh Dipinjam
+      loanable_remarks: "Peminjaman aset hanya dibenarkan bagi aset yang tersenarai di bawah. Kemaskini senarai di bawah dengan : "
+      remarks1: "Mengaktifkan fungsi 'tempahan' dalam modul <b>Aset</b> untuk membolehkan aset dipinjam."
+      remarks2: "Aset yang <u>sedang dipinjam</u> perlu dipulangkan sebaik tamat tempoh pinjaman."
       available: "Sedia dipinjam?"
       apply: Mohon pinjaman
       driver_id: Pemandu

@@ -47,13 +47,13 @@ class Loan_listPdf < Prawn::Document
         if loan.expected_on==Date.today
           expected+="<br>(#{I18n.t('asset.loan.due_date')})"
         elsif loan.expected_on < Date.today
-          expected+="<br>(#{I18n.t('asset.loan.overdue')}}"
+          expected+="<br>(#{I18n.t('asset.loan.overdue')})"
         end
       elsif loan.is_approved == true && loan.is_returned == true
         expected=I18n.t('asset.loan.is_returned')
       end
       
-      body << ["#{counter+=1}", asset, "#{loan.staff.staff_with_rank}<br>#{loan.reasons.capitalize}", "#{loan.asset.assignedto.staff_with_rank unless loan.asset.assignedto.blank?}<br>#{loan.asset.assignedto.positions.first.unit unless loan.asset.assignedto.positions.blank?}", "#{loan.loaned_on.try(:strftime, '%d %b %Y')}<br>#{loan.expected_on.try(:strftime, '%d %b %Y')}", approval, expected]
+      body << ["#{counter+=1}", asset, "#{loan.try(:staff).try(:staff_with_rank)}<br>#{loan.reasons.capitalize}", "#{loan.asset.try(:assignedto).try(:staff_with_rank)} <br>#{loan.asset.try(:assignedto).try(:positions).try(:first).try(:unit)}", "#{loan.loaned_on.try(:strftime, '%d %b %Y')}<br>#{loan.expected_on.try(:strftime, '%d %b %Y')}", approval, expected]
     end
     
     header+body   
