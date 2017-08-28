@@ -3,10 +3,9 @@
     %td 
       = t('staff_attendance.from')
       %br= t('staff_attendance.to')
-    %td
-      = f.text_field :logged_at_gt, :size=> 2,  :class =>  'form-control date-picker'
-      = f.text_field :logged_at_lteq, :size=>2,  :class => 'form-control date-picker'
-    %td &nbsp;
+    %td{colspan: 2}
+      = f.text_field :logged_at_gt, :size=> 2,  :class =>  'datetime_picker4_reverse form-control', value: @search.logged_at_gt.try(:strftime, '%d-%m-%Y %H:%M')
+      = f.text_field :logged_at_lteq, :size=>2,  :class => 'datetime_picker4_reverse form-control', value: @search.logged_at_lteq.try(:strftime, '%d-%m-%Y %H:%M')
     %td= f.text_field :attended_search, size: 2,  :class => "form-control"
     %td= select_tag('q[keyword_search]',options_for_select(StaffAttendance.get_thumb_ids_unit_names(3).sort),:prompt=>t("helpers.prompt.all_unit"), class: 'form-control selectpicker')
     %td &nbsp;
@@ -17,11 +16,5 @@
         %button.btn.btn-sm.btn-default.right{:type => "submit"}
           %i.fa.fa-search.fa-fw
 
-:javascript  
-  $('.date-picker').datetimepicker({
-   timepicker:true,
-     format: "Y-m-d H:i:s",
-     autoclose: true
-   });    
    
  

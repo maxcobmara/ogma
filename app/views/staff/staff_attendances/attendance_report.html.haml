@@ -8,6 +8,7 @@
       .col-md-8.col-md-offset-2
         / Nav tabs
         %ul.nav.nav-tabs
+          %li.text-red *
           %li= link_to (t 'staff_attendance.daily_report'), "#daily",   "data-toggle" => "tab"
           %li= link_to (t 'staff_attendance.weekly_report'), "#weekly", "data-toggle" => "tab"
           %li= link_to (t 'staff_attendance.monthly_report'), "#monthly","data-toggle" => "tab"
@@ -16,6 +17,7 @@
       
         / Tab Panes
         .tab-content{style:"padding-top:1em"}
+          %br
           .row
             .col-md-offset-2
               .form-group
@@ -24,7 +26,7 @@
                 .col-md-5
                   = select_tag(:unit_department, options_for_select(@udept), :include_blank => (t 'select'), :class => 'form-control')
           %br
-          // Register Tab
+
           #daily.tab-pane.fade
             .col-md-offset-2
               .form-group
@@ -145,3 +147,13 @@
                   = submit_tag (t 'staff_attendance.monthly_details'), :name => :list_submit_button, :class => 'btn btn-primary'
             %BR
   
+    .row
+      .col-md-8
+        .col-md-offset-5
+          %hr
+          .small
+            .col-md-9
+              =t('staff_attendance.report_type')
+              .col-sm-1
+                .text-red *
+              .col-md-11  

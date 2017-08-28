@@ -2201,6 +2201,9 @@ en:
     not_yet_ignored: Not yet ignored
     staff_compulsory_data: "Each staff requires complete data in (1) <u>Staff module</u> (<b>Thumb ID</b> and <b>Shift</b>), (2) <u>Position module</u> (<b>Unit</b>)"
     staff_not_exist: Staff not exist in Staff Info module
+    report_type: Choose type of report / listing accordingly
+    reason_not_submitted: Reason not submitted
+    not_submitted_yet: Not submitted yet
  
   attendance:
     title: "Manage Lateness & Early Return"

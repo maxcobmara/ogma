@@ -103,14 +103,14 @@
                       =h sa.r_u_late(shiftid) == "flag" ? image_tag("flag_red.png") : "" 
                       =h sa.r_u_early(shiftid) == "flag" ? image_tag("flag_red.png") : "" 
                     %td
-                      =h link_to sa.attended.try(:name), staff_staff_attendance_path(sa)
+                      =h link_to sa.attended.try(:staff_with_rank), staff_staff_attendance_path(sa)
                       ="("+sa.id.to_s+") ("+sa.thumb_id.to_s+")"
                     /%td{:style=>"text-align: center;"}=h sa.log_type == "I" ? sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P') : "" 
                     %td.centre
                       - if current_user.college.code=='amsas'
-                        =h sa.log_type == "I" ? sa.logged_at.strftime('%H:%M') : "" 
+                        =h sa.log_type.capitalize == "I" ? sa.logged_at.strftime('%H:%M') : "" 
                       - else
-                        =h sa.log_type == "I" ? sa.logged_at.strftime('%l:%M %P') : "" 
+                        =h sa.log_type.capitalize == "I" ? sa.logged_at.strftime('%l:%M %P') : "" 
                     %td.centre
                       - if sa.log_type == "O" || sa.log_type == "o"
                         /=h sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P')
@@ -132,6 +132,7 @@
                       //Notes: deactivate_date - last date for prev staff_shift
                  
                       /Display shift in use (start time & end time plus 'activation date' [ie. 1 day after deactivate_date of prev shift used])
+                      /TODO - StaffShifts table (inc StaffAttendance) -- to update 'college_id' column to support correct timing format for each college
                       - shiftinuse= StaffShift.shift_in_use(curr_date, sa.thumb_id)
                       - if shiftinuse.include?("~")==false
                         = shiftinuse
@@ -141,7 +142,7 @@
                         .small.text-grey=shiftinuse.split("~")[1]
                           
                     %td.centre
-                      - if sa.log_type == "I" 
+                      - if sa.log_type.capitalize == "I" 
                         - if sa.late_early(shiftid)=="-"
                           \-
                         - else
