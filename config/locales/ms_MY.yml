@@ -2096,6 +2096,9 @@ ms_MY:
     not_yet_ignored: Belum diabaikan
     staff_compulsory_data: "Setiap staf memerlukan data lengkap dalam : (1) <u>Modul Staf</u> (<b>Thumb ID</b> dan <b>Waktu Anjal</b>), (2) <u>Modul Jawatan</u> (<b>Unit</b>)"
     staff_not_exist: Staf tidak wujud dalam modul Maklumat Staf
+    report_type: Pilih jenis laporan / senarai untuk dijana terlebih dahulu
+    reason_not_submitted: Sebab tidak dihantar
+    not_submitted_yet: Belum dihantar
   
   attendance:
     title: "Pengurusan Datang Lambat & Pulang Awal"
@@ -2148,8 +2151,9 @@ ms_MY:
     approval2: "Kelulusan (Tidak Fingerprint)"
     no_record: Tiada rekod
     notes:  "Nota : Kenyataan Fingerprint (Tidak Fingerprint) hanya boleh dibuat bagi hari (tarikh) yang TIADA sekurang-kurangnya 1 rekod kedatangan (masuk atau keluar). Sekiranya Kenyataan Fingerprint diperlukan bagi hari yang mempunyai kedua-dua rekod keluar dan masuk, sila ke laman 'Pengurusan Datang Lambat & Pulang Awal'. Sila hubungi 'Pentadbir Staf' sekiranya rekod kedatangan yang diperlukan tiada dalam senarai."
-    statement_exist: "Kenyataan Fingerprint (Tdak Fingerprint) telah wujud!"
+    statement_exist: "Kenyataan Fingerprint (Tidak Fingerprint) telah wujud!"
     logrecord_exist: "Kenyataan Fingerprint (Tidak FIngerprint) hanya dibenarkan bagi hari-hari yang tidak mempunyai rekod kedatangan yang lengkap (log-masuk dan log-keluar)!"
+    not_thumbprint: "<i>(Terlupa Fingerprint & Lain-lain Hal : untuk TIDAK 'thumbprint' sahaja)</i>"
     
   rank:
     title: Senarai Pangkat

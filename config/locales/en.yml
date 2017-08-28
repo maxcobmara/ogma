@@ -2201,6 +2201,9 @@ en:
     not_yet_ignored: Not yet ignored
     staff_compulsory_data: "Each staff requires complete data in (1) <u>Staff module</u> (<b>Thumb ID</b> and <b>Shift</b>), (2) <u>Position module</u> (<b>Unit</b>)"
     staff_not_exist: Staff not exist in Staff Info module
+    report_type: Choose type of report / listing accordingly
+    reason_not_submitted: Reason not submitted
+    not_submitted_yet: Not submitted yet
  
   attendance:
     title: "Manage Lateness & Early Return"
@@ -2255,6 +2258,7 @@ en:
     notes:  "Note : Fingerprint Statement (No Fingerprint) can only be created for days (dates) without at least 1 attendance record (in or out). Please visit 'Manage Lateness & Early Return' page, should you require to create one for days with both in and out records exist. Consult 'Staff Administrator' if required attendance record is not in the list."
     statement_exist: "Fingerprint Statement (Not Fingerprint) already exist!"
     logrecord_exist: "Creating Fingerprint Statement (Not Fingerprint) for days with complete logged-in and logged-out record is not allowed!"
+    not_thumbprint: "<i>(Forgot fingerprint & Other matters : for NOT thumbprint only)</i>"
     
   rank:
     title: Rank Listing

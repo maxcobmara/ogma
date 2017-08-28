@@ -84,7 +84,8 @@ class Laporan_harian_punchcardPdf < Prawn::Document
       non_attend_list <<  ["#{counter += 1}", "#{Staff.where(thumb_id: thmb).first.name}", "Tiada rekod masuk & keluar" , ""]
     end
     
-    if @staff_attendances.count > 0
+    #if @staff_attendances.count > 0
+    if @w_wo_triggered.count > 0
       header + attendance_list + non_attend_list+ [["", "", "", ""], ["", "", "", ""]]
     else
       header+non_attend_list+[["", "", "", ""], ["", "", "", ""]]
