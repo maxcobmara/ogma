@@ -19,14 +19,18 @@ class Attendance_status_listPdf < Prawn::Document
   def record
     month_cols=[]
     mnt_cnt=@title_for_month.count
-    total_cols=3+
-    balance=520-210
-    per_col=310/mnt_cnt
-    0.upto(mnt_cnt-1).each do |cnt|
-      month_cols << per_col
+    if mnt_cnt == 0
+      total_cols=4
+      month_cols << 310
+    else
+      total_cols=3+mnt_cnt
+      balance=520-210
+      per_col=balance/mnt_cnt
+      0.upto(mnt_cnt-1).each do |cnt|
+        month_cols << per_col
+      end
+      status_bgcolor=@status_bgcolor
     end
-    status_bgcolor=@status_bgcolor
-    
     table(line_item_rows, :column_widths => [30, 100, 80]+month_cols, :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).align = :center
@@ -37,25 +41,29 @@ class Attendance_status_listPdf < Prawn::Document
       row(0..3).font_style = :bold
       row(2..3).background_color = 'FFE34D'
       row(2..3).columns(3..total_cols-1).align=:center
-      self.width=210+mnt_cnt*per_col
+      if mnt_cnt > 0
+        self.width=210+mnt_cnt*per_col
       
-      #status_bgcolor={"3, 3"=>"K", "3, 4"=>"K", "3, 5"=>"K", "4, 3"=>"", "4,4"=>"", "4, 5"=>"K"}
-      status_bgcolor.keys.each_with_index do |row_col, ind|
-	a=status_bgcolor[row_col]
-	if a=="K"
-	  bgcolor= 'fafcc9'
-	elsif a=="H"
-	  bgcolor='c9fccb'
-	elsif a=="M"
-	  bgcolor='fcdad9'
-	else
-	  bgcolor='fffdfd'
-	end
-	arow,acol=row_col.split(",")
-	row(arow.to_i).column(acol.to_i).background_color= bgcolor
-	row(arow.to_i).column(acol.to_i).style size: 11
-	row(arow.to_i).column(acol.to_i).font_style = :bold
-	row(arow.to_i).column(acol.to_i).align=:center
+        #status_bgcolor={"3, 3"=>"K", "3, 4"=>"K", "3, 5"=>"K", "4, 3"=>"", "4,4"=>"", "4, 5"=>"K"}
+        status_bgcolor.keys.each_with_index do |row_col, ind|
+	  a=status_bgcolor[row_col]
+	  if a=="K"
+	    bgcolor= 'fafcc9'
+          elsif a=="H"
+	    bgcolor='c9fccb'
+	  elsif a=="M"
+	    bgcolor='fcdad9'
+	  else
+	    bgcolor='fffdfd'
+	  end
+	  arow,acol=row_col.split(",")
+	  row(arow.to_i).column(acol.to_i).background_color= bgcolor
+	  row(arow.to_i).column(acol.to_i).style size: 11
+	  row(arow.to_i).column(acol.to_i).font_style = :bold
+	  row(arow.to_i).column(acol.to_i).align=:center
+        end
+      else
+        self.width=520 #210
       end
     end
   end
@@ -119,17 +127,26 @@ class Attendance_status_listPdf < Prawn::Document
   
   def line_item_rows
     counter = counter||0
-    total_cols=3+@title_for_month.count
+    mnt_cnt=@title_for_month.count
     b=[]
-    dummy=["", "", ""]
-    for amonth in @title_for_month
-      b << "#{I18n.t(:'date.abbr_month_names')[amonth.to_date.strftime("%m").to_i]}"
-      dummy << ""
+    if mnt_cnt==0
+      total_cols=4
+      dummy=["", "", "", ""]
+      a=[I18n.t('time.years').titleize]
+      b=[I18n.t('time.months').titleize]
+    else
+      total_cols=3+mnt_cnt
+      dummy=["", "", ""]
+      for amonth in @title_for_month
+        b << "#{I18n.t(:'date.abbr_month_names')[amonth.to_date.strftime("%m").to_i]}"
+        dummy << ""
+      end
+      a=[]
+      @year_group.each do |years, months|
+        a << {content: "#{years}", colspan: months.count}
+      end
     end
-    a=[]
-    @year_group.each do |years, months|
-      a << {content: "#{years}", colspan: months.count}
-    end
+    
     header=[[{content: "#{I18n.t('staff_attendance.status_punchcard').upcase}<br> #{@college.name.upcase}", colspan: total_cols}], dummy,
             [{content: "No", rowspan: 2},{content:  "#{I18n.t('staff_attendance.thumb_id')}", rowspan: 2}, {content: "#{I18n.t('staff_attendance.unit_department')}", rowspan: 2} ]+a, b]
   
