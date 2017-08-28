@@ -4,6 +4,7 @@ class Staff::StaffAttendancesController < ApplicationController
   
   before_action :set_staff_attendance, only: [:show, :edit, :update, :destroy]
   before_action :set_staff_attendances, only: [:index, :attendance_list]
+  before_action :set_manager_admin, only: [:manager_admin, :manager_admin_list]
   
   # GET /staff_attendances
   # GET /staff_attendances.xml
@@ -135,14 +136,6 @@ class Staff::StaffAttendancesController < ApplicationController
   end
   
   def manager_admin
-    @late_early_recs_ids=[]
-    all_late_early=StaffAttendance.triggered
-    all_late_early.each do |x|
-      shift_id=StaffShift.shift_id_in_use(x.logged_at.strftime('%Y-%m-%d'),x.thumb_id)
-      @late_early_recs_ids << x.id if x.r_u_late(shift_id)=="flag" || x.r_u_early(shift_id)=="flag"
-    end
-    @search=StaffAttendance.search(params[:q])
-    @late_early_recs=@search.result.where(id: @late_early_recs_ids)
     @late_early_recs=@late_early_recs.page(params[:page]||1)
   end
 
@@ -422,6 +415,17 @@ class Staff::StaffAttendancesController < ApplicationController
       end
     end
   end
+  
+  def manager_admin_list
+    respond_to do |format|
+      format.pdf do
+        pdf = Manager_admin_listPdf.new(@late_early_recs, view_context, current_user.college)
+        send_data pdf.render, filename: "manager_admin_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -499,6 +503,17 @@ class Staff::StaffAttendancesController < ApplicationController
       #group all attendances by DATE first for use - to determine last SA record of the day
       @group_sa_by_day=@keluar_balik.group_by{|t|t.group_by_thingy}
        
+    end
+    
+    def set_manager_admin
+      @late_early_recs_ids=[]
+      all_late_early=StaffAttendance.triggered
+      all_late_early.each do |x|
+        shift_id=StaffShift.shift_id_in_use(x.logged_at.strftime('%Y-%m-%d'),x.thumb_id)
+        @late_early_recs_ids << x.id if x.r_u_late(shift_id)=="flag" || x.r_u_early(shift_id)=="flag"
+      end
+      @search=StaffAttendance.search(params[:q])
+      @late_early_recs=@search.result.where(id: @late_early_recs_ids)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

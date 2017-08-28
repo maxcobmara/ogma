@@ -171,7 +171,7 @@
                       - elsif sa.trigger == nil && sa.r_u_early(shiftid) == "flag"
                         = check_box_tag "ignores[]", sa.id
                       - elsif sa.trigger == false
-                        = image_tag("tick.png")
+                        = fa_icon("check")
                     
           /display unit name for non-exist sa
           - if @hula == @last_person_oftheday && (params[:q]==nil || (params[:q][:keyword_search]==nil))
