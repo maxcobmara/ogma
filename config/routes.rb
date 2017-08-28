@@ -73,6 +73,7 @@ Ogma::Application.routes.draw do
       collection do
         get :approval
         get :index_admin
+	get :index_admin_list
       end
     end
     resources :holidays
