@@ -41,9 +41,11 @@ class Attendance_status_listPdf < Prawn::Document
       row(0..3).font_style = :bold
       row(2..3).background_color = 'FFE34D'
       row(2..3).columns(3..total_cols-1).align=:center
-      if mnt_cnt > 0
+      if mnt_cnt==0
+        self.width=520
+      else
         self.width=210+mnt_cnt*per_col
-      
+
         #status_bgcolor={"3, 3"=>"K", "3, 4"=>"K", "3, 5"=>"K", "4, 3"=>"", "4,4"=>"", "4, 5"=>"K"}
         status_bgcolor.keys.each_with_index do |row_col, ind|
 	  a=status_bgcolor[row_col]
@@ -62,8 +64,6 @@ class Attendance_status_listPdf < Prawn::Document
 	  row(arow.to_i).column(acol.to_i).font_style = :bold
 	  row(arow.to_i).column(acol.to_i).align=:center
         end
-      else
-        self.width=520 #210
       end
     end
   end
@@ -133,7 +133,7 @@ class Attendance_status_listPdf < Prawn::Document
       total_cols=4
       dummy=["", "", "", ""]
       a=[I18n.t('time.years').titleize]
-      b=[I18n.t('time.months').titleize]
+      b=[I18n.t('time.months').titleize ]
     else
       total_cols=3+mnt_cnt
       dummy=["", "", ""]
