@@ -115,11 +115,11 @@ class Staff::FingerprintsController < ApplicationController
     
     def set_index_admin
       @search = Fingerprint.search(params[:q])
-      @fingerprints = @search.result
+      @fingerprints = @search.result.order(fdate: :desc)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def fingerprint_params
-      params.require(:fingerprint).permit(:thumb_id, :fdate, :ftype, :reason, :approved_by, :is_approved, :approved_on, :status)
+      params.require(:fingerprint).permit(:thumb_id, :fdate, :ftype, :reason, :approved_by, :is_approved, :approved_on, :status, :college_id, {:data => []})
     end
 end
