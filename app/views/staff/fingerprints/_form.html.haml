@@ -11,12 +11,12 @@
           .form-group
             .col-sm-2.control-label
               = f.label :thumb_id 
-            .col-md-3
+            .col-md-5
               - if @fingerprint.new_record?
                 = f.hidden_field :thumb_id, value: current_user.userable.thumb_id
                 = Staff.where(thumb_id: current_user.userable.thumb_id).first.staff_thumb
               - else
-                = f.collection_select :thumb_id, Staff.where(thumb_id: @fingerprint.owner.thumb_id), :thumb_id, :staff_thumb, {:selected=>@fingerprint.owner.thumb_id},{class: 'selectpicker', "data-width"=>"420px", readonly: 'readonly'}
+                = f.collection_select :thumb_id, Staff.where(thumb_id: @fingerprint.owner.thumb_id), :thumb_id, :staff_thumb, {:selected=>@fingerprint.owner.thumb_id},{class: 'selectpicker', "data-width"=>"auto", readonly: 'readonly'}
               
           .form-group
             .col-sm-2.control-label

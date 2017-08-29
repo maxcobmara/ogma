@@ -1,13 +1,12 @@
 class Staff::FingerprintsController < ApplicationController
-  filter_access_to :index, :index_admin, :index_admin_list, :new, :create, :attribute_check => false
+  filter_access_to :index,:fingerprint_list, :index_admin, :index_admin_list, :new, :create, :attribute_check => false
   filter_access_to :show, :edit, :update, :approval, :destroy, :attribute_check => true
   before_action :set_fingerprint, only: [:show, :edit, :update, :destroy]
   before_action :set_index_admin, only: [:index_admin, :index_admin_list]
+  before_action :set_fingerprints, only: [:index, :fingerprint_list]
   
   def index
     @fingerprint = Fingerprint.new
-    @fingerprints = Fingerprint.find_mystatement(current_user.userable.thumb_id)
-    @approvefingerprints = Fingerprint.find_approvestatement(current_user)
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @fingerprints }
@@ -100,7 +99,18 @@ class Staff::FingerprintsController < ApplicationController
     respond_to do |format|
       format.pdf do
         pdf = Index_admin_listPdf.new(@fingerprints, view_context, current_user.college)
-        send_data pdf.render, filename: "fingerprint_list-{Date.today}",
+        send_data pdf.render, filename: "fingerprint_admin_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
+  def fingerprint_list
+    respond_to do |format|
+      format.pdf do
+        pdf = Fingerprint_listPdf.new(@fingerprints, @approvefingerprints, view_context, current_user.college)
+        send_data pdf.render, filename: "fingerprint_user_list-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
       end
@@ -118,6 +128,13 @@ class Staff::FingerprintsController < ApplicationController
       @fingerprints = @search.result.order(fdate: :desc)
     end
 
+    def set_fingerprints
+      @search = Fingerprint.search(params[:q])
+      @fingerprints_searched = @search.result
+      @fingerprints = @fingerprints_searched.find_mystatement(current_user.userable.thumb_id)
+      @approvefingerprints = @fingerprints_searched.find_approvestatement(current_user)
+    end
+    
     # Never trust parameters from the scary internet, only allow the white list through.
     def fingerprint_params
       params.require(:fingerprint).permit(:thumb_id, :fdate, :ftype, :reason, :approved_by, :is_approved, :approved_on, :status, :college_id, {:data => []})

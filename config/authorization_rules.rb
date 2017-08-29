@@ -138,7 +138,7 @@ authorization do
      if_attribute :thumb_id => is {user.userable.thumb_id}
    end
    has_permission_on :staff_fingerprints, :to => :create                                                      # issue Fingerprint statement
-   has_permission_on :staff_fingerprints, :to => [:read, :update] do                                   # index, show, update (own) Fingerprint statement
+   has_permission_on :staff_fingerprints, :to => [:read, :update, :fingerprint_list] do                                   # index, show, update (own) Fingerprint statement
      if_attribute :thumb_id => is {user.userable.thumb_id}
    end
    
@@ -571,7 +571,7 @@ authorization do
   role :staff_administrator do
      has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff, :staff_list]
      has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :actionable, :approval, :manager_admin, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :import_excel, :import, :status, :attendance_list, :attendance_status_list, :manager_admin_list]   #29Apr2013-refer routes.rb
-     has_permission_on :staff_fingerprints, :to => [:manage, :approval, :index_admin, :index_admin_list]
+     has_permission_on :staff_fingerprints, :to => [:manage, :approval, :index_admin, :index_admin_list, :fingerprint_list]
      has_permission_on :staff_staff_shifts, :to => :manage
      has_permission_on :staff_titles, :to => :manage
      has_permission_on :staff_positions, :to =>[:manage, :maklumat_perjawatan, :organisation_chart, :position_list]
@@ -1255,21 +1255,21 @@ authorization do
   #4-OK - for read, but manage - requires role: MANAGE for staff_attendances to be activated as well
   #restriction - INDEX - @fingerprints restricted to own record, @approvefingerprints restricted to unit members, BUT INDEX_ADMIN OK
   role :fingerprints_module_admin do
-    has_permission_on :staff_fingerprints, :to =>[:manage, :approval, :index_admin, :index_admin_list]
+    has_permission_on :staff_fingerprints, :to =>[:manage, :approval, :index_admin, :index_admin_list, :fingerprint_list]
   end
   role :fingerprints_module_viewer do
-    has_permission_on :staff_fingerprints, :to => [:read, :index_admin, :index_admin_list]
+    has_permission_on :staff_fingerprints, :to => [:read, :index_admin, :index_admin_list, :fingerprint_list]
   end
   role :fingerprints_module_user do
-    has_permission_on :staff_fingerprints, :to => [:read, :index_admin, :approval, :update, :index_admin_list]
+    has_permission_on :staff_fingerprints, :to => [:read, :index_admin, :approval, :update, :index_admin_list, :fingerprint_list]
   end
   role :fingerprints_module_member do
     #own record
-    has_permission_on :staff_fingerprints, :to => [:read, :update] do                                   
+    has_permission_on :staff_fingerprints, :to => [:read, :update, :fingerprint_list] do                                   
       if_attribute :thumb_id => is {user.userable.thumb_id}
     end
     #own (approver) - Timbalans / HOD - refer Administration Staff roles
-    has_permission_on :staff_fingerprints, :to => [:read, :index_admin, :approval, :update, :index_admin_list] do
+    has_permission_on :staff_fingerprints, :to => [:read, :index_admin, :approval, :update, :index_admin_list, :fingerprint_list] do
       if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
     end
   end

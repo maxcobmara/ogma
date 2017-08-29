@@ -13,8 +13,10 @@
       .form-group
         .col-sm-offset-2
           .col-sm-2
-            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('staff_attendance.list1'), staff_staff_attendances_path, :class => 'btn btn-default'
+            = link_to content_tag(:i, "", :class => "fa fa-list ") + " " + t('staff_attendance.list1'), staff_staff_attendances_path, :class => 'btn btn-default'
           .col-sm-2
-            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('staff_attendance.list2'), '/attendance/manager/', :class => 'btn btn-default'
-          .col-sm-2
+            = link_to content_tag(:i, "", :class => "fa fa-list ") + " " + t('staff_attendance.list2'), '/attendance/manager/', :class => 'btn btn-default'
+          .col-sm-1
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('back'), staff_fingerprints_path, :class => 'btn btn-default'
+          .col-sm-2{style: "padding-left: 30px;"}
             = f.submit t('create'), class: "btn btn-primary"

@@ -7,6 +7,7 @@ class Fingerprint < ActiveRecord::Base
   validates_presence_of :reason, :status, :if => :ftype_exist?
   validates_uniqueness_of :fdate, :scope => :thumb_id, :message => I18n.t('fingerprint.statement_exist')
   validate :valid_fdate?
+  # TODO - 29Aug2017 - valid_type (3 if both SA not exist, 2 if out not exist & 1 if in not exist
   
   def valid_fdate?
     daystart=fdate.to_time.beginning_of_day
@@ -45,7 +46,7 @@ class Fingerprint < ActiveRecord::Base
   end
   
   def self.find_mystatement(thumbid)
-    where(thumb_id: thumbid)
+    where(thumb_id: thumbid).order(fdate: :desc)
   end
    def self.find_approvestatement(current_user)
     all.where("thumb_id IN (?)", StaffAttendance.peeps(current_user)).order(fdate: :desc)

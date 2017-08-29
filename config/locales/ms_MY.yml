@@ -184,6 +184,7 @@ ms_MY:
         fdate: Tarikh
         thumb_id: "Staf (Thumb Id)"
         reason: Sebab
+        ftype: Jenis
       holiday:
         hname: Nama
         hdate: Tarikh
@@ -2137,6 +2138,8 @@ ms_MY:
     title: "Kenyataan Fingerprint (Hari Tidak Fingerprint)"
     title2: "Kenyataan Fingerprint (Tidak Fingerprint)"
     title3: "Senarai Kenyataan Fingerprint (Tidak Fingerprint)"
+    list: Senarai Fingerprint
+    new2: Kenyatataan Fingerprint Baru
     new: "Kenyataan Fingerprint Baru (Hari Tidak Fingerprint)"
     edit: "Sunting Kenyataan Fingerprint (Hari Tidak Fingerprint)"
     details: Butiran Fingerprint
@@ -2150,10 +2153,12 @@ ms_MY:
     approval: Kelulusan Kenyataan Fingerprint
     approval2: "Kelulusan (Tidak Fingerprint)"
     no_record: Tiada rekod
-    notes:  "Nota : Kenyataan Fingerprint (Tidak Fingerprint) hanya boleh dibuat bagi hari (tarikh) yang TIADA sekurang-kurangnya 1 rekod kedatangan (masuk atau keluar). Sekiranya Kenyataan Fingerprint diperlukan bagi hari yang mempunyai kedua-dua rekod keluar dan masuk, sila ke laman 'Pengurusan Datang Lambat & Pulang Awal'. Sila hubungi 'Pentadbir Staf' sekiranya rekod kedatangan yang diperlukan tiada dalam senarai."
-    statement_exist: "Kenyataan Fingerprint (Tidak Fingerprint) telah wujud!"
+    notes1:  "Kenyataan Fingerprint (Tidak Fingerprint) hanya boleh dibuat bagi hari (tarikh) yang TIADA sekurang-kurangnya 1 rekod kedatangan (masuk atau keluar)."
+    notes2: "Bagi penyediaan Kenyataan Fingerprint untuk hari yang mempunyai kedua-dua rekod keluar dan masuk, sila ke laman 'Pengurusan Datang Lambat & Pulang Awal' di bahagian <b>Senarai Kedatangan Lambat Datang (sendiri)</b> dan / atau <b>Senarai Kedatangan Pulang Awal (sendiri)</b>. Hubungi 'Pentadbir Staf' sekiranya rekod kedatangan yang diperlukan tiada dalam senarai."
+    statement_exist: "- Kenyataan Fingerprint (Tidak Fingerprint) telah wujud!"
     logrecord_exist: "Kenyataan Fingerprint (Tidak FIngerprint) hanya dibenarkan bagi hari-hari yang tidak mempunyai rekod kedatangan yang lengkap (log-masuk dan log-keluar)!"
     not_thumbprint: "<i>(Terlupa Fingerprint & Lain-lain Hal : untuk TIDAK 'thumbprint' sahaja)</i>"
+    create_statement: Sediakan kenyataan
     
   rank:
     title: Senarai Pangkat

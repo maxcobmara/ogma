@@ -200,6 +200,7 @@ en:
         fdate: Date
         thum_id: "Staff (Thumb Id)"
         reason: Reason
+        ftype: Type
       holiday:
         hname: Name
         hdate: Date
@@ -2242,6 +2243,8 @@ en:
     title: "Fingerprint Statement (Days Not Fingerprint)"
     title2: "Fingerprint Statement (Not Fingerprint)"
     title3: "Fingerprint Statement (Not Fingerprint) Listing"
+    list: Fingerprint List
+    new2: New Fingerprint Statement
     new: "New Fingerprint Statement (Days Not Fingerprint)"
     edit: "Edit Fingerprint Statement (Days Not Fingerprint)"
     details: Fingerprint Details
@@ -2255,10 +2258,12 @@ en:
     approval: Fingerprint Statement Approval
     approval2: "Approval (No Fingerprint)"
     no_record: No record
-    notes:  "Note : Fingerprint Statement (No Fingerprint) can only be created for days (dates) without at least 1 attendance record (in or out). Please visit 'Manage Lateness & Early Return' page, should you require to create one for days with both in and out records exist. Consult 'Staff Administrator' if required attendance record is not in the list."
-    statement_exist: "Fingerprint Statement (Not Fingerprint) already exist!"
+    notes1: "Fingerprint Statement (No Fingerprint) can only be created for days (dates) without at least 1 attendance record (in or out)."
+    notes2: "Please visit 'Manage Lateness & Early Return' page at section: <b>Days I am Late</b> and / or <b>Days I am Early (Return)</b>, should you require to create statement for days with both IN and OUT records exist. Consult 'Staff Administrator' should required record is not listed."
+    statement_exist: " - Fingerprint Statement (Not Fingerprint) already exist!"
     logrecord_exist: "Creating Fingerprint Statement (Not Fingerprint) for days with complete logged-in and logged-out record is not allowed!"
     not_thumbprint: "<i>(Forgot fingerprint & Other matters : for NOT thumbprint only)</i>"
+    create_statement: Create statement
     
   rank:
     title: Rank Listing
