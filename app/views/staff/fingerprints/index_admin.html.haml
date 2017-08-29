@@ -12,25 +12,22 @@
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'fingerprint.title'))), staff_fingerprints_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    /TODO - pdf - 28AUG2017###############
-    /%li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li=link_to fa_icon("print", text: (t 'actions.print')), index_admin_list_staff_fingerprints_path(params.merge(format: 'pdf'))
 
 .row
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th{width: '10%'}=sort_link(@search, :fdate, (t 'attendance.attdate'))
-        %th{width: '10%'}=t 'attendance.time_in'
-        %th{width: '10%'}=t 'attendance.time_out'
-        %th{width: '20%'}= sort_link(@search, :owner_name, (t 'attendance.staff_id'))
+        %th{width: '8%'}=sort_link(@search, :fdate, (t 'attendance.attdate'))
+        %th{width: '8%'}=t 'attendance.time_in'
+        %th{width: '8%'}=t 'attendance.time_out'
+        %th{width: '23%'}= sort_link(@search, :owner_name, (t 'attendance.staff_id'))
         %th{width: '20%'}=t 'attendance.reason'
-        %th{width: '20%'}= sort_link(@search, :approved_by, (t 'attendance.approve_id'))
+        %th{width: '23%'}= sort_link(@search, :approved_by, (t 'attendance.approve_id'))
         %th{width: '10%'}= sort_link(@search, :is_approved, (t 'attendance.approvestatus'))
     %tbody
       = render "index_search"
-      /%tr
-      /  %td{:colspan=>"7",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'fingerprint.approval_title'
-
+      
       - if @fingerprints.size > 0
         - for fingerprint in @fingerprints
           - if fingerprint.ftype!=3
@@ -50,9 +47,9 @@
                 .text-red=t('fingerprint.no_record')
               - else
                 = sa_rec_out.first.logged_at.strftime('%H:%M')
-            %td=h fingerprint.owner.name 
+            %td=h fingerprint.owner.try(:staff_with_rank_position_unit)
             %td=h fingerprint.reason
-            %td=h fingerprint.approved_by.blank? ? "" : fingerprint.try(:approver).try(:staff_name_with_position)
+            %td=h fingerprint.approved_by.blank? ? "" : fingerprint.try(:approver).try(:staff_with_rank_position_unit)
             %td
               - if fingerprint.reason? && (fingerprint.is_approved == nil)
                 /= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :controller=> 'fingerprints', :action => 'approval', :id => fingerprint
