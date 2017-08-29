@@ -6,9 +6,9 @@
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
     - permitted_to? :staff_staff_attendances, :manage do
-      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'staff_attendance.list1'))), staff_staff_attendances_path
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'attendance.title'))), '/attendance/manager'
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'fingerprint.title'))), staff_fingerprints_path
+      %li= link_to content_tag(:li, fa_icon("list", text: (t 'staff_attendance.list1'))), staff_staff_attendances_path
+    %li= link_to content_tag(:li, fa_icon("th-large", text: (t 'attendance.title'))), '/attendance/manager'
+    %li= link_to content_tag(:li, fa_icon("th", text: (t 'fingerprint.title'))), staff_fingerprints_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), manager_admin_list_staff_staff_attendances_path(params.merge(format: 'pdf'))

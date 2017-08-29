@@ -1,4 +1,4 @@
-= search_form_for [:fingerprint, @search], url: index_admin_staff_fingerprints_path,  class: "form-inline" do |f|
+= search_form_for [:fingerprint, @search], url: staff_fingerprints_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
     %td= f.text_field :fdate_eq, size: 2,  :class => "form-control date_picker_reverse", value: @search.fdate_eq.try(:strftime, '%d-%m-%Y')
     %td
@@ -6,7 +6,7 @@
     %td= f.text_field :owner_name_cont, size: 8,  :class => "form-control" 
     %td
     %td= f.text_field :approver_name_cont, size: 8,  :class => "form-control" 
-    %td.input-group.input-group-sm
+    %td.input-group
       =select_tag('q[is_approved_eq]', options_for_select([[(t 'all_records'),''],[(t 'approved'),true],[(t 'not_approved'),false]]), class: 'selectpicker',"data-width"=>'60px') 
       %span.input-group-btn
         %button.btn.btn-sm.btn-default.right{:type => "submit"}

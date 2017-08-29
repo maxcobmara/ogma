@@ -6,35 +6,37 @@
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
     - permitted_to? :manage,  :staff_staff_attendances do
-      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'staff_attendance.list1'))), staff_staff_attendances_path
+      %li= link_to content_tag(:li, fa_icon("list", text: (t 'staff_attendance.list1'))), staff_staff_attendances_path
     - permitted_to? :manager, :staff_staff_attendances do
-      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'attendance.title'))), '/attendance/manager'
+      %li= link_to content_tag(:li, fa_icon("th-large", text: (t 'attendance.title'))), '/attendance/manager'
     - permitted_to? :index_admin, :staff_fingerprints do
-      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'fingerprint.title3'))), index_admin_staff_fingerprints_path
+      %li= link_to content_tag(:li, fa_icon("list", text: (t 'fingerprint.title3'))), index_admin_staff_fingerprints_path
   %ul.nav.navbar-nav.navbar-right
-    /%li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    /%li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), fingerprint_list_staff_fingerprints_path(params.merge(format: 'pdf'))
 
 .navbar
   .col-md-3.navbar.navbar-default
     = form_for [:staff, @fingerprint], html: { multipart: true, class: 'form-horizontal' }  do |f| 
       = f.hidden_field :thumb_id, value: current_user.userable.thumb_id
       = f.hidden_field :college_id, value: current_user.college_id
-      .row
-        .col-md-6{style: "padding-left: 30px; padding-bottom: -5px;"}
+      .row{style: "padding-top: 10px; padding-left: 30px;"}
+        .row 
+          %strong.small{style: "padding-left: 18px;"}=t 'fingerprint.new2'
+        .col-md-6
           .form-group
             .input-group.input-group-sm
               .input-group-addon
                 =t 'attendance.attdate'
               = f.text_field :fdate, class: 'form-control date_picker_reverse'
-        .col-md-6
-          .form-group{style: "padding-left: 10px;"}
-            = f.submit 'Sediakan kenyataan', class: "btn btn-default btn-sm"
-            /TODO - translation - submit statement
+        .col-md-6{style: "padding-left: 20px;"}
+          .form-group
+            = f.submit (t 'fingerprint.create_statement'), class: "btn btn-default btn-sm"
+
       .row
         .col-md-11
-          .col-md-2.control-label
-            %label.small=(t 'fingerprint.ftype')+"* "
+          /.col-md-2.control-label
+          /  %label.small=(t 'fingerprint.ftype')+"* "
           .form-inline.small
             .col-md-3.form-group
               .centre= t 'fingerprint.in'
@@ -45,8 +47,13 @@
             .col-md-4.form-group
               .centre= t 'fingerprint.both'
               = f.radio_button :ftype, 3    
+
   .col-md-9
-    .alert.alert-warning="* "+(t 'fingerprint.notes')
+    .alert.alert-warning.small{style: "height: 123px; vertical-align: middle;"}
+      %strong=t 'remarks'
+      %ol
+        %li=(t 'fingerprint.notes1').html_safe
+        %li=(t 'fingerprint.notes2').html_safe
     
   .row
     %table.table-striped.table-hover.ogma
@@ -60,7 +67,7 @@
           %th{width: '20%'}=t 'attendance.approve_id'
           %th{width: '10%'}=t 'attendance.approvestatus'
       %tbody
-        /= render "index_search"
+        = render "index_search1"
         %tr
           %td.group3{colspan: 7}=t 'fingerprint.approval_title'
       
@@ -99,17 +106,6 @@
         %tr
           %td.group3{colspan: 7}=t 'fingerprint.title'
         
-        /%tr
-        /  %td{:colspan => "7"}
-        /    = form_for [:staff, @fingerprint], html: { multipart: true, class: 'form-horizontal' }  do |f| 
-        /      = f.hidden_field :thumb_id, value: current_user.userable.thumb_id
-        /      = f.hidden_field :college_id, value: current_user.college_id
-        /      .col-md-1= f.text_field :fdate, class: 'form-control date_picker_reverse'
-        /      .col-md-4= submit_tag t('fingerprint.new')
-        /      .col-md-5= t('fingerprint.notes')
-
-
-        /      /, class: "btn btn-link"
         - for fingerprint in @fingerprints
           - if fingerprint.ftype!=3
             - fdate_start=fingerprint.fdate.to_time.beginning_of_day

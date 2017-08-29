@@ -67,6 +67,7 @@ Ogma::Application.routes.draw do
 	get :manager_admin_list
 	get :attendance_list
 	get :attendance_status_list
+	get :manager_list
       end
     end
     resources :fingerprints do
@@ -74,6 +75,7 @@ Ogma::Application.routes.draw do
         get :approval
         get :index_admin
 	get :index_admin_list
+	get :fingerprint_list
       end
     end
     resources :holidays

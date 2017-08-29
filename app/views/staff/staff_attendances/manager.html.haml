@@ -6,12 +6,17 @@
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
     - permitted_to? :read, :staff_staff_attendances do
-      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'staff_attendance.list1'))), staff_staff_attendances_path
+      %li= link_to content_tag(:li, fa_icon("list", text: (t 'staff_attendance.list1'))), staff_staff_attendances_path
     - permitted_to? :manager_admin, :staff_staff_attendances do
-      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'attendance.title2'))), manager_admin_staff_staff_attendances_path
+      %li= link_to content_tag(:li, fa_icon("list", text: (t 'attendance.title2'))), manager_admin_staff_staff_attendances_path
     - permitted_to? :create, :staff_fingerprints do
-      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'fingerprint.title'))), staff_fingerprints_path
-
+      %li= link_to content_tag(:li, fa_icon("th", text: (t 'fingerprint.title'))), staff_fingerprints_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    - permitted_to? :manager_list, :staff_staff_attendances do
+      %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), manager_list_staff_staff_attendances_path(params.merge(format: 'pdf'))
+      
+    
 /=@current_user.admin_unitleaders_thumb.count
 /=StaffAttendance.peeps(@current_user).count
 
@@ -19,15 +24,15 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th=t 'attendance.attdate'		# sort_link(@search, :attdate, (t 'attendance.attdate'))
-        %th=t 'attendance.time_in'		# sort_link(@search, :time_in, (t 'attendance.time_in'))
-        %th=t 'attendance.time_out'		# sort_link(@search, :time_out, (t 'attendance.time_out'))
-        %th=t 'attendance.staff_id'		# sort_link(@search, :staff_id, (t 'attendance.staff_id'))
-        %th=t 'attendance.reason'		# sort_link(@search, :reason, (t 'attendance.reason'))
-        %th=t 'attendance.approve_id'	# sort_link(@search, :approve_id, (t 'attendance.approve_id'))
-        %th=t 'attendance.approvestatus'	# sort_link(@search, :approvestatus, (t 'attendance.approvestatus'))
+        %th{width: '10%'}=t 'attendance.attdate'		# sort_link(@search, :attdate, (t 'attendance.attdate'))
+        %th{width: '10%'}=t 'attendance.time_in'		# sort_link(@search, :time_in, (t 'attendance.time_in'))
+        %th{width: '10%'}=t 'attendance.time_out'		# sort_link(@search, :time_out, (t 'attendance.time_out'))
+        %th{width: '20%'}=t 'attendance.staff_id'		# sort_link(@search, :staff_id, (t 'attendance.staff_id'))
+        %th{width: '20%'}=t 'attendance.reason'		# sort_link(@search, :reason, (t 'attendance.reason'))
+        %th{width: '20%'}=t 'attendance.approve_id'	# sort_link(@search, :approve_id, (t 'attendance.approve_id'))
+        %th{width: '10%'}=t 'attendance.approvestatus'	# sort_link(@search, :approvestatus, (t 'attendance.approvestatus'))
     %tbody
-      /= render "index_search"
+      = render "index_search3"
       %tr
         %td.group3{colspan: 7}=t 'attendance.late_to_approve'
 
@@ -75,10 +80,10 @@
           %td=h link_to attendance.logged_at.strftime('%d-%m-%Y'), staff_staff_attendance_path(attendance)
           %td.centre.text-red=h attendance.logged_at.strftime('%H:%M:%S') 
           %td &nbsp;
-          %td &nbsp;
+          %td.centre -
           %td=h attendance.reason.blank? ? (t 'staff_attendance.reason_not_submitted') : attendance.reason
           %td=h attendance.approved_by.blank? ? "" : attendance.try(:approver).try(:staff_name_with_position)
-          %td
+          %td.centre
             - if attendance.is_approved == true
               = fa_icon("check")
             - elsif attendance.is_approved == false
@@ -91,10 +96,10 @@
           %td=h link_to attendance.logged_at.strftime('%d-%m-%Y'), staff_staff_attendance_path(attendance)
           %td &nbsp;
           %td.centre.text-red=h attendance.logged_at.strftime('%H:%M:%S') 
-          %td &nbsp;
+          %td.centre -
           %td=h attendance.reason.blank? ? (t 'staff_attendance.reason_not_submitted') : attendance.reason
           %td=h attendance.approved_by.blank? ? "" : attendance.try(:approver).try(:staff_name_with_position)
-          %td 
+          %td.centre
             - if attendance.is_approved == true
               = fa_icon("check")
             - elsif attendance.is_approved == false

@@ -54,6 +54,7 @@ class Index_admin_listPdf < Prawn::Document
   def record
     total_records=@fingerprints.count
     no_record_cells=@no_record_cells
+    fingerprints=@fingerprints
     table(line_item_rows, :column_widths => [30, 60, 45, 45, 100, 90, 95, 55], :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
@@ -61,10 +62,12 @@ class Index_admin_listPdf < Prawn::Document
       row(0).align = :center
       row(0..1).font_style = :bold
       row(1).background_color = 'FFE34D'
-      row(2..total_records+2).columns(2..3).align=:center
-      for acell in no_record_cells
-	arow, acol=acell.split(",")
-	row(arow.to_i).column(acol.to_i).text_color ='EC0C16'
+      if fingerprints.count > 0
+        row(2..total_records+2).columns(2..3).align=:center
+        for acell in no_record_cells
+	  arow, acol=acell.split(",")
+	  row(arow.to_i).column(acol.to_i).text_color ='EC0C16'
+        end
       end
       self.width = 520
     end

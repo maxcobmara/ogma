@@ -21,11 +21,13 @@
   .col-md-7.col-md-offset-2
     %hr
     .form-actions
+      - permitted_to? :index_admin, :staff_fingerprints do
+        = link_to content_tag(:i, "", :class => "fa fa-list ") + " " + t('fingerprint.list'), index_admin_staff_fingerprints_path, :class => 'btn btn-default'
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('back'), staff_fingerprints_path, :class => 'btn btn-default'
       - if @fingerprint.is_approved.nil?
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + "Fingerprint", edit_staff_fingerprint_path(@fingerprint),  :class => 'btn btn-primary' 
       - permitted_to? :approval, :staff_staff_attendances do
-        - if (@fingerprint.status || (@fingerprint.reason && @fingerprint.reason!="")) && @fingerprint.thumb_id!=@current_user.userable.thumb_id
+        - if (@fingerprint.status || (@fingerprint.reason && @fingerprint.reason!="")) && @fingerprint.thumb_id!=current_user.userable.thumb_id
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('fingerprint.approval2'),  approval_staff_fingerprints_path(:id=>@fingerprint.id),  :class => 'btn btn-primary' 
       - if @fingerprint.is_approved.nil?
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |

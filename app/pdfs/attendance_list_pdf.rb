@@ -85,7 +85,7 @@ class Attendance_listPdf < Prawn::Document
                           if sa.late_early(shiftid)=="-"
 			    early_out_col="-"
 			  else
-			    ear_out_col= sa.late_early(shiftid)
+			    early_out_col= sa.late_early(shiftid)
 			  end
 			else
 			  early_out_col="-"
@@ -93,14 +93,14 @@ class Attendance_listPdf < Prawn::Document
 			if (sa.trigger == nil && sa.r_u_late(shiftid) == "flag") || (sa.trigger == nil && sa.r_u_early(shiftid) == "flag")
 			  trigger="#{I18n.t('staff_attendance.not_yet_triggered')}"
 			elsif sa.trigger == true
-			  trigger="#{I18n.t('yes')}"
+			  trigger="#{I18n.t('yes2')}"
 			else
 			  trigger="-"
 			end
 			 if (sa.trigger == nil && sa.r_u_late(shiftid) == "flag") ||(sa.trigger == nil && sa.r_u_early(shiftid) == "flag")
 			   ignore="#{I18n.t('staff_attendance.not_yet_ignored')}"
 			 elsif sa.trigger == false
-			   ignore="#{I18n.t('yes')}"
+			   ignore="#{I18n.t('yes2')}"
 			 else
 			   ignore="-"
 			 end
