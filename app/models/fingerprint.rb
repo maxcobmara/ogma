@@ -1,6 +1,7 @@
 class Fingerprint < ActiveRecord::Base
   belongs_to :owner, :class_name => 'Staff', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approved_by'
+  belongs_to :college
   
   validates_presence_of :thumb_id, :fdate, :ftype
   validates_presence_of :reason, :status, :if => :ftype_exist?

@@ -32,8 +32,8 @@
         - for attendance in @late_early_recs
           %tr
             %td.centre=h attendance.logged_at.strftime('%d-%m-%Y')
-            %td.centre=h attendance.logged_at.strftime('%H:%M') if attendance.log_type=='I' or  attendance.log_type=='i' 
-            %td.centre=h attendance.logged_at.strftime('%H:%M') if attendance.log_type=='O' or  attendance.log_type=='o' 
+            %td.centre.text-red=h attendance.logged_at.strftime('%H:%M') if attendance.log_type=='I' or  attendance.log_type=='i' 
+            %td.centre.text-red=h attendance.logged_at.strftime('%H:%M') if attendance.log_type=='O' or  attendance.log_type=='o' 
             %td=h attendance.try(:attended).try(:staff_with_rank)
             %td=h StaffAttendance.unit_for_thumb(attendance.thumb_id)
             %td=h attendance.reason? ? attendance.reason : (t 'staff_attendance.not_submitted_yet')
@@ -44,7 +44,6 @@
               - elsif attendance.is_approved == false  
                 = fa_icon("times")
                 
-
   .right{style:"padding:0 30px; margin:0;"}= paginate @late_early_recs, :theme => 'twitter-bootstrap-3'
 %BR
 %BR

@@ -13,6 +13,7 @@ class Manager_admin_listPdf < Prawn::Document
   end
 
   def record
+    total_records=@late_early_recs.count
     table(line_item_rows, :column_widths => [30, 60, 40, 40, 80, 75, 70, 75, 50], :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
@@ -20,6 +21,8 @@ class Manager_admin_listPdf < Prawn::Document
       row(0).align = :center
       row(0..1).font_style = :bold
       row(1).background_color = 'FFE34D'
+      row(2..total_records+2).columns(2..3).align=:center
+      row(2..total_records+2).column(2..3).text_color ='EC0C16'
       self.width = 520
     end
   end

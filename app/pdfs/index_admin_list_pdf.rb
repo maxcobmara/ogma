@@ -5,33 +5,18 @@ class Index_admin_listPdf < Prawn::Document
     @view = view
     @college=college
     font "Helvetica"
+    retrieve_data
     record
     page_count.times do |i|
       go_to_page(i+1)
       footer
     end
   end
-
-  def record
-    total_records=@fingerprints.count
-    table(line_item_rows, :column_widths => [30, 60, 45, 45, 100, 90, 95, 55], :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
-      row(0).borders =[]
-      row(0).height=50
-      row(0).style size: 11
-      row(0).align = :center
-      row(0..1).font_style = :bold
-      row(1).background_color = 'FFE34D'
-      row(2..total_records+2).columns(2..3).align=:center
-      self.width = 520
-    end
-  end
   
-  
-  def line_item_rows
+  def retrieve_data
     counter = counter||0
-    header=[[{content: "#{I18n.t('fingerprint.title3').upcase}<br> #{@college.name.upcase}", colspan: 8}],
-            ["No", I18n.t('attendance.attdate'), I18n.t('attendance.time_in'), I18n.t('attendance.time_out'), I18n.t('attendance.staff_id'), I18n.t('attendance.reason'), I18n.t('attendance.approve_id'), I18n.t('attendance.approvestatus')]]
     body=[]
+    arr=Array.new
     if @fingerprints.size > 0
         @fingerprints.each do |fingerprint|
             if fingerprint.ftype!=3
@@ -42,11 +27,13 @@ class Index_admin_listPdf < Prawn::Document
 	    end
 	    if fingerprint.ftype==1 || fingerprint.ftype==3
                 time_in=I18n.t('fingerprint.no_record')
+		arr << "#{counter+2}, 2"
 	    else
 	        time_in=sa_rec_in.first.logged_at.strftime('%H:%M')
 	    end
 	    if fingerprint.ftype==2 || fingerprint.ftype==3
                time_out=I18n.t('fingerprint.no_record') 
+	       arr << "#{counter+2}, 3"
 	    else
 	       time_out=sa_rec_out.first.logged_at.strftime('%H:%M')
 	    end
@@ -60,6 +47,33 @@ class Index_admin_listPdf < Prawn::Document
         end
     end
     
+    @body=body
+    @no_record_cells=arr
+  end
+
+  def record
+    total_records=@fingerprints.count
+    no_record_cells=@no_record_cells
+    table(line_item_rows, :column_widths => [30, 60, 45, 45, 100, 90, 95, 55], :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
+      row(0).borders =[]
+      row(0).height=50
+      row(0).style size: 11
+      row(0).align = :center
+      row(0..1).font_style = :bold
+      row(1).background_color = 'FFE34D'
+      row(2..total_records+2).columns(2..3).align=:center
+      for acell in no_record_cells
+	arow, acol=acell.split(",")
+	row(arow.to_i).column(acol.to_i).text_color ='EC0C16'
+      end
+      self.width = 520
+    end
+  end
+  
+  def line_item_rows
+    body=@body
+    header=[[{content: "#{I18n.t('fingerprint.title3').upcase}<br> #{@college.name.upcase}", colspan: 8}],
+            ["No", I18n.t('attendance.attdate'), I18n.t('attendance.time_in'), I18n.t('attendance.time_out'), I18n.t('attendance.staff_id'), I18n.t('attendance.reason'), I18n.t('attendance.approve_id'), I18n.t('attendance.approvestatus')]]
     header+body
   end
   
