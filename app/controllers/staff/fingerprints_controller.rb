@@ -1,9 +1,9 @@
 class Staff::FingerprintsController < ApplicationController
-  filter_access_to :index, :index_admin, :new, :create, :attribute_check => false
+  filter_access_to :index, :index_admin, :index_admin_list, :new, :create, :attribute_check => false
   filter_access_to :show, :edit, :update, :approval, :destroy, :attribute_check => true
   before_action :set_fingerprint, only: [:show, :edit, :update, :destroy]
-
-  #filter_resource_access
+  before_action :set_index_admin, only: [:index_admin, :index_admin_list]
+  
   def index
     @fingerprint = Fingerprint.new
     @fingerprints = Fingerprint.find_mystatement(current_user.userable.thumb_id)
@@ -15,8 +15,6 @@ class Staff::FingerprintsController < ApplicationController
   end
   
   def index_admin
-    @search = Fingerprint.search(params[:q])
-    @fingerprints = @search.result
     @fingerprints = @fingerprints.page(params[:page]||1)
   end
   
@@ -98,10 +96,26 @@ class Staff::FingerprintsController < ApplicationController
     @fingerprint = Fingerprint.find(params[:id])
   end
   
+  def index_admin_list
+    respond_to do |format|
+      format.pdf do
+        pdf = Index_admin_listPdf.new(@fingerprints, view_context, current_user.college)
+        send_data pdf.render, filename: "fingerprint_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_fingerprint
       @fingerprint = Fingerprint.find(params[:id])
+    end
+    
+    def set_index_admin
+      @search = Fingerprint.search(params[:q])
+      @fingerprints = @search.result
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
