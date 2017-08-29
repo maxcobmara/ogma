@@ -11,7 +11,12 @@
       %li= link_to content_tag(:li, fa_icon("list", text: (t 'attendance.title2'))), manager_admin_staff_staff_attendances_path
     - permitted_to? :create, :staff_fingerprints do
       %li= link_to content_tag(:li, fa_icon("th", text: (t 'fingerprint.title'))), staff_fingerprints_path
-      /"asterisk"
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    - permitted_to? :manager_list, :staff_staff_attendances do
+      %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), manager_list_staff_staff_attendances_path(params.merge(format: 'pdf'))
+      
+    
 /=@current_user.admin_unitleaders_thumb.count
 /=StaffAttendance.peeps(@current_user).count
 
@@ -27,7 +32,7 @@
         %th{width: '20%'}=t 'attendance.approve_id'	# sort_link(@search, :approve_id, (t 'attendance.approve_id'))
         %th{width: '10%'}=t 'attendance.approvestatus'	# sort_link(@search, :approvestatus, (t 'attendance.approvestatus'))
     %tbody
-      /= render "index_search"
+      = render "index_search3"
       %tr
         %td.group3{colspan: 7}=t 'attendance.late_to_approve'
 

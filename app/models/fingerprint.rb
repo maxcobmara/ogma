@@ -6,8 +6,7 @@ class Fingerprint < ActiveRecord::Base
   validates_presence_of :thumb_id, :fdate, :ftype
   validates_presence_of :reason, :status, :if => :ftype_exist?
   validates_uniqueness_of :fdate, :scope => :thumb_id, :message => I18n.t('fingerprint.statement_exist')
-  validate :valid_fdate?
-  # TODO - 29Aug2017 - valid_type (3 if both SA not exist, 2 if out not exist & 1 if in not exist
+  validate :valid_fdate?, :valid_ftype?
   
   def valid_fdate?
     daystart=fdate.to_time.beginning_of_day
@@ -16,6 +15,21 @@ class Fingerprint < ActiveRecord::Base
     exist_log_outs=StaffAttendance.where('logged_at >=? and logged_at <? and thumb_id=?', daystart, dayend, thumb_id).where('log_type=? or log_type=?', 'O', 'o').count
     if exist_log_ins > 0 && exist_log_outs > 0
       errors.add(:fdate, I18n.t('fingerprint.logrecord_exist'))
+    end
+  end
+  
+  def valid_ftype?
+    #1 for IN, 2 for OUT, 3 for both (if both not exist)
+    daystart=fdate.to_time.beginning_of_day
+    dayend=fdate.to_time.end_of_day
+    exist_log_ins=StaffAttendance.where('logged_at >=? and logged_at <? and thumb_id=?', daystart, dayend, thumb_id).where('log_type=? or log_type=?', 'I', 'i').count
+    exist_log_outs=StaffAttendance.where('logged_at >=? and logged_at <? and thumb_id=?', daystart, dayend, thumb_id).where('log_type=? or log_type=?', 'O', 'o').count
+    if ftype==1 && exist_log_ins > 0
+      errors.add(:ftype, " - #{I18n.t('fingerprint.in_prohibited')} #{fdate.try(:strftime, '%d-%m-%Y')}")
+    elsif ftype==2 && exist_log_outs > 0
+      errors.add(:ftype, " - #{I18n.t('fingerprint.out_prohibited')} #{fdate.try(:strftime, '%d-%m-%Y')}")
+    elsif ftype==3 && exist_log_ins > 0 && exist_log_outs > 0
+      errors.add(:ftype, " - #{I18n.t('fingerprint.both_prohibited')} #{fdate.try(:strftime, '%d-%m-%Y')}")
     end
   end
   

@@ -2159,6 +2159,9 @@ ms_MY:
     logrecord_exist: "Kenyataan Fingerprint (Tidak FIngerprint) hanya dibenarkan bagi hari-hari yang tidak mempunyai rekod kedatangan yang lengkap (log-masuk dan log-keluar)!"
     not_thumbprint: "<i>(Terlupa Fingerprint & Lain-lain Hal : untuk TIDAK 'thumbprint' sahaja)</i>"
     create_statement: Sediakan kenyataan
+    in_prohibited: "Kenyataan Fingerprint(Tidak Fingerprint) untuk 'Masuk' tidak dibenarkan kerana terdapat rekod log masuk pada"
+    out_prohibited: "Kenyataan Fingerprint(Tidak Fingerprint) untuk 'Keluar' tidak dibenarkan kerana terdapat rekod log keluar pada"
+    both_prohibited: "Kenyataan Fingerprint(Tidak Fingerprint) untuk 'Masuk dan Keluar' tidak dibenarkan kerana terdapat rekod log masuk dan log keluar pada"
     
   rank:
     title: Senarai Pangkat

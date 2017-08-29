@@ -2264,7 +2264,10 @@ en:
     logrecord_exist: "Creating Fingerprint Statement (Not Fingerprint) for days with complete logged-in and logged-out record is not allowed!"
     not_thumbprint: "<i>(Forgot fingerprint & Other matters : for NOT thumbprint only)</i>"
     create_statement: Create statement
-    
+    in_prohibited: "Fingerprint Statement (No Fingerprint) for 'In' is not allowed as logged-in record exist on"
+    out_prohibited: "Fingerprint Statement (No Fingerprint) for 'Out' is not allowed as logged-out record exist on"
+    both_prohibited: "Fingerprint Statement (No Fingerprint) for 'In and Out' are not allowed as logged-in and logged-out record exist on"
+
   rank:
     title: Rank Listing
     new: New Rank

@@ -1,4 +1,4 @@
-= search_form_for @search, url: manager_admin_staff_staff_attendances_path,  class: "form-inline" do |f|
+= search_form_for @search, url: 'manager', class: "form-inline" do |f|
   %tr.search_row{style: "display:none;"}
     %td 
       = t('staff_attendance.from')
@@ -7,8 +7,7 @@
       = f.text_field :logged_at_gt, :size=> 2,  :class =>  'datetime_picker4_reverse form-control', value: @search.logged_at_gt.try(:strftime, '%d-%m-%Y %H:%M')
       = f.text_field :logged_at_lteq, :size=>2,  :class => 'datetime_picker4_reverse form-control', value: @search.logged_at_lteq.try(:strftime, '%d-%m-%Y %H:%M')
     %td= f.text_field :attended_search, size: 2,  :class => "form-control"
-    %td= select_tag('q[keyword_search]',options_for_select(StaffAttendance.get_thumb_ids_unit_names(3).sort),:prompt=>t("helpers.prompt.all_unit"), class: 'form-control selectpicker')
-    %td= f.text_field :reason_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :reason_cont, size: 2, :class => "form-control"
     %td= f.text_field :approver_search, size: 2,  :class => "form-control"
     %td.input-group
       =select_tag('q[is_approved_eq]', options_for_select([[(t 'all_records'),''],[(t 'approved'),true],[(t 'rejected'),false]]), class: 'selectpicker',"data-width"=>'60px') 

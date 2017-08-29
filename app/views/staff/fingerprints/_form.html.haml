@@ -29,7 +29,7 @@
           .form-group
             .col-sm-2.control-label
               = f.label t('fingerprint.ftype')
-            .col-md-2
+            .col-md-3
               /1 for IN, 2 for OUT, 3 for both (if both not exist)
               - if @fingerprint.new_record?
                 = f.select :ftype, DropDown::FINGERPRINT_TYPE,{ include_blank: t('select')}, {class: 'form-control'}

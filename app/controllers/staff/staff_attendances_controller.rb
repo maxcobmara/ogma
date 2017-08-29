@@ -122,10 +122,12 @@ class Staff::StaffAttendancesController < ApplicationController
     @udept=StaffAttendance.get_thumb_ids_unit_names(2)
     unit_name=current_user.userable.positions.first.unit
     if @udept.include?(unit_name) ==true #matching unit_name with valid department
-      @mylate_attendances = StaffAttendance.find_mylate(current_user) 
-      @myearly_attendances = StaffAttendance.find_myearly(current_user)
-      @approvelate_attendances = StaffAttendance.find_approvelate(current_user)
-      @approveearly_attendances = StaffAttendance.find_approveearly(current_user)  
+      @search = StaffAttendance.search(params[:q])
+      @staff_attendances = @search.result
+      @mylate_attendances = @staff_attendances.find_mylate(current_user) 
+      @myearly_attendances = @staff_attendances.find_myearly(current_user)
+      @approvelate_attendances = @staff_attendances.find_approvelate(current_user)
+      @approveearly_attendances = @staff_attendances.find_approveearly(current_user)  
     elsif @udept.include?(unit_name)==false  #elsif @udept.include?("--"+unit_name)
       if current_user.userable.thumb_id.blank? && current_user.userable.staff_shift_id.blank? && current_user.userable.positions.first.unit.blank?
         redirect_to('/dashboard', :notice => I18n.t('staff_attendance.require_complete_data_manage'))
@@ -421,6 +423,25 @@ class Staff::StaffAttendancesController < ApplicationController
       format.pdf do
         pdf = Manager_admin_listPdf.new(@late_early_recs, view_context, current_user.college)
         send_data pdf.render, filename: "manager_admin_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
+  def manager_list
+    # NOTE - checker already included in Manager page
+    @search = StaffAttendance.search(params[:q])
+    @staff_attendances = @search.result
+    @mylate_attendances = @staff_attendances.find_mylate(current_user) 
+    @myearly_attendances = @staff_attendances.find_myearly(current_user)
+    @approvelate_attendances = @staff_attendances.find_approvelate(current_user)
+    @approveearly_attendances = @staff_attendances.find_approveearly(current_user)  
+    
+    respond_to do |format|
+      format.pdf do
+        pdf = Manager_listPdf.new(@mylate_attendances, @myearly_attendances, @approvelate_attendances, @approveearly_attendances, view_context, current_user.college)
+        send_data pdf.render, filename: "manager_list-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
       end
