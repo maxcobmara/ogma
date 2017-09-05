@@ -5145,6 +5145,9 @@ ms_MY:
     travel_claims_returned: " Tuntutan Perjalanan dipulangkan untuk dibaiki"
     travel_claims_for_approval: " Tuntutan Perjalanan untuk diluluskan"
     travel_request_needs_approval: " Permohonan Perjalanan untuk diluluskan"
+    late_need_a_reason: " Lambat datang / pulang awal - sebab perlu dihantar"
+    late_require_approval:  " Lambat datang / pulang awal untuk kelulusan"
+    fingerprint_require_approval: " Kenyataan Fingerprint untuk kelulusan"
     
   equery:
     title: Carian Lanjut / Laporan
