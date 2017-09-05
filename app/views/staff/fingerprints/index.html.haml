@@ -93,7 +93,7 @@
                   = sa_rec_out.first.logged_at.strftime('%H:%M') if sa_rec_out.count > 0
               %td=h fingerprint.owner.name 
               %td=h fingerprint.reason
-              %td= fingerprint.try(:approvedby).try(:name) if fingerprint.is_approved == true
+              %td=h fingerprint.approved_by.blank? ? "" : fingerprint.try(:approver).try(:staff_with_rank_position_unit)
               %td
                 - if fingerprint.reason? && (fingerprint.is_approved == nil)
                   /= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :controller=> 'fingerprints', :action => 'approval', :id => fingerprint
@@ -126,7 +126,7 @@
                 = sa_rec_out.first.logged_at.strftime('%H:%M')
             %td=h fingerprint.try(:owner).try(:staff_with_rank)
             %td=h fingerprint.reason.blank? ? (t 'staff_attendance.reason_not_submitted') : fingerprint.reason
-            %td=h fingerprint.approved_by.blank? ? "" : fingerprint.try(:approver).try(:staff_name_with_position)
+            %td=h fingerprint.approved_by.blank? ? "" : fingerprint.try(:approver).try(:staff_with_rank_position_unit)
             %td 
               - if fingerprint.is_approved == true
                 = fa_icon("check")

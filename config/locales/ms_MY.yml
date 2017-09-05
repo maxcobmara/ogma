@@ -1999,7 +1999,6 @@ ms_MY:
     list: Senarai Kedatangan Staf
     new: Kedatangan Staf (Baru)
     edit: Sunting Kedatangan Staf
-    list: Senarai Kedatangan Staf
     details: Butiran Kedatangan
     approval: "Kelulusan Datang Lewat / Pulang Awal"
     approval2: Kelulusan
@@ -2124,7 +2123,7 @@ ms_MY:
     fingerprint_incomplete: Fingerprint belum lengkap
     not_triggered: "Belum 'trigger'"
     rejected: Ditolak
-    min_grade_post_required: Sila kemaskini gred minima bagi semua rekod perjawatan terlebih dahulu
+    min_grade_post_required: Sila kemaskini gred minima bagi semua rekod perjawatan staf dalam jabatan / unit dipilih terlebih dahulu ATAU peruntukkan peranan 'Ketua Unit' kepada ketua jabatan / unit(dalam akaun pengguna) bagi jabatan / unit yang dipilih 
   
   holiday:
     title: Cuti Umum

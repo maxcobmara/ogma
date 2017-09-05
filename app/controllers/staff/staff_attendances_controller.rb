@@ -256,7 +256,7 @@ class Staff::StaffAttendancesController < ApplicationController
     unless @leader_id.nil?
       @leader=Staff.find(@leader_id.to_i) 
     else
-      occupied_post_wo_min_grd=Position.where('staff_id is not null AND staffgrade_id is null')
+      occupied_post_wo_min_grd=Position.where('unit=? and staff_id is not null AND staffgrade_id is null', unit_dept)
       if occupied_post_wo_min_grd.count > 0
 	@leader='update_db'
       else

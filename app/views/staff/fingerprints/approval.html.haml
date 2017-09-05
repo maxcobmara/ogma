@@ -23,7 +23,14 @@
               .col-sm-2.control-label
                 = f.label t('staff_attendance.approved_by')
               .col-md-3
-                = f.collection_select :approved_by, Staff.joins(:positions).where("thumb_id is not null and thumb_id!=? and (positions.unit is not null or positions.unit=?) ",0,"").order(name: :asc), :id, :mykad_with_staff_name, { :prompt => t('helpers.prompt.select_staff'), :selected => @current_user.userable_id}, {class: 'selectpicker', "data-width"=>"420px"}
+                /- if is_admin? || is_developer?
+                /  - admins=Role.where(authname: 'administration').first.users.pluck(:userable_id)
+                /  - approver=Staff.joins(:positions).where('staffs.id IN (?)', [current_user.userable_id]+admins)
+                /- else
+                /  - approver=Staff.joins(:positions).where('staffs.id=?', current_user.userable_id)
+                - approver=Staff.joins(:positions).where('staffs.id=?', current_user.userable_id)
+                = f.collection_select :approved_by, approver, :id, :staff_with_rank_position_unit, { :prompt => t('helpers.prompt.select_staff'), :selected => current_user.userable_id}, {class: 'selectpicker', "data-width"=>"auto"}
+                /mykad_with_staff_name
             .form-group
               .col-sm-2.control-label
                 = f.label t('staff_attendance.is_approved')
@@ -40,7 +47,7 @@
                 .col-sm-2.control-label
                   = f.label t('staff_attendance.approved_on')
                 .col-md-2
-                  = f.text_field :approved_on, :class=>'date_picker form-control'
+                  = f.text_field :approved_on, :class=>'date_picker_reverse form-control'
 
     .row
       .col-md-7.col-md-offset-3

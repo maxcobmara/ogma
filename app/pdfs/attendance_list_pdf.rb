@@ -72,7 +72,7 @@ class Attendance_listPdf < Prawn::Document
 			else
 			  shift= "#{shiftinuse.split("~")[0]} <br>(#{shiftinuse.split("~")[1]})"  #%font{size: "-2px", color: "grey"}
 			end
-                        if sa.log_type == "I" 
+                        if sa.log_type.capitalize == "I" 
 			  if sa.late_early(shiftid)=="-"
 			    late_in_col="-"
 			  else
@@ -81,8 +81,9 @@ class Attendance_listPdf < Prawn::Document
 			else
 			  late_in_col="-"
 			end
-                        if sa.log_type == "O" 
-                          if sa.late_early(shiftid)=="-"
+                        if sa.log_type.capitalize == "O" 
+			  # NOTE sa.late_early(shiftid)=="" - rescue for punctual (return)
+                          if sa.late_early(shiftid)=="-" || sa.late_early(shiftid)==""
 			    early_out_col="-"
 			  else
 			    early_out_col= sa.late_early(shiftid)

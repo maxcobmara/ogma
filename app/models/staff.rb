@@ -323,18 +323,22 @@ class Staff < ActiveRecord::Base
     [staff_with_rank, id]
   end
   
-  #5Sept2017
-  def valid_position_unit
-    #initial_kskbjb_posts= Position.where('unit is not null and unit!=? and unit!=?',"", "ICMS").pluck(:id)
+  #5thSept2017-start
+  # TODO - production DB - remove 'Jangan Delete Dulu', meanwhile use below - SA Indx pg
+  def valid_posts
     initial_amsas_posts=[Position.where(name: 'Jangan Delete Dulu').first.id]+Position.where(name: 'Jangan Delete Dulu').first.descendant_ids
-    a=positions.pluck(:id)-initial_amsas_posts#-initial_kskbjb_posts
-    if a.size > 0
-      valid_unitdept=Position.find(a.first).unit
+    positions.pluck(:id)-initial_amsas_posts
+  end
+  
+  def valid_position_unit
+    if valid_posts.size > 0
+      valid_unitdept=Position.find(valid_posts.first).unit
     else
       valid_unitdept=""
     end
     valid_unitdept
   end
+  #5thSept2017-end
   
   def transport_class
     abc = TravelClaimsTransportGroup.abcrate

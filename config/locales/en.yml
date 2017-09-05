@@ -2102,7 +2102,6 @@ en:
     list: Staff Attendance Listing
     new: New Staff Attendance
     edit: Edit Staff Attendance
-    list: Staff Attendance List
     details: Attendance Details
     approval: "Late / Early Return Approval"
     approval2: Approval
@@ -2229,7 +2228,7 @@ en:
     fingerprint_incomplete: Fingerprint incomplete
     not_triggered: Not yet triggered
     rejected: Rejected
-    min_grade_post_required: Please update minimum grade for all positions first
+    min_grade_post_required: Please update minimum grade for all positions in selected department / unit first OR assign 'Unit Leader' role to leader(in user account) of selected department / unit for daily report generation
     
   holiday:
     title: Public Holiday

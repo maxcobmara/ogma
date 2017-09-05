@@ -22,19 +22,29 @@
             .form-group
               .col-sm-2.control-label
                 = f.label :status
-              .col-md-3
-                %table
-                  %tbody
-                    %tr
-                      %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 2, :id => 'loanmode', :class => 'radio_discard_options'
-                      %td= t 'staff_attendance.official'
-                    /for not thumbprint only
-                    /%tr
-                    /  %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 3, :id => 'loanmode', :class => 'radio_discard_options'
-                    /  %td= t 'staff_attendance.forgot'
-                    %tr
-                      %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 5, :id => 'loanmode',  :class => 'radio_discard_options'
-                      %td= t 'staff_attendance.others'
+              .col-md-6
+                .row
+                  .col-md-1= f.radio_button :status, 2, :id => 'loanmode', :class => 'radio_discard_options'
+                  .col-md-8= t 'staff_attendance.official'
+                .row
+                  .col-md-1= f.radio_button :status, 5, :id => 'loanmode',  :class => 'radio_discard_options'
+                  .col-md-8= t 'staff_attendance.others'
+            /.form-group
+            /  .col-sm-2.control-label
+            /    = f.label :status
+            /  .col-md-3
+            /    %table
+            /      %tbody
+            /        %tr
+            /          %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 2, :id => 'loanmode', :class => 'radio_discard_options'
+            /          %td= t 'staff_attendance.official'
+            /        /for not thumbprint only
+            /        /%tr
+            /        /  %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 3, :id => 'loanmode', :class => 'radio_discard_options'
+            /        /  %td= t 'staff_attendance.forgot'
+            /        %tr
+            /          %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 5, :id => 'loanmode',  :class => 'radio_discard_options'
+            /          %td= t 'staff_attendance.others'
             .form-group
               .col-sm-2.control-label
                 = f.label :reason

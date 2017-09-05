@@ -54,9 +54,9 @@
               .row
                 .col-md-1= f.radio_button :status, 5, :id => 'loanmode',  :class => 'radio_discard_options'
                 .col-md-8= t 'staff_attendance.others'
-              .row
-                %br
-                .col-md-10.small=(t 'fingerprint.not_thumbprint').html_safe
+              /.row
+              /  %br
+              /  .col-md-10.small=(t 'fingerprint.not_thumbprint').html_safe
               /%table
               /  %tbody
               /    %tr
@@ -66,9 +66,9 @@
               /      %tr
               /        %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 3, :id => 'loanmode', :class => 'radio_discard_options'
               /        %td= t 'staff_attendance.forgot'
-              /      %tr
-              /        %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 5, :id => 'loanmode',  :class => 'radio_discard_options'
-              /        %td= t 'staff_attendance.others'
+              /    %tr
+              /      %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 5, :id => 'loanmode',  :class => 'radio_discard_options'
+              /      %td= t 'staff_attendance.others'
           .form-group
             .col-sm-2.control-label
               = f.label t('staff_attendance.reason')

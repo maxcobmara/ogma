@@ -112,12 +112,13 @@
                       - else
                         =h sa.log_type.capitalize == "I" ? sa.logged_at.strftime('%l:%M %P') : "" 
                     %td.centre
-                      - if sa.log_type == "O" || sa.log_type == "o"
-                        /=h sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P')
-                        - if current_user.college.code=='amsas'
-                          =h sa.logged_at.strftime('%H:%M')
-                        - else
-                          =h sa.logged_at.strftime('%l:%M %P')
+                      /- if sa.log_type == "O" || sa.log_type == "o"
+                      /  /=h sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P')
+                      - if current_user.college.code=='amsas'
+                        =h sa.log_type.capitalize == "O" ? sa.logged_at.strftime('%H:%M') : ""
+                      - else
+                        =h sa.log_type.capitalize == "O" ? sa.logged_at.strftime('%l:%M %P') : ""
+                      
                     %td.centre
                       //working - draft - same result as shiftinuse
                       /- curr_date=sa.logged_at.strftime('%Y-%m-%d')
@@ -150,9 +151,9 @@
                       - else
                         \-
                     %td.centre
-                      /- if sa.log_type == "O" 
-                      - if sa.log_type == "O" || sa.log_type == "o"
-                        - if sa.late_early(shiftid)=="-"
+                      - if sa.log_type.capitalize == "O"
+                        /NOTE - sa.late_early(shiftid)=="" - rescue for punctual return
+                        - if sa.late_early(shiftid)=="-" || sa.late_early(shiftid)==""
                           \-
                         - else
                           .text-red= sa.late_early(shiftid)

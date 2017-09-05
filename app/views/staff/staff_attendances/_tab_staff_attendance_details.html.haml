@@ -4,7 +4,7 @@
     %dd=h @staff_attendance.try(:attended).try(:thumb_id_with_name_unit)
 
     %dt= t'staff_attendance.logged_at'
-    %dd=h @staff_attendance.try(:logged_at).try(:strftime,  '%d %b %Y %H:%M:%S %P')
+    %dd=h current_user.college.code=='amsas' ? @staff_attendance.try(:logged_at).try(:strftime,  '%d-%m-%Y %H:%M:%S') : @staff_attendance.try(:logged_at).try(:strftime,  '%d %b %Y %H:%M:%S %P')
             
     %dt= t'staff_attendance.log_type'
     %dd=h (DropDown::LOGTYPE.find_all{|disp, value| value == @staff_attendance.log_type.upcase }).map {|disp, value| disp}[0] 
@@ -15,7 +15,7 @@
     - if @staff_attendance.r_u_late(shiftid.to_i) == "flag" || @staff_attendance.r_u_early(shiftid.to_i) == "flag"
       %dt= t'staff_attendance.trigger'
       %dd
-        =h @staff_attendance.trigger? ? image_tag("tick.png") : image_tag("cross.png")
+        =h @staff_attendance.trigger? ? fa_icon('check') : fa_icon('times')
         - if @staff_attendance.r_u_late(shiftid.to_i) == "flag" 
           =t('staff_attendance.advise_trigger1')+@staff_attendance.late_early(shiftid.to_i)
         - elsif @staff_attendance.r_u_early(shiftid.to_i) == "flag" 

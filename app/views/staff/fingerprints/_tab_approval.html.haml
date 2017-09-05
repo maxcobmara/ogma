@@ -4,7 +4,7 @@
     %dd=h @fingerprint.try(:approver).try(:name)
             
     %dt= t'staff_attendance.is_approved'
-    %dd=h @fingerprint.is_approved? ? image_tag("tick.png") : image_tag("cross.png")
+    %dd=h @fingerprint.is_approved? ? fa_icon('check') : fa_icon('times')
             
     %dt= t'staff_attendance.approved_on'
     %dd=h @fingerprint.try(:approved_on).try(:strftime, '%d %b %Y')
