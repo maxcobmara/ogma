@@ -90,7 +90,7 @@
                 - if fingerprint.ftype==2 || fingerprint.ftype==3
                   .text-red=t('fingerprint.no_record')
                 - else
-                  = sa_rec_out.first.logged_at.strftime('%H:%M')
+                  = sa_rec_out.first.logged_at.strftime('%H:%M') if sa_rec_out.count > 0
               %td=h fingerprint.owner.name 
               %td=h fingerprint.reason
               %td= fingerprint.try(:approvedby).try(:name) if fingerprint.is_approved == true

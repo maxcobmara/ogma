@@ -12,7 +12,7 @@
             .col-sm-2.control-label
               = f.label :thumb_id 
             .col-md-7
-              = f.collection_select :thumb_id, Staff.joins(:positions).where("thumb_id is not null and thumb_id!=? and staff_shift_id is not null and (positions.unit is not null or positions.unit=?) ",0,"").where.not('staffs.name ILIKE ?', '%icms%').uniq.order(name: :asc), :thumb_id, :thumb_id_with_name_unit, { :prompt => t('helpers.prompt.select_thumb_id')}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.collection_select :thumb_id, Staff.joins(:positions).where("thumb_id is not null and thumb_id!=? and staff_shift_id is not null and (positions.unit is not null or positions.unit=?) ",0,"").where.not('staffs.name ILIKE ?', '%icms%').uniq.order(name: :asc), :thumb_id, :thumb_id_timing_with_name_unit, { :prompt => t('helpers.prompt.select_thumb_id')}, {class: 'selectpicker', "data-width"=>"auto"}
               .small.text-grey=t('staff_attendance.staff_compulsory_data').html_safe
                 
           .form-group

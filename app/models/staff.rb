@@ -255,6 +255,10 @@ class Staff < ActiveRecord::Base
       "#{thumb_id} |  #{name} (#{positions.first.unit})"
       end
     end
+    
+    def thumb_id_timing_with_name_unit
+      "#{thumb_id} (#{staff_shift.start_end} ) | #{name} (#{positions.first.unit})"
+    end
 
     def staff_name_with_position
       "#{name}  (#{position_for_staff})"
@@ -317,6 +321,19 @@ class Staff < ActiveRecord::Base
   
   def name_id
     [staff_with_rank, id]
+  end
+  
+  #5Sept2017
+  def valid_position_unit
+    #initial_kskbjb_posts= Position.where('unit is not null and unit!=? and unit!=?',"", "ICMS").pluck(:id)
+    initial_amsas_posts=[Position.where(name: 'Jangan Delete Dulu').first.id]+Position.where(name: 'Jangan Delete Dulu').first.descendant_ids
+    a=positions.pluck(:id)-initial_amsas_posts#-initial_kskbjb_posts
+    if a.size > 0
+      valid_unitdept=Position.find(a.first).unit
+    else
+      valid_unitdept=""
+    end
+    valid_unitdept
   end
   
   def transport_class

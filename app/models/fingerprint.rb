@@ -28,7 +28,7 @@ class Fingerprint < ActiveRecord::Base
       errors.add(:ftype, " - #{I18n.t('fingerprint.in_prohibited')} #{fdate.try(:strftime, '%d-%m-%Y')}")
     elsif ftype==2 && exist_log_outs > 0
       errors.add(:ftype, " - #{I18n.t('fingerprint.out_prohibited')} #{fdate.try(:strftime, '%d-%m-%Y')}")
-    elsif ftype==3 && exist_log_ins > 0 && exist_log_outs > 0
+    elsif ftype==3 && (exist_log_ins > 0 || exist_log_outs > 0)
       errors.add(:ftype, " - #{I18n.t('fingerprint.both_prohibited')} #{fdate.try(:strftime, '%d-%m-%Y')}")
     end
   end

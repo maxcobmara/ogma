@@ -17,7 +17,7 @@
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     - permitted_to? :attendance_list, :staff_staff_attendances do
       %li= link_to fa_icon("print", text: (t 'actions.print')), attendance_list_staff_staff_attendances_path(params.merge(format: 'pdf'))
-  
+/=StaffAttendance.staff_with_unit_groupbyunit
 /.row.filter{style: "display:none;"}
 /  .col-md-2
 /=@unit_names

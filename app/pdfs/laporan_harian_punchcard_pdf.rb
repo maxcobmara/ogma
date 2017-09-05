@@ -8,14 +8,18 @@ class Laporan_harian_punchcardPdf < Prawn::Document
     @thumbids=thumbids
     @w_wo_triggered=w_wo_triggered
     @without_both_logs=@thumbids-@w_wo_triggered.pluck(:thumb_id).uniq
-    font "Times-Roman"
-    text "Lampiran B 1", :align => :right, :size => 12, :style => :bold
+    font "Helvetica"
+    text "Lampiran B 1", :align => :right, :size => 11, :style => :bold
     move_down 20
-    text "Laporan Harian", :align => :center, :size => 12, :style => :bold
+    text "Laporan Harian", :align => :center, :size => 11, :style => :bold
     move_down 20
-    heading_details
-    @y=("#{y}").to_i
-    record
+    if @leader=='update_db'
+      text "#{I18n.t('attendance.min_grade_post_required')}", :align => :center, :size => 11
+    else
+      heading_details
+      @y=("#{y}").to_i
+      record
+    end
   end
   
   def heading_details

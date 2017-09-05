@@ -4,7 +4,7 @@ class Position < ActiveRecord::Base
   has_ancestry :cache_depth => true
   
   validates_uniqueness_of :combo_code, :staff_id
-  validates_presence_of   :name
+  validates_presence_of   :name, :staffgrade_id
   
   belongs_to :college, :foreign_key => 'college_id'
   belongs_to :staff, :foreign_key => 'staff_id'
