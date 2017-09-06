@@ -284,7 +284,7 @@ class Staff::StaffAttendancesController < ApplicationController
     if weekly_date.year < 2015
       wstart=weekly_start
       wend=weekly_end
-    elsif weekly_date.year > 2014
+    elsif weekly_date.year > 2014 && current_user.college.code=='kskbjb'
       wstart=(weekly_start-1.days).to_time.beginning_of_day
       wend=(weekly_start+3.days ).to_time.end_of_day
     end
@@ -301,7 +301,12 @@ class Staff::StaffAttendancesController < ApplicationController
     unless @leader_id.nil?
       @leader=Staff.find(@leader_id.to_i) 
     else
-      @leader=Position.unit_department_leader(unit_dept)
+      occupied_post_wo_min_grd=Position.where('unit=? and staff_id is not null AND staffgrade_id is null', unit_dept)
+      if occupied_post_wo_min_grd.count > 0
+	@leader='update_db'
+      else
+        @leader=Position.unit_department_leader(unit_dept)
+      end
     end
     #@staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?)', weekly_start, weekly_end, thumb_ids)
     @staff_attendances = StaffAttendance.where("trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<=?", true, false, thumb_ids, wstart, wend).order(logged_at: :desc)
@@ -309,7 +314,7 @@ class Staff::StaffAttendancesController < ApplicationController
     
     respond_to do |format|
       format.pdf do
-        pdf = Laporan_mingguan_punchcardPdf.new(@staff_attendances, @leader, weekly_date, @notapproved_lateearly, thumb_ids, view_context)
+        pdf = Laporan_mingguan_punchcardPdf.new(@staff_attendances, @leader, weekly_date, @notapproved_lateearly, thumb_ids, current_user.college, view_context)
         send_data pdf.render, filename: "laporan_mingguan_punchcard-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -334,7 +339,12 @@ class Staff::StaffAttendancesController < ApplicationController
     unless @leader_id.nil?
       @leader=Staff.find(@leader_id.to_i) 
     else
-      @leader=Position.unit_department_leader(unit_dept)
+      occupied_post_wo_min_grd=Position.where('unit=? and staff_id is not null AND staffgrade_id is null', unit_dept)
+      if occupied_post_wo_min_grd.count > 0
+	@leader='update_db'
+      else
+        @leader=Position.unit_department_leader(unit_dept)
+      end
     end
     #@staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?)', monthly_start, monthly_end, thumb_ids)
     @staff_attendances = StaffAttendance.count_non_approved(thumb_ids, monthly_start, monthly_end)

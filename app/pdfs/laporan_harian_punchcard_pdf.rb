@@ -1,6 +1,6 @@
 class Laporan_harian_punchcardPdf < Prawn::Document
   def initialize(staff_attendances, leader, daily_date, thumbids, w_wo_triggered, view)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 50,  left_margin: 50, page_size: 'A4', page_layout: :portrait })
     @staff_attendances = staff_attendances
     @view = view
     @leader = leader
