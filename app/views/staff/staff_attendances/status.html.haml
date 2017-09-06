@@ -26,7 +26,14 @@
       /NOTE - @all_dates (collect sa of staff info cw thumb_id only), below..@staff_thumb.include? checkers are no longer required - 25Aug2017
       /but for KSKBJB, still hv 2 cater for one thumb_id (being) used for multiple staffs
       
-      - @all_dates.keys.sort.each_with_index do |thumbid, index|
+      /NOTE - sort by thumb_id - be4-6thSept2017
+      /- @all_dates.keys.sort.each_with_index do |thumbid, index|
+      
+      /NOTE - sort by ancestry in positions - 6thSept2017
+      /https://stackoverflow.com/questions/17997725/ruby-sorting-an-array-with-another-array?noredirect=1&lq=1
+      - thumb_ids_in_staff = Staff.joins(:positions).where('thumb_id IS NOT NULL').order('positions.ancestry').pluck(:thumb_id).uniq
+      /- b.sort_by{|e| a.index(e)}
+      - @all_dates.keys.sort_by{|ele| thumb_ids_in_staff.index(ele)}.each_with_index do |thumbid, index|
         - thumb_owners=Staff.where(thumb_id: thumbid)
         ////////////////////// - per thumd_id liner (start)
         %tr

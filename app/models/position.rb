@@ -332,6 +332,7 @@ class Position < ActiveRecord::Base
   #use in Weeklytimetables_controller.rb (Index - retrieve Programme ID for Pos Basik/Pengkhususan/Diploma Lanjutan) - END
   
   #usage - views/staffattendancesearches/_form.html.haml
+  #usage - views/staff_attendances/attendance_report.html.haml
   def self.department_list(college_code)
     if college_code=='kskbjb'
       programme_names=['Diploma', 'Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']
@@ -347,6 +348,7 @@ class Position < ActiveRecord::Base
   end
   
   #usage - views/staffattendancesearches/_form.html.haml
+  #usage - views/staff_attendances/attendance_report.html.haml
   def self.thumbids_per_department
     #6thSept2017 - match w SA ind/search
     initial_amsas_posts=[Position.where(name: 'Jangan Delete Dulu').first.id]+Position.where(name: 'Jangan Delete Dulu').first.descendant_ids
@@ -355,7 +357,7 @@ class Position < ActiveRecord::Base
     a=[]
     Position.where('unit is not null and unit !=?', "").where.not('unit ILIKE ?', '%icms%').where.not('id IN(?)', initial_amsas_posts).group_by{|x|x.unit.strip}.sort.each do |unit_dept, posts|
       b=[(I18n.t 'select')]
-      posts.each do |apost|
+      posts.sort.each do |apost|
         b << [apost.staff.staff_with_rank, apost.staff.thumb_id] if staff_ids.include?(apost.staff_id)
       end
       a << [unit_dept, b]

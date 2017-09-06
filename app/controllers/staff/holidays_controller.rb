@@ -1,12 +1,13 @@
 class Staff::HolidaysController < ApplicationController
+  filter_access_to :index, :new, :create, :holiday_list, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
+  
   before_action :set_holiday, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_holidays, only: [:index, :holiday_list]
 
   # GET /holidays
   # GET /holidays.json
   def index
-    @search = Holiday.search(params[:q])
-    @holidays = @search.result.order(hdate: :desc)
     @holidays = @holidays.page(params[:page]||1)
   end
   
@@ -69,11 +70,27 @@ end
       format.json { head :no_content }
     end
   end
+  
+  def holiday_list
+    respond_to do |format|
+      format.pdf do
+        pdf = Holiday_listPdf.new(@holidays, view_context, current_user.college)
+        send_data pdf.render, filename: "holiday_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_holiday
       @holiday = Holiday.find(params[:id])
+    end
+    
+    def set_holidays
+      @search = Holiday.search(params[:q])
+      @holidays = @search.result.order(hdate: :desc)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
