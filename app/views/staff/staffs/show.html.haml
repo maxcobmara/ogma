@@ -34,8 +34,11 @@
           
           %dt= t 'staff.name', :default => model_class.human_attribute_name(:name) + ":"
           %dd
-            = @staff.title.try(:name)
-            = @staff.name
+            - unless @staff.rank.blank?
+              = @staff.staff_with_rank
+            - else
+              = @staff.title.try(:name)
+              = @staff.name
             
       #info.tab-pane.active
         %br

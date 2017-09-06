@@ -9,6 +9,8 @@ class Borang_maklumat_staffPdf < Prawn::Document
     move_down 5
     text "BORANG MAKLUMAT STAF BAGI SISTEM ICMS", :align => :center, :size => 14, :style => :bold
     move_down 20
+    @posts=""
+    Position.where(id: @staff.valid_posts).each{|x| @posts+=x.name}
     table1
     table2
     table_qualification
@@ -18,13 +20,12 @@ class Borang_maklumat_staffPdf < Prawn::Document
   end
   
     def table1
-      
       data =[["Butiran Peribadi", ""],
-            ["1. MyKad No", ": #{@staff.icno}"],
+            ["1. NoMyKad", ": #{@view.formatted_mykad(@staff.icno)}"],
             ["2. Nama", ": #{@college.code=='amsas' ? @staff.staff_with_rank : @staff.name}"],
-            ["3. Staff Code", ": #{@staff.code}"],
+            ["3. Kod Staf", ": #{@staff.code}"],
             ["4. No Fail Peribadi", ": #{@staff.fileno}"],
-            ["5. Jawatan",": #{@staff.positions.name}"],
+            ["5. Jawatan",": #{@posts}"],
             ["6. Email", ": #{@staff.coemail}"],
             ["7. Tarikh Lahir", ": #{@staff.cobirthdt.try(:strftime, '%d-%m-%Y')}"],
             ["8. No Surat Beranak", ": #{@staff.birthcertno}"],
@@ -60,10 +61,9 @@ class Borang_maklumat_staffPdf < Prawn::Document
          end
   
          def table2
-      
            data =[[" Butiran Pekerjaan", ""],
-                 ["26. Gred Jawatan", ": #{@staff.staffgrade.name_and_group}"],
-                 ["27. Jawatan", ": #{@staff.positions.name}"],
+                 ["26. Gred Jawatan", ": #{@staff.try(:staffgrade).try(:name_and_group)}"],
+                 ["27. Jawatan", ": #{@posts}"],
                  ["28. Melapor Kepada", ": #{@staff.positions.first.try(:parent).try(:staff).try(:name)}"],
                  ["29. Status Pekerjaan",": #{(DropDown::STAFF_STATUS.find_all{|disp, value| value == @staff.employstatus}).map {|disp, value| disp}[0]}"],
                  ["30. Status Lantikan", ": #{(DropDown::APPOINTMENT.find_all{|disp, value| value == @staff.appointstatus.to_s}).map {|disp, value| disp}[0]}"],
