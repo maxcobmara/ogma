@@ -1,5 +1,5 @@
 class Perincian_bulanan_punchcardPdf < Prawn::Document
-  def initialize(staff_attendances, monthly_list, unit_department, thumb_id, list_type, view)
+  def initialize(staff_attendances, monthly_list, unit_department, thumb_id, list_type, college, view)
     super({top_margin: 20, page_size: 'A4', page_layout: :portrait })
     @staff_attendances = staff_attendances
     @monthly_list=monthly_list
@@ -9,6 +9,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
     @view = view
     @total_days=Time.days_in_month(monthly_list.month)
     @staffid=Staff.where(thumb_id: @thumb_id).first.id
+    @college=college
     font "Times-Roman"
     move_down 10
     text "Details of Attendance (incl. Shift Exception)", :align => :center, :size => 13, :style => :bold
@@ -97,7 +98,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
             ccdate_rev=ccdate.strftime('%d/%m/%Y')
             dyname=ccdate.strftime('%a')
             shift_id=StaffShift.shift_id_in_use(ccdate.strftime('%Y-%m-%d'), @staff_attendances[0].thumb_id)
-            if ((dyname=="Sat" || dyname=="Sun") && ccdate.year < 2015) || ((dyname=="Sat" || dyname=="Fri") && ccdate.year > 2014)
+            if ((dyname=="Sat" || dyname=="Sun") && ccdate.year < 2015) || ((dyname=="Sat" || dyname=="Fri") && ccdate.year > 2014 && @college.code=='kskbjb') || ((dyname=="Sat" || dyname=="Sun") && ccdate.year > 2014 && @college.code!='kskbjb')
               absent=""
               leave_taken=""
             else
@@ -109,7 +110,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
                   absent=""
                 else        
                   #note - if public holidays fall on Friday, the next Sunday will be replace as holiday (not saturday)
-                  if (@holidays.include?(ccdate-1.day) && (dyname=="Mon" && ccdate.year < 2015) || (@holidays.include?(ccdate-2.day) && dyname=="Sun" && @next_date.year > 2014))
+                  if (@holidays.include?(ccdate-1.day) && (dyname=="Mon" && ccdate.year < 2015) || (@holidays.include?(ccdate-2.day) && dyname=="Sun" && @next_date.year > 2014 && @college.code=='kskbjb') || @holidays.include?(ccdate-1.day) && (dyname=="Mon" && ccdate.year > 2014 && @college.code!='kskbjb'))
 		    absent=""
 		    replace_holiday="**"
 	          else
@@ -187,7 +188,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
         @next_date+=1.day
         dyname=@next_date.strftime('%a')
         shift_id=StaffShift.shift_id_in_use(@next_date.strftime('%Y-%m-%d'), @staff_attendances[0].thumb_id)
-        if ((dyname=="Sat" || dyname=="Sun") && @next_date.year < 2015) || ((dyname=="Sat" || dyname=="Fri") && @next_date.year > 2014)
+        if ((dyname=="Sat" || dyname=="Sun") && @next_date.year < 2015) || ((dyname=="Sat" || dyname=="Fri") && @next_date.year > 2014 && @college.code=='kskbjb') || ((dyname=="Sat" || dyname=="Sun") && @next_date.year > 2014 && @college.code!='kskbjb')
           absent=""
           leave_or_travel=""
         else
@@ -200,7 +201,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
             else   
 	      #if @holidays.include?(@next_date.to_date-1.day) && ((dyname=="Mon" && @next_date.year < 2015)||(dyname=="Sun" && @next_date.year > 2014))
 	      #note - if public holidays fall on Friday, the next Sunday will be replace as holiday (not saturday)
-              if (@holidays.include?(@next_date.to_date-1.day) && (dyname=="Mon" && @next_date.year < 2015) || (@holidays.include?(@next_date.to_date-2.day) && dyname=="Sun" && @next_date.year > 2014))
+              if (@holidays.include?(@next_date.to_date-1.day) && (dyname=="Mon" && @next_date.year < 2015) || (@holidays.include?(@next_date.to_date-2.day) && dyname=="Sun" && @next_date.year > 2014 && @college.code=='kskbjb') || @holidays.include?(@next_date.to_date-1.day) && (dyname=="Mon" && @next_date.year > 2014 && @college.code!='kskbjb'))
 		absent=""
 		replace_holiday="**"
 	      else

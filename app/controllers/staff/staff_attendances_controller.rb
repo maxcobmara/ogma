@@ -284,9 +284,14 @@ class Staff::StaffAttendancesController < ApplicationController
     if weekly_date.year < 2015
       wstart=weekly_start
       wend=weekly_end
-    elsif weekly_date.year > 2014 && current_user.college.code=='kskbjb'
-      wstart=(weekly_start-1.days).to_time.beginning_of_day
-      wend=(weekly_start+3.days ).to_time.end_of_day
+    elsif weekly_date.year > 2014 
+      if current_user.college.code=='kskbjb'
+        wstart=(weekly_start-1.days).to_time.beginning_of_day
+        wend=(weekly_start+3.days ).to_time.end_of_day
+      else
+        wstart=weekly_start
+        wend=weekly_end
+      end
     end
     unit_dept=params[:unit_department]
     unit_dept_post_staffids=Position.where('staff_id is not null and unit=?', unit_dept).pluck(:staff_id)
@@ -397,7 +402,7 @@ class Staff::StaffAttendancesController < ApplicationController
     @staff_attendances=StaffAttendance.where('thumb_id=? and logged_at >=? and logged_at <=?', thumb_id, monthly_start, monthly_end).order('logged_at ASC, log_type ASC')
     respond_to do |format|
       format.pdf do
-        pdf = Perincian_bulanan_punchcardPdf.new(@staff_attendances, monthly_list2, unit_dept, thumb_id, list_type, view_context)
+        pdf = Perincian_bulanan_punchcardPdf.new(@staff_attendances, monthly_list2, unit_dept, thumb_id, list_type, current_user.college, view_context)
         send_data pdf.render, filename: "senarai_bulanan_punchcard-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

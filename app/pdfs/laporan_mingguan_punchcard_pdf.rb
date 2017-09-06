@@ -12,9 +12,14 @@ class Laporan_mingguan_punchcardPdf < Prawn::Document
     if weekly_date.year < 2015
       @wstart=weekly_start
       @wend=weekly_end
-    elsif weekly_date.year > 2014 && @college.code=='kskbjb'
-      @wstart=(weekly_start-1.days).to_time.beginning_of_day
-      @wend=(weekly_start+3.days).to_time.end_of_day
+    elsif weekly_date.year > 2014 
+      if @college.code=='kskbjb'
+        @wstart=(weekly_start-1.days).to_time.beginning_of_day
+        @wend=(weekly_start+3.days).to_time.end_of_day
+      else
+        @wstart=weekly_start
+        @wend=weekly_end
+      end
     end
     font "Helvetica"
     text "Lampiran B 2", :align => :right, :size => 11, :style => :bold

@@ -73,6 +73,7 @@ class College < ActiveRecord::Base
   has_many :mentors
   has_many :staff_shifts
   has_many :fingerprints
+  has_many :holidays
   # staffs
   
   serialize :data, Hash
