@@ -355,7 +355,7 @@ class Position < ActiveRecord::Base
     a=[]
     Position.where('unit is not null and unit !=?', "").where.not('unit ILIKE ?', '%icms%').where.not('id IN(?)', initial_amsas_posts).group_by{|x|x.unit.strip}.sort.each do |unit_dept, posts|
       b=[(I18n.t 'select')]
-      posts.each do |apost|
+      posts.sort.each do |apost|
         b << [apost.staff.staff_with_rank, apost.staff.thumb_id] if staff_ids.include?(apost.staff_id)
       end
       a << [unit_dept, b]

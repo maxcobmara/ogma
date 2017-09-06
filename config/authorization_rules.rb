@@ -573,7 +573,7 @@ authorization do
      has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :actionable, :approval, :manager_admin, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :import_excel, :import, :status, :attendance_list, :attendance_status_list, :manager_admin_list, :manager_list]   #29Apr2013-refer routes.rb
      has_permission_on :staff_fingerprints, :to => [:manage, :approval, :index_admin, :index_admin_list, :fingerprint_list]
      has_permission_on :staff_staff_shifts, :to => :manage
-     has_permission_on :staff_holidays, :to => :manage
+     has_permission_on :staff_holidays, :to => [:manage, :holiday_list]
      has_permission_on :staff_titles, :to => :manage
      has_permission_on :staff_positions, :to =>[:manage, :maklumat_perjawatan, :organisation_chart, :position_list]
      has_permission_on :banks, :to => :manage
@@ -1228,18 +1228,18 @@ authorization do
   role :staff_attendances_module_admin do
     has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :manager_admin, :approval, :actionable, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :attendance_list, :attendance_status_list, :manager_admin_list, :manager_list] 
     has_permission_on :equery_report_staffattendancesearches, :to => [:new, :create, :show]
-    has_permission_on :staff_holidays, :to => :manage
+    has_permission_on :staff_holidays, :to => [:manage, :holiday_list]
   end
   role :staff_attendances_module_viewer do
     #1) OK, but if READ only - can only read attendance list for all staff +manage own lateness/early (MANAGER) - as this is default for all staff UNLESS if MANAGE given.
     has_permission_on :staff_staff_attendances, :to => [:read, :manager, :manager_admin, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :attendance_list, :attendance_status_list, :manager_admin_list, :manager_list]
     has_permission_on :equery_report_staffattendancesearches, :to => [:new, :create, :show]
-    has_permission_on :staff_holidays, :to => :read
+    has_permission_on :staff_holidays, :to =>[:read, :holiday_list]
   end
   role :staff_attendances_module_user do 
     has_permission_on :staff_staff_attendances, :to => [:read, :update, :manager, :manager_admin, :approval, :actionable, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :attendance_list, :attendance_status_list, :manager_admin_list, :manager_list]
     has_permission_on :equery_report_staffattendancesearches, :to => [:new, :create, :show]
-    has_permission_on :staff_holidays, :to => [:read, :update]
+    has_permission_on :staff_holidays, :to => [:read, :update, :holiday_list]
   end
   role :staff_attendances_module_member do
     #own records

@@ -78,7 +78,11 @@ Ogma::Application.routes.draw do
 	get :fingerprint_list
       end
     end
-    resources :holidays
+    resources :holidays do
+      collection do
+	get :holiday_list
+      end
+    end
     resources :attendances
     resources :travel_requests do
       member do
