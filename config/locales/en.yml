@@ -5229,7 +5229,8 @@ en:
     travel_claims_for_approval: " Travel Claims for approval"
     travel_request_needs_approval: " Travel request that requires your approval"
     late_need_a_reason: " Late/early attendance require reason submission"
-    late_require_approval:  " Late/early attendance for approval"
+    late_require_approval:  " Late attendance for approval"
+    early_require_approval: " Early return for approval"
     fingerprint_require_approval: " Fingerprint statement(s) for approval"
     
   ###########

@@ -13,6 +13,8 @@
   %li= link_to content_tag(:span, "#{appraisal_requests}", class: "badge") + " Staff appraisal for processing", staff_staff_appraisals_path
  - if late_require_approval > 0
   %li=link_to content_tag(:span, "#{late_require_approval}", class: "badge") + (t 'notifications.late_require_approval'), attendance_manager_path
+ - if early_require_approval > 0
+  %li=link_to content_tag(:span, "#{early_require_approval}", class: "badge") + (t 'notifications.early_require_approval'), attendance_manager_path 
  - if late_need_a_reason > 0
   %li=link_to content_tag(:span, "#{late_need_a_reason}", class: "badge") + (t 'notifications.late_need_a_reason'), attendance_manager_path
  - if fingerprint_require_approval > 0

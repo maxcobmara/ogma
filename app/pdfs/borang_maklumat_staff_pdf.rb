@@ -4,10 +4,10 @@ class Borang_maklumat_staffPdf < Prawn::Document
     @staff = staff
     @view = view
     @college = college
-    font "Times-Roman"
-    text "#{college.name.upcase}", :align => :center, :size => 14, :style => :bold
+    font "Helvetica"
+    text "#{college.name.upcase}", :align => :center, :size => 13, :style => :bold
     move_down 5
-    text "BORANG MAKLUMAT STAF BAGI SISTEM ICMS", :align => :center, :size => 14, :style => :bold
+    text "BORANG MAKLUMAT STAF BAGI SISTEM ICMS", :align => :center, :size => 13, :style => :bold
     move_down 20
     @posts=""
     Position.where(id: @staff.valid_posts).each{|x| @posts+=x.name}
@@ -21,7 +21,7 @@ class Borang_maklumat_staffPdf < Prawn::Document
   
     def table1
       data =[["Butiran Peribadi", ""],
-            ["1. NoMyKad", ": #{@view.formatted_mykad(@staff.icno)}"],
+            ["1. No MyKad", ": #{@view.formatted_mykad(@staff.icno)}"],
             ["2. Nama", ": #{@college.code=='amsas' ? @staff.staff_with_rank : @staff.name}"],
             ["3. Kod Staf", ": #{@staff.code}"],
             ["4. No Fail Peribadi", ": #{@staff.fileno}"],
@@ -46,7 +46,7 @@ class Borang_maklumat_staffPdf < Prawn::Document
             ["23. Nama Bank", ": #{@staff.bank}"],
             ["24. Jenis Akaun",": #{@staff.bankacctype}"]]
             
-            table(data, :column_widths => [150, 250], :cell_style => { :size => 11})  do
+            table(data, :column_widths => [200, 300], :cell_style => { :size => 10})  do
               a = 0
               b = 25
               row(0).font_style = :bold
@@ -87,7 +87,7 @@ class Borang_maklumat_staffPdf < Prawn::Document
                  ["48. Tarikh Perakuan Pencen",": #{@staff.pension_confirm_date.try(:strftime, "%d/%m/%y")}"],
                  ["49. Status Pakaian Seragam", ": #{(DropDown::UNIFORM.find_all{|disp, value| value == @staff.uniformstat }).map {|disp, value| disp}[0]}"]]
             
-                 table(data, :column_widths => [150, 250], :cell_style => { :size => 11})  do
+                 table(data, :column_widths => [200, 300], :cell_style => { :size => 10})  do
                    a = 0
                    b = 25
                    row(0).font_style = :bold
@@ -102,7 +102,7 @@ class Borang_maklumat_staffPdf < Prawn::Document
             end
  
             def table_qualification
-              table(qualification, :column_widths => [150, 125, 125], :cell_style => { :size => 11})  do
+              table(qualification, :column_widths => [150, 175, 175], :cell_style => { :size => 10})  do
                 a = 0
                 b = 10
                 row(0).font_style = :bold
@@ -130,7 +130,7 @@ class Borang_maklumat_staffPdf < Prawn::Document
           end
   
           def table_loan
-            table(loan, :column_widths => [80, 80, 80, 80, 80], :cell_style => { :size => 11})  do
+            table(loan, :column_widths => [100, 100, 100, 100, 100], :cell_style => { :size => 10})  do
               a = 0
               b = 10
               row(0).font_style = :bold
@@ -146,12 +146,12 @@ class Borang_maklumat_staffPdf < Prawn::Document
 
           def loan
 
-          header1 = [["51. Loan", "No Akaun"," Tarikh Pinjaman", "Tempoh Bayaran Balik", "Ansuran bulanan"],
+          header1 = [["51. Pinjaman", "No Akaun"," Tarikh Pinjaman", "Tempoh Bayaran Balik", "Ansuran bulanan"],
                       ["", "", "", "", ""]]
           header1 +
           @staff.loans.map do |loan|
    
-            [ "Loan Type : #{(DropDown::LOAN_TYPE.find_all{|disp, value| value == loan.ltype }).map {|disp, value| disp}[0]}",": #{loan.accno}",
+            [ "Jenis Pinjaman : #{(DropDown::LOAN_TYPE.find_all{|disp, value| value == loan.ltype }).map {|disp, value| disp}[0]}",": #{loan.accno}",
             ": #{@staff.schemedt}",": #{loan.durationmn}", " : #{loan.deductions}"]
 
           end
@@ -171,7 +171,7 @@ class Borang_maklumat_staffPdf < Prawn::Document
                   end
                 end
             
-                      table(data, :column_widths => [150, 250], :cell_style => { :size => 11})  do
+                      table(data, :column_widths => [200, 300], :cell_style => { :size => 10})  do
                         a = 0
                         b = 4
                         row(0).font_style = :bold
@@ -189,7 +189,7 @@ class Borang_maklumat_staffPdf < Prawn::Document
       
             
                            def table4
-                             table(waris, :column_widths => [60, 80, 70, 60, 130], :cell_style => { :size => 10})  do
+                             table(waris, :column_widths => [80, 100, 90, 80, 150], :cell_style => { :size => 10})  do
                                a = 0
                                b = 10
                                row(0).font_style = :bold
