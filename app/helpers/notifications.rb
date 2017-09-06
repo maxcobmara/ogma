@@ -50,7 +50,11 @@ module Notifications
  end
 
  def late_require_approval
-   StaffAttendance.find_approveearly(current_user).where(is_approved: nil).count
+   StaffAttendance.find_approvelate(current_user).where(is_approved: nil).where.not(reason: nil).count
+ end
+ 
+ def early_require_approval
+   StaffAttendance.find_approveearly(current_user).where(is_approved: nil).where.not(reason: nil).count
  end
 
  def late_need_a_reason

@@ -20,6 +20,7 @@
           =t('staff_attendance.advise_trigger1')+@staff_attendance.late_early(shiftid.to_i)
         - elsif @staff_attendance.r_u_early(shiftid.to_i) == "flag" 
           =t('staff_attendance.advise_trigger2')+@staff_attendance.late_early(shiftid.to_i)
-        - if @staff_attendance.trigger.nil? 
-          %br=t('staff_attendance.advise_trigger3')
+      - if @staff_attendance.trigger.nil? 
+        %br
+          %i.small.text-grey=t('staff_attendance.advise_trigger3')
       %br
