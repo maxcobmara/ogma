@@ -24,4 +24,17 @@ module EventsHelper
     a
   end
   
+  #usage - holidays
+  def monthname(str)
+    I18n.t(:'date.abbr_month_names')[str]
+  end
+  
+  def fullmonthname(adate)
+    "#{adate.strftime('%d')} #{ I18n.t(:'date.month_names')[adate.month]} #{adate.strftime('%Y')}"
+  end
+  
+  def fulldayname(str)
+    I18n.t(:'date.day_names')[str]
+  end
+  
 end

@@ -18,4 +18,4 @@
             .col-sm-2.control-label
               = f.label t('holiday.hdate')
             .col-md-2
-              = f.text_field :hdate, class: 'form-control date_picker mandatory'
+              = f.text_field :hdate, class: 'form-control date_picker_reverse mandatory', value: @holiday.hdate.try(:strftime, '%d-%m-%Y')

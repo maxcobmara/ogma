@@ -78,7 +78,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def holiday_params
-      params.require(:holiday).permit(:hname, :hdate )
+      params.require(:holiday).permit(:hname, :hdate, :college_id, {:data => []})
     end
 end
 
