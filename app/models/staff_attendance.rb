@@ -76,7 +76,10 @@ class StaffAttendance < ActiveRecord::Base
   end
 
   def self.staff_with_unit_groupbyunit
-    Staff.joins(:positions).where('unit is not null and unit!=? and unit!=?',"", "ICMS").group_by{|x|x.positions.first.unit}  #icms - default AMSAS
+    Staff.joins(:positions).group_by{|x|x.valid_position_unit}
+    
+    #be4 5thSept2017
+    #Staff.joins(:positions).where('unit is not null and unit!=? and unit!=?',"", "ICMS").group_by{|x|x.positions.first.unit}  #icms - default AMSAS
    
     # START--solution for - NoMethodError in Staff::StaffAttendances#index, Showing /home/shimah/rails/ogma/app/views/staff/staff_attendances/index.html.haml where line #80 raised:undefined method `start_at' for nil:NilClass
     #Staff.joins(:positions).where('positions.staff_id is not null and staff_shift_id is not null and staffs.thumb_id is not null and unit is not null and unit!=?  and positions.name!=?', '', "ICMS Vendor Admin").group_by{|x|x.positions.first.unit}

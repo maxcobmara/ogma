@@ -14,6 +14,7 @@
             .col-md-5
               - if @fingerprint.new_record?
                 = f.hidden_field :thumb_id, value: current_user.userable.thumb_id
+                = f.hidden_field :college_id, value: current_user.college_id
                 = Staff.where(thumb_id: current_user.userable.thumb_id).first.staff_thumb
               - else
                 = f.collection_select :thumb_id, Staff.where(thumb_id: @fingerprint.owner.thumb_id), :thumb_id, :staff_thumb, {:selected=>@fingerprint.owner.thumb_id},{class: 'selectpicker', "data-width"=>"auto", readonly: 'readonly'}
@@ -54,9 +55,9 @@
               .row
                 .col-md-1= f.radio_button :status, 5, :id => 'loanmode',  :class => 'radio_discard_options'
                 .col-md-8= t 'staff_attendance.others'
-              .row
-                %br
-                .col-md-10.small=(t 'fingerprint.not_thumbprint').html_safe
+              /.row
+              /  %br
+              /  .col-md-10.small=(t 'fingerprint.not_thumbprint').html_safe
               /%table
               /  %tbody
               /    %tr
@@ -66,9 +67,9 @@
               /      %tr
               /        %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 3, :id => 'loanmode', :class => 'radio_discard_options'
               /        %td= t 'staff_attendance.forgot'
-              /      %tr
-              /        %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 5, :id => 'loanmode',  :class => 'radio_discard_options'
-              /        %td= t 'staff_attendance.others'
+              /    %tr
+              /      %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 5, :id => 'loanmode',  :class => 'radio_discard_options'
+              /      %td= t 'staff_attendance.others'
           .form-group
             .col-sm-2.control-label
               = f.label t('staff_attendance.reason')

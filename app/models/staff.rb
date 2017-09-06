@@ -255,6 +255,10 @@ class Staff < ActiveRecord::Base
       "#{thumb_id} |  #{name} (#{positions.first.unit})"
       end
     end
+    
+    def thumb_id_timing_with_name_unit
+      "#{thumb_id} (#{staff_shift.start_end} ) | #{name} (#{positions.first.unit})"
+    end
 
     def staff_name_with_position
       "#{name}  (#{position_for_staff})"
@@ -318,6 +322,23 @@ class Staff < ActiveRecord::Base
   def name_id
     [staff_with_rank, id]
   end
+  
+  #5thSept2017-start
+  # TODO - production DB - remove 'Jangan Delete Dulu', meanwhile use below - SA Indx pg
+  def valid_posts
+    initial_amsas_posts=[Position.where(name: 'Jangan Delete Dulu').first.id]+Position.where(name: 'Jangan Delete Dulu').first.descendant_ids
+    positions.pluck(:id)-initial_amsas_posts
+  end
+  
+  def valid_position_unit
+    if valid_posts.size > 0
+      valid_unitdept=Position.find(valid_posts.first).unit
+    else
+      valid_unitdept=""
+    end
+    valid_unitdept
+  end
+  #5thSept2017-end
   
   def transport_class
     abc = TravelClaimsTransportGroup.abcrate

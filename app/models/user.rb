@@ -338,44 +338,58 @@ class User < ActiveRecord::Base
     if iamleader== true   #check by roles
       thumbs=Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
     else #check by rank / grade
-      leader_staffid=Position.unit_department_leader(myunit).id   #return Staff(id) record ofunit/dept leader
-      @head_thumb_ids=[]
-      
-      #academic programmes-start
-      postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
-      dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
-      post_prog=Programme.roots.where(course_type: postbasics).pluck(:name)
-      commonsubject=Programme.where(course_type: 'Commonsubject').pluck(:name).uniq
-      #temp-rescue - make sure this 2 included in Programmes table @ production svr as commonsubject type
-      etc_subject=['Sains Tingkahlaku', 'Anatomi & Fisiologi']
-      #academic programmes-end 
-      
-      if leader_staffid==userable_id #when current user is unit/department leader
-        thumbs=Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
-        #when current user is Pengarah, above shall collect all timbalans thumb id plus academicians leader (Ketua Program)
-        if userable_id==Position.roots.first.staff_id
-          academic_programmes=dip_prog+post_prog+commonsubject
-          academic_programmes.each do |prog|
-            @head_thumb_ids << Position.unit_department_leader(prog).thumb_id if Position.where('staff_id is not null and unit=?', prog).count > 0 #staff_id must exist 
-          end
-          thumbs+=@head_thumb_ids
+      if college.code=='amsas'
+        #######-28 Aug 2017 (5thSept2017 - from StaffAttendance.peeps
+	# TODO - w user (customise) -- temporary to cater fingerprint approval for Unit Leaders (subordinate exactly under Komandan / Timbalan Pengarah
+        hod_staff_ids=Position.where('name ILIKE(?) or name ILIKE(?)', '%Komandan%','%Timbalan Pengarah%').pluck(:staff_id)
+        if hod_staff_ids.include?(userable_id)
+          desc_anc=mypost.ancestry_depth+1
+          my_desc=mypost.descendants.at_depth(desc_anc).pluck(:staff_id)
+          thumbs=Staff.where(id: my_desc).pluck(:thumb_id).compact
         end
-      else 
-        #when superior for current user is Pengarah, then she must be one of timbalans-"Ketua Unit Pengurusan Tertinggi"
-        if leader_staffid==Position.roots.first.staff_id 
-          if mypost.name.include?("Pengurusan") #Timbalan Pengarah (Pengurusan)
-            #management units
-            mgmt_units= Position.where('staff_id is not null and unit is not null and unit!=? and unit not in (?) and unit not in (?) and unit not in (?) and unit not in (?)', '', dip_prog, commonsubject, postbasics, etc_subject).pluck(:unit).uniq
-            mgmt_units.each do |department|
-              @head_thumb_ids << Position.unit_department_leader(department).thumb_id unless Position.unit_department_leader(department).nil?
+	#######
+      else
+        #%%%%%%%%%%%%%%%%%%%%%%
+        leader_staffid=Position.unit_department_leader(myunit).id   #return Staff(id) record ofunit/dept leader
+        @head_thumb_ids=[]
+      
+        #academic programmes-start
+        postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+        dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
+        post_prog=Programme.roots.where(course_type: postbasics).pluck(:name)
+        commonsubject=Programme.where(course_type: 'Commonsubject').pluck(:name).uniq
+        #temp-rescue - make sure this 2 included in Programmes table @ production svr as commonsubject type
+        etc_subject=['Sains Tingkahlaku', 'Anatomi & Fisiologi']
+        #academic programmes-end 
+      
+        if leader_staffid==userable_id #when current user is unit/department leader
+          thumbs=Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
+          #when current user is Pengarah, above shall collect all timbalans thumb id plus academicians leader (Ketua Program)
+          if userable_id==Position.roots.first.staff_id
+            academic_programmes=dip_prog+post_prog+commonsubject
+            academic_programmes.each do |prog|
+              @head_thumb_ids << Position.unit_department_leader(prog).thumb_id if Position.where('staff_id is not null and unit=?', prog).count > 0 #staff_id must exist 
             end
-            thumbs=@head_thumb_ids
-          else #other timbalans
+            thumbs+=@head_thumb_ids
+          end
+        else 
+          #when superior for current user is Pengarah, then she must be one of timbalans-"Ketua Unit Pengurusan Tertinggi"
+          if leader_staffid==Position.roots.first.staff_id 
+            if mypost.name.include?("Pengurusan") #Timbalan Pengarah (Pengurusan)
+              #management units
+              mgmt_units= Position.where('staff_id is not null and unit is not null and unit!=? and unit not in (?) and unit not in (?) and unit not in (?) and unit not in (?)', '',   dip_prog, commonsubject, postbasics, etc_subject).pluck(:unit).uniq
+              mgmt_units.each do |department|
+                @head_thumb_ids << Position.unit_department_leader(department).thumb_id unless Position.unit_department_leader(department).nil?
+              end
+              thumbs=@head_thumb_ids
+            else #other timbalans
+              thumbs=[]
+            end
+          else   
             thumbs=[]
           end
-        else   
-          thumbs=[]
         end
+        #%%%%%%%%%%%%%%%%
       end
     end
     thumbs

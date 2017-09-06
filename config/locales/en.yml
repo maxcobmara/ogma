@@ -2102,7 +2102,6 @@ en:
     list: Staff Attendance Listing
     new: New Staff Attendance
     edit: Edit Staff Attendance
-    list: Staff Attendance List
     details: Attendance Details
     approval: "Late / Early Return Approval"
     approval2: Approval
@@ -2200,7 +2199,7 @@ en:
     attendance_not_exist: "Attendance records not exist"
     not_yet_triggered: Not yet triggered
     not_yet_ignored: Not yet ignored
-    staff_compulsory_data: "Each staff requires complete data in (1) <u>Staff module</u> (<b>Thumb ID</b> and <b>Shift</b>), (2) <u>Position module</u> (<b>Unit</b>)"
+    staff_compulsory_data: "Each staff requires complete data in <br>(1) <u>Staff module</u> (<b>Thumb ID</b> and <b>Shift</b>) <br>(2) <u>Position module</u> (<b>Unit</b>)"
     staff_not_exist: Staff not exist in Staff Info module
     report_type: Choose type of report / listing accordingly
     reason_not_submitted: Reason not submitted
@@ -2229,6 +2228,7 @@ en:
     fingerprint_incomplete: Fingerprint incomplete
     not_triggered: Not yet triggered
     rejected: Rejected
+    min_grade_post_required: Please update minimum grade for all positions in selected department / unit first OR assign 'Unit Leader' role to leader(in user account) of selected department / unit for daily report generation
     
   holiday:
     title: Public Holiday
@@ -2266,7 +2266,7 @@ en:
     create_statement: Create statement
     in_prohibited: "Fingerprint Statement (No Fingerprint) for 'In' is not allowed as logged-in record exist on"
     out_prohibited: "Fingerprint Statement (No Fingerprint) for 'Out' is not allowed as logged-out record exist on"
-    both_prohibited: "Fingerprint Statement (No Fingerprint) for 'In and Out' are not allowed as logged-in and logged-out record exist on"
+    both_prohibited: "Fingerprint Statement (No Fingerprint) for 'In and Out' are not allowed as logged-in and / or logged-out record exist on"
 
   rank:
     title: Rank Listing
@@ -5225,6 +5225,9 @@ en:
     travel_claims_returned: " Travel Claims returned for amendments"
     travel_claims_for_approval: " Travel Claims for approval"
     travel_request_needs_approval: " Travel request that requires your approval"
+    late_need_a_reason: " Late/early attendance require reason submission"
+    late_require_approval:  " Late/early attendance for approval"
+    fingerprint_require_approval: " Fingerprint statement(s) for approval"
     
   ###########
      

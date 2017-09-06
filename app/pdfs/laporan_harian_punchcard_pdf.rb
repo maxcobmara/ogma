@@ -8,14 +8,18 @@ class Laporan_harian_punchcardPdf < Prawn::Document
     @thumbids=thumbids
     @w_wo_triggered=w_wo_triggered
     @without_both_logs=@thumbids-@w_wo_triggered.pluck(:thumb_id).uniq
-    font "Times-Roman"
-    text "Lampiran B 1", :align => :right, :size => 12, :style => :bold
+    font "Helvetica"
+    text "Lampiran B 1", :align => :right, :size => 11, :style => :bold
     move_down 20
-    text "Laporan Harian", :align => :center, :size => 12, :style => :bold
+    text "Laporan Harian", :align => :center, :size => 11, :style => :bold
     move_down 20
-    heading_details
-    @y=("#{y}").to_i
-    record
+    if @leader=='update_db'
+      text "<color rgb='#EC0C16'>#{I18n.t('attendance.min_grade_post_required')}</color>", :inline_format => true, :align => :center, :size => 11   
+    else
+      heading_details
+      @y=("#{y}").to_i
+      record
+    end
   end
   
   def heading_details
@@ -74,7 +78,16 @@ class Laporan_harian_punchcardPdf < Prawn::Document
         status2b="Lambat datang" if sas.last.r_u_late(shiftid) == "flag"  && sas.first.trigger==true && sas.last.is_approved==false
         status2b="Pulang awal" if sas.last.r_u_early(shiftid) == "flag" && sas.first.trigger==true && sas.last.is_approved==false
 	inbetween=" & " if status2a && status2b
-        attendance_list << ["#{counter += 1}", "#{sas.first.attended.name}", "#{status2a} +#{inbetween if inbetween}+ #{status2b}" , "#{sas.first.logged_at.strftime('%H:%M')} / #{sas.last.logged_at.strftime('%H:%M')}"]
+        if status2a && status2b
+          attendance_list << ["#{counter += 1}", "#{sas.first.attended.name}", "#{status2a} & #{status2b}" , "#{sas.first.logged_at.strftime('%H:%M')} / #{sas.last.logged_at.strftime('%H:%M')}"]
+	else
+	  if !status2a && !status2b
+	    #if IN and OUT punctual, don't display staff at all
+	  else
+	    #either one will be displayed
+	    attendance_list << ["#{counter += 1}", "#{sas.first.attended.name}", "#{status2a}#{status2b}" , "#{sas.first.logged_at.strftime('%H:%M')} / #{sas.last.logged_at.strftime('%H:%M')}"]
+	  end
+	end
       end
     end
     

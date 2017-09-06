@@ -133,6 +133,9 @@ class Staff::FingerprintsController < ApplicationController
       @fingerprints_searched = @search.result
       @fingerprints = @fingerprints_searched.find_mystatement(current_user.userable.thumb_id)
       @approvefingerprints = @fingerprints_searched.find_approvestatement(current_user)
+      # NOTE - customisation if requested (improvements)
+      #each individuals could check his own attendance records, not thumbprint (IN, OUT or BOTH) rather than waiting for daily report by Unit/Dept leaders
+      # NOTE - fingerprint.rb - checker already included for SELECTED DATE (fingerprint creation)
     end
     
     # Never trust parameters from the scary internet, only allow the white list through.

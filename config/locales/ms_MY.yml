@@ -1999,7 +1999,6 @@ ms_MY:
     list: Senarai Kedatangan Staf
     new: Kedatangan Staf (Baru)
     edit: Sunting Kedatangan Staf
-    list: Senarai Kedatangan Staf
     details: Butiran Kedatangan
     approval: "Kelulusan Datang Lewat / Pulang Awal"
     approval2: Kelulusan
@@ -2095,7 +2094,7 @@ ms_MY:
     attendance_not_exist: "Rekod kedatangan tidak wujud"
     not_yet_triggered: Belum diaktifkan
     not_yet_ignored: Belum diabaikan
-    staff_compulsory_data: "Setiap staf memerlukan data lengkap dalam : (1) <u>Modul Staf</u> (<b>Thumb ID</b> dan <b>Waktu Anjal</b>), (2) <u>Modul Jawatan</u> (<b>Unit</b>)"
+    staff_compulsory_data: "Setiap staf memerlukan data lengkap dalam : <br>(1) <u>Modul Staf</u> (<b>Thumb ID</b> dan <b>Waktu Anjal</b>) <br>(2) <u>Modul Jawatan</u> (<b>Unit</b>)"
     staff_not_exist: Staf tidak wujud dalam modul Maklumat Staf
     report_type: Pilih jenis laporan / senarai untuk dijana terlebih dahulu
     reason_not_submitted: Sebab tidak dihantar
@@ -2124,6 +2123,7 @@ ms_MY:
     fingerprint_incomplete: Fingerprint belum lengkap
     not_triggered: "Belum 'trigger'"
     rejected: Ditolak
+    min_grade_post_required: Sila kemaskini gred minima bagi semua rekod perjawatan staf dalam jabatan / unit dipilih terlebih dahulu ATAU peruntukkan peranan 'Ketua Unit' kepada ketua jabatan / unit(dalam akaun pengguna) bagi jabatan / unit yang dipilih 
   
   holiday:
     title: Cuti Umum
@@ -2161,7 +2161,7 @@ ms_MY:
     create_statement: Sediakan kenyataan
     in_prohibited: "Kenyataan Fingerprint(Tidak Fingerprint) untuk 'Masuk' tidak dibenarkan kerana terdapat rekod log masuk pada"
     out_prohibited: "Kenyataan Fingerprint(Tidak Fingerprint) untuk 'Keluar' tidak dibenarkan kerana terdapat rekod log keluar pada"
-    both_prohibited: "Kenyataan Fingerprint(Tidak Fingerprint) untuk 'Masuk dan Keluar' tidak dibenarkan kerana terdapat rekod log masuk dan log keluar pada"
+    both_prohibited: "Kenyataan Fingerprint(Tidak Fingerprint) untuk 'Masuk dan Keluar' tidak dibenarkan kerana terdapat rekod log masuk dan / atau log keluar pada"
     
   rank:
     title: Senarai Pangkat
@@ -5145,6 +5145,9 @@ ms_MY:
     travel_claims_returned: " Tuntutan Perjalanan dipulangkan untuk dibaiki"
     travel_claims_for_approval: " Tuntutan Perjalanan untuk diluluskan"
     travel_request_needs_approval: " Permohonan Perjalanan untuk diluluskan"
+    late_need_a_reason: " Lambat datang / pulang awal - sebab perlu dihantar"
+    late_require_approval:  " Lambat datang / pulang awal untuk kelulusan"
+    fingerprint_require_approval: " Kenyataan Fingerprint untuk kelulusan"
     
   equery:
     title: Carian Lanjut / Laporan

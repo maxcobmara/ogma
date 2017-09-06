@@ -256,7 +256,12 @@ class Staff::StaffAttendancesController < ApplicationController
     unless @leader_id.nil?
       @leader=Staff.find(@leader_id.to_i) 
     else
-      @leader=Position.unit_department_leader(unit_dept)
+      occupied_post_wo_min_grd=Position.where('unit=? and staff_id is not null AND staffgrade_id is null', unit_dept)
+      if occupied_post_wo_min_grd.count > 0
+	@leader='update_db'
+      else
+        @leader=Position.unit_department_leader(unit_dept)
+      end
     end
     #to confirm
     #@staff_attendances = StaffAttendance.where('logged_at >? and logged_at <? and thumb_id IN(?)', daily_start, daily_end, thumb_ids)

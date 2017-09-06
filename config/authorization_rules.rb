@@ -1125,7 +1125,7 @@ authorization do
     has_permission_on :staff_staff_attendances, :to => [:approval, :update, :show] do
       if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
     end
-    has_permission_on :staff_staff_fingerprints, :to => :approval do
+    has_permission_on :staff_fingerprints, :to => [:approval, :update, :show] do
       if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
     end
     

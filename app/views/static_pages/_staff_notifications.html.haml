@@ -12,9 +12,11 @@
  - if appraisal_requests > 0
   %li= link_to content_tag(:span, "#{appraisal_requests}", class: "badge") + " Staff appraisal for processing", staff_staff_appraisals_path
  - if late_require_approval > 0
-  %li= link_to content_tag(:span, "#{late_require_approval}", class: "badge") + " Late/early attendance for approval", attendance_manager_path
+  %li=link_to content_tag(:span, "#{late_require_approval}", class: "badge") + (t 'notifications.late_require_approval'), attendance_manager_path
  - if late_need_a_reason > 0
-  %li= link_to content_tag(:span, "#{late_need_a_reason}", class: "badge") + " Late/early attendance require reason submission", attendance_manager_path
+  %li=link_to content_tag(:span, "#{late_need_a_reason}", class: "badge") + (t 'notifications.late_need_a_reason'), attendance_manager_path
+ - if fingerprint_require_approval > 0
+  %li=link_to content_tag(:span, "#{fingerprint_require_approval}", class: "badge") + (t 'notifications.fingerprint_require_approval'), staff_fingerprints_path
  - if travel_request_needs_approval > 0
   %li= link_to content_tag(:span, "#{travel_request_needs_approval}", class: "badge") + (t 'notifications.travel_request_needs_approval'), staff_travel_requests_path
  - if your_travel_approved.size > 0

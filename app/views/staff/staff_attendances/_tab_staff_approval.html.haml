@@ -6,7 +6,7 @@
     %dt= t'staff_attendance.is_approved'
     %dd
       - if @staff_attendance.trigger?
-        =h @staff_attendance.is_approved? ? image_tag("tick.png") : image_tag("cross.png")
+        =h @staff_attendance.is_approved? ? fa_icon('check') : fa_icon('times')
             
     %dt= t'staff_attendance.approved_on'
     %dd=h @staff_attendance.try(:approved_on).try(:strftime, '%d %b %Y')

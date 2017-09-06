@@ -50,7 +50,7 @@ module Notifications
  end
 
  def late_require_approval
-  StaffAttendance.where(approved_by: current_staff_id).where(is_approved: nil).count
+   StaffAttendance.find_approveearly(current_user).where(is_approved: nil).count
  end
 
  def late_need_a_reason
@@ -59,6 +59,10 @@ module Notifications
   else
     0
   end
+ end
+ 
+ def fingerprint_require_approval
+   Fingerprint.find_approvestatement(current_user).where(is_approved: nil).count
  end
 
  def travel_request_needs_approval
