@@ -55,6 +55,7 @@ ms_MY:
       topic_detail: Butiran Topik
       trainingnote: Nota Latihan
       visitor: Pelawat
+      position: Jawatan
     attributes:
       asset:
         assignedto_id: Pegawai Bertanggungjawab
@@ -453,6 +454,8 @@ ms_MY:
         expertise: Kepakaran / kelayakan
       librarytransactionsearch:
         yearstat: Tahun
+      position:
+        staffgrade_id: Gred minima diperlukan
         
         
     errors:

@@ -73,6 +73,7 @@ en:
       topic_detail: Topic Detail
       trainingnote: Training Note
       visitor: Visitor
+      position: Position
     attributes:
       asset:
         assignedto_id: Assigned to
@@ -468,6 +469,8 @@ en:
         expertise: Expertise / qualification
       librarytransactionsearch:
         yearstat: Year
+      position:
+        staffgrade_id: Minimum grade requirement
 
     errors:
         template:
