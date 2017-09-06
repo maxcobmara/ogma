@@ -15,6 +15,6 @@
           %td=staff.try(:rank).try(:name)
           %td=staff.name 
           %td
-            -for position in staff.positions
+            -for position in Position.where(id: staff.valid_posts)
               = position.name
               <BR>
