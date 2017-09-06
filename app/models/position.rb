@@ -339,17 +339,21 @@ class Position < ActiveRecord::Base
       non_academic=Position.where('unit is not null and unit NOT IN (?)', programme_names).order(unit: :asc).map(&:unit).uniq.compact 
       department_list=academic+non_academic
     elsif college_code=='amsas'
-       department_list=Position.where('unit is not null and unit !=?', "").where.not('unit ILIKE ?', '%icms%').order(unit: :asc).map{|x|x.unit.strip}.uniq.compact
+       #6thSept2017 - match w SA ind/search
+       initial_amsas_posts=[Position.where(name: 'Jangan Delete Dulu').first.id]+Position.where(name: 'Jangan Delete Dulu').first.descendant_ids
+       department_list=Position.where('unit is not null and unit !=?', "").where.not('unit ILIKE ?', '%icms%').where.not('id IN(?)', initial_amsas_posts).order(unit: :asc).map{|x|x.unit.strip}.uniq.compact
     end
     department_list
   end
   
   #usage - views/staffattendancesearches/_form.html.haml
   def self.thumbids_per_department
+    #6thSept2017 - match w SA ind/search
+    initial_amsas_posts=[Position.where(name: 'Jangan Delete Dulu').first.id]+Position.where(name: 'Jangan Delete Dulu').first.descendant_ids
     # NOTE - KSKBJB/AMSAS - staff name : 'ICMS Vendor Admin' / 'ICMS developer', 'ICMS tester', 'ICMS user'
     staff_ids=Position.joins(:staff).where.not('staffs.name ILIKE ?','%icms%').where('staffs.staff_shift_id is not null and staffs.thumb_id is not null').map(&:staff_id)
     a=[]
-    Position.where('unit is not null and unit !=?', "").where.not('unit ILIKE ?', '%icms%').group_by{|x|x.unit.strip}.sort.each do |unit_dept, posts|
+    Position.where('unit is not null and unit !=?', "").where.not('unit ILIKE ?', '%icms%').where.not('id IN(?)', initial_amsas_posts).group_by{|x|x.unit.strip}.sort.each do |unit_dept, posts|
       b=[(I18n.t 'select')]
       posts.each do |apost|
         b << [apost.staff.staff_with_rank, apost.staff.thumb_id] if staff_ids.include?(apost.staff_id)

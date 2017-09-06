@@ -1,22 +1,25 @@
 class Laporan_bulanan_punchcardPdf < Prawn::Document
   def initialize(staff_attendances,leader, monthly_date, notapproved_lateearly, thumb_ids, view)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 50,  left_margin: 50, page_size: 'A4', page_layout: :portrait })
     @staff_attendances = staff_attendances
     @leader = leader
     @view = view
     @monthly_date = monthly_date
     @notapproved_lateearly = notapproved_lateearly
     @total_staff=thumb_ids.count
-    font "Times-Roman"
-    text "Lampiran B 3", :align => :right, :size => 12, :style => :bold
+    font "Helvetica"
+    text "Lampiran B 3", :align => :right, :size => 11, :style => :bold
     move_down 20
-    text "Laporan Bulanan", :align => :center, :size => 12 
+    text "Laporan Bulanan", :align => :center, :size => 11, :style => :bold
     move_down 20
-    heading_details
-    @y=("#{y}").to_i
-    record
-    jumlah
-   
+    if @leader=='update_db'
+      text "<color rgb='#EC0C16'>#{I18n.t('attendance.min_grade_post_required')}</color>", :inline_format => true, :align => :center, :size => 11   
+    else
+      heading_details
+      @y=("#{y}").to_i
+      record
+      jumlah
+    end
   end
   
   def heading_details
@@ -125,12 +128,12 @@ class Laporan_bulanan_punchcardPdf < Prawn::Document
   
   def jumlah 
     move_down 20
-    text "Jumlah Pegawai / Kakitangan                                      #{@total_staff}", :align => :left, :size => 12
+    text "Jumlah Pegawai / Kakitangan                                      #{@total_staff}", :align => :left, :size => 11
     move_down 5
-    text "Jumlah Pegawai / Kakitangan                                      #{@green_count}", :align => :left, :size => 12
-    text "Yang memegang kad hijau", :align => :left, :size => 12
+    text "Jumlah Pegawai / Kakitangan                                      #{@green_count}", :align => :left, :size => 11
+    text "Yang memegang kad hijau", :align => :left, :size => 11
     move_down 5
-    text "Jumlah Pegawai / Kakitangan                                      #{@red_count}", :align => :left, :size => 12
-    text "Yang memegang kad merah", :align => :left, :size => 12
+    text "Jumlah Pegawai / Kakitangan                                      #{@red_count}", :align => :left, :size => 11
+    text "Yang memegang kad merah", :align => :left, :size => 11
   end
 end

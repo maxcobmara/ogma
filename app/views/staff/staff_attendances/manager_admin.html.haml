@@ -37,7 +37,7 @@
             %td=h attendance.try(:attended).try(:staff_with_rank)
             %td=h StaffAttendance.unit_for_thumb(attendance.thumb_id)
             %td=h attendance.reason? ? attendance.reason : (t 'staff_attendance.not_submitted_yet')
-            %td= attendance.approver.try(:name) if attendance.is_approved == true
+            %td=h attendance.approved_by.blank? ? "" : attendance.try(:approver).try(:staff_with_rank_position_unit) 
             %td
               - if attendance.is_approved == true  
                 = fa_icon("check")
