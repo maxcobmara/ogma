@@ -5121,6 +5121,7 @@ ms_MY:
     booking_facility_approved: " Tempahan Kemudahan telah diluluskan"
     late_book_staff: " Buku perpustakaan lewat/belum dipulangkan (staf)"
     late_book_student: " Buku perpustakaan lewat/belum dipulangkan (pelajar)"
+    late_book_own: " Buku perpustakaan lewat/belum dipulangkan (sendiri)"
     late_return_book: " Buku perpustakaan lewat/belum dipulangkan"
     ready_for_collection2: " Buku yang ditempah telah sedia dipinjam"
     check_email: (Sila semak emel anda)

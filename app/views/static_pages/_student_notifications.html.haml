@@ -2,9 +2,16 @@
  - if student_notification_of_leave.count > 0
   %li= link_to "Your leave request for #{student_notification_of_leave.first.strftime('%d-%m-%Y')} has been approved", student_leaveforstudents_path
   
- /31Okt2016
+ /31Okt2016,8Sept2017
+ /5)login as other staffs - display own late books (no links)
  - if borrower_student_late_library_books > 0
-  %li=link_to content_tag(:span, "#{borrower_student_late_library_books}", class: "badge") +((t 'notifications.late_return_book')+ "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+(t 'notifications.check_email')).html_safe, "#"
+  %li
+   .first_line
+    %span.badge=borrower_student_late_library_books
+    =(t 'notifications.late_return_book')
+   .second_line=(t 'notifications.check_email')
+   
+  /%li=link_to content_tag(:span, "#{borrower_student_late_library_books}", class: "badge") +((t 'notifications.late_return_book')+ "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+(t 'notifications.check_email')).html_safe, "#"
   
  #6March2017
  - if reserver_book_now_available > 0

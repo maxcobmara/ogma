@@ -82,15 +82,28 @@
  - if applicant_booking_facility > 0
   %li=link_to content_tag(:span, "#{applicant_booking_facility}", class: "badge") + (t 'notifications.booking_facility_approved'), campus_bookingfacilities_path
   
- #31Oct2016
+ #31Oct2016(8Sept2017)
+ /1)login as librarian/admin/dev - display all staffs late books
  - if librarian_staff_late_library_books > 0
   %li=link_to content_tag(:span, "#{librarian_staff_late_library_books}", class: "badge") + (t 'notifications.late_book_staff'), library_librarytransactions_path
-  
+ 
+ /2)login as librarian/admin/dev - display all students late books
  - if librarian_student_late_library_books > 0
   %li=link_to content_tag(:span, "#{librarian_student_late_library_books}", class: "badge") + (t 'notifications.late_book_student'), library_librarytransactions_path
   
+ /3)login as librarian/admin/dev - display own late books
+ - if borrower_librarian_late_library_books > 0
+  %li=link_to content_tag(:span, "#{borrower_librarian_late_library_books}", class: "badge") + (t 'notifications.late_book_own'), library_librarytransactions_path
+
+ /4)login as other staffs - display own late books (no links)
  - if borrower_staff_late_library_books > 0
-  %li=link_to content_tag(:span, "#{borrower_staff_late_library_books}", class: "badge") +((t 'notifications.late_return_book')+ "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+(t 'notifications.check_email')).html_safe, "#"
+  %li
+   .first_line
+    %span.badge=borrower_staff_late_library_books
+    =(t 'notifications.late_return_book')
+   .second_line=(t 'notifications.check_email')
+
+  /=link_to content_tag(:span, "#{borrower_staff_late_library_books}", class: "badge") +((t 'notifications.late_return_book')+ "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+(t 'notifications.check_email')).html_safe, "#"
  
  #6March2017
  - if reserver_book_now_available > 0

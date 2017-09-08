@@ -29,8 +29,7 @@ set :environment, 'production' #'development'
 #   logclear_time="4:00 AM"
 # end
 
-# TODO - check again tomorrow - 2Dec2016
-# NOTE - time zone @ linode svr is set to MYT (Thu Dec  1 09:22:42 MYT 2016)
+# NOTE - Latest time zone @ linode svr is set to MYT (Thu Dec  1 09:22:42 MYT 2016) - STATUS OK - 8Sept2017(email delivery fr linode worked as expected)
 delivery_time="5:00 AM"
 logclear_time='12am'
 

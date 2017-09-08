@@ -5201,6 +5201,7 @@ en:
     booking_facility_approved: " Booking Facilities were approved"
     late_book_staff: " Late return of library book (staff)"
     late_book_student: " Late return of library book (student)"
+    late_book_own: " Late return of library book (own)"
     late_return_book: " Late return of library book"
     ready_for_collection2: " reserved book(s) are ready for loan"
     check_email: (Please check your email)
