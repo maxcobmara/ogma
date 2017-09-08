@@ -184,6 +184,15 @@ module Notifications
    Bookingfacility.where(staff_id: current_staff_id).where(approval: true).where(approval: true).where('start_date >=?', Date.today).count
  end
  
+ #a)login as dev - display all visitor (late marine docs)
+ def visitor_late_marine_docs
+   if is_developer?
+     Librarytransaction.marine_docs_transactions.where(returned: [false, nil]).where('returnduedate <?', Date.today.yesterday).count
+   else
+     0
+   end
+ end
+ 
  #1)login as librarian/admin/dev - display all staffs late books
  def librarian_staff_late_library_books
    if is_librarian? || is_admin? || is_developer?
