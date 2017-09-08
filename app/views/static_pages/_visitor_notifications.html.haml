@@ -1,0 +1,5 @@
+/TODO - when user account for (visitor) is ready (userable_type='visitor') - revised this (based on current_user instead of dev) - 8Sept2017
+%ul.nav.nav-pills.nav-stacked{role: "tablist"}
+ /1)login as dev - display all vistors late books
+ - if visitor_late_marine_docs > 0
+  %li=link_to content_tag(:span, "#{visitor_late_marine_docs}", class: "badge") + " Late return technical documentations", repository_loan_library_librarytransactions_path
