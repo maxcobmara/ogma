@@ -184,26 +184,43 @@ module Notifications
    Bookingfacility.where(staff_id: current_staff_id).where(approval: true).where(approval: true).where('start_date >=?', Date.today).count
  end
  
+ #1)login as librarian/admin/dev - display all staffs late books
  def librarian_staff_late_library_books
-   if current_user.roles.pluck(:authname).include?('librarian')
+   if is_librarian? || is_admin? || is_developer?
      Librarytransaction.where(ru_staff: true).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
    else
      0
    end
  end
  
+ #2)login as librarian/admin/dev - display all students late books
  def librarian_student_late_library_books
-   if current_user.roles.pluck(:authname).include?('librarian')
+   if is_librarian? || is_admin? || is_developer?
      Librarytransaction.where(ru_staff: false).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
    else
      0
    end
  end
  
- def borrower_staff_late_library_books
-   Librarytransaction.where(staff_id: current_staff_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
+ #3)login as librarian/admin/dev - display own late books
+ def borrower_librarian_late_library_books
+   if is_librarian? || is_admin? || is_developer?
+     Librarytransaction.where(staff_id: current_staff_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
+   else
+     0
+   end
  end
  
+ #4)login as other staffs - display own late books (no links)
+ def borrower_staff_late_library_books
+   if is_librarian? || is_admin? || is_developer?
+     0
+   else
+     Librarytransaction.where(staff_id: current_staff_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
+   end
+ end
+ 
+ #5)login as student - display own late books (no links)
   def borrower_student_late_library_books
     if current_student_id!=nil
       Librarytransaction.where(student_id: current_student_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count

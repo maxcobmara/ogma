@@ -359,7 +359,12 @@ table.inline_display {
  font-size: 0.9em;
  a {color: #888;}
  ul {
-  li {border-bottom: solid 1px #DDD;}
+  li {
+    border-bottom: solid 1px #DDD;
+    .first_line{padding-left: 17px; color: #888;}
+    .second_line{padding-left: 40px; color: #888;}
+  }
+  
  }
 }
 
@@ -427,7 +432,7 @@ table.inline_display {
 .text-red {color: red;}
 .text-green {color: green;}
 .red-white{ background-color: red; color: white;}
-.text-grey{color: #999;}
+.text-grey{color: #888;}
 .yellow-grey{background-color: #FAF8B7; color: #999;}
 .bg-grey{background-color: #F7F7F7}
 .bg-grey-yellowish{background-color: #F9F6DD;}
