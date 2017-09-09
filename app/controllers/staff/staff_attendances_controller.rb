@@ -118,23 +118,34 @@ class Staff::StaffAttendancesController < ApplicationController
   end
 
   def manager
-    #@udept=Position.unit_department2
-    @udept=StaffAttendance.get_thumb_ids_unit_names(2)
-    unit_name=current_user.userable.positions.first.unit
-    if @udept.include?(unit_name) ==true #matching unit_name with valid department
-      @search = StaffAttendance.search(params[:q])
-      @staff_attendances = @search.result
-      @mylate_attendances = @staff_attendances.find_mylate(current_user) 
-      @myearly_attendances = @staff_attendances.find_myearly(current_user)
+    @search = StaffAttendance.search(params[:q])
+    @staff_attendances = @search.result
+    @mylate_attendances = @staff_attendances.find_mylate(current_user) 
+    @myearly_attendances = @staff_attendances.find_myearly(current_user)
+    myunit=current_user.userable.valid_position_unit
+    unless myunit==""
       @approvelate_attendances = @staff_attendances.find_approvelate(current_user)
       @approveearly_attendances = @staff_attendances.find_approveearly(current_user)  
-    elsif @udept.include?(unit_name)==false  #elsif @udept.include?("--"+unit_name)
-      if current_user.userable.thumb_id.blank? && current_user.userable.staff_shift_id.blank? && current_user.userable.positions.first.unit.blank?
-        redirect_to('/dashboard', :notice => I18n.t('staff_attendance.require_complete_data_manage'))
-      #else
-        #redirect_to('/dashboard', :notice => I18n.t('staff_attendance.attendance_not_exist')
+    else
+      if current_user.userable.thumb_id.blank? && current_user.userable.staff_shift_id.blank?
+         redirect_to('/dashboard', :notice => I18n.t('staff_attendance.require_complete_data_manage'))
       end
     end
+   
+#     #@udept=Position.unit_department2
+#     @udept=StaffAttendance.get_thumb_ids_unit_names(2)
+#     unit_name=current_user.userable.positions.first.unit
+#     if @udept.include?(unit_name) ==true #matching unit_name with valid department
+#       
+#       @approvelate_attendances = @staff_attendances.find_approvelate(current_user)
+#       @approveearly_attendances = @staff_attendances.find_approveearly(current_user)  
+#     elsif @udept.include?(unit_name)==false  #elsif @udept.include?("--"+unit_name)
+#       if current_user.userable.thumb_id.blank? && current_user.userable.staff_shift_id.blank? && current_user.userable.positions.first.unit.blank?
+#         redirect_to('/dashboard', :notice => I18n.t('staff_attendance.require_complete_data_manage'))
+#       #else
+#         #redirect_to('/dashboard', :notice => I18n.t('staff_attendance.attendance_not_exist')
+#       end
+#     end
   end
   
   def manager_admin
