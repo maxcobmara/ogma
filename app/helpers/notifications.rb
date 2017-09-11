@@ -196,7 +196,7 @@ module Notifications
  #1)login as librarian/admin/dev - display all staffs late books
  def librarian_staff_late_library_books
    if is_librarian? || is_admin? || is_developer?
-     Librarytransaction.where(ru_staff: true).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
+     Librarytransaction.where(ru_staff: true).where(returned: [nil, false]).where.not(accession_id: nil).where('returnduedate <?', Date.today).count
    else
      0
    end
@@ -205,7 +205,7 @@ module Notifications
  #2)login as librarian/admin/dev - display all students late books
  def librarian_student_late_library_books
    if is_librarian? || is_admin? || is_developer?
-     Librarytransaction.where(ru_staff: false).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
+     Librarytransaction.where(ru_staff: false).where(returned: [nil, false]).where.not(accession_id: nil).where('returnduedate <?', Date.today).count
    else
      0
    end
@@ -214,7 +214,7 @@ module Notifications
  #3)login as librarian/admin/dev - display own late books
  def borrower_librarian_late_library_books
    if is_librarian? || is_admin? || is_developer?
-     Librarytransaction.where(staff_id: current_staff_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
+     Librarytransaction.where(staff_id: current_staff_id).where(returned: [nil, false]).where.not(accession_id: nil).where('returnduedate <?', Date.today).count
    else
      0
    end
@@ -225,14 +225,14 @@ module Notifications
    if is_librarian? || is_admin? || is_developer?
      0
    else
-     Librarytransaction.where(staff_id: current_staff_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
+     Librarytransaction.where(staff_id: current_staff_id).where(returned: [nil, false]).where.not(accession_id: nil).where('returnduedate <?', Date.today).count
    end
  end
  
  #5)login as student - display own late books (no links)
   def borrower_student_late_library_books
     if current_student_id!=nil
-      Librarytransaction.where(student_id: current_student_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
+      Librarytransaction.where(student_id: current_student_id).where(returned: [nil, false]).where.not(accession_id: nil).where('returnduedate <?', Date.today).count
     else
       0
     end
