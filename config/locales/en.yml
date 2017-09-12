@@ -5233,6 +5233,7 @@ en:
     late_require_approval:  " Late attendance for approval"
     early_require_approval: " Early return for approval"
     fingerprint_require_approval: " Fingerprint statement(s) for approval"
+    visitor_late_marine_docs: " Late return technical documentations"
     
   ###########
      
