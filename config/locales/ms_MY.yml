@@ -5153,6 +5153,7 @@ ms_MY:
     late_require_approval:  " Lambat datang untuk kelulusan"
     early_require_approval: " Pulang awal untuk kelulusan"
     fingerprint_require_approval: " Kenyataan Fingerprint untuk kelulusan"
+    visitor_late_marine_docs: " Dokumentasi teknikal lewat/belum dipulangkan"
     
   equery:
     title: Carian Lanjut / Laporan
