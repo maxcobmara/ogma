@@ -15,11 +15,8 @@
               - staff_list=Staff.where(id: @leaveforstaff.staff_id)
               - selected=@leaveforstaff.staff_id
             - else
-              - if @is_admin
-                - staff_list= Staff.all.order(name: :asc)
-              - else
-                - staff_list=Staff.where(id: @current_user.userable_id)
-              - selected=@current_user.userable_id
+              - staff_list= @is_admin ? Staff.valid_staffs.order(rank_id: :asc, name: :asc) : Staff.where(id: current_user.userable_id)
+              - selected=current_user.userable_id
             = f.collection_select :staff_id, staff_list, :id,  :staff_with_rank_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>selected},{class: 'selectpicker mandatory', "data-width"=>'400px'}
 
         .form-group
@@ -79,39 +76,27 @@
         - if current_user.college.code!='kskbjb' 
           - if @leaveforstaff.new_record?
             - if @is_admin
-              - approver1_multipost=Staff.all
-              - approver2_multipost=Staff.all
+              - approver1=Staff.valid_staffs
+              - approver2=Staff.valid_staffs
+              /TODO checker admin cannot approve own application
             - else
-              - if current_user.userable.positions.count > 1
-                - approver1_multipost=Staff.where(id: current_user.userable.approver1_list_multipost)
-                - approver2_multipost=Staff.where(id: current_user.userable.approver2_list_multipost)
+              - if current_user.userable.positions.count > 0
+                - approver1=current_user.userable.approver1_list_multipost
+                - approver2=current_user.userable.approver2_list_multipost
           - else
-            - if @leaveforstaff.applicant.positions.count > 1
-              - approver1_multipost=Staff.where(id: @leaveforstaff.approver1_list_multipost)
-              - approver2_multipost=Staff.where(id: @leaveforstaff.approver2_list_multipost)
-            
-          - if @is_admin || current_user.userable.positions.count > 1
+            - if @leaveforstaff.applicant.positions.count > 0
+              - approver1=@leaveforstaff.approver1_list_multipost
+              - approver2=@leaveforstaff.approver2_list_multipost
+          
+          - if @is_admin || current_user.userable.positions.count > 0
             .form-group
               .col-sm-2.control-label
                 =f.label t 'staff_leave.approval1_id'
               .col-md-6
-                =f.collection_select :approval1_id, approver1_multipost.order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>'400px'}
+                =f.collection_select :approval1_id, Staff.where(id: approver1).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>'400px'}
   
             .form-group
               .col-sm-2.control-label
                 =f.label t 'staff_leave.approval2_id'
               .col-md-6
-                =f.collection_select :approval2_id, approver2_multipost.order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>'400px'}
-  
-  :javascript
-    $('.date-picker').datetimepicker({
-     timepicker:false,
-       format: "d-m-Y",
-       step: 15,
-       defaultSeconds: 0,
-       autoclose: true
-     });
-  
-    
- 
-
+                =f.collection_select :approval2_id, Staff.where(id: approver2).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>'400px'}

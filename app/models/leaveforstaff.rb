@@ -115,33 +115,33 @@ class Leaveforstaff < ActiveRecord::Base
         end
       end
     end
-
+    
     #Multi positions
     def approver1_list_multipost
       parent_post_ids=applicant.positions.map(&:parent_id)
-      parent_staff_ids=Position.where(id: parent_post_ids).pluck(:staff_id)
+      parent_staff_ids=Position.valid_posts.where(id: parent_post_ids).pluck(:staff_id)
     end
     
     def approver2_list_multipost
       parent_post_ids=applicant.positions.map(&:parent_id)
       grandparent_post_ids=Position.where(id: parent_post_ids).map(&:parent_id)
-      grandparent_staff_ids=Position.where(id: grandparent_post_ids).pluck(:staff_id)
+      grandparent_staff_ids=Position.valid_posts.where(id: grandparent_post_ids).pluck(:staff_id)
     end
     
     def set_approver1_default
-      if applicant.positions.first.parent.staff_id == []
+      if applicant.positions.valid_posts.first.parent.staff_id == []
         approver1 = nil
       else
-        approver1 = applicant.positions.first.parent.staff_id
+        approver1 = applicant.positions.valid_posts.first.parent.staff_id
       end    
     end
     
     def set_approver2_default
-      if applicant.positions.first.parent.is_root?
+      if applicant.positions.valid_posts.first.parent.is_root?
         approver2 = 0
       else
         # TODO - confirm with user
-        approver2 = applicant.positions.first.parent.parent.staff_id
+        approver2 = applicant.positions.valid_posts.first.parent.parent.staff_id
       end
     end 
       
