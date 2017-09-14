@@ -86,7 +86,8 @@
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_leaveforstaffs_path, :class => 'btn btn-default'
       /- if @leaveforstaff.college.code!='kskbjb'
-      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), borang_cuti_staff_leaveforstaff_path(@leaveforstaff, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('staff_leave.leave_form')
+      - permitted_to? :borang_cuti, :staff_leaveforstaffs do
+        = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), borang_cuti_staff_leaveforstaff_path(@leaveforstaff, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('staff_leave.leave_form')
       /- if @current_user.userable_id == @leaveforstaff.staff_id
       /- permitted_to? :edit, :staff_leaveforstaffs do
       /  = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_leaveforstaff_path(@leaveforstaff), :class => 'btn btn-primary'

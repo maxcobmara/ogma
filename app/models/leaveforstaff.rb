@@ -374,20 +374,25 @@ class Leaveforstaff < ActiveRecord::Base
   
     def repl_staff
       sibpos = applicant.positions.first.sibling_ids
+      descpos=applicant.positions.first.descendant_ids
       dept   = applicant.positions.first.unit
       sibs   = Position.where(["id IN (?) AND unit=?" , sibpos,dept]).pluck(:staff_id)
+      descs = Position.where("id IN(?) AND unit=?", descpos, dept).pluck(:staff_id)
       applicant = Array(staff_id)
-      sibs - applicant
+      sibs +descs - applicant
     end
     
     def repl_staff_multipost
       sibpos=Array.new
       dept=Array.new
+      descpos=Array.new
       applicant.positions.each{|x|sibpos+=x.sibling_ids}
+      applicant.positions.each{|x|descpos+=x.descendant_ids}
       applicant.positions.each{|x|dept << x.unit}
       sibs=Position.where('id IN(?) and unit IN(?)', sibpos, dept).pluck(:staff_id)
+      descs=Position.where('id IN(?) and unit IN(?)', descpos, dept).pluck(:staff_id)
       applicant=Array(staff_id)
-      sibs - applicant
+      sibs + descpos - applicant
     end
   
     def self.leavetype_when_day_taken_off(staffid, details_date) #details_date = checked date

@@ -26,7 +26,7 @@
                     - replacement_candidates=@leaveforstaff.repl_staff_multipost
                   - else
                     - replacement_candidates=@leaveforstaff.repl_staff
-                  = f.collection_select :replacement_id, Staff.where("id IN (?)", replacement_candidates), :id, :name, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'}
+                  = f.collection_select :replacement_id, Staff.where("id IN (?)", replacement_candidates), :id, :staff_with_rank_position, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'}
                 
               .form-group
                 .col-sm-3.control-label

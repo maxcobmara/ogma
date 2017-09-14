@@ -1956,6 +1956,10 @@ ms_MY:
     requestdate: Tarikh Permohonan
     address_on_leave: Alamat semasa bercuti
     phone_on_leave: No Telefon semasa bercuti
+    none: Tiada
+    awaiting_support: Menunggu sokongan
+    awaiting_approval: Menunggu kelulusan
+    by: oleh
   
   position:
     title: "Tugas & Tanggungjawab"
@@ -5154,6 +5158,10 @@ ms_MY:
     early_require_approval: " Pulang awal untuk kelulusan"
     fingerprint_require_approval: " Kenyataan Fingerprint untuk kelulusan"
     visitor_late_marine_docs: " Dokumentasi teknikal lewat/belum dipulangkan"
+    leave_notifications: "  Permohonan cuti staf untuk sokongan / kelulusan"
+    my_leave_approvals: Permohonan cuti anda pada
+    your_travel_approved: Permohonan perjalanan anda pada
+    has_been_approved: telah diluluskan
     
   equery:
     title: Carian Lanjut / Laporan
