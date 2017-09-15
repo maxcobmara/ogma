@@ -2060,6 +2060,10 @@ en:
     requestdate: Request Date
     address_on_leave: Address (during leave)
     phone_on_leave: Phone (during leave)
+    none: None
+    awaiting_support: Awaiting support
+    awaiting_approval: Awaiting approval
+    by: by
       
   position:
     title: "Tasks & Responsibilities"
@@ -5234,6 +5238,10 @@ en:
     early_require_approval: " Early return for approval"
     fingerprint_require_approval: " Fingerprint statement(s) for approval"
     visitor_late_marine_docs: " Late return technical documentations"
+    leave_notifications: "  Staff leave application for support / approval"
+    my_leave_approvals: Your leave request for
+    your_travel_approved: Your travel request for
+    has_been_approved: has been approved
     
   ###########
      

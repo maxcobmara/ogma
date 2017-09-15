@@ -25,6 +25,7 @@ authorization do
    has_permission_on :users, :to => :delete, :join_by => :and do
      if_attribute :college_id => is {user.college_id}
      if_attribute :userable_id => is {nil}
+     if_attribute :email => is_not {User.where(college_id: user.college_id).joins(:roles).where('roles.authname=?', 'developer').pluck(:email).first}
    end
    has_permission_on :colleges, :to => [:show, :update] do
      if_attribute :id => is {user.college_id}

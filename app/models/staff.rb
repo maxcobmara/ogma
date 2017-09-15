@@ -148,6 +148,8 @@ class Staff < ActiveRecord::Base
   #validate :coemail, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :message => I18n.t('activerecord.errors.messages.invalid') }		#temp remark-staff attendance-5Aug2014
 
   #--------------------Declerations----------------------------------------------------
+  scope :valid_staffs, -> { Staff.joins(:positions).where('positions.id NOT IN (?)', Position.initial_posts) }   #added 14thSept2017
+  
    def mykad_holder
      country_cd==1 || country_cd==3
    end
@@ -323,11 +325,13 @@ class Staff < ActiveRecord::Base
     [staff_with_rank, id]
   end
   
-  #5thSept2017-start
+  #5thSept2017-start - NOTE : #per staff record
   # TODO - production DB - remove 'Jangan Delete Dulu', meanwhile use below - SA Indx pg
   def valid_posts
-    initial_amsas_posts=[Position.where(name: 'Jangan Delete Dulu').first.id]+Position.where(name: 'Jangan Delete Dulu').first.descendant_ids
-    positions.pluck(:id)-initial_amsas_posts
+    #initial_amsas_posts=[Position.where(name: 'Jangan Delete Dulu').first.id]+Position.where(name: 'Jangan Delete Dulu').first.descendant_ids
+    #positions.pluck(:id)-initial_amsas_posts
+    #rev 14thSept2017
+    positions.pluck(:id)-Position.initial_posts
   end
   
   def valid_position_unit
@@ -354,13 +358,13 @@ class Staff < ActiveRecord::Base
   #Multi positions - for use in Leaveforstaff
     def approver1_list_multipost
       parent_post_ids=positions.map(&:parent_id)
-      parent_staff_ids=Position.where(id: parent_post_ids).pluck(:staff_id)
+      parent_staff_ids=Position.valid_posts.where(id: parent_post_ids).pluck(:staff_id)
     end
     
     def approver2_list_multipost
       parent_post_ids=positions.map(&:parent_id)
       grandparent_post_ids=Position.where(id: parent_post_ids).map(&:parent_id)
-      grandparent_staff_ids=Position.where(id: grandparent_post_ids).pluck(:staff_id)
+      grandparent_staff_ids=Position.valid_posts.where(id: grandparent_post_ids).pluck(:staff_id)
     end
     
     def valid_for_removal

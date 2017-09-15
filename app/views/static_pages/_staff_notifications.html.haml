@@ -1,10 +1,10 @@
 %ul.nav.nav-pills.nav-stacked{role: "tablist"}
  - if leave_notifications > 0
-  %li= link_to content_tag(:span, "#{leave_notifications}", class: "badge") + "  Leave application for approval", staff_leaveforstaffs_path
+  %li= link_to content_tag(:span, "#{leave_notifications}", class: "badge") + (t 'notifications.leave_notifications'), staff_leaveforstaffs_path
  - if my_leave_approvals.size > 0
   - counter = 0
   - my_leave_approvals.each do |leave|
-   %li= link_to "Your leave request for #{leave[1]} has been approved", staff_leaveforstaff_path("#{leave[0]}")
+   %li= link_to "  #{(t 'notifications.my_leave_approvals')} #{leave[1]} #{(t 'notifications.has_been_approved')}", staff_leaveforstaff_path("#{leave[0]}")
  - if skts_endorse_ready > 0
   %li= link_to content_tag(:span, "#{skts_endorse_ready}", class: "badge") + " Staff SKT ready for endorsement", staff_staff_appraisals_path
  - if skt_review_ready > 0
@@ -25,7 +25,7 @@
   - counter = 0
   - your_travel_approved.each do |travel|
    - if TravelRequest.find(travel[0]).travel_claim_logs.count==0
-    %li= link_to "Your travel request for #{travel[1].strftime("%b-%d")} has been approved", staff_travel_request_path("#{travel[0]}")
+    %li= link_to "#{(t 'notifications.your_travel_approved')} #{travel[1].strftime("%b-%d")} #{(t 'notifications.has_been_approved')}", staff_travel_request_path("#{travel[0]}")
 
  #28Nov2016-start
  - if travel_claims_for_checking > 0

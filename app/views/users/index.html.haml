@@ -60,7 +60,7 @@
                   =(t 'user.user_not_link_entity')
             %td=translated_list_comma(user.roles.pluck(:authname))
             /=list_comma(user.roles.pluck(:name))
-            - if is_developer?
+            - if is_developer? && reg_developer(user.id)==false
               %td= link_to content_tag(:i, "", class: "fa fa-trash-o"), user_path(user), :method => 'delete',:data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }
             - if is_admin?
               %td

@@ -117,6 +117,10 @@ module ApplicationHelper
    current_user.userable_type == 'Staff'
   end
   
+  def reg_developer(usr)
+    User.joins(:roles).where('roles.authname=?', 'developer').pluck(:id).include?(usr)
+  end
+  
   def is_developer?
     current_user.roles.pluck(:authname).include?('developer')==true
   end

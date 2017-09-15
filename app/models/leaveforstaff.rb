@@ -115,33 +115,33 @@ class Leaveforstaff < ActiveRecord::Base
         end
       end
     end
-
+    
     #Multi positions
     def approver1_list_multipost
       parent_post_ids=applicant.positions.map(&:parent_id)
-      parent_staff_ids=Position.where(id: parent_post_ids).pluck(:staff_id)
+      parent_staff_ids=Position.valid_posts.where(id: parent_post_ids).pluck(:staff_id)
     end
     
     def approver2_list_multipost
       parent_post_ids=applicant.positions.map(&:parent_id)
       grandparent_post_ids=Position.where(id: parent_post_ids).map(&:parent_id)
-      grandparent_staff_ids=Position.where(id: grandparent_post_ids).pluck(:staff_id)
+      grandparent_staff_ids=Position.valid_posts.where(id: grandparent_post_ids).pluck(:staff_id)
     end
     
     def set_approver1_default
-      if applicant.positions.first.parent.staff_id == []
+      if applicant.positions.valid_posts.first.parent.staff_id == []
         approver1 = nil
       else
-        approver1 = applicant.positions.first.parent.staff_id
+        approver1 = applicant.positions.valid_posts.first.parent.staff_id
       end    
     end
     
     def set_approver2_default
-      if applicant.positions.first.parent.is_root?
+      if applicant.positions.valid_posts.first.parent.is_root?
         approver2 = 0
       else
         # TODO - confirm with user
-        approver2 = applicant.positions.first.parent.parent.staff_id
+        approver2 = applicant.positions.valid_posts.first.parent.parent.staff_id
       end
     end 
       
@@ -374,20 +374,25 @@ class Leaveforstaff < ActiveRecord::Base
   
     def repl_staff
       sibpos = applicant.positions.first.sibling_ids
+      descpos=applicant.positions.first.descendant_ids
       dept   = applicant.positions.first.unit
       sibs   = Position.where(["id IN (?) AND unit=?" , sibpos,dept]).pluck(:staff_id)
+      descs = Position.where("id IN(?) AND unit=?", descpos, dept).pluck(:staff_id)
       applicant = Array(staff_id)
-      sibs - applicant
+      sibs +descs - applicant
     end
     
     def repl_staff_multipost
       sibpos=Array.new
       dept=Array.new
+      descpos=Array.new
       applicant.positions.each{|x|sibpos+=x.sibling_ids}
+      applicant.positions.each{|x|descpos+=x.descendant_ids}
       applicant.positions.each{|x|dept << x.unit}
       sibs=Position.where('id IN(?) and unit IN(?)', sibpos, dept).pluck(:staff_id)
+      descs=Position.where('id IN(?) and unit IN(?)', descpos, dept).pluck(:staff_id)
       applicant=Array(staff_id)
-      sibs - applicant
+      sibs + descpos - applicant
     end
   
     def self.leavetype_when_day_taken_off(staffid, details_date) #details_date = checked date

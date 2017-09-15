@@ -17,11 +17,11 @@
         - if groupped_leaves.count == 1
           %th{width: '20%'}=current_user.college.code=='kskbjb' ? sort_link(@search, :staff_id, t('staff_leave.id')) : sort_link(@search, :staff_id, t('staff_leave.staff_id'))
         %th{width: '10%'}= sort_link(@search, :leavetype, t('staff_leave.leavetype'))
-        %th{width: '15%'}= sort_link(@search, :leavestartdate, t('staff_leave.from')) + ("/") + sort_link(@search, :leavenddate, t('staff_leave.to')) 
-        %th{width: '10%'}= sort_link(@search, :leavedays, t('staff_leave.duration')) 
+        %th{width: '10%'}= sort_link(@search, :leavestartdate, t('staff_leave.from')) + ("/") + sort_link(@search, :leavenddate, t('staff_leave.to')) 
+        %th{width: '8%'}= sort_link(@search, :leavedays, t('staff_leave.duration')) 
         /%th{width: '25%'}= sort_link(@search, :reason, t('staff_leave.reason'))
-        %th{width: '15%'}=(t 'staff_leave.supported')+"?"
-        %th{width: '10%'}=(t 'staff_leave.approved')+"?"
+        %th{width: '16%'}=(t 'staff_leave.supported')+"?"
+        %th{width: '16%'}=(t 'staff_leave.approved')+"?"
         %th{width: '20%'}= sort_link(@search, :replacement_id, t('staff_leave.replacement'))  
 
     %tbody
@@ -41,9 +41,34 @@
             %td= leaveforstaff.leave_for.to_s + (" ") +   (t 'staff_leave.days')
             /%td= leaveforstaff.reason
             %td
-              - if leaveforstaff.approval1?
-                = leaveforstaff.approval1_id.blank? ? (t 'not_required') : (fa_icon('check'))
-            %td= leaveforstaff.approver2? ? fa_icon('check') : fa_icon('times')
-            %td= leaveforstaff.replacement_id.blank? ? "None" : leaveforstaff.replacement.staff_with_rank
+              - if leaveforstaff.approval1_id.blank?
+                =t 'not_required'
+              - else
+                - if leaveforstaff.approval1==true
+                  = t 'staff_leave.supported'
+                - elsif leaveforstaff.approval1==false
+                  .text-red=t 'staff_leave.rejected'
+                - else
+                  - acolor=leaveforstaff.approval1_id == current_user.userable_id ? "blue" : "#222"
+                  %span{style: "color: #{acolor};"}
+                    =t 'staff_leave.awaiting_support'
+                    - if @is_admin
+                      = leaveforstaff.approval1_id.blank? ? "" : "#{(t 'staff_leave.by')} #{leaveforstaff.seconder.staff_with_rank_position}"
+            %td
+              - if leaveforstaff.approval2_id.blank? 
+                = (t 'not_required')
+              - else
+                - if leaveforstaff.approver2==true
+                  =t 'staff_leave.approved'
+                - elsif leaveforstaff.approver2==false  
+                  =t 'staff_leave.rejected'
+                - else
+                  - if leaveforstaff.approval1==true
+                    - acolor=(leaveforstaff.approval2_id == current_user.userable_id) && leaveforstaff.approval1==true ? "blue" : "#222"
+                    %span{style: "color: #{acolor};"}
+                      = t 'staff_leave.awaiting_approval'
+                      - if @is_admin
+                        = leaveforstaff.approval2_id.blank? ? "" : "#{(t 'staff_leave.by')} #{leaveforstaff.approver.staff_with_rank_position}"
+            %td= leaveforstaff.replacement_id.blank? ? (t 'staff_leave.none') : leaveforstaff.replacement.staff_with_rank
          
   .right{style:"padding:0 30px; margin:0;"}= paginate @leaveforstaffs, :theme => 'twitter-bootstrap-3'
