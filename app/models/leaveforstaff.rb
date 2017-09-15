@@ -1,4 +1,5 @@
 class Leaveforstaff < ActiveRecord::Base
+    include EventsHelper
   
     paginates_per 10  
   
@@ -306,11 +307,7 @@ class Leaveforstaff < ActiveRecord::Base
     end
   
     def show_to_day
-      if (leavenddate - leavestartdate) == 0
-        ""
-      else
-        (" ") + (leavenddate.strftime("%d %b %Y")).to_s
-      end
+      shortmonthname(leavenddate)
     end
   
 
@@ -421,6 +418,10 @@ class Leaveforstaff < ActiveRecord::Base
       else
         checkeddate_leavetype=(DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == Leaveforstaff.find(@leave_id).leavetype}).map {|disp, value| disp}[0] 
       end
+    end
+    
+    def render_leave_type
+      (DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == leavetype}).map {|disp, value| disp} [0]
     end
  
   end

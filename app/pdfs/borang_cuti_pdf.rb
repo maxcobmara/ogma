@@ -24,7 +24,7 @@ class Borang_cutiPdf < Prawn::Document
   end
   
   def table_applicant
-    data=[[{content: "Kepada : <u>#{@leaveforstaff.applicant.staff_with_rank}</u>", colspan: 3}], [{content: "Saya memohon kebenaran cuti rehat selama 2 hari mulai<u> #{@leaveforstaff.leavestartdate.strftime('%d-%m-%Y')}</u> dan <u>#{@leaveforstaff.leavenddate.strftime('%d-%m-%Y')}</u>", colspan: 3}],
+    data=[[{content: "Kepada : <u>#{@leaveforstaff.seconder.staff_with_rank}</u>", colspan: 3}], [{content: "Saya memohon kebenaran cuti rehat selama #{@leaveforstaff.leave_for} hari mulai<u> #{@leaveforstaff.leavestartdate.strftime('%d-%m-%Y')}</u> dan <u>#{@leaveforstaff.leavenddate.strftime('%d-%m-%Y')}</u>", colspan: 3}],
           ["(i) Semasa saya bercuti #{@leaveforstaff.replacement_id.nil? ? '' : '<u>'+@leaveforstaff.replacement.staff_with_rank+'</u>'}", 
            {content: "Tandatangan Pemohon : _____________________", colspan:2}],
           ["akan menjalankan tugas saya.", "Nama Penuh ", ": #{@leaveforstaff.applicant.staff_with_rank}"],

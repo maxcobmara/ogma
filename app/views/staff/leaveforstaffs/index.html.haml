@@ -34,8 +34,11 @@
           %tr
             - if groupped_leaves.count==1
               %td= current_user.college.code=='kskbjb' ? (link_to leaveforstaff.applicant.try(:mykad_with_staff_name), staff_leaveforstaff_path(leaveforstaff)) : (link_to leaveforstaff.applicant.staff_with_rank, staff_leaveforstaff_path(leaveforstaff))
-            %td=link_to ((DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp} [0]), staff_leaveforstaff_path(leaveforstaff)
             %td
+              /=link_to ((DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp} [0]), staff_leaveforstaff_path(leaveforstaff)
+              =link_to leaveforstaff.render_leave_type, staff_leaveforstaff_path(leaveforstaff)
+            %td
+              /shortmonthname(leavenddate)
               = leaveforstaff.leavestartdate.try(:strftime, '%d-%m-%Y')
               %br= leaveforstaff.leavenddate.try(:strftime, '%d-%m-%Y')
             %td= leaveforstaff.leave_for.to_s + (" ") +   (t 'staff_leave.days')
@@ -49,8 +52,9 @@
                 - elsif leaveforstaff.approval1==false
                   .text-red=t 'staff_leave.rejected'
                 - else
-                  - acolor=leaveforstaff.approval1_id == current_user.userable_id ? "blue" : "#222"
-                  %span{style: "color: #{acolor};"}
+                  - if leaveforstaff.approval1_id == current_user.userable_id
+                    = link_to (fa_icon("thumbs-o-up", text: (t 'staff_leave.support'))), processing_level_1_staff_leaveforstaff_path(leaveforstaff)
+                  - else
                     =t 'staff_leave.awaiting_support'
                     - if @is_admin
                       = leaveforstaff.approval1_id.blank? ? "" : "#{(t 'staff_leave.by')} #{leaveforstaff.seconder.staff_with_rank_position}"
@@ -64,8 +68,9 @@
                   =t 'staff_leave.rejected'
                 - else
                   - if leaveforstaff.approval1==true
-                    - acolor=(leaveforstaff.approval2_id == current_user.userable_id) && leaveforstaff.approval1==true ? "blue" : "#222"
-                    %span{style: "color: #{acolor};"}
+                    - if leaveforstaff.approval2_id==current_user.userable_id && leaveforstaff.approval1==true
+                      = link_to (fa_icon("thumbs-o-up", text: (t 'staff_leave.support'))), processing_level_2_staff_leaveforstaff_path(leaveforstaff)
+                    - else
                       = t 'staff_leave.awaiting_approval'
                       - if @is_admin
                         = leaveforstaff.approval2_id.blank? ? "" : "#{(t 'staff_leave.by')} #{leaveforstaff.approver.staff_with_rank_position}"

@@ -1,4 +1,4 @@
-<%=t('staff_leave.notify_to')%> :  <%=@leaveforstaff.seconder.staff_with_rank %>
+<%=t('staff_leave.notify_to')%> : <%=@leaveforstaff.approval1.blank? @leaveforstaff.seconder.staff_with_rank : @leaveforstaff.approver.staff_with_rank %>
 
 <%= render :partial => 'application_details', :locals => {:leaveforstaff => @leaveforstaff, :view => @view}%>
 
