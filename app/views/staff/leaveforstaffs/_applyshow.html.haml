@@ -6,7 +6,7 @@
   %dd= @leaveforstaff.requestdate.try(:strftime, '%d-%m-%Y')
 
   %dt= t 'staff_leave.leavetype'
-  %dd= (DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == @leaveforstaff.leavetype}).map {|disp, value| disp} [0]
+  %dd= @leaveforstaff.render_leave_type
 
   %dt= t 'staff_leave.from' 
   %dd= @leaveforstaff.leavestartdate.try(:strftime, "%d %b %Y")
@@ -27,4 +27,4 @@
   %dd= @leaveforstaff.try(:reason)
 
   %dt= t 'staff_leave.notes'
-  %dd= @leaveforstaff.try(:notes)
+  %dd{style: 'padding-left: 70px;'}= @leaveforstaff.try(:notes)

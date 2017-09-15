@@ -2,26 +2,55 @@ class Staff::LeaveforstaffsController < ApplicationController
   filter_access_to :index, :new, :create, :leaveforstaff_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy,  :processing_level_1, :processing_level_2, :borang_cuti, :attribute_check => true
   
-  before_action :set_admin, only: [:new, :edit, :index]
+  before_action :set_admin, only: [:new, :edit, :index, :create, :update]
   before_action :set_index_list, only: [:index, :leaveforstaff_list]
   before_action :set_leaveforstaff, only: [:show, :edit, :update, :destroy]
+  before_action :set_new_var, only: [:new, :create]
+  before_action :set_edit_var, only: [:edit, :update]
 
   def index
     @leaveforstaffs = @leaveforstaffs.order(staff_id: :asc, leavestartdate: :asc).page(params[:page]||1)
   end
   
-  def show
-    @leaveforstaff = Leaveforstaff.find(params[:id])
+  def new
+    @leaveforstaff = Leaveforstaff.new
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @leaveforstaff }
+    end
+  end
+  
+  def create
+    @leaveforstaff = Leaveforstaff.new(leaveforstaff_params)
+    @selected=params[:leaveforstaff][:staff_id]
+    respond_to do |format|
+      if @leaveforstaff.save
+        #LeaveforstaffsMailer.staff_leave_notification(@leaveforstaff, request.host, view_context).deliver
+        LeaveforstaffsMailer.support_approve_leave_notification(@leaveforstaff, request.host, view_context).deliver
+        format.html { redirect_to(staff_leaveforstaff_path(@leaveforstaff), notice:t('staff_leave.new_notice'))}
+        format.xml  { render :xml => @leaveforstaff, :status => :created, :location => @leaveforstaff }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @leaveforstaff.errors, :status => :unprocessable_entity }
+      end
+    end
   end
   
   def edit
-    @leaveforstaff = Leaveforstaff.find(params[:id])
   end
   
   def update
-    @leaveforstaff = Leaveforstaff.find(params[:id])
     respond_to do |format|
       if @leaveforstaff.update(leaveforstaff_params)
+
+        if @leaveforstaff.approval1==true && @leaveforstaff.approval2_id!=nil && @leaveforstaff.approver2!=true
+          #LeaveforstaffsMailer.approve_leave_notification(@leaveforstaff, request.host, view_context).deliver 
+          LeaveforstaffsMailer.support_approve_leave_notification(@leaveforstaff, request.host, view_context).deliver 
+	end
+	if (@leaveforstaff.approval1==true && (@leaveforstaff.approver2==true || @leaveforstaff.approver2=nil))
+	  LeaveforstaffsMailer.successfull_leave_notification(@leaveforstaff, request.host, view_context).deliver
+	end
+      
         format.html { redirect_to staff_leaveforstaff_path, notice: t('staff_leave.update_notice')}
         format.json { head :no_content }
       else
@@ -31,23 +60,10 @@ class Staff::LeaveforstaffsController < ApplicationController
     end
   end
   
-  def create
-    @leaveforstaff = Leaveforstaff.new(leaveforstaff_params)
-
-    respond_to do |format|
-      if @leaveforstaff.save
-        #LeaveforstaffsMailer.staff_leave_notification(@leaveforstaff).deliver
-        format.html { redirect_to(staff_leaveforstaff_path(@leaveforstaff), notice:t('staff_leave.new_notice'))}
-        format.xml  { render :xml => @leaveforstaff, :status => :created, :location => @leaveforstaff }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @leaveforstaff.errors, :status => :unprocessable_entity }
-      end
-    end
+  def show
   end
-   
+ 
   def destroy
-    @leaveforstaff = Leaveforstaff.find(params[:id])
     @leaveforstaff.destroy
 
     respond_to do |format|
@@ -55,19 +71,9 @@ class Staff::LeaveforstaffsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
-  def new
-    @leaveforstaff = Leaveforstaff.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @leaveforstaff }
-    end
-  end
 
   def processing_level_1
     @leaveforstaff = Leaveforstaff.find(params[:id])
-    #LeaveforstaffsMailer.approve_leave_notification(@leaveforstaff).deliver 
   end
   
   def processing_level_2
@@ -119,6 +125,15 @@ class Staff::LeaveforstaffsController < ApplicationController
         @search = Leaveforstaff.sstaff2(current_user.userable.id).search(params[:q])
       end 
       @leaveforstaffs = @search.result
+    end
+    
+    def set_new_var
+      @staff_list=@is_admin ? Staff.valid_staffs.order(rank_id: :asc, name: :asc) : Staff.where(id: current_user.userable_id)
+    end
+    
+    def set_edit_var
+      @staff_list=Staff.where(id: @leaveforstaff.staff_id)
+      @selected=@leaveforstaff.staff_id
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -11,13 +11,7 @@
           .col-sm-2.control-label
             = f.label t 'staff_leave.name', for: :staff_id
           .col-md-3
-            - if @leaveforstaff.staff_id
-              - staff_list=Staff.where(id: @leaveforstaff.staff_id)
-              - selected=@leaveforstaff.staff_id
-            - else
-              - staff_list= @is_admin ? Staff.valid_staffs.order(rank_id: :asc, name: :asc) : Staff.where(id: current_user.userable_id)
-              - selected=current_user.userable_id
-            = f.collection_select :staff_id, staff_list, :id,  :staff_with_rank_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>selected},{class: 'selectpicker mandatory', "data-width"=>'400px'}
+            = f.collection_select :staff_id, @staff_list, :id,  :staff_with_rank_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@selected},{class: 'selectpicker mandatory', "data-width"=>'400px'}
 
         .form-group
           .col-sm-2.control-label

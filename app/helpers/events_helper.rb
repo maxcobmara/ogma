@@ -29,6 +29,11 @@ module EventsHelper
     I18n.t(:'date.abbr_month_names')[str]
   end
   
+  #also use in leaveforstaff.rb
+  def shortmonthname(adate)
+    "#{adate.strftime('%d')} #{ I18n.t(:'date.abbr_month_names')[adate.month]} #{adate.strftime('%Y')}"
+  end
+  
   def fullmonthname(adate)
     "#{adate.strftime('%d')} #{ I18n.t(:'date.month_names')[adate.month]} #{adate.strftime('%Y')}"
   end

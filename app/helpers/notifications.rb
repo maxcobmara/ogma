@@ -32,7 +32,7 @@ module Notifications
  end
 
  def my_leave_approvals
-  Leaveforstaff.where(staff_id: current_staff_id).where(approval1: true).where(approval1: true).where("leavestartdate > ?", Date.today).pluck(:id, :leavestartdate)
+  Leaveforstaff.where(staff_id: current_staff_id).where(approval1: true).where('approver2 is true OR approval2_id is null').where("leavestartdate > ?", Date.today).pluck(:id, :leavestartdate)
  end
 
  def skts_endorse_ready

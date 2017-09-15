@@ -4,7 +4,7 @@
  - if my_leave_approvals.size > 0
   - counter = 0
   - my_leave_approvals.each do |leave|
-   %li= link_to "  #{(t 'notifications.my_leave_approvals')} #{leave[1]} #{(t 'notifications.has_been_approved')}", staff_leaveforstaff_path("#{leave[0]}")
+   %li= link_to "  #{(t 'notifications.my_leave_approvals')} #{leave[1].try(:strftime, '%d-%m-%Y')} #{(t 'notifications.has_been_approved')}", staff_leaveforstaff_path("#{leave[0]}")
  - if skts_endorse_ready > 0
   %li= link_to content_tag(:span, "#{skts_endorse_ready}", class: "badge") + " Staff SKT ready for endorsement", staff_staff_appraisals_path
  - if skt_review_ready > 0

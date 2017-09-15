@@ -2064,6 +2064,16 @@ en:
     awaiting_support: Awaiting support
     awaiting_approval: Awaiting approval
     by: by
+    support_subject: Staff leave application for support
+    approval_subject: Staff leave application for approval
+    successful_subject: Staff leave application is approved
+    apply_for_leave: "apply for leave."
+    details_application: Details for leave application
+    decision_link: "Click this link to make decision."
+    notify_to: To
+    view_details: View leave details
+    support_status: Support status
+    application_status: Application status
       
   position:
     title: "Tasks & Responsibilities"

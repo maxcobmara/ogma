@@ -1886,7 +1886,7 @@ ms_MY:
       pppid: 'Nama PPP'
       title_part9: Bahagian IX - Ulasan Keseluruhan Oleh Pegawai Penilai Kedua
       part9_desc: 'PPK hendaklah memberi ulasan keseluruhan pencapaian PYD berasaskan ulasan keseluruhan oleh PPP'
-      ppkid: 'Name Pegawai Penilai Kedua (PPK)'      
+      ppkid: 'Name Pegawai Penilai Kedua (PPK)'
       
   staff_leave:
     leave: Cuti Staf
@@ -1960,6 +1960,16 @@ ms_MY:
     awaiting_support: Menunggu sokongan
     awaiting_approval: Menunggu kelulusan
     by: oleh
+    support_subject: Permohonan cuti staf untuk sokongan
+    approval_subject: Permohonan cuti staf untuk kelulusan
+    successful_subject: Permohonan cuti staf telah diluluskan
+    apply_for_leave: "mohon untuk bercuti."
+    details_application: Butiran permohonan cuti
+    decision_link: "Klik pautan ini untuk membuat keputusan."
+    notify_to: Kepada
+    view_details: Semak butiran cuti
+    support_status: Status sokongan
+    application_status: Status permohonan
   
   position:
     title: "Tugas & Tanggungjawab"

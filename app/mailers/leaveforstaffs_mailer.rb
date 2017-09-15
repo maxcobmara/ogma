@@ -1,21 +1,27 @@
 class LeaveforstaffsMailer < ActionMailer::Base
-  default from: "icms.kskb.jb@gmail.com"
   
-  def staff_leave_notification(leaveforstaff)
+  default from: College.where(code: Page.find(1).college.code).first.library_email #ENV["GMAIL_USERNAME"]
+  
+  def support_approve_leave_notification(leaveforstaff, ahost, view)
+    apage=leaveforstaff.approval1==true ? "processing_level_2" : "processing_level_1"
+    arecipient=College.where(code: Page.find(1).college.code).first.library_email
+    asubject=leaveforstaff.approval1==true ? I18n.t('staff_leave.approval_subject') : I18n.t('staff_leave.support_subject')
+    #arecipient=@leaveforstaff.approval1==true ? @leaveforstaff.approver.coemail : @leaveforstaff.seconder.coemail
     @leaveforstaff = leaveforstaff
-    @url = 'http://localhost:3000/staff/leaveforstaffs/19/processing_level_1?locale=ms_MY'
-    mail(to: @leaveforstaff.applicant.positions.first.parent.staff.coemail, subject: "Staff Leave Notification") do |format|
-      format.html { render action: 'staff_leave_notification' }
-      format.text { render action: 'staff_leave_notification' }
-    end
+    @view=view
+    @url = "http://#{ahost}:3003/staff/leaveforstaffs/#{leaveforstaff.id}/#{apage}?locale=#{I18n.locale}"
+    mail(to: arecipient, subject: asubject) 
   end
   
-  def approve_leave_notification(leaveforstaff)
+  def successfull_leave_notification(leaveforstaff, ahost, view)
+    arecipient=College.where(code: Page.find(1).college.code).first.library_email
+    #arecipient=@leaveforstaff.applicant.coemail
     @leaveforstaff = leaveforstaff
-    @url = 'http://localhost:3000/staff/leaveforstaffs/19/processing_level_1?locale=ms_MY'
-    mail(to: @leaveforstaff.applicant.positions.first.parent.parent.staff.coemail, subject: "Staff Leave Notification") do |format|
-      format.html { render action: 'staff_leave_notification' }
-      format.text { render action: 'staff_leave_notification' }
-    end
+    @view=view
+    @url = "http://#{ahost}:3003/staff/leaveforstaffs/#{leaveforstaff.id}?locale=#{I18n.locale}"
+    mail(to: arecipient, subject: I18n.t('staff_leave.successful_subject')) 
   end
+  
+   # TODO - 3)raise error when network not avai? / cannot send email (like amsas - last visit), data still saved - to diff
+  
 end
