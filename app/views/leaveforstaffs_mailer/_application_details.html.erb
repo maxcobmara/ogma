@@ -2,14 +2,12 @@
 
 <u><%=t('staff_leave.details_application')%> :</u>
 
-<pre>
 <table border='0'>
-<tr><td><%=t('staff_leave.name')%></td><td> : </td><td><%=h leaveforstaff.applicant.staff_with_rank_position %></td></tr>
-<tr><td><%=t('staff_leave.leavetype')%></td><td> : </td><td><%=h leaveforstaff.render_leave_type %></td></tr>
-<tr><td><%=t('staff_leave.from')%></td><td> : </td><td><%=h view.shortmonthname(leaveforstaff.leavestartdate) %></td></tr>
-<tr><td><%=t('staff_leave.to')%></td><td> : </td><td><%=h leaveforstaff.show_to_day %></td></tr>
-<tr><td><%=t('staff_leave.for')%></td><td> : </td><td><%=h leaveforstaff.leave_for.to_s + (" ")+(t 'staff_leave.days') %></td></tr>
-<tr><td><%=t('staff_leave.reason')%></td><td> : </td><td><%=h leaveforstaff.reason %></td></tr>
-<tr><td><%=t('staff_leave.notes')%></td><td> : </td><td><%=h leaveforstaff.notes %></td></tr>
+    <tr><td><%=t('staff_leave.name')%></td><td> : </td><td><%=h leaveforstaff.applicant.staff_with_rank_position %></td></tr>
+    <tr><td><%=t('staff_leave.leavetype')%></td><td> : </td><td><%=h leaveforstaff.render_leave_type %></td></tr>
+    <tr><td><%=t('staff_leave.from')%></td><td> : </td><td><%=h view.shortmonthname(leaveforstaff.leavestartdate) %></td></tr>
+    <tr><td><%=t('staff_leave.to')%></td><td> : </td><td><%=h leaveforstaff.show_to_day %></td></tr>
+    <tr><td><%=t('staff_leave.for')%></td><td> : </td><td><%=h leaveforstaff.leave_for.to_s + (" ")+(t 'staff_leave.days') %></td></tr>
+    <tr><td><%=t('staff_leave.reason')%></td><td> : </td><td><%=h leaveforstaff.reason %></td></tr>
+    <tr><td><%=t('staff_leave.notes')%></td><td> : </td><td><%=h leaveforstaff.notes %></td></tr>
 </table>
-</pre>

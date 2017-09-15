@@ -1,6 +1,0 @@
-<%=t('staff_leave.notify_to')%> :  <%=@leaveforstaff.approver.staff_with_rank %>
-
-<%= render :partial => 'application_details', :locals => {:leaveforstaff => @leaveforstaff, :view => @view}%>
-
-<p><%= link_to (t 'staff_leave.decision_link'), @url%></p>
-
