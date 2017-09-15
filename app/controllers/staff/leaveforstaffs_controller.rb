@@ -2,7 +2,7 @@ class Staff::LeaveforstaffsController < ApplicationController
   filter_access_to :index, :new, :create, :leaveforstaff_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy,  :processing_level_1, :processing_level_2, :borang_cuti, :attribute_check => true
   
-  before_action :set_admin, only: [:new, :edit, :index]
+  before_action :set_admin, only: [:new, :edit, :index, :create, :update]
   before_action :set_index_list, only: [:index, :leaveforstaff_list]
   before_action :set_leaveforstaff, only: [:show, :edit, :update, :destroy]
   before_action :set_new_var, only: [:new, :create]
@@ -22,6 +22,7 @@ class Staff::LeaveforstaffsController < ApplicationController
   
   def create
     @leaveforstaff = Leaveforstaff.new(leaveforstaff_params)
+    @selected=params[:leaveforstaff][:staff_id]
     respond_to do |format|
       if @leaveforstaff.save
         #LeaveforstaffsMailer.staff_leave_notification(@leaveforstaff, request.host, view_context).deliver
@@ -128,7 +129,6 @@ class Staff::LeaveforstaffsController < ApplicationController
     
     def set_new_var
       @staff_list=@is_admin ? Staff.valid_staffs.order(rank_id: :asc, name: :asc) : Staff.where(id: current_user.userable_id)
-      @selected=current_user.userable_id 
     end
     
     def set_edit_var

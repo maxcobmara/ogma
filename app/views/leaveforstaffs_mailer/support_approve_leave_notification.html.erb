@@ -1,5 +1,9 @@
-<%=t('staff_leave.notify_to')%> : <%=@leaveforstaff.approval1.blank? @leaveforstaff.seconder.staff_with_rank : @leaveforstaff.approver.staff_with_rank %>
+<%=t('staff_leave.notify_to')%> : <%=@leaveforstaff.approval1==true ? @leaveforstaff.approver.staff_with_rank : @leaveforstaff.seconder.staff_with_rank %>
+
+<p><%=t('staff_leave.staff_id')%> : <b><%= @leaveforstaff.applicant.staff_with_rank_position %></b> <%=t('staff_leave.apply_for_leave')%></p>
 
 <%= render :partial => 'application_details', :locals => {:leaveforstaff => @leaveforstaff, :view => @view}%>
+
+<p><b><%=@leaveforstaff.approval1==true ? "#{(t 'staff_leave.support_status')} : #{(t 'staff_leave.supported')} #{t 'staff_leave.by'} #{@leaveforstaff.seconder.staff_with_rank}" : "" %></b></p>
 
 <p><%= link_to (t 'staff_leave.decision_link'), @url%></p>

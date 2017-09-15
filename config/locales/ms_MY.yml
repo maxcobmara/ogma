@@ -1968,6 +1968,8 @@ ms_MY:
     decision_link: "Klik pautan ini untuk membuat keputusan."
     notify_to: Kepada
     view_details: Semak butiran cuti
+    support_status: Status sokongan
+    application_status: Status permohonan
   
   position:
     title: "Tugas & Tanggungjawab"
