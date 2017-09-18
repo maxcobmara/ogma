@@ -325,6 +325,11 @@ class Staff < ActiveRecord::Base
     [staff_with_rank, id]
   end
   
+  #18Sept2017 - usage leaveforstaff.rb (set_approver1_default, set_approver2_default)
+  def valid_positions
+    Position.where(id: valid_posts)
+  end
+  
   #5thSept2017-start - NOTE : #per staff record
   # TODO - production DB - remove 'Jangan Delete Dulu', meanwhile use below - SA Indx pg
   def valid_posts
