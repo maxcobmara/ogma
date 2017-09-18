@@ -576,7 +576,7 @@ authorization do
      has_permission_on :staff_staff_shifts, :to => :manage
      has_permission_on :staff_holidays, :to => [:manage, :holiday_list]
      has_permission_on :staff_titles, :to => :manage
-     has_permission_on :staff_positions, :to =>[:manage, :maklumat_perjawatan, :organisation_chart, :position_list]
+     has_permission_on :staff_positions, :to =>[:manage, :maklumat_perjawatan, :organisation_chart, :listing, :position_list]
      has_permission_on :banks, :to => :manage
      has_permission_on :insurance_companies, :to => :manage
      has_permission_on :staff_employgrades, :to => [:manage, :employgrade_list]
@@ -1210,16 +1210,16 @@ authorization do
   
   #2)OK - all 4 - 4Feb2016
   role :positions_module_admin do
-     has_permission_on :staff_positions, :to => [:manage, :organisation_chart, :position_list]
+     has_permission_on :staff_positions, :to => [:manage, :organisation_chart, :listing, :position_list]
   end
   role :positions_module_viewer do
-     has_permission_on :staff_positions, :to => [:read, :organisation_chart, :position_list]
+     has_permission_on :staff_positions, :to => [:read, :organisation_chart, :listing, :position_list]
   end
   role :positions_module_user do
-     has_permission_on :staff_positions, :to => [:read, :update, :organisation_chart, :position_list]
+     has_permission_on :staff_positions, :to => [:read, :update, :organisation_chart, :listing, :position_list]
   end
   role :positions_module_member do
-    has_permission_on :staff_positions, :to =>  [:read, :update, :organisation_chart, :position_list] do
+    has_permission_on :staff_positions, :to =>  [:read, :update, :organisation_chart, :listing, :position_list] do
       if_attribute :staff_id => is {user.userable.id}
     end
   end

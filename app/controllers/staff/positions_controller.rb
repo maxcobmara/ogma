@@ -1,6 +1,6 @@
 class Staff::PositionsController < ApplicationController
   #filter_access_to :all
-  filter_access_to :index, :new, :create, :organisation_chart, :maklumat_perjawatan, :maklumat_perjawatan_excel, :position_list, :attribute_check => false
+  filter_access_to :index, :listing, :new, :create, :organisation_chart, :maklumat_perjawatan, :maklumat_perjawatan_excel, :position_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_position, only: [:show, :edit, :update, :destroy]
   
