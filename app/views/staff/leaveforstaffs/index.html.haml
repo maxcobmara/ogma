@@ -68,7 +68,7 @@
                     - else
                       = t 'staff_leave.awaiting_approval'
                       - if @is_admin
-                        = leaveforstaff.approval2_id.blank? ? "" : "#{(t 'staff_leave.by')} #{leaveforstaff.approver.staff_with_rank_position}"
+                        = leaveforstaff.approval2_id.blank? ? "" : "#{(t 'staff_leave.by')} #{leaveforstaff.try(:approver).try(:staff_with_rank_position)}"
             %td= leaveforstaff.replacement_id.blank? ? (t 'staff_leave.none') : leaveforstaff.replacement.staff_with_rank
          
   .right{style:"padding:0 30px; margin:0;"}= paginate @leaveforstaffs, :theme => 'twitter-bootstrap-3'
