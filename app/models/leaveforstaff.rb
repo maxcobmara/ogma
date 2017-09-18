@@ -95,7 +95,7 @@ class Leaveforstaff < ActiveRecord::Base
           if college_code=='kskbjb'
             self.approval1_id = set_approver1
           else
-	    if applicant.positions.count==1
+	    if applicant.positions.count > 0 #==1
               self.approval1_id = set_approver1_default
               #temporary set default value as true if superior not exist
               if set_approver1_default==nil
@@ -109,7 +109,7 @@ class Leaveforstaff < ActiveRecord::Base
           if college_code=='kskbjb'
             self.approval2_id = set_approver2
           else
-	    if applicant.positions.count==1
+	    if applicant.positions.count > 0 #==1
               self.approval2_id = set_approver2_default
 	    end
           end
@@ -130,19 +130,19 @@ class Leaveforstaff < ActiveRecord::Base
     end
     
     def set_approver1_default
-      if applicant.positions.valid_posts.first.parent.staff_id == []
+      if applicant.valid_positions.first.parent.staff_id == []
         approver1 = nil
       else
-        approver1 = applicant.positions.valid_posts.first.parent.staff_id
+        approver1 = applicant.valid_positions.first.parent.staff_id
       end    
     end
     
     def set_approver2_default
-      if applicant.positions.valid_posts.first.parent.is_root?
+      if applicant.valid_positions.first.parent.is_root?
         approver2 = 0
       else
         # TODO - confirm with user
-        approver2 = applicant.positions.valid_posts.first.parent.parent.staff_id
+        approver2 = applicant.valid_positions.first.parent.parent.staff_id
       end
     end 
       
