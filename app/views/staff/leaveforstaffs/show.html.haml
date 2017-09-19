@@ -57,6 +57,7 @@
           - if @leaveforstaff.approval1_id.blank?
             =t 'not_required'
           - else
+            - b=@leaveforstaff.seconder.coemail.blank? ? " <span style='color:red;'>*</span>" : ""
             - if @leaveforstaff.approval1==true
               = t 'staff_leave.supported'
             - elsif @leaveforstaff.approval1==false
@@ -64,7 +65,7 @@
             - else
               =t 'staff_leave.awaiting_support'
           ////////
-        - b=@leaveforstaff.seconder.coemail.blank? ? " <span style='color:red;'>*</span>" : ""
+          
         %dt= t 'staff_leave.endorsed_name'
         %dd=h @leaveforstaff.approval1_id.blank? ? "-" : (@leaveforstaff.seconder.staff_with_rank_position+b).html_safe
  
@@ -81,6 +82,7 @@
           - if @leaveforstaff.approval2_id.blank? 
             = (t 'not_required')
           - else
+            - c=@leaveforstaff.approver.coemail.blank? ? " <span style='color:red;'>*</span>" : ""
             - if @leaveforstaff.approver2==true
               =t 'staff_leave.approved'
             - elsif @leaveforstaff.approver2==false  
@@ -89,7 +91,7 @@
               - if @leaveforstaff.approval1==true
                 = t 'staff_leave.awaiting_approval'
           /////////
-        - c=@leaveforstaff.approver.coemail.blank? ? " <span style='color:red;'>*</span>" : ""
+        
         %dt= t 'staff_leave.approval_name'
         %dd=h  @leaveforstaff.approval2_id.blank? ? "-" : (@leaveforstaff.approver.staff_with_rank_position+c).html_safe
   
