@@ -70,7 +70,7 @@
           ////////
           
         %dt= t 'staff_leave.endorsed_name'
-        %dd=h @leaveforstaff.approval1_id.blank? ? "-" : (@leaveforstaff.seconder.staff_with_rank_position+b).html_safe
+        %dd=h @leaveforstaff.approval1_id.blank? ? "-" : (@leaveforstaff.try(:seconder).try(:staff_with_rank_position)+b).html_safe
  
         %dt= t 'staff_leave.endorsed_date'
         %dd=h shortmonthname(@leaveforstaff.approval1date)
@@ -99,7 +99,7 @@
           /////////
         
         %dt= t 'staff_leave.approval_name'
-        %dd=h  @leaveforstaff.approval2_id.blank? ? "-" : (@leaveforstaff.approver.staff_with_rank_position+c).html_safe
+        %dd=h  @leaveforstaff.approval2_id.blank? ? "-" : (@leaveforstaff.try(:approver).try(:staff_with_rank_position)+c).html_safe
   
         %dt= t 'staff_leave.approve_date'
         %dd=h shortmonthname(@leaveforstaff.approval1date)
