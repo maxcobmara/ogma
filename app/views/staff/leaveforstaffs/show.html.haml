@@ -111,10 +111,10 @@
       - noemail=noemail||0
       - if @leaveforstaff.applicant.coemail.blank?
         - noemail=1
-      - elsif @leaveforstaff.approval1_id.blank? == false && @leaveforstaff.seconder.coemail.blank?
-        - noemail=1
-      - elsif @leaveforstaff.approval2_id.blank? == false && @leaveforstaff.approver.coemail.blank?
-        - noemail=1
+      - elsif @leaveforstaff.approval1_id.blank? == false && Staff.valid_staffs.pluck(:id).include?(@leaveforstaff.approval1_id) 
+        - noemail=1 if @leaveforstaff.seconder.coemail.blank?
+      - elsif @leaveforstaff.approval2_id.blank? == false && Staff.valid_staffs.pluck(:id).include?(@leaveforstaff.approval2_id) 
+        - noemail=1 if @leaveforstaff.approver.coemail.blank?
       - if noemail==1
         %i.small="#{t('remarks')} : <span style='color:red'>* </span>#{t('staff_leave.email_not_available')}".html_safe
     %br
