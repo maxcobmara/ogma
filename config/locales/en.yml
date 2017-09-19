@@ -2069,20 +2069,22 @@ en:
     none: None
     awaiting_support: Awaiting support
     awaiting_approval: Awaiting approval
-    email_not_available: Email address not available in ICMS
     by: by
-    support_subject: Staff leave application for support
-    approval_subject: Staff leave application for approval
-    successful_subject: Staff leave application is approved
-    apply_for_leave: "apply for leave."
-    details_application: Details for leave application
-    decision_link: "Click this link to make decision."
-    notify_to: To
-    view_details: View leave details
-    support_status: Support status
-    application_status: Application status
+    email_not_available: Email address not available in ICMS
     via_icms: "Staff leave application, support and approval must be done through ICMS."
     emails_required: "Email notifications for leave to support / approve and approved leave requires valid email address of all parties (applicant, supporter, approver)."
+    
+    mailer:
+      support_subject: Staff leave application for support
+      approval_subject: Staff leave application for approval
+      successful_subject: Staff leave application is approved
+      apply_for_leave: "apply for leave."
+      details_application: Details for leave application
+      decision_link: "Click this link to make decision."
+      notify_to: To
+      view_details: View leave details
+      support_status: Support status
+      application_status: Application status
       
   position:
     title: "Tasks & Responsibilities"

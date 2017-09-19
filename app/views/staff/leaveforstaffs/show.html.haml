@@ -69,12 +69,14 @@
         %dd=h @leaveforstaff.approval1_id.blank? ? "-" : (@leaveforstaff.seconder.staff_with_rank_position+b).html_safe
  
         %dt= t 'staff_leave.endorsed_date'
+        %dd=h shortmonthname(@leaveforstaff.approval1date)
+
+        %br
+
+        %dt= t 'staff_leave.approver_decision'
         %dd
-          /- if @leaveforstaff.college.code=='kskbjb'
-          /  =h @leaveforstaff.approval1date.try(:strftime, "%d %b %Y")
-          /- else
-          /  - if @leaveforstaff.approval1?
-          /    =h @leaveforstaff.approval1_id!=nil ? @leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : '-'
+          /- unless @leaveforstaff.approver2.blank?
+          /  =h @leaveforstaff.approver2? ? (t 'approved') : (t 'staff_leave.reject')
           /////////
           - if @leaveforstaff.approval2_id.blank? 
             = (t 'not_required')
@@ -87,19 +89,12 @@
               - if @leaveforstaff.approval1==true
                 = t 'staff_leave.awaiting_approval'
           /////////
-        %br
-
-        %dt= t 'staff_leave.approver_decision'
-        %dd
-          - unless @leaveforstaff.approver2.blank?
-            =h @leaveforstaff.approver2? ? (t 'approved') : (t 'staff_leave.reject')
-
         - c=@leaveforstaff.approver.coemail.blank? ? " <span style='color:red;'>*</span>" : ""
         %dt= t 'staff_leave.approval_name'
         %dd=h  @leaveforstaff.approval2_id.blank? ? "-" : (@leaveforstaff.approver.staff_with_rank_position+c).html_safe
   
         %dt= t 'staff_leave.approve_date'
-        %dd=h @leaveforstaff.approval2date.try(:strftime, "%d %b %Y")
+        %dd=h shortmonthname(@leaveforstaff.approval1date)
 
 .row
   .col-md-6.col-md-offset-3

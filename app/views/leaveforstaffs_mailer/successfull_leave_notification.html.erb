@@ -1,4 +1,4 @@
-<%=t('staff_leave.notify_to')%> :  <%=@leaveforstaff.applicant.staff_with_rank %>
+<%=t('staff_leave.mailer.notify_to')%> :  <%=@leaveforstaff.applicant.staff_with_rank %>
 <br><br>
 <%= render :partial => 'application_details', :locals => {:leaveforstaff => @leaveforstaff, :view => @view}%>
 <br>
@@ -7,4 +7,4 @@
   <tr><td><%=t('staff_leave.entitlement')%></td><td> : </td><td><%=h @leaveforstaff.applicant.appointdt.nil? ? (t 'staff_leave.appointdt_not_exist') : @leaveforstaff.leave_balance.to_s+"/"+@leaveforstaff.cuti_rehat_entitlement.to_s unless @leaveforstaff.applicant.staffgrade.nil? %></td></tr>
 </table>
 
-<p><%= link_to (t 'staff_leave.view_details'), @url%></p>
+<p><%= link_to (t 'staff_leave.mailer.view_details'), @url%></p>
