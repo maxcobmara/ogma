@@ -148,7 +148,7 @@ class Staff < ActiveRecord::Base
   #validate :coemail, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :message => I18n.t('activerecord.errors.messages.invalid') }		#temp remark-staff attendance-5Aug2014
 
   #--------------------Declerations----------------------------------------------------
-  scope :valid_staffs, -> { Staff.joins(:positions).where('positions.id NOT IN (?)', Position.initial_posts) }   #added 14thSept2017
+  scope :valid_staffs, -> { Staff.joins(:positions).where('positions.id NOT IN (?)', Position.initial_posts).uniq }   #added 14thSept2017
   
    def mykad_holder
      country_cd==1 || country_cd==3
