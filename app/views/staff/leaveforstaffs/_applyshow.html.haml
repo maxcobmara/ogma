@@ -1,6 +1,8 @@
+- a=@leaveforstaff.applicant.coemail.blank? ? " <span style='color:red;'>*</span>" : ""
+
 %dl.dl-horizontal
   %dt= t 'staff_leave.name'
-  %dd= link_to @leaveforstaff.applicant.staff_with_rank_position, (staff_info_path(@leaveforstaff.staff_id)) rescue nil
+  %dd= link_to (@leaveforstaff.applicant.staff_with_rank_position+a).html_safe, (staff_info_path(@leaveforstaff.staff_id)) rescue nil
   
   %dt= t 'staff_leave.requestdate'
   %dd= @leaveforstaff.requestdate.try(:strftime, '%d-%m-%Y')

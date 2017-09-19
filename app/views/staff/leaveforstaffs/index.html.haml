@@ -10,7 +10,7 @@
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), leaveforstaff_list_staff_leaveforstaffs_path(params.merge(format: 'pdf'))
 
 .row
-  - groupped_leaves=@leaveforstaffs.group_by(&:applicant)
+  - groupped_leaves=@leaveforstaffs.group_by(&:applicant).sort_by{|a, b|a.name}
   .col-md-12
     .alert.alert-warning
       %strong=(t 'remarks')+" : "
