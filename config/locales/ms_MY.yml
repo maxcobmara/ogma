@@ -1929,7 +1929,11 @@ ms_MY:
     endorsed_name: Disokong Oleh
     endorsed_date: Tarikh Disokong
     new_notice: Cuti baru untuk staf berjaya dicipta
-    update_notice: Cuti berjaya dikemaskini 
+    new_notice_mail_not_sent: "Cuti baru untuk staf berjaya dicipta, tetapi emel kepada penyokong / pelulus cuti tidak berjaya dihantar."
+    support_notice: Keputusan sokongan cuti berjaya dikemaskini
+    support_notice_mail_not_sent: "Keputusan sokongan cuti berjaya dikemaskini, tetapi emel kepada pelulus tidak berjaya dihantar."
+    approve_notice: Keputusan kelulusan cuti berjaya dikemaskini
+    approve_notice_mail_not_sent: "Keputusan kelulusan cuti berjaya dikemaskini, tetapi emel kepada pemohon tidak berjaya dihantar."
     for_approval: Untuk Kelulusan
     approve_staff_leave: Kelulusan Cuti Staf
     approve_by_date: Tarikh Meluluskan
@@ -1970,6 +1974,8 @@ ms_MY:
     view_details: Semak butiran cuti
     support_status: Status sokongan
     application_status: Status permohonan
+    via_icms: "Permohonan cuti staf perlu dikemukakan dan diberi sokongan / kelulusan dalam ICMS."
+    emails_required: "Alamat emel yang sah diperlukan bagi pemohon, penyokong dan pelulus cuti untuk membolehkan notifikasi permohonan dihantar melalui emel."
   
   position:
     title: "Tugas & Tanggungjawab"
