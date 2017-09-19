@@ -120,6 +120,7 @@ ms_MY:
       leaveforstaff:
         staff_id: Nama Staf
         leavetype: Jenis Cuti
+        position: Jawatan
       leaveforstudent:
         student_id: Nama pelajar
         leavetype: Jenis cuti
