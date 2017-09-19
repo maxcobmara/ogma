@@ -29,10 +29,10 @@ class Staff::LeaveforstaffsController < ApplicationController
         #ref : https://stackoverflow.com/questions/23448384/ruby-on-rails-check-whether-internet-connection-in-on-or-off
         begin 
           LeaveforstaffsMailer.support_approve_leave_notification(@leaveforstaff, request.host, view_context).deliver
-          format.html { redirect_to(staff_leaveforstaff_path(@leaveforstaff), notice:t('staff_leave.new_notice'))}
+          format.html { redirect_to(staff_leaveforstaff_path(@leaveforstaff), notice: (t 'staff_leave.new_notice'))}
           format.xml  { render :xml => @leaveforstaff, :status => :created, :location => @leaveforstaff }
           rescue SocketError => e
-            format.html { redirect_to(staff_leaveforstaff_path(@leaveforstaff), notice:t('staff_leave.new_notice_mail_not_send'))}
+            format.html { redirect_to(staff_leaveforstaff_path(@leaveforstaff), notice: (t 'staff_leave.new_notice_mail_not_sent'))}
             format.xml  { render :xml => @leaveforstaff, :status => :created, :location => @leaveforstaff }
         end
       else
@@ -55,9 +55,9 @@ class Staff::LeaveforstaffsController < ApplicationController
           #ref : https://stackoverflow.com/questions/23448384/ruby-on-rails-check-whether-internet-connection-in-on-or-off
           begin
             LeaveforstaffsMailer.support_approve_leave_notification(@leaveforstaff, request.host, view_context).deliver 
-	    format.html { redirect_to staff_leaveforstaff_path, notice: t('staff_leave.approve_notice')}
+	    format.html { redirect_to staff_leaveforstaff_path, notice: t('staff_leave.support_notice')}
 	    rescue SocketError => e
-	      format.html { redirect_to staff_leaveforstaff_path, notice: t('staff_leave.approve_notice_mail_not_sent')}
+	      format.html { redirect_to staff_leaveforstaff_path, notice: t('staff_leave.support_notice_mail_not_sent')}
 	  end
 	end
 
@@ -66,9 +66,9 @@ class Staff::LeaveforstaffsController < ApplicationController
           #ref : https://stackoverflow.com/questions/23448384/ruby-on-rails-check-whether-internet-connection-in-on-or-off
           begin
             LeaveforstaffsMailer.successfull_leave_notification(@leaveforstaff, request.host, view_context).deliver
-            format.html { redirect_to staff_leaveforstaff_path, notice: t('staff_leave.update_notice')}
+            format.html { redirect_to staff_leaveforstaff_path, notice: t('staff_leave.approve_notice')}
             rescue SocketError => e
-              format.html { redirect_to staff_leaveforstaff_path, notice: t('staff_leave.update_notice_mail_not_sent')}
+              format.html { redirect_to staff_leaveforstaff_path, notice: t('staff_leave.approve_notice_mail_not_sent')}
           end
         end
         

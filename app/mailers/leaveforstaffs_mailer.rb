@@ -22,6 +22,4 @@ class LeaveforstaffsMailer < ActionMailer::Base
     mail(to: arecipient, subject: I18n.t('staff_leave.successful_subject')) 
   end
   
-   # TODO - 3)raise error when network not avai? / cannot send email (like amsas - last visit), data still saved - to diff
-  
 end

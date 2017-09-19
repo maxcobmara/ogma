@@ -2054,6 +2054,7 @@ en:
     rejected: Rejected
     appointdt_not_exist: "Please update 'Appointment Date' in 'Staff Information' submodule"
     staffgrade_not_define: "Please update 'Staff Grade' in 'Staff Information' submodule"
+    staffgrade_appointdt_required: "'Staff Grade' and 'Appointment Date' in 'Staff Information' submodule is required for leave balance calculation."
     leave_balance: Leave Balance
     balance_before: "(before this leave is taken)"
     balance_after: "(after this leave is taken)"
