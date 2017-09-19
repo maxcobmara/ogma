@@ -1986,7 +1986,7 @@ en:
         g3_title:   "KUALITI PERIBADI"
         g3_text:    "Pegawai Penilai dikehendaki memberikan penilaian berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 hingga 10:" 
         g3q1_title: "&nbsp;&nbsp;&nbsp;ILMU PENGETAHUAN DAN KEMAHIRAN DALAM BIDANG <BR/> &nbsp; &nbsp; &nbsp; KERJA" 
-        g3q1_text:  "Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, menganalisis serta menyelesaikan masalah."       
+        g3q1_text:  "Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, menganalisis serta menyelesaikan masalah."
         g3q2_title: "&nbsp;&nbsp;&nbsp;PELAKSANAAN PERATURAN DAN ARAHAN <BR/> &nbsp; &nbsp; &nbsp;  PENTADBIRAN" 
         g3q2_text : "Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya."
         g3q3_title: "&nbsp;&nbsp;KEBERKESANAN KOMUNIKASI" 
@@ -2032,7 +2032,12 @@ en:
     endorser_decision: Head of Dept Decision
     endorsed_name: Endorsed By
     endorsed_date: Date Endorsed
-    new_notice: A new leave for staff has successfully created
+    new_notice: A new leave for staff was successfully created
+    new_notice_mail_not_sent: "A new leave for staff was successfully created, but email is not sent to supporter / approver."
+    support_notice: Leave support decision was successfully updated
+    support_notice_mail_not_sent: "Leave support decision was successfully updated, but email is not sent to approver."
+    approve_notice: Leave approval decision was successfully updated
+    approve_notice_mail_not_sent: "Leave approval decision was successfully updated, but email is not sent to leave applicant."
     update_notice: A leave has successfully updated
     for_approval: For Approval
     approve_staff_leave: Approve Staff Leave
@@ -2074,6 +2079,8 @@ en:
     view_details: View leave details
     support_status: Support status
     application_status: Application status
+    via_icms: "Staff leave application, support and approval must be done through ICMS."
+    emails_required: "Email notifications for leave to support / approve and approved leave requires valid email address of all parties (applicant, supporter, approver)."
       
   position:
     title: "Tasks & Responsibilities"

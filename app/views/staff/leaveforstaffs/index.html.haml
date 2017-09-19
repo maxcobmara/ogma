@@ -11,6 +11,12 @@
 
 .row
   - groupped_leaves=@leaveforstaffs.group_by(&:applicant)
+  .col-md-12
+    .alert.alert-warning
+      %strong=(t 'remarks')+" : "
+      %ol
+        %li=t 'staff_leave.via_icms'
+        %li=t 'staff_leave.emails_required'
   %table.table-striped.table-hover.ogma
     %thead
       %tr
@@ -52,7 +58,7 @@
                   - else
                     =t 'staff_leave.awaiting_support'
                     - if @is_admin
-                      = leaveforstaff.approval1_id.blank? ? "" : "#{(t 'staff_leave.by')} #{leaveforstaff.seconder.staff_with_rank_position}"
+                      = leaveforstaff.approval1_id.blank? ? "" : "#{(t 'staff_leave.by')} #{leaveforstaff.try(:seconder).try(:staff_with_rank_position)}"
             %td
               - if leaveforstaff.approval2_id.blank? 
                 = (t 'not_required')
