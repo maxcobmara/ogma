@@ -57,7 +57,10 @@
           - if @leaveforstaff.approval1_id.blank?
             =t 'not_required'
           - else
-            - b=@leaveforstaff.seconder.coemail.blank? ? " <span style='color:red;'>*</span>" : ""
+            - if Staff.valid_staffs.pluck(:id).include?(@leaveforstaff.approval1_id)
+              - b=@leaveforstaff.seconder.coemail.blank? ? " <span style='color:red;'>*</span>" : ""
+            - else
+              - b=""
             - if @leaveforstaff.approval1==true
               = t 'staff_leave.supported'
             - elsif @leaveforstaff.approval1==false
@@ -82,7 +85,10 @@
           - if @leaveforstaff.approval2_id.blank? 
             = (t 'not_required')
           - else
-            - c=@leaveforstaff.approver.coemail.blank? ? " <span style='color:red;'>*</span>" : ""
+            - if Staff.valid_staffs.pluck(:id).include?(@leaveforstaff.approval2_id)
+              - c=@leaveforstaff.approver.coemail.blank? ? " <span style='color:red;'>*</span>" : ""
+            - else
+              - c=""
             - if @leaveforstaff.approver2==true
               =t 'staff_leave.approved'
             - elsif @leaveforstaff.approver2==false  
