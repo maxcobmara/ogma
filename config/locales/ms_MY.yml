@@ -1949,6 +1949,7 @@ ms_MY:
     rejected: Ditolak
     appointdt_not_exist: "Sila kemaskini 'Tarikh Lantikan Pertama' dalam submodul 'Maklumat Kakitangan'"
     staffgrade_not_define: "Sila kemaskini 'Gred Jawatan' dalam submodul 'Maklumat Kakitangan'"
+    staffgrade_appointdt_required: "'Gred Jawatan' dan 'Tarikh Lantikan Pertama' dalam submodul 'Maklumat Kakitangan' diperlukan untuk pengiraan baki cuti rehat."
     leave_balance: Baki Cuti Rehat
     balance_before: "(sebelum cuti ini diambil)"
     balance_after: "(selepas cuti ini diambil)"
