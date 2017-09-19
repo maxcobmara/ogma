@@ -279,26 +279,26 @@ class Staff < ActiveRecord::Base
     end
 
     def unit_for_staff
-      if positions.blank?
+      if valid_positions.count == 0                #positions.blank?
         "-"
       else
-        "#{positions[0].try(:unit)}"
+        "#{valid_positions[0].try(:unit)}"        #"#{positions[0].try(:unit)}"
       end
     end
     
     def grade_for_staff
-      if positions.blank?
+      if valid_positions.count == 0                #positions.blank?
         "-"
       else
-        "#{positions[0].staffgrade.try(:name)}"
+        "#{valid_positions[0].staffgrade.try(:name)}"  #"#{positions[0].staffgrade.try(:name)}"
       end
     end
     
     def position_for_staff
-      if positions.blank?
+      if valid_positions.count == 0                #positions.blank?
         "-"
       else
-        positions[0].name
+        valid_positions[0].name                     #positions[0].name
       end
     end
 
@@ -306,17 +306,16 @@ class Staff < ActiveRecord::Base
       "#{staff_with_rank}  (thumb id : #{thumb_id})"
     end
 
-
   def render_unit
-    if positions.blank?
+    if valid_positions.count == 0                 # positions.blank?
       "Staff not exist in Task & Responsibilities"
-    elsif positions.first.is_root?
-        "Pengarah"
-    elsif positions
-      if positions.first.unit.blank?
-        "#{positions.first.name}"                  #display position name instead - must be somebody!
-      else
-        "#{positions.first.unit}"                  #   "#{position.unit} - 3"
+    elsif valid_positions.first.is_root?           #positions.first.is_root?
+      "Pengarah" 
+    else      #elsif positions
+      if valid_positions.first.unit.blank?         # positions.first.unit.blank?
+        "#{valid_positions.first.name}"         # "#{positions.first.name}"                  #display position name instead - must be somebody!
+      else 
+        "#{valid_positions.first.unit}"            # "#{positions.first.unit}"                     #   "#{position.unit} - 3"
       end
     end
   end

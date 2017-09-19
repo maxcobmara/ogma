@@ -5,13 +5,13 @@
   %dd= link_to "#{@leaveforstaff.applicant.staff_with_rank_position} #{a}".html_safe, (staff_info_path(@leaveforstaff.staff_id)) rescue nil
   
   %dt= t 'staff_leave.requestdate'
-  %dd= shortmonthname(@leaveforstaff.requestdate)
+  %dd= shortmonthname(@leaveforstaff.requestdate) if @leaveforstaff.requestdate.blank? == false
 
   %dt= t 'staff_leave.leavetype'
   %dd= @leaveforstaff.render_leave_type
 
   %dt= t 'staff_leave.from' 
-  %dd= @leaveforstaff.leavestartdate.try(:strftime, "%d %b %Y")
+  %dd= shortmonthname(@leaveforstaff.leavestartdate) if @leaveforstaff.leavestartdate.blank? == false
     
   %dt= t 'staff_leave.to' 
   %dd= @leaveforstaff.try(:show_to_day)
