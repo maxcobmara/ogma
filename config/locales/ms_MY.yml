@@ -1965,6 +1965,7 @@ ms_MY:
     awaiting_support: Menunggu sokongan
     awaiting_approval: Menunggu kelulusan
     by: oleh
+    email_not_available: Alamat emel tiada dalam ICMS
     support_subject: Permohonan cuti staf untuk sokongan
     approval_subject: Permohonan cuti staf untuk kelulusan
     successful_subject: Permohonan cuti staf telah diluluskan

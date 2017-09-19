@@ -13,7 +13,7 @@ class Leaveforstaff_listPdf < Prawn::Document
   end
   
   def record
-    groupped_leaves=@leaveforstaffs.group_by(&:applicant)
+    groupped_leaves=@leaveforstaffs.group_by(&:applicant).sort_by{|a, b|a.name}
     if groupped_leaves.count > 1
       columnswidth=[30, 100, 60, 60, 80, 80, 130]
       row_counts=[]
@@ -24,10 +24,10 @@ class Leaveforstaff_listPdf < Prawn::Document
           recs_per_applicant+=leaveforstaffs.count+1
       end
     else
-      columnswidth=[30, 90, 80, 60, 50, 70, 60, 100]
+      columnswidth=[30, 90, 50, 55, 40, 88, 87, 100]
     end
     
-    table(line_item_rows, :column_widths => columnswidth, :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
+    table(line_item_rows, :column_widths => columnswidth, :cell_style => { :size => 8,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
       row(0).style size: 11
@@ -46,7 +46,7 @@ class Leaveforstaff_listPdf < Prawn::Document
   end
     
   def line_item_rows
-    groupped_leaves=@leaveforstaffs.group_by(&:applicant)
+    groupped_leaves=@leaveforstaffs.group_by(&:applicant).sort_by{|a, b|a.name}
     if groupped_leaves.count > 1
       colcount=7
     else
@@ -63,19 +63,49 @@ class Leaveforstaff_listPdf < Prawn::Document
     body=[]
     groupped_leaves.each do |applicant, leaveforstaffs|
         if groupped_leaves.count > 1
-          body << [{content: applicant.staff_with_rank, colspan: 7}]
+          body << [{content: "#{I18n.t('staff_leave.staff_id')} : #{@college.code=='kskbjb' ? applicant.try(:mykad_with_staff_name) : applicant.try(:staff_with_rank)}", colspan: 7}]
         end
         for leaveforstaff in leaveforstaffs
 	    leavetype=(DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp} [0]
 	    start_end="#{leaveforstaff.leavestartdate.try(:strftime, '%d-%m-%Y')}<br>#{leaveforstaff.leavenddate.try(:strftime, '%d-%m-%Y')}"
 	    duration="#{leaveforstaff.leave_for} #{I18n.t('staff_leave.days')}"
-	    
-	    if leaveforstaff.approval1?
-	      approval1="#{leaveforstaff.approval1_id.blank? ? I18n.t('not_required') : I18n.t('staff_leave.supported')}"
-	    else
-	      approval1=""
+
+# 	    if leaveforstaff.approval1?
+# 	      approval1="#{leaveforstaff.approval1_id.blank? ? I18n.t('not_required') : I18n.t('staff_leave.supported')}"
+# 	    else
+# 	      approval1=""
+# 	    end
+            if leaveforstaff.approval1_id.blank?
+              approval1=I18n.t('not_required')
+            else 
+              if leaveforstaff.approval1==true
+                approval1= I18n.t('staff_leave.supported')
+              elsif leaveforstaff.approval1==false
+                approval1=I18n.t('staff_leave.rejected')
+              else
+                approval1=I18n.t('staff_leave.awaiting_support')
+		app= leaveforstaff.approval1_id.blank? ? "" : "#{leaveforstaff.try(:seconder).try(:staff_with_rank_position)}"
+		approval1+=app
+              end
 	    end
-	    approval2="#{leaveforstaff.approver2? ? I18n.t('staff_leave.approved') : I18n.t('staff_leave.rejected')}"
+
+	    #approval2="#{leaveforstaff.approver2? ? I18n.t('staff_leave.approved') : I18n.t('staff_leave.rejected')}"
+            if leaveforstaff.approval2_id.blank? 
+	      approval2=I18n.t('not_required')
+	    else
+	      if leaveforstaff.approver2==true
+	        approval2=I18n.t('staff_leave.approved')
+	      elsif leaveforstaff.approver2==false  
+		approval2=I18n.t('staff_leave.rejected')
+	      else
+		if leaveforstaff.approval1==true
+		  approval2=I18n.t('staff_leave.awaiting_approval')
+		  app2=leaveforstaff.approval2_id.blank? ? "" : "#{leaveforstaff.try(:approver).try(:staff_with_rank_position)}"
+		  approval2+=app2
+		end
+	      end
+	    end
+	    
 	    replacement="#{leaveforstaff.replacement_id.blank? ? '-' : leaveforstaff.replacement.staff_with_rank}"
             others=[leavetype, start_end, duration, approval1, approval2, replacement]
 	    

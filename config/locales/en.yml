@@ -2069,6 +2069,7 @@ en:
     none: None
     awaiting_support: Awaiting support
     awaiting_approval: Awaiting approval
+    email_not_available: Email address not available in ICMS
     by: by
     support_subject: Staff leave application for support
     approval_subject: Staff leave application for approval

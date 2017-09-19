@@ -140,9 +140,13 @@ class Staff::LeaveforstaffsController < ApplicationController
       roles = current_user.roles.pluck(:authname)
       @is_admin = true if roles.include?("developer") || roles.include?("administration") ||  roles.include?("staff_leaves_module_admin") || roles.include?("staff_leaves_module_viewer") || roles.include?("staff_leaves_module_user")
       if @is_admin
-        @search = Leaveforstaff.search(params[:q])
+	if roles.include?("developer")
+	  @search=Leaveforstaff.search(params[:q])
+	else
+          @search = Leaveforstaff.current_leaves.search(params[:q])
+	end
       else
-        @search = Leaveforstaff.sstaff2(current_user.userable.id).search(params[:q])
+        @search = Leaveforstaff.current_leaves.sstaff2(current_user.userable.id).search(params[:q])
       end 
       @leaveforstaffs = @search.result
     end

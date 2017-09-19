@@ -1,10 +1,6 @@
 - model_class = Leaveforstaff
 .page-header
-  %h1
-    - if current_user.college.code=='kskbjb'
-      = @leaveforstaff.applicant.mykad_with_staff_name 
-    - else
-      = @leaveforstaff.applicant.staff_with_rank
+  %h1= current_user.college.code=='kskbjb' ? @leaveforstaff.applicant.mykad_with_staff_name : @leaveforstaff.applicant.staff_with_rank
 
 = render 'shared/flashes'
 
@@ -30,10 +26,11 @@
           - if !@leaveforstaff.applicant.appointdt.nil? && !@leaveforstaff.applicant.staffgrade.nil?
             =@leaveforstaff.balance_before
           - else
-            - if @leaveforstaff.applicant.appointdt.nil?
-              .text-red=(t 'staff_leave.appointdt_not_exist')
-            - if @leaveforstaff.applicant.staffgrade.nil?
-              .text-red=(t 'staff_leave.staffgrade_not_define')
+            .text-red
+              - if @leaveforstaff.applicant.appointdt.nil?
+                =(t 'staff_leave.appointdt_not_exist')
+              - if @leaveforstaff.applicant.staffgrade.nil?
+                =(t 'staff_leave.staffgrade_not_define')
         %dt
           = (t 'staff_leave.leave_balance')
           %br=(t 'staff_leave.balance_after')
@@ -47,26 +44,49 @@
       %dl.dl-horizontal
         %dt= t 'staff_leave.endorser_decision'
         %dd
-          - unless @leaveforstaff.approval1.blank?
-            - if @leaveforstaff.college.code=='kskbjb'
-              =h @leaveforstaff.approval1? ? (t 'staff_leave.support') : (t 'staff_leave.reject')
+          /- unless @leaveforstaff.approval1.blank?
+          /  - if @leaveforstaff.college.code=='kskbjb'
+          /    =h @leaveforstaff.approval1? ? (t 'staff_leave.support') : (t 'staff_leave.reject')
+          /  - else
+          /    - if @leaveforstaff.approval1?
+          /      =h @leaveforstaff.approval1_id!=nil ? t('endorsed') : (t 'not_required')
+          /      /=h @leaveforstaff.approval1_id!=nil ? t('staff_leave.approved')+t("by2")+@leaveforstaff.seconder.name+t("on2")+@leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : (t 'not_required')
+          /    - else
+          /      =t("staff_leave.rejected") 
+          ////////
+          - if @leaveforstaff.approval1_id.blank?
+            =t 'not_required'
+          - else
+            - if @leaveforstaff.approval1==true
+              = t 'staff_leave.supported'
+            - elsif @leaveforstaff.approval1==false
+              .text-red=t 'staff_leave.rejected'
             - else
-              - if @leaveforstaff.approval1?
-                =h @leaveforstaff.approval1_id!=nil ? t('endorsed') : (t 'not_required')
-                /=h @leaveforstaff.approval1_id!=nil ? t('staff_leave.approved')+t("by2")+@leaveforstaff.seconder.name+t("on2")+@leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : (t 'not_required')
-              - else
-                =t("staff_leave.rejected") 
-          
+              =t 'staff_leave.awaiting_support'
+          ////////
+        - b=@leaveforstaff.seconder.coemail.blank? ? " <span style='color:red;'>*</span>" : ""
         %dt= t 'staff_leave.endorsed_name'
-        %dd=h @leaveforstaff.approval1_id.blank? ? "-" : @leaveforstaff.seconder.staff_with_rank_position
+        %dd=h @leaveforstaff.approval1_id.blank? ? "-" : (@leaveforstaff.seconder.staff_with_rank_position+b).html_safe
  
         %dt= t 'staff_leave.endorsed_date'
         %dd
-          - if @leaveforstaff.college.code=='kskbjb'
-            =h @leaveforstaff.approval1date.try(:strftime, "%d %b %Y")
+          /- if @leaveforstaff.college.code=='kskbjb'
+          /  =h @leaveforstaff.approval1date.try(:strftime, "%d %b %Y")
+          /- else
+          /  - if @leaveforstaff.approval1?
+          /    =h @leaveforstaff.approval1_id!=nil ? @leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : '-'
+          /////////
+          - if @leaveforstaff.approval2_id.blank? 
+            = (t 'not_required')
           - else
-            - if @leaveforstaff.approval1?
-              =h @leaveforstaff.approval1_id!=nil ? @leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : '-'
+            - if @leaveforstaff.approver2==true
+              =t 'staff_leave.approved'
+            - elsif @leaveforstaff.approver2==false  
+              =t 'staff_leave.rejected'
+            - else
+              - if @leaveforstaff.approval1==true
+                = t 'staff_leave.awaiting_approval'
+          /////////
         %br
 
         %dt= t 'staff_leave.approver_decision'
@@ -74,8 +94,9 @@
           - unless @leaveforstaff.approver2.blank?
             =h @leaveforstaff.approver2? ? (t 'approved') : (t 'staff_leave.reject')
 
+        - c=@leaveforstaff.approver.coemail.blank? ? " <span style='color:red;'>*</span>" : ""
         %dt= t 'staff_leave.approval_name'
-        %dd=h  @leaveforstaff.approval2_id.blank? ? (t 'not_required') : @leaveforstaff.approver.staff_with_rank_position
+        %dd=h  @leaveforstaff.approval2_id.blank? ? "-" : (@leaveforstaff.approver.staff_with_rank_position+c).html_safe
   
         %dt= t 'staff_leave.approve_date'
         %dd=h @leaveforstaff.approval2date.try(:strftime, "%d %b %Y")
@@ -83,6 +104,18 @@
 .row
   .col-md-6.col-md-offset-3
     %hr
+    .col-md-offset-1
+      - noemail=noemail||0
+      - if @leaveforstaff.applicant.coemail.blank?
+        - noemail=1
+      - elsif @leaveforstaff.approval1_id.blank? == false && @leaveforstaff.seconder.coemail.blank?
+        - noemail=1
+      - elsif @leaveforstaff.approval2_id.blank? == false && @leaveforstaff.approver.coemail.blank?
+        - noemail=1
+      - if noemail==1
+        %i.small="#{t('remarks')} : <span style='color:red'>* </span>#{t('staff_leave.email_not_available')}".html_safe
+    %br
+    
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_leaveforstaffs_path, :class => 'btn btn-default'
       /- if @leaveforstaff.college.code!='kskbjb'
