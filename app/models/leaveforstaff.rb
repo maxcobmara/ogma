@@ -17,6 +17,7 @@ class Leaveforstaff < ActiveRecord::Base
   
     scope :current_leaves, -> {where('leavestartdate >?', Date.today)}
     
+    # NOTE - 19Sept2017 - valid_staffs (staff.rb) already restrict staff w/o valid position fr being displayed (just 2 cater 4 prev existg record)
     def validate_positions_exist
       if !staff_id.blank? && applicant.position_for_staff == "-"
         errors.add(:position,I18n.t('must_exist'))
