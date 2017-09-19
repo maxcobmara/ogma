@@ -26,13 +26,13 @@ module Notifications
  end
 
  def leave_notifications
-  my_first_level_approval  = Leaveforstaff.where(approval1_id: current_staff_id).where(approval1: nil).count
-  my_second_level_approval = Leaveforstaff.where(approval1: true).where(approval2_id: current_staff_id).where(approver2: nil).count
+  my_first_level_approval  = Leaveforstaff.where(approval1_id: current_staff_id).where(approval1: nil).where('leavestartdate >=?', Date.today).count
+  my_second_level_approval = Leaveforstaff.where(approval1: true).where(approval2_id: current_staff_id).where(approver2: nil).where('leavestartdate >?', Date.today).count
   my_first_level_approval + my_second_level_approval
  end
 
  def my_leave_approvals
-  Leaveforstaff.where(staff_id: current_staff_id).where(approval1: true).where('approver2 is true OR approval2_id is null').where("leavestartdate > ?", Date.today).pluck(:id, :leavestartdate)
+  Leaveforstaff.where(staff_id: current_staff_id).where(approval1: true).where('approver2 is true OR approval2_id is null').where("leavestartdate > ?", Date.today).order(leavestartdate: :asc).pluck(:id, :leavestartdate)
  end
 
  def skts_endorse_ready

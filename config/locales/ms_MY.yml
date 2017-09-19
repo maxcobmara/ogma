@@ -1966,18 +1966,21 @@ ms_MY:
     awaiting_approval: Menunggu kelulusan
     by: oleh
     email_not_available: Alamat emel tiada dalam ICMS
-    support_subject: Permohonan cuti staf untuk sokongan
-    approval_subject: Permohonan cuti staf untuk kelulusan
-    successful_subject: Permohonan cuti staf telah diluluskan
-    apply_for_leave: "mohon untuk bercuti."
-    details_application: Butiran permohonan cuti
-    decision_link: "Klik pautan ini untuk membuat keputusan."
-    notify_to: Kepada
-    view_details: Semak butiran cuti
-    support_status: Status sokongan
-    application_status: Status permohonan
     via_icms: "Permohonan cuti staf perlu dikemukakan dan diberi sokongan / kelulusan dalam ICMS."
     emails_required: "Alamat emel yang sah diperlukan bagi pemohon, penyokong dan pelulus cuti untuk membolehkan notifikasi permohonan dihantar melalui emel."
+    
+    mailer:
+      support_subject: Permohonan cuti staf untuk sokongan
+      approval_subject: Permohonan cuti staf untuk kelulusan
+      successful_subject: Permohonan cuti staf telah diluluskan
+      apply_for_leave: "mohon untuk bercuti."
+      details_application: Butiran permohonan cuti
+      decision_link: "Klik pautan ini untuk membuat keputusan."
+      notify_to: Kepada
+      view_details: Semak butiran cuti
+      support_status: Status sokongan
+      application_status: Status permohonan
+   
   
   position:
     title: "Tugas & Tanggungjawab"

@@ -15,7 +15,7 @@ class Leaveforstaff < ActiveRecord::Base
     validate :validate_positions_exist
     validate :validate_end_date_before_start_date, :validate_leave_application_is_unique
   
-    scope :current_leaves, -> {where('leavestartdate >=?', Date.today)}
+    scope :current_leaves, -> {where('leavestartdate >?', Date.today)}
     
     def validate_positions_exist
       if !staff_id.blank? && applicant.position_for_staff == "-"
