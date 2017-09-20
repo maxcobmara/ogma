@@ -20,7 +20,7 @@ class Leaveforstaff < ActiveRecord::Base
     # define scope
     def self.support_search(query) 
       if query=='2'
-        a=where(approval1: [nil, false]).where.not(approval1_id: nil)
+        a=where(approval1: nil).where.not(approval1_id: nil)
       elsif query=='1'
         a=where(approval1: true)
       elsif query=='0'
@@ -33,9 +33,9 @@ class Leaveforstaff < ActiveRecord::Base
     
     def self.approval_search(query)
       if query=='2'
-        a=where(approver2: [nil, false]).where(approval1: true).where.not(approval2_id: nil)
+        a=where(approver2: nil).where(approval1: true).where.not(approval2_id: nil)
       elsif query=='1'
-	a=where(approver2: true).where(approval1: true)
+	a=where(approver2: true)
       elsif query=='0'
         a=where(approver2: false)
       else
