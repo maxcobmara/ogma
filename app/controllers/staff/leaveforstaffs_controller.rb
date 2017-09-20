@@ -50,7 +50,7 @@ class Staff::LeaveforstaffsController < ApplicationController
       if @leaveforstaff.update(leaveforstaff_params)
         
         #supporting
-        if (@leaveforstaff.approval1==true && @leaveforstaff.approval2_id!=nil && @leaveforstaff.approver2!=true) || (@leaveforstaff.approval1==true && @leaveforstaff.approval2_id==nil)
+        if (@leaveforstaff.approval1==true && @leaveforstaff.approval2_id!=nil && @leaveforstaff.approver2!=true) 
           #LeaveforstaffsMailer.approve_leave_notification(@leaveforstaff, request.host, view_context).deliver 
           #ref : https://stackoverflow.com/questions/23448384/ruby-on-rails-check-whether-internet-connection-in-on-or-off
           begin
@@ -60,7 +60,17 @@ class Staff::LeaveforstaffsController < ApplicationController
 	      format.html { redirect_to staff_leaveforstaff_path, notice: ("<span style='color: red;'>"+(t 'staff_leave.support_notice_mail_not_sent')+"</span>").html_safe}
 	  end
 	end
-
+	
+	#supporting (with no approval requirement)
+	if (@leaveforstaff.approval1==true && @leaveforstaff.approval2_id==nil)
+          begin
+            LeaveforstaffsMailer.successfull_leave_notification(@leaveforstaff, request.host, view_context).deliver
+            format.html { redirect_to staff_leaveforstaff_path, notice: (t 'staff_leave.approve_notice').html_safe}
+            rescue SocketError => e
+              format.html { redirect_to staff_leaveforstaff_path, notice: ("<span style='color: red;'>"+(t 'staff_leave.approve_notice_mail_not_sent')+"</span>").html_safe}
+          end
+	end
+	
         #approving
         if (@leaveforstaff.approval1==true && (@leaveforstaff.approver2==true || @leaveforstaff.approver2=nil))
           #ref : https://stackoverflow.com/questions/23448384/ruby-on-rails-check-whether-internet-connection-in-on-or-off
