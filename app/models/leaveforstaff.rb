@@ -17,6 +17,38 @@ class Leaveforstaff < ActiveRecord::Base
   
     scope :current_leaves, -> {where('leavestartdate >?', Date.today)}
     
+    # define scope
+    def self.support_search(query) 
+      if query=='2'
+        a=where(approval1: [nil, false]).where.not(approval1_id: nil)
+      elsif query=='1'
+        a=where(approval1: true)
+      elsif query=='0'
+	a=where(approval1: false)
+      else
+	a=Leaveforstaff.all
+      end
+      a
+    end
+    
+    def self.approval_search(query)
+      if query=='2'
+        a=where(approver2: [nil, false]).where(approval1: true).where.not(approval2_id: nil)
+      elsif query=='1'
+	a=where(approver2: true).where(approval1: true)
+      elsif query=='0'
+        a=where(approver2: false)
+      else
+	a=Leaveforstaff.all
+      end
+      a
+    end
+    
+    # whitelist the scope
+    def self.ransackable_scopes(auth_object = nil)
+      [:support_search, :approval_search]
+    end
+  
     # NOTE - 19Sept2017 - valid_staffs (staff.rb) already restrict staff w/o valid position fr being displayed (just 2 cater 4 prev existg record)
     def validate_positions_exist
       if !staff_id.blank? && applicant.position_for_staff == "-"
