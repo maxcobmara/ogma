@@ -20,7 +20,7 @@ class LeaveforstaffsMailer < ActionMailer::Base
     @view=view
     @url = "http://#{ahost}:3003/staff/leaveforstaffs/#{leaveforstaff.id}?locale=#{I18n.locale}"
     @final=leaveforstaff.final_status
-    mail(to: arecipient, subject: I18n.t('staff_leave.mailer.final_subject')) 
+    mail(to: arecipient, subject: "#{I18n.t('staff_leave.mailer.final_subject')} #{@final}") 
   end
   
 end
