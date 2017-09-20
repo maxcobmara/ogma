@@ -3,7 +3,10 @@
 <%= render :partial => 'application_details', :locals => {:leaveforstaff => @leaveforstaff, :view => @view}%>
 <br>
 <table border='0'>
-  <tr><td><%=t('staff_leave.application_status')%></td><td> : </td><th><%=h @leaveforstaff.approver2 == true ? (t 'staff_leave.approved') : (t 'staff_leave.rejected') %></th></tr>
+  <tr><td><%=t('staff_leave.application_status')%></td><td> : </td>
+          <th><%=h (@approval2_id!=nil && @leaveforstaff.approver2 == true) ? (t 'staff_leave.approved') : (t 'staff_leave.rejected') %>
+          <%=h (@approval2_id==nil && @leaveforstaff.approval1==true) ? (t 'staff_leave.approved') : (t 'staff_leave.rejected') %>
+          </th></tr>
   <tr><td><%=t('staff_leave.entitlement')%></td><td> : </td><td><%=h @leaveforstaff.applicant.appointdt.nil? ? (t 'staff_leave.appointdt_not_exist') : @leaveforstaff.leave_balance.to_s+"/"+@leaveforstaff.cuti_rehat_entitlement.to_s unless @leaveforstaff.applicant.staffgrade.nil? %></td></tr>
 </table>
 
