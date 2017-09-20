@@ -1973,7 +1973,7 @@ ms_MY:
     mailer:
       support_subject: Permohonan cuti staf untuk sokongan
       approval_subject: Permohonan cuti staf untuk kelulusan
-      final_subject: Permohonan cuti staf telah diluluskan
+      final_subject: Permohonan cuti staf telah
       apply_for_leave: "mohon untuk bercuti."
       details_application: Butiran permohonan cuti
       decision_link: "Klik pautan ini untuk membuat keputusan."

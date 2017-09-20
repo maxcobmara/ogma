@@ -2078,7 +2078,7 @@ en:
     mailer:
       support_subject: Staff leave application for support
       approval_subject: Staff leave application for approval
-      final_subject: Staff leave application is approved
+      final_subject: Staff leave application is
       apply_for_leave: "apply for leave."
       details_application: Details for leave application
       decision_link: "Click this link to make decision."
