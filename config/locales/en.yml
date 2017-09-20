@@ -2035,10 +2035,10 @@ en:
     endorsed_date: Date Endorsed
     new_notice: A new leave for staff was successfully created
     new_notice_mail_not_sent: "A new leave for staff was successfully created, but email is not sent to supporter / approver."
-    support_notice: Leave support decision was successfully updated
-    support_notice_mail_not_sent: "Leave support decision was successfully updated, but email is not sent to approver."
-    approve_notice: Leave approval decision was successfully updated
-    approve_notice_mail_not_sent: "Leave approval decision was successfully updated, but email is not sent to leave applicant."
+    support_notice: "Leave <u>support</u> decision was successfully updated"
+    support_notice_mail_not_sent: "Leave <u>support</u> decision was successfully updated, but email is not sent to approver."
+    approve_notice: "Leave <u>approval</u> decision was successfully updated"
+    approve_notice_mail_not_sent: "Leave <u>approval</u> decision was successfully updated, but email is not sent to leave applicant."
     update_notice: A leave has successfully updated
     for_approval: For Approval
     approve_staff_leave: Approve Staff Leave

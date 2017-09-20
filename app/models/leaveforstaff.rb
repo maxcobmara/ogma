@@ -80,10 +80,6 @@ class Leaveforstaff < ActiveRecord::Base
   
     def self.sstaff2(u)
       where('staff_id=? OR approval1_id=? OR approval2_id=?', u,u,u)
-    end   
-  
-    def self.find_main
-      Staff.find(:all, :condition => ["staff_id=? OR approval1_id=? OR approval2_id=?", User.current_user.staff_id, User.current_user.staff_id, User.current_user.staff_id])
     end
     
     def save_duration
@@ -373,9 +369,9 @@ class Leaveforstaff < ActiveRecord::Base
     end
   
     def repl_staff
-      sibpos = applicant.positions.first.sibling_ids
-      descpos=applicant.positions.first.descendant_ids
-      dept   = applicant.positions.first.unit
+      sibpos = applicant.valid_positions.first.sibling_ids
+      descpos=applicant.valid_positions.first.descendant_ids
+      dept   = applicant.valid_positions.first.unit
       sibs   = Position.where(["id IN (?) AND unit=?" , sibpos,dept]).pluck(:staff_id)
       descs = Position.where("id IN(?) AND unit=?", descpos, dept).pluck(:staff_id)
       applicant = Array(staff_id)
@@ -386,9 +382,9 @@ class Leaveforstaff < ActiveRecord::Base
       sibpos=Array.new
       dept=Array.new
       descpos=Array.new
-      applicant.positions.each{|x|sibpos+=x.sibling_ids}
-      applicant.positions.each{|x|descpos+=x.descendant_ids}
-      applicant.positions.each{|x|dept << x.unit}
+      applicant.valid_positions.each{|x|sibpos+=x.sibling_ids}
+      applicant.valid_positions.each{|x|descpos+=x.descendant_ids}
+      applicant.valid_positions.each{|x|dept << x.unit}
       sibs=Position.where('id IN(?) and unit IN(?)', sibpos, dept).pluck(:staff_id)
       descs=Position.where('id IN(?) and unit IN(?)', descpos, dept).pluck(:staff_id)
       applicant=Array(staff_id)
