@@ -1931,10 +1931,10 @@ ms_MY:
     endorsed_date: Tarikh Disokong
     new_notice: Cuti baru untuk staf berjaya dicipta
     new_notice_mail_not_sent: "Cuti baru untuk staf berjaya dicipta, tetapi emel kepada penyokong / pelulus cuti tidak berjaya dihantar."
-    support_notice: Keputusan sokongan cuti berjaya dikemaskini
-    support_notice_mail_not_sent: "Keputusan sokongan cuti berjaya dikemaskini, tetapi emel kepada pelulus tidak berjaya dihantar."
-    approve_notice: Keputusan kelulusan cuti berjaya dikemaskini
-    approve_notice_mail_not_sent: "Keputusan kelulusan cuti berjaya dikemaskini, tetapi emel kepada pemohon tidak berjaya dihantar."
+    support_notice: "Keputusan <u>sokongan</u> cuti berjaya dikemaskini"
+    support_notice_mail_not_sent: "Keputusan <u>sokongan</u> cuti berjaya dikemaskini, tetapi emel kepada pelulus tidak berjaya dihantar."
+    approve_notice: "Keputusan <u>kelulusan</u> cuti berjaya dikemaskini"
+    approve_notice_mail_not_sent: "Keputusan <u>kelulusan</u> cuti berjaya dikemaskini, tetapi emel kepada pemohon tidak berjaya dihantar."
     for_approval: Untuk Kelulusan
     approve_staff_leave: Kelulusan Cuti Staf
     approve_by_date: Tarikh Meluluskan

@@ -22,7 +22,7 @@
                 .col-sm-3.control-label
                   = f.label t 'staff_leave.replacement', for: :replacement_id
                 .col-md-4
-                  - if @leaveforstaff.applicant.positions.count > 1
+                  - if @leaveforstaff.applicant.valid_positions.count > 0
                     - replacement_candidates=@leaveforstaff.repl_staff_multipost
                   - else
                     - replacement_candidates=@leaveforstaff.repl_staff
