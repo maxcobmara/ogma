@@ -50,7 +50,7 @@ class Staff::LeaveforstaffsController < ApplicationController
       if @leaveforstaff.update(leaveforstaff_params)
         
         #supporting
-        if @leaveforstaff.approval1==true && @leaveforstaff.approval2_id!=nil && @leaveforstaff.approver2!=true
+        if (@leaveforstaff.approval1==true && @leaveforstaff.approval2_id!=nil && @leaveforstaff.approver2!=true) || (@leaveforstaff.approval1==true && @leaveforstaff.approval2_id==nil)
           #LeaveforstaffsMailer.approve_leave_notification(@leaveforstaff, request.host, view_context).deliver 
           #ref : https://stackoverflow.com/questions/23448384/ruby-on-rails-check-whether-internet-connection-in-on-or-off
           begin
@@ -153,6 +153,7 @@ class Staff::LeaveforstaffsController < ApplicationController
     
     def set_new_var
       @staff_list=@is_admin ? Staff.valid_staffs.order(rank_id: :asc, name: :asc) : Staff.where(id: current_user.userable_id)
+      @selected=current_user.userable_id
     end
     
     def set_edit_var
