@@ -1,4 +1,4 @@
-<%=t('staff_leave.notify_to')%> : <%=@leaveforstaff.approval1==true ? @leaveforstaff.approver.staff_with_rank : @leaveforstaff.seconder.staff_with_rank %>
+<%=t('staff_leave.mailer.notify_to')%> : <%=@leaveforstaff.approval1==true ? @leaveforstaff.approver.staff_with_rank : @leaveforstaff.seconder.staff_with_rank %>
 
 <p><%=t('staff_leave.staff_id')%> : <b><%= @leaveforstaff.applicant.staff_with_rank_position %></b> <%=t('staff_leave.mailer.apply_for_leave')%></p>
 
