@@ -43,7 +43,8 @@ class Borang_cutiPdf < Prawn::Document
           [{content: "(Pegawai Yang Meluluskan Cuti)", colspan: 2}], 
           ["Permohonan cuti di atas <b> #{'Disokong' if @college.code=='kskbjb' && @leaveforstaff.approval1?}#{'Tidak Disokong' if @college.code=='kskbjb' && !@leaveforstaff.approval1?}#{'Disokong' if @college.code!='kskbjb' && @leaveforstaff.approval1? && !@leaveforstaff.approval1_id.blank?}#{'Tidak Disokong' if @college.code!='kskbjb' && !@leaveforstaff.approval1?}#{'Tidak diperlukan' if  @college.code!='kskbjb' && @leaveforstaff.approval1? && @leaveforstaff.approval1_id.blank?}</b>", ""],
           ["Tarikh : #{@leaveforstaff.approval1? ? @leaveforstaff.approval1date.strftime('%d-%m-%Y') : '-'}", "_________________________________"],["", "Tandatangan Ketua Bahagian / Unit"],
-          ["Permohonan cuti di atas <b> #{@leaveforstaff.approver2? ? 'Diluluskan' : 'Tidak Diluluskan'}</b>", ""],
+          ##{@leaveforstaff.approver2? ? 'Diluluskan' : 'Tidak Diluluskan'}
+          ["Permohonan cuti di atas <b> #{@leaveforstaff.final_status}</b>", ""],
           ["Tarikh : #{@leaveforstaff.approver2? ? @leaveforstaff.approval2date.strftime('%d-%m-%Y') : '-'}", "_________________________________"], ["", "Tandatangan Pegawai Yang <br>Meluluskan Cuti"]
           ]
     table(data, :column_widths => [300, 210], :cell_style => { :size => 10, :inline_format => :true,  :borders=>[], :padding => [5,0,0,0]}) do
