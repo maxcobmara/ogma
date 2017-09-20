@@ -422,5 +422,23 @@ class Leaveforstaff < ActiveRecord::Base
     def render_leave_type
       (DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == leavetype}).map {|disp, value| disp} [0]
     end
+    
+    #usage - mailers/leaveforstaffs_mailer.rb - 20Sept2017
+    def final_status
+      if approval2_id!=nil
+        if @leaveforstaff.approver2 == true
+          final=(t 'staff_leave.approved')
+        elsif @leaveforstaff.approver2 == false
+          final=(t 'staff_leave.rejected')
+        end 
+      elsif @leaveforstaff.approval2_id==nil 
+        if @leaveforstaff.approval1==true
+          final=(t 'staff_leave.approved') 
+        elsif @leaveforstaff.approval1==false
+          final=(t 'staff_leave.rejected') 
+        end
+      end
+      final
+    end
  
   end
