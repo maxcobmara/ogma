@@ -427,15 +427,15 @@ class Leaveforstaff < ActiveRecord::Base
     def final_status
       if approval2_id!=nil
         if approver2 == true
-          final=(t 'staff_leave.approved')
+          final=I18n.t('staff_leave.approved')
         elsif approver2 == false
-          final=(t 'staff_leave.rejected')
+          final=I18n.t('staff_leave.rejected')
         end 
       elsif approval2_id==nil 
         if approval1==true
-          final=(t 'staff_leave.approved') 
+          final=I18n.t('staff_leave.approved') 
         elsif approval1==false
-          final=(t 'staff_leave.rejected') 
+          final=I18n.t('staff_leave.rejected') 
         end
       end
       final
