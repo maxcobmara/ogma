@@ -1620,6 +1620,8 @@ en:
       vehicle_must_exist: " must exist if 'own car' is selected"
       no_longer_editable: Travel Request no longer editable
       application_status: Application Status
+      accepted: Accepted
+      not_accepted: Not accepted
 
     travel_claim:
       title: Travel Claims

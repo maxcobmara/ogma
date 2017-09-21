@@ -27,46 +27,50 @@ class Leaveforstaff_listPdf < Prawn::Document
     columnswidth=[30, 60, 60, 50, 120, 120, 90]
     row_counts=[]
     row_subtitles=[]
+    row_separators=[]
     rowno=2
     recs_per_applicant=0
-    if @for_supports.size > 0
-      row_subtitles << rowno
-      rowno+=1
-      gsupports=@for_supports.group_by(&:applicant).sort_by{|a, b|a.name}
-      gsupports.each do |applicant, leaveforstaffs|
-        row_counts << rowno+recs_per_applicant
-        recs_per_applicant+=leaveforstaffs.count+1
-      end
+    
+    #supporting
+    row_subtitles << rowno
+    rowno+=1
+    gsupports=@for_supports.group_by(&:applicant).sort_by{|a, b|a.name}
+    gsupports.each do |applicant, leaveforstaffs|
+      row_counts << rowno+recs_per_applicant
+      recs_per_applicant+=leaveforstaffs.count+1
     end
-    if @for_approvals.size > 0
-      row_subtitles << rowno+gsupports.count+@for_supports.count
-      rowno+=1
-    end
+    row_separators << rowno+gsupports.count+@for_supports.count
+    rowno+=1
+    
+    #approving
+    row_subtitles << rowno+gsupports.count+@for_supports.count
+    rowno+=1
     gapprovals=@for_approvals.group_by(&:applicant).sort_by{|a, b|a.name}
     gapprovals.each do |applicant, leaveforstaffs|
       row_counts << rowno+recs_per_applicant
       recs_per_applicant+=leaveforstaffs.count+1
     end
-    if @owns.size > 0
-      row_subtitles << rowno+(gsupports.count+@for_supports.count)+(gapprovals.count+@for_approvals.count)
-      rowno+=1
-    end
+    row_separators << rowno+(gsupports.count+@for_supports.count)+(gapprovals.count+@for_approvals.count)
+    rowno+=1
+    
+    #own
+    row_subtitles << rowno+(gsupports.count+@for_supports.count)+(gapprovals.count+@for_approvals.count)
+    rowno+=1
     gowns=@owns.group_by(&:applicant).sort_by{|a, b|a.name}
-#     gowns.each do |applicant, leaveforstaffs|
-#       row_counts << rowno+recs_per_applicant
-#       recs_per_applicant+=leaveforstaffs.count+1
-#     end
     recs_per_applicant+=@owns.count
-    if @others.size > 0
-      row_subtitles <<  rowno+(gsupports.count+@for_supports.count)+(gapprovals.count+@for_approvals.count)+(@owns.count)
-      rowno+=1
-    end
+    row_separators << rowno+(gsupports.count+@for_supports.count)+(gapprovals.count+@for_approvals.count)+(@owns.count)
+    rowno+=1
+    
+    #others (not related)
+    row_subtitles <<  rowno+(gsupports.count+@for_supports.count)+(gapprovals.count+@for_approvals.count)+(@owns.count)
+    rowno+=1
     gothers=@others.group_by(&:applicant).sort_by{|a, b|a.name}
     gothers.each do |applicant, leaveforstaffs|
       row_counts << rowno+recs_per_applicant
       recs_per_applicant+=leaveforstaffs.count+1
     end
-      
+    row_separators << rowno+(gsupports.count+@for_supports.count)+(gapprovals.count+@for_approvals.count)+(@owns.count)+ (gothers.count+@others.count)
+    
     table(line_item_rows, :column_widths => columnswidth, :cell_style => { :size => 8,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
@@ -74,19 +78,22 @@ class Leaveforstaff_listPdf < Prawn::Document
       row(0).align = :center
       row(0..1).font_style = :bold
       row(1).background_color = 'FFE34D'
-      if gsupports.count > 0 || gapprovals.count > 0 || gowns.count > 0 || gothers.count > 0
+      if row_subtitles.count > 0
 	for row_subtitle in row_subtitles
 	  row(row_subtitle).font_style=:bold
 	  row(row_subtitle).align =:center
 	  row(row_subtitle).background_color='f8dd78'
 	end
       end
-      if gsupports.count > 0 || gapprovals.count > 0 || gowns.count > 0 || gothers.count > 0
+      if row_counts.count > 0
         for row_count in row_counts
           row(row_count).font_style=:bold
 	  row(row_count).align =:center
 	  row(row_count).background_color='FDF8A1'
         end
+      end
+      for row_separator in row_separators
+	row(row_separator).height=10
       end
       self.width=530
     end
@@ -96,22 +103,32 @@ class Leaveforstaff_listPdf < Prawn::Document
     header = [[{content: "#{I18n.t('staff_leave.list').upcase}<br> #{@college.name.upcase}", colspan: 7}]]
     header_title=["No", I18n.t('staff_leave.leavetype'), "#{I18n.t('staff_leave.from')} / #{I18n.t('staff_leave.to')}", I18n.t('staff_leave.duration'), "#{I18n.t('staff_leave.supported')} ?", "#{I18n.t('staff_leave.approved')} ?", I18n.t('staff_leave.replacement')]
     a=[]
+    
+    #supporting ---
+    a+=[[{content: "#{I18n.t('staff_leave.supports_subtitle')} :  (#{@for_supports.size})", colspan: 7}]]  
     if @for_supports.size > 0
-      a+=[[{content: "#{I18n.t('staff_leave.supports_subtitle')} :  (#{@for_supports.size})", colspan: 7}]]
       a+=groupped_leaves_lines(@for_supports)
     end
+    a+=[[{content: "", colspan: 7}]]
+    #approving ---
+    a+=[[{content: "#{I18n.t('staff_leave.approvals_subtitle')} :  (#{@for_approvals.size})", colspan: 7}]]
     if @for_approvals.size > 0
-      a+=[[{content: "#{I18n.t('staff_leave.approvals_subtitle')} :  (#{@for_approvals.size})", colspan: 7}]]
       a+=groupped_leaves_lines(@for_approvals)
     end
-    if @owns.size > 0
-      a+=[[{content: "#{I18n.t('staff_leave.owns_subtitle')} :  (#{@college.code=='amsas' ? @astaff.try(:staff_with_rank) : @astaff.try(:mykad_with_staff_name)})", colspan: 7}]]
+    a+=[[{content: "", colspan: 7}]]
+    #own ---
+    a+=[[{content: "#{I18n.t('staff_leave.owns_subtitle')} :  (#{@college.code=='amsas' ? @astaff.try(:staff_with_rank) : @astaff.try(:mykad_with_staff_name)})", colspan: 7}]]
+     if @owns.size > 0
       a+=groupped_leaves_lines(@owns)
     end
+    a+=[[{content: "", colspan: 7}]]
+    #others (not related) ---
+    a+=[[{content: "#{I18n.t('staff_leave.others_subtitle')} (#{@others.size})", colspan: 7}]]
     if @others.size > 0
-      a+=[[{content: "#{I18n.t('staff_leave.others_subtitle')} (#{@others.size})", colspan: 7}]]
       a+=groupped_leaves_lines(@others)
     end
+    a+=[[{content: "", colspan: 7}]]
+    
     header+[header_title]+a
   end
   
@@ -163,6 +180,7 @@ class Leaveforstaff_listPdf < Prawn::Document
 	    
 	    body << ["#{counter += 1}"]+others
         end
+	
       end
       body
   end

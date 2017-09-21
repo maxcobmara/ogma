@@ -21,7 +21,6 @@ ms_MY:
       leaveforstudent: Cuti Pelajar
       leaveforstaff: Cuti Staf
       kin: Waris
-      travel_request: Permohonan Perjalanan
       travel_claim: Tuntutan Perjalanan
       travel_claim_logs: Log Perjalanan
       stationery: Keperluan Pejabat
@@ -1591,6 +1590,8 @@ ms_MY:
       vehicle_must_exist: " mesti diisi jika 'kenderaan sendiri' dipilih"
       no_longer_editable: Permohonan Perjalanan tidak lagi boleh disunting
       application_status: Status Permohonan
+      accepted: Diterima
+      not_accepted: Tidak diterima
       
     travel_claim:
       title: Tuntutan Perjalanan
