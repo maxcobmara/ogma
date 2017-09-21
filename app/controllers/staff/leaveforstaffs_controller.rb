@@ -9,7 +9,14 @@ class Staff::LeaveforstaffsController < ApplicationController
   before_action :set_edit_var, only: [:edit, :update]
 
   def index
-    @leaveforstaffs = @leaveforstaffs.order(staff_id: :asc, leavestartdate: :asc).page(params[:page]||1)
+    @ll=@leaveforstaffs
+    @leaveforstaffs = @leaveforstaffs.page(params[:page]||1) #.order(staff_id: :asc, leavestartdate: :asc).page(params[:page]||1)
+    @owns = @ll.where(staff_id: current_user.userable_id)
+    @for_supports = @ll.where(approval1_id: current_user.userable_id)                                            #.where(approval1: nil)
+    @for_approvals = @ll.where(approval2_id: current_user.userable_id)                                           #.where(approval1: true).where(approver2: nil)
+    if @is_admin
+      @others=@ll.where('staff_id !=? and approval1_id!=? and approval2_id!=?', current_user.userable_id, current_user.userable_id, current_user.userable_id)
+    end
   end
   
   def new
