@@ -4,6 +4,8 @@
    #before_filter :set_current_user
    before_action :set_travel_request, only: [:show, :edit, :update, :destroy]
    before_action :set_admin, only: [:new, :edit, :index, :travelrequest_list, :show]
+   before_action :set_new_var, only: [:new, :create]
+   before_action :set_edit_var, only: [:edit, :update]
     
   # GET /travel_requests
   # GET /travel_requests.xml
@@ -183,14 +185,24 @@
   
   private
   
-  def set_travel_request
-    @travel_request = TravelRequest.find(params[:id])
-    @travel_log = @travel_request
-  end
+    def set_travel_request
+      @travel_request = TravelRequest.find(params[:id])
+      @travel_log = @travel_request
+    end
   
-  def set_admin
+    def set_admin
       roles = current_user.roles.pluck(:authname)
       @is_admin = true if roles.include?("developer") ||  roles.include?("administration") || roles.include?("travel_requests_module_admin") || roles.include?("travel_requests_module_viewer") || roles.include?("travel_requests_module_user")
+    end
+  
+    def set_new_var
+      @staff_list=@is_admin ? Staff.valid_staffs.order(rank_id: :asc, name: :asc) : Staff.where(id: current_user.userable_id)
+      @selected=current_user.userable_id
+    end
+    
+    def set_edit_var
+      @staff_list=Staff.where(id: @travel_request.staff_id)
+      @selected=@travel_request.staff_id
     end
   
   def travel_request_params
