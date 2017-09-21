@@ -2003,6 +2003,10 @@ en:
     details: Details
     approve_leave: Approval
     list: Staff Leave List
+    supports_subtitle: Staff Leaves Support
+    approvals_subtitle: Staff Leaves Approvals
+    owns_subtitle: Leave Applications 
+    others_subtitle: "Leave Applications (others)"
     id: Staff Name and IC No
     staff_id: Staff
     name: Staff Name

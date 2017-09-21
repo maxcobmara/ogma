@@ -1899,6 +1899,10 @@ ms_MY:
     details: Butiran 
     approve_leave: Kelulusan 
     list: Senarai Cuti Staf
+    supports_subtitle: Sokongan Cuti Staf
+    approvals_subtitle: Kelulusan Cuti Staf
+    owns_subtitle: Permohonan Cuti Individu
+    others_subtitle: Permononan Cuti Individu Lain (Tidak berkaitan)
     id: Nama dan No IC
     staff_id: Staf
     name: Nama Staf
