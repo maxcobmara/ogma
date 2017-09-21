@@ -28,24 +28,25 @@
         %th{width: '20%'}= sort_link(@search, :replacement_id, t('staff_leave.replacement'))  
     %tbody
       = render "index_search"
+      
+      %tr
+        %td.group{colspan: 6}="#{t('staff_leave.supports_subtitle')} (#{@for_supports.size})"
       - if @for_supports.size > 0
-        %tr
-          %td.group{colspan: 6}="Sokongan Cuti Staf (#{@for_supports.size})"
         = render partial: 'index', locals: {ll: @for_supports}
 
+      %tr
+        %td.group{colspan: 6}="#{t('staff_leave.approvals_subtitle')} (#{@for_approvals.size})"
       - if @for_approvals.size > 0
-        %tr
-          %td.group{colspan: 6}="Kelulusan Cuti Staf (#{@for_approvals.size})"
         = render partial: 'index', locals: {ll: @for_approvals}
 
+      %tr
+        %td.group{colspan: 6}="#{t('staff_leave.owns_subtitle')} : #{current_user.userable.staff_with_rank} (#{@owns.size})"
       - if @owns.size > 0
-        %tr
-          %td.group{colspan: 6}="Permohonan Cuti Individu : #{current_user.userable.staff_with_rank} (#{@owns.size})"
         = render partial: 'index', locals: {ll: @owns}
-          
+
+      %tr
+        %td.group{colspan: 6}="#{t('staff_leave.others_subtitle')} (#{@others.size})"
       - if @others.size > 0
-        %tr
-          %td.group{colspan: 6}="Permohonan Cuti Individu Lain (Tidak Berkaitan) (#{@others.size})"
         = render partial: 'index', locals: {ll: @others}
 
 /=@ll.count

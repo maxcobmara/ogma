@@ -6,10 +6,10 @@
     %td=f.text_field :depart_at_gteq, :size=> 2,  :class =>  'datetime_picker form-control'
     %td=f.text_field :return_at_gteq, :size=> 2,  :class =>  'datetime_picker form-control'
     %td=f.text_field :document_title_cont, size: 2, :class => "form-control"
-    %td= select_tag('q[is_submitted_eq]',options_for_select([['All Records',''],['Submitted',true],['Not Submitted',false]]),class: 'selectpicker',"data-width"=>'100px')
+    %td= select_tag('q[is_submitted_eq]',options_for_select([[(t 'all_records'),''],[(t 'submitted'),true],[(t 'not_submitted'),false]]),class: 'selectpicker',"data-width"=>'100px')
     %td
       .input-group
-        =select_tag('q[hod_accept_on_null]', options_for_select([['All Records',''],['Accepted',0],['Not Accepted',1]]), class: 'selectpicker',"data-width"=>'60px') 
+        =select_tag('q[hod_accept_on_null]', options_for_select([[(t 'all_records'),''],[(t 'staff.travel_request.accepted'),0],[(t 'staff.travel_request.not_accepted'),1]]), class: 'selectpicker',"data-width"=>'60px') 
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw
