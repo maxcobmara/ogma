@@ -105,11 +105,6 @@ class Leaveforstaff < ActiveRecord::Base
       User.current_user.staff_id unless User.current_user.staff_id.blank?
     end
   
-    #named_scope :relevant,    :conditions =>  ["staff_id=? OR approval1_id=? OR approval2_id=?", User.current_user.staff_id, User.current_user.staff_id, User.current_user.staff_id]
-    #named_scope :mine,        :conditions =>  ["staff_id=?", User.current_user[:staff_id]]
-    #named_scope :forsupport,  :conditions =>  ["approval1_id=? AND approval1 IS ?", User.current_user.staff_id, nil]
-    #named_scope :forapprove,  :conditions =>  ["approval2_id=? AND approver2 IS ? AND approval1=?", User.current_user.staff_id, nil, true]
-  
     def self.sstaff2(u)
       where('staff_id=? OR approval1_id=? OR approval2_id=?', u,u,u)
     end

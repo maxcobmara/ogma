@@ -10,7 +10,6 @@
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), leaveforstaff_list_staff_leaveforstaffs_path(params.merge(format: 'pdf'))
 
 .row
-  - groupped_leaves=@leaveforstaffs.group_by(&:applicant).sort_by{|a, b|a.name}
   .col-md-12
     .alert.alert-warning
       %strong=(t 'remarks')+" : "
@@ -21,61 +20,106 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        - if groupped_leaves.count == 1
-          %th{width: '20%'}=current_user.college.code=='kskbjb' ? sort_link(@search, :staff_id, t('staff_leave.id')) : sort_link(@search, :staff_id, t('staff_leave.staff_id'))
-        %th{width: '10%'}= sort_link(@search, :leavetype, t('staff_leave.leavetype'))
+        %th{width: '14%'}= sort_link(@search, :leavetype, t('staff_leave.leavetype'))
         %th{width: '10%'}= sort_link(@search, :leavestartdate, t('staff_leave.from')) + ("/") + sort_link(@search, :leavenddate, t('staff_leave.to')) 
-        %th{width: '8%'}= sort_link(@search, :leavedays, t('staff_leave.duration')) 
-        /%th{width: '25%'}= sort_link(@search, :reason, t('staff_leave.reason'))
-        %th{width: '16%'}=(t 'staff_leave.supported')+"?"
-        %th{width: '16%'}=(t 'staff_leave.approved')+"?"
+        %th{width: '10%'}= sort_link(@search, :leavedays, t('staff_leave.duration')) 
+        %th{width: '23%'}=(t 'staff_leave.supported')+"?"
+        %th{width: '23%'}=(t 'staff_leave.approved')+"?"
         %th{width: '20%'}= sort_link(@search, :replacement_id, t('staff_leave.replacement'))  
-
     %tbody
       = render "index_search"
-      - groupped_leaves.each do |applicant, leaveforstaffs|
-        - if groupped_leaves.count > 1
-          %tr
-            %td.group{colspan: 6}=current_user.college.code=='kskbjb' ? (t 'staff_leave.staff_id')+": "+applicant.try(:mykad_with_staff_name) : (t 'staff_leave.staff_id')+": "+applicant.staff_with_rank
-        - for leaveforstaff in leaveforstaffs
-          %tr
-            - if groupped_leaves.count==1
-              %td= current_user.college.code=='kskbjb' ? (link_to leaveforstaff.applicant.try(:mykad_with_staff_name), staff_leaveforstaff_path(leaveforstaff)) : (link_to leaveforstaff.applicant.staff_with_rank, staff_leaveforstaff_path(leaveforstaff))
-            %td=link_to leaveforstaff.render_leave_type, staff_leaveforstaff_path(leaveforstaff)
-            %td="#{shortmonthname(leaveforstaff.leavestartdate)} <br> #{shortmonthname(leaveforstaff.leavenddate)}".html_safe
-            %td= leaveforstaff.leave_for.to_s + (" ") +   (t 'staff_leave.days')
-            /%td= leaveforstaff.reason
-            %td
-              - if leaveforstaff.approval1_id.blank?
-                =t 'not_required'
-              - else
-                - if leaveforstaff.approval1==true
-                  = t 'staff_leave.supported'
-                - elsif leaveforstaff.approval1==false
-                  .text-red=t 'staff_leave.rejected'
-                - else
-                  - if leaveforstaff.approval1_id == current_user.userable_id
-                    = link_to (fa_icon("thumbs-o-up", text: (t 'staff_leave.support'))), processing_level_1_staff_leaveforstaff_path(leaveforstaff)
-                  - else
-                    =t 'staff_leave.awaiting_support'
-                    - if @is_admin
-                      = leaveforstaff.approval1_id.blank? ? "" : "#{(t 'staff_leave.by')} #{leaveforstaff.try(:seconder).try(:staff_with_rank_position)}"
-            %td
-              - if leaveforstaff.approval2_id.blank? 
-                = (t 'not_required')
-              - else
-                - if leaveforstaff.approver2==true
-                  =t 'staff_leave.approved'
-                - elsif leaveforstaff.approver2==false
-                  =t 'staff_leave.rejected'
-                - else
-                  - if leaveforstaff.approval1==true
-                    - if leaveforstaff.approval2_id==current_user.userable_id && leaveforstaff.approval1==true
-                      = link_to (fa_icon("thumbs-o-up", text: (t 'staff_leave.support'))), processing_level_2_staff_leaveforstaff_path(leaveforstaff)
-                    - else
-                      = t 'staff_leave.awaiting_approval'
-                      - if @is_admin
-                        = leaveforstaff.approval2_id.blank? ? "" : "#{(t 'staff_leave.by')} #{leaveforstaff.try(:approver).try(:staff_with_rank_position)}"
-            %td= leaveforstaff.replacement_id.blank? ? (t 'staff_leave.none') : leaveforstaff.replacement.staff_with_rank
-         
-  .right{style:"padding:0 30px; margin:0;"}= paginate @leaveforstaffs, :theme => 'twitter-bootstrap-3'
+      - if @for_supports.size > 0
+        %tr
+          %td.group{colspan: 6}="Sokongan Cuti Staf (#{@for_supports.size})"
+        = render partial: 'index', locals: {ll: @for_supports}
+
+      - if @for_approvals.size > 0
+        %tr
+          %td.group{colspan: 6}="Kelulusan Cuti Staf (#{@for_approvals.size})"
+        = render partial: 'index', locals: {ll: @for_approvals}
+
+      - if @owns.size > 0
+        %tr
+          %td.group{colspan: 6}="Permohonan Cuti Individu : #{current_user.userable.staff_with_rank} (#{@owns.size})"
+        = render partial: 'index', locals: {ll: @owns}
+          
+      - if @others.size > 0
+        %tr
+          %td.group{colspan: 6}="Permohonan Cuti Individu Lain (Tidak Berkaitan) (#{@others.size})"
+        = render partial: 'index', locals: {ll: @others}
+
+/=@ll.count
+/=@owns.count
+/=@for_supports.count
+/=@for_approvals.count
+/=@others.count        
+/ .row
+/   - groupped_leaves=@leaveforstaffs.group_by(&:applicant).sort_by{|a, b|a.name}
+/   .col-md-12
+/     .alert.alert-warning
+/       %strong=(t 'remarks')+" : "
+/       %ol
+/         %li=t 'staff_leave.via_icms'
+/         %li=t 'staff_leave.emails_required'
+/         %li=t 'staff_leave.staffgrade_appointdt_required'
+/   %table.table-striped.table-hover.ogma
+/     %thead
+/       %tr
+/         - if groupped_leaves.count == 1
+/           %th{width: '20%'}=current_user.college.code=='kskbjb' ? sort_link(@search, :staff_id, t('staff_leave.id')) : sort_link(@search, :staff_id, t('staff_leave.staff_id'))
+/         %th{width: '10%'}= sort_link(@search, :leavetype, t('staff_leave.leavetype'))
+/         %th{width: '10%'}= sort_link(@search, :leavestartdate, t('staff_leave.from')) + ("/") + sort_link(@search, :leavenddate, t('staff_leave.to')) 
+/         %th{width: '8%'}= sort_link(@search, :leavedays, t('staff_leave.duration')) 
+/         /%th{width: '25%'}= sort_link(@search, :reason, t('staff_leave.reason'))
+/         %th{width: '16%'}=(t 'staff_leave.supported')+"?"
+/         %th{width: '16%'}=(t 'staff_leave.approved')+"?"
+/         %th{width: '20%'}= sort_link(@search, :replacement_id, t('staff_leave.replacement'))  
+/ 
+/     %tbody
+/       = render "index_search"
+/       - groupped_leaves.each do |applicant, leaveforstaffs|
+/         - if groupped_leaves.count > 1
+/           %tr
+/             %td.group{colspan: 6}=current_user.college.code=='kskbjb' ? (t 'staff_leave.staff_id')+": "+applicant.try(:mykad_with_staff_name) : (t 'staff_leave.staff_id')+": "+applicant.staff_with_rank
+/         - for leaveforstaff in leaveforstaffs
+/           %tr
+/             - if groupped_leaves.count==1
+/               %td= current_user.college.code=='kskbjb' ? (link_to leaveforstaff.applicant.try(:mykad_with_staff_name), staff_leaveforstaff_path(leaveforstaff)) : (link_to leaveforstaff.applicant.staff_with_rank, staff_leaveforstaff_path(leaveforstaff))
+/             %td=link_to leaveforstaff.render_leave_type, staff_leaveforstaff_path(leaveforstaff)
+/             %td="#{shortmonthname(leaveforstaff.leavestartdate)} <br> #{shortmonthname(leaveforstaff.leavenddate)}".html_safe
+/             %td= leaveforstaff.leave_for.to_s + (" ") +   (t 'staff_leave.days')
+/             /%td= leaveforstaff.reason
+/             %td
+/               - if leaveforstaff.approval1_id.blank?
+/                 =t 'not_required'
+/               - else
+/                 - if leaveforstaff.approval1==true
+/                   = t 'staff_leave.supported'
+/                 - elsif leaveforstaff.approval1==false
+/                   .text-red=t 'staff_leave.rejected'
+/                 - else
+/                   - if leaveforstaff.approval1_id == current_user.userable_id
+/                     = link_to (fa_icon("thumbs-o-up", text: (t 'staff_leave.support'))), processing_level_1_staff_leaveforstaff_path(leaveforstaff)
+/                   - else
+/                     =t 'staff_leave.awaiting_support'
+/                     - if @is_admin
+/                       = leaveforstaff.approval1_id.blank? ? "" : "#{(t 'staff_leave.by')} #{leaveforstaff.try(:seconder).try(:staff_with_rank_position)}"
+/             %td
+/               - if leaveforstaff.approval2_id.blank? 
+/                 = (t 'not_required')
+/               - else
+/                 - if leaveforstaff.approver2==true
+/                   =t 'staff_leave.approved'
+/                 - elsif leaveforstaff.approver2==false
+/                   =t 'staff_leave.rejected'
+/                 - else
+/                   - if leaveforstaff.approval1==true
+/                     - if leaveforstaff.approval2_id==current_user.userable_id && leaveforstaff.approval1==true
+/                       = link_to (fa_icon("thumbs-o-up", text: (t 'staff_leave.support'))), processing_level_2_staff_leaveforstaff_path(leaveforstaff)
+/                     - else
+/                       = t 'staff_leave.awaiting_approval'
+/                       - if @is_admin
+/                         = leaveforstaff.approval2_id.blank? ? "" : "#{(t 'staff_leave.by')} #{leaveforstaff.try(:approver).try(:staff_with_rank_position)}"
+/             %td= leaveforstaff.replacement_id.blank? ? (t 'staff_leave.none') : leaveforstaff.replacement.staff_with_rank
+/          
+/   .right{style:"padding:0 30px; margin:0;"}= paginate @leaveforstaffs, :theme => 'twitter-bootstrap-3'
