@@ -813,8 +813,8 @@ en:
     
     staff_administrator_modules: "Staffs, Staff Attendances, Fingerprints, Positions, Banks, Titles, Staff Shifts, Ranks, Employment Grades, Post Information"
     finance_unit_modules: "Travel Claims, Training Budget, Transport Groups, Mileage Rates"
-    training_administration_modules: "Training Budget, Training Courses, Training Schedules, Training Attendance"
-    training_manager_modules: "Training Budget, Training Courses, Training Schedules, Training Attendance"
+    training_administration_modules: "Training Budget, Training Courses, Training Schedules, Training Attendance, Address Book"
+    training_manager_modules: "Training Budget, Training Courses, Training Schedules, Training Attendance, Address Book"
     staff_modules: "Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student List(R), Student Discipline Case(O), Locations(R), Facilities Reservation(O), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R), Instructor Appraisals(O), Average Instructors(O)"
     asset_administrator_modules: "Asset Losses, Asset Loans, Asset Disposals, Asset Defect, Asset List, Asset Categories, Locations"
     e_filing_modules: "File Registry, Document Registry"
@@ -1468,6 +1468,7 @@ en:
         domestic: Domestic
         overseas: Overseas
         cost: Cost
+        refer_address_book: "Refer address book module for complete / additional listing."
       schedule:
         title_schedule: Training Schedule
         new: Schedule a Course

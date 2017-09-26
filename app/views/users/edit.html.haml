@@ -1113,7 +1113,7 @@ $(function(){
         supportrd[5].disabled=true;
     }
     
-    /*when Training Manager OR Training Administration is selected, uncheck all Training modules*/
+    /*when Training Manager OR Training Administration is selected, uncheck all Training modules, plus disable address book*/
     if(inputElements[7].checked || inputElements[8].checked){
       for(i=0; i < 4; i++)
       {
@@ -1123,6 +1123,10 @@ $(function(){
         c_staffown[i].disabled=true;
         ec_staffmn[i].disabled=true;
       }
+      supportmg[0].disabled=true;
+      supportrd[0].disabled=true;
+      esupportmn[0].disabled=true;
+      
     }
     
     /*disable this main checkbox if no file module selected - staff part 2*/
@@ -2149,6 +2153,11 @@ $(function(){
       esupportm[9].disabled=false;
       esupportm[10].disabled=false;
       esupportm[11].disabled=false;
+      
+      /*26Sept 2017-RESCUE 4 - Messaging groups & Visitors (checkbox - select/deselect), as these 2 modules have no connection with other modules at all*/
+      /* NOTE - staff role already inc. messaging(ref: auth rules) but not messaging group*/
+      esupportm[7].disabled=false;
+      esupportm[12].disabled=false;
     }
         
     /* 5) Staff part 2 : Travel Requests & Travel Claims & part 3 : Training Budget, Training Courses, Training Schedule, Training Attendances */
@@ -2307,7 +2316,7 @@ $(function(){
       esupportm[5].disabled=false;
     }
     
-    /*when Training Manager OR Training Administration is selected, uncheck Training Budget, Training Schedule, Training Courses, Training Attendance*/
+    /*when Training Manager OR Training Administration is selected, uncheck Training Budget, Training Schedule, Training Courses, Training Attendance, plus uncheck Address Book*/
     if(inputElements[7].checked || inputElements[8].checked){
       /*********Training Budget is part of Finance Unit (role) & Training Manager, Training Administration (role)*********/
       if(inputElements[19].checked==false)
@@ -2347,6 +2356,13 @@ $(function(){
         ec_staffm[i].checked=false;
         ec_staffm[i].disabled=true;
       }
+      /*26Sept2017-when Training Manager OR Training Administration is selected, Address Book module is disabled*/
+      supportmg[0].checked=false;
+      supportmg[0].disabled=true;
+      supportrd[0].checked=false;
+      supportrd[0].disabled=true;
+      esupportm[0].checked=false;
+      esupportm[0].disabled=true;
     } 
     else
     {
@@ -2361,7 +2377,8 @@ $(function(){
         { ec_staffm[3].checked=true;}
       }
       else
-      {  c_staffown[3].disabled=false;}
+      {  c_staffown[3].disabled=false;
+      }
       
       if(inputElements[19].checked==false)
       {
@@ -2382,6 +2399,11 @@ $(function(){
       c_staffrd[3].disabled=false;
       c_staffusr[3].disabled=false;
       ec_staffm[3].disabled=false;
+      
+      /*26Sept2017-uncheck Training Manager OR Training Administration, Address Book module becomes available*/
+      supportmg[0].disabled=false;
+      supportrd[0].disabled=false;
+      esupportm[0].disabled=false;
     }
     
     /* 7) Staff part 4 : Staff Appraisals, Staff Leaves */
