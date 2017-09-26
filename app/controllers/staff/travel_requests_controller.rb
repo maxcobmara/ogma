@@ -3,7 +3,7 @@
    filter_access_to :show, :edit, :update, :destroy, :travel_log, :approval, :status_movement, :attribute_check => true
    #before_filter :set_current_user
    before_action :set_travel_request, only: [:show, :edit, :update, :destroy]
-   before_action :set_admin, only: [:new, :edit, :index, :travelrequest_list, :show]
+   before_action :set_admin, only: [:new, :edit, :create, :update, :index, :travelrequest_list, :show]
    before_action :set_new_var, only: [:new, :create]
    before_action :set_edit_var, only: [:edit, :update]
     

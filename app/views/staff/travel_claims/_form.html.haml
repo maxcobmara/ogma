@@ -31,12 +31,13 @@
               = f.text_field :staff_name, value: @travel_claim.staff.staff_with_rank_position, readonly: 'readonly', class: 'form-control'
               = f.hidden_field :staff_id, value: @travel_claim.staff_id
             - else
-              - if @is_admin
-                - staff_list= Staff.all.order(name: :asc)
-              - else
-                - staff_list=Staff.where(id: current_user.userable_id)
+              /RESTRICT - creation to owner
+              - staff_list=Staff.where(id: current_user.userable_id)
               - selected=current_user.userable_id
-              = f.collection_select :staff_id, staff_list.order(name: :asc), :id,  :staff_with_rank_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>selected},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+              - if current_user.college.code=='amsas'
+                = f.collection_select :staff_id, staff_list, :id,  :staff_with_rank_position_unit, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>selected},{class: 'selectpicker', "data-width"=>'460px'} 
+              - else
+                = f.collection_select :staff_id, staff_list, :id,  :staff_name_with_position_grade_unit, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>selected},{class: 'selectpicker', "data-width"=>'460px'} 
             
       - if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true) 
         .col-md-6.col-md-offset-2    

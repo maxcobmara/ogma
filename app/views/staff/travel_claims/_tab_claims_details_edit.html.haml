@@ -14,8 +14,7 @@
     = render 'travel_claim_allowance_fields', :f => builder
   %br
   .row
-    /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :travel_claim_allowances
-    = link_to_add_fields t('addmore'), f, :travel_claim_allowances, "",  t('addmore')
+    = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :travel_claim_allowances, "", t('addmore')
   %BR
   .row
     .col-sm-4
@@ -39,8 +38,7 @@
     = render 'travel_claim_receipt_fields', :f => builder
   %br
   .row
-    /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :travel_claim_receipts
-    = link_to_add_fields t('addmore'), f, :travel_claim_receipts, "",  t('addmore')
+    = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :travel_claim_receipts, "", t('addmore')
   %hr   
 
 /Advance section
