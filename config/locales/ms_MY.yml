@@ -795,8 +795,8 @@ ms_MY:
     
     staff_administrator_modules: "Staf, Kedatangan Staf, Fingerprint, Perjawatan, Bank, Gelaran, Jadual Waktu Anjal, Pangkat, Gred Perkhidmatan, Butiran Perjawatan"
     finance_unit_modules: "Tuntutan Perjalanan, Belanjawan Latihan, Kumpulan Kenderaan, Kadar Batuan"
-    training_administration_modules: "Belanjawan Latihan, Kursus Latihan, Jadual Latihan, Kedatangan Latihan"
-    training_manager_modules: "Belanjawan Latihan, Kursus Latihan, Jadual Latihan, Kedatangan Latihan"
+    training_administration_modules: "Belanjawan Latihan, Kursus Latihan, Jadual Latihan, Kedatangan Latihan, Buku Alamat"
+    training_manager_modules: "Belanjawan Latihan, Kursus Latihan, Jadual Latihan, Kedatangan Latihan, Buku Alamat"
     staff_modules: "Staf(O), Kedatangan Staf(O), Kedatangan Latihan(O), Penilaian Staf(O), Cuti Staf(O), Permohonan Perjalanan(O), Tuntutan Perjalanan(O), Senarai Aset(R), Kerosakan Aset(O), Peminjaman Aset(O), Senarai Pelajar(R), Kes Disiplin Pelajar(O), Lokasi(R), Tempahan Kemudahan(O), Acara(O), Buletin(R), Daftar Dokumen(O), Buku Perpustakaan(R), Analisis & Statistik Perpustakaan(R), Penilaian Diri Jurulatih(O), Penilaian & Analisa Skor Purata Jurulatih(O)"
     asset_administrator_modules: "Kehilangan Aset, Peminjaman Aset, Pelupusan Aset, Kerosakan Aset, Senarai Aset, Kategori Aset, Lokasi"
     e_filing_modules: "Daftar Fail, Daftar Dokumen"
@@ -1438,6 +1438,7 @@ ms_MY:
         domestic: Dalam Negeri
         overseas: Luar Negara
         cost: Kos
+        refer_address_book: "Rujuk modul buku alamat untuk senarai penuh / tambahan."
       schedule:
         title_schedule: Jadual Latihan
         new: Penjadualan Baru

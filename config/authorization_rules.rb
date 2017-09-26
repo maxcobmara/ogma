@@ -605,7 +605,8 @@ authorization do
 
   role :training_manager do
     has_permission_on :staff_training_ptbudgets, :to => [:manage, :ptbudget_list]
-    has_permission_on :staff_training_ptcourses, :to => [:manage, :ptcourse_list]
+    has_permission_on :staff_training_ptcourses, :to => [:manage, :ptcourse_list]               
+    has_permission_on :campus_address_books, :to => [:manage, :address_list]                 #should be able to manage provider list (address book) too
     has_permission_on :staff_training_ptschedules, :to => [:manage, :ptschedule_list, :participantexpenses_list]
     has_permission_on :staff_training_ptdos, :to =>[:approve, :ptdo_list]
     has_permission_on :equery_report_ptdosearches, :to => [:new, :create, :show]
@@ -614,6 +615,7 @@ authorization do
   role :training_administration do
     has_permission_on :staff_training_ptbudgets, :to => [:manage, :ptbudget_list]
     has_permission_on :staff_training_ptcourses, :to => [:manage, :ptcourse_list]
+    has_permission_on :campus_address_books, :to => [:manage, :address_list]                 #should be able to manage provider list (address book) too
     has_permission_on :staff_training_ptschedules, :to => [:manage, :participants_expenses, :ptschedule_list, :participantexpenses_list]
     has_permission_on :staff_training_ptdos, :to => [:read, :ptdo_list]
     has_permission_on :staff_training_ptdos, :to => :update do
@@ -1476,12 +1478,15 @@ authorization do
   #10-OK, in show - link 'schedule a course' requires manage for ptschedules
   role :training_courses_module_admin do
      has_permission_on :staff_training_ptcourses, :to =>[:manage, :ptcourse_list]
+     has_permission_on :campus_address_books, :to => [:manage, :address_list]                 #should be able to manage provider list (address book) too
   end
   role :training_courses_module_viewer do
      has_permission_on :staff_training_ptcourses, :to =>[:read, :ptcourse_list]
+     has_permission_on :campus_address_books, :to => [:read, :address_list]                 #should be able to read provider list (address book) too
   end
   role :training_courses_module_user do
      has_permission_on :staff_training_ptcourses, :to =>[:read, :update, :ptcourse_list]
+     has_permission_on :campus_address_books, :to => [:read, :address_list]                 #should be able to read provider list (address book) too
   end
 #   role :training_courses_module_member do
 #      has_permission_on :staff_training_ptcourses, :to =>[:read, :update]
