@@ -58,11 +58,9 @@
           
   .form-group
     .col-sm-2.control-label 
-      /- unless Staff.where(id:25)[0].vehicles.blank?
       - unless current_user.userable.vehicles.blank?
         #tr_mileage=f.label :mileage_desc
     .col-md-6
-      /- unless Staff.where(id:25)[0].vehicles.blank?
       - unless current_user.userable.vehicles.blank?
         .row#tr_mileage2
           .col-sm-2

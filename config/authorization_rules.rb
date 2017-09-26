@@ -593,7 +593,7 @@ authorization do
     has_permission_on :staff_travel_claims, :to => [:show, :claimprint, :travelclaim_list] do
       if_attribute :is_submitted => is {true}
     end
-    has_permission_on :staff_travel_claims, :to => [:check, :update, :show, :claimprint], :join_by => :and do
+    has_permission_on :staff_travel_claims, :to => [:check, :update], :join_by => :and do # , :show, :claimprint], :join_by => :and do
       if_attribute :is_submitted => is {true}
       if_attribute :is_returned => is_not {true}
       if_attribute :is_checked => is_not {true}

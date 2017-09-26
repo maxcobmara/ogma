@@ -10,7 +10,7 @@ class Staff::LeaveforstaffsController < ApplicationController
 
   def index
     @ll=@leaveforstaffs
-    @leaveforstaffs = @leaveforstaffs.page(params[:page]||1) #.order(staff_id: :asc, leavestartdate: :asc).page(params[:page]||1)
+    @leaveforstaffs = @leaveforstaffs.page(params[:page]||1) 
     @owns = @ll.where(staff_id: current_user.userable_id)
     @for_supports = @ll.where(approval1_id: current_user.userable_id)                                            #.where(approval1: nil)
     @for_approvals = @ll.where(approval2_id: current_user.userable_id)                                           #.where(approval1: true).where(approver2: nil)

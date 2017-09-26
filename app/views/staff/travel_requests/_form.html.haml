@@ -16,19 +16,10 @@
           .col-sm-2.control-label
             = f.label :staff_id
           .col-md-3
-            - if @travel_request.staff_id
-              - staff_list=Staff.where(id: @travel_request.staff_id)
-              - selected=@travel_request.staff_id
-            - else
-              - if @is_admin
-                - staff_list= Staff.all.order(name: :asc)
-              - else
-                - staff_list=Staff.where(id: current_user.userable_id)
-              - selected=current_user.userable_id
             - if current_user.college.code=='amsas'
-              = f.collection_select :staff_id, staff_list, :id,  :staff_with_rank_position_unit, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>selected},{class: 'selectpicker', "data-width"=>'460px'} 
+              = f.collection_select :staff_id, @staff_list, :id,  :staff_with_rank_position_unit, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@selected},{class: 'selectpicker', "data-width"=>'460px'} 
             - else
-              = f.collection_select :staff_id, staff_list, :id,  :staff_name_with_position_grade_unit, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>selected},{class: 'selectpicker', "data-width"=>'460px'} 
+              = f.collection_select :staff_id, @staff_list, :id,  :staff_name_with_position_grade_unit, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@selected},{class: 'selectpicker', "data-width"=>'460px'} 
         .form-group
           .col-sm-2.control-label
             = f.label :document_id

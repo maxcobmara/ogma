@@ -2,10 +2,10 @@ class Staff::TravelClaimsController < ApplicationController
   filter_access_to :index, :new, :create, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :check, :approval, :claimprint, :attribute_check => true
   before_action :set_travel_claim, only: [:show, :edit, :update, :destroy]
-  before_action :set_admin, only: [:index, :edit, :show, :travelclaim_list]
+  before_action :set_admin, only: [:index, :new, :edit,:create, :update, :show, :travelclaim_list]
   
   def index
-    if @is_admin
+    if @is_admin || @is_finance
       @search = TravelClaim.search(params[:q])
     else
       @search = TravelClaim.sstaff2(current_user.userable.id).search(params[:q])
@@ -140,7 +140,7 @@ class Staff::TravelClaimsController < ApplicationController
   end
   
   def travelclaim_list
-    if @is_admin
+    if @is_admin || @is_finance
       @search = TravelClaim.search(params[:q])
     else
       @search = TravelClaim.sstaff2(current_user.userable.id).search(params[:q])
@@ -164,8 +164,9 @@ class Staff::TravelClaimsController < ApplicationController
   
   def set_admin
     roles = current_user.roles.pluck(:authname)
-    mypost = Position.where(staff_id: current_user.userable_id).first
+    #mypost = Position.where(staff_id: current_user.userable_id).first
     @is_admin = true if roles.include?("developer") || roles.include?("administration") || roles.include?("travel_claims_module_admin")|| roles.include?("travel_claims_module_viewer")|| roles.include?("travel_claims_module_user")# || mypost.is_root? || roles.include?("finance_unit")
+    @is_finance=true if roles.include?("finance_unit")
   end
   
   def travel_claim_params

@@ -7,12 +7,7 @@
     .col-md-3
       .span_submit1{:style=>"display:none;"}
         = f.text_field :approved_on, class: 'date_picker_reverse form-control', value: @travel_claim.approved_on.try(:strftime, '%d-%m-%Y')
-  .span_submit1{:style=>"display:none;"}
-    .form-group
-      .col-sm-2.control-label 
-        &nbsp;
-      .col-md-6
-        = t 'staff.travel_claim.approve_notify'
+      .small= t 'staff.travel_claim.approve_notify'
   .form-group
     .col-sm-2.control-label
       = f.label :approved_by
