@@ -5,11 +5,16 @@
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav.navbar-right
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    /TODO - pdf listing of ICMS user
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: "bogus"
-- if is_developer?
-  = current_user.college.users.map(&:college_id)  
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), user_list_users_path(params.merge(format: 'pdf'))
+
 .row
+  - if is_developer?
+    /TEMP
+    .col-md-12
+      .alert.alert-warning
+        %strong="Position / Unit :"
+        ="Remove staff from designated positions ( / *) to ensure #{current_user.college.code.upcase} staff validity in all modules, EXCEPT for ICMS Developer, ICMS Administrator and ICMS tester(s)"
+        
   %table.table-striped.table-hover.ogma
     %thead
       %tr
@@ -24,6 +29,11 @@
           %th{style: "width:2%;"}
     %tbody
       = render "search_bar"
+      /=@all.count
+      - if is_developer?
+        = current_user.college.users.map(&:college_id)
+        %br
+      
       - @user_by_type.each do |user_type, users| 
         - if is_developer?
           = users.map(&:college_id)

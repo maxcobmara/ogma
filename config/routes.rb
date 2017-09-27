@@ -653,6 +653,9 @@ Ogma::Application.routes.draw do
     post :link
     put :complete
    end
+   collection do
+     get :user_list
+   end
   end
   resources :logins
   resources :roles

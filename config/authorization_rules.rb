@@ -18,7 +18,7 @@ authorization do
  role :administration do
    has_permission_on :authorization_rules, :to => :read
    has_permission_on :roles, :to => :manage
-   has_permission_on :users, :to =>[:index, :update], :join_by => :and do
+   has_permission_on :users, :to =>[:index, :update, :user_list], :join_by => :and do
      if_attribute :college_id => is {user.college_id}
      if_attribute :email => is_not {User.where(college_id: user.college_id).joins(:roles).where('roles.authname=?', 'developer').pluck(:email).first}
    end
@@ -2753,7 +2753,7 @@ authorization do
   
   role :users_module do
     #has_permission_on :users, :to => :manage
-    has_permission_on :users, :to =>[:index, :update], :join_by => :and do
+    has_permission_on :users, :to =>[:index, :update, :user_list], :join_by => :and do
       if_attribute :college_id => is {user.college_id}
       if_attribute :email => is_not {User.where(college_id: user.college_id).joins(:roles).where('roles.authname=?', 'developer').pluck(:email).first}
     end

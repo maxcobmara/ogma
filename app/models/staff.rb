@@ -149,6 +149,7 @@ class Staff < ActiveRecord::Base
 
   #--------------------Declerations----------------------------------------------------
   scope :valid_staffs, -> { Staff.joins(:positions).where('positions.id NOT IN (?)', Position.initial_posts).uniq }   #added 14thSept2017
+  scope :invalid_staffs, -> { Staff.joins(:positions).where('positions.id IN (?)', Position.initial_posts).uniq } #added 27sept2017
   
    def mykad_holder
      country_cd==1 || country_cd==3
@@ -517,7 +518,13 @@ class Staff < ActiveRecord::Base
 	     cnt+=1
 	   end
 	 else
-           a+=post.name+" / "+post.unit
+	   if valid_posts.include?(post.id)
+             a+=post.name+" / "+post.unit
+	   else
+	     if dev==true
+	       a+="(#{post.name} /  #{post.unit} *)"
+	     end
+	   end
 	   cnt+=1
 	 end
        end
