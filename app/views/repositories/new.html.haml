@@ -7,7 +7,7 @@
 .row.fluid
   = form_for @repository, html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
-    = render :partial => 'form', :locals => {:f => f}
+    = render :partial => 'repositories/iso/form', :locals => {:f => f}
 	
     .col-md-offset-1
       .form-group

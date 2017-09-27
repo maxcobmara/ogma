@@ -7,7 +7,8 @@
     %td=f.text_field :position_search, :size => 2, class: 'form-control'
     %td= select_tag('q[userable_type_eq]',options_for_select([[t('actions.all_records'),''],[t('staff.title'),'Staff'],[t('student.title'),'Student']]),class: 'selectpicker',"data-width"=>'100px')
     %td
-      = f.text_field :roles_name_cont, :size => 2, class: 'form-control'
+      /= f.text_field :roles_name_cont, :size => 2, class: 'form-control'
+      =f.text_field :role_search, :size => 2, class: 'form-control'
       .input-group
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}

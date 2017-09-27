@@ -34,10 +34,20 @@ class User < ActiveRecord::Base
     staff_ids=Position.where('name ILIKE(?)or unit ILIKE(?)', "%#{query}%", "%#{query}%").pluck(:staff_id)
     where(userable_id: staff_ids).where(userable_type: "Staff")
   end
+  
+  def self.role_search(query)
+    role_ids=[]
+    translated_roles=[]
+    Role.all.each{|y|translated_roles << [y.id, I18n.t("user.#{y.authname}")]}
+    translated_roles.each do |id, trans|
+      role_ids << id if trans.include?(query.capitalize)
+    end
+    joins(:roles).where('roles.id IN(?)', role_ids)
+  end
 
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-   [:keyword_search, :position_search]
+   [:keyword_search, :position_search, :role_search]
   end
   
   def mailboxer_name
