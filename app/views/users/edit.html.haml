@@ -826,7 +826,19 @@ $(function(){
     /*Local Messaging only*/
     if(fileown[4].checked==false)
     { efilemn[4].disabled=true;}
-    
+   
+
+    /**** bring upwards as staff admin requires support table - Title & Staff Shift ****/
+    /**** bring upwards as librarian requires support table - Visitors ****/
+    /* 13) Admin / Support Tables */
+    var supportmg = document.getElementsByClassName('supportmanage2');
+    var supportrd = document.getElementsByClassName('supportread2');
+    var esupportmn = document.getElementsByClassName('supportmain');
+
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var esupportmg = document.getElementsByClassName('supportmanage');
+    var esupportrd = document.getElementsByClassName('supportread');
+
     
     /* 2)  E-Library*/
     var librarymg = document.getElementsByClassName('librarymanage2');
@@ -858,8 +870,8 @@ $(function(){
       {  elibrarymn[i].checked=true;}
     }
     /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
-    
-    /*when Librarian is selected, uncheck Student(R), Library Book(both) & Library Transactions(both)*/
+
+    /*when Librarian is selected, uncheck Student(R), Library Book(all), Library Transactions(all) & Visitors (both)*/
     if(inputElements[4].checked){
       for(i=0; i<2; i++){
         librarymg[i].disabled=true;
@@ -867,8 +879,11 @@ $(function(){
         libraryusr[i].disabled=true;
         libraryown[i].disabled=true;
         elibrarymn[i].disabled=true;
-        studentrd[4].disabled=true;
       }
+      studentrd[4].disabled=true;
+      supportmg[12].disabled=true;
+      supportrd[12].disabled=true;
+      esupportmn[12].disabled=true;
     }
     
     /*disable this main checkbox if no file module selected*/
@@ -923,16 +938,6 @@ $(function(){
         eexammn[i].disabled=true;
       }
     }
-    
-    /**** bring upwards as staff admin requires support table - Title & Staff Shift ****/
-    /* 13) Admin / Support Tables */
-    var supportmg = document.getElementsByClassName('supportmanage2');
-    var supportrd = document.getElementsByClassName('supportread2');
-    var esupportmn = document.getElementsByClassName('supportmain');
-
-    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
-    var esupportmg = document.getElementsByClassName('supportmanage');
-    var esupportrd = document.getElementsByClassName('supportread');
     
     for(i=0; i<13; i++){
       if(supportmg[i].checked)
@@ -1808,6 +1813,23 @@ $(function(){
       
     } 
 
+    
+    /***bring upwards as checking required for Staff Administrator***/
+    /***bring upwards as checking requred for Librarian - Visitors***/
+    /* 13) Admin / Support Tables*/
+    /*Admin & support tables checkboxes*/
+    var esupportmg = document.getElementsByClassName('supportmanage');
+    var esupportrd = document.getElementsByClassName('supportread');
+    
+    /*Admin & support tables radio buttons*/
+    var supportmg = document.getElementsByClassName('supportmanage2');
+    var supportrd = document.getElementsByClassName('supportread2');
+    
+    /*Admin & support tables main UNCHECK checkbox*/
+    var esupportm = document.getElementsByClassName('supportmain');
+    /*bring upwards as checking required for Staff Administrator*/
+    
+    
     /* 2) E-Library Section*/
     /*E-Library checkboxes*/
     var elibrarymg = document.getElementsByClassName('librarymanage');
@@ -1844,7 +1866,7 @@ $(function(){
     }
     /MOVED From Students module - requires usage starting fr Library/
     var studentrd = document.getElementsByClassName('studentread2');
-    /*when Librarian is selected, uncheck Student(R), Library Book(both) & Library Transactions(both)*/
+    /*when Librarian is selected, uncheck Student(R), Library Book(all), Library Transactions(all) & Visitors(both)*/
     if(inputElements[4].checked){
       for(i=0; i<2; i++){
         elibrarymg[i].checked=false;
@@ -1871,6 +1893,15 @@ $(function(){
         /*studentrd[4].disabled=true;*/
       /*}*/
       /*Refer role: Warden Only(else - Student Info(R)) */
+      
+      /*Visitors*/
+      supportmg[12].disabled=true;
+      supportmg[12].checked=false;
+      supportrd[12].disabled=true;
+      supportrd[12].checked=false;
+      esupportm[12].disabled=true;
+      esupportm[12].checked=false;
+
     } 
     else
     {
@@ -1900,6 +1931,11 @@ $(function(){
       /*{ */
         /*studentrd[4].disabled=false;*/
       /*}*/
+      
+      /*Visitors*/
+      supportmg[12].disabled=false;
+      supportrd[12].disabled=false;
+      esupportm[12].disabled=false;
     }
       
     /* 3) Examination Section*/
@@ -1978,24 +2014,6 @@ $(function(){
       else
       {  examown[6].disabled=false;}
     }
-    
-    
-    /***bring upwards as checking required for Staff Administrator***/
-    /* 13) Admin / Support Tables*/
-    /*Admin & support tables checkboxes*/
-    var esupportmg = document.getElementsByClassName('supportmanage');
-    var esupportrd = document.getElementsByClassName('supportread');
-    
-    /*Admin & support tables radio buttons*/
-    var supportmg = document.getElementsByClassName('supportmanage2');
-    var supportrd = document.getElementsByClassName('supportread2');
-    
-    /*Admin & support tables main UNCHECK checkbox*/
-    var esupportm = document.getElementsByClassName('supportmain');
-    /*bring upwards as checking required for Staff Administrator*/
-    
-    
-    
     
     /* 4) Staff part 1 : Staffs, Positions, Staff Attendances, Fingerprints */
     /*Staff part 1 checkboxes*/
@@ -2154,10 +2172,10 @@ $(function(){
       esupportm[10].disabled=false;
       esupportm[11].disabled=false;
       
-      /*26Sept 2017-RESCUE 4 - Messaging groups & Visitors (checkbox - select/deselect), as these 2 modules have no connection with other modules at all*/
+      /*26Sept 2017-RESCUE 4 - Messaging groups (checkbox - select/deselect), as these 2 modules have no connection with other modules at all*/
       /* NOTE - staff role already inc. messaging(ref: auth rules) but not messaging group*/
       esupportm[7].disabled=false;
-      esupportm[12].disabled=false;
+      
     }
         
     /* 5) Staff part 2 : Travel Requests & Travel Claims & part 3 : Training Budget, Training Courses, Training Schedule, Training Attendances */
