@@ -826,7 +826,19 @@ $(function(){
     /*Local Messaging only*/
     if(fileown[4].checked==false)
     { efilemn[4].disabled=true;}
-    
+   
+
+    /**** bring upwards as staff admin requires support table - Title & Staff Shift ****/
+    /**** bring upwards as librarian requires support table - Visitors ****/
+    /* 13) Admin / Support Tables */
+    var supportmg = document.getElementsByClassName('supportmanage2');
+    var supportrd = document.getElementsByClassName('supportread2');
+    var esupportmn = document.getElementsByClassName('supportmain');
+
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var esupportmg = document.getElementsByClassName('supportmanage');
+    var esupportrd = document.getElementsByClassName('supportread');
+
     
     /* 2)  E-Library*/
     var librarymg = document.getElementsByClassName('librarymanage2');
@@ -858,8 +870,8 @@ $(function(){
       {  elibrarymn[i].checked=true;}
     }
     /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
-    
-    /*when Librarian is selected, uncheck Student(R), Library Book(both) & Library Transactions(both)*/
+
+    /*when Librarian is selected, uncheck Student(R), Library Book(all), Library Transactions(all)*/
     if(inputElements[4].checked){
       for(i=0; i<2; i++){
         librarymg[i].disabled=true;
@@ -867,8 +879,11 @@ $(function(){
         libraryusr[i].disabled=true;
         libraryown[i].disabled=true;
         elibrarymn[i].disabled=true;
-        studentrd[4].disabled=true;
       }
+      studentrd[4].disabled=true;
+      supportmg[12].disabled=true;
+      supportrd[12].disabled=true;
+      esupportmn[12].disabled=true;
     }
     
     /*disable this main checkbox if no file module selected*/
@@ -923,16 +938,6 @@ $(function(){
         eexammn[i].disabled=true;
       }
     }
-    
-    /**** bring upwards as staff admin requires support table - Title & Staff Shift ****/
-    /* 13) Admin / Support Tables */
-    var supportmg = document.getElementsByClassName('supportmanage2');
-    var supportrd = document.getElementsByClassName('supportread2');
-    var esupportmn = document.getElementsByClassName('supportmain');
-
-    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
-    var esupportmg = document.getElementsByClassName('supportmanage');
-    var esupportrd = document.getElementsByClassName('supportread');
     
     for(i=0; i<13; i++){
       if(supportmg[i].checked)
@@ -1317,7 +1322,7 @@ $(function(){
         
       }
  
-      /* when Facilites Administrator is selected, uncheck Location & Tenant, disable Facilities Booking (User & Viewer-redundant) */
+      /* when Facilites Administrator is selected, uncheck Location & Tenant, disable Facilities Booking (User & Viewer-redundant), disable Visitors */
       if(inputElements[11].checked){
         locationmg[0].disabled=true;
         locationrd[0].disabled=true;
@@ -1331,7 +1336,13 @@ $(function(){
         elocationmn[2].disabled=true;
         locationusr[3].disabled=true;
         locationrd[3].disabled=true;
+        
+        /*visitors - disable when facilities admin is selected*/
+        supportmg[12].disabled=true;
+        supportrd[12].disabled=true
+        esupportmn[12].disabled=true;
       }
+      
     }
     
     /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
@@ -1808,6 +1819,23 @@ $(function(){
       
     } 
 
+    
+    /***bring upwards as checking required for Staff Administrator***/
+    /***bring upwards as checking requred for Librarian - Visitors***/
+    /* 13) Admin / Support Tables*/
+    /*Admin & support tables checkboxes*/
+    var esupportmg = document.getElementsByClassName('supportmanage');
+    var esupportrd = document.getElementsByClassName('supportread');
+    
+    /*Admin & support tables radio buttons*/
+    var supportmg = document.getElementsByClassName('supportmanage2');
+    var supportrd = document.getElementsByClassName('supportread2');
+    
+    /*Admin & support tables main UNCHECK checkbox*/
+    var esupportm = document.getElementsByClassName('supportmain');
+    /*bring upwards as checking required for Staff Administrator*/
+    
+    
     /* 2) E-Library Section*/
     /*E-Library checkboxes*/
     var elibrarymg = document.getElementsByClassName('librarymanage');
@@ -1844,7 +1872,7 @@ $(function(){
     }
     /MOVED From Students module - requires usage starting fr Library/
     var studentrd = document.getElementsByClassName('studentread2');
-    /*when Librarian is selected, uncheck Student(R), Library Book(both) & Library Transactions(both)*/
+    /*when Librarian is selected, uncheck Student(R), Library Book(all), Library Transactions(all) - NOTE: combine Visitors disable at role=Facilities Admin(inputElements[11])*/
     if(inputElements[4].checked){
       for(i=0; i<2; i++){
         elibrarymg[i].checked=false;
@@ -1871,6 +1899,7 @@ $(function(){
         /*studentrd[4].disabled=true;*/
       /*}*/
       /*Refer role: Warden Only(else - Student Info(R)) */
+
     } 
     else
     {
@@ -1900,6 +1929,7 @@ $(function(){
       /*{ */
         /*studentrd[4].disabled=false;*/
       /*}*/
+
     }
       
     /* 3) Examination Section*/
@@ -1978,24 +2008,6 @@ $(function(){
       else
       {  examown[6].disabled=false;}
     }
-    
-    
-    /***bring upwards as checking required for Staff Administrator***/
-    /* 13) Admin / Support Tables*/
-    /*Admin & support tables checkboxes*/
-    var esupportmg = document.getElementsByClassName('supportmanage');
-    var esupportrd = document.getElementsByClassName('supportread');
-    
-    /*Admin & support tables radio buttons*/
-    var supportmg = document.getElementsByClassName('supportmanage2');
-    var supportrd = document.getElementsByClassName('supportread2');
-    
-    /*Admin & support tables main UNCHECK checkbox*/
-    var esupportm = document.getElementsByClassName('supportmain');
-    /*bring upwards as checking required for Staff Administrator*/
-    
-    
-    
     
     /* 4) Staff part 1 : Staffs, Positions, Staff Attendances, Fingerprints */
     /*Staff part 1 checkboxes*/
@@ -2154,10 +2166,10 @@ $(function(){
       esupportm[10].disabled=false;
       esupportm[11].disabled=false;
       
-      /*26Sept 2017-RESCUE 4 - Messaging groups & Visitors (checkbox - select/deselect), as these 2 modules have no connection with other modules at all*/
+      /*26Sept 2017-RESCUE 4 - Messaging groups (checkbox - select/deselect), as these 2 modules have no connection with other modules at all*/
       /* NOTE - staff role already inc. messaging(ref: auth rules) but not messaging group*/
       esupportm[7].disabled=false;
-      esupportm[12].disabled=false;
+      
     }
         
     /* 5) Staff part 2 : Travel Requests & Travel Claims & part 3 : Training Budget, Training Courses, Training Schedule, Training Attendances */
@@ -2685,23 +2697,7 @@ $(function(){
         ecourseevalm[i].checked=false;
       }
     }
-    
-    
-    
-    /***************************************** 12) Admin & support tables when UNCHECK , all training main is false********************/
-    for(i=0; i < 13; i++){
-      if (esupportm[i].checked==false) {
-        supportmg[i].checked=false;
-        supportrd[i].checked=false;
-        esupportmg[i].checked=false;
-        esupportrd[i].checked=false;
-      }
-      /*file main checkbox REMAINS FALSE(cannot be checked) if no file module selected*/
-      if ((supportmg[i].checked==false) && (supportrd[i].checked==false)){
-        esupportm[i].checked=false;
-      }
-    }
-    ///////////////
+
     /*When Asset Administrator OR Facilities Administrator is selected*/
     if((inputElements[9].checked) || (inputElements[11].checked))
     {
@@ -2772,7 +2768,7 @@ $(function(){
     } 
     else
     {
-      /* when Asset Administrator is not selected, but Staff role is selected, disable Asset List(R), Asset Defect(O), Asset Loan(O)*/
+      /* when Asset Administrator is not selected, but Staff role is selected, disable Asset List(R), Asset Defect(O), Asset Loan(O), disable*/
       if(inputElements[5].checked){
         assetrd[5].disabled=true;    /*list*/
         assetown[4].disabled=true; /*defect*/
@@ -2819,7 +2815,7 @@ $(function(){
       eassetm[3].disabled=false;
     }
     
-    /* when Facilites Administrator is selected, uncheck Location & Tenant, disable & uncheck Facilities Reservation (User)*/
+    /* when Facilites Administrator is selected, uncheck Location & Tenant, disable & uncheck Facilities Reservation (User), disable Visitors*/
     /* if not a warden - hide location read & tenant read too */
     if(inputElements[11].checked){
       /* hide tenant R*/
@@ -2868,6 +2864,7 @@ $(function(){
       elocationm[3].checked=false;
       
       
+      
     } 
     else
     {
@@ -2888,6 +2885,26 @@ $(function(){
       
       locationusr[3].disabled=false;
       locationrd[3].disabled=false;
+    }
+    
+    /* when Librarian OR Facilities Admin is selected - uncheck & disable Visitors - 27Sept2017*/
+    if ((inputElements[4].checked) || (inputElements[11].checked))
+    {
+      /*visitors - disable when librarian OR facilities admin is selected*/
+      supportmg[12].checked=false;
+      supportrd[12].checked=false;
+      supportmg[12].disabled=true;
+      supportrd[12].disabled=true;
+        
+      esupportm[12].checked=false;
+      esupportm[12].disabled=true;
+    }
+    else
+    {
+      /*visitors - available when librarian OR facilities admin is not selected*/
+      supportmg[12].disabled=false;
+      supportrd[12].disabled=false;
+      esupportm[12].disabled=false;
     }
 
     /* when Student administrator is selected, uncheck Student Info*/
@@ -3479,6 +3496,25 @@ $(function(){
       locationown[3].disabled=false;
     }
     ///
+    
+    
+    ////////////////////////////---- MOVED downwards to support ALL support tables related ----- as last checker for selected values of support table items - 27sept2017
+    /***************************************** 12) Admin & support tables when UNCHECK , all training main is false********************/
+    for(i=0; i < 13; i++){
+      if (esupportm[i].checked==false) {
+        supportmg[i].checked=false;
+        supportrd[i].checked=false;
+        esupportmg[i].checked=false;
+        esupportrd[i].checked=false;
+      }
+      /*file main checkbox REMAINS FALSE(cannot be checked) if no file module selected*/
+      if ((supportmg[i].checked==false) && (supportrd[i].checked==false)){
+        esupportm[i].checked=false;
+      }
+    }
+    ///////////////---- MOVED downwards to support ALL support tables related -----as last checker for selected values of support table items - 27sept2017
+    
+    ///////////////////////////
     
     /SAME AS - EACH part - default value - at any time/
     /*set by default at all time - Student Attendance (Member) not applicable - refer auth rules*/
