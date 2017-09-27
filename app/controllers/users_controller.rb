@@ -1,17 +1,14 @@
 class UsersController < ApplicationController
- filter_resource_access
+#  filter_resource_access
+ filter_access_to :index, :link, :user_list, :attribute_check => false
+ filter_access_to :edit, :update, :destroy, :attribute_check => true
+  
  before_action :set_user, only: [:show, :edit, :update, :destroy]
+ before_action :set_index_list, only: [:index, :user_list]
  before_filter :load_userable, only: [:link, :edit, :update]
 
-
  def index
-   roles=current_user.roles.map(&:authname)
-   if roles.include?('developer')
-     @search = User.search(params[:q])
-   else
-     @search = current_user.college.users.search(params[:q])  #http://stackoverflow.com/questions/32300349/restrict-index-view-to-users-records NOTE-0 voted
-   end
-   @users = @search.result
+   @all=@users
    @users = @users.page(params[:page]||1)
    @user_by_type = @users.group_by(&:userable_type)
  end
@@ -51,11 +48,32 @@ class UsersController < ApplicationController
      end
    end
  end
+ 
+ def user_list
+   respond_to do |format|
+      format.pdf do
+        pdf = User_listPdf.new(@users, view_context, current_user)
+        send_data pdf.render, filename: "user_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+ end
 
  private
    # Use callbacks to share common setup or constraints between actions.
    def set_user
      @user = User.find(params[:id])
+   end
+   
+   def set_index_list
+     roles=current_user.roles.map(&:authname)
+     if roles.include?('developer')
+       @search = User.search(params[:q])
+     else
+       @search = current_user.college.users.where.not(id: User.icms_acct).search(params[:q])  #http://stackoverflow.com/questions/32300349/restrict-index-view-to-users-records NOTE-0 voted
+     end
+     @users = @search.result
    end
 
    # Never trust parameters from the scary internet, only allow the white list through.

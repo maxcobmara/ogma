@@ -565,4 +565,9 @@ class User < ActiveRecord::Base
   def set_college
     self.college_id=2 # TODO - rely on domain name
   end
+  
+  def self.icms_acct
+    icms_team=Staff.where('name ILIKE(?)', "%icms%").pluck(:id)+Student.where('name ILIKE(?)', "%icms%").pluck(:id)
+    where(userable_id: icms_team).pluck(:id)
+  end
 end
