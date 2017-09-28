@@ -2,13 +2,10 @@ class StaffTraining::PtdosController < ApplicationController
   filter_access_to :index, :new, :create, :show_total_days, :training_report, :ptdo_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_ptdo, only: [:show, :edit, :update, :destroy]
+  before_action :set_users_admin, only: [:index, :new, :create]
+  before_action :set_new_var, only: [:new, :create]
   
   def index
-    roles = current_user.roles.pluck(:authname)
-    @is_admin = roles.include?("developer") || roles.include?("administration") || roles.include?("training_administration") || roles.include?("training_manager") || roles.include?("training_attendance_module")
-    @is_programme_mgr = roles.include?("programme_manager")
-    @is_unit_leader = roles.include?("unit_leader")
-    @is_admin_superior = true if roles.include?("administration_staff") && current_user.userable.positions.first.name=="Timbalan Pengarah (Pengurusan)"
     if current_user.college.code=="amsas"
       directors=Position.where('name ILIKE(?) OR name ILIKE(?) OR name ILIKE(?)', 'Pengarah%', 'Komandan%', 'Ketua Penolong Pengarah%').pluck(:staff_id)
       @is_director = true if directors.include?(current_user.userable_id)
@@ -42,6 +39,7 @@ class StaffTraining::PtdosController < ApplicationController
   
   def new
     @ptdo = Ptdo.new(:ptschedule_id => params[:ptschedule_id])
+    @selected=current_user.userable_id
   end
   
   def edit
@@ -50,7 +48,8 @@ class StaffTraining::PtdosController < ApplicationController
   
   def create
     @ptdo = Ptdo.new(ptdo_params)
-
+    @selected=@ptdo.staff_id
+    
     respond_to do |format|
       if @ptdo.save
         format.html { redirect_to(staff_training_ptdo_path(@ptdo), notice: (t 'staff.training.application_status.title_apply')+" "+(t 'actions.created'))}
@@ -136,6 +135,23 @@ class StaffTraining::PtdosController < ApplicationController
       def set_ptdo
         @ptdo = Ptdo.find(params[:id])
       end
+      
+      def set_users_admin
+        roles = current_user.roles.pluck(:authname)
+        @is_admin = roles.include?("developer") || roles.include?("administration") || roles.include?("training_administration") || roles.include?("training_manager") || roles.include?("training_attendance_module")
+        @is_programme_mgr = roles.include?("programme_manager")
+        @is_unit_leader = roles.include?("unit_leader")
+        @is_admin_superior = true if roles.include?("administration_staff") && current_user.userable.positions.first.name=="Timbalan Pengarah (Pengurusan)"
+      end
+      
+     def set_new_var
+       @staff_list=@is_admin ? Staff.valid_staffs.order(rank_id: :asc, name: :asc) : Staff.where(id: current_user.userable_id)
+     end
+   
+#       def set_edit_var
+#         @staff_list=Staff.where(id: @travel_request.staff_id)
+#         @selected=@travel_request.staff_id
+#       end
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def ptdo_params
