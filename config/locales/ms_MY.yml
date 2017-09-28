@@ -751,6 +751,8 @@ ms_MY:
     available_roles: Pilihan Peranan
     assigned_roles: Peranan diperuntukkan
     user_not_link_entity: "Pengguna belum disuaipadan dengan mana-mana entiti"
+    remove_position: "Keluarkan staf dari rekod perjawatan ( /*) bagi membolehkan staf"
+    remove_position_cont: "didapati dalam kesemua modul, KECUALI rekod perjawatan bagi Pembangun ICMS, Pentadbir ICMS dan Penguji ICMS."
     access_by_module: Akses Mengikut Modul
     roles_vs_modules: "Peruntukan peranan / akses "
     subject_to: "mengikut modul tertakluk kepada : "
