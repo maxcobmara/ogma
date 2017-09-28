@@ -2616,6 +2616,7 @@ en:
       discard_options: Discard Method
       discard_witness_by: Discard Witnesses
       type_others_desc: Other Discard method
+      type_others_desc2: Describe other method
       transfer: Transfer
       sold: Sold
       discard: Discard
@@ -2629,7 +2630,10 @@ en:
       disposed_by: View and Close By
       no_record_selected: "No record selected for KEW.PA-17 / KEW.PA-20 printing"
       defect_to_dispose: "Select 'Dispose' action when processing <b>Asset Defect</b> for asset to be appeared in above list"
-      list_defect_to_dispose: "Select 'Dispose' action when processing <b>Asset Defect</b> before proceeding with disposal"
+      list_defect_to_dispose: "Select 'Dispose' action when processing <b>Asset Defect</b> before proceeding with disposal."
+      kewpa17_available: "KEW-PA 17 (Laporan Lembaga Pemeriksa...) only available for not yet disposed assets (awaiting disposal approval)."
+      awaiting_disposal_approval: "Awaiting Disposal Approval"
+      approved_disposal: "Disposed Assets"
       
     loss:
       title: "Loss & Write Offs"

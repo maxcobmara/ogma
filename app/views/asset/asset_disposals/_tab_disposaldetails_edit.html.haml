@@ -23,7 +23,7 @@
       .col-sm-1= f.radio_button :disposal_type, "others",  :id => 'button_others',  :class => 'radio_disposal_type'
       .col-sm-1= t 'asset.disposal.others'
       .col-sm-4.others_item{:style=>"display: none;"}
-        = f.text_field :type_others_desc, class: 'form-control', placeholder: "Describe other method"
+        = f.text_field :type_others_desc, class: 'form-control', placeholder: (t 'asset.disposal.type_others_desc2')
   .form-group.transfer_item{:style=>"display: none;"}
     .col-sm-2.control-label
       = f.label :receiver_name
@@ -64,7 +64,7 @@
       = f.check_box :witness_is_staff1, :id => 'witness_is_staff1'
     .col-md-4
       .span_wstaff1_on{:style=>"display: none;"}
-        = f.collection_select :discard_witness_1, Staff.all.order(name: :asc), :id, :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@disposal.discard_witness_1},{class: 'selectpicker', "data-width"=>'357px'} 
+        = f.collection_select :discard_witness_1, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@disposal.discard_witness_1},{class: 'selectpicker', "data-width"=>'357px'} 
       .span_wstaff1_off{:style=>"display: none;"}
         = f.text_field :witness_outsider1, class: 'form-control'
   .form-group.discard_item{:style=>"display: none;"}
@@ -74,7 +74,7 @@
       = f.check_box :witness_is_staff2, :id => 'witness_is_staff2'
     .col-md-4
       .span_wstaff2_on{:style=>"display: none;"}
-        = f.collection_select :discard_witness_2, Staff.all.order(name: :asc), :id, :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@disposal.discard_witness_2},{class: 'selectpicker', "data-width"=>'357px'} 
+        = f.collection_select :discard_witness_2, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@disposal.discard_witness_2},{class: 'selectpicker', "data-width"=>'357px'} 
       .span_wstaff2_off{:style=>"display: none;"}
         = f.text_field :witness_outsider2, class: 'form-control'
   .form-group

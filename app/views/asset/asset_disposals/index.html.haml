@@ -22,14 +22,16 @@
     .col-md-12
       .alert.alert-warning
         %strong=(t 'remarks')+" : "
-        =t('asset.disposal.list_defect_to_dispose').html_safe
+        %ol
+          %li=t('asset.disposal.list_defect_to_dispose').html_safe
+          %li=t('asset.disposal.kewpa17_available')
     %table.table-striped.table-hover.ogma
       %thead
         %tr
           %th &nbsp;
           %th=sort_link(@search, :asset_assetcode,  t('asset.assetcode'))
           %th=t('asset.category.type_name_model')
-          %th= t('asset.disposal.quantity')
+          /%th= t('asset.disposal.quantity')
           %th{:width => "200px"}= sort_link(@search, :asset_purchasedate, t('asset.disposal.purchase_date'))
           %th{:width => "200px"}= sort_link(@search, :disposed_on, t('asset.disposal.disposed_on'))
           %th= sort_link(@search, :current_value, t('asset.disposal.current_value'))
@@ -37,17 +39,20 @@
       %tbody
         = render "index_search"     
         - count=0
-        - @disposals.each do |disposal|
+        - @disposals.group_by(&:is_disposed).each do |status, disposals|
           %tr
-            %td{:style=>"text-align: center;"}= check_box_tag "disposal_ids[]", disposal.id, true, :id => "disposalidss_#{count}"
-            %td= link_to disposal.asset.assetcode, asset_disposal_path(disposal)
-            %td= "#{disposal.asset.try(:typename)} - #{disposal.asset.name} - #{disposal.asset.modelname}"  
-            %td= disposal.qty
-            %td= disposal.asset.try(:purchasedate).try(:strftime, "%d %b %Y")
-            %td= disposal.disposed_on.try(:strftime, "%d %b %Y")
-            %td= ringgols(disposal.total_current_value)
-            %td= disposal.justify1_disposal
-            - count+=1
+            %td.group{colspan: 8}=status==true ? (t 'asset.disposal.approved_disposal') : (t 'asset.disposal.awaiting_disposal_approval')
+          - for disposal in disposals
+            %tr
+              %td.centre= check_box_tag "disposal_ids[]", disposal.id, true, :id => "disposalidss_#{count}"
+              %td= link_to disposal.asset.assetcode, asset_disposal_path(disposal)
+              %td= "#{disposal.asset.try(:typename)} - #{disposal.asset.name} - #{disposal.asset.modelname}"  
+              /%td= disposal.qty
+              %td= disposal.asset.try(:purchasedate).try(:strftime, "%d %b %Y")
+              %td= disposal.disposed_on.try(:strftime, "%d %b %Y")
+              %td= ringgols(disposal.total_current_value)
+              %td= disposal.justify1_disposal
+              - count+=1
       
     .row
       %br

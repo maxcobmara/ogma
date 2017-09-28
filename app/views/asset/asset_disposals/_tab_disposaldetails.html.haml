@@ -20,4 +20,4 @@
       %dd= @disposed.type_others_desc.capitalize
     - elsif @disposed.disposal_type == "stock"      
     %dt= t 'asset.disposal.is_disposed'
-    %dd= @disposed.is_disposed? ? image_tag("tick.png") : image_tag("cross.png")
+    %dd= @disposed.is_disposed? ? fa_icon("check") : fa_icon("times")
