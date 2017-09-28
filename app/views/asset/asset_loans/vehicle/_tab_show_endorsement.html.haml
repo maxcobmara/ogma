@@ -2,7 +2,7 @@
   %dl.dl-horizontal
     - if @asset_loan.is_endorsed == true
       %dt=t 'asset.loan.is_endorsed'
-      %dd=h @asset_loan.is_endorsed? ? "#{(t 'asset.loan.endorsed_date')} #{(@asset_loan.endorsed_date.strftime('%d %b %Y'))} #{t('by2')}  #{@asset_loan.try(:loanofficer).try(:staff_with_rank)}" : "" 
+      %dd=h @asset_loan.is_endorsed? ? "#{(t 'asset.loan.endorsed_date')} #{l(@asset_loan.endorsed_date) unless @asset_loan.endorsed_date.nil?} #{t('by2')}  #{@asset_loan.try(:loanofficer).try(:staff_with_rank)}" : "" 
     - else
       %dt Status
       %dd=t 'not_endorsed'

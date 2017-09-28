@@ -38,7 +38,7 @@
           %td=h loanable.name
           %td=h loanable.modelname
           %td=h loanable.serialno
-          %td=h loanable.assignedto.try(:name)+ t('asset.loan.separator_slash')+loanable.assignedto.try(:positions).first.try(:unit)
+          %td="#{loanable.assignedto.try(:staff_with_rank)}/ #{loanable.assignedto.try(:positions).first.try(:unit)}"
           %td
             /- unless loanable.assignedto.blank?
             /  - unless loanable.assignedto.positions.first.blank? 

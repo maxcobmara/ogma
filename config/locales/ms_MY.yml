@@ -550,7 +550,7 @@ ms_MY:
   from: Dari
   to: Hingga
   to2: Kepada
-  
+  at: di
   for: untuk
   return: Pemulangan
   confirmed: Disahkan
@@ -2607,6 +2607,7 @@ ms_MY:
       rejected: Ditolak
       pending: Sedang diproses
       onloan: Sedang dipinjam
+      return_received: Pemulangan diterima
       is_returned: Telah dipulangkan
       is_approved: "Diluluskan?"
       notify_hod: Makluman Ketua Jabatan
@@ -2623,7 +2624,7 @@ ms_MY:
       approval: Kelulusan
       return: Pemulangan item
       remarks: Catatan
-      released_on: "Dikeluarkan pada  "
+      release_on: "Dikeluarkan pada  "
       loan_officer: Pegawai Pengeluar
       received_officer: Pegawai Pemulangan
       approve: Meluluskan

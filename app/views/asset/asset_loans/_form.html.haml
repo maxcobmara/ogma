@@ -10,7 +10,7 @@
         %dt= t 'asset.assetcode'
         %dd= @asset_loan.asset.code_typename_name_modelname_serialno
     
-        %dt= t('asset.loan.loaned_by')+t('asset.loan.separator_slash')+t('asset.loan.responsible_unit')
+        %dt= "#{(t 'asset.loan.loaned_by')} / #{(t 'asset.loan.responsible_unit')}"
         %dd="#{@asset_loan.try(:asset).try(:assignedto).try(:staff_with_rank)} / #{@asset_loan.asset.assignedto.try(:positions).try(:first).try(:unit)}"
         %br
             

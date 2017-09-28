@@ -570,6 +570,7 @@ en:
   from: From
   to: To
   to2: To
+  at: at
   for: for
   return: Return
   confirmed: Confirmed
@@ -2695,7 +2696,7 @@ en:
       title: Asset Loan
       title2: Vehicle Reservation
       new: New Asset Loan
-      new: New Vehicle Reservation
+      new2: New Vehicle Reservation
       edit: Edit Asset Loan
       edit: Edit Vehicle Reservation
       application: Loan Vehicle / Other Asset Application
@@ -2715,7 +2716,8 @@ en:
       rejected: Rejected 
       pending: Pending
       onloan: On loan
-      is_returned: Is returned
+      return_received: Receival of return
+      is_returned: Returned
       is_approved: "Approved?"
       notify_hod: Notify HOD
       approve_hod: HOD Approval
