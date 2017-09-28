@@ -126,10 +126,10 @@ end
     
     def set_index_list
       current_roles=current_user.roles.pluck(:authname)
-      if current_roles.include?('developer')
+      if current_roles.include?('developer') || (current_roles.include?('administration') && User.icms_acct.include?(current_user.id))
         @search = Staff.search(params[:q])
       else
-        @search = Staff.where('staffs.name not ILIKE(?)', "ICMS%").search(params[:q])
+        @search = Staff.where('name not ILIKE(?)', "ICMS%").search(params[:q])
       end
       if current_user.college.code=='amsas'
         @staffs_w_grades=Employgrade.sorted_staff_bygrade(@search.result.where('staffs.staffgrade_id is not null'))  

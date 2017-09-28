@@ -8,12 +8,13 @@
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), user_list_users_path(params.merge(format: 'pdf'))
 
 .row
-  - if is_developer?
+  - if is_developer? || (is_admin? && icms_acct?)
     /TEMP
     .col-md-12
       .alert.alert-warning
-        %strong="Position / Unit :"
-        ="Remove staff from designated positions ( / *) to ensure #{current_user.college.code.upcase} staff validity in all modules, EXCEPT for ICMS Developer, ICMS Administrator and ICMS tester(s)"
+        .small
+          %strong="#{t('user.position')} / Unit :"
+          ="#{t('user.remove_position')} #{current_user.college.code.upcase} #{t('user.remove_position_cont')}"
         
   %table.table-striped.table-hover.ogma
     %thead

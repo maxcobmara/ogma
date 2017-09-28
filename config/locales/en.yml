@@ -770,6 +770,8 @@ en:
     available_roles: Available Roles
     assigned_roles: Assigned Roles
     user_not_link_entity: User not yet link with any entity
+    remove_position: "Remove staff from designated positions ( / *) to ensure"
+    remove_position_cont: "staff validity in all modules, EXCEPT for ICMS Developer, ICMS Administrator and ICMS tester(s)."
     access_by_module: Access by Module
     roles_vs_modules: "Role / modules access assignment "
     subject_to: "are subjected to :"

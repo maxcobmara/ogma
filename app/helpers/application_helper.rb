@@ -129,6 +129,11 @@ module ApplicationHelper
     current_user.roles.pluck(:authname).include?('administration')==true
   end
   
+  #usage - users/index 28Sept2017
+  def icms_acct?
+    User.icms_acct.include?(current_user.id)==true
+  end
+  
   def is_librarian?
     current_user.roles.pluck(:authname).include?('librarian')==true
   end

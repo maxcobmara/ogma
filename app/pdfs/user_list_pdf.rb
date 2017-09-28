@@ -14,7 +14,7 @@ class User_listPdf < Prawn::Document
   end
   
   def record
-      columnswidth=[30, 90, 100, 100, 60, 150]
+    columnswidth=[30, 120, 100, 100, 60, 120]
     table(line_item_rows, :column_widths => columnswidth, :cell_style => { :size => 8,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
@@ -29,7 +29,7 @@ class User_listPdf < Prawn::Document
   def line_item_rows
     counter = counter || 0
     header = [[{content: "#{@college.name.upcase}<br>#{I18n.t('staff.list').upcase}", colspan: 6}]]
-    header << ["No", I18n.t('staff.icno'),I18n.t('staff.staffgrade_id'), I18n.t('staff.rank_id'), I18n.t('staff.name'), I18n.t('staff.position')]
+    header << ["No", I18n.t('user.email'), I18n.t('user.userable_id'), "#{I18n.t('user.position')} / Unit", I18n.t('user.userable_type'), I18n.t('user.roles')]
     body=[]
     
     @users.map do |user|

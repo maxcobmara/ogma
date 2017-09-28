@@ -68,7 +68,7 @@ class UsersController < ApplicationController
    
    def set_index_list
      roles=current_user.roles.map(&:authname)
-     if roles.include?('developer')
+     if roles.include?('developer') || (roles.include?('administration') && User.icms_acct.include?(current_user.id))
        @search = User.search(params[:q])
      else
        @search = current_user.college.users.where.not(id: User.icms_acct).search(params[:q])  #http://stackoverflow.com/questions/32300349/restrict-index-view-to-users-records NOTE-0 voted

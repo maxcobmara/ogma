@@ -50,11 +50,20 @@ module Notifications
  end
 
  def late_require_approval
-   StaffAttendance.find_approvelate(current_user).where(is_approved: nil).where.not(reason: nil).count
+   #position must exist
+   if current_staff && current_staff.positions.exists?
+     StaffAttendance.find_approvelate(current_user).where(is_approved: nil).where.not(reason: nil).count
+   else
+     0
+   end
  end
  
  def early_require_approval
-   StaffAttendance.find_approveearly(current_user).where(is_approved: nil).where.not(reason: nil).count
+   if current_staff && current_staff.positions.exists?
+     StaffAttendance.find_approveearly(current_user).where(is_approved: nil).where.not(reason: nil).count
+   else
+     0
+   end
  end
 
  def late_need_a_reason
@@ -66,7 +75,11 @@ module Notifications
  end
  
  def fingerprint_require_approval
-   Fingerprint.find_approvestatement(current_user).where(is_approved: nil).count
+   if current_staff && current_staff.positions.exists?
+     Fingerprint.find_approvestatement(current_user).where(is_approved: nil).count
+   else
+     0
+   end
  end
 
  def travel_request_needs_approval
