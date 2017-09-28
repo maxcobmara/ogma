@@ -5,7 +5,7 @@
     %dt= t 'asset.serialno'
     %dd= @disposed.asset.serialno
     %dt= t 'asset.disposal.usage'
-    %dd= "#{@disposed.running_hours} Hrs Or #{@disposed.mileage} Km "
+    %dd= "#{@disposed.running_hours} #{(t 'time.hours').capitalize} #{(t 'or').capitalize} #{@disposed.mileage} Km "
     %dt= t 'asset.disposal.duration_used'
     %dd= @disposed.try(:age)
     %dt= t 'asset.disposal.current_condition'
@@ -31,8 +31,9 @@
     %dt &nbsp;
     %dd= "3. #{@disposed.justify3_disposal}"  
     %dt= t 'asset.disposal.board_examiners'
-    %dd= "1. #{@disposed.is_staff1? ? @disposed.inspect1or.try(:name) : @disposed.examiner1}"
+    %dd= "1. #{@disposed.is_staff1? ? @disposed.inspect1or.try(:staff_with_rank) : @disposed.examiner1}"
     %dt &nbsp;
-    %dd= "2. #{@disposed.is_staff2? ? @disposed.inspect2or.try(:name) : @disposed.examiner2}"
+    %dd= "2. #{@disposed.is_staff2? ? @disposed.inspect2or.try(:staff_with_rank) : @disposed.examiner2}"
     %dt= t 'asset.disposal.is_checked'
-    %dd= @disposed.is_checked? ? "Yes, "+@disposed.processor.name+" on "+@disposed.checked_on.strftime('%d %b %Y') : "No" 
+    %dd=@disposed.is_checked? ? "#{(t 'yes2')},#{(t 'by2')}#{@disposed.processor.name}#{(t 'on2')} #{l(@disposed.checked_on)}" : (t 'no2')
+    /= @disposed.is_checked? ? "Yes, "+@disposed.processor.name+" on "+@disposed.checked_on.strftime('%d %b %Y') : "No" 

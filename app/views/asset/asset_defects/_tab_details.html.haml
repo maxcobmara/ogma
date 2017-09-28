@@ -6,4 +6,4 @@
   %dt= t 'asset.defect.description'
   %dd= @defective.description
   %dt= t 'asset.defect.reported_by'
-  %dd= link_to @defective.reporter.try(:name), (staff_info_path(@defective.reporter)) rescue nil
+  %dd= link_to @defective.reporter.try(:staff_with_rank), (staff_info_path(@defective.reporter)) rescue nil

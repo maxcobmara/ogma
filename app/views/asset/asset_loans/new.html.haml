@@ -1,7 +1,10 @@
 - model_class = AssetLoan
 .page-header
   %h1
-    = t 'asset.loan.new'
+    - if @current_asset.category_id==3 || @current_asset.category.description.downcase.include?("kenderaan")
+      = t 'asset.loan.new2'
+    - else
+      = t 'asset.loan.new'
 
 = render 'shared/flashes'
 

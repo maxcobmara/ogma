@@ -20,7 +20,7 @@
       .form-group
         %label.col-sm-2.control-label= f.label t 'staff.training.application_status.staff_name'
         .col-md-3
-          = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_with_rank_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable_id},{class: 'selectpicker', "data-width"=>'440px'}
+          = f.collection_select :staff_id, @staff_list.order(rank_id: :asc, name: :asc), :id,  :staff_with_rank_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@selected},{class: 'selectpicker', "data-width"=>'440px'}
           
       .form-group
         .col-sm-offset-2.col-sm-2

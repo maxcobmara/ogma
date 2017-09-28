@@ -42,11 +42,11 @@
             %br
             %b=h asset_loan.asset.try(:assignedto).try(:positions).try(:first).try(:unit)
           %td  
-            =h asset_loan.loaned_on.try(:strftime, '%d %b %Y')
-            %br=h asset_loan.expected_on.try(:strftime, '%d %b %Y')
+            =h l(asset_loan.loaned_on)
+            %br=h l(asset_loan.expected_on)
           %td
             - if asset_loan.is_approved == true
-              = h asset_loan.approved_date.try(:strftime, '%d %b %Y')
+              = h l(asset_loan.approved_date)
             - elsif asset_loan.is_approved == false
               %b.text-red=t 'asset.loan.rejected'
             - else

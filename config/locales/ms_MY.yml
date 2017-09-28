@@ -550,7 +550,7 @@ ms_MY:
   from: Dari
   to: Hingga
   to2: Kepada
-  
+  at: di
   for: untuk
   return: Pemulangan
   confirmed: Disahkan
@@ -631,7 +631,7 @@ ms_MY:
     import_failed: " gagal diimport"
     save_action: Simpan Tindakan
     check_all: "Pilih kotak semak ini untuk MEMILIH atau MENYAHPILIH SEMUA rekod"
-    check_all2: "Pilih kotak semak ini untuk MEMILIH atau MENYAHPILIH SEMUA rekod bagi cetakan KEW.PA-17 dan KEW.PA-20."
+    check_all2: "Pilih kotak semak ini untuk MEMILIH atau MENYAHPILIH SEMUA rekod bagi cetakan KEW.PA-17 / KEW.PA-20."
     all_records: Semua Rekod
     all_programmes: Semua Program
     all_intakes: Semua Ambilan
@@ -2460,7 +2460,7 @@ ms_MY:
       process: Proses
       repair: Baiki
       dispose: Lupus
-      report: "Laporkan kerosakan dengan memilih (papar) aset dalam modul Aset dan klik "
+      report: "Laporkan kerosakan aset dalam laman papar (modul aset) dengan mengklik "
       reported_by: Dilaporkan Oleh
       is_processed: "Hantar Cadangan?"
       processed_by: Diproses Oleh
@@ -2508,6 +2508,7 @@ ms_MY:
       discard_options: Kaedah Pemusnahan
       discard_witness_by: "Saksi - Saksi Pemusnahan Aset"
       type_others_desc: Kaedah Pemusnahan Lain
+      type_others_desc2: Nyatakan kaedah pemusnahan lain
       transfer: "Pindahan / Hadiah"
       sold: Jualan
       discard: Musnah
@@ -2521,11 +2522,18 @@ ms_MY:
       disposed_by: Disemak dan Ditutup Oleh
       no_record_selected: "Tiada rekod dipilih untuk cetakan KEW.PA-17 / KEW.PA-20"
       defect_to_dispose: "Pilih tindakan 'Lupus' ketika memproses <b>Kerosakan Aset</b> untuk disenaraikan dalam pilihan di atas"
-      list_defect_to_dispose: "Pilih tindakan 'Lupus' ketika memproses </b>Kerosakan Aset</b> sebelum aset dapat dilupuskan"
+      list_defect_to_dispose: "Pilih tindakan 'Lupus' ketika memproses </b>Kerosakan Aset</b> sebelum aset dapat dilupuskan."
+      kewpa17_available: "Cetakan KEW-PA 17 (Laporan Lembaga Pemeriksa...) hanya tersedia untuk aset belum dilupus (menunggu kelulusan pelupusan)."
+      awaiting_disposal_approval: "Menunggu Kelulusan Pelupusan"
+      approved_disposal: "Aset Telah Dilupuskan"
  
     loss:
       title: "Kehilangan & Hapus Kira"
       list: "Senarai Kehilangan & Hapus Kira"
+      report: "Bagi membolehkan aset dipilih untuk pelaporan kehilangan aset, sila aktifkan kotak semak 'Tanda untuk kehilangan/lupus' dalam laman sunting (modul aset) terlebih dahulu."
+      report_acr: "Jika tiada dalam senarai, aktifkan kotak semak 'Tanda untuk kehilangan/lupus'<br>dalam laman sunting rekod aset"
+      approval_register: "<b>Kelulusan Perbendaharaan</b> perlulah direkodkan dalam modul Daftar Dokumen."
+      select_for_writeoff: "Bagi setiap <b>Kelulusan Perbendaharaan</b>, pilih rekod kehilangan aset berikut (seperti mana yang terkandung di dalam kelulusan) dan klik butang 'Hapuskira aset yang dipilih' untuk penyediaan borang KEW-PA 31."
       loss_type: Jenis Kehilangan
       est_value: Nilai Anggaran
       asset_name: Nama Aset
@@ -2599,6 +2607,7 @@ ms_MY:
       rejected: Ditolak
       pending: Sedang diproses
       onloan: Sedang dipinjam
+      return_received: Pemulangan diterima
       is_returned: Telah dipulangkan
       is_approved: "Diluluskan?"
       notify_hod: Makluman Ketua Jabatan
@@ -2615,7 +2624,7 @@ ms_MY:
       approval: Kelulusan
       return: Pemulangan item
       remarks: Catatan
-      released_on: "Dikeluarkan pada  "
+      release_on: "Dikeluarkan pada  "
       loan_officer: Pegawai Pengeluar
       received_officer: Pegawai Pemulangan
       approve: Meluluskan

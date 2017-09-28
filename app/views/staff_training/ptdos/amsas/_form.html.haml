@@ -10,7 +10,7 @@
         .col-md-5
           .small=t 'staff.training.application_status.director_app'
               
-  - if (@ptdo.dept_approve? && @ptdo.final_approve?) && (@ptdo.staff_id == @current_user.userable_id  || is_developer? || current_user.roles.pluck(:authname).include?("administration"))
+  - if (@ptdo.dept_approve? && @ptdo.final_approve?) && (@ptdo.staff_id == current_user.userable_id  || is_developer? || is_admin?)
     .form-group
       .col-sm-2.control-label
         = f.label t 'staff.training.application_status.trainee_report'

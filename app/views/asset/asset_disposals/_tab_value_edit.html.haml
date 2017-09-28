@@ -3,7 +3,7 @@
     .col-sm-2.control-label
       = f.label :revalued_by
     .col-md-3
-      = f.collection_select :revalued_by, Staff.all.order(name: :asc), :id, :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@disposal.revalued_by},{class: 'selectpicker', "data-width"=>'357px'} 
+      = f.collection_select :revalued_by, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@disposal.revalued_by},{class: 'selectpicker', "data-width"=>'357px'} 
   .form-group
     .col-sm-2.control-label
       = f.label :revalue

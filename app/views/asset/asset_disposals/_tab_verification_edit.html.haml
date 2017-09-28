@@ -5,7 +5,7 @@
     .col-sm-1
       = f.check_box :is_verified, :id => 'is_verified' 
     .col-sm-2.span_verified_on{:style=> "display: block;"}
-      = f.text_field :verified_on, class: 'date_picker form-control'
+      = f.text_field :verified_on, class: 'date_picker_reverse form-control', value: @disposal.verified_on.try(:strftime, "%d-%m-%Y")
  
 :javascript
 

@@ -8,7 +8,6 @@ class UsersController < ApplicationController
  before_filter :load_userable, only: [:link, :edit, :update]
 
  def index
-   @all=@users
    @users = @users.page(params[:page]||1)
    @user_by_type = @users.group_by(&:userable_type)
  end

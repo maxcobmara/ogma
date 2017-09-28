@@ -8,10 +8,10 @@
     %dd=h @asset_loan.reasons
   
     %dt=t 'asset.loan.requested_for'
-    %dd=h @asset_loan.loaned_on.try(:strftime, '%d %b %Y')
+    %dd=h l(@asset_loan.loaned_on) unless @asset_loan.loaned_on.nil?
 
     %dt= t 'asset.loan.returned_date'
-    %dd=h @asset_loan.expected_on.try(:strftime, '%d %b %Y')
+    %dd=h l(@asset_loan.expected_on) unless @asset_loan.expected_on.nil?
     
     - if (@asset_loan.asset.category_id==3 || @asset_loan.asset.category.description.downcase.include?("kenderaan"))
       %dt=t 'asset.loan.driver_id'

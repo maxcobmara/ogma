@@ -570,6 +570,7 @@ en:
   from: From
   to: To
   to2: To
+  at: at
   for: for
   return: Return
   confirmed: Confirmed
@@ -2616,6 +2617,7 @@ en:
       discard_options: Discard Method
       discard_witness_by: Discard Witnesses
       type_others_desc: Other Discard method
+      type_others_desc2: Describe other method
       transfer: Transfer
       sold: Sold
       discard: Discard
@@ -2629,11 +2631,18 @@ en:
       disposed_by: View and Close By
       no_record_selected: "No record selected for KEW.PA-17 / KEW.PA-20 printing"
       defect_to_dispose: "Select 'Dispose' action when processing <b>Asset Defect</b> for asset to be appeared in above list"
-      list_defect_to_dispose: "Select 'Dispose' action when processing <b>Asset Defect</b> before proceeding with disposal"
+      list_defect_to_dispose: "Select 'Dispose' action when processing <b>Asset Defect</b> before proceeding with disposal."
+      kewpa17_available: "KEW-PA 17 (Laporan Lembaga Pemeriksa...) only available for not yet disposed assets (awaiting disposal approval)."
+      awaiting_disposal_approval: "Awaiting Disposal Approval"
+      approved_disposal: "Disposed Assets"
       
     loss:
       title: "Loss & Write Offs"
       list: "Loss & Write Offs Listing"
+      report: "Activate 'Mark as loss/write off' checkbox in edit page (asset module) to ensure asset available for the loss reporting."
+      report_acr: "If not listed, activate 'Mark as loss/write off' checkbox in asset edit page"
+      approval_register: "<b>Treasury Approval</b> must be registered in Document Registry module."
+      select_for_writeoff: "For each <b>Treasury Approval</b>, select matching asset loss records and click 'Writeoff checked asset' button to produce KEW-PA 31."
       loss_type: Loss Type
       est_value: Estimated Value
       asset_name: Asset Name
@@ -2687,7 +2696,7 @@ en:
       title: Asset Loan
       title2: Vehicle Reservation
       new: New Asset Loan
-      new: New Vehicle Reservation
+      new2: New Vehicle Reservation
       edit: Edit Asset Loan
       edit: Edit Vehicle Reservation
       application: Loan Vehicle / Other Asset Application
@@ -2707,7 +2716,8 @@ en:
       rejected: Rejected 
       pending: Pending
       onloan: On loan
-      is_returned: Is returned
+      return_received: Receival of return
+      is_returned: Returned
       is_approved: "Approved?"
       notify_hod: Notify HOD
       approve_hod: HOD Approval

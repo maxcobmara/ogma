@@ -9,6 +9,7 @@ class Ptdo < ActiveRecord::Base
   has_many    :staff_appraisals, :through => :staff
   
   validates_uniqueness_of :staff_id, :scope => :ptschedule_id, :message => I18n.t("staff.training.application_status.staff_must_unique")
+  validate :staff_id, presence: true
 
   def self.keyword_search(query)
     staff_ids = Staff.where('icno ILIKE (?) OR name ILIKE(?)', "%#{query}%", "%#{query}%").pluck(:id).uniq
