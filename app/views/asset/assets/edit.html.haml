@@ -9,206 +9,207 @@
 .row
   = form_for [:asset, @asset],  html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
-
-    %ul.nav.nav-tabs
-      %li.active= link_to (t "asset.status"), "#status",  "data-toggle" => "tab"
-      %li= link_to (t "asset.details"),     "#details",       "data-toggle" => "tab"
-      %li= link_to (t "asset.description"), "#description", "data-toggle" => "tab"
-      %li= link_to (t "asset.purchase"),    "#purchase",    "data-toggle" => "tab"
-      %li= link_to (t "asset.placement"),   "#placement",   "data-toggle" => "tab"
-      - if @asset.is_maintainable?
-        %li= link_to (t "asset.maintenance"),    "#maintenance", "data-toggle" => "tab"
+    .col-md-offset-2
+      %ul.nav.nav-tabs
+        %li.active= link_to (t "asset.status"), "#status",  "data-toggle" => "tab"
+        %li= link_to (t "asset.details"),     "#details",       "data-toggle" => "tab"
+        %li= link_to (t "asset.description"), "#description", "data-toggle" => "tab"
+        %li= link_to (t "asset.purchase"),    "#purchase",    "data-toggle" => "tab"
+        %li= link_to (t "asset.placement"),   "#placement",   "data-toggle" => "tab"
+        - if @asset.is_maintainable?
+          %li= link_to (t "asset.maintenance"),    "#maintenance", "data-toggle" => "tab"
   
-    .tab-content.col-md-offset-1
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'asset.assetcode', for: :assetcode
-        .col-md-5
-          = f.text_field :assetcode, class: 'form-control mandatory'
-      #status.tab-pane.fade.in.active
-        - if @asset.assettype == 1
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'asset.bookable', for: :bookable
-            .col-md-4
-              = f.check_box :bookable, class: 'form-control mandatory'
-              %p.help-block= t 'asset.bookable_text'
+      .tab-content.col-md-offset-1
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'asset.assetcode', for: :assetcode
+          .col-md-5
+            = f.text_field :assetcode, class: 'form-control mandatory'
+        #status.tab-pane.fade.in.active
+          - if @asset.assettype == 1
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'asset.bookable', for: :bookable
+              .col-md-4
+                = f.check_box :bookable, class: 'form-control mandatory'
+                %p.help-block= t 'asset.bookable_text'
               
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'asset.maintainable', for: :is_maintainable
-            .col-md-5
-              = f.check_box :is_maintainable, class: 'form-control'
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'asset.maintainable', for: :is_maintainable
+              .col-md-5
+                = f.check_box :is_maintainable, class: 'form-control'
                
       
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.mark_lost', for: :mark_as_lost
-          .col-md-4
-            = f.check_box :mark_as_lost, class: 'form-control'
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.mark_lost', for: :mark_as_lost
+            .col-md-4
+              = f.check_box :mark_as_lost, class: 'form-control'
           
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.mark_disposal', for: :is_disposed
-          .col-md-4
-            = f.check_box :is_disposed, class: 'form-control mandatory'
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.mark_disposal', for: :is_disposed
+            .col-md-4
+              = f.check_box :is_disposed, class: 'form-control mandatory'
       
-      #details.tab-pane.fade.in.active
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.category.title', for: :category_id
-          .col-md-5
-            = f.collection_select :category_id, Assetcategory.where('parent_id IS ?', nil), :id, :description, {:prompt => "Select"}, class: 'selectpicker mandatory'
+        #details.tab-pane.fade.in.active
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.category.title', for: :category_id
+            .col-md-5
+              = f.collection_select :category_id, Assetcategory.where('parent_id IS ?', nil), :id, :description, {:prompt => "Select"}, class: 'selectpicker mandatory'
   
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.subcategory_name', for: :subcategory_name
-          .col-md-5
-            = f.text_field :subcategory, class: 'form-control'
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.subcategory_name', for: :subcategory_name
+            .col-md-5
+              = f.text_field :subcategory, class: 'form-control'
 
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.typename', for: :typename
-          .col-md-5
-            = f.text_field :typename, class: 'form-control'  
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.typename', for: :typename
+            .col-md-5
+              = f.text_field :typename, class: 'form-control'  
 
-      #description.tab-pane.fade
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.name', for: :name
-          .col-md-5
-            = f.text_field :name, class: 'form-control' 
+        #description.tab-pane.fade
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.name', for: :name
+            .col-md-5
+              = f.text_field :name, class: 'form-control' 
+  
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.manufacturer', for: :manufacturer_id
+            .col-md-5
+              = f.text_field :manufacturer_id, class: 'form-control' 	   
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.country_id', for: :country_id
+            .col-md-5
+              = f.select :country_id, DropDown::COUNTRYLIST, {:include_blank => (t 'select')}, {class: 'selectpicker'}
 		  
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.manufacturer', for: :manufacturer_id
-          .col-md-5
-            = f.text_field :manufacturer_id, class: 'form-control' 	   
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.country_id', for: :country_id
-          .col-md-5
-            = f.select :country_id, DropDown::COUNTRYLIST, {:include_blank => (t 'select')}, {class: 'selectpicker'}
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.model', for: :modelname
+            .col-md-5
+              = f.text_field :modelname, class: 'form-control input-xxlarge' 
 		  
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.model', for: :modelname
-          .col-md-5
-            = f.text_field :modelname, class: 'form-control input-xxlarge' 
-		  
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.serial_no', for: :serialno
-          .col-md-5
-            = f.text_field :serialno, class: 'form-control input-xxlarge' 			  
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.located_at', for: :location_id
-          .col-md-5
-            = f.collection_select :location_id, Location.all.order(combo_code: :asc), :id, :location_list, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.serial_no', for: :serialno
+            .col-md-5
+              = f.text_field :serialno, class: 'form-control input-xxlarge' 			  
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.located_at', for: :location_id
+            .col-md-5
+              = f.collection_select :location_id, Location.all.order(combo_code: :asc), :id, :location_list, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
 
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.assigned_to', for: :assignedto_id
-          .col-md-5
-            - if current_user.college.code=="kskbjb"
-              = f.collection_select :assignedto_id, Staff.all.order(rank_id: :asc, name: :asc), :id,  :staff_name_with_position, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
-            - elsif current_user.college.code=="amsas"
-              = f.collection_select :assignedto_id, Staff.all.order(rank_id: :asc, name: :asc), :id,  :staff_with_rank_unit, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.assigned_to', for: :assignedto_id
+            .col-md-5
+              - if current_user.college.code=="kskbjb"
+                = f.collection_select :assignedto_id, Staff.all.order(rank_id: :asc, name: :asc), :id,  :staff_name_with_position, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
+              - elsif current_user.college.code=="amsas"
+                = f.collection_select :assignedto_id, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id,  :staff_with_rank_unit, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
 		  	  
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.status', for: :status
-          .col-md-5
-            = f.text_field :status, class: 'form-control input-xxlarge'
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.status', for: :status
+            .col-md-5
+              = f.text_field :status, class: 'form-control input-xxlarge'
 
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.other_information', for: :otherinfo
-          .col-md-5
-            = f.text_field :otherinfo, class: 'form-control input-xxlarge'
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.other_information', for: :otherinfo
+            .col-md-5
+              = f.text_field :otherinfo, class: 'form-control input-xxlarge'
 			  
-      #purchase.tab-pane.fade
-        %dl.dl-horizontal
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'asset.orderno', for: :orderno
-            .col-md-5
-              = f.text_field :orderno, class: 'form-control input-xxlarge'
-			  
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'asset.purchaseprice', for: :purchaseprice
-            .col-md-5
-              = f.text_field :purchaseprice, class: 'form-control input-xxlarge'
-			  
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'asset.purchasedate', for: :purchasedate
-            .col-md-5
-              = f.text_field :purchasedate, :default => 1.days.from_now,  :class =>  'date_picker_reverse form-control', value: @asset.try(:purchasedate).try(:strftime, '%d-%m-%Y')
-			  
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'asset.receiveddate', for: :receiveddate
-            .col-md-5
-              = f.text_field :receiveddate, :default => 1.days.from_now,  :class =>  'date_picker_reverse form-control', value: @asset.try(:receiveddate).try(:strftime, '%d-%m-%Y')
-			  			  
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'asset.receivedby', for: :receiver_id
-            .col-md-5
-              = f.text_field :receiver_id, class: 'form-control input-xxlarge'
+        #purchase.tab-pane.fade
+          %dl.dl-horizontal
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'asset.orderno', for: :orderno
+              .col-md-5
+                = f.text_field :orderno, class: 'form-control input-xxlarge'
+ 
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'asset.purchaseprice', for: :purchaseprice
+              .col-md-5
+                = f.text_field :purchaseprice, class: 'form-control input-xxlarge'
+
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'asset.purchasedate', for: :purchasedate
+              .col-md-5
+                = f.text_field :purchasedate, :default => 1.days.from_now,  :class =>  'date_picker_reverse form-control', value: @asset.try(:purchasedate).try(:strftime, '%d-%m-%Y')
+
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'asset.receiveddate', for: :receiveddate
+              .col-md-5
+                = f.text_field :receiveddate, :default => 1.days.from_now,  :class =>  'date_picker_reverse form-control', value: @asset.try(:receiveddate).try(:strftime, '%d-%m-%Y')
   
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'asset.suppliedby', for: :supplier_id
-            .col-md-5
-              = f.text_field :supplier_id, class: 'form-control input-xxlarge'			  
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'asset.receivedby', for: :receiver_id
+              .col-md-5
+                = f.text_field :receiver_id, class: 'form-control input-xxlarge'
+  
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'asset.suppliedby', for: :supplier_id
+              .col-md-5
+                = f.text_field :supplier_id, class: 'form-control input-xxlarge'			  
 
-      #placement.tab-pane.fade
-        .row
-          .col-sm-2=f.label t 'asset.located_at', for: :located_at
-          .col-sm-2=f.label t 'asset.assigned_to', for: :assigned_to
-          .col-sm-2=f.label t 'asset.date', for: :date_assigned
-          .col-sm-1=f.label (t 'asset.quantity')+" (/"+@asset.quantity.to_s+")", for: :quantity
+        #placement.tab-pane.fade
+          .row
+            .col-sm-2=f.label t 'asset.located_at', for: :located_at
+            .col-sm-2=f.label t 'asset.assigned_to', for: :assigned_to
+            .col-sm-2=f.label t 'asset.date', for: :date_assigned
+            .col-sm-1=f.label (t 'asset.quantity')+" (/"+@asset.quantity.to_s+")", for: :quantity
 
-        = f.fields_for :asset_placements do |builder|
-          = render 'asset_placement_fields', :f => builder
-        .row
-          /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :asset_placements
-          = link_to_add_fields t('addmore'), f, :asset_placements, "",  t('addmore')
+          = f.fields_for :asset_placements do |builder|
+            = render 'asset_placement_fields', :f => builder
+          .row
+            /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :asset_placements
+            /= link_to_add_fields t('addmore'), f, :asset_placements, "",  t('addmore')
+            = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :asset_placements, "", t('addmore')
         
-      - if @asset.is_maintainable?
-        #maintenance.tab-pane.fade
-          .form-group
-            .col-sm-2.control-label
-              = f.label :note, for: :remark
-            .col-md-5
-              = f.text_field :remark, class: 'form-control input-xxlarge' 
-			  
-          %table.table.table-condensed.table-hover{:style => "width: 50%; "}
-            %thead
-              %tr
-                %th= t 'asset.maint.maintainer_id'
-                %th= t 'asset.maint.workorderno' 
-                %th= t 'asset.maint.maintcost' 
-                %th= t 'asset.maint.details' 
-            %tbody	  
-              - for maint in @asset.maints	  
+        - if @asset.is_maintainable?
+          #maintenance.tab-pane.fade
+            .form-group
+              .col-sm-2.control-label
+                = f.label :note, for: :remark
+              .col-md-5
+                = f.text_field :remark, class: 'form-control input-xxlarge' 
+  
+            %table.table.table-condensed.table-hover{:style => "width: 50%; "}
+              %thead
                 %tr
-                  %td= maint.maintainer_id  
-                  %td= maint.workorderno
-                  %td= maint.maintcost
-                  %td= maint.details
+                  %th= t 'asset.maint.maintainer_id'
+                  %th= t 'asset.maint.workorderno' 
+                  %th= t 'asset.maint.maintcost' 
+                  %th= t 'asset.maint.details' 
+              %tbody	  
+                - for maint in @asset.maints
+                  %tr
+                    %td= maint.maintainer_id  
+                    %td= maint.workorderno
+                    %td= maint.maintcost
+                    %td= maint.details
 			  
-      .col-md-offset-1
-        //= render :partial => 'form', :locals => {:f => f}
-        .form-group
-          .col-sm-offset-4.col-sm-1
-            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_asset_path(@asset), :class => 'btn btn-default'
-          .col-sm-2
-            = f.submit t('update'), class: "btn btn-primary" 
+        .col-md-offset-1
+          //= render :partial => 'form', :locals => {:f => f}
+          .form-group
+            .col-sm-offset-2.col-sm-1
+              = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_asset_path(@asset), :class => 'btn btn-default'
+            .col-sm-2{style: "padding-left: 40px;"}
+              = f.submit t('update'), class: "btn btn-primary" 
        
 :javascript
 
