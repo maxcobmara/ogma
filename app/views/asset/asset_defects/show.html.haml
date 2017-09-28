@@ -3,24 +3,25 @@
   %h1= @defective.asset.assetcode
 = render 'shared/flashes'
 
-%ul.nav.nav-tabs
-  %li.active= link_to (t "asset.defect.details"), "#details",     "data-toggle" => "tab"
-  %li= link_to (t "asset.defect.process"), "#process",     "data-toggle" => "tab"
-  - if @defective.is_processed
-    %li= link_to (t "asset.defect.decision"), "#decision",    "data-toggle" => "tab"
+.col-md-offset-1
+  %ul.nav.nav-tabs
+    %li.active= link_to (t "asset.defect.details"), "#details",     "data-toggle" => "tab"
+    %li= link_to (t "asset.defect.process"), "#process",     "data-toggle" => "tab"
+    - if @defective.is_processed
+      %li= link_to (t "asset.defect.decision"), "#decision",    "data-toggle" => "tab"
 
-.tab-content.col-md-offset-1
-  %dl.dl-horizontal
-    %dt= t 'asset.assetcode'
-    %dd= @defective.asset.assetcode
-  #details.tab-pane.fade.in.active
-    = render 'tab_details'
+  .tab-content.col-md-offset-1
+    %dl.dl-horizontal
+      %dt= t 'asset.assetcode'
+      %dd= @defective.asset.assetcode
+    #details.tab-pane.fade.in.active
+      = render 'tab_details'
    
-  #process.tab-pane.fade.in
-    = render 'tab_process'
+    #process.tab-pane.fade.in
+      = render 'tab_process'
   
-  #decision.tab-pane.fade.in
-    = render 'tab_decision'
+    #decision.tab-pane.fade.in
+      = render 'tab_decision'
 
 .row
   .col-md-6.col-md-offset-2

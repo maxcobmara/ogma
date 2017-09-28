@@ -2,13 +2,11 @@
   .row
     .col-sm-2
       = f.hidden_field :_destroy
-      = f.collection_select :issuedby, Staff.all.order(name: :asc), :id, :staff_name_with_position, {include_blank: (t 'helpers.prompt.select_staff')}, {class: 'selectpicker'}
-    .col-sm-2= f.collection_select :receivedby, Staff.all.order(name: :asc), :id, :staff_name_with_position, {include_blank: (t 'helpers.prompt.select_staff')}, {class: 'selectpicker'}
+      = f.collection_select :issuedby, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {include_blank: (t 'helpers.prompt.select_staff')}, {class: 'selectpicker'}
+    .col-sm-2= f.collection_select :receivedby, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {include_blank: (t 'helpers.prompt.select_staff')}, {class: 'selectpicker'}
     .col-sm-1= f.text_field :quantity, class: 'form-control'
     .col-sm-2= f.text_field :issuedate, class: 'date-picker form-control'
-    .col-sm-1
-      /= link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
-      = link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
+    .col-sm-1= link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
       
 :javascript
   $('.selectpicker').selectpicker('render');

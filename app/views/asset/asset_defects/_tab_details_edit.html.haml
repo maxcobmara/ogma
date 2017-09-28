@@ -14,4 +14,4 @@
   .col-sm-2.control-label
     = f.label t 'asset.defect.reported_by', for: :reported_by
   .col-md-4
-    = f.collection_select :reported_by, Staff.all.order(name: :asc), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected =>@defective.reported_by},{class: 'selectpicker', "data-width"=>'230px'}  
+    = f.collection_select :reported_by, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected =>@defective.reported_by},{class: 'selectpicker', "data-width"=>'300px'}  

@@ -2460,7 +2460,7 @@ ms_MY:
       process: Proses
       repair: Baiki
       dispose: Lupus
-      report: "Laporkan kerosakan dengan memilih (papar) aset dalam modul Aset dan klik "
+      report: "Laporkan kerosakan dalam laman papar aset dengan mengklik "
       reported_by: Dilaporkan Oleh
       is_processed: "Hantar Cadangan?"
       processed_by: Diproses Oleh

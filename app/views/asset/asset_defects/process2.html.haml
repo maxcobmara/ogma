@@ -8,27 +8,28 @@
   = form_for @defective,  html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
     = f.hidden_field :editing_page, :value=>'process2'
+    
+    .col-md-offset-1
+      %ul.nav.nav-tabs
+        %li= link_to (t "asset.defect.details"), "#details",   "data-toggle" => "tab"
+        %li.active= link_to (t "asset.defect.process"),  "#process_edit", "data-toggle" => "tab"
 
-    %ul.nav.nav-tabs
-      %li= link_to (t "asset.defect.details"), "#details",   "data-toggle" => "tab"
-      %li.active= link_to (t "asset.defect.process"),  "#process_edit", "data-toggle" => "tab"
+      .tab-content.col-md-offset-1
+        %dl.dl-horizontal
+          %dt= t 'asset.assetcode'
+          %dd= @defective.asset.assetcode
 
-    .tab-content.col-md-offset-1
-      %dl.dl-horizontal
-        %dt= t 'asset.assetcode'
-        %dd= @defective.asset.assetcode
+        #details.tab-pane.fade.in
+          = render 'tab_details'
 
-      #details.tab-pane.fade.in
-        = render 'tab_details'
+        #process_edit.tab-pane.fade.in.active
+          %br
+          =  render 'tab_process_edit', :f => f
 
-      #process_edit.tab-pane.fade.in.active
-        %br
-        =  render 'tab_process_edit', :f => f
-
-      .col-md-offset-1
-        .form-group
-          .col-sm-offset-4.col-sm-1
-            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_defects_path(@defective), :class => 'btn btn-default'
-          .col-sm-2
-            = f.submit t('update'), class: "btn btn-primary" 
+      /.col-md-offset-1
+      .form-group
+        .col-sm-offset-4.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_defects_path(@defective), :class => 'btn btn-default'
+        .col-sm-2
+          = f.submit t('update'), class: "btn btn-primary" 
  
