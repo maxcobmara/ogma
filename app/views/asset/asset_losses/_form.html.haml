@@ -22,11 +22,12 @@
           .form-group
             .col-sm-2.control-label
               = f.label t 'asset.loss.asset_name', for: :asset_id
-            .col-md-2
+            .col-md-6
               - if @asset_loss.new_record?
                 = f.collection_select :asset_id, Asset.where('mark_as_lost is true').where.not(id: AssetLoss.pluck(:asset_id)), :id, :code_typename_serial_no, {:include_blank =>(t 'select')},{class: 'selectpicker', "data-width"=>'410px'}
               - else
                 = f.collection_select :asset_id, Asset.where('mark_as_lost is true'), :id, :code_typename_serial_no, {:include_blank =>(t 'select')},{class: 'selectpicker', "data-width"=>'410px', readonly: 'readonly'} 
+              .help-block.small=t('asset.loss.report_acr').html_safe
                
                 
           .form-group
@@ -54,7 +55,7 @@
             .col-sm-2.control-label
               = f.label t 'asset.loss.last', for: :last_handled_by
             .col-md-4
-              = f.collection_select :last_handled_by, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
+              = f.collection_select :last_handled_by, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id,  :staff_with_rank_position_unit, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
               .help-block.small= t('asset.loss.last_long')
               
           .form-group

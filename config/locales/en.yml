@@ -2634,6 +2634,10 @@ en:
     loss:
       title: "Loss & Write Offs"
       list: "Loss & Write Offs Listing"
+      report: "Activate 'Mark as loss/write off' checkbox in edit page (asset module) to ensure asset available for the loss reporting."
+      report_acr: "If not listed, activate 'Mark as loss/write off' checkbox in asset edit page"
+      approval_register: "<b>Treasury Approval</b> must be registered in Document Registry module."
+      select_for_writeoff: "For each <b>Treasury Approval</b>, select matching asset loss records and click 'Writeoff checked asset' button to produce KEW-PA 31."
       loss_type: Loss Type
       est_value: Estimated Value
       asset_name: Asset Name

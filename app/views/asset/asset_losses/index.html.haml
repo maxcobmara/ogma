@@ -14,6 +14,14 @@
   .col-md-2
   
 .row
+  .col-md-12
+    .alert.alert-warning
+      %strong=(t 'remarks')+" : "
+      %ol
+        %li=t('asset.loss.report')
+        %li=(t 'asset.loss.approval_register').html_safe
+        %li=(t 'asset.loss.select_for_writeoff').html_safe
+
   = form_tag edit_multiple_asset_losses_path, :method => :put, :id => "form1" do 
     %table.table-striped.table-hover.ogma
       %thead

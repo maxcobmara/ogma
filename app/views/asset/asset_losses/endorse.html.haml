@@ -73,7 +73,7 @@
                 .col-sm-2.control-label
                   = f.label t 'asset.loss.hod', for: :report_code
                 .col-md-2
-                  = f.collection_select :endorsed_hod_by, Staff.where(id: Position.roots.first.staff_id), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'selectpicker'}
+                  = f.collection_select :endorsed_hod_by, Staff.where(id: Position.roots.first.staff_id), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width" => "auto"}
               .form-group
                 .col-sm-2.control-label
                   = f.label t 'asset.loss.endorsed' 

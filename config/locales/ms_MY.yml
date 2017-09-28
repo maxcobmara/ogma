@@ -2460,7 +2460,7 @@ ms_MY:
       process: Proses
       repair: Baiki
       dispose: Lupus
-      report: "Laporkan kerosakan dalam laman papar aset dengan mengklik "
+      report: "Laporkan kerosakan aset dalam laman papar (modul aset) dengan mengklik "
       reported_by: Dilaporkan Oleh
       is_processed: "Hantar Cadangan?"
       processed_by: Diproses Oleh
@@ -2526,6 +2526,10 @@ ms_MY:
     loss:
       title: "Kehilangan & Hapus Kira"
       list: "Senarai Kehilangan & Hapus Kira"
+      report: "Bagi membolehkan aset dipilih untuk pelaporan kehilangan aset, sila aktifkan kotak semak 'Tanda untuk kehilangan/lupus' dalam laman sunting (modul aset) terlebih dahulu."
+      report_acr: "Jika tiada dalam senarai, aktifkan kotak semak 'Tanda untuk kehilangan/lupus'<br>dalam laman sunting rekod aset"
+      approval_register: "<b>Kelulusan Perbendaharaan</b> perlulah direkodkan dalam modul Daftar Dokumen."
+      select_for_writeoff: "Bagi setiap <b>Kelulusan Perbendaharaan</b>, pilih rekod kehilangan aset berikut (seperti mana yang terkandung di dalam kelulusan) dan klik butang 'Hapuskira aset yang dipilih' untuk penyediaan borang KEW-PA 31."
       loss_type: Jenis Kehilangan
       est_value: Nilai Anggaran
       asset_name: Nama Aset
