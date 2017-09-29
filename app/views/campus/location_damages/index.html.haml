@@ -18,6 +18,21 @@
           / Erick Alvarez over 2 years ago(railscast #362) : You can use - link_to "Excel", user_contacts_path(params.merge(format: 'xls')), and this will maintain the current parameters you have plus the ones you add or edit inside merge.
 
 .row
+  .col-md-12
+    .alert.alert-warning
+      %strong=(t 'remarks')+" :"
+      %ol
+        %li=(t 'location.damage.room_desc').html_safe
+        %li=(t 'location.damage.asset_others_desc').html_safe
+        %li=(t 'location.damage.report_by_type').html_safe
+        %ol
+          %li=(t 'location.damage.room_report').html_safe
+          %li 
+            =(t 'location.damage.asset_others_report1').html_safe
+            %button.btn.btn-default.btn-xs
+              %i.fa.fa-bug
+            =t 'location.damage.asset_others_report2'
+
   %table.table-striped.table-hover.ogma
     %thead
       %tr
@@ -32,18 +47,19 @@
     %tbody
     = render "index_search"
     - no=0
-    - @damages.each do |damage|
-      %tr
-        %td=no+=1
-        %td= link_to damage.location.try(:combo_code), campus_location_path(damage.location)
-        %td= link_to damage.damage_type, campus_location_damage_path(damage)
-        %td
-          = damage.description
-          - unless damage.college_id.nil?
-            =" - "
-            = link_to damage.asset.assetcode, asset_asset_path(damage.asset) 
-        %td= l(damage.reported_on) unless damage.reported_on.nil?
-        %td= l(damage.repaired_on) unless damage.repaired_on.nil?
-        %td= damage.tenant.try(:student).try(:name) unless damage.user_id.nil?
+    - @damages.group_by(&:location).each do |alocation, damages|
+      - span=damages.count
+      - damages.each_with_index do |damage, count|
+        %tr
+          %td=no+=1
+          - if count==0
+            %td.centre{rowspan: "#{span}", style: "vertical-align: middle;"}= link_to damage.location.try(:combo_code), campus_location_path(damage.location)
+          %td= link_to damage.damage_type, campus_location_damage_path(damage)
+          %td
+            = damage.description
+            = link_to " - #{damage.asset.assetcode}", asset_asset_path(damage.asset) rescue nil
+          %td= l(damage.reported_on) unless damage.reported_on.nil?
+          %td= l(damage.repaired_on) unless damage.repaired_on.nil?
+          %td= damage.tenant.try(:student).try(:name) unless damage.user_id.nil?
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @damages, :theme => 'twitter-bootstrap-3'

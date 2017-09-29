@@ -11,6 +11,7 @@
     = render 'shared/error_messages', object: f.object
     = f.hidden_field :location_id, :value => @locationid
     = f.hidden_field :document_id, :value => 2
+    = f.hidden_field :college_id, :value => current_user.college_id
     .form-group
       %label.col-sm-2.control-label{:for => "Location"}= t 'location.title'
       .col-md-3
@@ -29,7 +30,7 @@
     .form-group
       %label.col-sm-2.control-label{:for => "code"}= t 'location.damage.match_asset'
       .col-md-6
-        = f.collection_select :college_id, @damage.location.assets, :id, :code_asset, {:prompt=>((t 'select')+" "+(t 'asset.assetcode')+" - "+(t 'asset.name'))}, {class: 'selectpicker', "data-width"=>"380px" }
+        = f.collection_select :asset_id, @damage.location.assets, :id, :code_asset, {:prompt=>((t 'select')+" "+(t 'asset.assetcode')+" - "+(t 'asset.name'))}, {class: 'selectpicker', "data-width"=>"380px" }
         
     .form-group
       .col-md-6.col-sm-offset-2

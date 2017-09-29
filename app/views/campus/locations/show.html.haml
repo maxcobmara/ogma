@@ -105,7 +105,7 @@
               %td= damage.reported_on.try(:strftime, '%d %b %Y')
               %td
                 = damage.description
-                =" ("+damage.asset.assetcode[15,12]+")" unless damage.college_id.nil?
+                =" ("+damage.asset.assetcode[15,12]+")" unless damage.asset_id.nil?
               %td
                 - if damage.document_id == 1
                   - if @location.typename == 1
