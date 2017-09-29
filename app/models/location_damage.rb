@@ -2,6 +2,7 @@ class LocationDamage < ActiveRecord::Base
   belongs_to :location, :foreign_key => 'location_id'
   belongs_to :tenant, :foreign_key => 'user_id'
   belongs_to :asset, :foreign_key => 'asset_id'
+  belongs_to :college
   
   validates_presence_of :reported_on, :description, :document_id
   
