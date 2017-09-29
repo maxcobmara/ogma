@@ -2569,7 +2569,7 @@ en:
       process: Process
       repair: Repair
       dispose: Dispose
-      report: "To report a defect, select (display) asset in Asset module and click "
+      report: "To report a defect (KEW-PA 9), select (display) asset in Asset module and click "
       reported_by: Reported By
       is_processed: "Submit Recommendation?"
       processed_by: Processed By
