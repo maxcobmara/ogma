@@ -2740,7 +2740,7 @@ en:
       reject: Reject
       loanable: Loanable Assets
       loanable_remarks: "Loan of assets only allowed for asset as per listed below. Update list by : "
-      remarks1: "Activate 'bookable' function in <b>Asset</b> module for asset to be listed for loan."
+      remarks1: "Activate 'bookable' function in <b>Asset (Fixed Assets) </b> module for asset to be listed for loan."
       remarks2: "<u>On-loan asset</u> must be returned upon loan due date."
       available: "Available?"
       apply: Apply to loan
@@ -2836,6 +2836,12 @@ en:
       repairs_of: Repairs of
       room_damages: room damages
       must_be_updated_in: "must be updated in : "
+      room_desc: "<b>Room Damage</b> : Major damage(s) which caused room cannot be occupied."
+      asset_others_desc: "<b>Asset / Other Damages</b> : Asset / other minor damage(s) including fittings / fixtures damage(s), etc."
+      report_by_type: "Report damages in <b>Location</b> module :"
+      room_report: "<b>Room Damage</b> : in <u>location edit page</u> (item Damage Status - activate 'Damage' checkbox)."
+      asset_others_report1: "<b>Asset / Other Damages</b> : in <u>location damage page</u>, click "
+      asset_others_report2: "button. (Select matching asset record, if applicable)."
     
   student:
     title: Student

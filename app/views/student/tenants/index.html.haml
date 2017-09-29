@@ -50,7 +50,7 @@
         %tr
           %td
             = link_to tenant.location.try(:combo_code), campus_location_path(tenant.location)
-            %span{style: 'color: red;'}="*" if [tenant.location.try(:staffadmin_id)].include?(current_user.userable_id)
+            .text-red="*" if [tenant.location.try(:staffadmin_id)].include?(current_user.userable_id)
           %td= link_to tenant.try(:student).try(:icno), student_tenant_path(tenant)
           %td= link_to tenant.try(:student).try(:student_with_rank), student_path(tenant.student)
           %td= tenant.try(:student).try(:matrixno)
@@ -59,7 +59,7 @@
           %td= tenant.keyaccept.try(:strftime, '%d %b %Y')
           %td
             - if tenant.keyexpectedreturn < Date.today && tenant.keyreturned.blank?
-              %span{style: 'color: red;'}=tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
+              .text-red=tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
             - else
               =tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
           %td= tenant.keyreturned.try(:strftime, '%d %b %Y')

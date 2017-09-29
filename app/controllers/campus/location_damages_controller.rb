@@ -114,6 +114,6 @@ class Campus::LocationDamagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def location_damage_params
-      params.require(:location_damage).permit(:update_type, :location_id, :reported_on, :description, :repaired_on, :document_id, :inspection_on, :user_id, :college_id )
+      params.require(:location_damage).permit(:update_type, :location_id, :reported_on, :description, :repaired_on, :document_id, :inspection_on, :user_id, :asset_id, :college_id, {:data => []} )
     end
 end

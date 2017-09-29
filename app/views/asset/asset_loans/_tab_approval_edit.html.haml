@@ -25,7 +25,11 @@
       
     .col-md-4.notify_hod
       - if current_user.college.code!="kskbjb"
-        =f.collection_select :hod, Staff.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank=> t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+        /=f.collection_select :hod, Staff.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank=> t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+        
+        - hod_ids=@asset_loan.asset.assignedto.valid_positions.first.ancestors.pluck(:staff_id).compact
+        =f.collection_select :hod, Staff.where(id: hod_ids), :id, :staff_with_rank_position_unit, {:include_blank=> t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+        
       - elsif current_user.college.code=="kskbjb"
         - @unit_members = @asset_loan.unit_members 
         - if @asset_loan.loantype == 1

@@ -2631,7 +2631,7 @@ ms_MY:
       reject: Ditolak
       loanable: Senarai Aset Boleh Dipinjam
       loanable_remarks: "Peminjaman aset hanya dibenarkan bagi aset yang tersenarai di bawah. Kemaskini senarai di bawah dengan : "
-      remarks1: "Mengaktifkan fungsi 'tempahan' dalam modul <b>Aset</b> untuk membolehkan aset dipinjam."
+      remarks1: "Mengaktifkan fungsi 'tempahan' dalam modul <b>Aset (Harta Modal) </b> untuk membolehkan aset dipinjam."
       remarks2: "Aset yang <u>sedang dipinjam</u> perlu dipulangkan sebaik tamat tempoh pinjaman."
       available: "Sedia dipinjam?"
       apply: Mohon pinjaman
@@ -2728,6 +2728,12 @@ ms_MY:
       repairs_of: Pembaikan 
       room_damages: kerosakan bilik 
       must_be_updated_in: "perlu dikemaskini di modul : "
+      room_desc: "<b>Kerosakan bilik</b> : Kerosakan yang menyebabkan bilik tidak boleh didiami."
+      asset_others_desc: "<b>Kerosakan Aset / Lain - Lain</b> : Kerosakan pada aset / kerosakan kecil lain seperti kerosakan pada kelengkapan / lekapan (fittings / fixtures) dalam bilik."
+      report_by_type: "Laporkan kerosakan dalam modul <b>Lokasi</b> :"
+      room_report: "<b>Kerosakan Bilik</b> : dalam <u>laman sunting lokasi</u> (item Status Kerosakan - aktifkan kotak semak 'Rosak')."
+      asset_others_report1: "<b>Kerosakan Aset / Lain - Lain</b> : dalam <u>laman papar lokasi</u>, klik pada butang "
+      asset_others_report2: "(Pilih rekod aset yang sepadan, jika berkaitan)."
     
   student:
     title: Pelajar
