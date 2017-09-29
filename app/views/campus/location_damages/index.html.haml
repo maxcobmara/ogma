@@ -32,6 +32,7 @@
             %button.btn.btn-default.btn-xs
               %i.fa.fa-bug
             =t 'location.damage.asset_others_report2'
+        %li=(t 'location.damage.asset_inventory').html_safe
 
   %table.table-striped.table-hover.ogma
     %thead
@@ -39,7 +40,7 @@
         %th No
         %th= t 'location.combo_code'
         %th= t 'student.tenant.damage_type'
-        %th= t 'location.damage.description'
+        %th= "#{(t 'location.damage.description')} - #{(t 'location.damage.matching_asset')} "
         %th= t 'location.damage.reported_on'
         %th= t 'location.damage.repaired_on'
         %th= t 'student.tenant.name'

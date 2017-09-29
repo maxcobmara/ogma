@@ -2460,7 +2460,7 @@ ms_MY:
       process: Proses
       repair: Baiki
       dispose: Lupus
-      report: "Laporkan kerosakan aset dalam laman papar (modul aset) dengan mengklik "
+      report: "Laporkan kerosakan aset (KEW-PA 9) dalam laman papar modul aset (Harta Modal) dengan mengklik "
       reported_by: Dilaporkan Oleh
       is_processed: "Hantar Cadangan?"
       processed_by: Diproses Oleh
@@ -2725,15 +2725,18 @@ ms_MY:
       damage_report_staff: Laporan Kerosakan di Lokasi bagi Penempatan Kakitangan
       match_asset: "Padankan Aset ?"
       no_match_asset: Tiada padanan aset
+      matching_asset: Asset Sepadan
       repairs_of: Pembaikan 
       room_damages: kerosakan bilik 
       must_be_updated_in: "perlu dikemaskini di modul : "
       room_desc: "<b>Kerosakan bilik</b> : Kerosakan yang menyebabkan bilik tidak boleh didiami."
-      asset_others_desc: "<b>Kerosakan Aset / Lain - Lain</b> : Kerosakan pada aset / kerosakan kecil lain seperti kerosakan pada kelengkapan / lekapan (fittings / fixtures) dalam bilik."
+      asset_others_desc: "<b>Kerosakan Aset / Lain - Lain</b> : Kerosakan pada aset (inventori) / kerosakan kecil lain seperti kerosakan pada kelengkapan / lekapan (fittings / fixtures) dalam bilik."
       report_by_type: "Laporkan kerosakan dalam modul <b>Lokasi</b> :"
       room_report: "<b>Kerosakan Bilik</b> : dalam <u>laman sunting lokasi</u> (item Status Kerosakan - aktifkan kotak semak 'Rosak')."
       asset_others_report1: "<b>Kerosakan Aset / Lain - Lain</b> : dalam <u>laman papar lokasi</u>, klik pada butang "
       asset_others_report2: "(Pilih rekod aset yang sepadan, jika berkaitan)."
+      list_as_per_kewpa: "Aset (inventori) untuk padanan tertakluk kepada senarai KEW-PA 7 / KEW-PA 11. Sekiranya aset untuk padanan tiada dalam senarai KEW-PA, kemaskini data penempatan aset (lokasi) dalam rekod aset berkaitan (modul aset)."
+      asset_inventory: "Laporan kerosakan aset dalam modul in terhad kepada <b>Inventori</b> sahaja. Rujuk modul Kerosakan Aset untuk kerosakan <b>Harta Modal</b>."
     
   student:
     title: Pelajar

@@ -2569,7 +2569,7 @@ en:
       process: Process
       repair: Repair
       dispose: Dispose
-      report: "To report a defect, select (display) asset in Asset module and click "
+      report: "To report a defect (KEW-PA 9), select (display) asset in Asset module (Fixed Asset) and click "
       reported_by: Reported By
       is_processed: "Submit Recommendation?"
       processed_by: Processed By
@@ -2833,15 +2833,18 @@ en:
       damage_report_staff: Location Damage Report for Staff Residence
       match_asset: "Match Asset ?"
       no_match_asset: No matching asset
+      matching_asset: Matching Asset
       repairs_of: Repairs of
       room_damages: room damages
       must_be_updated_in: "must be updated in : "
       room_desc: "<b>Room Damage</b> : Major damage(s) which caused room cannot be occupied."
-      asset_others_desc: "<b>Asset / Other Damages</b> : Asset / other minor damage(s) including fittings / fixtures damage(s), etc."
+      asset_others_desc: "<b>Asset / Other Damages</b> : Asset (inventory) / other minor damage(s) including fittings / fixtures damage(s), etc."
       report_by_type: "Report damages in <b>Location</b> module :"
       room_report: "<b>Room Damage</b> : in <u>location edit page</u> (item Damage Status - activate 'Damage' checkbox)."
       asset_others_report1: "<b>Asset / Other Damages</b> : in <u>location damage page</u>, click "
       asset_others_report2: "button. (Select matching asset record, if applicable)."
+      list_as_per_kewpa: "Available assets (Inventory) as per listed in KEW-PA 7 / KEW-PA 11. Should required asset is not available in the KEW-PA list, define asset placements (location) in corresponding asset record (asset module)."
+      asset_inventory: "Asset damage report in this module is limited to Inventory records. Refer Asset Defect module for Fixed Asset damages reporting."
     
   student:
     title: Student

@@ -22,9 +22,15 @@ class Kewpa7Pdf < Prawn::Document
       start_new_page
       heading
     end
+    #either one exist
     if (@asset_placements.count+@hm.count) < 2 
       asset_last if @asset_placements.count > 0
       hm_last if @hm.count > 0
+    end
+    #both exist - but just one for each type 
+    if (@asset_placements.count==1 && @hm.count==1)
+      hm_list
+      asset_last
     end
     blank_rows if (@asset_placements.count+@hm.count) < 14 #4
     signature_block
