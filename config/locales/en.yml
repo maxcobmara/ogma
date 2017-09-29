@@ -2740,7 +2740,7 @@ en:
       reject: Reject
       loanable: Loanable Assets
       loanable_remarks: "Loan of assets only allowed for asset as per listed below. Update list by : "
-      remarks1: "Activate 'bookable' function in <b>Asset</b> module for asset to be listed for loan."
+      remarks1: "Activate 'bookable' function in <b>Asset (Fixed Assets) </b> module for asset to be listed for loan."
       remarks2: "<u>On-loan asset</u> must be returned upon loan due date."
       available: "Available?"
       apply: Apply to loan

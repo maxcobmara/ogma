@@ -24,5 +24,9 @@
     .col-sm-2.control-label.notify_hod
       = f.label t 'asset.loan.approve_hod', for: :hod
     .col-md-4.notify_hod
-      = f.collection_select :hod, Staff.joins(:positions).where('positions.unit=?', 'Ketua Tadbir Bantuan Operasi Latihan'), :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+      /= f.collection_select :hod, Staff.joins(:positions).where('positions.unit=?', 'Ketua Tadbir Bantuan Operasi Latihan'), :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+      /Position.where('name ilike(?)',"%pemandu%").first.ancestors.at_depth(1)
+      /TODO - confirm w user
+      - a=[Position.where('name ilike(?)',"%pemandu%").first.root_id]+Position.where('name ilike(?)',"%pemandu%").first.ancestors.at_depth(1).pluck(:id)
+      = f.collection_select :hod, Staff.joins(:positions).where('positions.id IN(?)', a), :id, :staff_with_rank_position_unit, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'300px'}
    

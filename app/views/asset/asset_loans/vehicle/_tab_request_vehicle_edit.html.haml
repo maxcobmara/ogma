@@ -7,7 +7,7 @@
     .col-sm-2.control-label
       = f.label t 'asset.loan.staff_id', for: :staff_id
     .col-md-4
-      = f.collection_select :staff_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>loaner},{class: 'selectpicker mandatory', "data-width"=>'350px'}               
+      = f.collection_select :staff_id, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>loaner},{class: 'selectpicker mandatory', "data-width"=>'350px'}               
   .form-group
     .col-sm-2.control-label
       = f.label t 'asset.loan.reasons', for: :reasons
@@ -28,4 +28,4 @@
     .col-sm-2.control-label
       = f.label t 'asset.loan.driver_id', for: :driver_id
     .col-md-4
-      = f.collection_select :driver_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+      = f.collection_select :driver_id, Staff.joins(:positions).where('positions.name ilike(?)', "%pemandu%").order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position_unit, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
