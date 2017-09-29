@@ -29,8 +29,9 @@
         
     .form-group
       %label.col-sm-2.control-label{:for => "code"}= t 'location.damage.match_asset'
-      .col-md-6
+      .col-md-5
         = f.collection_select :asset_id, @damage.location.assets, :id, :code_asset, {:prompt=>((t 'select')+" "+(t 'asset.assetcode')+" - "+(t 'asset.name'))}, {class: 'selectpicker', "data-width"=>"380px" }
+        .help-block.small=t 'location.damage.list_as_per_kewpa'
         
     .form-group
       .col-md-6.col-sm-offset-2
