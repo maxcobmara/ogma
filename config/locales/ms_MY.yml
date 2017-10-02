@@ -2030,6 +2030,7 @@ ms_MY:
     remark_text8: baru (selain nod utama / akar), pilih 'Nod Baru' dalam laman 'Papar' nod induk.
     remark_text9: "Klik pada 'Jawatan' untuk ke laman 'Papar'."
     remark_text9_amsas: "Klik pada 'Jawatan' untuk ke laman 'Papar'."
+    is_filled:  "* Jawatan telah diisi"
        
   staff_attendance:
     title: Kedatangan Staf

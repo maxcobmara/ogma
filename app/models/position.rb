@@ -3,7 +3,8 @@ class Position < ActiveRecord::Base
   before_save :set_combo_code, :titleize_name, :set_staff_if_staff_id2_exist
   has_ancestry :cache_depth => true
   
-  validates_uniqueness_of :combo_code, :staff_id
+  validates_uniqueness_of :combo_code
+  validates_uniqueness_of :staff_id, :if => :staff_exist?
   validates_presence_of   :name, :staffgrade_id
   
   belongs_to :college, :foreign_key => 'college_id'
@@ -14,6 +15,10 @@ class Position < ActiveRecord::Base
   attr_accessor :staff_id2
   
   scope :valid_posts, -> { where.not(id: Position.initial_posts) }   #added 14thSept2017
+  
+  def staff_exist?
+    staff_id.blank? == false
+  end
   
   def set_staff_if_staff_id2_exist
     unless staff_id2.blank?

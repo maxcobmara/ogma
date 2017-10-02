@@ -40,7 +40,7 @@ module PositionsHelper
   end
   
   def position_details(position)
-    "#{position.combo_code} <BR> #{(position.name).split('&').join('<BR>') } #{unit_name(position)} <a href='/staff/positions/new?parent_id=#{position.id}'>(+)</a>"
+    "#{position.combo_code}#{position.staff_id.nil? ? '' : ' *'} <BR> #{(position.name).split('&').join('<BR>') } #{unit_name(position)} <a href='/staff/positions/new?parent_id=#{position.id}'>(+)</a>"
   end
   
   def position_details2(position)

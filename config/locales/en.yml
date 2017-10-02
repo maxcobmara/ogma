@@ -2135,6 +2135,8 @@ en:
     remark_text7: descendant 
     remark_text8: node (other than root), select 'New node' in a parent node 'Show' page.
     remark_text9: "Click at 'Position' to display 'Show' page."
+    remark_text9_amsas: "Click at 'Position' to display 'Show' page."
+    is_filled: "* Position has been filled"
     
   staff_attendance:
     title: Staff Attendance
