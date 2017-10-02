@@ -23,7 +23,7 @@ class Damage_reportPdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header = [[ "", "#{I18n.t('location.combo_code')}","#{I18n.t('student.tenant.damage_type')}", "#{I18n.t('location.damage.description')}", "#{I18n.t('location.damage.reported_on')}", "#{I18n.t('location.damage.repaired_on')}", "#{I18n.t('student.tenant.name')}"]]   
+    header = [[ "", "#{I18n.t('location.title')}","#{I18n.t('student.tenant.damage_type')}", "#{I18n.t('location.damage.description')}", "#{I18n.t('location.damage.reported_on')}", "#{I18n.t('location.damage.repaired_on')}", "#{I18n.t('student.tenant.name')}"]]   
     header +
       @damages.map do |damage|
       ["#{counter += 1}", "#{damage.try(:location).try(:combo_code)}", "#{damage.damage_type} " , "#{damage.description_assetcode}"," #{damage.reported_on.try(:strftime, '%d-%m-%Y')}", "#{damage.repaired_on.try(:strftime, '%d-%m-%Y')}",  "#{damage.try(:tenant).try(:student).try(:name)}"]

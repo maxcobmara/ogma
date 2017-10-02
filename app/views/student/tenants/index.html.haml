@@ -27,48 +27,47 @@
     %thead
       %tr
         %th{width: '9%'}= t 'location.code'
-        %th{width: '7%'}= t 'student.students.icno'
+        %th{width: '10%'}= t 'student.students.icno'
         %th{width: '18%'}= t 'student.name'
-        %th{width: '8%'}= current_user.college.code=='amsas' ? (t 'student.students.bodyno') : (t 'student.students.matrixno')
-        %th{width: '5%'}= t 'student.students.intake_id'
-        %th{width: '10%'}= t 'course.name'
+        %th{width: '12%'}= current_user.college.code=='amsas' ? (t 'student.students.apmmno') : (t 'student.students.matrixno')
         %th{width: '7%'}= t 'student.tenant.key.provided'
         %th{width: '7%'}= t 'student.tenant.key.expected'
         %th{width: '7%'}= t 'student.tenant.key.returned'
         %th{width: '7%'}= t 'student.tenant.vacate'
         %th{width: '8%'}= t 'student.tenant.damage_status'
-        %th{width: '7%'}= t 'student.tenant.damage_type'
+        %th{width: '15%'}= t 'student.tenant.damage_type'
 
     %tbody
     = render "index_search"
-    - @tenants.each do |tenant|
-      - unless tenant.student.nil?
+    - @tenants.group_by{|x|x.student.intakestudent}.each do |sintake, tenants|
+      %tr 
+        %td.group{colspan: 10}=sintake.siri_programmelist
+      - for tenant in tenants
+        - unless tenant.student.nil?
 
-        - if tenant.damages.count==0; damages_text = (t 'no2'); else damages_text = (t 'yes2'); end
-        - damage_description = []
+          - if tenant.damages.count==0; damages_text = (t 'no2'); else damages_text = (t 'yes2'); end
+          - damage_description = []
 
-        %tr
-          %td
-            = link_to tenant.location.try(:combo_code), campus_location_path(tenant.location)
-            .text-red="*" if [tenant.location.try(:staffadmin_id)].include?(current_user.userable_id)
-          %td= link_to tenant.try(:student).try(:icno), student_tenant_path(tenant)
-          %td= link_to tenant.try(:student).try(:student_with_rank), student_path(tenant.student)
-          %td= tenant.try(:student).try(:matrixno)
-          %td= current_user.college.code=='amsas' ? tenant.try(:student).try(:intakestudent).try(:monthyear_intake).try(:strftime, '%m/%Y') : tenant.try(:student).try(:intakestudent).try(:monthyear_intake).try(:strftime, '%b %Y')
-          %td= tenant.try(:student).try(:course).try(:name)
-          %td= tenant.keyaccept.try(:strftime, '%d %b %Y')
-          %td
-            - if tenant.keyexpectedreturn < Date.today && tenant.keyreturned.blank?
-              .text-red=tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
-            - else
-              =tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
-          %td= tenant.keyreturned.try(:strftime, '%d %b %Y')
-          %td= tenant.force_vacate? ? (t 'yes2') : (t 'no2')
-          %td= damages_text
-          %td
-            - if tenant.damages.count>0
-              - tenant.damages.each{|t|damage_description << t.damage_type}
-              = damage_description.uniq.to_sentence
+          %tr
+            %td
+              = link_to tenant.location.try(:combo_code), campus_location_path(tenant.location)
+              .text-red="*" if [tenant.location.try(:staffadmin_id)].include?(current_user.userable_id)
+            %td= link_to formatted_mykad(tenant.try(:student).try(:icno)), student_tenant_path(tenant)
+            %td= link_to tenant.try(:student).try(:student_with_rank), student_path(tenant.student)
+            %td= tenant.try(:student).try(:matrixno)
+            %td= tenant.keyaccept.try(:strftime, '%d %b %Y')
+            %td
+              - if tenant.keyexpectedreturn < Date.today && tenant.keyreturned.blank?
+                .text-red=tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
+              - else
+                =tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
+            %td= tenant.keyreturned.try(:strftime, '%d %b %Y')
+            %td= tenant.force_vacate? ? (t 'yes2') : (t 'no2')
+            %td= damages_text
+            %td
+              - if tenant.damages.count>0
+                - tenant.damages.each{|t|damage_description << t.damage_type}
+                = damage_description.uniq.to_sentence
 
-        //%td= link_to image_tag("printer.png", :border => 0, :title => 'Borang Asrama'), :action => 'borang_asrama', :id => tenant
+          //%td= link_to image_tag("printer.png", :border => 0, :title => 'Borang Asrama'), :action => 'borang_asrama', :id => tenant
   .right{style:"padding:0 30px; margin:0;"}= paginate @tenants, :theme => 'twitter-bootstrap-3'

@@ -2,15 +2,19 @@ class Student::TenantsController < ApplicationController
   filter_access_to :index,:index_staff, :reports, :statistics, :tenant_report, :tenant_report_staff, :return_key, :return_key2, :room_map, :room_map2, :new, :create,  :laporan_penginapan, :laporan_penginapan2, :census, :census_level, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_tenant, only: [:show, :edit, :update, :destroy]
+  before_action :set_index, only: [:index, :tenant_report] #2ndOct2017
+  before_action :set_index_staff, only: [:index_staff, :tenant_report_staff] #2ndOct2017
   
   def index
-    #@search = Tenant.where("student_id IS NOT NULL").search(params[:q])
-    @search = Tenant.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
-    if params[:q]
-      #move searches here
-    end
-    @search.keyreturned_present != nil unless params[:q]
-    @search.force_vacate_true = false unless params[:q]
+#     rev 2ndOct2017
+#     #@search = Tenant.where("student_id IS NOT NULL").search(params[:q])
+#     @search = Tenant.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
+#     if params[:q]
+#       #move searches here
+#     end
+    
+    @search.keyreturned_present != nil #unless params[:q]
+    @search.force_vacate_true = false #unless params[:q]
     @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
     @tenants_all = @search.result.where('student_id is not null')
     @tenants = @tenants_all.page(params[:page]||1)  
@@ -23,12 +27,14 @@ class Student::TenantsController < ApplicationController
   end
   
   def index_staff
-    @search = Tenant.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
-    if params[:q]
-      #move searches here
-    end
-    @search.keyreturned_present != nil unless params[:q]
-    @search.force_vacate_true = false unless params[:q]
+#     rev 2ndOct2017
+#     @search = Tenant.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
+#     if params[:q]
+#       #move searches here
+#     end
+    
+    @search.keyreturned_present != nil #unless params[:q]
+    @search.force_vacate_true = false #unless params[:q]
     @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
     @tenants_all = @search.result.where('staff_id is not null')
     @tenants = @tenants_all.page(params[:page]||1)
@@ -263,9 +269,9 @@ class Student::TenantsController < ApplicationController
 
   #PDF for Index - student residence
   def tenant_report
-    @search = Tenant.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
-    @search.keyreturned_present != nil unless params[:q]
-    @search.force_vacate_true = false unless params[:q]
+#     rev 2ndOct2017 - @search = Tenant.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
+    @search.keyreturned_present != nil #unless params[:q]
+    @search.force_vacate_true = false #unless params[:q]
     @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
     @tenants = @search.result.where('student_id is not null')
     respond_to do |format|
@@ -280,9 +286,9 @@ class Student::TenantsController < ApplicationController
   
   #PDF for Index - staff residence
   def tenant_report_staff
-    @search = Tenant.search(params[:q]) 
-    @search.keyreturned_present != nil unless params[:q]
-    @search.force_vacate_true = false unless params[:q]
+#     rev 2ndOct2017 - @search = Tenant.search(params[:q]) 
+    @search.keyreturned_present != nil #unless params[:q]
+    @search.force_vacate_true = false #unless params[:q]
     @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
     @tenants = @search.result.where('staff_id is not null')
     respond_to do |format|
@@ -360,6 +366,24 @@ class Student::TenantsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_tenant
       @tenant = Tenant.find(params[:id])
+    end
+    
+    def set_index
+      roles=current_user.roles.map(&:authname)
+      if roles.include?('developer') || (roles.include?('administration') && User.icms_acct.include?(current_user.id))
+        @search = Tenant.search(params[:q])
+      else
+        @search = Tenant.isstudents.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
+      end
+    end
+    
+    def set_index_staff
+      roles=current_user.roles.map(&:authname)
+      if roles.include?('developer') || (roles.include?('administration') && User.icms_acct.include?(current_user.id))
+        @search = Tenant.search(params[:q])
+      else
+        @search = Tenant.isstaffs.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
