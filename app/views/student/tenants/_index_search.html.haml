@@ -2,10 +2,14 @@
   %tr.search_row{style: "display: none;"}
     %td= f.text_field :location_combo_code_start, size: 2, class: 'form-control'
     %td= f.text_field :student_icno_start, size: 8, class: 'form-control'
-    %td= f.text_field :student_name_cont, size: 8, class: 'form-control'
+    %td
+      = f.text_field :student_name_cont, size: 8, class: 'form-control', placeholder: (t 'student.name')
+      - if current_user.college.code=='amsas'
+        = f.text_field :student_intakestudent_name_cont, size: 8, class: 'form-control', placeholder: "Siri"
+      - else
+        = f.text_field :student_intakestudent_monthyear_intake_eq, size: 8, class: 'monthyear_picker_reverse form-control', placeholder: (t 'training.intake.title'), value: @search.student_intakestudent_monthyear_intake_eq.try(:strftime, '%d-%m-%Y')
+      = f.text_field :student_course_name_cont, size: 8, class: 'form-control', placeholder: (t 'training.intake.programme_id')
     %td= f.text_field :student_matrixno_cont, size: 8, class: 'form-control'
-    %td= f.text_field :student_intake_eq, size: 8, class: 'monthyear_picker form-control'
-    %td= f.text_field :student_course_name_cont, size: 8, class: 'form-control'
     %td= f.text_field :keyaccept_eq, :size=> 2, class: 'date_picker form-control'
     %td= f.text_field :keyexpectedreturn_eq, :size=> 2, class:  'date_picker form-control'
     %td= f.text_field :keyreturned_eq, :size=> 2, class: 'date_picker form-control'

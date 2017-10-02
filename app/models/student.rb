@@ -61,6 +61,8 @@ class Student < ActiveRecord::Base
 #     [:course_search]
 #   end
   
+  scope :valid_students, -> {where.not('name ILIKE (?)', "%icms%")}
+  
   def self.division_search(query)
     if query
       intakeid,k=query.split("~")

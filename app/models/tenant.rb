@@ -12,6 +12,10 @@ class Tenant < ActiveRecord::Base
   validates :staff_id, presence: true, :if => :location_is_staff_residence?
   validates :keyaccept, :keyexpectedreturn, :total_keys, presence: true
   
+  scope :valid_tenants, -> { where('student_id IN(?) OR staff_id IN(?)', Student.valid_students.pluck(:id), Staff.valid_staffs.pluck(:id)) }
+  scope :isstudents, -> { valid_tenants.where(staff_id: nil)}
+  scope :isstaffs, -> { valid_tenants.where(student_id: nil)}
+  
   def location_is_student_residence?
     #male lclass=3, typename=8 , ancestry_depth=3,
     #female lclass=3, typename=2, ditto
@@ -111,7 +115,7 @@ class Tenant < ActiveRecord::Base
     CSV.generate(options) do |csv|
         csv << [I18n.t('student.tenant.list_full')] #title added
         csv << [] #blank row added
-        csv << [I18n.t('location.code'), I18n.t('student.students.icno'), I18n.t('student.name'), I18n.t('student.students.matrixno'), I18n.t('student.students.intake_id'), I18n.t('course.name'), I18n.t('student.tenant.key.provided'), I18n.t('student.tenant.key.expected'), I18n.t('student.tenant.key.returned'), I18n.t('student.tenant.vacate'), I18n.t('student.tenant.damage_status'), I18n.t('student.tenant.damage_type'),]   
+        csv << [I18n.t('location.code'), I18n.t('student.students.icno'), I18n.t('student.name'), "#{all[0].college.code=='amsas' ? I18n.t('student.students.apmmno') : I18n.t('student.students.matrixno')}", I18n.t('student.students.intake_id'), I18n.t('course.name'), I18n.t('student.tenant.key.provided'), I18n.t('student.tenant.key.expected'), I18n.t('student.tenant.key.returned'), I18n.t('student.tenant.vacate'), I18n.t('student.tenant.damage_status'), I18n.t('student.tenant.damage_type'),]   
         all.each do |tenant|
           unless tenant.student.nil?
             if tenant.damages.count==0; damages_text = (I18n.t 'no2'); else damages_text = (I18n.t 'yes2'); end
@@ -119,9 +123,9 @@ class Tenant < ActiveRecord::Base
             
             if tenant.damages.count>0
                 tenant.damages.each{|t|damage_description << t.damage_type}
-                csv << [tenant.location.try(:combo_code), tenant.try(:student).try(:icno), tenant.try(:student).try(:name), tenant.try(:student).try(:matrixno), tenant.try(:student).try(:intake).try(:strftime, '%b %Y'), tenant.try(:student).try(:course).try(:name), tenant.keyaccept.try(:strftime, '%d %b %Y'), tenant.keyexpectedreturn.try(:strftime, '%d %b %Y'), tenant.keyreturned.try(:strftime, '%d %b %Y'), tenant.force_vacate? ? (I18n.t 'yes2') : (I18n.t 'no2'), damages_text, damage_description.uniq.to_sentence]
+                csv << [tenant.location.try(:combo_code), tenant.try(:student).try(:icno), tenant.try(:student).try(:name), tenant.try(:student).try(:matrixno), tenant.try(:student).try(:intakestudent).try(:intake_details), tenant.try(:student).try(:course).try(:programme_list), tenant.keyaccept.try(:strftime, '%d %b %Y'), tenant.keyexpectedreturn.try(:strftime, '%d %b %Y'), tenant.keyreturned.try(:strftime, '%d %b %Y'), tenant.force_vacate? ? (I18n.t 'yes2') : (I18n.t 'no2'), damages_text, damage_description.uniq.to_sentence]
             else
-                csv << [tenant.location.try(:combo_code), tenant.try(:student).try(:icno), tenant.try(:student).try(:name), tenant.try(:student).try(:matrixno), tenant.try(:student).try(:intake).try(:strftime, '%b %Y'), tenant.try(:student).try(:course).try(:name), tenant.keyaccept.try(:strftime, '%d %b %Y'), tenant.keyexpectedreturn.try(:strftime, '%d %b %Y'), tenant.keyreturned.try(:strftime, '%d %b %Y'), tenant.force_vacate? ? (I18n.t 'yes2') : (I18n.t 'no2'), damages_text]
+                csv << [tenant.location.try(:combo_code), tenant.try(:student).try(:icno), tenant.try(:student).try(:name), tenant.try(:student).try(:matrixno), tenant.try(:student).try(:intakestudent).try(:intake_details), tenant.try(:student).try(:course).try(:programme_list), tenant.keyaccept.try(:strftime, '%d %b %Y'), tenant.keyexpectedreturn.try(:strftime, '%d %b %Y'), tenant.keyreturned.try(:strftime, '%d %b %Y'), tenant.force_vacate? ? (I18n.t 'yes2') : (I18n.t 'no2'), damages_text]
             end
           end
         end
