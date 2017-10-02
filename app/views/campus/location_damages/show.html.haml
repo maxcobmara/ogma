@@ -20,7 +20,7 @@
             %dt=t 'student.tenant.damage_type'
             %dd
               =@damage.damage_type
-              =" ("+@damage.asset.code_asset+")" unless @damage.college_id.nil?
+              =" ("+@damage.asset.code_asset+")" unless @damage.asset_id.nil?
           
             %dt= t 'location.damage.description'
             %dd=@damage.description

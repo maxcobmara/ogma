@@ -82,7 +82,7 @@ class Campus::LocationDamagesController < ApplicationController
   
   def damage_report
     @search = LocationDamage.search(params[:q]) 
-    @damages = @search.result.joins(:location).where('typename IN(?) or lclass IN(?)',[2,8,6],[4,2]) #4-block, 2-flr, 2-bed f, 8-bed m, 6-room
+    @damages = @search.result.joins(:location).where('typename IN(?) or lclass IN(?)',[2,8,6],[4,2]).sort_by{|x|x.location.combo_code}#4-block, 2-flr, 2-bed f, 8-bed m, 6-room
     respond_to do |format|
        format.pdf do
          pdf = Damage_reportPdf.new(@damages, view_context, current_user.college)
@@ -95,7 +95,7 @@ class Campus::LocationDamagesController < ApplicationController
   
   def damage_report_staff
     @search = LocationDamage.search(params[:q]) 
-    @damages = @search.result.joins(:location).where('locations.typename=?',1) 
+    @damages = @search.result.joins(:location).where('locations.typename=?',1).sort_by{|x|x.location.combo_code}
     respond_to do |format|
        format.pdf do
          pdf = Damage_report_staffPdf.new(@damages, view_context, current_user.college)
