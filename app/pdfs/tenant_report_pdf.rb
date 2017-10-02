@@ -4,7 +4,7 @@ class Tenant_reportPdf < Prawn::Document
     @tenants = tenants
     @view = view
     @college = college
-    font "Times-Roman"
+    font "Helvetica"#"Times-Roman"
     text "#{college.name}", :align => :center, :size => 12, :style => :bold
     text "#{I18n.t('student.tenant.list_full')}", :align => :center, :size => 12, :style => :bold
     move_down 10

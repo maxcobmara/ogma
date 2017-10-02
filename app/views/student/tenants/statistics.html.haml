@@ -124,9 +124,22 @@
                 %td.centre=students2.count
           - else
             - @students_prog.each do |course_id, students|
-              - students.group_by{|k|k.intake}.each do |intake, students2|
+              - students.group_by{|k|k.intakestudent}.each do |intake, students2|
                 %tr
-                  %th=students.first.course.name+" - "+students2.first.intake_num
+                  %th
+                    /=students.first.course.name+" - "+students2.first.intake_num
+                    /TODO - update college1 DB - student table should use 'intake_id' (as per college2) instead of 'intake' field
+                    ="#{students.first.course.name} - "
+                    - if students2.first.intake.nil?
+                      -str=students2.first.intakestudent.monthyear_intake
+                      - if str.strftime('%m').to_i < 7 
+                        = "1/#{str.strftime('%Y')}"
+                      - else
+                        = "2/#{str.strftime('%Y')}"
+                    - else
+                      =students2.first.intake_num
+                    /TEMP - refer helper when 'intake' field is still in use
+                      
                   %td.centre=students2.count
           - if @all_tenants_wostudent.count > 0
             %tr

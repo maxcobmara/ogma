@@ -4,6 +4,7 @@ class Student::TenantsController < ApplicationController
   before_action :set_tenant, only: [:show, :edit, :update, :destroy]
   before_action :set_index, only: [:index, :tenant_report] #2ndOct2017
   before_action :set_index_staff, only: [:index_staff, :tenant_report_staff] #2ndOct2017
+  before_action :set_statistics_reports, only: [:statistics, :reports] #2ndOct2017
   
   def index
 #     rev 2ndOct2017
@@ -51,7 +52,11 @@ class Student::TenantsController < ApplicationController
     @residentials = roots.uniq
     #@current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    
+    #ori be4 2ndOct2017
+    #@current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    @current_tenants = @tenants.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    
     @occupied_locations = @current_tenants.pluck(:location_id)
     
     #Excel - Statistic by level (of selected block) - moved to LOCATION module - statistic_level
@@ -110,7 +115,10 @@ class Student::TenantsController < ApplicationController
     @male_student_beds    = @locations.where('typename = ?', 8)
     #@current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    
+    #ori be4 2ndOct2017 - @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    @current_tenants = @tenants.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    
     @occupied_locations = @current_tenants.pluck(:location_id)
     
     #All Rooms
@@ -383,6 +391,15 @@ class Student::TenantsController < ApplicationController
         @search = Tenant.search(params[:q])
       else
         @search = Tenant.isstaffs.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
+      end
+    end
+    
+    def set_statistics_reports
+      roles=current_user.roles.map(&:authname)
+      if roles.include?('developer') || (roles.include?('administration') && User.icms_acct.include?(current_user.id))
+        @tenants=Tenant.all
+      else
+	@tenants=Tenant.isstudents
       end
     end
 
