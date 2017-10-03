@@ -3,7 +3,7 @@ class Tenant_report_staffPdf < Prawn::Document
     super({top_margin: 50, page_size: 'A4', page_layout: :landscape })
     @tenants = tenants
     @view = view
-    font "Times-Roman"
+    font "Helvetica" #"Times-Roman"
     text "#{college.name}", :align => :center, :size => 12, :style => :bold
     text "#{I18n.t('student.tenant.list_full2')}", :align => :center, :size => 12, :style => :bold
     move_down 10
@@ -32,12 +32,12 @@ class Tenant_report_staffPdf < Prawn::Document
     end
     
     counter = counter || 0
-    header = [[ "", "#{I18n.t('location.code')}", "#{I18n.t('student.students.icno')}",  "#{I18n.t('student.name')}",  "#{I18n.t('student.tenant.key.provided')}",  "#{I18n.t('student.tenant.key.expected')}",  "#{I18n.t('student.tenant.key.returned')}",  "#{I18n.t('student.tenant.vacate')}",  "#{I18n.t('student.tenant.damage_status')}",  "#{I18n.t('student.tenant.damage_type')}"]]   
+    header = [[ "", "#{I18n.t('location.code')}", "#{I18n.t('student.students.icno')}",  "#{I18n.t('staff.name')}",  "#{I18n.t('student.tenant.key.provided')}",  "#{I18n.t('student.tenant.key.expected')}",  "#{I18n.t('student.tenant.key.returned')}",  "#{I18n.t('student.tenant.vacate')}",  "#{I18n.t('student.tenant.damage_status')}",  "#{I18n.t('student.tenant.damage_type')}"]]   
     header +
       @tenants.map do |tenant|
       ["#{counter += 1}", "#{tenant.location.try(:combo_code)}", 
-       "#{tenant.try(:staff).try(:icno) unless tenant.staff.nil?} #{(I18n.t 'student.tenant.tenancy_details_nil') if tenant.staff.nil?}", 
-       "#{tenant.try(:staff).try(:name) unless tenant.staff.nil?}", 
+       "#{@view.formatted_mykad(tenant.try(:staff).try(:icno)) unless tenant.staff.nil?} #{(I18n.t 'student.tenant.tenancy_details_nil') if tenant.staff.nil?}", 
+       "#{tenant.try(:staff).try(:staff_with_rank) unless tenant.staff.nil?}", 
        "#{ I18n.l(tenant.keyaccept, :format => '%d %b %y') rescue nil}",
        "#{ I18n.l(tenant.keyexpectedreturn, :format => '%d %b %y') unless tenant.keyexpectedreturn.blank?}", 
        "#{ I18n.l(tenant.keyreturned, :format => '%d %b %y') unless tenant.keyreturned.blank?}", 
