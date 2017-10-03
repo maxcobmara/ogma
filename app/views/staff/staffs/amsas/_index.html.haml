@@ -18,3 +18,5 @@
             -for position in Position.where(id: staff.valid_posts)
               = position.name
               <BR>
+            - if is_developer? || (is_admin? &&  icms_acct?)
+              =staff.positions.pluck(:combo_code, :name).join(" - ")

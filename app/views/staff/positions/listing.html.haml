@@ -66,7 +66,46 @@
       - anch=count
       %ul{id: "tree_#{ancs}", class: 'non_bulleted'}=Position.nested_post(ancs, root_post, anch, hp).html_safe
 
-
+- if is_developer? || (is_admin? &&  icms_acct?)
+  %BR
+  .col-md-10.col-md-offset-1
+    %hr
+    .col-md-5
+      .small.text-grey
+        - a=Position.joins(:staff).where(id: Position.initial_posts)
+        ="#{a.count} invalid position records. Remove staff from postition accordingly."
+        %table.table.table-bordered.table-condensed
+          %tr
+            %th Id
+            %th Code
+            %th Staff
+            %th Staff Id
+          - for apost in a.sort_by(&:combo_code)
+            %tr
+              %td=apost.id
+              %td=(apost.unit.downcase.include?('icms')==true || apost.staff.name.downcase.include?('icms')==true) ? apost.combo_code : (link_to apost.combo_code, staff_position_path(apost))
+              %td=apost.staff.staff_with_rank
+              %td=apost.staff_id
+            
+    .col-md-5
+      .small.text-grey
+        - b=Position.where(id: Position.initial_posts).where.not(staff_id: nil)
+        - c=b-a
+        ="#{c.count} invalid position records, position assigned to no longer exist staff. Remove staff_id accordingly."
+        %table.table.table-bordered.table-condensed
+          %tr
+            %th Id
+            %th Code
+            %th Staff
+            %th Staff Id
+          - for apost in c.sort_by(&:combo_code)
+            %tr
+              %td=apost.id
+              %td=link_to apost.combo_code, staff_position_path(apost)
+              %td=apost.staff.try(:staff_with_rank)
+              %td=apost.staff_id
+              
+  
 //=========================
 /Programme @ 1st level
 / %ul#programme_tree
