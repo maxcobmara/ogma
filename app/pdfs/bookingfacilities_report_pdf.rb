@@ -4,20 +4,20 @@ class Bookingfacilities_reportPdf < Prawn::Document
     @bookingfacilities = bookingfacilities
     @view = view
     @college=college
-    font "Times-Roman"
+    font "Helvetica" #"Times-Roman"
     record
   end
   
   def record
-    table(line_item_rows, :column_widths => [30,70, 150, 65, 95, 60,70], :cell_style => { :size => 10,  :inline_format => :true}, :header => 2) do
+    table(line_item_rows, :column_widths => [30,70, 145, 65, 90, 55,65], :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
-      row(0).style size: 12
+      row(0).style size: 11
       row(0).align = :center
       row(0..1).font_style = :bold
       row(1).background_color = 'FFE34D'
       self.row_colors = ["FEFEFE", "FFFFFF"]
-      self.width = 540
+      self.width = 520
       header = true
     end
   end

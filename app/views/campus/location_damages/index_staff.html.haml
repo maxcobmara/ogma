@@ -14,6 +14,22 @@
           %li= link_to  (fa_icon "file-pdf-o", text: (t 'location.damage.report')), damage_report_staff_campus_location_damages_path(params.merge(format: 'pdf' ))
           
 .row
+  .col-md-12
+    .alert.alert-warning
+      %strong=(t 'remarks')+" :"
+      %ol
+        %li=(t 'location.damage.unit_desc').html_safe
+        %li=(t 'location.damage.asset_others_desc').html_safe
+        %li=(t 'location.damage.report_by_type').html_safe
+        %ol
+          %li=(t 'location.damage.unit_report').html_safe
+          %li 
+            =(t 'location.damage.asset_others_report1').html_safe
+            %button.btn.btn-default.btn-xs
+              %i.fa.fa-bug
+            =t 'location.damage.asset_others_report2'
+        %li=(t 'location.damage.asset_inventory').html_safe
+        
   %table.table-striped.table-hover.ogma
     %thead
       %tr

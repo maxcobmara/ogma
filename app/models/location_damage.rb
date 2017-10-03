@@ -10,7 +10,11 @@ class LocationDamage < ActiveRecord::Base
   
   def damage_type
     if document_id==1
-     "#{ I18n.t('student.tenant.room_damage')}"
+      if location.typename==1
+        "#{ I18n.t('location.damage.unit_damage')}"
+      else
+        "#{ I18n.t('student.tenant.room_damage')}"
+      end
     elsif document_id==2
       "#{ I18n.t('student.tenant.asset_other_damage')}"
     end
