@@ -1342,6 +1342,7 @@ en:
     settings: Settings
     search:
       ic_no: Staff Search
+    compulsory_position: "All staff must be assigned to a position in order to be listed in all ICMS modules."
 
     titles:
       title: Staff Title

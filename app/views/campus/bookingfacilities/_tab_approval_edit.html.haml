@@ -2,7 +2,7 @@
   .col-sm-2.control-label
     = f.label t('campus.bookingfacilities.approver_id'), for: :approver_id
   .col-md-5
-    = f.collection_select :approver_id, Staff.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'form-control selectpicker', "data-width" =>"auto"}
+    = f.collection_select :approver_id, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'form-control selectpicker', "data-width" =>"auto"}
      
 .form-group
   .col-sm-2.control-label

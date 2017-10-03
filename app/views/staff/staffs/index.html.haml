@@ -12,6 +12,13 @@
       %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), staff_list_staff_infos_path(params.merge(format: 'pdf'))
 
 .row
+  .col-md-12
+    .alert.alert-warning
+      %strong=(t 'remark')+": "
+      =t 'staff.compulsory_position'
+      /(eg. Booking Facilities)
+      /TODO - to cater staff w/o perjawatan
+      
   //.right{style:"padding:0 30px; margin:0;"}= paginate @staffs, :theme => 'twitter-bootstrap-3', :pagination_class => "pagination-sm"
   = render :partial => "staff/staffs/#{current_user.college.code}/index"
   .right{style:"padding:0 30px; margin:0;"}= paginate @staffs, :theme => 'twitter-bootstrap-3'

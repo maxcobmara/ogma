@@ -1312,6 +1312,8 @@ ms_MY:
     settings: Tetapan
     search:
       ic_no: Carian Kakitangan
+      
+    compulsory_position: "Semua staf mesti diperuntukkan dengan jawatan bagi membolehkan staf disenaraikan dalam semua modul ICMS."
     
     titles:
       title: Gelaran
