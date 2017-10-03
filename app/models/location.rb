@@ -9,6 +9,7 @@ class Location < ActiveRecord::Base
   validates_presence_of  :code, :name, :combo_code
   validates :combo_code, uniqueness: true
   
+  belongs_to :college
   belongs_to  :administrator, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
   has_many  :tenants, :dependent => :destroy
   has_many  :damages, :class_name => 'LocationDamage', :foreign_key => 'location_id', :dependent => :destroy
@@ -176,20 +177,30 @@ class Location < ActiveRecord::Base
   #Export Excel - Census by level - tenants/..../census_level.html.haml (location_id/level)
   def self.to_csv2(options = {})
     
-    #For TOTAL of rooms, damaged rooms, occupied rooms, empty rooms
+    #For TOTAL no of rooms, damaged rooms, occupied rooms, empty rooms
     #@current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    
+    #@current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    #default 2 valid students - enable above & disable below 4 checking
+    @current_tenants = Tenant.isstudents.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    
     @tenantbed_per_level=all.joins(:tenants).where("tenants.id" => @current_tenants)
     tenant_beds_ids = @tenantbed_per_level.pluck(:location_id)
     occupied_rooms = all.where('id IN(?)', tenant_beds_ids).group_by{|x|x.combo_code[0,9]}.count
-    all_rooms = all.group_by{|x|x.combo_code[0,9]}.count
+    all_rooms = all.map(&:combo_code).group_by{|x|x[0, x.size-2]}.count #fixed-3rdOct2017 - all.group_by{|x|x.combo_code[0,9]}.count
     damaged_rooms = all.where(occupied: true).group_by{|x|x.combo_code[0,9]}.count
-    if all[0].combo_code[5,1]=="-"
-      floor_label = all[0].combo_code[0,5]
-    else
-      floor_label = all[0].combo_code[0,6]
+    
+    if all.first.college.code=='amsas'
+      floor_label=all[0].parent.parent.name
+    else 
+      if all[0].combo_code[5,1]=="-"
+        floor_label = all[0].combo_code[0,5]
+      else
+        floor_label = all[0].combo_code[0,6]
+      end
     end
+    
     
     #For tenants COUNT group by programme
     @all_tenants_wstudent = @current_tenants.joins(:location).where('location_id IN(?) and student_id IN(?)', tenant_beds_ids, Student.all.pluck(:id))
@@ -210,7 +221,9 @@ class Location < ActiveRecord::Base
                if bed.tenants.last.student.nil?
                   csv << [bed.combo_code, bed.name, I18n.t('student.tenant.tenancy_details_nil')]
                else
-                  csv << [bed.combo_code, bed.name, bed.tenants.last.try(:student).try(:name), bed.tenants.last.try(:student).try(:icno), bed.tenants.last.try(:student).try(:matrixno), bed.tenants.last.try(:student).try(:course).try(:name), bed.tenants.last.try(:student).try(:intake_num),  "\'"+bed.tenants.last.try(:student).try(:stelno)+"\'"]  #"=\"" + myVariable + "\""
+                  validstu=Student.valid_students.pluck(:id)
+                  a=true if validstu.include?(bed.tenants.last.student.id)
+                  csv << [bed.combo_code, bed.name, "\'#{bed.tenants.last.try(:student).try(:name) if a}\'", "\'#{bed.tenants.last.try(:student).try(:icno) if a}\'", "\'#{bed.tenants.last.try(:student).try(:matrixno) if a}\'", "\'#{bed.tenants.last.try(:student).try(:course).try(:name) if a}\'", "\'#{bed.tenants.last.try(:student).try(:intake_num) if a}\'", "\'#{bed.tenants.last.try(:student).try(:stelno) if a}\'"]  #"=\"" + myVariable + "\""
                end
              else
                csv << [bed.combo_code, bed.name] #leaves empty, coz has no values
@@ -218,6 +231,12 @@ class Location < ActiveRecord::Base
           end
         end
 
+        if all.first.college.code=='amsas'
+	  course_heading="\'Siri | #{(I18n.t 'course.name')}\'"
+	else
+	  course_heading="\'#{(I18n.t 'course.name')} - #{(I18n.t 'training.intake.description')}\'"
+	end
+        
         csv << [] #blank row added
         csv << [] #blank row added
         csv << [ I18n.t('student.tenant.total_empty'), all_rooms-damaged_rooms-occupied_rooms]
@@ -227,12 +246,18 @@ class Location < ActiveRecord::Base
 
         csv << [] #blank row added
         csv << [] #blank row added
-        csv << [(I18n.t 'course.name')+" - "+(I18n.t 'training.intake.description'), I18n.t('student.tenant.total')]
-        @students_prog.each do |course_id, students|
-           students.group_by{|k|k.intake}.each do |intake, students2|
-             csv << [students.first.course.name+" - "+students2.first.intake_num, students2.count]
+        csv << [course_heading, I18n.t('student.tenant.total')]
+	if all.first.college.code=='amsas'
+           Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id)).group_by(&:intakestudent).each do |intakestu, students2|
+	     csv << [intakestu.siri_programmelist, students2.count]
+	   end
+	else
+           @students_prog.each do |course_id, students|
+              students.group_by{|k|k.intake}.each do |intake, students2|
+                csv << [students.first.course.name+" - "+students2.first.intake_num, students2.count]
+              end
            end
-        end
+	end
         if @all_tenants_wostudent.count > 0
            csv << [(I18n.t 'student.tenant.tenancy_details_nil'), @all_tenants_wostudent.count]
         end
