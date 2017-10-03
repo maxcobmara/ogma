@@ -47,8 +47,8 @@
           %td
             = link_to tenant.location.try(:combo_code), campus_location_path(tenant.location)
             %span{style: 'color: red;'}="*" if [tenant.location.try(:staffadmin_id)].include?(current_user.userable_id)
-          %td= link_to tenant.try(:staff).try(:icno), student_tenant_path(tenant)
-          %td= link_to tenant.try(:staff).try(:staff_with_rank), staff_info_path(tenant.staff)
+          %td= link_to formatted_mykad(tenant.try(:staff).try(:icno)), student_tenant_path(tenant) rescue nil
+          %td= link_to tenant.try(:staff).try(:staff_with_rank), staff_info_path(tenant.staff) rescue nil
           %td= tenant.keyaccept.try(:strftime, '%d %b %Y')
           %td
             - if tenant.keyexpectedreturn < Date.today && tenant.keyreturned.blank?

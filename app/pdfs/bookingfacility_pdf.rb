@@ -43,7 +43,7 @@ class BookingfacilityPdf < Prawn::Document
           [{content: I18n.t('campus.bookingfacilities.booked_facility_details').upcase, colspan: 6}],
           [ I18n.t('campus.bookingfacilities.location_id'), ":", {content: @bookingfacility.booked_facility.location_list, colspan: 4}],
           [ I18n.t('campus.bookingfacilities.usage_date'), ":", @bookingfacility.start_date.strftime("%d-%m-%Y"),  I18n.t('campus.bookingfacilities.until'), ":", @bookingfacility.end_date.strftime("%d-%m-%Y")],
-          [ I18n.t('campus.bookingfacilities.usage_time'), ":", @bookingfacility.start_date.strftime("%H:%M %P"),  I18n.t('campus.bookingfacilities.usage_time'), ":", @bookingfacility.end_date.strftime("%H:%M %P")],
+          [ I18n.t('campus.bookingfacilities.usage_time'), ":", @bookingfacility.start_date.strftime("%H:%M"),  I18n.t('campus.bookingfacilities.usage_time'), ":", @bookingfacility.end_date.strftime("%H:%M")],
           [ I18n.t('campus.bookingfacilities.total_participant'), ":", @bookingfacility.total_participant, "", "", ""],
           [ I18n.t('campus.bookingfacilities.purpose'), ":", {content: @bookingfacility.purpose, colspan: 4}],
           [{content: I18n.t('campus.bookingfacilities.applicant_assurance').upcase, colspan: 6}],

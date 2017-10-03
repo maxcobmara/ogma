@@ -19,4 +19,6 @@
               = position.name
               <BR>
             - if is_developer? || (is_admin? &&  icms_acct?)
-              =staff.positions.pluck(:combo_code, :name).join(" - ")
+              - for apost in staff.positions
+                - unless staff.valid_posts.include?(apost.id)
+                  .small.text-red="* #{apost.combo_code} | #{apost.name}"
