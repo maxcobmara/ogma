@@ -210,7 +210,7 @@ class Location < ActiveRecord::Base
         csv << [I18n.t('student.tenant.census')] #title added
         csv << [] #blank row added
         csv << [floor_label]
-        csv << [I18n.t('location.code'), I18n.t('location.name'), I18n.t('student.name'), I18n.t('student.icno'), I18n.t('student.students.matrixno'), I18n.t('course.name'), I18n.t('training.intake.description'), I18n.t('student.students.stelno') , I18n.t('student.tenant.notes')]  
+        csv << [I18n.t('location.code'), I18n.t('location.name'), I18n.t('student.name'), I18n.t('student.icno'), I18n.t('student.students.matrixno'), I18n.t('course.name'), all.first.college.code=='amsas' ? "Siri" : I18n.t('training.intake.description'), I18n.t('student.students.stelno') , I18n.t('student.tenant.notes')]  
 
         all.sort_by{|t|t.combo_code}.each do |bed|
           if bed.occupied==true
