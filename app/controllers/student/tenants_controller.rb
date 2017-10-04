@@ -276,7 +276,7 @@ class Student::TenantsController < ApplicationController
      ab=Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id))
     respond_to do |format|
       format.pdf do
-	pdf = CensusStudentTenantsPdf.new(@all_beds_single,@all_rooms.count, @damaged_rooms.count,@occupied_rooms.count, @students_prog, @all_tenants_wstudent.count, ab, @all_tenants_wostudent.count, @tenantbed_per_level.count, view_context, current_user.college)
+	pdf = CensusStudentTenantsPdf.new(@all_beds_single,@all_rooms.count, @damaged_rooms.count,@occupied_rooms.count, @students_prog, @all_tenants_wstudent.count, ab, @all_tenants_wostudent.count, @tenantbed_per_level.count, view_context, current_user)
         send_data pdf.render, filename: "census",
                               type: "application/pdf",
                               disposition: "inline"

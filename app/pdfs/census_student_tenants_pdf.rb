@@ -1,8 +1,8 @@
 class CensusStudentTenantsPdf < Prawn::Document
   include StudentsHelper
-  def initialize(all_beds_single, all, damaged, occupied, students_prog, all_tenants_wstudent, ab, all_tenants_wostudent, tenantbed_per_level, view, college)
+  def initialize(all_beds_single, all, damaged, occupied, students_prog, all_tenants_wstudent, ab, all_tenants_wostudent, tenantbed_per_level, view, curr_usr)
     super({top_margin: 30, page_size: 'A4', page_layout: :portrait })
-    @college=college
+    @college=curr_usr.college
     @all_beds_single = all_beds_single
     @all=all 
     @damaged=damaged
@@ -12,7 +12,11 @@ class CensusStudentTenantsPdf < Prawn::Document
     @ab=ab
     @all_tenants_wostudent=all_tenants_wostudent
     @tenantbed_per_level=tenantbed_per_level
-    font "Times-Roman"
+    roles=curr_usr.roles.pluck(:authname)
+    if roles.include?('developer') || (roles.include?('administration') && User.icms_acct.include?(curr_usr.id))
+      @icms_team=true
+    end
+    font "Helvetica" #"Times-Roman"
     logo
     move_down 5
     text "Aras : #{@all_beds_single[0].parent.parent.name[-2,2]}", :align => :left, :size => 10, :style => :bold
@@ -41,7 +45,7 @@ class CensusStudentTenantsPdf < Prawn::Document
   end
   
   def record
-    table(line_item_rows, :column_widths => [30,60,200,80,120,40], :cell_style => { :size => 10,  :inline_format => :true}) do
+    table(line_item_rows, :column_widths => [30,60,200,80,100,60], :cell_style => { :size => 9,  :inline_format => :true}) do
       row(0).font_style = :bold
       row(0).background_color = 'FFE34D'
       self.row_colors = ["FEFEFE", "FFFFFF"]
@@ -64,8 +68,13 @@ class CensusStudentTenantsPdf < Prawn::Document
           if bed.tenants.last.student.nil?
             one_line+=["#{I18n.t 'student.tenant.tenancy_details_nil'}","","",""]
           else
-            a=true if validstu.include?(bed.tenants.last.student.id)
-            one_line+=["#{bed.tenants.last.try(:student).try(:name) if a}", "#{bed.tenants.last.try(:student).try(:formatted_mykad) if a}", "#{bed.tenants.last.try(:student).try(:course).try(:name) if a}","#{bed.tenants.last.student.intake_num if a}"]
+            a=true if validstu.include?(bed.tenants.last.student.id) || @icms_team
+            if @college.code=='amsas'
+              intake_detailing=bed.tenants.last.student.intakestudent.name
+            else
+              intake_detailing=bed.tenants.last.student.intake_num
+            end
+            one_line+=["#{bed.tenants.last.try(:student).try(:name) if a}", "#{bed.tenants.last.try(:student).try(:formatted_mykad) if a}", "#{bed.tenants.last.try(:student).try(:course).try(:name) if a}","#{intake_detailing if a}"]
           end
         else
           one_line+=["","","",""]
@@ -74,12 +83,12 @@ class CensusStudentTenantsPdf < Prawn::Document
       end
     end
     
-    header = [[ "BIL", "NO. BILIK", "NAMA", "NO. K / P", "PROGRAM", "KUMP"]]   
+    header = [[ "BIL", "NO. BILIK", "NAMA", "NO. K / P", "PROGRAM", @college.code=='amsas' ? "SIRI" : "KUMP"]]   
     header + line_items
   end
   
   def statistics
-    table(statistic_rows, :column_widths => [120,200,80], :cell_style => { :size => 12,  :inline_format => :true}) do
+    table(statistic_rows, :column_widths => [120,200,80], :cell_style => { :size => 10,  :inline_format => :true}) do
       row(0).font_style = :bold
       row(0).column(1).background_color = 'FFE34D'
       row(0).column(2).background_color = 'FFE34D'
@@ -103,7 +112,7 @@ class CensusStudentTenantsPdf < Prawn::Document
   end 
 
   def statistics2
-    table(statistic_rows2, :column_widths => [90,270,80], :cell_style => { :size => 12,  :inline_format => :true}) do
+    table(statistic_rows2, :column_widths => [90,270,80], :cell_style => { :size => 10,  :inline_format => :true}) do
       row(0).font_style = :bold
       row(0).column(1).background_color = 'FFE34D'
       row(0).column(2).background_color = 'FFE34D'

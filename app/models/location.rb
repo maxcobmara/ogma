@@ -114,7 +114,6 @@ class Location < ActiveRecord::Base
   end
   
   #Export excel - statistic by level - tenants/reports.html.haml 
-  #4thOct2017- refer location_helper.rb for dev/icms_acct
   def self.to_csv(options = {})
     #@current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
@@ -160,7 +159,7 @@ class Location < ActiveRecord::Base
            hash_occlevel = Hash[occ_level.zip(occupiedroomss)]
            hash_occlevel.default = 0 
            occupiedroom = hash_occlevel[floor]
-           allroom = beds.group_by{|x|x.combo_code[0,9]}.count
+           allroom = beds.map(&:combo_code).group_by{|x|x[0, x.size-2]}.count# beds.group_by{|x|x.combo_code[0,9]}.count
            if floor[5,1]=="-"
              rev_floor = floor[0,5]   #HB-02-
            elsif floor[5,1]!="-"
@@ -175,7 +174,6 @@ class Location < ActiveRecord::Base
   end
   
   #Export Excel - Census by level - tenants/..../census_level.html.haml (location_id/level)
-  #4thOct2017- refer location_helper.rb for dev/icms_acct
   def self.to_csv2(options = {})
     
     #For TOTAL no of rooms, damaged rooms, occupied rooms, empty rooms
@@ -224,7 +222,12 @@ class Location < ActiveRecord::Base
                else
                   validstu=Student.valid_students.pluck(:id)
                   a=true if validstu.include?(bed.tenants.last.student.id)
-                  csv << [bed.combo_code, bed.name, "\'#{bed.tenants.last.try(:student).try(:name) if a}\'", "\'#{bed.tenants.last.try(:student).try(:icno) if a}\'", "\'#{bed.tenants.last.try(:student).try(:matrixno) if a}\'", "\'#{bed.tenants.last.try(:student).try(:course).try(:name) if a}\'", "\'#{bed.tenants.last.try(:student).try(:intake_num) if a}\'", "\'#{bed.tenants.last.try(:student).try(:stelno) if a}\'"]  #"=\"" + myVariable + "\""
+                  if all.first.college.code=='amsas'
+                    intake_detailing=bed.tenants.last.student.intakestudent.name
+                  else
+                    intake_detailing=bed.tenants.last.student.intake_num
+                  end
+                  csv << [bed.combo_code, bed.name, "\'#{bed.tenants.last.try(:student).try(:name) if a}\'", "\'#{bed.tenants.last.try(:student).try(:icno) if a}\'", "\'#{bed.tenants.last.try(:student).try(:matrixno) if a}\'", "\'#{bed.tenants.last.try(:student).try(:course).try(:name) if a}\'", "\'#{intake_detailing if a}\'", "\'#{bed.tenants.last.try(:student).try(:stelno) if a}\'"]  #"=\"" + myVariable + "\""
                end
              else
                csv << [bed.combo_code, bed.name] #leaves empty, coz has no values
@@ -355,7 +358,7 @@ class Location < ActiveRecord::Base
         csv << [I18n.t('student.tenant.census')] #title added
         csv << [] #blank row added
         csv << [floor_label]
-        csv << [I18n.t('location.code'), I18n.t('location.name'), I18n.t('student.name'), I18n.t('student.icno'), I18n.t('student.students.matrixno'), I18n.t('course.name'), I18n.t('training.intake.description'), I18n.t('student.students.stelno') , I18n.t('student.tenant.notes')]  
+        csv << [I18n.t('location.code'), I18n.t('location.name'), I18n.t('student.name'), I18n.t('student.icno'), I18n.t('student.students.matrixno'), I18n.t('course.name'), all.first.college.code=='amsas' ? "Siri" : I18n.t('training.intake.description'), I18n.t('student.students.stelno') , I18n.t('student.tenant.notes')]  
 
         all.sort_by{|t|t.combo_code}.each do |bed|
           if bed.occupied==true
@@ -365,9 +368,12 @@ class Location < ActiveRecord::Base
                if bed.tenants.last.student.nil?
                   csv << [bed.combo_code, bed.name, I18n.t('student.tenant.tenancy_details_nil')]
                else
-                  validstu=Student.valid_students.pluck(:id)
-                  a=true if validstu.include?(bed.tenants.last.student.id)
-                  csv << [bed.combo_code, bed.name, "\'#{bed.tenants.last.try(:student).try(:name) if a}\'", "\'#{bed.tenants.last.try(:student).try(:icno) if a}\'", "\'#{bed.tenants.last.try(:student).try(:matrixno) if a}\'", "\'#{bed.tenants.last.try(:student).try(:course).try(:name) if a}\'", "\'#{bed.tenants.last.try(:student).try(:intake_num) if a}\'", "\'#{bed.tenants.last.try(:student).try(:stelno) if a}\'"]  #"=\"" + myVariable + "\""
+                  if all.first.college.code=='amsas'
+                    intake_detailing=bed.tenants.last.student.intakestudent.name
+                  else
+                    intake_detailing=bed.tenants.last.student.intake_num
+                  end
+                  csv << [bed.combo_code, bed.name, "\'#{bed.tenants.last.try(:student).try(:name) }\'", "\'#{bed.tenants.last.try(:student).try(:icno)}\'", "\'#{bed.tenants.last.try(:student).try(:matrixno)}\'", "\'#{bed.tenants.last.try(:student).try(:course).try(:name) }\'", intake_detailing, "\'#{bed.tenants.last.try(:student).try(:stelno) }\'"]  #"=\"" + myVariable + "\""
                end
              else
                csv << [bed.combo_code, bed.name] #leaves empty, coz has no values
@@ -455,7 +461,7 @@ class Location < ActiveRecord::Base
            hash_occlevel = Hash[occ_level.zip(occupiedroomss)]
            hash_occlevel.default = 0 
            occupiedroom = hash_occlevel[floor]
-           allroom = beds.group_by{|x|x.combo_code[0,9]}.count
+           allroom = beds.map(&:combo_code).group_by{|x|x[0, x.size-2]}.count #beds.group_by{|x|x.combo_code[0,9]}.count
            if floor[5,1]=="-"
              rev_floor = floor[0,5]   #HB-02-
            elsif floor[5,1]!="-"
