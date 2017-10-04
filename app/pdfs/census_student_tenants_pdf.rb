@@ -19,7 +19,11 @@ class CensusStudentTenantsPdf < Prawn::Document
     font "Helvetica" #"Times-Roman"
     logo
     move_down 5
-    text "Aras : #{@all_beds_single[0].parent.parent.name[-2,2]}", :align => :left, :size => 10, :style => :bold
+    if @college.code=='amsas'
+      text "Aras : #{@all_beds_single[0].parent.parent.name}", :align => :left, :size => 10, :style => :bold
+    else
+      text "Aras : #{@all_beds_single[0].parent.parent.name[-2,2]}", :align => :left, :size => 10, :style => :bold
+    end
     record
     move_down 40
     statistics
@@ -74,7 +78,7 @@ class CensusStudentTenantsPdf < Prawn::Document
             else
               intake_detailing=bed.tenants.last.student.intake_num
             end
-            one_line+=["#{bed.tenants.last.try(:student).try(:name) if a}", "#{bed.tenants.last.try(:student).try(:formatted_mykad) if a}", "#{bed.tenants.last.try(:student).try(:course).try(:name) if a}","#{intake_detailing if a}"]
+            one_line+=["#{bed.tenants.last.try(:student).try(:name) if a}", "#{bed.tenants.last.try(:student).try(:formatted_mykad) if a}", "#{bed.tenants.last.try(:student).try(:course).try(:programme_list) if a}","#{intake_detailing if a}"]
           end
         else
           one_line+=["","","",""]

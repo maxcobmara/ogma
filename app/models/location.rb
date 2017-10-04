@@ -227,7 +227,7 @@ class Location < ActiveRecord::Base
                   else
                     intake_detailing=bed.tenants.last.student.intake_num
                   end
-                  csv << [bed.combo_code, bed.name, "\'#{bed.tenants.last.try(:student).try(:name) if a}\'", "\'#{bed.tenants.last.try(:student).try(:icno) if a}\'", "\'#{bed.tenants.last.try(:student).try(:matrixno) if a}\'", "\'#{bed.tenants.last.try(:student).try(:course).try(:name) if a}\'", "\'#{intake_detailing if a}\'", "\'#{bed.tenants.last.try(:student).try(:stelno) if a}\'"]  #"=\"" + myVariable + "\""
+                  csv << [bed.combo_code, bed.name, "\'#{bed.tenants.last.try(:student).try(:name) if a}\'", "\'#{bed.tenants.last.try(:student).try(:icno) if a}\'", "\'#{bed.tenants.last.try(:student).try(:matrixno) if a}\'", "\'#{bed.tenants.last.try(:student).try(:course).try(:programme_list) if a}\'", "\'#{intake_detailing if a}\'", "\'#{bed.tenants.last.try(:student).try(:stelno) if a}\'"]  #"=\"" + myVariable + "\""
                end
              else
                csv << [bed.combo_code, bed.name] #leaves empty, coz has no values
@@ -373,7 +373,7 @@ class Location < ActiveRecord::Base
                   else
                     intake_detailing=bed.tenants.last.student.intake_num
                   end
-                  csv << [bed.combo_code, bed.name, "\'#{bed.tenants.last.try(:student).try(:name) }\'", "\'#{bed.tenants.last.try(:student).try(:icno)}\'", "\'#{bed.tenants.last.try(:student).try(:matrixno)}\'", "\'#{bed.tenants.last.try(:student).try(:course).try(:name) }\'", intake_detailing, "\'#{bed.tenants.last.try(:student).try(:stelno) }\'"]  #"=\"" + myVariable + "\""
+                  csv << [bed.combo_code, bed.name, "\'#{bed.tenants.last.try(:student).try(:name) }\'", "\'#{bed.tenants.last.try(:student).try(:icno)}\'", "\'#{bed.tenants.last.try(:student).try(:matrixno)}\'", "\'#{bed.tenants.last.try(:student).try(:course).try(:programme_list) }\'", intake_detailing, "\'#{bed.tenants.last.try(:student).try(:stelno) }\'"]  #"=\"" + myVariable + "\""
                end
              else
                csv << [bed.combo_code, bed.name] #leaves empty, coz has no values
