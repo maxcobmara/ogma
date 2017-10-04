@@ -1,6 +1,6 @@
 class CensusStudentTenantsPdf < Prawn::Document
   include StudentsHelper
-  def initialize(all_beds_single, all, damaged, occupied, students_prog, all_tenants_wstudent, all_tenants_wostudent, tenantbed_per_level, view, college)
+  def initialize(all_beds_single, all, damaged, occupied, students_prog, all_tenants_wstudent, ab, all_tenants_wostudent, tenantbed_per_level, view, college)
     super({top_margin: 30, page_size: 'A4', page_layout: :portrait })
     @college=college
     @all_beds_single = all_beds_single
@@ -9,6 +9,7 @@ class CensusStudentTenantsPdf < Prawn::Document
     @occupied=occupied
     @students_prog=students_prog
     @all_tenants_wstudent=all_tenants_wstudent
+    @ab=ab
     @all_tenants_wostudent=all_tenants_wostudent
     @tenantbed_per_level=tenantbed_per_level
     font "Times-Roman"
@@ -53,6 +54,7 @@ class CensusStudentTenantsPdf < Prawn::Document
   def line_item_rows    
     line_items=[]
     counter = counter || 0
+    validstu=Student.valid_students.pluck(:id)
     @all_beds_single.map do |bed|
       if bed.occupied==true
         line_items << ["#{counter+=1}","#{bed.parent.name[-5,5] if bed.parent.name[4,1]!='-'}#{bed.parent.name[-4,5] if bed.parent.name[4,1]=='-'}",{content: "#{bed.parent.damages.where(document_id: 1).last.description rescue (t 'student.tenant.damage')}", colspan: 4, :align => :center}]
@@ -62,7 +64,8 @@ class CensusStudentTenantsPdf < Prawn::Document
           if bed.tenants.last.student.nil?
             one_line+=["#{I18n.t 'student.tenant.tenancy_details_nil'}","","",""]
           else
-            one_line+=["#{bed.tenants.last.try(:student).try(:name)}", "#{bed.tenants.last.try(:student).try(:formatted_mykad)}", "#{bed.tenants.last.try(:student).try(:course).try(:name)}","#{bed.tenants.last.student.intake_num rescue ""}"]
+            a=true if validstu.include?(bed.tenants.last.student.id)
+            one_line+=["#{bed.tenants.last.try(:student).try(:name) if a}", "#{bed.tenants.last.try(:student).try(:formatted_mykad) if a}", "#{bed.tenants.last.try(:student).try(:course).try(:name) if a}","#{bed.tenants.last.student.intake_num if a}"]
           end
         else
           one_line+=["","","",""]
@@ -116,16 +119,22 @@ class CensusStudentTenantsPdf < Prawn::Document
   def statistic_rows2
     line_items=[]
     counter = counter || 0
-    @students_prog.each do |course_id, students|
-      students.group_by{|k|k.intake}.each do |intake, students2|
-        line_items << ["","#{students.first.course.name+" - "+students2.first.intake_num}", "#{students2.count}"]
+    if @college.code=='amsas'
+      @ab.group_by(&:intakestudent).each do |intakestu, students2|
+        line_items << ["", intakestu.siri_programmelist, "#{students2.count}"]
       end
-      if @all_tenants_wostudent > 0
-        line_items << ["","#{I18n.t 'student.tenant.tenancy_details_nil'}","#{@all_tenants_wostudent}"] 
+    else
+      @students_prog.each do |course_id, students|
+        students.group_by{|k|k.intake}.each do |intake, students2|
+          line_items << ["","#{students.first.course.name+" - "+students2.first.intake_num}", "#{students2.count}"]
+        end
       end
     end
+    if @all_tenants_wostudent > 0
+      line_items << ["","#{I18n.t 'student.tenant.tenancy_details_nil'}","#{@all_tenants_wostudent}"] 
+    end
     line_items << ["", "#{I18n.t 'student.tenant.total_tenants'}","#{@tenantbed_per_level}"]
-    header = [[ "","#{(I18n.t 'course.name')+" - "+(I18n.t 'training.intake.description')}", "#{I18n.t('student.tenant.total')}"]]   
+    header = [[ "", @college.code=='amsas' ? "Siri | #{(I18n.t 'course.name')}" : "#{(I18n.t 'course.name')} -  #{(I18n.t 'training.intake.description')}", "#{I18n.t('student.tenant.total')}"]]   
     header +line_items
   end   
   

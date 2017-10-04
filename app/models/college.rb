@@ -75,6 +75,7 @@ class College < ActiveRecord::Base
   has_many :fingerprints
   has_many :holidays
   has_many :location_damages
+  has_many :locations
   # staffs
   
   serialize :data, Hash

@@ -41,4 +41,6 @@ module LocationHelper
       '#'
     end
   end
+  
+  
 end

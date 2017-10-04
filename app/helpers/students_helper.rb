@@ -31,12 +31,22 @@ module StudentsHelper
   end
   
   def intake_num
-    intake_month = intake.strftime("%m")
-    intake_year = intake.strftime("%Y")
-    if intake_month.to_i < 7 
-      mnth_group = 1
-    elsif intake_month.to_i > 6
-      mnth_group = 2
+    unless intake.nil?
+      intake_month = intake.strftime("%m")
+      intake_year = intake.strftime("%Y")
+    else
+      unless intake_id.nil?
+	inta=Intake.find(intake_id).monthyear_intake
+	intake_month = inta.strftime("%m")
+        intake_year = inta.strftime("%Y")
+      end
+    end
+    unless intake_month.nil?
+      if intake_month.to_i < 7 
+        mnth_group = 1
+      elsif intake_month.to_i > 6
+        mnth_group = 2
+      end
     end
     "#{mnth_group}/#{intake_year}"
   end

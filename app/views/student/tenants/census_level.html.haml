@@ -33,6 +33,7 @@
         %td= t 'student.students.stelno'
         %td= t 'student.tenant.notes'
     %tbody
+      /=@all_beds_single.map(&:combo_code).group_by{|x|x[0, x.size-2]}.count
       - @all_beds_single.each do |bed|
         - if bed.occupied==true
           %tr
@@ -48,12 +49,14 @@
                 - if bed.tenants.last.student.nil?
                   %font{color: "red"}=t 'student.tenant.tenancy_details_nil'
                 - else
-                  =bed.tenants.last.try(:student).try(:name) 
-              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:icno)
-              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:matrixno)
-              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:course).try(:name)
-              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.student.intake_num rescue ""
-              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:stelno)
+                  - validstu=Student.valid_students.pluck(:id)
+                  - a=true if validstu.include?(bed.tenants.last.student.id)
+                  =bed.tenants.last.try(:student).try(:name) if a
+              %td= bed.tenants.last.student.nil? ? "" : formatted_mykad(bed.tenants.last.try(:student).try(:icno)) if a
+              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:matrixno) if a
+              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:course).try(:name) if a
+              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.student.intake_num if a
+              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:stelno) if a
               %td &nbsp; 
             - else
               %td &nbsp;
@@ -92,14 +95,20 @@
     %table.table-striped.table-hover.ogma
       %thead
         %tr
-          %th=(t 'course.name')+" - "+(t 'training.intake.description')
+          %th=current_user.college.code=='amsas' ? "Siri | #{(t 'course.name')}" : "#{(t 'course.name')} -  #{(t 'training.intake.description')}"
           %th.centre=t('student.tenant.total')
       %tbody
-        - @students_prog.each do |course_id, students|
-          - students.group_by{|k|k.intake}.each do |intake, students2|
+        - if current_user.college.code=='amsas'
+          - Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id)).group_by(&:intakestudent).each do |intakestu, students2|
             %tr
-              %th=students.first.course.name+" - "+students2.first.intake_num
+              %th=intakestu.siri_programmelist
               %td.centre=students2.count
+        - else
+          - @students_prog.each do |course_id, students|
+            - students.group_by{|k|k.intake}.each do |intake, students2|
+              %tr
+                %th=students.first.course.name+" - "+students2.first.intake_num
+                %td.centre=students2.count
         - if @all_tenants_wostudent.count > 0
           %tr
             %td{style: "color: red;"}=t 'student.tenant.tenancy_details_nil'
