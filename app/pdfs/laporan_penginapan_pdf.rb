@@ -4,17 +4,17 @@ class Laporan_penginapanPdf < Prawn::Document
     @residential = residential
     @current_tenants = current_tenants
     @view = view
-    font "Times-Roman"
-    text "#{college.name}", :align => :center, :size => 12, :style => :bold
-    text "#{I18n.t('student.tenant.report_main')}", :align => :center, :size => 12, :style => :bold
+    font "Helvetica" #"Times-Roman"
+    text "#{college.name}", :align => :center, :size => 11, :style => :bold
+    text "#{I18n.t('student.tenant.report_main')}", :align => :center, :size => 11, :style => :bold
     move_down 10
-    text "#{@residential.name}"
+    text "#{@residential.name}", :size => 11
     move_down 5
     record
   end
   
   def record
-    table(line_item_rows, :column_widths => [100,100,100,100,100], :cell_style => { :size => 10,  :inline_format => :true}) do
+    table(line_item_rows, :column_widths => [100,100,100,100,100], :cell_style => { :size => 9,  :inline_format => :true}) do
       row(0).font_style = :bold
       row(0).background_color = 'FFE34D'
       columns(1..3).align=:center
