@@ -145,11 +145,19 @@ class Campus::LocationsController < ApplicationController
   def statistic_level 
     buildingname = params[:buildingname]
     @rooms = Location.where('name LIKE (?) and lclass=?', "#{buildingname}", 4).first.descendants.where(typename: [2,8])
-    
-    respond_to do |format|
-      format.html
-      format.csv { send_data @rooms.to_csv }
-      format.xls { send_data @rooms.to_csv(col_sep: "\t") } 
+    roles=current_user.roles.pluck(:authname)
+    if roles.include?('developer') || (roles.include?('administration') && User.icms_acct.include?(current_user.id))
+      respond_to do |format|
+        format.html
+        format.csv { send_data @rooms.to_csv_all }
+        format.xls { send_data @rooms.to_csv_all(col_sep: "\t") } 
+      end
+    else
+      respond_to do |format|
+        format.html
+        format.csv { send_data @rooms.to_csv }
+        format.xls { send_data @rooms.to_csv(col_sep: "\t") } 
+      end
     end
   end
   
@@ -158,12 +166,20 @@ class Campus::LocationsController < ApplicationController
   def census_level2
     @floor_id = params[:floorid]
     @all_beds_single=Location.find(@floor_id).descendants.where('typename = ? OR typename =?', 2, 8)
-
-    respond_to do |format|
-      format.html
-      format.csv { send_data @all_beds_single.to_csv2}
-      format.xls { send_data @all_beds_single.to_csv2(col_sep: "\t") }    ##generate_line(["=\"01\""], ...)
-                                                                                                             #CSV.generate_line(["01"], :force_quotes => true)
+    roles=current_user.roles.pluck(:authname)
+    if roles.include?('developer') || (roles.include?('administration') && User.icms_acct.include?(current_user.id))
+      respond_to do |format|
+        format.html
+        format.csv { send_data @all_beds_single.to_csv2_all}
+        format.xls { send_data @all_beds_single.to_csv2_all(col_sep: "\t") }    ##generate_line(["=\"01\""], ...)
+      end                                                                                                         #CSV.generate_line(["01"], :force_quotes => true)
+    else
+      respond_to do |format|
+        format.html
+        format.csv { send_data @all_beds_single.to_csv2}
+        format.xls { send_data @all_beds_single.to_csv2(col_sep: "\t") }    ##generate_line(["=\"01\""], ...)
+                                                                                                                 #CSV.generate_line(["01"], :force_quotes => true)
+      end
     end
   end
   

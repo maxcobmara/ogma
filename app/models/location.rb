@@ -114,11 +114,12 @@ class Location < ActiveRecord::Base
      "#{combo_code}  #{name}"
   end
   
-  #Export excel - statistic by level - tenants/reports.html.haml
+  #Export excel - statistic by level - tenants/reports.html.haml 
+  #4thOct2017- refer location_helper.rb for dev/icms_acct
   def self.to_csv(options = {})
     #@current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    @current_tenants = Tenant.isstudents.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     occupied_beds = @current_tenants.pluck(:location_id)
     building_name = all[0].root.name
     CSV.generate(options) do |csv|
@@ -175,6 +176,7 @@ class Location < ActiveRecord::Base
   end
   
   #Export Excel - Census by level - tenants/..../census_level.html.haml (location_id/level)
+  #4thOct2017- refer location_helper.rb for dev/icms_acct
   def self.to_csv2(options = {})
     
     #For TOTAL no of rooms, damaged rooms, occupied rooms, empty rooms

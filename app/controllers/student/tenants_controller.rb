@@ -4,7 +4,7 @@ class Student::TenantsController < ApplicationController
   before_action :set_tenant, only: [:show, :edit, :update, :destroy]
   before_action :set_index, only: [:index, :tenant_report] #2ndOct2017
   before_action :set_index_staff, only: [:index_staff, :tenant_report_staff] #2ndOct2017
-  before_action :set_statistics_reports, only: [:statistics, :reports, :census, :census_level] #2ndOct2017
+  before_action :set_statistics_reports, only: [:statistics, :reports, :census, :census_level, :laporan_penginapan] #2nd-4thOct2017
   
   def index
 #     rev 2ndOct2017
@@ -324,7 +324,11 @@ class Student::TenantsController < ApplicationController
     @residential = Location.where('name LIKE (?) and lclass=?', "#{buildingname}", 4).first
     #@current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    
+    #ori be4 4thOct2017
+    #@current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    @current_tenants = @tenants.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    
     respond_to do |format|
        format.pdf do
          pdf = Laporan_penginapanPdf.new(@residential, @current_tenants, view_context, current_user.college)
