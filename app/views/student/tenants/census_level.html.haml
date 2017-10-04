@@ -27,9 +27,9 @@
         %td= t 'location.name'
         %td= t 'student.name'
         %td= t 'student.icno'
-        %td= t 'student.students.matrixno'
+        %td= current_user.college.code=='amsas' ? (t 'student.students.apmmno') : (t 'student.students.matrixno')
         %td= t 'course.name'
-        %td= t 'training.intake.description'
+        %td= current_user.college.code=='amsas' ? "Siri" : (t 'training.intake.description')
         %td= t 'student.students.stelno'
         %td= t 'student.tenant.notes'
     %tbody
@@ -50,12 +50,16 @@
                   %font{color: "red"}=t 'student.tenant.tenancy_details_nil'
                 - else
                   - validstu=Student.valid_students.pluck(:id)
-                  - a=true if validstu.include?(bed.tenants.last.student.id)
+                  - a=true if validstu.include?(bed.tenants.last.student.id) || is_developer? || (is_admin? && icms_acct?)
                   =bed.tenants.last.try(:student).try(:name) if a
               %td= bed.tenants.last.student.nil? ? "" : formatted_mykad(bed.tenants.last.try(:student).try(:icno)) if a
               %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:matrixno) if a
-              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:course).try(:name) if a
-              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.student.intake_num if a
+              - if current_user.college.code=='amsas'
+                %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:course).try(:programme_list) if a
+                %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.student.intakestudent.siri_name if a
+              - else
+                %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:course).try(:name) if a
+                %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.student.intake_num if a
               %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:stelno) if a
               %td &nbsp; 
             - else
