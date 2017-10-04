@@ -4,7 +4,7 @@ class Student::TenantsController < ApplicationController
   before_action :set_tenant, only: [:show, :edit, :update, :destroy]
   before_action :set_index, only: [:index, :tenant_report] #2ndOct2017
   before_action :set_index_staff, only: [:index_staff, :tenant_report_staff] #2ndOct2017
-  before_action :set_statistics_reports, only: [:statistics, :reports, :census, :census_level, :laporan_penginapan] #2nd-4thOct2017
+  before_action :set_statistics_reports, only: [:statistics, :reports, :census, :census_level, :laporan_penginapan, :laporan_penginapan2] #2nd-4thOct2017
   
   def index
 #     rev 2ndOct2017
@@ -346,11 +346,15 @@ class Student::TenantsController < ApplicationController
     @residentials = Location.find(blockid).descendants.where('typename = ? OR typename =?', 2, 8)    #beds
     #@current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    
+    #ori be4 4thOct2017
+    #@current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    @current_tenants = @tenants.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    
     respond_to do |format|
        format.pdf do
          pdf = Laporan_penginapan2Pdf.new(@residentials, @current_tenants, view_context, current_user.college)
-                   send_data pdf.render, filename: "laporan_penginapan-{Date.today}",
+                   send_data pdf.render, filename: "laporan_penginapan_blok-{Date.today}",
                    type: "application/pdf",
                    disposition: "inline"
        end
