@@ -189,10 +189,19 @@ class Campus::LocationsController < ApplicationController
     @block_id = params[:blockid]
     @all_beds_single=Location.find(@block_id).descendants.where('typename = ? OR typename =?', 2, 8)#.sort_by{|y|y.combo_code}
 
-    respond_to do |format|
-      format.html
-      format.csv { send_data @all_beds_single.to_csv3}
-      format.xls { send_data @all_beds_single.to_csv3(col_sep: "\t") } 
+    roles=current_user.roles.pluck(:authname)
+    if roles.include?('developer') || (roles.include?('administration') && User.icms_acct.include?(current_user.id))
+      respond_to do |format|
+        format.html
+        format.csv { send_data @all_beds_single.to_csv3_all}
+        format.xls { send_data @all_beds_single.to_csv3_all(col_sep: "\t") } 
+      end
+    else
+      respond_to do |format|
+        format.html
+        format.csv { send_data @all_beds_single.to_csv3}
+        format.xls { send_data @all_beds_single.to_csv3(col_sep: "\t") } 
+      end
     end
   end
   

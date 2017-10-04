@@ -275,7 +275,7 @@ class Location < ActiveRecord::Base
     #For statistic by block (room status breakdown)
     #@current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    @current_tenants = Tenant.isstudents.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     all_beds = all
     all_rooms = all_beds.group_by{|x|x.combo_code[0,x.combo_code.size-2]}
     damaged_rooms = all_beds.where(occupied: true).group_by{|x|x.combo_code[0,x.combo_code.size-2]}
@@ -287,7 +287,15 @@ class Location < ActiveRecord::Base
     @students_prog = Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id)).group_by{|j|j.course_id}
     @all_tenants_wostudent = @current_tenants.joins(:location).where('location_id IN(?) and (student_id is null OR student_id NOT IN(?))', @tenantbed_per_block.pluck(:id), Student.all.pluck(:id))
     
+     if all.first.college.code=='amsas'
+       course_heading="\'Siri | #{(I18n.t 'course.name')}\'"
+     else
+       course_heading="\'#{(I18n.t 'course.name')} - #{(I18n.t 'training.intake.description')}\'"
+     end
+
     CSV.generate(options) do |csv|
+        csv << [all_beds[0].parent.parent.parent.name]
+        csv << [] #blank row added
         csv << [I18n.t('student.tenant.room_status_title')] #title added
         csv << [] #blank row added
         csv << [I18n.t('student.tenant.room'), I18n.t('student.tenant.total')]
@@ -299,12 +307,18 @@ class Location < ActiveRecord::Base
         csv << [] #blank row added
         csv << [I18n.t('student.tenant.tenant_programme_title')] #title added
         csv << [] #blank row added
-        csv << [(I18n.t 'course.name')+" - "+(I18n.t 'training.intake.description'), (I18n.t 'student.tenant.total')]
-        @students_prog.each do |course_id, students|  
-           students.group_by{|k|k.intake}.each do |intake, students2|
-              csv << [students.first.course.name+" - "+students2.first.intake_num, students2.count]
+        csv << [course_heading, (I18n.t 'student.tenant.total')]
+        if all.first.college.code=='amsas'
+           Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id)).group_by(&:intakestudent).each do |intakestu, students2|
+             csv << [intakestu.siri_programmelist, students2.count]
            end
-        end
+        else
+          @students_prog.each do |course_id, students|  
+             students.group_by{|k|k.intake}.each do |intake, students2|
+                csv << [students.first.course.name+" - "+students2.first.intake_num, students2.count]
+             end
+          end
+	end
         if @all_tenants_wostudent.count > 0
            csv << [(I18n.t 'student.tenant.tenancy_details_nil'), @all_tenants_wostudent.count]
         end
@@ -473,6 +487,64 @@ class Location < ActiveRecord::Base
         end
 
       end
+  end
+  
+  #Export Excel - statistic by block(total room status & tenant's programme) - tenant/statistics.html.haml
+  def self.to_csv3_all(options = {})
+    
+    #For statistic by block (room status breakdown)
+    #@current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+    all_beds = all
+    all_rooms = all_beds.group_by{|x|x.combo_code[0,x.combo_code.size-2]}
+    damaged_rooms = all_beds.where(occupied: true).group_by{|x|x.combo_code[0,x.combo_code.size-2]}
+    occupied_rooms = all_beds.where('id IN(?)', @current_tenants.pluck(:location_id)).group_by{|x|x.combo_code[0,x.combo_code.size-2]}
+    
+    #For statistic by block (tenant's programme)
+    @tenantbed_per_block = all.joins(:tenants).where("tenants.id" => @current_tenants)
+    @all_tenants_wstudent = @current_tenants.joins(:location).where('location_id IN(?) and student_id IN(?)', @tenantbed_per_block.pluck(:id), Student.all.pluck(:id))
+    @students_prog = Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id)).group_by{|j|j.course_id}
+    @all_tenants_wostudent = @current_tenants.joins(:location).where('location_id IN(?) and (student_id is null OR student_id NOT IN(?))', @tenantbed_per_block.pluck(:id), Student.all.pluck(:id))
+    
+     if all.first.college.code=='amsas'
+       course_heading="\'Siri | #{(I18n.t 'course.name')}\'"
+     else
+       course_heading="\'#{(I18n.t 'course.name')} - #{(I18n.t 'training.intake.description')}\'"
+     end
+
+    CSV.generate(options) do |csv|
+        csv << [all_beds[0].parent.parent.parent.name]
+        csv << [] #blank row added
+        csv << [I18n.t('student.tenant.room_status_title')] #title added
+        csv << [] #blank row added
+        csv << [I18n.t('student.tenant.room'), I18n.t('student.tenant.total')]
+        csv << [I18n.t('student.tenant.total_empty'), all_rooms.count-damaged_rooms.count-occupied_rooms.count]
+        csv << [I18n.t('student.tenant.total_occupied'), occupied_rooms.count]
+        csv << [I18n.t('student.tenant.total_damaged'), damaged_rooms.count]
+        csv << [I18n.t('student.tenant.total_rooms'), all_rooms.count]
+        csv << [] #blank row added
+        csv << [] #blank row added
+        csv << [I18n.t('student.tenant.tenant_programme_title')] #title added
+        csv << [] #blank row added
+        csv << [course_heading, (I18n.t 'student.tenant.total')]
+        if all.first.college.code=='amsas'
+           Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id)).group_by(&:intakestudent).each do |intakestu, students2|
+	     csv << [intakestu.siri_programmelist, students2.count]
+	   end
+	else
+          @students_prog.each do |course_id, students|  
+             students.group_by{|k|k.intake}.each do |intake, students2|
+                csv << [students.first.course.name+" - "+students2.first.intake_num, students2.count]
+             end
+          end
+	end
+        if @all_tenants_wostudent.count > 0
+           csv << [(I18n.t 'student.tenant.tenancy_details_nil'), @all_tenants_wostudent.count]
+        end
+        csv << [(I18n.t 'student.tenant.total_tenants'), @tenantbed_per_block.count.to_s]
+    end
+    
   end
   #####icms_acct purposes - end - 3-4thOct2017
   

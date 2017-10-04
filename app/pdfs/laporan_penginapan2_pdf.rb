@@ -4,22 +4,23 @@ class Laporan_penginapan2Pdf < Prawn::Document
     @residentials = residentials
     @current_tenants = current_tenants
     @view = view
-    font "Times-Roman"
-    text "#{college.name}", :align => :center, :size => 12, :style => :bold
+    @college = college
+    font "Helvetica" #"Times-Roman"
+    text "#{college.name}", :align => :center, :size => 11, :style => :bold
     move_down 20
-    text "#{@residentials[0].root.name}"
+    text "#{@residentials[0].root.name}", :size => 11, :style => :bold
     move_down 10
-    text "#{I18n.t 'student.tenant.statistics_block'}", :style => :bold
+    text "#{I18n.t 'student.tenant.statistics_block'}", :size => 11, :style => :bold
     move_down 20
     room_status
     move_down 30
-    text "#{(I18n.t 'student.tenant.tenants_students')}", :style => :bold
+    text "#{(I18n.t 'student.tenant.tenants_students')}", :size => 11, :style => :bold
     move_down 20
     tenant_programme
   end
   
   def room_status
-    table(room_status_rows, :column_widths => [120,200,80], :cell_style => { :size => 12,  :inline_format => :true}) do
+    table(room_status_rows, :column_widths => [120,200,80], :cell_style => { :size => 11,  :inline_format => :true}) do
       row(0).font_style = :bold
       row(0).column(1).background_color = 'FFE34D'
       row(0).column(2).background_color = 'FFE34D'
@@ -48,7 +49,7 @@ class Laporan_penginapan2Pdf < Prawn::Document
   end 
   
   def tenant_programme
-    table(tenant_programme_rows, :column_widths => [80,280,80], :cell_style => { :size => 12,  :inline_format => :true}) do
+    table(tenant_programme_rows, :column_widths => [80,280,80], :cell_style => { :size => 10,  :inline_format => :true}) do
       row(0).font_style = :bold
       row(0).column(1).background_color = 'FFE34D'
       row(0).column(2).background_color = 'FFE34D'
@@ -69,13 +70,20 @@ class Laporan_penginapan2Pdf < Prawn::Document
     all_tenants_wostudent = @current_tenants.joins(:location).where('location_id IN(?) and (student_id is null OR student_id NOT IN(?))', tenantbed_per_block.pluck(:id), Student.all.pluck(:id))
     
     header = [["",{content: "#{I18n.t('student.tenant.tenant_programme_title')}", colspan: 2}],
-                     ["", "#{(I18n.t 'course.name')+" - "+(I18n.t 'training.intake.description')}", "#{I18n.t('student.tenant.total')}"]]  
+                     ["", @college.code=='amsas' ? "Siri | #{(I18n.t 'course.name')}" : "#{(I18n.t 'course.name')} - #{(I18n.t 'training.intake.description')}", "#{I18n.t('student.tenant.total')}"]]  
     
     tenant_rows=[]
-    students_prog.each do |course_id, students|
-       students.group_by{|k|k.intake}.each do |intake, students2|
+    
+    if @college.code=='amsas'
+      Student.where('id IN (?)', all_tenants_wstudent.pluck(:student_id)).group_by(&:intakestudent).each do |intakestu, students2|
+        tenant_rows << ["", intakestu.siri_programmelist, students2.count]
+      end
+    else
+      students_prog.each do |course_id, students|
+        students.group_by{|k|k.intake}.each do |intake, students2|
           tenant_rows << ["", "#{students.first.course.name+" - "+students2.first.intake_num}", "#{students2.count}"]
-       end
+        end
+      end
     end
     if all_tenants_wostudent.count > 0
        tenant_rows << ["", "#{I18n.t 'student.tenant.tenancy_details_nil'}", "#{all_tenants_wostudent.count}"]

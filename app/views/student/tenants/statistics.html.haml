@@ -113,7 +113,7 @@
           %tr
             %th.centre{colspan: 2}=t('student.tenant.tenant_programme_title')
           %tr
-            %th=(t 'course.name')+" - "+(t 'training.intake.description')
+            %th=current_user.college.code=='amsas' ? "Siri | #{(t 'course.name')}" : "#{(t 'course.name')} - #{(t 'training.intake.description')}"
             %th.centre=t('student.tenant.total')
         %tbody
           - if current_user.college.code=='amsas'
