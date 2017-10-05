@@ -13,7 +13,7 @@ class Event_listPdf < Prawn::Document
   end
   
   def record
-    table(line_item_rows, :column_widths => [30, 90, 90, 90, 80, 80, 60], :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
+    table(line_item_rows, :column_widths => [30, 100, 60, 60, 80, 80, 110], :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
       row(0).style size: 11

@@ -43,4 +43,4 @@
     .col-sm-2.control-label
       = f.label t 'events.cb', for: :staff_name
     .col-md-3
-      = f.collection_select :createdby, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable_id},{class: 'selectpicker', "data-width"=>'360px'}
+      = f.collection_select :createdby, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id,  :staff_with_rank_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable_id},{class: 'selectpicker', "data-width"=>'360px'}

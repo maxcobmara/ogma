@@ -1,5 +1,6 @@
 class GroupsController < ApplicationController
-  filter_resource_access
+  filter_access_to :index, :new, :create, :group_list, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_group, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
@@ -37,6 +38,19 @@ class GroupsController < ApplicationController
   def destroy
     @group.destroy
     respond_with(@group)
+  end
+  
+  def group_list
+    @search = Group.search(params[:q])
+    @groups = @search.result
+    respond_to do |format|
+      format.pdf do
+        pdf = Group_listPdf.new(@groups, view_context, current_user)
+        send_data pdf.render, filename: "group_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
   end
 
   private

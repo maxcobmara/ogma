@@ -2774,10 +2774,10 @@ authorization do
  
   #55 - Ogma Only - Recipient GROUP for Local Messaging
   role :messaging_groups_module_admin do
-    has_permission_on :groups, :to => :manage
+    has_permission_on :groups, :to => [:manage, :group_list]
   end
   role :messaging_groups_module_viewer do
-    has_permission_on :groups, :to => :read
+    has_permission_on :groups, :to => [:read, :group_list]
   end
   #56 - Ogma Only - Local Messaging - FULL access for Conversation but MEMBER access for Group - as in 'Staff' role
   role :local_messaging_module_member do
