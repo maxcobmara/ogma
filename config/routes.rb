@@ -683,7 +683,12 @@ Ogma::Application.routes.draw do
     #end
   end
 
-  resources :groups
+  resources :groups do
+    collection do
+      get :group_list
+    end
+  end
+  
   resources :colleges 
   
   namespace :equery_report do

@@ -19,7 +19,7 @@
       %dd= @event.location
 
       %dt= t 'events.pt', :default => model_class.human_attribute_name(:participants) + ":"
-      %dd= @event.participants
+      %dd{style: 'padding-left: 70px;'}= @event.participants
 
       %dt= t 'events.ob', :default => model_class.human_attribute_name(:officiated) + ":"
       %dd= @event.officiated
