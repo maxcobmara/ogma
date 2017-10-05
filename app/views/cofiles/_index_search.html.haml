@@ -1,5 +1,5 @@
 = search_form_for @search, url: cofiles_path,  class: "form-inline" do |f|
-  %tr.search_row{style: 'display: blank;'}
+  %tr.search_row{style: 'display: none;'}
     %td= f.text_field :cofileno_cont, size: 2,  :class => "form-control"
     %td= f.text_field :name_cont, size: 2,  :class => "form-control"
     %td= f.text_field :location_cont, size: 2,  :class => "form-control"

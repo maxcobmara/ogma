@@ -2,8 +2,8 @@
   .form-group
     .col-sm-2.control-label
       = f.label t 'document.cc1staff_id'   , for: :cc1staff_id
-    .col-md-6
-      = f.collection_select :cc1staff_id, Staff.joins(:positions).where('positions.name IN(?) OR positions.name ILIKE(?)', ['Pengarah','Komandan Akademi', 'Komandan Pusat Latihan'], '%Pengarah Kompetensi%'), :id,  :staff_with_rank_position, {:include_blank => t('select')}, {class: 'selectpicker mandatory', "data-width"=> "auto"}
+    .col-md-5
+      = f.collection_select :cc1staff_id, Staff.joins(:positions).where('(positions.name ILIKE(?) OR positions.name ILIKE(?)) AND positions.ancestry_depth IN(?) AND staffs.id IN(?)', '%Pengarah%','Komandan%', [0,1], Staff.valid_staffs.pluck(:id)).order('positions.ancestry_depth', rank_id: :asc, name: :asc), :id,  :staff_with_rank_position_unit, {:include_blank => t('select')}, {class: 'selectpicker mandatory', "data-width"=> "370px"}
       
   .form-group
     .col-sm-2.control-label

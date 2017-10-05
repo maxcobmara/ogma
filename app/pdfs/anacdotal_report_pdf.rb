@@ -1,19 +1,19 @@
 class Anacdotal_reportPdf < Prawn::Document 
   def initialize(discipline_cases, view, college)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 50, left_margin: 50, page_size: 'A4', page_layout: :portrait })
     @college=college
     @discipline_cases= discipline_cases
     @view = view
-    font "Times-Roman"
-    text "#{college.name}", :align => :center, :size => 12, :style => :bold
-    text "#{I18n.t('student.discipline.report_title')}", :align => :center, :size => 12, :style => :bold
+    font "Helvetica" #"Times-Roman"
+    text "#{college.name}", :align => :center, :size => 11, :style => :bold
+    text "#{I18n.t('student.discipline.report_title')}", :align => :center, :size => 11, :style => :bold
     move_down 30
-    text "#{I18n.t('student.students.name')} : #{@discipline_cases.first.college.code=='amsas' ? @discipline_cases.first.student.student_with_rank : @discipline_cases.first.student.name}", :align => :left, :size => 11, :indent_paragraphs => 10
+    text "#{I18n.t('student.students.name')} : #{@discipline_cases.first.college.code=='amsas' ? @discipline_cases.first.student.student_with_rank : @discipline_cases.first.student.name}", :align => :left, :size => 10, :indent_paragraphs => 10
     if college.code=="kskbjb"
-      text "#{I18n.t('student.students.matrixno')} : #{@discipline_cases.first.student.try(:matrixno)}", :align => :left, :size => 11, :indent_paragraphs => 10
+      text "#{I18n.t('student.students.matrixno')} : #{@discipline_cases.first.student.try(:matrixno)}", :align => :left, :size => 10, :indent_paragraphs => 10
     end
-    text "#{I18n.t('student.students.course_id')} : #{@discipline_cases.first.student.course.try(:programme_list)}", :align => :left, :size => 11, :indent_paragraphs => 10
-    text "#{I18n.t('student.students.intake_id')} : #{@discipline_cases.first.college.code=='amsas' ? 'Siri '+ @discipline_cases.first.student.intakestudent.monthyear_intake.try(:strftime, '%m/%Y') : @discipline_cases.first.student.intakestudent.monthyear_intake.try(:strftime, '%b %Y')}", :align => :left, :size => 11, :indent_paragraphs => 10
+    text "#{I18n.t('student.students.course_id')} : #{@discipline_cases.first.student.course.try(:programme_list)}", :align => :left, :size => 10, :indent_paragraphs => 10
+    text "#{I18n.t('student.students.intake_id')} : #{@discipline_cases.first.college.code=='amsas' ? 'Siri '+ @discipline_cases.first.student.intakestudent.monthyear_intake.try(:strftime, '%m/%Y') : @discipline_cases.first.student.intakestudent.monthyear_intake.try(:strftime, '%b %Y')}", :align => :left, :size => 10, :indent_paragraphs => 10
     move_down 10
     record
     page_count.times do |i|
@@ -23,12 +23,12 @@ class Anacdotal_reportPdf < Prawn::Document
   end
   
   def record
-    table(line_item_rows, :column_widths => [30,70, 80, 70, 60, 200], :cell_style => { :size => 10,  :inline_format => :true}) do
+    table(line_item_rows, :column_widths => [30,70, 80, 70, 60, 190], :cell_style => { :size => 9,  :inline_format => :true}) do
       row(0).font_style = :bold
       row(0).background_color = 'FFE34D'
       self.row_colors = ["FEFEFE", "FFFFFF"]
       self.header = true
-      self.width = 510
+      self.width = 500
       header = true
     end
   end

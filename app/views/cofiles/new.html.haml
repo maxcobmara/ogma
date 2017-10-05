@@ -14,6 +14,6 @@
       .form-group
         .col-sm-offset-3.col-sm-1
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), cofiles_path, :class => 'btn btn-default'
-        .col-sm-2
+        .col-sm-2{style: 'padding-left: 30px;'}
           = f.submit t('create'), class: "btn btn-primary"
 		 

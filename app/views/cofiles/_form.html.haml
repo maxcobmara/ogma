@@ -27,7 +27,7 @@
       = f.label t 'cofile.owner', for: :owner
     .col-md-4
       - if current_user.college.code=='amsas'
-        = f.collection_select :owner_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"350px"}
+        = f.collection_select :owner_id, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"350px"}
       - else
         = f.collection_select :owner_id, Staff.all.order(name: :asc), :id, :mykad_with_staff_name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"350px"}
 
@@ -47,7 +47,7 @@
       /- else
       /  = f.collection_select :staffloan_id, Staff.all, :id, :mykad_with_staff_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
       - if current_user.college.code=='amsas'
-        = f.collection_select :staffloan_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"350px"}
+        = f.collection_select :staffloan_id, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"350px"}
       - else
         = f.collection_select :staffloan_id, Staff.all, :id, :mykad_with_staff_name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"350px"}
 

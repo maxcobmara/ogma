@@ -11,7 +11,7 @@
     .tab-content{style:"padding-top:1em"}
       #details_edit.tab-pane.active
         %br
-        - if @document.stafffiled_id==current_user.userable_id || is_developer? || current_roles.include?("administration") || current_roles.include?("documents_module_admin") || current_roles.include?("e_filing")
+        - if @document.stafffiled_id==current_user.userable_id || is_developer? || is_admin? || current_roles.include?("documents_module_admin") || current_roles.include?("e_filing")
           = render 'tab_details_edit', :f => f
           = render "documents/amsas/forward_cc1_edit", :f => f
           = render 'tab_close_edit', :f => f
@@ -21,7 +21,7 @@
           = render "documents/amsas/forward_cc1"
           = render 'tab_close'
           
-      - if @document.cc1staff_id==current_user.userable_id || is_developer? || current_roles.include?("administration") || current_roles.include?("documents_module_admin") || current_roles.include?("e_filing")
+      - if @document.cc1staff_id==current_user.userable_id || is_developer? || is_admin? || current_roles.include?("documents_module_admin") || current_roles.include?("e_filing")
 
         // TODO - chosen-select - didn't work with .tab-pane
         .row
@@ -32,7 +32,7 @@
             
               /// NOTE - this part is to capture currently selected staff_id for circulation
               = f.label  t 'document.circulate_to' , for: :attached_name
-              = f.select(:recipients, (Staff.order(rank_id: :asc, name: :asc).map(&:staff_rank_unit_id))+group_list, {selected: @document.saved_recipients_list}, { multiple: true , class: "chosen-select form-control" })
+              = f.select(:recipients, (Staff.valid_staffs.order(rank_id: :asc, name: :asc).map(&:staff_rank_unit_id))+group_list, {selected: @document.saved_recipients_list}, { multiple: true , class: "chosen-select form-control" })
             
               //// NOTE - this part to capture previously saved circulation records
               = f.fields_for :circulations do |builder|

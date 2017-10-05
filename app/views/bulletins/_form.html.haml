@@ -16,7 +16,8 @@
     .col-sm-2.control-label
       = f.label t 'buletin.posted_by', for: :postedby_id
     .col-md-5
-      = f.collection_select :postedby_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select'), :selected => current_user.userable_id}, {class: 'selectpicker', "data-width"=>"300px"}
+      - selected=@bulletin.new_record? ? current_user.userable_id : @bulletin.postedby_id
+      = f.collection_select :postedby_id, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select'), :selected => selected}, {class: 'selectpicker', "data-width"=>"300px"}
 		  
   .form-group
     .col-sm-2.control-label
