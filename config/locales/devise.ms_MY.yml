@@ -7,6 +7,7 @@ ms_MY:
  
   devise:
     failure:
+      already_authenticated: 'Anda telah pun log masuk.'
       unauthenticated: 'Anda harus mendaftar atau log masuk sebelum meneruskan.'
       unconfirmed: 'Anda harus melakukan proses pengesahan sebalum meneruskan.'
       locked: 'Akaun anda terkunci.'

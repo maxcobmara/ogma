@@ -17,7 +17,7 @@
             %td=  @bulletin.content
     
       %dt= t 'buletin.posted_by', :default => model_class.human_attribute_name(:postedby_id) + ":"
-      %dd= check_kin {@bulletin.staff.mykad_with_staff_name}
+      %dd= @bulletin.college.code=='amsas' ? @bulletin.staff.staff_with_rank : @bulletin.staff.mykad_with_staff_name
 
       %dt= t 'buletin.publish_date', :default => model_class.human_attribute_name(:publishdt) + ":"
       %dd= @bulletin.publishdt.try(:strftime, '%d-%m-%Y')

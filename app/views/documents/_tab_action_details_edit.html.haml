@@ -3,7 +3,7 @@
   - current_roles=current_user.roles.pluck(:authname)
   
   = f.fields_for :circulations do |builder| 
-    - if (builder.object.staff_id == current_user.userable.id || current_roles.include?('administration') || is_developer? || current_roles.include?("documents_module_manage") || current_roles.include?("e_filing"))
+    - if (builder.object.staff_id == current_user.userable.id || is_admin? || is_developer? || current_roles.include?("documents_module_manage") || current_roles.include?("e_filing"))
       
       .form-group
         .col-sm-2.control-label
@@ -12,7 +12,7 @@
           - if builder.object.staff_id == current_user.userable.id
             =builder.object.staff.staff_name_with_position 
           - else
-            %span{style: 'color: red;'}=builder.object.staff.staff_name_with_position 
+            .text-red=builder.object.staff.staff_name_with_position 
 
       .form-group
         .col-sm-2.control-label
