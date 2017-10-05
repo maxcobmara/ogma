@@ -1,0 +1,86 @@
+.col-md-offset-2 
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.student_id', for: :student
+    .col-md-5
+      - if current_user.userable_type=="Student"
+        = f.collection_select :student_id, Student.where(id: current_user.userable_id), :id, :student_with_rank, {:selected => current_user.userable_id},{class: 'selectpicker', "data-width"=>'320px'} 
+        .small{style: 'color: red;'}= t('student.leaveforstudent.has_no_kin')+t('student.leaveforstudent.update_student_kin') if current_user.userable.kins.count==0
+      - else
+        = f.collection_select :student_id, Student.valid_students.order(rank_id: :asc, name: :asc), :id, :student_with_rank, {:include_blank =>t('helpers.prompt.select_student')},{class: 'selectpicker mandatory', "data-width"=>'320px'} 
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.leavetype', for: :leavetype
+    .col-md-2
+      = f.select :leavetype, DropDown::STUDENTLEAVETYPE,{:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'220px'} 
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.requestdate', for: :requestdate
+    .col-md-2 
+      = f.text_field :requestdate, value: Date.today.strftime('%d-%m-%Y'), class: 'date_picker_reverse form-control'
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.reason', for: :reason
+    .col-md-4
+      = f.text_field :reason, class: 'form-control mandatory'
+	  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.address', for: :address
+    .col-md-4
+      = f.text_area :address, value: Student.where(id: current_user.userable_id).first.try(:address), class: 'form-control mandatory'
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.telno', for: :phone_no
+    .col-md-4
+      = f.text_field :telno, value: Student.where(id: current_user.userable_id).first.try(:stelno), class: 'form-control mandatory'
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.leave_startdate', for: :leave_startdate
+    .col-md-2
+      = f.text_field :leave_startdate, class: 'date_picker_reverse form-control mandatory'
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.leave_enddate', for: :leave_enddate
+    .col-md-2
+      = f.text_field :leave_enddate, class: 'date_picker_reverse form-control mandatory'
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.submit_approval', for: :submit_approval
+    .col-md-1 
+      = f.check_box :studentsubmit, class: 'form-control'
+      
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.staff_id', for: :staff_id
+    .col-md-2
+      /= f.collection_select :staff_id, Staff.joins(:positions).where('positions.id IN(?)', [2, 55]).order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'320px'}
+      
+      /NOTE-rev 5th October 2017
+      - commandants=Position.where('name ILIKE(?)', "%komandan%").pluck(:id)
+      - subpos=Position.where('name ILIKE(?)', "%komandan%").map(&:descendants).flatten.map(&:id)
+      - non_maritim_post_ids=Employgrade.joins(:staffgrades).where.not('employgrades.name ILIKE(?)',"x%").map(&:staffgrades).flatten.map(&:id)
+      - academy_school=commandants+subpos
+      = f.collection_select :staff_id, Staff.joins(:positions).where('positions.id IN(?) and positions.id NOT IN(?)', academy_school, non_maritim_post_ids).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position_unit, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'400px'}
+      
+  /TODO - upon acceptance of customisation
+  /to include 'staf_id2' field in this form - for approval level (kelulusan) - as below
+  /to update locales as well - staff_id(sokongan), staff_id2(kelulusan)
+  /to rename approving.html.haml as supporting (sokongan)
+  /to add new approving.html.haml for final approval (kelulusan)
+  /to add mailer notifications as in leaveforstaff, note same pdf format required & same work flow shold be applied
+  /.form-group
+  /  .col-sm-2.control-label
+  /    = f.label t 'student.leaveforstudent.staff_id2', for: :staff_id
+  /  .col-md-2
+  /    = f.collection_select :staff_id2, Staff.joins(:positions).where('positions.name ILIKE(?) OR positions.name ILIKE(?)', '%Pengarah%','Komandan%').order('positions.ancestry_depth', rank_id: :asc, name: :asc), :id,  :staff_with_rank_position, {:include_blank => t('select')}, {class: 'selectpicker mandatory', "data-width"=> "370px"}
+  
+      
+%br

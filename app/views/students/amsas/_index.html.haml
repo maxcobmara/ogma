@@ -6,21 +6,23 @@
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     - permitted_to? :student_report, :students do
-      %li.dropdown
-        %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-          = fa_icon "print", text: (t 'actions.print')
-          %b.caret
-        %ul.dropdown-menu
-          - for intakeid in allstudents.order(intake_id: :desc).pluck(:intake_id).uniq
-            %li= link_to  (fa_icon "file-pdf-o", text: Intake.find(intakeid).siri_programmelist), student_report_students_path(programme_id: intakeid, format: 'pdf')
+      - if allstudents.count > 0 
+        %li.dropdown
+          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+            = fa_icon "print", text: (t 'actions.print')
+            %b.caret
+          %ul.dropdown-menu
+            - for intakeid in allstudents.order(intake_id: :desc).pluck(:intake_id).uniq
+              %li= link_to  (fa_icon "file-pdf-o", text: Intake.find(intakeid).siri_programmelist), student_report_students_path(programme_id: intakeid, format: 'pdf')
 
     - permitted_to? :manage, :students do
-      %li.dropdown
-        %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-          = fa_icon "external-link", text: (t 'actions.export')
-          %b.caret
-        %ul.dropdown-menu
-          %li= link_to (fa_icon "file-excel-o", text: (t "student.students.list")), students_path(params.merge(format: "xls"))
+      - if allstudents.count > 0
+        %li.dropdown
+          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+            = fa_icon "external-link", text: (t 'actions.export')
+            %b.caret
+          %ul.dropdown-menu
+            %li= link_to (fa_icon "file-excel-o", text: (t "student.students.list")), students_path(params.merge(format: "xls"))
      
 .row.filter{style: "display:none;"}
   .col-md-2

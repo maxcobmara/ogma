@@ -1,0 +1,73 @@
+.col-md-offset-2 
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.student_id', for: :student
+    .col-md-5
+      - if current_user.college.code=="kskbjb"
+        - if current_user.userable_type=="Student"
+          = f.collection_select :student_id, Student.where(id: current_user.userable_id), :id, :formatted_mykad_and_student_name, {:selected => current_user.userable_id},{class: 'selectpicker', "data-width"=>'320px'} 
+          .small{style: 'color: red;'}= t('student.leaveforstudent.has_no_kin')+t('student.leaveforstudent.update_student_kin') if current_user.userable.kins.count==0
+        - else
+          = f.collection_select :student_id, Student.all.order(name: :asc), :id, :formatted_mykad_and_student_name, {:include_blank =>t('helpers.prompt.select_student')},{class: 'selectpicker mandatory', "data-width"=>'320px'} 
+      - else
+        - if current_user.userable_type=="Student"
+          = f.collection_select :student_id, Student.where(id: current_user.userable_id), :id, :student_with_rank, {:selected => current_user.userable_id},{class: 'selectpicker', "data-width"=>'320px'} 
+          .small{style: 'color: red;'}= t('student.leaveforstudent.has_no_kin')+t('student.leaveforstudent.update_student_kin') if current_user.userable.kins.count==0
+        - else
+          = f.collection_select :student_id, Student.valid_students.order(rank_id: :asc, name: :asc), :id, :student_with_rank, {:include_blank =>t('helpers.prompt.select_student')},{class: 'selectpicker mandatory', "data-width"=>'320px'} 
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.leavetype', for: :leavetype
+    .col-md-2
+      = f.select :leavetype, DropDown::STUDENTLEAVETYPE,{:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'220px'} 
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.requestdate', for: :requestdate
+    .col-md-2 
+      = f.text_field :requestdate, value: Date.today.strftime('%d-%m-%Y'), class: 'date_picker_reverse form-control'
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.reason', for: :reason
+    .col-md-4
+      = f.text_field :reason, class: 'form-control mandatory'
+	  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.address', for: :address
+    .col-md-4
+      = f.text_area :address, value: Student.where(id: current_user.userable_id).first.try(:address), class: 'form-control mandatory'
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.telno', for: :phone_no
+    .col-md-4
+      = f.text_field :telno, value: Student.where(id: current_user.userable_id).first.try(:stelno), class: 'form-control mandatory'
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.leave_startdate', for: :leave_startdate
+    .col-md-2
+      = f.text_field :leave_startdate, class: 'date_picker_reverse form-control mandatory'
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.leave_enddate', for: :leave_enddate
+    .col-md-2
+      = f.text_field :leave_enddate, class: 'date_picker_reverse form-control mandatory'
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.submit_approval', for: :submit_approval
+    .col-md-1 
+      = f.check_box :studentsubmit, class: 'form-control'
+      
+  - if current_user.college.code!='kskbjb'
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'student.leaveforstudent.staff_id', for: :staff_id
+      .col-md-2
+        = f.collection_select :staff_id, Staff.joins(:positions).where('positions.id IN(?)', [2, 55]).order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'320px'}
+%br

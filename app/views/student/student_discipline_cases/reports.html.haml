@@ -4,7 +4,7 @@
 .row.fluid
   - student_ids = StudentDisciplineCase.all.pluck(:student_id).uniq
   - if current_user.college.code=="amsas"
-    - @students_disciplines = Student.where(id: student_ids).order(rank_id: :asc, name: :asc)
+    - @students_disciplines = Student.valid_students.where(id: student_ids).order(rank_id: :asc, name: :asc)
   - else
     - @students_disciplines = Student.where(id: student_ids).order(course_id: :asc)
   = form_tag(action: :anacdotal_report, format: 'pdf') do

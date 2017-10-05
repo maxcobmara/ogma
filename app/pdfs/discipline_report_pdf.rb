@@ -4,9 +4,9 @@ class Discipline_reportPdf < Prawn::Document
     @student_discipline_cases= student_discipline_cases
     @view = view
     @college=college
-    font "Times-Roman"
-    text "#{college.name}", :align => :center, :size => 12, :style => :bold
-    text "#{I18n.t('student.discipline.list')}", :align => :center, :size => 12, :style => :bold
+    font "Helvetica" #"Times-Roman"
+    text "#{college.name}", :align => :center, :size => 11, :style => :bold
+    text "#{I18n.t('student.discipline.list')}", :align => :center, :size => 11, :style => :bold
     move_down 10
     record
     page_count.times do |i|
@@ -17,7 +17,7 @@ class Discipline_reportPdf < Prawn::Document
   
   def record
     if @college.code=="kskbjb"
-      table(line_item_rows, :column_widths => [30,70, 60, 150,120, 50, 50, 60, 60, 60], :cell_style => { :size => 8,  :inline_format => :true}) do
+      table(line_item_rows, :column_widths => [30,70, 60, 150,120, 50, 50, 60, 60, 60], :cell_style => { :size => 7,  :inline_format => :true}) do
         row(0).font_style = :bold
         row(0).background_color = 'FFE34D'
         self.row_colors = ["FEFEFE", "FFFFFF"]
@@ -26,7 +26,7 @@ class Discipline_reportPdf < Prawn::Document
         header = true
       end
     elsif @college.code=="amsas"
-      table(line_item_rows, :column_widths => [30, 60, 130,120, 55, 50, 60, 60, 55,160], :cell_style => { :size => 8,  :inline_format => :true}) do
+      table(line_item_rows, :column_widths => [30, 60, 130,120, 55, 50, 60, 60, 55,160], :cell_style => { :size => 7,  :inline_format => :true}) do
         row(0).font_style = :bold
         row(0).background_color = 'FFE34D'
         self.row_colors = ["FEFEFE", "FFFFFF"]
