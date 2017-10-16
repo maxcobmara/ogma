@@ -74,7 +74,7 @@ class Leaveforstudent < ActiveRecord::Base
   end
 
   def validate_kin_exist
-     if student.kins.count < 1
+     if !student_id.nil? && student.kins.count < 1
       errors.add( I18n.t('student.leaveforstudent.has_no_kin'), I18n.t('student.leaveforstudent.update_student_kin')) 
      end
   end

@@ -29,7 +29,7 @@
     .alert.alert-warning
       %strong=t('library.book.reservation_allowed')
       %ul
-        %li=t('library.book.reservation_allowed1')+("(Status : <span style='color: blue;'>Available</span>)").html_safe
+        %li=(t('library.book.reservation_allowed1')+"(Status : <span style='color: blue;'>Available</span>)").html_safe
         %li=t('library.book.reservation_allowed2')+"(Status : On-loan)"
   %table.table-striped.table-hover.ogma
     %thead
