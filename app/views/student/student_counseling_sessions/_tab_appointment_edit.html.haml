@@ -11,12 +11,12 @@
       - if @case_id!= nil 
         = f.hidden_field :case_id, :value => @case_id
         - if current_user.college.code=='amsas'
-          = f.collection_select :student_id, Student.all.order(rank_id: :asc, name: :asc), :id, :student_with_rank, {:selected=> StudentDisciplineCase.find(@case_id).student_id}, {class: 'selectpicker', "data-width"=>"auto"}
+          = f.collection_select :student_id, Student.valid_students.order(rank_id: :asc, name: :asc), :id, :student_with_rank, {:selected=> StudentDisciplineCase.find(@case_id).student_id}, {class: 'selectpicker', "data-width"=>"auto"}
         - else
           = f.collection_select :student_id, Student.where('sstatus=? or sstatus=?', 'Current', 'Repeat').order(name: :asc), :id, :formatted_mykad_and_student_name, {:selected=> StudentDisciplineCase.find(@case_id).student_id}, {class: 'selectpicker', "data-width"=>"400px"}
       - else
         - if current_user.college.code=='amsas'
-          = f.collection_select :student_id, Student.all.order(rank_id: :asc, name: :asc), :id, :student_with_rank, {:include_blank=>t('helpers.prompt.select_student')}, {class: 'selectpicker', "data-width"=>"auto"}
+          = f.collection_select :student_id, Student.valid_students.order(rank_id: :asc, name: :asc), :id, :student_with_rank, {:include_blank=>t('helpers.prompt.select_student')}, {class: 'selectpicker', "data-width"=>"auto"}
         - else
           = f.collection_select :student_id, Student.where('sstatus=? or sstatus=?', 'Current', 'Repeat').order(name: :asc), :id, :formatted_mykad_and_student_name, {:include_blank=>t('helpers.prompt.select_student')}, {class: 'selectpicker', "data-width"=>"400px"}
     .col-md-1
