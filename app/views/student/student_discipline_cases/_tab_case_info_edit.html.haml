@@ -62,14 +62,14 @@
     .col-sm-2.control-label
       = f.label  t 'student.discipline.assigned2_to_mentor', for: :assigned2_to
     .col-md-5
-      = f.collection_select :assigned2_to, Staff.where('id IN (?)', mentor).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_unit, {}, {class: 'selectpicker mandatory', "data-width"=>'460px'}
+      = f.collection_select :assigned2_to, Staff.where('id IN (?)', mentor).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_unit, {prompt: (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>'460px'}
       
   / NOTE - is_counselor -> field for Counselor (assigned2_to - refer model)
   .form-group#cn_item{style: "display: none;"}
     .col-sm-2.control-label
       = f.label  t 'student.discipline.assigned2_to_counselor', for: :assigned2_to
     .col-md-5
-      = f.collection_select :is_counselor, Staff.where('id IN (?)', counselor).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_unit, {}, {class: 'selectpicker mandatory', "data-width"=>'460px'}
+      = f.collection_select :is_counselor, Staff.where('id IN (?)', counselor).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_unit, {prompt: (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>'460px'}
   
   .form-group#assign_date{style: "display: none;"}
     .col-sm-2.control-label

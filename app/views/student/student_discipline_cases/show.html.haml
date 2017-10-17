@@ -87,7 +87,7 @@
       /- permitted_to? :approve, @student_discipline_case do
       - permitted_to? :update, :student_student_discipline_cases do
         /- if ["New", "Open"].include? (@student_discipline_case.status) 
-        - if @student_discipline_case.assigned2_to!=@current_user.userable_id
+        - if @student_discipline_case.assigned2_to!=@current_user.userable_id && @student_discipline_case.status!="Closed"
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('actions.edit'), edit_student_student_discipline_case_path(@student_discipline_case),  :class => 'btn btn-primary' 
 
       /- permitted_to? :manage, :student_student_discipline_cases do

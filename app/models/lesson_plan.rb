@@ -121,7 +121,7 @@ class LessonPlan < ActiveRecord::Base
      end 
    end
    
-  def hods  
+  def hods
       role_kp = Role.find_by_name('Programme Manager')  #must have role as Programme Manager
       staff_with_kprole = Login.joins(:roles).where('role_id IN(?)',role_kp).pluck(:staff_id).compact.uniq
       #programme_name = User.current.userable.positions.first.unit # "Radiografi"

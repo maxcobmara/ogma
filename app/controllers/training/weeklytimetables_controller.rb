@@ -498,13 +498,26 @@ class Training::WeeklytimetablesController < ApplicationController
   end
   
   def personalize_report
-    if params[:q]
+#     if params[:q]
+#       lecturer=current_user.userable_id
+#       @search = WeeklytimetableDetail.search(params[:q])
+#       @weeklytimetables_details= @search.result.where('lecturer_id=?', lecturer)
+#     else
+#       lecturer=params[:lecturer]
+#       @weeklytimetables_details=WeeklytimetableDetail.where(id: params[:ids]).where(lecturer_id: lecturer)
+#     end
+    
+    #usages 
+    #1) Equery / report (training):
+    #2) ransack search: weeklytimetables/personalize_index
+    
+    if params[:ids]
+       lecturer=params[:lecturer]
+      @weeklytimetables_details=WeeklytimetableDetail.where(id: params[:ids]).where(lecturer_id: lecturer)
+    else
       lecturer=current_user.userable_id
       @search = WeeklytimetableDetail.search(params[:q])
-      @weeklytimetables_details= @search.result.where('lecturer_id=?', lecturer)
-    else
-      lecturer=params[:lecturer]
-      @weeklytimetables_details=WeeklytimetableDetail.where(id: params[:ids]).where(lecturer_id: lecturer)
+      @weeklytimetables_details= @search.result.where('lecturer_id=?', current_user.userable_id)
     end
     all_combine = []
     @weeklytimetables_details.each{|x| all_combine << Weeklytimetable.find(x.weeklytimetable.id)}

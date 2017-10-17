@@ -42,7 +42,7 @@
               - else
                 = f.collection_select :staff_id, lecturers, :id, :name, {:include_blank =>t('select'), :selected=>prepared_by},{class: 'selectpicker', "data-width"=>'260px'} 
             - else
-              - lecturers=Staff.all.order('rank_id ASC, name ASC')
+              - lecturers=Staff.valid_staffs.order(rank_id: :asc, name: :asc)
               - if @trainingnote.timetable_id?
                 = text_field_tag(:staff, Staff.find(prepared_by).staff_with_rank, class: 'form-control', readonly: 'readonly')
                 = f.hidden_field :staff_id

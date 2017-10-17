@@ -11,7 +11,7 @@ class Lesson_planPdf< Prawn::Document
     end
     @references_lines=LessonPlan.in_string(@lesson_plan.reference)
     
-    font "Times-Roman"
+    font "Helvetica" #"Times-Roman"
     if college.code=="kskbjb"
       text "BPL.KKM.PK(T04D/09)", :align => :right, :size => 9
     else
@@ -27,7 +27,7 @@ class Lesson_planPdf< Prawn::Document
     end
     text "#{college.name.upcase}", :style => :bold, :align => :center
     move_down 15
-    text "PELAN PENGAJARAN#{'KULIAH'  if @lesson_plan.schedule_item.lecture_method == 1} #{'TUTORIAL'  if @lesson_plan.schedule_item.lecture_method == 2} #{'AMALI'  if @lesson_plan.schedule_item.lecture_method == 3}", :style => :bold, :align => :center, :size => 11
+    text "PELAN PENGAJARAN #{'KULIAH'  if @lesson_plan.schedule_item.lecture_method == 1} #{'TUTORIAL'  if @lesson_plan.schedule_item.lecture_method == 2} #{'AMALI'  if @lesson_plan.schedule_item.lecture_method == 3}", :style => :bold, :align => :center, :size => 10
     move_down 5
     if college.code=="kskbjb"
       table_details
@@ -54,7 +54,7 @@ class Lesson_planPdf< Prawn::Document
             ["","Rujukan", @references_lines]
             ]
           
-    table(data, :column_widths => [30,290,430], :cell_style => { :size => 11, :align=> :center,  :inline_format => true}) do
+    table(data, :column_widths => [30,290,430], :cell_style => { :size => 10, :align=> :center,  :inline_format => true}) do
       self.width = 750
       columns(0).borders =[]
       columns(1).align = :left
@@ -83,7 +83,7 @@ class Lesson_planPdf< Prawn::Document
             ["","Rujukan", @references_lines]
             ]
           
-    table(data, :column_widths => [30,290,430], :cell_style => { :size => 11, :align=> :center,  :inline_format => true}) do
+    table(data, :column_widths => [30,290,430], :cell_style => { :size => 10, :align=> :center,  :inline_format => true}) do
       self.width = 750
       columns(0).borders =[]
       columns(1).align = :left
@@ -95,7 +95,7 @@ class Lesson_planPdf< Prawn::Document
   end
   
   def table_methodologies          
-    table(methodologies_line_items_rows, :column_widths => [30,90,140,120,100,120,150], :cell_style => { :size => 11, :align=> :center,  :inline_format => true}) do
+    table(methodologies_line_items_rows, :column_widths => [30,90,140,120,100,120,150], :cell_style => { :size => 10, :align=> :center,  :inline_format => true}) do
       self.width = 750
       columns(0).borders =[]
       columns(1).align = :left
@@ -141,7 +141,7 @@ class Lesson_planPdf< Prawn::Document
              ["","Tarikh : #{@lesson_plan.submitted_on? ? @lesson_plan.submitted_on.try(:strftime,'%d-%b-%Y') : "Belum Dihantar"}","Tarikh : #{@lesson_plan.hod_approved_on? ? @lesson_plan.hod_approved_on.try(:strftime,'%d-%b-%Y') : "Belum Diluluskan"}"],
             ]
           
-    table(data, :column_widths => [120,360,270], :cell_style => { :size => 11, :align=> :center,  :inline_format => true}) do
+    table(data, :column_widths => [120,360,270], :cell_style => { :size => 10, :align=> :center,  :inline_format => true}) do
       self.width = 750
       columns(0).borders =[]
       columns(1).borders =[]
