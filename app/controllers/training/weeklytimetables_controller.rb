@@ -507,15 +507,24 @@ class Training::WeeklytimetablesController < ApplicationController
 #       @weeklytimetables_details=WeeklytimetableDetail.where(id: params[:ids]).where(lecturer_id: lecturer)
 #     end
     
-    @search = WeeklytimetableDetail.search(params[:q])
-    @weeklytimetables_details= @search.result.where('lecturer_id=?', current_user.userable_id)
+    #usages 
+    #1) Equery / report (training):
+    #2) ransack search: weeklytimetables/personalize_index
     
+    if params[:ids]
+       lecturer=params[:lecturer]
+      @weeklytimetables_details=WeeklytimetableDetail.where(id: params[:ids]).where(lecturer_id: lecturer)
+    else
+      lecturer=current_user.userable_id
+      @search = WeeklytimetableDetail.search(params[:q])
+      @weeklytimetables_details= @search.result.where('lecturer_id=?', current_user.userable_id)
+    end
     all_combine = []
     @weeklytimetables_details.each{|x| all_combine << Weeklytimetable.find(x.weeklytimetable.id)}
     @personalize = all_combine.group_by{|t|t.startdate}
      respond_to do |format|
        format.pdf do
-         pdf = Personalize_reportPdf.new(@personalize, view_context, current_user.college, current_user.userable_id)
+         pdf = Personalize_reportPdf.new(@personalize, view_context, current_user.college, lecturer)
          send_data pdf.render, filename: "personalize_report-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
