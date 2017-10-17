@@ -498,20 +498,24 @@ class Training::WeeklytimetablesController < ApplicationController
   end
   
   def personalize_report
-    if params[:q]
-      lecturer=current_user.userable_id
-      @search = WeeklytimetableDetail.search(params[:q])
-      @weeklytimetables_details= @search.result.where('lecturer_id=?', lecturer)
-    else
-      lecturer=params[:lecturer]
-      @weeklytimetables_details=WeeklytimetableDetail.where(id: params[:ids]).where(lecturer_id: lecturer)
-    end
+#     if params[:q]
+#       lecturer=current_user.userable_id
+#       @search = WeeklytimetableDetail.search(params[:q])
+#       @weeklytimetables_details= @search.result.where('lecturer_id=?', lecturer)
+#     else
+#       lecturer=params[:lecturer]
+#       @weeklytimetables_details=WeeklytimetableDetail.where(id: params[:ids]).where(lecturer_id: lecturer)
+#     end
+    
+    @search = WeeklytimetableDetail.search(params[:q])
+    @weeklytimetables_details= @search.result.where('lecturer_id=?', current_user.userable_id)
+    
     all_combine = []
     @weeklytimetables_details.each{|x| all_combine << Weeklytimetable.find(x.weeklytimetable.id)}
     @personalize = all_combine.group_by{|t|t.startdate}
      respond_to do |format|
        format.pdf do
-         pdf = Personalize_reportPdf.new(@personalize, view_context, current_user.college, lecturer)
+         pdf = Personalize_reportPdf.new(@personalize, view_context, current_user.college, current_user.userable_id)
          send_data pdf.render, filename: "personalize_report-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
