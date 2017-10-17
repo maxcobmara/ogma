@@ -80,8 +80,8 @@
                 - else
                   =h session_done.confirmed_at.try(:getlocal).try(:strftime,"%d %b %Y, %H:%M")   
                 /=h l(session_done.confirmed_at+8.hours, format: "%d %b %Y, %l:%M %P") 
-              %td=h session_done.duration
-              %td=h session_done.is_confirmed? ? fa_icon('check') : fa_icon('times')
+              %td.centre=h session_done.duration
+              %td.centre=h session_done.is_confirmed? ? fa_icon('check') : fa_icon('times')
               - if session_done.c_scope == "case" && !session_done.case_id.blank? && !session_done.student_discipline_case.nil?
                 - if count2==0
                   %td{:rowspan=>session_dones.count, :style=>"text-align:center; vertical-align: middle"}
