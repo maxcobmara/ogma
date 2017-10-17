@@ -1,22 +1,22 @@
 class Feedback_referrerPdf < Prawn::Document 
   def initialize(sessions, view, case_details, college)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 50, left_margin: 45, page_size: 'A4', page_layout: :portrait })
     @sessions_by_case  = sessions
     @view = view
     @case_details = case_details
     @intake=@case_details.student.intake
     @college=college
-    font "Times-Roman"
+    font "Helvetica" #"Times-Roman"
     move_down 20
-    text "MAKLUM BALAS KAUNSELING BAGI KES RUJUKAN", :align => :center, :size => 12, :style => :bold
+    text "MAKLUM BALAS KAUNSELING BAGI KES RUJUKAN", :align => :center, :size => 11, :style => :bold
     move_down 10
-    text "BUTIRAN KES", :align=>:left, :size => 11, :style => :bold
+    text "BUTIRAN KES", :align=>:left, :size => 10, :style => :bold
     move_down 10
     table_case
     move_down 15
     table_tphep_actions
     move_down 20
-    text "BUTIRAN SESI KAUNSELING", :align=>:left, :size => 11, :style => :bold
+    text "BUTIRAN SESI KAUNSELING", :align=>:left, :size => 10, :style => :bold
     move_down 10
     table_sessions
     move_down 5
@@ -32,7 +32,7 @@ class Feedback_referrerPdf < Prawn::Document
     end
     data+=[["Kesalahan","#{(DropDown::INFRACTION.find_all{|disp, value| value == @case_details.infraction_id}).map {|disp, value| disp}[0]} #{" ("+@case_details.description+")" if @case_details.infraction_id==4}","Lokasi Kes","#{@case_details.location.try(:location_list)}"],  ["Tarikh & Masa","#{@case_details.reported_on.try(:strftime, "%d %b %y, %l:%M %P") if @case_details.college.code!='amsas'}#{@case_details.reported_on.try(:strftime, "%d %b %y, %H:%M") if @case_details.college.code=='amsas'}","Jenis Tindakan","#{"Kaunseling" if @case_details.action_type='counseling'}"]]
     
-    table(data, :column_widths => [100, 190, 90, 130], :cell_style => { :size => 11, :borders => [:left, :right, :top, :bottom]})  do
+    table(data, :column_widths => [100, 190, 90, 130], :cell_style => { :size => 10, :borders => [:left, :right, :top, :bottom]})  do
               a = 0
               b = 5
               column(0).font_style = :bold
@@ -47,7 +47,7 @@ class Feedback_referrerPdf < Prawn::Document
   
   def table_tphep_actions
     data=[["Tindakan oleh TPHEP","#{@case_details.action}"]]
-    table(data, :column_widths => [180,330], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom]}) do
+    table(data, :column_widths => [180,330], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom]}) do
       a = 0
       b = 1
       column(0).font_style = :bold
@@ -61,7 +61,7 @@ class Feedback_referrerPdf < Prawn::Document
   def table_sessions
      for session in @sessions_by_case 
        data=[["Tarikh & Masa","#{session.confirmed_at.try(:strftime, "%d %b %y, %l:%M %P") if session.college.code!='amsas'}#{session.confirmed_at.try(:strftime, "%d %b %y, %H:%M") if session.college.code=='amsas'}", "Skop Sesi", "#{session.c_scope if !session.c_scope.blank?}"],["Tempoh Sesi","#{session.duration} minit","Jenis Sesi","#{session.c_type}"],["Deskripsi Isu",{content: "#{session.issue_desc}", colspan: 3}],["Nota Sesi",{content: "#{session.notes}", colspan: 3}],["Maklumbalas Kaunselor (bagi sesi ini)",{content: "#{session.remark}", colspan: 3}]]
-       table(data, :column_widths => [100, 190, 90, 130], :cell_style=>{:size=>11, :borders=>[:left, :right, :top, :bottom]}) do
+       table(data, :column_widths => [100, 190, 90, 130], :cell_style=>{:size=>10, :borders=>[:left, :right, :top, :bottom]}) do
 	 a=0
 	 b=5
 	 column(0).font_style = :bold
@@ -79,7 +79,7 @@ class Feedback_referrerPdf < Prawn::Document
   
   def table_final_feedback
     data=[["Maklumbalas Akhir oleh Kaunselor (bagi kesemua sesi di atas)","#{@case_details.counselor_feedback}"]]
-    table(data, :column_widths => [180, 330], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom]}) do
+    table(data, :column_widths => [180, 330], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom]}) do
       a = 0
       b = 1
       column(0).font_style = :bold

@@ -290,9 +290,13 @@ class ConversationsController < ApplicationController
     ##user_ids.each{|user_id|  staff_list << [Staff.joins(:users).where('users.id=?', user_id).first.name, user_id]}
     #user_ids.each{|user_id|  staff_list << [Staff.joins(:users).where('users.id=?', user_id).first.name, user_id] if Staff.joins(:users).where('users.id=?', user_id).count > 0}
     staff_list=[]
-     
+    
+    # NOTE other option - 17Oct2017
+    # b.sort_by{|e| a.index(e)} - SORT array with another array
+    user_ids=User.find_by_sql("select users.id from users inner join staffs on users.userable_id=staffs.id AND users.userable_type='Staff' inner join positions on positions.staff_id=staffs.id order by positions.ancestry_depth ASC, staffs.rank_id ASC, staffs.name ASC").flatten.map(&:id).uniq
+
     # NOTE 5thOct2017- 'administration' - still given access to deliver / send msgs to icms account's holder.
-    user_ids=Staff.joins(:users).order(rank_id: :asc, name: :asc).map(&:user_ids).flatten    #ordered
+    #user_ids=Staff.joins(:users).order(rank_id: :asc, name: :asc).map(&:user_ids).flatten    #ordered
     roles=current_user.roles.map(&:authname)
     if roles.include?('developer') || roles.include?('administration') || User.icms_acct.include?(current_user.id)
       user_ids.each{|user_id|  staff_list << [Staff.joins(:users).where('users.id=?', user_id).first.staff_with_rank, user_id] if Staff.joins(:users).where('users.id=?', user_id).count > 0}

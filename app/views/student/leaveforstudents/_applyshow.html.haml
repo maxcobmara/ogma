@@ -9,16 +9,16 @@
     %dt= t 'student.leaveforstudent.leave_startdate'
     %dd
       - if @leaveforstudent.leave_startdate < Date.tomorrow && @leaveforstudent.approved==nil && @leaveforstudent.approved2==nil
-        %font{:style=>"color: red;"}=h @leaveforstudent.leave_startdate.strftime("%a, %d %b %Y")
+        .text-red=h @leaveforstudent.leave_startdate.strftime("%a, %d %b %Y")
       - else 
-        %font{:style=>"color: black;"}=h @leaveforstudent.leave_startdate.strftime("%a, %d %b %Y")
+        =h @leaveforstudent.leave_startdate.strftime("%a, %d %b %Y")
     
     %dt=t 'student.leaveforstudent.leave_enddate'  
     %dd
       - if @leaveforstudent.leave_startdate < Date.tomorrow && @leaveforstudent.approved==nil && @leaveforstudent.approved2==nil
-        %font{:style=>"color: red;"}=h @leaveforstudent.leave_enddate.strftime("%a, %d %b %Y")
+        .text-red=h @leaveforstudent.leave_enddate.strftime("%a, %d %b %Y")
       - else
-        %font{:style=>"color: black;"}=h @leaveforstudent.leave_enddate.strftime("%a, %d %b %Y")
+        =h @leaveforstudent.leave_enddate.strftime("%a, %d %b %Y")
       
     %dt= t 'student.leaveforstudent.submit_approval'
     %dd=h @leaveforstudent.studentsubmit? ? (t 'submitted') : (t 'not_submitted')

@@ -12,17 +12,17 @@
             =f.label t 'student.discipline.reported_by' ,for: :reported_by
           .col-md-2
             - if current_user.college.code=="kskbjb"
-              = f.collection_select :reported_by, Staff.all.order(name: :asc), :id,  :staff_name_with_position_grade, {:prompt =>t('helpers.prompt.select_staff'), :selected=>current_user.userable_id},{class: 'selectpicker mandatory', "data-width"=>'460px'}
+              = f.collection_select :reported_by, Staff.valid_staffs.order(name: :asc), :id,  :staff_name_with_position_grade, {:prompt =>t('helpers.prompt.select_staff'), :selected=>current_user.userable_id},{class: 'selectpicker mandatory', "data-width"=>'460px'}
             - elsif current_user.college.code=="amsas"
-              = f.collection_select :reported_by, Staff.all.order(rank_id: :asc, name: :asc), :id,  :staff_with_rank, {:prompt =>t('helpers.prompt.select_staff'), :selected=>current_user.userable_id},{class: 'selectpicker mandatory', "data-width"=>'460px'}
+              = f.collection_select :reported_by, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id,  :staff_with_rank, {:prompt =>t('helpers.prompt.select_staff'), :selected=>current_user.userable_id},{class: 'selectpicker mandatory', "data-width"=>'460px'}
         .form-group
           .col-sm-2.control-label
             = f.label t 'student.discipline.student_id', for: :student_id
           .col-md-3
             - if current_user.college.code=="kskbjb"
-              = f.collection_select :student_id, Student.where('end_training>?',Date.today).order('course_id asc, matrixno asc'), :id, :matrix_name_programme, {:prompt => t('helpers.prompt.select_student')},{class: 'selectpicker mandatory', "data-width"=>'460px'}
+              = f.collection_select :student_id, Student.valid_students.where('end_training>?',Date.today).order('course_id asc, matrixno asc'), :id, :matrix_name_programme, {:prompt => t('helpers.prompt.select_student')},{class: 'selectpicker mandatory', "data-width"=>'460px'}
             - elsif current_user.college.code=="amsas"
-              = f.collection_select :student_id, Student.order('rank_id asc, name asc'), :id, :student_with_rank, {:prompt => t('helpers.prompt.select_student')},{class: 'selectpicker mandatory', "data-width"=>'460px'}
+              = f.collection_select :student_id, Student.valid_students.order('rank_id asc, name asc'), :id, :student_with_rank, {:prompt => t('helpers.prompt.select_student')},{class: 'selectpicker mandatory', "data-width"=>'460px'}
         .form-group
           .col-sm-2.control-label
             = f.label t 'student.discipline.infraction_id', for: :infraction_id
@@ -53,7 +53,7 @@
             - if current_user.college.code=="kskbjb"
               = f.collection_select :assigned_to, Staff.where('id IN (?)', @myhod), :id, :name, {:prompt => t('helpers.prompt.select_hod')},{class: 'selectpicker mandatory'}
             - elsif current_user.college.code=="amsas"
-              = f.collection_select :assigned_to, Staff.joins(:positions).where('positions.unit ILIKE(?) OR positions.unit=?', '%Sekolah%', 'Ketua Sekolah Latihan Asas').order(rank_id: :asc, name: :asc), :id, :staff_with_rank_unit, {:prompt => t('select')},{class: 'selectpicker mandatory'}
+              = f.collection_select :assigned_to, Staff.joins(:positions).where('positions.name ILIKE?', "%komandan%").order(rank_id: :asc, name: :asc), :id, :staff_with_rank_unit, {prompt: (t 'select')}, {class: 'selectpicker mandatory'}
         = f.hidden_field :assigned_on, :value => Date.today
         = f.fields_for :student_counseling_sessions do |builder| 
           = builder.hidden_field :c_scope, :value => "case"
