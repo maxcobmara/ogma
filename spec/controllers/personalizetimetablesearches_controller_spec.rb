@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe PersonalizetimetablesearchesController, :type => :controller do
+RSpec.describe EqueryReport::PersonalizetimetablesearchesController, :type => :controller do
 
 end

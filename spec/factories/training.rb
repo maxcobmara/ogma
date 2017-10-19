@@ -1,4 +1,4 @@
-require 'spec_helper'
+# require 'spec_helper'
 FactoryGirl.define do
 
   factory :academic_session do

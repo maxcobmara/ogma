@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe WeeklytimetablesearchesController, :type => :controller do
+RSpec.describe EqueryReport::WeeklytimetablesearchesController, :type => :controller do
 
 end

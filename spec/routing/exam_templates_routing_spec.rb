@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ExamTemplatesController, :type => :routing do
+RSpec.describe Exam::ExamTemplatesController, :type => :routing do
   describe "routing" do
 
     it "routes to #index" do

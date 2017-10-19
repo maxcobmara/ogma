@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe DocumentsearchesController, :type => :controller do
+RSpec.describe EqueryReport::DocumentsearchesController, :type => :controller do
 
 end

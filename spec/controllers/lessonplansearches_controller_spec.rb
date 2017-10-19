@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe LessonplansearchesController, :type => :controller do
+RSpec.describe EqueryReport::LessonplansearchesController, :type => :controller do
 
 end
