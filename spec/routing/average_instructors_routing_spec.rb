@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe AverageInstructorsController, :type => :routing do
+RSpec.describe Staff::AverageInstructorsController, :type => :routing do
   describe "routing" do
 
     it "routes to #index" do
