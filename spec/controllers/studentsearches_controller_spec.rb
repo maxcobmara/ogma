@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe StudentsearchesController, :type => :controller do
+RSpec.describe EqueryReport::StudentsearchesController, :type => :controller do
 
 end
