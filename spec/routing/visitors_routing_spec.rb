@@ -4,31 +4,31 @@ RSpec.describe Campus::VisitorsController, :type => :routing do
   describe "routing" do
 
     it "routes to #index" do
-      expect(:get => "/visitors").to route_to("visitors#index")
+      expect(:get => "campus/visitors").to route_to("campus/visitors#index")
     end
 
     it "routes to #new" do
-      expect(:get => "/visitors/new").to route_to("visitors#new")
+      expect(:get => "campus/visitors/new").to route_to("campus/visitors#new")
     end
 
     it "routes to #show" do
-      expect(:get => "/visitors/1").to route_to("visitors#show", :id => "1")
+      expect(:get => "campus/visitors/1").to route_to("campus/visitors#show", :id => "1")
     end
 
     it "routes to #edit" do
-      expect(:get => "/visitors/1/edit").to route_to("visitors#edit", :id => "1")
+      expect(:get => "campus/visitors/1/edit").to route_to("campus/visitors#edit", :id => "1")
     end
 
     it "routes to #create" do
-      expect(:post => "/visitors").to route_to("visitors#create")
+      expect(:post => "campus/visitors").to route_to("campus/visitors#create")
     end
 
     it "routes to #update" do
-      expect(:put => "/visitors/1").to route_to("visitors#update", :id => "1")
+      expect(:put => "campus/visitors/1").to route_to("campus/visitors#update", :id => "1")
     end
 
     it "routes to #destroy" do
-      expect(:delete => "/visitors/1").to route_to("visitors#destroy", :id => "1")
+      expect(:delete => "campus/visitors/1").to route_to("campus/visitors#destroy", :id => "1")
     end
 
   end

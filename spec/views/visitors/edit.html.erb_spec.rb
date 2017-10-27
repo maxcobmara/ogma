@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe "visitors/edit", :type => :view do
+RSpec.describe "campus/visitors/edit", :type => :view do
   before(:each) do
     @visitor = assign(:visitor, Visitor.create!(
       :name => "MyString",
       :icno => "MyString",
       :rank_id => 1,
-      :title => 1,
+      :title_id => 1,
       :department => "MyString",
       :officeno => "MyString",
       :hpno => "MyString",

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "average_instructors/edit", :type => :view do
+RSpec.describe "staff/average_instructors/edit", :type => :view do
   before(:each) do
     @average_instructor = assign(:average_instructor, AverageInstructor.create!(
       :programme_id => 1,
@@ -8,6 +8,9 @@ RSpec.describe "average_instructors/edit", :type => :view do
       :title => "MyString",
       :objective => "MyText",
       :delivery_type => 1,
+      :evaluate_date => "2017-10-20",
+      :start_at => "2017-10-20 02:55:00",
+      :end_at => "2000-10-20 03:55:00",
       :pbq1 => 1,
       :pbq2 => 1,
       :pbq3 => 1,
@@ -46,7 +49,7 @@ RSpec.describe "average_instructors/edit", :type => :view do
       :dq6review => "MyString",
       :dq7review => "MyString",
       :dq8review => "MyString",
-      :dq9reiew => "MyString",
+      :dq9review => "MyString",
       :dq10review => "MyString",
       :dq11review => "MyString",
       :dq12review => "MyString",
@@ -182,7 +185,7 @@ RSpec.describe "average_instructors/edit", :type => :view do
 
       assert_select "input#average_instructor_dq8review[name=?]", "average_instructor[dq8review]"
 
-      assert_select "input#average_instructor_dq9reiew[name=?]", "average_instructor[dq9reiew]"
+      assert_select "input#average_instructor_dq9rveiew[name=?]", "average_instructor[dq9review]"
 
       assert_select "input#average_instructor_dq10review[name=?]", "average_instructor[dq10review]"
 

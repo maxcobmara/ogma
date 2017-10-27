@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "average_instructors/index", :type => :view do
+RSpec.describe "staff/average_instructors/index", :type => :view do
   before(:each) do
     assign(:average_instructors, [
       AverageInstructor.create!(
@@ -47,7 +47,7 @@ RSpec.describe "average_instructors/index", :type => :view do
         :dq6review => "Dq6review",
         :dq7review => "Dq7review",
         :dq8review => "Dq8review",
-        :dq9reiew => "Dq9reiew",
+        :dq9review => "Dq9review",
         :dq10review => "Dq10review",
         :dq11review => "Dq11review",
         :dq12review => "Dq12review",
@@ -134,7 +134,7 @@ RSpec.describe "average_instructors/index", :type => :view do
         :dq6review => "Dq6review",
         :dq7review => "Dq7review",
         :dq8review => "Dq8review",
-        :dq9reiew => "Dq9reiew",
+        :dq9review => "Dq9review",
         :dq10review => "Dq10review",
         :dq11review => "Dq11review",
         :dq12review => "Dq12review",
@@ -225,7 +225,7 @@ RSpec.describe "average_instructors/index", :type => :view do
     assert_select "tr>td", :text => "Dq6review".to_s, :count => 2
     assert_select "tr>td", :text => "Dq7review".to_s, :count => 2
     assert_select "tr>td", :text => "Dq8review".to_s, :count => 2
-    assert_select "tr>td", :text => "Dq9reiew".to_s, :count => 2
+    assert_select "tr>td", :text => "Dq9review".to_s, :count => 2
     assert_select "tr>td", :text => "Dq10review".to_s, :count => 2
     assert_select "tr>td", :text => "Dq11review".to_s, :count => 2
     assert_select "tr>td", :text => "Dq12review".to_s, :count => 2

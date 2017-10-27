@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Staff do
 
-  before  { @staff = FactoryGirl.create(:staff) }
+  before  { @staff = FactoryGirl.create(:basic_staff) }
 
   subject { @staff }
 

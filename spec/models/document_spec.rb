@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Document do
 
-  before  { @document = FactoryGirl.create(:document) }
+  before  { @document = FactoryGirl.create(:document)}
 
   subject { @document }
   

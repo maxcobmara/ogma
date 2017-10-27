@@ -9,6 +9,8 @@ FactoryGirl.define do
     email
     password '12345678'
     password_confirmation '12345678'
+    association :college, factory: :college
+    userable factory: :basic_staff  #polymorphic (userable_type & userable_id)
     after(:create) {|user| user.roles = [create(:admin_role)]}
   end
 
@@ -17,9 +19,12 @@ FactoryGirl.define do
     sequence(:login) { |n| "slatest#{n}@example.com" }
     password '12345678'
     password_confirmation '12345678'
+    association :college, factory: :college
+    #ref https://robots.thoughtbot.com/aint-no-calla-back-girl
+    userable factory: :basic_staff  #polymorphic (userable_type & userable_id)
     after(:create) {|user| user.roles = [create(:staff_role)]}
   end
-
+  
   factory :admin_role, :class => 'Role' do
     name 'Administration'
     authname 'administration'
@@ -29,6 +34,5 @@ FactoryGirl.define do
     name 'Staff'
     authname 'staff'
   end
-
 
 end

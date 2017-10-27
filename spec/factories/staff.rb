@@ -1,6 +1,8 @@
 FactoryGirl.define do
 
   # Staffs
+#   astaff=Staff.new(name: 'nama 1', coemail: 'latest@example.com', icno: '123456789012', code: "123456789012", appointdt: "2012-01-01", current_salary: 1100.00, country_cd: 1, staffgrade_id: 1)
+
   factory :basic_staff, :class => 'Staff' do
     sequence(:coemail) { |n| "slatest#{n}@example.com" }
     sequence(:name) { |n| "Bob#{n} Uncle" }
@@ -16,7 +18,11 @@ FactoryGirl.define do
     fileno {(0...8).map { (65 + rand(26)).chr }.join}
     current_salary {rand(300..15000)}
     association :staffgrade, factory: :employgrade
+    association :college, factory: :college
     #association :timetables, factory: :timetable
+#     factory :basic_staff_with_position do
+      after(:create) {|basic_staff| create(:position, staff: basic_staff)}
+#     end
   end
 
   factory :staff_with_login, :class => 'Staff' do
@@ -47,46 +53,54 @@ FactoryGirl.define do
     #staff_id 25
   end
 
+#   agrade=Employgrade.new(name: 'grade 11', group_id: 1)
   factory :employgrade do
-    name {|n| "Grade Name #{n}"}
+#     name {|n| "Grade Name #{[1,2].sample}#{n}"}
+    name {|n| "Grade Name 4#{n}" }
     group_id {[1,2,4].sample}
   end
 
   factory :position do
     sequence(:name) { |n| "Position#{n} Orgchart" }
     sequence(:code) { |n| "Code#{n}" }
+    sequence(:tasks_main) {|n| "Task #{n}"}
+    sequence(:combo_code) {|n| "0-#{n}"}
+    association :college, factory: :college
+    association :staff, factory: :basic_staff
+    association :staffgrade, factory: :employgrade #min grade
   end
 
   factory :staff_attendance do
     #sequence(:thumb_id) { |n| }
-    association :attended, factory: :staff
+    association :attended, factory: :basic_staff
     logged_at {Time.at(rand * Time.now.to_f)}
     log_type "Some Type"
     reason "Some Reason"
     trigger {rand(2) == 1}
-    association :approver, factory: :staff
+    association :approver, factory: :basic_staff
     is_approved {rand(2) == 1}
     approved_on {Date.today+(366*rand()).to_f}
     status 1
     review "Some Review"
   end
 
+#   app=StaffAppraisal.new(staff_id: 1, evaluation_year: "2011-01-01")
   factory :staff_appraisal do
-    association :appraised, factory: :staff
-    association :eval1_officer, factory: :staff
-    association :eval2_officer, factory: :staff
+    association :appraised, factory: :basic_staff
+    association :eval1_officer, factory: :basic_staff
+    association :eval2_officer, factory: :basic_staff
     evaluation_year {(Date.today+(366*rand()).to_f).at_beginning_of_month}
-    is_skt_submit {rand(2) == 1}
+    is_skt_submit true #{rand(2) == 1}
     skt_submit_on {Date.today+(366*rand()).to_f}
-    is_skt_endorsed {rand(2) == 1}
+    is_skt_endorsed true #{rand(2) == 1}
     skt_endorsed_on {Date.today+(366*rand()).to_f}
     skt_pyd_report "Some PYD Report"
-    is_skt_pyd_report_done {rand(2) == 1}
+    is_skt_pyd_report_done true #{rand(2) == 1}
     skt_pyd_report_on {Date.today+(366*rand()).to_f}
     skt_ppp_report "Some PPP Report"
-    is_skt_ppp_report_done {rand(2) == 1}
+    is_skt_ppp_report_done true #{rand(2) == 1}
     skt_ppp_report_on {Date.today+(366*rand()).to_f}
-    is_submit_for_evaluation {rand(2) ==1}
+    is_submit_for_evaluation true #{rand(2) ==1}
     submit_for_evaluation_on {Date.today+(366*rand()).to_f}
     g1_questions 5
     g2_questions {rand(3..4)}
@@ -118,7 +132,7 @@ FactoryGirl.define do
     e1_months {rand(0..12)}
     e1_performance "Some Performance"
     e1_progress "Some Progress"
-    is_submit_e2 {rand(2)==1}
+    is_submit_e2 true # {rand(2)==1}
     submit_e2_on {Date.today+(366*rand()).to_f}
 
     e2g1q1 {rand(0..10).to_f}
@@ -148,7 +162,7 @@ FactoryGirl.define do
     e2_months {rand(0..12)}
     e2_performance "Some Performance 2"
     evaluation_total 1.0
-    is_complete {rand(2)==1}
+    is_complete true #{rand(2)==1}
     is_completed_on {Date.today+(366*rand()).to_f}
   end
 
@@ -200,6 +214,35 @@ FactoryGirl.define do
     is_approved {rand(2)==1}
     approved_on {Date.today+(366*rand()).to_f}
   end
+  
+  factory :instructor_appraisal do
+    association :checker, factory: :basic_staff
+    association :instructor, factory: :basic_staff
+    association :college, factory: :college
+    appraisal_date {Date.today+(366*rand()).to_f}
+  end
+  
+#   factory :leaveforstaff do
+#     association :applicant, factory: :basic_staff
+#     association :replacement, factory: :basic_staff
+#     association :seconder, factory: :basic_staff
+#     association :approver, factory: :basic_staff
+#     association :college, factory: :college
+#     leavetype 1
+#     leavestartdate {Date.today.tomorrow+(366*rand()).to_f}
+#     leaveenddate {Date.today+2.days+(366*rand()).to_f}
+#     leavedays 1.0
+#     reason "Some reason"
+#     notes "Some notes"
+#     submit {rand(2)==1}
+#     approval1 {rand(2)==1}
+#     approval1date {Date.today+(366*rand()).to_f}
+#     approver2 {rand(2)==1}
+#     approval2date {Date.today+(366*rand()).to_f}
+#     data {{}}
+#     address_on_leave "Some address"
+#     phone_on_leave (0...12).map {rand(10).to_s}.join
+#   end
 
 end
 

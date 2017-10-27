@@ -9,7 +9,8 @@ class Document < ActiveRecord::Base
                      :path => ":rails_root/public/assets/documents/:id/:style/:basename.:extension"
   #has_and_belongs_to_many   :staffs, :join_table => :documents_staffs 
   has_many :circulations
-  has_many :staffs, :through => :circulations#, :autosave => true
+#   has_many :recipients, :class_name => 'Staff', :through => :circulations#, :autosave => true
+  has_many :staffs, :through => :circulations
   accepts_nested_attributes_for :circulations, :allow_destroy => :true 
 
   belongs_to :stafffilled,  :class_name => 'Staff', :foreign_key => 'stafffiled_id'
@@ -33,7 +34,9 @@ class Document < ActiveRecord::Base
   attr_accessor :recipients 
  
   def creator_action_is_closed?
-    college.code=='kskbjb' && cc1closed==true
+    unless id.nil?
+      college.code=='kskbjb' && cc1closed==true
+    end
   end
   
   def director_action_is_closed?

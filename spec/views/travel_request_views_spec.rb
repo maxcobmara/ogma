@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe "Travel Request pages" do
 
-  before { @staff = FactoryGirl.create(:staff) }
-  before { @replacement = FactoryGirl.create(:staff) }
-  before { @hod = FactoryGirl.create(:staff) }
+  before { @staff = FactoryGirl.create(:basic_staff) }
+  before { @replacement = FactoryGirl.create(:basic_staff) }
+  before { @hod = FactoryGirl.create(:basic_staff) }
 
   before { @vehicle = FactoryGirl.create(:vehicle, reg_no: "JJJ1234", staff_id: @staff.id) }
   before { @vehicle2 = FactoryGirl.create(:vehicle, reg_no: "JKK 4545", staff_id: @staff.id)}
 
-  before { @travel_request = FactoryGirl.create(:travel_request, is_submitted: true, hod_accept: true, applicant: @staff, replacement: @replacement, headofdept: @hod) }
+  before { @travel_request = FactoryGirl.create(:travel_request, is_submitted: true, destination: 'some destination', depart_at: DateTime.now-2.days, return_at: DateTime.now-1.days , hod_accept: true, staff_id: @staff, replaced_by: @replacement, headofdept: @hod) }
 
   subject { page }
 

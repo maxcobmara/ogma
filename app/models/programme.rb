@@ -13,6 +13,8 @@ class Programme < ActiveRecord::Base
   has_many :grades, :foreign_key => 'subject_id', :dependent => :destroy
   has_many :examquestions, :foreign_key => 'topic_id', :dependent => :destroy
   
+  belongs_to :college
+  
   attr_accessor :programme_listng, :subject_listing, :topic_listing, :subject_listing2
   
   validates_uniqueness_of :combo_code

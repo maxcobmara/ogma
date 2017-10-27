@@ -1,8 +1,16 @@
 require 'spec_helper'
 
 describe "document pages" do
-  before  { @document = FactoryGirl.create(:document) }
+ 
   subject { page }
+   
+  before {@college=FactoryGirl.create(:college)}
+  before {@page=FactoryGirl.create(:page)}
+  before {@admin_user=FactoryGirl.create(:admin_user)}
+  before {@document = FactoryGirl.create(:document)}
+  before (:each) do 
+    sign_in(@admin_user)
+  end
   
   describe "Document Index page" do
     before { visit documents_path }
@@ -11,23 +19,26 @@ describe "document pages" do
     it { should have_link("New",    href: new_document_path + "?locale=en")}
     it { should have_selector(:link_or_button, "Search")}    
     it { should have_selector(:link_or_button, "Print")}
-    it { should have_selector('th', text: 'Serial No') }
+    it { should have_selector('th', text: I18n.t('document.serial_no')) }
     it { should have_selector('th', text: 'Ref No') }
     it { should have_selector('th', text: 'Category')}
     it { should have_selector('th', text: 'Title')}
-    it { should have_selector('th', text: 'Letter Date')}
-    it { should have_selector('th', text: 'Received Date')}
+    it { should have_selector('th', text: I18n.t('document.letter_date'))}
+    it { should have_selector('th', text: I18n.t('document.received_date'))}
     it { should have_selector('th', text: 'From')}
-    it { should have_selector('th', text: 'Circulate To')}
+    it { should have_selector('th', text: "Status / "+(I18n.t 'document.circulation_date') )}
     it { should have_selector('th', text: 'Actions/Notifications')}
-    it { should have_selector('th', text: 'Closed')}
+    it { should have_selector('th', text: I18n.t('document.file_closed'))}
     it { should have_link(@document.refno), href: document_path(@document) + "?locale=en" }
   end
   
   describe "Document Show Page" do
     before { visit document_path(@document)}   
-    it {should have_selector('h1', text: "#{@document.refno} : #{@document.title.capitalize}")}
-    it { should have_selector(:link_or_button, "Action Details")}    
+    it {should have_selector('h1', text: "#{@document.refno} : #{@document.title.capitalize}")}   
+    #amsas
+    it { should have_selector(:link_or_button, I18n.t('document.staff_action'))} 
+    #kskbjb
+    #it { should have_selector(:link_or_button, "Action Details")}
     it { should have_selector(:link_or_button, "Document Details")}
     
     it { should have_selector(:link_or_button, "Back")}    

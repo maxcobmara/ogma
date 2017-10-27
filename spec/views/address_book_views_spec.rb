@@ -4,8 +4,8 @@ describe "Address Book views" do
   
   subject { page }
   
-
   describe "Address Book Index page" do
+    before {@college = FactoryGirl.create(:college)}
     before  { @contact = FactoryGirl.create(:address_book) }
     before { visit campus_address_books_path }
     

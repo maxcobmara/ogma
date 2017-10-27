@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe "instructor_appraisals/index", :type => :view do
+RSpec.describe "staff/instructor_appraisals/index", :type => :view do
   before(:each) do
     assign(:instructor_appraisals, [
       InstructorAppraisal.create!(
         :staff_id => 1,
         :qc_sent => false,
+        :appraisal_date => "2017-10-20",
         :q1 => 2,
         :q2 => 3,
         :q3 => 4,
@@ -61,6 +62,7 @@ RSpec.describe "instructor_appraisals/index", :type => :view do
       InstructorAppraisal.create!(
         :staff_id => 1,
         :qc_sent => false,
+        :appraisal_date => "2017-10-20",
         :q1 => 2,
         :q2 => 3,
         :q3 => 4,
@@ -120,6 +122,7 @@ RSpec.describe "instructor_appraisals/index", :type => :view do
     render
     assert_select "tr>td", :text => 1.to_s, :count => 2
     assert_select "tr>td", :text => false.to_s, :count => 2
+    assert_select "tr>td", :text => "2017-10-20", :count => 2
     assert_select "tr>td", :text => 2.to_s, :count => 2
     assert_select "tr>td", :text => 3.to_s, :count => 2
     assert_select "tr>td", :text => 4.to_s, :count => 2

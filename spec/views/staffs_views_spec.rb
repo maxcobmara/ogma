@@ -5,7 +5,8 @@ describe "staff views" do
   subject { page }
 
   describe "staff Index page" do
-    before  { @staffs = FactoryGirl.create(:staff) }
+    before {@college=FactoryGirl.create(:college)}
+    before  { @staffs = FactoryGirl.create(:basic_staff) }
     before { visit staff_infos_path }
 
     it { should have_selector('h1', text: 'List') }
@@ -16,6 +17,7 @@ describe "staff views" do
   end
 
   describe "staff new page" do
+    before {@college=FactoryGirl.create(:college)}
     before { visit new_staff_info_path }
 
     it { should have_selector('h1', text: I18n.t('staff.new')) }
@@ -23,7 +25,8 @@ describe "staff views" do
   end
 
   describe "staff edit page" do
-    before  { @staff = FactoryGirl.create(:staff) }
+    before {@college=FactoryGirl.create(:college)}
+    before  { @staff = FactoryGirl.create(:basic_staff) }
     before { visit edit_staff_info_path(@staff) }
 
     it { should have_selector('h1', text: ("Edit " + @staff.name)) }

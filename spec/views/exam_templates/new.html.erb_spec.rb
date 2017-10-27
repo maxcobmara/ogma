@@ -10,7 +10,8 @@ RSpec.describe "exam_templates/new", :type => :view do
   end
 
   it "renders new exam_template form" do
-    render
+#     render
+    render :template => "exam/exam_templates/new"
 
     assert_select "form[action=?][method=?]", exam_templates_path, "post" do
 
