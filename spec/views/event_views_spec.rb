@@ -6,6 +6,7 @@ describe "event pages" do
   
 
   describe "Event Index page" do
+    before {@college=FactoryGirl.create(:college)}
     before  { @event = FactoryGirl.create(:event) }
     before { visit events_path }
     

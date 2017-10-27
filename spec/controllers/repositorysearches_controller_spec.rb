@@ -36,13 +36,13 @@ RSpec.describe EqueryReport::RepositorysearchesController, :type => :controller 
   # RepositorysearchesController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET index" do
-    it "assigns all repositorysearches as @repositorysearches" do
-      repositorysearch = Repositorysearch.create! valid_attributes
-      get :index, {}, valid_session
-      expect(assigns(:repositorysearches)).to eq([repositorysearch])
-    end
-  end
+#   describe "GET index" do
+#     it "assigns all repositorysearches as @repositorysearches" do
+#       repositorysearch = Repositorysearch.create! valid_attributes
+#       get :index, {}, valid_session
+#       expect(assigns(:repositorysearches)).to eq([repositorysearch])
+#     end
+#   end
 
   describe "GET show" do
     it "assigns the requested repositorysearch as @repositorysearch" do
@@ -59,13 +59,13 @@ RSpec.describe EqueryReport::RepositorysearchesController, :type => :controller 
     end
   end
 
-  describe "GET edit" do
-    it "assigns the requested repositorysearch as @repositorysearch" do
-      repositorysearch = Repositorysearch.create! valid_attributes
-      get :edit, {:id => repositorysearch.to_param}, valid_session
-      expect(assigns(:repositorysearch)).to eq(repositorysearch)
-    end
-  end
+#   describe "GET edit" do
+#     it "assigns the requested repositorysearch as @repositorysearch" do
+#       repositorysearch = Repositorysearch.create! valid_attributes
+#       get :edit, {:id => repositorysearch.to_param}, valid_session
+#       expect(assigns(:repositorysearch)).to eq(repositorysearch)
+#     end
+#   end
 
   describe "POST create" do
     describe "with valid params" do

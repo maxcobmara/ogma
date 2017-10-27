@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Exam do
-  
-  before { @exam = FactoryGirl.create(:exam) } 
+  before {@programme=FactoryGirl.create(:programme)}
+  before { @exam = FactoryGirl.create(:exam, :programme_id => @programme.id) } 
   
   subject { @exam }
   

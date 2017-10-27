@@ -388,11 +388,14 @@ class InstructorAppraisal < ActiveRecord::Base
       #http://stackoverflow.com/questions/9428605/find-number-of-months-between-two-dates-in-ruby-on-rails
       #(date2.year * 12 + date2.month) - (date1.year * 12 + date1.month) 
       if id.nil? && staff_id 
-        last_evaluation=InstructorAppraisal.where(staff_id: staff_id).last.appraisal_date
-        diff_current_last=(appraisal_date.year * 12 + appraisal_date.month) - (last_evaluation.year * 12 + last_evaluation.month)
-        if diff_current_last < 3
-          errors.add(:appraisal_date, I18n.t('instructor_appraisal.one_per_quarter')+last_evaluation.strftime('%d-%m-%Y')+".")
-        end
+	evaluations=InstructorAppraisal.where(staff_id: staff_id)
+	if evaluations.count > 0
+	  last_evaluation=InstructorAppraisal.where(staff_id: staff_id).last.appraisal_date
+	  diff_current_last=(appraisal_date.year * 12 + appraisal_date.month) - (last_evaluation.year * 12 + last_evaluation.month)
+	  if diff_current_last < 3
+	    errors.add(:appraisal_date, I18n.t('instructor_appraisal.one_per_quarter')+last_evaluation.strftime('%d-%m-%Y')+".")
+	  end
+	end
       end
     end
     

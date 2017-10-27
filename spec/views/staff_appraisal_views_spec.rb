@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe "Staff Appraisal pages" do
-  
+  before { @college = FactoryGirl.create(:college) }
   before { @employgrade = FactoryGirl.create(:employgrade)}
-  before { @appraised = FactoryGirl.create(:staff, :staffgrade => @employgrade)}
-  before { @staff_appraisal = FactoryGirl.create(:staff_appraisal, :appraised => @appraised) }
+  before { @appraised = FactoryGirl.create(:basic_staff, :staffgrade_id => @employgrade.id)}
+  before { @staff_appraisal = FactoryGirl.create(:staff_appraisal)}#, :staff_id => @appraised.id, evaluation_year: "2011-01-01") }
   
   subject { page }
 

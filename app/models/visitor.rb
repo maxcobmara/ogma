@@ -15,7 +15,7 @@ class Visitor < ActiveRecord::Base
 
   def visitor_with_title_rank
     unless rank_id.blank?
-      a=rank.shortname
+      a=rank.try(:shortname)
     else
       a=title.try(:name)
     end

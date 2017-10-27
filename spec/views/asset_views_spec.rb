@@ -1,13 +1,20 @@
 require 'spec_helper'
 
 describe "asset pages" do
-  before  { sign_in (FactoryGirl.create(:admin_user))}
+  
+  subject { page }
+  
+  before  { @college=FactoryGirl.create(:college) }
+  before  { @page=FactoryGirl.create(:page) }
+  before  { @admin_user=FactoryGirl.create(:admin_user) }
   before  { @asset = FactoryGirl.create(:fixed_asset) }
   before  { @inventory = FactoryGirl.create(:inventory) }
-  before  { @asset_defect = FactoryGirl.create(:asset_defect)}
-  subject { page }
+  before  { @staff_user = FactoryGirl.create(:staff_user) }
+  before  { @asset_defect = FactoryGirl.create(:asset_defect) }
 
   describe "Asset Index page" do
+    
+    before { sign_in(@admin_user) }
     before { visit asset_assets_path }
 
     it { should have_selector('h1', text: 'Assets') }
@@ -27,7 +34,10 @@ describe "asset pages" do
   end
 
   describe "Fixed Asset Show Page" do
+    
+    before { sign_in(@admin_user)}
     before { visit asset_asset_path(@asset) }
+    
     it { should have_selector('h1', text: @asset.assetcode) }
     #it { should have_link("Details",  href: '#details')}
     #it { should have_link("Description", href: '#description')}
@@ -44,11 +54,14 @@ describe "asset pages" do
   end
 
   describe "Inventory Show Page" do
+    
+    before { sign_in(@admin_user)}
     before { visit asset_asset_path(@inventory) }
+    
     it { should have_selector('h1', text: @inventory.assetcode) }
     it { should have_link("Details",  href: '#details')}
     it { should have_link("Description", href: '#description')}
-    it { should have_link("Purchase", href: '#purchase')}
+    it { should have_link(I18n.t("asset.purchase"), href: '#purchase')}
     it { should have_link("Place",    href: '#placement')}
     it { should_not have_link("Maintenance",    href: '#maintenance')}
 
@@ -68,7 +81,10 @@ describe "asset pages" do
   end
 
   describe "Report New Defect Page" do
-    before { visit new_asset_defect_path(:asset_defect => @asset) }
+    
+    before { sign_in(@staff_user)}
+    before { visit new_asset_defect_path(:asset_id => @asset.id, :reported_by => @staff_user.userable_id ) }
+    
     it { should have_selector('h1', text: I18n.t('asset.defect.new')) }
     #it { should have_field("asset_defect[asset_show]", :disabled => true) }
     #it { should have_field("asset_defect[description]") }
@@ -77,17 +93,21 @@ describe "asset pages" do
   end
 
   describe "Report Defect Show Page" do
+    
+    before { sign_in(@admin_user)}
+    
   end
 
-
   describe "Report Defect Index Page" do
+    
+    before { sign_in(@admin_user)}
     before  { @asset_defect = FactoryGirl.create(:asset_defect)}
     before { visit asset_defects_path }
 
     it { should have_selector('h1', text: "Asset Defect") }
     it { should have_selector('th', text: 'Registration Serial No') }
     it { should have_selector('th', text: I18n.t('asset.category.type_name_model')) }
-    it { should have_selector('th', text: 'Serialno')}
+    it { should have_selector('th', text: I18n.t('asset.serial_no'))}
     it { should have_selector('th', text: I18n.t('location.title'))}
     it { should have_selector('th', text: 'Notes')}
     it { should have_selector(:link_or_button, "New")}
@@ -96,28 +116,34 @@ describe "asset pages" do
     #it { should have_link((@asset_defect.asset.assetcode).to_s, href: asset_defect_path(@asset_defect.id) + "?locale=en" )}
   end
 
-
 end
-
 
 ###### Stationery Pages
 describe "stationery Pages" do
-
-  before  { @stationery = FactoryGirl.create(:stationery)}
+  
   subject { page }
+  
+  before {@college=FactoryGirl.create(:college)}
+  before {@page=FactoryGirl.create(:page)}
+  before {@admin_user=FactoryGirl.create(:admin_user)}
+  
+  before { sign_in(@admin_user)}
 
   describe "Stationery Index page" do
     before { visit asset_stationeries_path }
 
-    it { should have_selector('h1', text: 'Office Supplies') }
+    it { should have_selector('h1', text: I18n.t('stationery.title')) }
+#     it { should have_selector(:link_or_button, I18n.t('actions.new'))}
+#     it { should have_selector(:link_or_button, I18n.t('actions.search'))}
+#     it { should have_selector(:link_or_button, I18n.t('actions.print'))}
     it { should have_selector(:link_or_button, "New")}
     it { should have_selector(:link_or_button, "Search")}
     it { should have_selector(:link_or_button, "Print")}
-    it { should have_selector('th', text: 'Item Code') }
-    it { should have_selector('th', text: 'Product Name') }
-    it { should have_selector('th', text: 'Current Quantity')}
-    it { should have_selector('th', text: 'Max Quantity')}
-    it { should have_selector('th', text: 'Min Quantity')}
+    it { should have_selector('th', text: I18n.t('stationery.code')) }
+    it { should have_selector('th', text: I18n.t('stationery.category')) }
+    it { should have_selector('th', text: I18n.t('stationery.quantity'))}
+    it { should have_selector('th', text: I18n.t('stationery.max'))}
+    it { should have_selector('th', text: I18n.t('stationery.min'))}
   end
 
 end

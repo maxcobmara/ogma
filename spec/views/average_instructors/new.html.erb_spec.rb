@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "average_instructors/new", :type => :view do
+RSpec.describe "staff/average_instructors/new", :type => :view do
   before(:each) do
     assign(:average_instructor, AverageInstructor.new(
       :programme_id => 1,
@@ -46,7 +46,7 @@ RSpec.describe "average_instructors/new", :type => :view do
       :dq6review => "MyString",
       :dq7review => "MyString",
       :dq8review => "MyString",
-      :dq9reiew => "MyString",
+      :dq9review => "MyString",
       :dq10review => "MyString",
       :dq11review => "MyString",
       :dq12review => "MyString",
@@ -182,7 +182,7 @@ RSpec.describe "average_instructors/new", :type => :view do
 
       assert_select "input#average_instructor_dq8review[name=?]", "average_instructor[dq8review]"
 
-      assert_select "input#average_instructor_dq9reiew[name=?]", "average_instructor[dq9reiew]"
+      assert_select "input#average_instructor_dq9review[name=?]", "average_instructor[dq9review]"
 
       assert_select "input#average_instructor_dq10review[name=?]", "average_instructor[dq10review]"
 

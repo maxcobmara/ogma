@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe "Travel Claim pages" do
   
+  before { @college = FactoryGirl.create(:college) }
   before { @travel_claim = FactoryGirl.create(:travel_claim) }
   
   subject { page }

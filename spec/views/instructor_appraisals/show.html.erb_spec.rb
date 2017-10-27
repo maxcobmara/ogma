@@ -1,10 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe "instructor_appraisals/show", :type => :view do
+RSpec.describe "staff/instructor_appraisals/show", :type => :view do
   before(:each) do
     @instructor_appraisal = assign(:instructor_appraisal, InstructorAppraisal.create!(
       :staff_id => 1,
       :qc_sent => false,
+      :appraisal_date => "2017-10-20",
       :q1 => 2,
       :q2 => 3,
       :q3 => 4,
@@ -63,6 +64,7 @@ RSpec.describe "instructor_appraisals/show", :type => :view do
     render
     expect(rendered).to match(/1/)
     expect(rendered).to match(/false/)
+    expect(rendered).to match(/2017-10-20/)
     expect(rendered).to match(/2/)
     expect(rendered).to match(/3/)
     expect(rendered).to match(/4/)

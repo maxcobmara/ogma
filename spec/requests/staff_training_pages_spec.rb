@@ -4,6 +4,7 @@ describe "Staff Training Cycle " do
   context "Create New Training Budget" do
     let(:ptbudget) { FactoryGirl.create(:ptbudget) }
     before do
+      @college=FactoryGirl.create(:college)
       visit staff_training_ptbudgets_path
       click_link('New')
       fill_in 'ptbudget[budget]',         with: 100
@@ -15,6 +16,7 @@ describe "Staff Training Cycle " do
   
   context "Delete Training Budget" do
     before do
+      @college=FactoryGirl.create(:college)
       @budget = FactoryGirl.create(:ptbudget)
       visit staff_training_ptbudget_path(@budget)
     end

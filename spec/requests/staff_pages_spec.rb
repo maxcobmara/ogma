@@ -6,7 +6,8 @@ describe "staff pages" do
   
 
   describe "Staff Index page" do
-    before  { @staff = FactoryGirl.create(:staff) }
+    before  { @college = FactoryGirl.create(:college) }
+    before  { @staff = FactoryGirl.create(:basic_staff) }
     before { visit staff_infos_path }
     
     it { should have_selector('h1', text: 'List') }

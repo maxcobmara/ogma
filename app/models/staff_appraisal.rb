@@ -192,16 +192,18 @@ class StaffAppraisal < ActiveRecord::Base
   end
   
   def set_number_of_questions
-    self.g1_questions = 5
-    if appraised.staffgrade.name.last(2).to_i <= 16
-      self.g2_questions = 4
-      self.g3_questions = 3
-    elsif appraised.staffgrade.name.last(2).to_i >= 41
-      self.g2_questions = 3
-      self.g3_questions = 5
-    else
-      self.g2_questions = 3
-      self.g3_questions = 4
+    unless id.nil?
+      self.g1_questions = 5
+      if appraised.staffgrade.name.last(2).to_i <= 16
+	self.g2_questions = 4
+	self.g3_questions = 3
+      elsif appraised.staffgrade.name.last(2).to_i >= 41
+	self.g2_questions = 3
+	self.g3_questions = 5
+      else
+	self.g2_questions = 3
+	self.g3_questions = 4
+      end
     end
   end
 

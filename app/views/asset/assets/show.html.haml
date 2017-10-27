@@ -8,7 +8,7 @@
   %ul.nav.nav-tabs
     %li.active= link_to (t "asset.details"), "#details",     "data-toggle" => "tab"
     %li= link_to (t "asset.description"),    "#description", "data-toggle" => "tab"
-    %li= link_to (t "asset.purchase"),       "#purchase",    "data-toggle" => "tab" if permitted_to? :manage, :assets
+    %li= link_to (t "asset.purchase"),       "#purchase",    "data-toggle" => "tab" if permitted_to? :manage, :asset_assets
     %li= link_to (t "asset.placement"),      "#placement",   "data-toggle" => "tab"
     - if @asset.is_maintainable?
       %li= link_to (t "asset.maintenance"),   "#maintenance", "data-toggle" => "tab"

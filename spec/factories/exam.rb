@@ -3,7 +3,7 @@ FactoryGirl.define do
   factory :exam do
     sequence(:name) { |n| "Some Name_#{n}" }
     description "Some Description"
-    association :creator, factory: :staff
+    association :creator, factory: :basic_staff
     programme_id 5#1
     association :subject, factory: :programme  #- not ready
     #subject_id 100 #if 1 is use - will failed - refer exams_controller.rb, line 92 (@programme_id = @exam.subject.root.id)

@@ -1,10 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe "average_instructors/show", :type => :view do
+RSpec.describe "staff/average_instructors/show", :type => :view do
   before(:each) do
     @average_instructor = assign(:average_instructor, AverageInstructor.create!(
       :programme_id => 1,
       :instructor_id => 2,
+      :evaluate_date => "2017-10-20",
+      :start_at => "2017-10-20 08:55:00",
+      :end_at => "2017-10-20 09:55:00",
       :title => "Title",
       :objective => "MyText",
       :delivery_type => 3,
@@ -46,7 +49,7 @@ RSpec.describe "average_instructors/show", :type => :view do
       :dq6review => "Dq6review",
       :dq7review => "Dq7review",
       :dq8review => "Dq8review",
-      :dq9reiew => "Dq9reiew",
+      :dq9review => "Dq9review",
       :dq10review => "Dq10review",
       :dq11review => "Dq11review",
       :dq12review => "Dq12review",
@@ -95,6 +98,9 @@ RSpec.describe "average_instructors/show", :type => :view do
     render
     expect(rendered).to match(/1/)
     expect(rendered).to match(/2/)
+    expect(rendered).to match(/2017-10-20/)
+    expect(rendered).to match(/2017-10-20 08:55:00/)
+    expect(rendered).to match(/2017-10-20 09:55:00/)
     expect(rendered).to match(/Title/)
     expect(rendered).to match(/MyText/)
     expect(rendered).to match(/3/)
@@ -136,7 +142,7 @@ RSpec.describe "average_instructors/show", :type => :view do
     expect(rendered).to match(/Dq6review/)
     expect(rendered).to match(/Dq7review/)
     expect(rendered).to match(/Dq8review/)
-    expect(rendered).to match(/Dq9reiew/)
+    expect(rendered).to match(/Dq9review/)
     expect(rendered).to match(/Dq10review/)
     expect(rendered).to match(/Dq11review/)
     expect(rendered).to match(/Dq12review/)

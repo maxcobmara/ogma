@@ -1,10 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe "instructor_appraisals/edit", :type => :view do
+RSpec.describe "staff/instructor_appraisals/edit", :type => :view do
+  before  { @instructor_appraisal = FactoryGirl.create(:instructor_appraisal) }
+  
   before(:each) do
     @instructor_appraisal = assign(:instructor_appraisal, InstructorAppraisal.create!(
       :staff_id => 1,
       :qc_sent => false,
+      :appraisal_date => "2017-10-20",
       :q1 => 1,
       :q2 => 1,
       :q3 => 1,
@@ -67,6 +70,8 @@ RSpec.describe "instructor_appraisals/edit", :type => :view do
       assert_select "input#instructor_appraisal_staff_id[name=?]", "instructor_appraisal[staff_id]"
 
       assert_select "input#instructor_appraisal_qc_sent[name=?]", "instructor_appraisal[qc_sent]"
+      
+      assert_select "input#instructor_appraisal_appraisal_date[name=?]", "instructor_appraisal[appraisal_date]"
 
       assert_select "input#instructor_appraisal_q1[name=?]", "instructor_appraisal[q1]"
 

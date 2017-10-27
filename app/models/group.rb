@@ -1,6 +1,8 @@
 class Group < ActiveRecord::Base
   serialize :members, Hash  
   
+  belongs_to :college
+
   #define scope
   def self.members_search(query)
     if query

@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe TimetablePeriod do
 
+  before {@timetable = FactoryGirl.create(:timetable)}
   before { @timetable_period = FactoryGirl.create(:timetable_period) }
       
   subject { @timetable_period }

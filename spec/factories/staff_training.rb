@@ -18,6 +18,10 @@ FactoryGirl.define do
   end
   
   factory :ptdo do
+    association :college, factory: :college
+    association :staff, factory: :basic_staff
+    association :applicant, factory: :basic_staff
+    association :replacement, factory: :basic_staff
   end
   
   

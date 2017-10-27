@@ -5,7 +5,8 @@ describe "cofile pages" do
   subject { page }
   
   describe "Cofile Index page" do
-    before  { @cofiles = FactoryGirl.create(:cofile) }
+    before {@owner=FactoryGirl.create(:basic_staff)}
+    before  { @cofiles = FactoryGirl.create(:cofile, :owner_id => @owner.id) }
     before { visit cofiles_path }
     
     it { should have_selector('h1', text: 'List') }

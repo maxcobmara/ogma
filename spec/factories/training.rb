@@ -2,7 +2,8 @@
 FactoryGirl.define do
 
   factory :academic_session do
-    semester {rand(1..2).to_s+"/"+(Date.today.year+rand(1..3)).to_s}
+    #semester {rand(1..2).to_s+"/"+(Date.today.year+rand(1..3)).to_s}
+    semester {"1/#{Date.today.year}"}
     total_week {rand(20..30)}
   end
 
@@ -10,7 +11,8 @@ FactoryGirl.define do
     sequence(:code) { |n| "Some Code_#{n}"}
     sequence(:name) { |n| "Some Name_#{n}"}
     description "Some Description"
-    association :creator, factory: :staff  #(user not ready)
+    association :creator, factory: :basic_staff  #(user not ready)
+    association :college, factory: :college
     #created_by 1
   end
 
@@ -21,13 +23,16 @@ FactoryGirl.define do
     association :programme, factory: :programme
     is_active {rand(2) == 1}
     monthyear_intake {Date.new(Date.today.year+rand(1..3), [1,3,7,9].sample, 1)}
+    association :college, factory: :college, college_id: 1
+    association :coordinator, factory: :basic_staff, staff_id: 1
     #monthyear_intake {Date.new(Date.today.year+rand(1..3), [1,3,7,9][rand([1,3,7,9].length)], 1)}
   end
 
   factory :timetable_period do
     #timetable_id 1
+    association :college, factory: :college
     association :timetable, factory: :timetable
-    sequence(:sequence) { rand(1..15) }     #NOTE - field name is 'sequence'
+    sequence(:sequence) { |n| "#{n}"+rand(1..15) }     #NOTE - field name is 'sequence'
     day_name { rand(1..7) }
     end_at {Time.at(rand * Time.now.to_f)}
     start_at {Time.at(rand * Time.now.to_f)}
@@ -39,9 +44,10 @@ FactoryGirl.define do
     sequence(:ancestry_depth) {|n| "#{n}"}
     sequence(:name) { |n| "Programme_#{n}"}
     #sequence(:course_type) { |n| "Course Type #{n}"}
-    course_type {["Diploma", "Pos Basik Diploma Lanjutan", "Semester", "Subject", "Commonsubject", "Topic", "Subtopic"].sample}
+    course_type {["Diploma", "Pos Basik Diploma Lanjutan", "Semester", "Subject", "Commonsubject", "Topic", "Subtopic", "Asas", "Pertengahan", "Lanjutan"].sample}
     #sequence(:ancestry) { |n| "#{n}"}
     #sequence(:combo_code) { |n| "0#{n}-"+code}
+    association :college, factory: :college
   end
 
     #if programme --> course type diploma/pos basik/diploma lanjutan && ancestry depth=0
@@ -56,12 +62,12 @@ FactoryGirl.define do
       startdate {Date.today+(366*rand()).to_f}
       enddate {Date.today+(366*rand())+(4*rand()).to_f}
       semester {rand(6)}
-      #association :schedule_creator, factory: :staff
-      #association :schedule_approver, factory: :staff
-      #association :timetable_monthurs, factory: :timetable
-      #association :timetable_friday, factory: :timetable
-      format1 1
-      format2 2
+      association :schedule_creator, factory: :basic_staff
+      association :schedule_approver, factory: :basic_staff
+      association :timetable_monthurs, factory: :timetable
+      association :timetable_friday, factory: :timetable
+#       format1 1
+#       format2 2
       week {rand(26)}
       is_submitted {rand(2) == 1}
       submitted_on {Date.today+(366*rand()).to_f}
@@ -76,7 +82,7 @@ FactoryGirl.define do
       #association :weeklytimetable_subject, factory: :programme
       #association :weeklytimetable_topic, factory: :programme
       #association :weeklytimetable_lecturer, factory: :staff
-      association :weeklytimetable, factory: :weeklytimetable
+      association :weeklytimetable, factory: :weeklytimetable, weeklytimetable_id: 1
       day2 {[1,2,3,4,6,7].sample}
       is_friday {rand(2) == 1}
       #association :fridayslot, factory: :timetable_period
@@ -123,8 +129,10 @@ FactoryGirl.define do
       #report_endorsed {rand(2) == 1}
       #report_endorsed_on {Date.today+(366*rand()).to_f}
       #report_summary "Some Summary"
+      
       #association :schedule, factory: :weeklytimetable_detail
-      schedule 1
+      #schedule 1
+      association :schedule_item, factory: :weeklytimetable_detail
     end
 
 end

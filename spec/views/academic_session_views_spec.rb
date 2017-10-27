@@ -1,13 +1,15 @@
 require 'spec_helper'
 
 describe "academic sessions pages" do
-  before  { @academic_session = FactoryGirl.create(:academic_session) }
+  
+  #before  { @academic_session = FactoryGirl.create(:academic_session) }
   subject { page }
   
   describe "Academic Session Index page" do
+    before  { @college = FactoryGirl.create(:college) }
+    before  { @academic_session = FactoryGirl.create(:academic_session) }
     
     before { visit training_academic_sessions_path }
-    
     it { should have_selector('h1', text: I18n.t('training.academic_session.title')) }
     it { should have_selector('th', text: I18n.t('training.academic_session.semester')) }
     it { should have_selector('th', text: I18n.t('training.academic_session.total_week')) }
@@ -15,11 +17,15 @@ describe "academic sessions pages" do
   end
   
   describe "Academic Session New page" do
+    before  { @college = FactoryGirl.create(:college) }
+    before  { @academic_session = FactoryGirl.create(:academic_session) }
     before { visit new_training_academic_session_path }   
     it { should have_selector('h1', text: I18n.t('training.academic_session.new')) }
   end
   
   describe "Academic Session Show page" do
+    before  { @college = FactoryGirl.create(:college) }
+    before  { @academic_session = FactoryGirl.create(:academic_session) }
     before { visit training_academic_session_path(@academic_session) }
     
     it { should have_selector('h1', text: I18n.t('training.academic_session.title')) }

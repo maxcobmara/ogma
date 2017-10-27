@@ -18,7 +18,7 @@ FactoryGirl.define do
 
   factory :asset_defect do
     association :asset, factory: :fixed_asset
-    association :reporter, factory: :staff
+    association :reporter, factory: :basic_staff
   end
 
   factory :asset_disposal do
@@ -30,6 +30,7 @@ FactoryGirl.define do
     #category "some_name"
     #code "some_code"
     sequence(:category) { |n| "category#{n}" }
+    unittype "some unit type"
     sequence(:code) { |n| "code#{n}" }
   end
 
