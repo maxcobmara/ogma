@@ -10,7 +10,7 @@ FactoryGirl.define do
     password '12345678'
     password_confirmation '12345678'
     association :college, factory: :college
-    userable factory: :basic_staff  #polymorphic (userable_type & userable_id)
+    userable factory: :basic_staff_with_position  #polymorphic (userable_type & userable_id)
     after(:create) {|user| user.roles = [create(:admin_role)]}
   end
 
@@ -21,7 +21,7 @@ FactoryGirl.define do
     password_confirmation '12345678'
     association :college, factory: :college
     #ref https://robots.thoughtbot.com/aint-no-calla-back-girl
-    userable factory: :basic_staff  #polymorphic (userable_type & userable_id)
+    userable factory: :basic_staff_with_position  #polymorphic (userable_type & userable_id)
     after(:create) {|user| user.roles = [create(:staff_role)]}
   end
   

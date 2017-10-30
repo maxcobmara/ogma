@@ -20,9 +20,9 @@ FactoryGirl.define do
     association :staffgrade, factory: :employgrade
     association :college, factory: :college
     #association :timetables, factory: :timetable
-#     factory :basic_staff_with_position do
+    factory :basic_staff_with_position do
       after(:create) {|basic_staff| create(:position, staff: basic_staff)}
-#     end
+    end
   end
 
   factory :staff_with_login, :class => 'Staff' do
