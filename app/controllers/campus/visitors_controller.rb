@@ -4,13 +4,17 @@ class Campus::VisitorsController < ApplicationController
   
   before_action :set_visitor, only: [:show, :edit, :update, :destroy]
 
-  respond_to :html
+#   respond_to :html
 
   def index
     @search = Visitor.search(params[:q])
     @visitors = @search.result
     @visitors = @visitors.page(params[:page]||1)
-    respond_with(@visitors)
+#     respond_with(@visitors)
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @visitors } 
+    end
   end
 
   def show
