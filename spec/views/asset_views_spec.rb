@@ -55,8 +55,13 @@ describe "asset pages" do
 
   describe "Inventory Show Page" do
     
-    before { sign_in(@admin_user)}
-    before { visit asset_asset_path(@inventory) }
+#     before { sign_in(@admin_user)}
+#     before { visit asset_asset_path(@inventory) }
+    
+    before(:each) do
+      sign_in(@admin_user)
+      visit asset_asset_path(@inventory)
+    end
     
     it { should have_selector('h1', text: @inventory.assetcode) }
     it { should have_link("Details",  href: '#details')}

@@ -14,7 +14,8 @@ class Timetable < ActiveRecord::Base
   has_many :timetable_for_monthurs,   :class_name => 'WeeklyTimetable'#, :foreign_key => 'format1'#, :dependent => :nullify
   has_many :timetable_for_friday,     :class_name => 'WeeklyTimetable'#, :foreign_key => 'format2'#, :dependent => :nullify
   
-  validates :code, :name, :description, :created_by, :timetable_periods, presence: true
+  validates :code, :name, :description, :created_by, presence: true
+#   validates :code, :name, :description, :created_by, :timetable_periods, presence: true
 
   def timetable_in_use
     wts=Weeklytimetable.all.pluck(:format1, :format2)

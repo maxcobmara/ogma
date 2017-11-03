@@ -13,7 +13,7 @@ FactoryGirl.define do
     description "Some Description"
     association :creator, factory: :basic_staff  #(user not ready)
     association :college, factory: :college
-    #created_by 1
+    after(:create) {|timetable| timetable_period = [create(:timetable_period, timetable: timetable)]}
   end
 
   factory :intake do
@@ -29,10 +29,9 @@ FactoryGirl.define do
   end
 
   factory :timetable_period do
-    #timetable_id 1
     association :college, factory: :college
     association :timetable, factory: :timetable
-    sequence(:sequence) { |n| "#{n}"+rand(1..15) }     #NOTE - field name is 'sequence'
+    sequence(:sequence) { |n| "#{n}"+rand(1..15).to_s }     #NOTE - field name is 'sequence'
     day_name { rand(1..7) }
     end_at {Time.at(rand * Time.now.to_f)}
     start_at {Time.at(rand * Time.now.to_f)}
@@ -81,8 +80,8 @@ FactoryGirl.define do
     factory :weeklytimetable_detail do
       #association :weeklytimetable_subject, factory: :programme
       #association :weeklytimetable_topic, factory: :programme
-      #association :weeklytimetable_lecturer, factory: :staff
-      association :weeklytimetable, factory: :weeklytimetable, weeklytimetable_id: 1
+      association :weeklytimetable_lecturer, factory: :basic_staff
+      association :weeklytimetable, factory: :weeklytimetable#, weeklytimetable_id: 1
       day2 {[1,2,3,4,6,7].sample}
       is_friday {rand(2) == 1}
       #association :fridayslot, factory: :timetable_period

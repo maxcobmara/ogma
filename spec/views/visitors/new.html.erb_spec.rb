@@ -2,10 +2,19 @@ require 'rails_helper'
 
 RSpec.describe "campus/visitors/new", :type => :view do
   before(:each) do
+    @college=FactoryGirl.create(:college)
     @visitor=FactoryGirl.create(:visitor)
-    @staff_user=FactoryGirl.create(:staff_user)
+    @staff_user=FactoryGirl.create(:staff_user, college_id: @college.id)
     sign_in(@staff_user)
   end
+#   before(:each) do
+#     @visitor=FactoryGirl.create(:visitor)
+#   end
+#   
+#   before(:each) do
+#     @staff_user=FactoryGirl.create(:staff_user)
+#     sign_in(@staff_user)
+#   end
 
   it "renders new visitor form" do
     

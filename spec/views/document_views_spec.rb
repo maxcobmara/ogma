@@ -2,18 +2,17 @@ require 'spec_helper'
 
 describe "document pages" do
  
-  subject { page }
-   
-  before {@college=FactoryGirl.create(:college)}
-  before {@page=FactoryGirl.create(:page)}
-  before {@admin_user=FactoryGirl.create(:admin_user)}
-  before {@document = FactoryGirl.create(:document)}
-  before (:each) do 
-    sign_in(@admin_user)
-  end
+  subject { page.html }
   
   describe "Document Index page" do
-    before { visit documents_path }
+    before(:each) do 
+      @college=FactoryGirl.create(:college)
+      @page=FactoryGirl.create(:page)
+      @admin_user=FactoryGirl.create(:admin_user)
+      sign_in(@admin_user)
+      @document = FactoryGirl.create(:document, stafffiled_id: @admin_user)
+      visit documents_path
+    end
     
     it { should have_selector('h1', text: 'Document List') }
     it { should have_link("New",    href: new_document_path + "?locale=en")}
@@ -33,7 +32,15 @@ describe "document pages" do
   end
   
   describe "Document Show Page" do
-    before { visit document_path(@document)}   
+    before(:each) do 
+      @college=FactoryGirl.create(:college)
+      @page=FactoryGirl.create(:page)
+      @admin_user2=FactoryGirl.create(:admin_user)
+      @document = FactoryGirl.create(:document)
+      sign_in(@admin_user2)
+      visit document_path(@document)
+    end
+    
     it {should have_selector('h1', text: "#{@document.refno} : #{@document.title.capitalize}")}   
     #amsas
     it { should have_selector(:link_or_button, I18n.t('document.staff_action'))} 
@@ -47,7 +54,15 @@ describe "document pages" do
   end
   
   describe "Document Edit Page" do
-    before { visit edit_document_path(@document)}   
+    before(:each) do 
+      @college=FactoryGirl.create(:college)
+      @page=FactoryGirl.create(:page)
+      @document = FactoryGirl.create(:document)
+      @admin_user3=FactoryGirl.create(:admin_user)
+      sign_in(@admin_user3)
+      visit edit_document_path(@document)
+    end
+
     it {should have_selector('h1', text: "Edit #{@document.refno} : #{@document.title.capitalize}")}
     
     it { should have_selector(:link_or_button, "Back")}    
