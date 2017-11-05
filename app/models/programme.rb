@@ -28,7 +28,9 @@ class Programme < ActiveRecord::Base
   end
   
   def maritim_roots?
-    college_id==College.where(code: 'amsas').first.id && ancestry_depth==0
+    unless college_id.nil?
+      college_id==College.where(code: 'amsas').first.id && ancestry_depth==0
+    end
   end
   
   def code2

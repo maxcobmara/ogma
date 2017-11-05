@@ -59,7 +59,8 @@ class Weeklytimetable < ActiveRecord::Base
   end
   
   def college_isnot_amsas?
-    college_id!=2
+#     college_id!=2
+    college.code!="amsas"
   end
   
   def manual_remove_details_if_marked
@@ -74,7 +75,8 @@ class Weeklytimetable < ActiveRecord::Base
   end
   
   def update_programme_amsas
-    if college_id==2
+#     if college_id==2
+    if college.code=="amsas"
       self.programme_id=Intake.find(intake_id).programme_id
     end
   end
@@ -634,7 +636,7 @@ class Weeklytimetable < ActiveRecord::Base
   
   private
     def intake_must_match_with_programme
-      if college_id!=2
+      if college.code!="amsas" #if college_id!=2
         valid_intakes = Intake.where(programme_id: programme_id).pluck(:id)
         if valid_intakes.include?(intake_id)
           return true
