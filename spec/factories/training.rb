@@ -54,6 +54,7 @@ FactoryGirl.define do
     #sequence(:ancestry) { |n| "#{n}"}
     #sequence(:combo_code) { |n| "0#{n}-"+code}
     association :college, factory: :college
+    level "llp"
   end
 
     #if programme --> course type diploma/pos basik/diploma lanjutan && ancestry depth=0
