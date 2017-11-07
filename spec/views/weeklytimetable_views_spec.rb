@@ -16,8 +16,8 @@ describe "Weeklytimetable pages" do
   before { @timetable_monthurs = FactoryGirl.create(:timetable) }
   before { @timetable_friday = FactoryGirl.create(:timetable) }
   
-  before { @timetable_period = FactoryGirl.create(:timetable_period, :timetable => @timetable_monthurs) }
-  before { @timetable_period = FactoryGirl.create(:timetable_period, :timetable => @timetable_friday) }
+#   before { @timetable_period = FactoryGirl.create(:timetable_period, :timetable => @timetable_monthurs) }
+#   before { @timetable_period = FactoryGirl.create(:timetable_period, :timetable => @timetable_friday) }
   
   before { @weeklytimetable = FactoryGirl.create(:weeklytimetable, :timetable_monthurs => @timetable_monthurs, :timetable_friday => @timetable_friday) }
  
