@@ -66,7 +66,7 @@ FactoryGirl.define do
       #programme_id 1
 #       intake_id 1
       association :schedule_intake, factory: :intake
-#       association :schedule_programme, factory: :programme
+      association :schedule_programme, factory: :programme
       startdate {Date.today+(366*rand()).to_f}
       enddate {Date.today+(366*rand())+(4*rand()).to_f}
       association :schedule_creator, factory: :basic_staff
