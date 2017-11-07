@@ -24,7 +24,8 @@ FactoryGirl.define do
       after(:create) {|basic_staff| create(:position, staff: basic_staff)}
     end
     factory :basic_staff_with_rank do
-      after(:create) {|basic_staff| create(:rank, staff: basic_staff)}
+      association :rank, factory: :rank
+#       after(:create) {|basic_staff| create(:rank, staff: basic_staff)}
     end
   end
 
