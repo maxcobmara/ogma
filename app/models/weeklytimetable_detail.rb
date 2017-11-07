@@ -14,8 +14,8 @@ class WeeklytimetableDetail < ActiveRecord::Base
    #has_one    :lessonplan,                :class_name => 'LessonPlan',  :foreign_key => 'schedule', :dependent => :nullify #31OCT2013 - :dependent => :destroy #####to UNREMARK when student attendance is ready******  26JUNE2014
    has_many   :student_attendances
    
-   belongs_to :fridayslot,      :class_name => 'TimetablePeriod', :foreign_key => 'time_slot'  ##sequence save not ID of TimetablePeriod
-   belongs_to :monthurslot, :class_name => 'TimetablePeriod', :foreign_key => 'time_slot2'  ##sequence save not ID of TimetablePeriod
+#    belongs_to :fridayslot,      :class_name => 'TimetablePeriod', :foreign_key => 'time_slot'  ##sequence save not ID of TimetablePeriod
+#    belongs_to :monthurslot, :class_name => 'TimetablePeriod', :foreign_key => 'time_slot2'  ##sequence save not ID of TimetablePeriod
    
    #validates_presence_of :lecturer_id, :lecture_method, :if => :topic?#,:time_slot, :time_slot2, :day2, :is_friday, :location,
    validates_presence_of :weeklytimetable_id
@@ -78,9 +78,11 @@ class WeeklytimetableDetail < ActiveRecord::Base
 #      timeslot = time_slot if is_friday == true 
 #      "#{weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: timeslot).first.start_at.strftime("%l:%M %p")}"
      if is_friday == false || is_friday == nil
-       "#{weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: time_slot2).first.start_at.strftime("%l:%M %p")}"
+#        "#{weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: time_slot2).first.start_at.strftime("%l:%M %p")}"
+       "#{TimetablePeriod.where(timetable: weeklytimetable.timetable_monthurs).where(seq: time_slot2).first.start_at.strftime("%l:%M %p")}"
      else
-       "#{weeklytimetable.timetable_friday.timetable_periods.where(sequence: time_slot).first.start_at.strftime("%l:%M %p")}"
+#        "#{weeklytimetable.timetable_friday.timetable_periods.where(sequence: time_slot).first.start_at.strftime("%l:%M %p")}"
+       "#{TimetablePeriod.where(timetable: weeklytimetable.timetable_monthurs).where(seq: time_slot).first.start_at.strftime("%l:%M %p")}"
      end
    end   
    
@@ -90,9 +92,11 @@ class WeeklytimetableDetail < ActiveRecord::Base
 #      timeslot = time_slot if is_friday == true 
 #      "#{weeklytimetable.timetable_friday.timetable_periods.where(sequence: timeslot).first.end_at.strftime("%l:%M %p")}"
      if is_friday == false || is_friday == nil
-       "#{weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: time_slot2).first.end_at.strftime("%l:%M %p")}"
+#        "#{weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: time_slot2).first.end_at.strftime("%l:%M %p")}"
+       "#{TimetablePeriod.where(timetable: weeklytimetable.timetable_monthurs).where(seq: time_slot2).first.end_at.strftime("%l:%M %p")}"
      else
-       "#{weeklytimetable.timetable_friday.timetable_periods.where(sequence: time_slot).first.end_at.strftime("%l:%M %p")}"
+#        "#{weeklytimetable.timetable_friday.timetable_periods.where(sequence: time_slot).first.end_at.strftime("%l:%M %p")}"
+       "#{TimetablePeriod.where(timetable: weeklytimetable.timetable_monthurs).where(seq: time_slot).first.end_at.strftime("%l:%M %p")}"
      end
    end   
    
@@ -105,11 +109,13 @@ class WeeklytimetableDetail < ActiveRecord::Base
       ####
       if is_friday == false || is_friday == nil
         timeslot = time_slot2 
-        slot=weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: timeslot).first   #format1
+#         slot=weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: timeslot).first   #format1
+	slot=weeklytimetable.timetable_monthurs.timetable_periods.where(seq: timeslot).first   #format1
       end
       if is_friday == true 
         timeslot = time_slot 
-        slot=weeklytimetable.timetable_friday.timetable_periods.where(sequence: timeslot).first         #weeklytimetable.format2
+#         slot=weeklytimetable.timetable_friday.timetable_periods.where(sequence: timeslot).first         #weeklytimetable.format2
+	slot=weeklytimetable.timetable_friday.timetable_periods.where(seq: timeslot).first       
       end
       if weeklytimetable.college.code=='amsas'
         stime="#{slot.start_at.strftime('%H:%M')} - #{slot.end_at.strftime('%H:%M')}"

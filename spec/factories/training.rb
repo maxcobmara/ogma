@@ -32,7 +32,9 @@ FactoryGirl.define do
   factory :timetable_period do
     association :college, factory: :college
     association :timetable, factory: :timetable
-    sequence(:sequence) { |n| "#{n}"+rand(1..15).to_s }     #NOTE - field name is 'sequence'
+    seq 1 # --OK 4 ... >> FactoryGirl.create(:lesson_plan), NOT OK 4 .. >>FactoryGirl.create(:timetable_period)
+    #seq { rand(1..15) }  #-- reverse of above
+    sequence(:sequence) { |n| "#{n}"}#+rand(1..15).to_s }     #NOTE - field name is 'sequence'
     day_name { rand(1..7) }
     end_at {Time.at(rand * Time.now.to_f)}
     start_at {Time.at(rand * Time.now.to_f)}
@@ -90,16 +92,19 @@ FactoryGirl.define do
       association :weeklytimetable_lecturer, factory: :basic_staff
       association :weeklytimetable, factory: :weeklytimetable#, weeklytimetable_id: 1
       day2 {[1,2,3,4,6,7].sample}
-      is_friday {rand(2) == 1}
-      #association :fridayslot, factory: :timetable_period
+      is_friday false #{rand(2) == 1}
+#       sequence(:time_slot2 ) {|n| "#{n}"}
+      time_slot2 1 #based on TimetablePeriod-sequence- default 1(monthurs)
+      time_slot 0
       #association :monthurslot, factory: :timetable_period
+      #association :fridayslot, factory: :timetable_period
       location "Some location"
       #association :weeklytimetable_location, factory: :location
       lecture_method {rand(1..3)}
     end
 
     factory :lesson_plan, class: LessonPlan do
-      #association :lessonplan_owner, factory: :staff
+#       association :lessonplan_owner, factory: :basic_staff
       #association :lessonplan_intake, factory: :intake
       sequence(:student_qty) { |n| "#{n}" }
       #semester {rand(1..6)}

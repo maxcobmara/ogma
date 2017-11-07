@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170929071311) do
+ActiveRecord::Schema.define(version: 20171107050528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -2685,6 +2685,7 @@ ActiveRecord::Schema.define(version: 20170929071311) do
     t.integer  "college_id"
     t.string   "data"
     t.integer  "non_class"
+    t.integer  "seq"
   end
 
   create_table "timetables", force: true do |t|
