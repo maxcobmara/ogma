@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171107050528) do
+ActiveRecord::Schema.define(version: 20171109053327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,15 +33,12 @@ ActiveRecord::Schema.define(version: 20171107050528) do
     t.date     "received"
     t.integer  "received_by"
     t.integer  "supplied_by"
+    t.integer  "status"
+    t.integer  "college_id"
+    t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "college_id"
-    t.integer  "status"
-    t.text     "data"
   end
-
-  add_index "accessions", ["accession_no"], name: "index_accessions_on_accession_no", using: :btree
-  add_index "accessions", ["id"], name: "index_accessions_on_id", using: :btree
 
   create_table "address_book_items", force: true do |t|
     t.integer  "address_book_id"
@@ -689,15 +686,12 @@ ActiveRecord::Schema.define(version: 20171107050528) do
     t.string   "indice"
     t.string   "notes"
     t.string   "backuproman"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "finance_source"
     t.integer  "college_id"
-    t.string   "data"
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
-
-  add_index "books", ["id"], name: "index_books_on_id", using: :btree
-  add_index "books", ["isbn"], name: "index_books_on_isbn", using: :btree
 
   create_table "booksearches", force: true do |t|
     t.string   "title"
@@ -709,11 +703,11 @@ ActiveRecord::Schema.define(version: 20171107050528) do
     t.string   "accessionno_end"
     t.integer  "stock_summary"
     t.integer  "accumbookloan"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "publisher"
     t.integer  "college_id"
-    t.string   "data"
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "booleananswers", force: true do |t|
@@ -1528,10 +1522,10 @@ ActiveRecord::Schema.define(version: 20171107050528) do
     t.integer  "libcheckout_by"
     t.integer  "libextended_by"
     t.integer  "libreturned_by"
+    t.integer  "college_id"
+    t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "college_id"
-    t.string   "data"
   end
 
   create_table "librarytransactionsearches", force: true do |t|
@@ -1541,10 +1535,10 @@ ActiveRecord::Schema.define(version: 20171107050528) do
     t.integer  "bookloans"
     t.date     "yearstat"
     t.integer  "details"
+    t.integer  "college_id"
+    t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "college_id"
-    t.string   "data"
   end
 
   create_table "loans", force: true do |t|
