@@ -2,56 +2,38 @@ require 'rails_helper'
 
 RSpec.describe "campus/visitors/new", :type => :view do
   before(:each) do
-    assign(:visitor, Visitor.new(
-      :name => "MyString",
-      :icno => "MyString",
-      :rank_id => 1,
-      :title_id => 1,
-      :department => "MyString",
-      :phoneno => "MyString",
-      :hpno => "MyString",
-      :email => "MyString",
-      :expertise => "MyString"
-    ))
+    @college=FactoryGirl.create(:college)
+    @visitor=FactoryGirl.create(:visitor)
+    @staff_user=FactoryGirl.create(:staff_user, college_id: @college.id)
+    sign_in(@staff_user)
   end
-  
-  before(:each) do
-    assign(:staff_user, [
-      User.create!(
-	:email => "test@gmmm.com",
-	:password => "12345678",
-	:password_confirmation => "12345678",
-	:college_id => 1,
-	:userable_type => "staff",
-	:userable_id => 1
-      )
-    ])
-  end
-  
-  before { sign_in (:staff_user)}
+#   before(:each) do
+#     @visitor=FactoryGirl.create(:visitor)
+#   end
+#   
+#   before(:each) do
+#     @staff_user=FactoryGirl.create(:staff_user)
+#     sign_in(@staff_user)
+#   end
 
   it "renders new visitor form" do
-    render
-
-    assert_select "form[action=?][method=?]", visitors_path, "post" do
+    
+    render :template => 'campus/visitors/new'    
+    
+    assert_select "form[action=?][method=?]", campus_visitor_path(@visitor), "post" do
 
       assert_select "input#visitor_name[name=?]", "visitor[name]"
-
       assert_select "input#visitor_icno[name=?]", "visitor[icno]"
-
-      assert_select "input#visitor_rank_id[name=?]", "visitor[rank_id]"
-
-      assert_select "input#visitor_title_id[name=?]", "visitor[title_id]"
-
+      assert_select "select#visitor_rank_id[name=?]", "visitor[rank_id]"
+      assert_select "select#visitor_title_id[name=?]", "visitor[title_id]"
       assert_select "input#visitor_department[name=?]", "visitor[department]"
-
+      assert_select "select#visitor_address_book_id[name=?]", "visitor[address_book_id]"
+      assert_select "input#visitor_corporate[name=?]", "visitor[corporate]"
       assert_select "input#visitor_phoneno[name=?]", "visitor[phoneno]"
-
       assert_select "input#visitor_hpno[name=?]", "visitor[hpno]"
-
       assert_select "input#visitor_email[name=?]", "visitor[email]"
-
       assert_select "input#visitor_expertise[name=?]", "visitor[expertise]"
+      
     end
   end
 end

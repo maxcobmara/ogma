@@ -41,7 +41,9 @@ class Intake < ActiveRecord::Base
   
   def college_isnot_amsas?
     #college_id!=2
-    college.code!='amsas'
+    unless college_id.nil?
+      college.code!='amsas'
+    end
   end
   
   def apply_month_year_if_nil

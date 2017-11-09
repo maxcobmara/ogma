@@ -106,7 +106,21 @@ FactoryGirl.define do
   end
   
   factory :mailbox do
-    
+  end
+  
+  factory :visitor do
+    sequence(:name) {|n| "Visitor #{n}"}
+    icno {(0...12).map {rand(10).to_s}.join }
+    association :rank, factory: :rank
+    association :title, factory: :title
+    association :college, factory: :college
+    association :address_book, factory: :address_book
+    corporate {true}
+    sequence(:department) {|n| "Department #{n}"}
+    phoneno {(0...10).map {rand(10).to_s}.join }
+    hpno {(0...10).map {rand(10).to_s}.join }
+    email { |n| "visitor#{n}@example.com" }
+    expertise {"My expertise"}
   end
   
 end

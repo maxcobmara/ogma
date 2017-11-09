@@ -20,9 +20,13 @@ FactoryGirl.define do
     association :staffgrade, factory: :employgrade
     association :college, factory: :college
     #association :timetables, factory: :timetable
-#     factory :basic_staff_with_position do
+    factory :basic_staff_with_position do
       after(:create) {|basic_staff| create(:position, staff: basic_staff)}
-#     end
+    end
+    factory :basic_staff_with_rank do
+      association :rank, factory: :rank
+#       after(:create) {|basic_staff| create(:rank, staff: basic_staff)}
+    end
   end
 
   factory :staff_with_login, :class => 'Staff' do
@@ -68,6 +72,21 @@ FactoryGirl.define do
     association :college, factory: :college
     association :staff, factory: :basic_staff
     association :staffgrade, factory: :employgrade #min grade
+  end
+  
+  factory :rank do
+    association :staffgrade, factory: :employgrade
+    sequence(:name) {|n| "Name #{n}"}
+    sequence(:shortname) {|n| "Short Name #{n}"}
+    category {[1,2].sample}
+    association :college, factory: :college
+  end
+  
+  factory :title do
+    sequence(:titlecode) {|n| "Title Code #{n}"}
+    name {['Tun', 'Cik', 'Puan', 'Hajjah', 'Encik', 'Tuan', 'Haji', 'Doktor', 'Dato'].sample}
+    berhormat {rand(2) == 1}
+    association :college, factory: :college
   end
 
   factory :staff_attendance do

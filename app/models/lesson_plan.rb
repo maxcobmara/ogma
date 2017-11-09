@@ -1,7 +1,7 @@
 class LessonPlan < ActiveRecord::Base
   
   #hide before_save to pass rspec - requires current_user to work
-  before_save :set_to_nil_where_false,:assign_topic_intake_id, :copy_attached_doc_trainingnotes
+  before_save :set_to_nil_where_false,:assign_topic_intake_id, :copy_attached_doc_trainingnotes, :set_plan_owner
 
   belongs_to :lessonplan_owner,   :class_name => 'Staff',                 :foreign_key => 'lecturer'
   belongs_to :lessonplan_creator, :class_name => 'Staff',                 :foreign_key => 'prepared_by'
@@ -15,8 +15,9 @@ class LessonPlan < ActiveRecord::Base
   accepts_nested_attributes_for :lessonplan_methodologies, :allow_destroy => true#, :reject_if => lambda { |a| a[:start_at].blank? }
   
   #validate :approved_or_rejected, :satisfy_or_notsatisfy
-  validates :schedule, :lecturer, presence: true    #hide on 31st October 2013
-  validate :schedule_and_plan_owner_must_match
+  #validates :schedule, :lecturer, presence: true    #hide on 31st October 2013
+  validates :schedule, presence: true #hide on 7Nov2017-should take plan owner from schedule (WeeklytimetableDetail)
+#   validate :schedule_and_plan_owner_must_match
   validates :endorsed_by, presence: true, :if => :is_submitted? 
   
   #trial section------------
@@ -37,6 +38,12 @@ class LessonPlan < ActiveRecord::Base
                           :storage => :file_system,
                           :message => "Invalid File Format" 
    validates_attachment_size :data, :less_than => 5.megabytes 
+  
+  def set_plan_owner
+    unless schedule.nil?
+      self.lecturer=schedule_item.lecturer_id
+    end
+  end
   
   def set_to_nil_where_false
     if is_submitted == true

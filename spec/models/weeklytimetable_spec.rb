@@ -32,6 +32,8 @@ describe Weeklytimetable do
   
    describe "when programme_id is not present" do
     before { @weeklytimetable.programme_id = nil }
+    before { @college = FactoryGirl.create(:college, code: "other_college")}
+    before { @weeklytimetable.college = @college }
     it { should_not be_valid }
   end
   

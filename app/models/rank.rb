@@ -2,6 +2,7 @@ class Rank < ActiveRecord::Base
   
   before_save :set_shortname
   
+  belongs_to :college
   has_many :staffs
   belongs_to :staffgrade, class_name: 'Employgrade',  foreign_key: 'employgrade_id'
   has_many :students

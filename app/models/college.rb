@@ -78,6 +78,8 @@ class College < ActiveRecord::Base
   has_many :locations
   has_many :programmes
   has_many :groups
+  has_many :ranks
+  has_many :titles
   # staffs
   
   serialize :data, Hash
