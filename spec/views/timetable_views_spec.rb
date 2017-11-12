@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Timetable pages" do
 
   before { @timetable = FactoryGirl.create(:timetable) }
-  before { @timetable_period = FactoryGirl.create(:timetable_period, :timetable =>@timetable)}
+#   before { @timetable_period = FactoryGirl.create(:timetable_period, :timetable =>@timetable)}
   #refer app/views/timetables/show.html.haml - line 35 (@timetable.timetable_periods.in_groups_of)   
   
   #Reference : http://www.agileweboperations.com/real-world-example-using-factory_girl-to-simplify-our-test-setup  
