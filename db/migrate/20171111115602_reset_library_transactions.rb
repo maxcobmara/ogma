@@ -1,0 +1,46 @@
+class ResetLibraryTransactions < ActiveRecord::Migration
+  def self.up
+    drop_table :librarytransactions
+    drop_table :librarytransactionsearches
+  end
+  
+  def self.down
+    create_table :librarytransactions do |t|
+      t.integer  :accession_id
+      t.boolean  :ru_staff
+      t.integer  :staff_id
+      t.integer  :student_id
+      t.date     :checkoutdate
+      t.date     :returnduedate
+      t.boolean  :extended
+      t.boolean  :returned
+      t.date     :returneddate
+      t.decimal  :fine
+      t.boolean  :finepay
+      t.date     :finepaydate
+      t.boolean  :reportlost
+      t.text     :report
+      t.date     :reportlostdate
+      t.date     :replaceddate
+      t.integer  :libcheckout_by
+      t.integer  :libextended_by
+      t.integer  :libreturned_by
+      t.integer  :college_id
+      t.text       :data
+      t.timestamps
+    end
+
+    create_table :librarytransactionsearches do |t|
+      t.integer  :accumbookloan
+      t.integer  :programme
+      t.integer  :fines
+      t.integer  :bookloans
+      t.date     :yearstat
+      t.integer  :details
+      t.integer  :college_id
+      t.text       :data
+      t.timestamps
+    end
+  end
+  
+end
