@@ -2,7 +2,7 @@
 #set -o verbose
 #rm .bundle/config
 ps -ef |  grep -v grep | grep ruby && ps aux | grep -v grep | grep ruby | awk '{print $2}' | xargs kill -9;
-pg_dump icms_demo_production > /Users/apmm/ICMS/database_backup/icms_demo_production_$(date +%d-%m-%y_%H:%M:%S).dump
+pg_dump icms_demo_production > /Users/apmm/ICMS/database_backup/icms_demo_production_$(date +%d%b%Y_%H-%M-%S).dump
 source ~/.rvm/scripts/rvm
 git pull &&
 RAILS_ENV=production bundle install &&
