@@ -1524,8 +1524,6 @@ ActiveRecord::Schema.define(version: 20161219084454) do
     t.text     "trainee_report"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "payment"
-    t.text     "remark"
   end
 
   create_table "ptdosearches", force: true do |t|
