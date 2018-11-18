@@ -1,6 +1,6 @@
 class Student < ActiveRecord::Base
   include StudentsHelper
-  
+
   before_save  :titleize_name
   validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake,:course_id
   validates_numericality_of :icno, :stelno
@@ -36,7 +36,7 @@ class Student < ActiveRecord::Base
 
   #has_many :sdiciplines, :foreign_key => 'student_id'
   #has_many :std, :class_name => 'Sdicipline', :foreign_key => 'student_id'
-  
+
   has_many          :kins, :dependent => :destroy
   accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
 
@@ -44,16 +44,16 @@ class Student < ActiveRecord::Base
     programme_ids = Programme.roots.where('name ILIKE(?)', "%#{query}%").pluck(:id)
     where(course_id: programme_ids)
   end
-  
+
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
     [:course_search]
   end
-  
+
   def intake_course
     "#{intake}"+","+"#{course_id}"
   end
-  
+
   def student_list
     "#{icno}"+" "+"#{name}"
 
@@ -122,13 +122,13 @@ class Student < ActiveRecord::Base
   end
 
   def matrix_name
-    " #{matrixno} #{name}"
+    " #{matrixno.to_s} #{name.to_s}"
   end
-  
+
   def matrix_name_programme
      "#{matrix_name} (#{programme_name})"
   end
-  
+
   def programme_name
     if course.blank?
       "N/A"
@@ -222,48 +222,48 @@ class Student < ActiveRecord::Base
      ####Kebidanan only - end
      return Date.new(intake_year, intake_month,1)
    end
-   
+
    def self.get_intake_repeat(main_semester, main_year, programme)
      current_year = Date.today.year
      current_month = Date.today.month     #for testing - assign value as 8 (August)
-     if current_month < 7 
+     if current_month < 7
        current_semester = 2
        current_sem_month = 7              #Sem January
-     else 
-       current_semester = 1 
+     else
+       current_semester = 1
        current_sem_month = 1              #Sem July
-     end 
-     if main_semester == 1 
-       intake_month = current_sem_month 
-       if main_year >1 
+     end
+     if main_semester == 1
+       intake_month = current_sem_month
+       if main_year >1
          intake_year = current_year-main_year
 #        else                                     #no repeaters among 1st sem, 1st year students, all freshies.
-#          intake_year = current_year 
-       end 
+#          intake_year = current_year
+       end
      elsif main_semester == 2
-       if current_sem_month == 1 
+       if current_sem_month == 1
          intake_month = 1
-         intake_year = current_year-(main_year-1) 
-       else 
-         intake_month = 1 
-         intake_year = current_year-main_year    
-       end 
-     end 
-     return Date.new(intake_year, intake_month,1) 
+         intake_year = current_year-(main_year-1)
+       else
+         intake_month = 1
+         intake_year = current_year-main_year
+       end
+     end
+     return Date.new(intake_year, intake_month,1)
    end
 
    def self.get_intake_repeat2(main_semester, main_year, programme) #Sem 1, Year 3 (1/1/2012)
      current_year = Date.today.year
-     current_month = Date.today.month     
-     if current_month < 7 
+     current_month = Date.today.month
+     if current_month < 7
        intake_month = 1              #Sem January
-     else 
+     else
        intake_month = 7              #Sem July
-     end      
+     end
      intake_year = current_year-main_year
-     return Date.new(intake_year, intake_month,1) 
+     return Date.new(intake_year, intake_month,1)
    end
-   
+
    def self.get_student_by_intake_gender_race(main_semester, main_year, gender, programme, race)
      intake_start = Student.get_intake(main_semester, main_year, programme)
      intake_end = intake_start.end_of_month
@@ -272,9 +272,9 @@ class Student < ActiveRecord::Base
        intake_repeat_start = Student.get_intake_repeat(main_semester, main_year, programme)
        intake_repeat_end = intake_repeat_start.end_of_month
        repeat_students = Student.where('intake >=? AND intake<=? AND course_id=? AND race2=? AND gender=? and sstatus=? AND sstatus_remark not ILIKE(?)', intake_repeat_start, intake_repeat_end, programme, race, gender, 'Repeat', '%,%')
-       #repeat_students = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND race2=? AND gender=? and sstatus=?', "2014-01-01", "2014-01-31", 1, 11, 1, 'Repeat']) 
+       #repeat_students = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND race2=? AND gender=? and sstatus=?', "2014-01-01", "2014-01-31", 1, 11, 1, 'Repeat'])
        #for checking - 950423-12-6289, Idzham, Jurupulih Cara Kerja(1), Male, Kedayan(11), Intake Jan 2014, SWITCH between sstatus='Current' & 'Repeat'
-       
+
        #downgrade by another 1 sem  (repeat 2 semesters)
        if !(main_semester==2 && main_year==1)  #&& main_semester==2 #1
          intake_repeat2_start = Student.get_intake_repeat2(main_semester, main_year, programme)
@@ -283,12 +283,12 @@ class Student < ActiveRecord::Base
          if intakemonth == main_semester || intakemonth-5 == main_semester
            repeat_students2 = Student.where('intake >=? AND intake<=? AND course_id=? AND race2=? and gender=? and sstatus=? AND sstatus_remark ILIKE(?)', intake_repeat2_start, intake_repeat2_end, programme, race, gender, 'Repeat', '%,%')
          end
-       end 
-       
+       end
+
      end
      all_students = []
      all_students += current_students if current_students
-     all_students+=repeat_students if repeat_students 
+     all_students+=repeat_students if repeat_students
      all_students+=repeat_students2 if repeat_students2
      return all_students
    end
@@ -301,9 +301,9 @@ class Student < ActiveRecord::Base
        intake_repeat_start = Student.get_intake_repeat(main_semester, main_year, programme)
        intake_repeat_end = intake_repeat_start.end_of_month
        repeat_students = Student.where('intake >=? AND intake<=? AND course_id=? AND gender=? and race2 IS NOT NULL and sstatus=? AND sstatus_remark not ILIKE(?)', intake_repeat_start, intake_repeat_end, programme, gender, 'Repeat', '%,%')
-       #repeat_students = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND gender=? and sstatus=?', "2014-01-01", "2014-01-31", 1, 1, 'Repeat']) 
+       #repeat_students = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND gender=? and sstatus=?', "2014-01-01", "2014-01-31", 1, 1, 'Repeat'])
        #for checking - 950423-12-6289, Idzham, Jurupulih Cara Kerja(1), Male, Kedayan(11), Intake Jan 2014, SWITCH between sstatus='Current' & 'Repeat'
-       
+
        #downgrade by another 1 sem  (repeat 2 semesters)
        if !(main_semester==2 && main_year==1)  #&& main_semester==2 #1
          intake_repeat2_start = Student.get_intake_repeat2(main_semester, main_year, programme)
@@ -312,17 +312,17 @@ class Student < ActiveRecord::Base
          if intakemonth == main_semester || intakemonth-5 == main_semester
            repeat_students2 = Student.where('intake >=? AND intake<=? AND course_id=? AND race2 IS NOT NULL and gender=? and sstatus=? AND sstatus_remark ILIKE(?)', intake_repeat2_start, intake_repeat2_end, programme, gender, 'Repeat', '%,%')
          end
-       end 
-       
+       end
+
      end
-     
+
      all_students = []
      all_students += current_students if current_students
      all_students+=repeat_students if repeat_students
      all_students+=repeat_students2 if repeat_students2
      return all_students
    end
-   
+
    #####Laporan Bilangan Pelatih (Lapor Diri)
    def self.get_lapor_diri(main_semester, main_year, gender, programme)
      students_all_6intakes = Student.get_student_by_6intake(programme)
@@ -348,7 +348,7 @@ class Student < ActiveRecord::Base
      intake_start6 = Student.get_intake(2, 3, programme)
      intake_end6 = intake_start6.end_of_month
      current_students = Student.where('((intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=? and sstatus=?',intake_start1, intake_end1,intake_start2, intake_end2, intake_start3, intake_end3, intake_start4, intake_end4,intake_start5, intake_end5,intake_start6, intake_end6,programme, 'Current')
-     
+
      intake_repeat_start2 = Student.get_intake_repeat(2, 1, programme)
      intake_repeat_end2 = intake_repeat_start2.end_of_month
      intake_repeat_start3 = Student.get_intake_repeat(1, 2, programme)
@@ -360,7 +360,7 @@ class Student < ActiveRecord::Base
      intake_repeat_start6 = Student.get_intake_repeat(2, 3, programme)
      intake_repeat_end6 = intake_repeat_start6.end_of_month
      repeat_students= Student.where('( (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=? AND sstatus=? AND sstatus_remark not ILIKE(?)',intake_repeat_start2, intake_repeat_end2, intake_repeat_start3, intake_repeat_end3, intake_repeat_start4, intake_repeat_end4,intake_repeat_start5, intake_repeat_end5,intake_repeat_start6, intake_repeat_end6,programme, 'Repeat', '%,%')
-     
+
      intake_repeat2_start3 = Student.get_intake_repeat2(1, 2, programme)
      intake_repeat2_end3 = intake_repeat2_start3.end_of_month
      intake_repeat2_start4 = Student.get_intake_repeat2(2, 2, programme)
@@ -370,7 +370,7 @@ class Student < ActiveRecord::Base
      intake_repeat2_start6 = Student.get_intake_repeat2(2, 3, programme)
      intake_repeat2_end6 = intake_repeat2_start6.end_of_month
      repeat2_students= Student.where('( (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=? AND sstatus=? AND sstatus_remark ILIKE(?)', intake_repeat2_start3, intake_repeat2_end3, intake_repeat2_start4, intake_repeat2_end4,intake_repeat2_start5, intake_repeat2_end5,intake_repeat2_start6, intake_repeat2_end6,programme, 'Repeat', '%,%')
-     
+
      all_students = []
      all_students += current_students if current_students
      all_students+=repeat_students if repeat_students
@@ -384,19 +384,19 @@ class Student < ActiveRecord::Base
      intake_start2 = Student.get_intake(2, 1, programme)
      intake_end2 = intake_start2.end_of_month
      current_students = Student.where('((intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=? and sstatus=?',intake_start1, intake_end1,intake_start2, intake_end2, programme, 'Current')
-     
+
      intake_repeat_start2 = Student.get_intake_repeat(2, 1, programme)
      intake_repeat_end2 = intake_repeat_start2.end_of_month
      #intake_repeat_start3 = Student.get_intake_repeat(1, 2, programme)
      #intake_repeat_end3 = intake_repeat_start3.end_of_month
      repeat_students= Student.where('( (intake >=? AND intake<=?)) AND course_id=? AND sstatus=? AND sstatus_remark not ILIKE(?)',intake_repeat_start2, intake_repeat_end2, programme, 'Repeat', '%,%')
-     
+
      intake_repeat2_start3 = Student.get_intake_repeat2(1, 2, programme)
      intake_repeat2_end3 = intake_repeat2_start3.end_of_month
      intake_repeat2_start4 = Student.get_intake_repeat2(2, 2, programme)
      intake_repeat2_end4 = intake_repeat2_start4.end_of_month
      repeat2_students= Student.where('((intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=? AND sstatus=? AND sstatus_remark ILIKE(?)', intake_repeat2_start3, intake_repeat2_end3, intake_repeat2_start4, intake_repeat2_end4,programme, 'Repeat', '%,%')
-     
+
      all_students = []
      all_students += current_students if current_students
      all_students+=repeat_students if repeat_students
@@ -416,7 +416,7 @@ class Student < ActiveRecord::Base
  accepts_nested_attributes_for :spmresults, :reject_if => lambda { |a| a[:spm_subject].blank? }
 
  #export excel section ---
- 
+
   def self.to_csv2(options = {})
     CSV.generate(options) do |csv|
         csv << [I18n.t('student.students.list')] #title added
@@ -427,7 +427,7 @@ class Student < ActiveRecord::Base
         end
       end
   end
- 
+
  def self.to_csv(options = {})
     @programme_id = all[0].course_id
     students_all_6intakes = Student.get_student_by_6intake(@programme_id)
@@ -436,7 +436,7 @@ class Student < ActiveRecord::Base
     @valid = Student.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',@programme_id, @students_6intakes_ids)
     @student = Student.all
     programme_name=Programme.find(@programme_id).programme_list
-   
+
     CSV.generate(options) do |csv|
         csv << ["BAHAGIAN PENGURUSAN LATIHAN"]
         csv << ["KEMENTERIAN KESIHATAN MALAYSIA"]
@@ -446,7 +446,7 @@ class Student < ActiveRecord::Base
         else
             csv << ["INSTITUSI LATIHAN : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", "**SESI:JAN-JUN......  JUL-DIS #{Date.today.year}"]
         end
-        csv << [] #blank row added  
+        csv << [] #blank row added
         csv << ["JENIS PROGRAM/ KURSUS","KUMP","Jantina", "Melayu","Cina","India","Org Asli","Bajau","Murut","Brunei","Bisaya","Kadazan","Suluk","Kedayan","Iban","Kadazan Dusun","Sungai","Siam","Malanau","Bugis","Bidayuh","Momogun Rungus","Dusun","Lain-lain","JUMLAH"]
 
         csv << [programme_name,"T1SI","P","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 1).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 2).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 3).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 4).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 5).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 6).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 7).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 8).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 9).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 10).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 11).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 12).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 13).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 14).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 15).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 16).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 17).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 18).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 19).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 20).count}","#{Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, 21).count}","#{Student.get_student_by_intake_gender(1, 1, 2,@programme_id).count}"]
@@ -470,62 +470,62 @@ class Student < ActiveRecord::Base
          csv << [nil, nil,"L","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 1).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 2).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 3).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 4).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 5).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 6).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 7).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 8).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 9).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 10).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 11).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 12).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 13).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 14).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 15).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 16).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 17).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 18).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 19).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 20).count}","#{Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, 21).count}","#{Student.get_student_by_intake_gender(1, 3, 1,@programme_id).count}"]
 
          csv << [nil, "T3SII","P","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 1).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 2).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 3).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 4).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 5).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 6).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 7).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 8).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 9).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 10).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 11).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 12).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 13).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 14).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 15).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 16).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 17).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 18).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 19).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 20).count}","#{Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, 21).count}","#{Student.get_student_by_intake_gender(2, 3, 2,@programme_id).count}"]
-	 
+
          csv << [nil, nil,"L","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 1).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 2).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 3).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 4).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 5).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 6).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 7).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 8).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 9).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 10).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 11).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 12).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 13).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 14).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 15).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 16).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 17).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 18).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 19).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 20).count}","#{Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 21).count}","#{Student.get_student_by_intake_gender(2, 3, 1,@programme_id).count}"]
- 
+
          csv << [nil,"JUMLAH",nil, "#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 1,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 2,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 3,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 4,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 5,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 6,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 7,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 8,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 9,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 10,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 11,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 12,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 13,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 14,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 15,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 16,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 17,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 18,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 19,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 20,@students_6intakes_ids).count}","#{@total_by_race=Student.where('course_id=? AND race2=? AND id IN (?)', @programme_id, 21,@students_6intakes_ids).count}","#{@valid.count}"]
 
       end
   end
-  
-  def self.import(file) 
-    spreadsheet = Spreadsheet2.open_spreadsheet(file) 
+
+  def self.import(file)
+    spreadsheet = Spreadsheet2.open_spreadsheet(file)
     result = StudentsHelper.update_student(spreadsheet)
     return result
-  end 
+  end
 
-  def self.messages(import_result) 
+  def self.messages(import_result)
     StudentsHelper.msg_import(import_result)
   end
-  
-  def self.messages2(import_result) 
+
+  def self.messages2(import_result)
     StudentsHelper.msg_import2(import_result)
   end
-  
+
   def self.groupby_programme
     studentby_programmelists=Student.where('course_id is not null').group_by{|x|x.course.programme_list}
     @groupped_student=[]
     studentby_programmelists.each do |programmelist, students|
       pg_students=[[I18n.t('helpers.prompt.select_student'), '']]
-      students.each{|student|pg_students << [student.matrix_name, student.id]} 
+      students.each{|student|pg_students << [student.matrix_name, student.id]}
       @groupped_student << [programmelist, pg_students]
     end
     @groupped_student
   end
-  
+
   def self.groupby_posbasics
     posbasics=Programme.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:id)
     studentby_programmelists=Student.where('course_id is not null').where(course_id: posbasics).group_by{|x|x.course.programme_list}
     @groupped_student=[]
     studentby_programmelists.each do |programmelist, students|
       pg_students=[[I18n.t('helpers.prompt.select_student'), '']]
-      students.each{|student|pg_students << [student.matrix_name, student.id]} 
+      students.each{|student|pg_students << [student.matrix_name, student.id]}
       @groupped_student << [programmelist, pg_students]
     end
     @groupped_student
   end
-  
+
   def self.groupby_oneprogramme(progid)
     studentby_programmelists=Student.where(course_id: progid).order(matrixno: :asc).group_by{|x|x.course.programme_list}
     @groupped_student=[]
     studentby_programmelists.each do |programmelist, students|
       pg_students=[[I18n.t('helpers.prompt.select_student'), '']]
-      students.each{|student|pg_students << [student.matrix_name, student.id]} 
+      students.each{|student|pg_students << [student.matrix_name, student.id]}
       @groupped_student << [programmelist, pg_students]
     end
     @groupped_student
   end
-  
+
 STATUS = [
            #  Displayed       stored in db
            [ I18n.t('student.students.current'),"Current" ],
@@ -534,7 +534,7 @@ STATUS = [
            [ I18n.t('student.students.on_leave'), "On Leave" ],
            [ I18n.t('student.students.transfer_college'), "Transfer College"],
            [ I18n.t('student.students.expelled'), "Expelled"]
-] 
+]
 
 SPONSOR = [
          #  Displayed       stored in db

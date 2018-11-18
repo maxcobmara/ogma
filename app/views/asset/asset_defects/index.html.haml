@@ -1,7 +1,7 @@
 - model_class = AssetDefect
 .page-header
   %h1= t('asset.defect.title')#, :default => model_class.model_name.human.pluralize
-  
+
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
   %ul.nav.navbar-nav.navbar-right
@@ -22,17 +22,17 @@
     - @defective.each do |defect|
       %tr
         %td= link_to defect.asset.try(:assetcode), asset_defect_path(defect)
-        %td= "#{defect.asset.try(:typename)} - #{defect.asset.name} - #{defect.asset.modelname}"  
+        %td= "#{defect.asset.try(:typename)} - #{defect.try(:asset).try(:name)} - #{defect.try(:asset).try(:modelname)}"  
         %td= defect.asset.try(:serialno)
         %td= link_to defect.asset.asset_placements.last.try(:location).try(:location_list), (campus_location_path(defect.asset.asset_placements.last.location.id)) rescue nil
         %td
           /= defect.id
-         
+
   .right{style:"padding:0 30px; margin:0;"}= paginate @defective, :theme => 'twitter-bootstrap-3'
 
 :javascript
 $(document).ready(function(){
   $('.toga').click(function() {
-    $('.search_row').toggle(); 
+    $('.search_row').toggle();
   });
 });
