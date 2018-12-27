@@ -9,38 +9,38 @@ module StudentsHelper
     start_year = 1
     start_sem = 1
 
-    if intake_month.to_i < 7 
-      if current_month.to_i < 7 
-        @year = start_year + diff_year 
-        @semester = start_sem 
-      elsif current_month.to_i > 6 
-        @year = start_year + diff_year 
-        @semester = 2 
-      end 
-    elsif intake_month.to_i > 6 
-      if current_month.to_i < 7 
-        @year = diff_year 
-        @semester = 2 							
-      elsif current_month.to_i > 6 
-        @year = start_year + diff_year 
-        @semester = 1 
+    if intake_month.to_i < 7
+      if current_month.to_i < 7
+        @year = start_year + diff_year
+        @semester = start_sem
+      elsif current_month.to_i > 6
+        @year = start_year + diff_year
+        @semester = 2
       end
-    end 
+    elsif intake_month.to_i > 6
+      if current_month.to_i < 7
+        @year = diff_year
+        @semester = 2
+      elsif current_month.to_i > 6
+        @year = start_year + diff_year
+        @semester = 1
+      end
+    end
 
     "#{(I18n.t('time.years')).singularize.titleize} #{@year}, Semester #{@semester}"
   end
-  
+
   def intake_num
     intake_month = intake.strftime("%m")
     intake_year = intake.strftime("%Y")
-    if intake_month.to_i < 7 
+    if intake_month.to_i < 7
       mnth_group = 1
     elsif intake_month.to_i > 6
       mnth_group = 2
     end
     "#{mnth_group}/#{intake_year}"
   end
-  
+
   #for Export Excel -- start
   def display_matrixno
     unless matrixno.nil?
@@ -49,9 +49,9 @@ module StudentsHelper
       nil
     end
   end
- 
+
   def display_race
-    unless race2.nil? 
+    unless race2.nil?
       a="#{((Student::RACE.find_all{|disp, value| value == race2.to_i}).map {|disp, value| disp}).first}"
     else
       a=nil
@@ -77,7 +77,7 @@ module StudentsHelper
   def display_birthdate
     "#{sbirthdt.to_date.strftime("%d-%m-%Y") unless sbirthdt.nil?}"
   end
- 
+
   def display_bloodtype
     if bloodtype.nil? || bloodtype.blank?
       a=nil
@@ -109,7 +109,7 @@ module StudentsHelper
         a=nil
       end
     else
-      unless sstatus_remark.nil? 
+      unless sstatus_remark.nil?
         a="#{sstatus_remark}"
       else
         a=nil
@@ -193,34 +193,34 @@ module StudentsHelper
 
   #for Import Excel -- start
   def self.update_student(spreadsheet)
-    spreadsheet.default_sheet = spreadsheet.sheets.first 
+    spreadsheet.default_sheet = spreadsheet.sheets.first
     header = spreadsheet.row(1)
-    
+
     student_status=[]
     Student::STATUS.each do |name, saved_status|
       student_status << saved_status
     end
-    
+
     student_sponsor=[]
     Student::SPONSOR.each do |name, saved_sponsor|
       student_sponsor << saved_sponsor
     end
-    
+
     student_course=[]
     Programme.roots.sort.each do |course|
       student_course << course.id
     end
-    
+
     student_marital=[]
     Student::MARITAL_STATUS.each do |name, saved_marital|
       student_marital << saved_marital
     end
-    
+
     student_race=[]
     Student::RACE.each do |name, saved_race|
       student_race << saved_race
     end
-      
+
     saved_students=[]
     icno_not_exist=[]
     name_not_exist=[]
@@ -233,24 +233,24 @@ module StudentsHelper
     intake_not_valid=[]
     marital_not_valid=[]
     #race_not_valid=[] - not compulsory
-    
+
     (2..spreadsheet.last_row).each do |i|
-      row = Hash[[header, spreadsheet.row(i)].transpose] 
+      row = Hash[[header, spreadsheet.row(i)].transpose]
 
       #retrieve UNIQUE fields of icno
       #additional Float check required for numbers-only data
       #lstrip required for string to remove leading/preceeding spaces
-      icno_e=row["icno"] 
+      icno_e=row["icno"]
       if icno_e.is_a? Numeric
         icno_e=icno_e.to_i.to_s if icno_e.to_i.to_s.size==12
       elsif icno_e.is_a? String
-        icno_e=icno_e.lstrip if icno_e.lstrip.size==12 
+        icno_e=icno_e.lstrip if icno_e.lstrip.size==12
       else
-       #cell is blank? 
+       #cell is blank?
         icno_not_exist << i
         icno_e = nil
       end
-      
+
       name_e=row["name"]
       if name_e.is_a? String
         if name_e.lstrip.size>0
@@ -262,11 +262,11 @@ module StudentsHelper
       else
         name_not_exist << i
         name_e=nil
-      end 
-      
-      stelno_e=row["stelno"] 
+      end
+
+      stelno_e=row["stelno"]
       if stelno_e.is_a? Numeric
-        stelno_e= stmrtlstatuscd_e=mrtlstatuscd_e.to_selno_e.to_i.to_s
+        stelno_e=stelno_e.to_i.to_s
       elsif stelno_e.is_a? String
 	 if stelno_e.lstrip.size>0
           stelno_e=stelno_e.lstrip
@@ -278,7 +278,7 @@ module StudentsHelper
         stelno_not_exist << i
 	stelno_e=nil
       end
-      
+
       sstatus_e=row["sstatus"]
       if sstatus_e.is_a? String
         sstatus_e=sstatus_e.titleize
@@ -293,7 +293,7 @@ module StudentsHelper
         sstatus_e=nil
         status_not_valid << i
       end
-      
+
       ssponsor_e=row["ssponsor"]
       if ssponsor_e.is_a? String
         if student_sponsor.include?(ssponsor_e)
@@ -307,8 +307,8 @@ module StudentsHelper
         ssponsor_e=nil
         sponsor_not_valid << i
       end
-      
-      gender_e=row["gender"]   
+
+      gender_e=row["gender"]
       if gender_e.is_a? Numeric
          gender_e=gender_e.to_i
       elsif gender_e.is_a? String
@@ -321,9 +321,9 @@ module StudentsHelper
           gender_not_valid << i
         end
       end
-      
+
       course_id_e=row["course_id"]
-      if course_id_e.is_a? String 
+      if course_id_e.is_a? String
         if LibraryHelper.all_digits(course_id_e) && student_course.include?(course_id_e.to_i)
           course_id_e=course_id_e.to_i
         else
@@ -333,15 +333,15 @@ module StudentsHelper
         end
       else
         if student_course.include?(course_id_e)
-          course_id_e=course_id_e.to_i 
+          course_id_e=course_id_e.to_i
         else
           course_id_e=nil
           course_id_not_valid << i
         end
       end
-      
+
       race2_e=row["race2"]
-      if race2_e.is_a? String 
+      if race2_e.is_a? String
         if LibraryHelper.all_digits(race2_e) && student_race.include?(race2_e.to_i)
           race2_e=race2_e.to_i
         else
@@ -351,15 +351,15 @@ module StudentsHelper
         end
       else
         if student_race.include?(race2_e.to_i)
-          race2_e=race2_e.to_i 
+          race2_e=race2_e.to_i
         else
           race2_e=nil
           #race_not_valid << i
         end
       end
-      
+
       mrtlstatuscd_e=row["mrtlstatuscd"]
-      if mrtlstatuscd_e.is_a? String 
+      if mrtlstatuscd_e.is_a? String
         if LibraryHelper.all_digits(mrtlstatuscd_e) && student_marital.include?(mrtlstatuscd_e)
           #mrtlstatuscd_e=mrtlstatuscd_e.to_s
         else
@@ -391,7 +391,7 @@ module StudentsHelper
         sbirthdt_e=nil
         sbirthdt_not_valid << i
       end
-      
+
       intake_e=row["intake"]
       unless intake_e.nil? || intake_e.blank? || intake_e==""
         if intake_e.is_a? Date
@@ -407,9 +407,9 @@ module StudentsHelper
         intake_e=nil
         intake_not_valid << i
       end
-      
+
       ##validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :sbirthdt,     :gender, :mrtlstatuscd, :intake,:course_id
-      
+
       #based on above UNIQUE fields, retrieve existing record(s) Or create new
       student_recs = Student.where(icno: icno_e)
       student_rec = student_recs.first || Student.new
@@ -433,10 +433,10 @@ module StudentsHelper
         saved_students << i #if !student_rec.id.nil?
       end
     end
-    result={:svs=>saved_students, :ine=> icno_not_exist, :stnv=>status_not_valid, :spnv=>sponsor_not_valid, :nne => name_not_exist, :stne =>stelno_not_exist, :sbnv => sbirthdt_not_valid, :gnv =>gender_not_valid, :mnv=>marital_not_valid, :cinv=>course_id_not_valid, :inv =>intake_not_valid} 
+    result={:svs=>saved_students, :ine=> icno_not_exist, :stnv=>status_not_valid, :spnv=>sponsor_not_valid, :nne => name_not_exist, :stne =>stelno_not_exist, :sbnv => sbirthdt_not_valid, :gnv =>gender_not_valid, :mnv=>marital_not_valid, :cinv=>course_id_not_valid, :inv =>intake_not_valid}
   end
-  
-  def self.msg_import(a) 
+
+  def self.msg_import(a)
     if a[:svs].count>0
       lines=''
       a[:svs].each_with_index do |l,no|
@@ -445,10 +445,10 @@ module StudentsHelper
       end
       msg=a[:svs].count.to_s+(I18n.t 'actions.records')+(I18n.t 'actions.imported_updated')+(I18n.t 'actions.line_no_excel')+lines+")"
     end
-    msg 
-  end 
+    msg
+  end
 
-  def self.msg_import2(a) 
+  def self.msg_import2(a)
     msg=""
     if a[:ine].count>0
       lines2=''
@@ -458,7 +458,7 @@ module StudentsHelper
       end
       msg+=a[:ine].count.to_s+(I18n.t 'student.students.icno_invalid')+(I18n.t 'actions.line_no_excel')+lines2+")"
     end
-    
+
     if a[:ine].count>0 && a[:nne].count>0
       msg+=", "
     end
@@ -470,7 +470,7 @@ module StudentsHelper
       end
       msg+=a[:nne].count.to_s+(I18n.t 'student.students.name_invalid')+(I18n.t 'actions.line_no_excel')+lines5+")"
     end
-  
+
     if (a[:ine].count>0 || a[:nne].count>0) && a[:stne].count>0
       msg+=", "
     end
@@ -482,7 +482,7 @@ module StudentsHelper
       end
       msg+=a[:stne].count.to_s+(I18n.t 'student.students.stelno_invalid')+(I18n.t 'actions.line_no_excel')+lines6+")"
     end
-    
+
     if (a[:ine].count>0 || a[:nne].count>0 || a[:stne].count>0) && a[:stnv].count>0
       msg+=", "
     end
@@ -494,7 +494,7 @@ module StudentsHelper
       end
       msg+=a[:stnv].count.to_s+(I18n.t 'student.students.sstatus_invalid')+(I18n.t 'actions.line_no_excel')+lines3+")"
     end
-    
+
     if (a[:ine].count>0 || a[:nne].count>0 || a[:stne].count>0 || a[:stnv].count>0) && a[:spnv].count>0
       msg+=", "
     end
@@ -506,7 +506,7 @@ module StudentsHelper
       end
       msg+=a[:spnv].count.to_s+(I18n.t 'student.students.ssponsor_invalid')+(I18n.t 'actions.line_no_excel')+lines4+")"
     end
-    
+
     if (a[:ine].count>0 || a[:nne].count>0 || a[:stne].count>0 || a[:stnv].count>0 || a[:spnv].count>0) && a[:sbnv].count>0
       msg+=", "
     end
@@ -518,7 +518,7 @@ module StudentsHelper
       end
       msg+=a[:sbnv].count.to_s+(I18n.t 'student.students.sbirthdt_invalid')+(I18n.t 'actions.line_no_excel')+lines7+")"
     end
-    
+
     if (a[:ine].count>0 || a[:nne].count>0 || a[:stne].count>0 || a[:stnv].count>0 || a[:spnv].count>0 ||  a[:sbnv].count>0) && a[:gnv].count>0
       msg+=", "
     end
@@ -530,7 +530,7 @@ module StudentsHelper
       end
       msg+=a[:gnv].count.to_s+(I18n.t 'student.students.gender_invalid')+(I18n.t 'actions.line_no_excel')+lines8+")"
     end
-    
+
     if (a[:ine].count>0 || a[:nne].count>0 || a[:stne].count>0 || a[:stnv].count>0 || a[:spnv].count>0 ||  a[:sbnv].count>0 || a[:gnv].count>0) && a[:mnv].count>0
       msg+=", "
     end
@@ -553,8 +553,8 @@ module StudentsHelper
         lines10+=", " if no < (a[:cinv].count)-1
       end
       msg+=a[:cinv].count.to_s+(I18n.t 'student.students.course_id_invalid')+(I18n.t 'actions.line_no_excel')+lines10+")"
-    end    
-    
+    end
+
     if (a[:ine].count>0 || a[:nne].count>0 || a[:stne].count>0 || a[:stnv].count>0 || a[:spnv].count>0 ||  a[:sbnv].count>0 || a[:gnv].count>0 || a[:mnv].count>0|| a[:cinv].count>0) && a[:inv].count>0
       msg+=", "
     end
@@ -565,10 +565,10 @@ module StudentsHelper
         lines11+=", " if no < (a[:inv].count)-1
       end
       msg+=a[:inv].count.to_s+(I18n.t 'student.students.intake_invalid')+(I18n.t 'actions.line_no_excel')+lines11+")"
-    end   
-    
+    end
+
     msg
   end
   #for Import Excel -- end
-  
+
 end
