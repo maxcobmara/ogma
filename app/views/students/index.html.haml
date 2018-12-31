@@ -7,7 +7,7 @@
   %ul.nav.navbar-nav
     - permitted_to? :create, :students do
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_student_path
-      %li= link_to content_tag(:li, fa_icon("file-excel-o", text: (t 'actions.import_excel'))), import_excel_students_path    
+      %li= link_to content_tag(:li, fa_icon("file-excel-o", text: (t 'actions.import_excel'))), import_excel_students_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     - permitted_to? :student_report, :students do
@@ -25,7 +25,7 @@
           %b.caret
         %ul.dropdown-menu
           %li= link_to (fa_icon "file-excel-o", text: (t "student.students.list")), students_path(params.merge(format: "xls"))
-     
+
 .row.filter{style: "display:none;"}
   .col-md-2
 
@@ -42,7 +42,7 @@
 
     %tbody
     = render "index_search"
-    - @students.group_by{|t|t.intake}.each do |intake, student_course|
+    - @students.group_by{|t|t.intake}.sort{|a,z|a<=>z}.to_h.each do |intake, student_course|   
       %tr
         %td.group{:colspan => "10", :style => "background-color:#EFF1F1;"}
           %br

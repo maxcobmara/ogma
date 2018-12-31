@@ -9,12 +9,12 @@ class StudentsController < ApplicationController
 
   def index
     @search = Student.search(params[:q])
-    @students_all = @search.result.order(intake: :asc, course_id: :asc)
+    @students_all = @search.result.order(intake: :desc, course_id: :asc)
     @students = @students_all.page(params[:page]||1)
     respond_to do |format|
       format.html
       format.csv { send_data @students_all.to_csv2 }
-      format.xls { send_data @students_all.to_csv2(col_sep: "\t") } 
+      format.xls { send_data @students_all.to_csv2(col_sep: "\t") }
     end
   end
 
@@ -26,14 +26,14 @@ class StudentsController < ApplicationController
   #start - import excel
   def import_excel
   end
-  
+
   def import
     unless params[:file].nil? || params[:file].blank?
-      
-      a=Student.import(params[:file]) 
+
+      a=Student.import(params[:file])
       msg=Student.messages(a)
-      msg2=Student.messages2(a)      
-      
+      msg2=Student.messages2(a)
+
       if a[:svs].count>0 && a[:ine].count==0 && a[:stnv].count==0 && a[:spnv].count==0
         respond_to do |format|
           flash[:notice]= msg
@@ -47,19 +47,19 @@ class StudentsController < ApplicationController
           #flash.discard
         end
       end
-      
+
     else
       respond_to do |format|
         format.html { redirect_to import_excel_students_url, :notice => (t 'select_excel_file')}
       end
     end
   end
-  
+
   def download_excel_format
     send_file ("#{::Rails.root.to_s}/public/excel_format/student_import.xls")
   end
   #end - import excel
-  
+
   # GET /students/1
   # GET /students/1.xml
   def show
@@ -122,7 +122,7 @@ class StudentsController < ApplicationController
       end
     end
   end
-  
+
   def kumpulan_etnik_main
     commit = params[:list_submit_button]
     programme_id = params[:programme]
@@ -150,14 +150,14 @@ class StudentsController < ApplicationController
       end
     end
   end
-  
+
   def kumpulan_etnik_excel
     @programme_id = params[:programme].to_i
     @student=Student.where(course_id: @programme_id)
     respond_to do |format|
       #format.html
       format.csv { send_data @student.to_csv }
-      format.xls { send_data @student.to_csv(col_sep: "\t") } 
+      format.xls { send_data @student.to_csv(col_sep: "\t") }
     end
   end
 
@@ -185,7 +185,7 @@ class StudentsController < ApplicationController
 
   def reports
   end
-  
+
   def student_report
     @programme_id=params[:programme_id].to_i
     @students = Student.where(sstatus: ['Current', 'Repeat'], course_id: @programme_id).order(intake: :asc, course_id: :asc)
@@ -198,7 +198,7 @@ class StudentsController < ApplicationController
       end
     end
   end
-  
+
   def students_quantity_sponsor
     @students_kkm=Student.where(sstatus: ['Current', 'Repeat'], ssponsor: "KKM")
     @students_kkm_male=Student.where(sstatus: ['Current', 'Repeat'], gender: 1, ssponsor: "KKM")
@@ -224,7 +224,7 @@ class StudentsController < ApplicationController
       end
     end
   end
-  
+
   def students_quantity_report
     @programmes=Programme.roots
     @students = Student.where(sstatus: ['Current', 'Repeat'])
