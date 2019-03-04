@@ -429,15 +429,17 @@ module StudentsHelper
         student_rec.intake = intake_e
         student_rec.attributes = row.to_hash.slice("matrixno","sstatus_remark", "semail", "regdate", "offer_letter_serial", "end_training", "address", "address_posbasik")
         if student_rec.save!
-          u = User.create!(
-            login: student_rec.icno,
-            email: "#{student_rec.icno}@kskbjb.net",
-            password: student_rec.icno,
-            password_confirmation: student_rec.icno,
-            userable_id: student_rec.id,
-            userable_type: "Student"
-          )
-          u.roles << Role.find(3)
+          if User.find_by_login(student_rec.icno) == nil
+            u = User.create!(
+              login: student_rec.icno,
+              email: "#{student_rec.icno}@kskbjb.net",
+              password: student_rec.icno,
+              password_confirmation: student_rec.icno,
+              userable_id: student_rec.id,
+              userable_type: "Student"
+            )
+            u.roles << Role.find(3)
+          end
         end
         #saved_students << student_rec if !student_rec.id.nil?
         saved_students << i #if !student_rec.id.nil?
