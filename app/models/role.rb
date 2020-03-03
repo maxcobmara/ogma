@@ -14,9 +14,10 @@ end
 #
 # Table name: roles
 #
-#  authname   :string(255)
-#  created_at :datetime
-#  id         :integer          not null, primary key
-#  name       :string(255)
-#  updated_at :datetime
+#  authname    :string(255)
+#  created_at  :datetime
+#  description :string(255)
+#  id          :integer          not null, primary key
+#  name        :string(255)
+#  updated_at  :datetime
 #

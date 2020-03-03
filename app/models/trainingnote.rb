@@ -110,3 +110,23 @@ class Trainingnote < ActiveRecord::Base
   end
   
 end
+
+# == Schema Information
+#
+# Table name: trainingnotes
+#
+#  created_at            :datetime
+#  document_content_type :string(255)
+#  document_file_name    :string(255)
+#  document_file_size    :integer
+#  document_updated_at   :datetime
+#  id                    :integer          not null, primary key
+#  reference             :string(255)
+#  release               :date
+#  staff_id              :string(255)
+#  timetable_id          :integer
+#  title                 :string(255)
+#  topicdetail_id        :integer
+#  updated_at            :datetime
+#  version               :string(255)
+#

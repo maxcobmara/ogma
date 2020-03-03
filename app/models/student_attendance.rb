@@ -54,3 +54,19 @@ class StudentAttendance < ActiveRecord::Base
   end
   
 end
+
+# == Schema Information
+#
+# Table name: student_attendances
+#
+#  action                     :string(255)
+#  attend                     :boolean
+#  created_at                 :datetime
+#  id                         :integer          not null, primary key
+#  reason                     :string(255)
+#  remark                     :string(255)
+#  status                     :string(255)
+#  student_id                 :integer
+#  updated_at                 :datetime
+#  weeklytimetable_details_id :integer
+#

@@ -272,3 +272,43 @@ class TravelRequest < ActiveRecord::Base
   end
   
 end
+
+# == Schema Information
+#
+# Table name: travel_requests
+#
+#  bus                       :boolean
+#  code                      :string(255)
+#  created_at                :datetime
+#  depart_at                 :datetime
+#  dept_car                  :boolean
+#  destination               :string(255)
+#  document_id               :integer
+#  hod_accept                :boolean
+#  hod_accept_on             :date
+#  hod_id                    :integer
+#  id                        :integer          not null, primary key
+#  is_submitted              :boolean
+#  is_travel_log_complete    :boolean
+#  log_fare                  :decimal(, )
+#  log_mileage               :decimal(, )
+#  mileage                   :boolean
+#  mileage_history           :integer
+#  mileage_replace           :boolean
+#  other                     :boolean
+#  other_desc                :string(255)
+#  others_car                :boolean
+#  others_car_notes          :string(255)
+#  own_car                   :boolean
+#  own_car_notes             :string(255)
+#  plane                     :boolean
+#  replaced_by               :integer
+#  return_at                 :datetime
+#  staff_course_conducted_id :integer
+#  staff_id                  :integer
+#  submitted_on              :date
+#  taxi                      :boolean
+#  train                     :boolean
+#  travel_claim_id           :integer
+#  updated_at                :datetime
+#

@@ -159,6 +159,7 @@ end
 #  created_at         :datetime
 #  description        :string(255)
 #  edition            :string(255)
+#  finance_source     :string(255)
 #  id                 :integer          not null, primary key
 #  indice             :string(255)
 #  isbn               :string(255)

@@ -173,3 +173,28 @@ class Leaveforstudent < ActiveRecord::Base
   end
 
 end
+
+# == Schema Information
+#
+# Table name: leaveforstudents
+#
+#  address         :string(255)
+#  approved        :boolean
+#  approved2       :boolean
+#  approvedate     :date
+#  approvedate2    :date
+#  created_at      :datetime
+#  id              :integer          not null, primary key
+#  leave_enddate   :date
+#  leave_startdate :date
+#  leavetype       :string(255)
+#  notes           :text
+#  reason          :string(255)
+#  requestdate     :date
+#  staff_id        :integer
+#  staff_id2       :integer
+#  student_id      :integer
+#  studentsubmit   :boolean
+#  telno           :string(255)
+#  updated_at      :datetime
+#

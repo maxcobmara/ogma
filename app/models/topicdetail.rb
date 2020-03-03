@@ -73,3 +73,22 @@
   end
   
 end
+
+# == Schema Information
+#
+# Table name: topicdetails
+#
+#  contents    :text
+#  created_at  :datetime
+#  duration    :time
+#  id          :integer          not null, primary key
+#  objctives   :text
+#  practical   :time
+#  prepared_by :integer
+#  theory      :time
+#  topic_code  :integer
+#  topic_name  :string(255)
+#  tutorial    :time
+#  updated_at  :datetime
+#  version_no  :float
+#

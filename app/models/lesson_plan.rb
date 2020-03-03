@@ -217,3 +217,49 @@ end
 #  updated_at timestamp without time zone,
 #  CONSTRAINT lesson_plans_pkey PRIMARY KEY (id)
 #)
+
+# == Schema Information
+#
+# Table name: lesson_plans
+#
+#  condition_desc      :string(255)
+#  condition_isgood    :boolean
+#  condition_isnotgood :boolean
+#  created_at          :datetime
+#  data_content_type   :string(255)
+#  data_file_name      :string(255)
+#  data_file_size      :integer
+#  data_updated_ot     :datetime
+#  end_time            :time
+#  endorsed_by         :integer
+#  hod_approved        :boolean
+#  hod_approved_on     :date
+#  hod_rejected        :boolean
+#  hod_rejected_on     :date
+#  id                  :integer          not null, primary key
+#  intake_id           :integer
+#  is_submitted        :boolean
+#  lecture_date        :date
+#  lecture_title       :string(255)
+#  lecturer            :integer
+#  prepared_by         :integer
+#  prerequisites       :string(255)
+#  reason              :text
+#  reference           :text
+#  report_endorsed     :boolean
+#  report_endorsed_on  :date
+#  report_submit       :boolean
+#  report_submit_on    :date
+#  report_summary      :text
+#  schedule            :integer
+#  semester            :integer
+#  start_time          :time
+#  student_qty         :integer
+#  submitted_on        :date
+#  summary             :text
+#  topic               :integer
+#  total_absent        :integer
+#  training_aids       :text
+#  updated_at          :datetime
+#  year                :integer
+#

@@ -358,18 +358,25 @@ end
 #
 # Table name: programmes
 #
-#  ancestry       :string(255)
-#  ancestry_depth :integer
-#  code           :string(255)
-#  combo_code     :string(255)
-#  course_type    :string(255)
-#  created_at     :datetime
-#  credits        :integer
-#  duration       :integer
-#  duration_type  :integer
-#  id             :integer          not null, primary key
-#  name           :string(255)
-#  objective      :text
-#  status         :integer
-#  updated_at     :datetime
+#  ancestry             :string(255)
+#  ancestry_depth       :integer
+#  code                 :string(255)
+#  combo_code           :string(255)
+#  course_type          :string(255)
+#  created_at           :datetime
+#  credits              :integer
+#  duration             :decimal(, )
+#  duration_type        :integer
+#  id                   :integer          not null, primary key
+#  lecture              :integer
+#  lecture_time         :integer
+#  name                 :string(255)
+#  objective            :text
+#  practical            :integer
+#  practical_time       :integer
+#  status               :integer
+#  subject_abbreviation :string(255)
+#  tutorial             :integer
+#  tutorial_time        :integer
+#  updated_at           :datetime
 #

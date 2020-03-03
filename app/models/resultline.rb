@@ -53,3 +53,18 @@ class Resultline < ActiveRecord::Base
 
 end
 
+# == Schema Information
+#
+# Table name: resultlines
+#
+#  created_at    :datetime
+#  examresult_id :integer
+#  id            :integer          not null, primary key
+#  pngk          :decimal(, )
+#  pngs17        :decimal(, )
+#  remark        :string(255)
+#  status        :string(255)
+#  student_id    :integer
+#  total         :decimal(, )
+#  updated_at    :datetime
+#

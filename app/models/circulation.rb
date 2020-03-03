@@ -16,3 +16,20 @@ class Circulation < ActiveRecord::Base
   validates_attachment_size :action, :less_than => 5.megabytes
  
 end
+
+# == Schema Information
+#
+# Table name: circulations
+#
+#  action_closed       :boolean
+#  action_content_type :string(255)
+#  action_date         :date
+#  action_file_name    :string(255)
+#  action_file_size    :integer
+#  action_remarks      :text
+#  action_taken        :string(255)
+#  action_updated_at   :datetime
+#  document_id         :integer
+#  id                  :integer          not null, primary key
+#  staff_id            :integer
+#

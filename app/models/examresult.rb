@@ -291,3 +291,20 @@ class Examresult < ActiveRecord::Base
   end
   
 end
+
+# == Schema Information
+#
+# Table name: examresults
+#
+#  created_at   :datetime
+#  examdte      :date
+#  examdts      :date
+#  id           :integer          not null, primary key
+#  pngs17       :decimal(, )
+#  programme_id :integer
+#  remark       :string(255)
+#  semester     :string(255)
+#  status       :string(255)
+#  total        :decimal(, )
+#  updated_at   :datetime
+#

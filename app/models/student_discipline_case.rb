@@ -175,3 +175,39 @@ class StudentDisciplineCase < ActiveRecord::Base
     end
     
 end
+
+# == Schema Information
+#
+# Table name: student_discipline_cases
+#
+#  action               :text
+#  action_type          :string(255)
+#  appeal_decision      :text
+#  appeal_decision_on   :date
+#  appeal_on            :date
+#  assigned2_on         :date
+#  assigned2_to         :integer
+#  assigned_on          :date
+#  assigned_to          :integer
+#  board_decision       :text
+#  board_decision_on    :date
+#  board_meeting_on     :date
+#  case_created_on      :date
+#  closed_at_college_on :date
+#  counselor_feedback   :text
+#  created_at           :datetime
+#  description          :text
+#  file_id              :integer
+#  id                   :integer          not null, primary key
+#  infraction_id        :integer
+#  investigation_notes  :text
+#  is_innocent          :boolean
+#  location_id          :integer
+#  other_info           :text
+#  reported_by          :integer
+#  reported_on          :date
+#  sent_to_board_on     :date
+#  status               :string(255)
+#  student_id           :integer
+#  updated_at           :datetime
+#

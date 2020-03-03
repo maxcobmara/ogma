@@ -361,3 +361,27 @@ class Leaveforstaff < ActiveRecord::Base
     end
  
   end
+
+# == Schema Information
+#
+# Table name: leaveforstaffs
+#
+#  approval1      :boolean
+#  approval1_id   :integer
+#  approval1date  :date
+#  approval2_id   :integer
+#  approval2date  :date
+#  approver2      :boolean
+#  created_at     :datetime
+#  id             :integer          not null, primary key
+#  leavedays      :decimal(, )
+#  leavenddate    :date
+#  leavestartdate :date
+#  leavetype      :integer
+#  notes          :text
+#  reason         :string(255)
+#  replacement_id :integer
+#  staff_id       :integer
+#  submit         :boolean
+#  updated_at     :datetime
+#

@@ -5,7 +5,7 @@ end
 
 # == Schema Information
 #
-# Table name: users
+# Table name: logins
 #
 #  created_at                :datetime
 #  crypted_password          :string(40)

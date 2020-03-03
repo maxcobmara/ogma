@@ -17,4 +17,15 @@ class Vehicle < ActiveRecord::Base
       end
     end
     
-end 
+end
+
+# == Schema Information
+#
+# Table name: vehicles
+#
+#  cylinder_capacity :integer
+#  id                :integer          not null, primary key
+#  reg_no            :string(255)
+#  staff_id          :integer
+#  type_model        :string(255)
+#

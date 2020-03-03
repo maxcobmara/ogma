@@ -21,3 +21,22 @@ class Page < ActiveRecord::Base
      "#{position} | #{navlabel}"
    end
 end
+
+# == Schema Information
+#
+# Table name: pages
+#
+#  action_name     :string(255)
+#  admin           :boolean
+#  body            :text
+#  controller_name :string(255)
+#  created_at      :datetime
+#  id              :integer          not null, primary key
+#  name            :string(255)
+#  navlabel        :string(255)
+#  parent_id       :integer
+#  position        :integer
+#  redirect        :boolean
+#  title           :string(255)
+#  updated_at      :datetime
+#

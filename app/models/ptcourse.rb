@@ -61,16 +61,18 @@ end
 #
 # Table name: ptcourses
 #
-#  approved      :boolean
-#  cost          :decimal(, )
-#  course_type   :integer
-#  created_at    :datetime
-#  description   :text
-#  duration      :decimal(, )
-#  duration_type :integer
-#  id            :integer          not null, primary key
-#  name          :string(255)
-#  proponent     :string(255)
-#  provider_id   :integer
-#  updated_at    :datetime
+#  approved                :boolean
+#  cost                    :decimal(, )
+#  course_type             :integer
+#  created_at              :datetime
+#  description             :text
+#  duration                :decimal(, )
+#  duration_type           :integer
+#  id                      :integer          not null, primary key
+#  level                   :integer
+#  name                    :string(255)
+#  proponent               :string(255)
+#  provider_id             :integer
+#  training_classification :integer
+#  updated_at              :datetime
 #

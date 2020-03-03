@@ -20,6 +20,7 @@ end
 #  purchase_price :decimal(, )
 #  received       :date
 #  received_by    :integer
+#  status         :integer
 #  supplied_by    :integer
 #  updated_at     :datetime
 #

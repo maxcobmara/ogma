@@ -139,3 +139,30 @@ class EvaluateCourse < ActiveRecord::Base
   
   
 end
+
+# == Schema Information
+#
+# Table name: evaluate_courses
+#
+#  average_course_id :integer
+#  comment           :string(255)
+#  course_id         :integer
+#  created_at        :datetime
+#  ev_assessment     :integer
+#  ev_content        :integer
+#  ev_deliver        :integer
+#  ev_knowledge      :integer
+#  ev_note           :integer
+#  ev_obj            :integer
+#  ev_tool           :integer
+#  ev_topic          :integer
+#  ev_work           :integer
+#  evaluate_date     :date
+#  id                :integer          not null, primary key
+#  invite_lec        :string(255)
+#  invite_lec_topic  :string(255)
+#  staff_id          :integer
+#  student_id        :integer
+#  subject_id        :integer
+#  updated_at        :datetime
+#

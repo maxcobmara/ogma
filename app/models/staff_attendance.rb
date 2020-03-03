@@ -820,3 +820,22 @@ class StaffAttendance < ActiveRecord::Base
          [ "Red",3 ]
    ]
 end
+
+# == Schema Information
+#
+# Table name: staff_attendances
+#
+#  approved_by :integer
+#  approved_on :date
+#  created_at  :datetime
+#  id          :integer          not null, primary key
+#  is_approved :boolean
+#  log_type    :string(255)
+#  logged_at   :datetime
+#  reason      :string(255)
+#  review      :string(255)
+#  status      :integer
+#  thumb_id    :integer
+#  trigger     :boolean
+#  updated_at  :datetime
+#

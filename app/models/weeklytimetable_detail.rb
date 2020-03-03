@@ -142,6 +142,7 @@ end
 #  lecture_method     :integer
 #  lecturer_id        :integer
 #  location           :integer
+#  location_desc      :string(255)
 #  subject            :integer
 #  time_slot          :integer
 #  time_slot2         :integer
@@ -149,4 +150,3 @@ end
 #  updated_at         :datetime
 #  weeklytimetable_id :integer
 #
-

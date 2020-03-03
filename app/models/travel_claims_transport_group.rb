@@ -65,3 +65,17 @@ class TravelClaimsTransportGroup < ActiveRecord::Base
     
   end
 end
+
+# == Schema Information
+#
+# Table name: travel_claims_transport_groups
+#
+#  cc_high     :integer
+#  cc_low      :integer
+#  created_at  :datetime
+#  group_name  :string(2)        not null
+#  id          :integer          not null, primary key
+#  salary_high :decimal(8, 2)
+#  salary_low  :decimal(8, 2)
+#  updated_at  :datetime
+#

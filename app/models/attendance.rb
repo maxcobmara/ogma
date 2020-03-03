@@ -30,4 +30,19 @@ class Attendance < ActiveRecord::Base
    
    
 end
- 
+
+# == Schema Information
+#
+# Table name: attendances
+#
+#  approve_id    :integer
+#  approvestatus :boolean
+#  attdate       :date
+#  created_at    :datetime
+#  id            :integer          not null, primary key
+#  reason        :string(255)
+#  staff_id      :integer
+#  time_in       :time
+#  time_out      :time
+#  updated_at    :datetime
+#

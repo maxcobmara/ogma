@@ -9,14 +9,14 @@ end
 
 # == Schema Information
 #
-# Table name: usesupplies
+# Table name: stationery_uses
 #
-#  created_at  :datetime
-#  id          :integer          not null, primary key
-#  issuedate   :date
-#  issuedby    :integer
-#  quantity    :decimal(, )
-#  receivedby  :integer
-#  supplier_id :integer
-#  updated_at  :datetime
+#  created_at    :datetime
+#  id            :integer          not null, primary key
+#  issuedate     :date
+#  issuedby      :integer
+#  quantity      :integer
+#  receivedby    :integer
+#  stationery_id :integer
+#  updated_at    :datetime
 #

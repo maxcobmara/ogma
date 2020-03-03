@@ -467,3 +467,25 @@ class User < ActiveRecord::Base
    end
   end
 end
+
+# == Schema Information
+#
+# Table name: users
+#
+#  created_at             :datetime
+#  current_sign_in_at     :datetime
+#  current_sign_in_ip     :inet
+#  email                  :string(255)      default(""), not null
+#  encrypted_password     :string(255)      default(""), not null
+#  id                     :integer          not null, primary key
+#  last_sign_in_at        :datetime
+#  last_sign_in_ip        :inet
+#  login                  :string(255)      default(""), not null
+#  remember_created_at    :datetime
+#  reset_password_sent_at :datetime
+#  reset_password_token   :string(255)
+#  sign_in_count          :integer          default(0), not null
+#  updated_at             :datetime
+#  userable_id            :integer
+#  userable_type          :string(255)
+#

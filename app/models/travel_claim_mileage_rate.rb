@@ -15,3 +15,19 @@ class TravelClaimMileageRate < ActiveRecord::Base
   end
   
 end
+
+# == Schema Information
+#
+# Table name: travel_claim_mileage_rates
+#
+#  a_group    :decimal(4, 2)
+#  b_group    :decimal(4, 2)
+#  c_group    :decimal(4, 2)
+#  created_at :datetime
+#  d_group    :decimal(4, 2)
+#  e_group    :decimal(4, 2)
+#  id         :integer          not null, primary key
+#  km_high    :integer
+#  km_low     :integer
+#  updated_at :datetime
+#

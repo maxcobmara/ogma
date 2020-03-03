@@ -63,3 +63,18 @@ class Fingerprint < ActiveRecord::Base
   end
   
 end
+
+# == Schema Information
+#
+# Table name: fingerprints
+#
+#  approved_by :integer
+#  approved_on :date
+#  fdate       :date
+#  ftype       :integer
+#  id          :integer          not null, primary key
+#  is_approved :boolean
+#  reason      :string(255)
+#  status      :integer
+#  thumb_id    :integer
+#

@@ -656,6 +656,7 @@ end
 #  specilisation       :integer
 #  ssponsor            :string(255)
 #  sstatus             :string(255)
+#  sstatus_remark      :string(255)
 #  stelno              :string(255)
 #  updated_at          :datetime
 #

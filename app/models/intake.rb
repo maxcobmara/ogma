@@ -54,5 +54,6 @@ end
 #  name             :string(255)
 #  programme_id     :integer
 #  register_on      :date
+#  staff_id         :integer
 #  updated_at       :datetime
 #

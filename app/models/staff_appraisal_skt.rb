@@ -158,3 +158,39 @@ class StaffAppraisalSkt < ActiveRecord::Base
 #   end
  
 end
+
+# == Schema Information
+#
+# Table name: staff_appraisal_skts
+#
+#  achievement_cost        :string(255)
+#  achievement_quality     :string(255)
+#  achievement_quantity    :string(255)
+#  achievement_time        :string(255)
+#  created_at              :datetime
+#  description             :text
+#  drop_reasons            :string(255)
+#  dropped_on              :date
+#  half                    :integer
+#  id                      :integer          not null, primary key
+#  indicator_desc_cost     :string(255)
+#  indicator_desc_quality  :string(255)
+#  indicator_desc_quantity :string(255)
+#  indicator_desc_time     :string(255)
+#  is_dropped              :boolean
+#  notes_cost              :string(255)
+#  notes_quality           :string(255)
+#  notes_quantity          :string(255)
+#  notes_time              :string(255)
+#  priority                :integer
+#  progress_cost           :decimal(, )
+#  progress_quality        :decimal(, )
+#  progress_quantity       :decimal(, )
+#  progress_time           :decimal(, )
+#  staff_appraisal_id      :integer
+#  target_cost             :string(255)
+#  target_quality          :string(255)
+#  target_quantity         :string(255)
+#  target_time             :string(255)
+#  updated_at              :datetime
+#

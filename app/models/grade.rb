@@ -412,3 +412,31 @@ class Grade < ActiveRecord::Base
     
   
 end
+
+# == Schema Information
+#
+# Table name: grades
+#
+#  carry_paper       :boolean
+#  created_at        :datetime
+#  eligible_for_exam :boolean
+#  exam1desc         :string(255)
+#  exam1marks        :decimal(, )
+#  exam1name         :string(255)
+#  exam2desc         :string(255)
+#  exam2marks        :decimal(, )
+#  exam2name         :string(255)
+#  examweight        :decimal(, )
+#  finalscore        :decimal(, )
+#  formative         :decimal(, )
+#  grading_id        :integer
+#  id                :integer          not null, primary key
+#  resit             :boolean
+#  score             :decimal(, )
+#  sent_date         :date
+#  sent_to_BPL       :boolean
+#  student_id        :integer
+#  subject_id        :integer
+#  summative         :decimal(, )
+#  updated_at        :datetime
+#

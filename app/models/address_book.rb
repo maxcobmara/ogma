@@ -9,14 +9,14 @@ end
 #
 # Table name: address_books
 #
-#  address    :string(255)
+#  address    :string
 #  created_at :datetime
-#  fax        :string(255)
+#  fax        :string
 #  id         :integer          not null, primary key
-#  mail       :string(255)
-#  name       :string(255)
-#  phone      :string(255)
-#  shortname  :string(255)
+#  mail       :string
+#  name       :string
+#  phone      :string
+#  shortname  :string
 #  updated_at :datetime
-#  web        :string(255)
+#  web        :string
 #

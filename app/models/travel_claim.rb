@@ -388,3 +388,27 @@ class TravelClaim < ActiveRecord::Base
   
   #  
 end
+
+# == Schema Information
+#
+# Table name: travel_claims
+#
+#  accommodations :text
+#  advance        :decimal(, )
+#  approved_by    :integer
+#  approved_on    :date
+#  checked_by     :integer
+#  checked_on     :date
+#  claim_month    :date
+#  created_at     :datetime
+#  id             :integer          not null, primary key
+#  is_approved    :boolean
+#  is_checked     :boolean
+#  is_returned    :boolean
+#  is_submitted   :boolean
+#  notes          :string(255)
+#  staff_id       :integer
+#  submitted_on   :date
+#  total          :decimal(, )
+#  updated_at     :datetime
+#

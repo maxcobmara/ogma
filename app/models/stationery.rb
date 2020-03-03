@@ -30,8 +30,8 @@ end
 #  code        :string(255)
 #  created_at  :datetime
 #  id          :integer          not null, primary key
-#  maxquantity :decimal(, )
-#  minquantity :decimal(, )
+#  maxquantity :integer
+#  minquantity :integer
 #  unittype    :string(255)
 #  updated_at  :datetime
 #

@@ -1,0 +1,21 @@
+Assetcategory.create!([
+  {id: 1, parent_id: nil, description: "Loji", cattype_id: 1, created_at: "2011-07-03 21:07:04", updated_at: "2011-07-03 21:07:04"},
+  {id: 2, parent_id: nil, description: "Jentera Berat", cattype_id: 1, created_at: "2011-07-03 21:07:22", updated_at: "2011-07-03 21:07:22"},
+  {id: 3, parent_id: nil, description: "Kenderaan", cattype_id: 1, created_at: "2011-07-03 21:07:33", updated_at: "2011-07-03 21:07:33"},
+  {id: 4, parent_id: nil, description: "Peralatan", cattype_id: 1, created_at: "2011-07-03 21:07:47", updated_at: "2011-07-03 21:07:47"},
+  {id: 5, parent_id: nil, description: "Kelengkapan ICT", cattype_id: 1, created_at: "2011-07-03 21:08:00", updated_at: "2011-07-03 21:08:00"},
+  {id: 6, parent_id: nil, description: "Telekomunikasi", cattype_id: 1, created_at: "2011-07-03 21:08:11", updated_at: "2011-07-03 21:08:11"},
+  {id: 7, parent_id: nil, description: "Penyiaran", cattype_id: 1, created_at: "2011-07-03 21:08:19", updated_at: "2011-07-03 21:08:19"},
+  {id: 9, parent_id: nil, description: "Pejabat", cattype_id: 1, created_at: "2011-07-03 21:08:35", updated_at: "2011-07-03 21:08:35"},
+  {id: 10, parent_id: nil, description: "Makmal", cattype_id: 1, created_at: "2011-07-03 21:08:49", updated_at: "2011-07-03 21:08:49"},
+  {id: 11, parent_id: nil, description: "Bengkel", cattype_id: 1, created_at: "2011-07-03 21:09:00", updated_at: "2011-07-03 21:09:00"},
+  {id: 12, parent_id: nil, description: "Dapur", cattype_id: 1, created_at: "2011-07-03 21:09:10", updated_at: "2011-07-03 21:09:10"},
+  {id: 13, parent_id: nil, description: "Sukan", cattype_id: 1, created_at: "2011-07-03 21:09:19", updated_at: "2011-07-03 21:09:19"},
+  {id: 14, parent_id: 3, description: "Kereta", cattype_id: 1, created_at: "2011-07-03 21:09:35", updated_at: "2011-07-03 21:10:47"},
+  {id: 15, parent_id: 3, description: "Motosikal", cattype_id: 1, created_at: "2011-07-03 21:11:06", updated_at: "2011-07-03 21:11:06"},
+  {id: 16, parent_id: 3, description: "Van", cattype_id: 1, created_at: "2011-07-03 21:11:19", updated_at: "2011-07-03 21:11:19"},
+  {id: 17, parent_id: 3, description: "Bas", cattype_id: 1, created_at: "2011-07-03 21:11:29", updated_at: "2011-07-03 21:11:29"},
+  {id: 18, parent_id: 8, description: "Mesin X-Ray", cattype_id: 1, created_at: "2011-07-03 21:11:56", updated_at: "2011-07-03 21:11:56"},
+  {id: 19, parent_id: 8, description: "Radiographic Unit", cattype_id: 1, created_at: "2011-07-03 21:12:12", updated_at: "2011-07-03 21:12:12"},
+  {id: 8, parent_id: nil, description: "Peralatan Perubatan", cattype_id: 1, created_at: "2011-07-03 21:08:28", updated_at: "2011-07-28 07:17:41"}
+])

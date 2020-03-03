@@ -9,3 +9,17 @@ class AttachmentUploader < ActiveRecord::Base
                           :message => "Invalid File Format" 
    validates_attachment_size :data, :less_than => 5.megabytes 
 end
+
+# == Schema Information
+#
+# Table name: attachment_uploaders
+#
+#  created_at         :datetime
+#  data_content_type  :string(255)
+#  data_file_name     :string(255)
+#  data_file_size     :integer
+#  data_updated_at    :datetime
+#  id                 :integer          not null, primary key
+#  msgnotification_id :integer
+#  updated_at         :datetime
+#

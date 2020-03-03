@@ -12,3 +12,20 @@ class TravelClaimReceipt < ActiveRecord::Base
   end  
   
 end
+
+# == Schema Information
+#
+# Table name: travel_claim_receipts
+#
+#  amount           :decimal(, )
+#  checker          :boolean
+#  checker_notes    :string(255)
+#  created_at       :datetime
+#  expenditure_type :integer
+#  id               :integer          not null, primary key
+#  quantity         :decimal(, )
+#  receipt_code     :string(255)
+#  spent_on         :date
+#  travel_claim_id  :integer
+#  updated_at       :datetime
+#

@@ -200,8 +200,10 @@ end
 #  final_approve  :boolean
 #  id             :integer          not null, primary key
 #  justification  :string(255)
+#  payment        :integer
 #  ptcourse_id    :integer
 #  ptschedule_id  :integer
+#  remark         :text
 #  replacement_id :integer
 #  staff_id       :integer
 #  trainee_report :text

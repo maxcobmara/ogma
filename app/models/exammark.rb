@@ -409,3 +409,15 @@ class Exammark < ActiveRecord::Base
   end
   
 end
+
+# == Schema Information
+#
+# Table name: exammarks
+#
+#  created_at :datetime
+#  exam_id    :integer
+#  id         :integer          not null, primary key
+#  student_id :integer
+#  total_mcq  :decimal(, )
+#  updated_at :datetime
+#

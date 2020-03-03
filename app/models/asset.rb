@@ -76,6 +76,7 @@ end
 #  receiveddate         :date
 #  receiver_id          :integer
 #  registration         :string(255)
+#  remark               :string(255)
 #  serialno             :string(255)
 #  status               :integer
 #  subcategory          :string(255)

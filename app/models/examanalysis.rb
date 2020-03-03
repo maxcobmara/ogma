@@ -559,3 +559,24 @@ class Examanalysis < ActiveRecord::Base
   
   
 end
+
+# == Schema Information
+#
+# Table name: examanalyses
+#
+#  created_at  :datetime
+#  exam_id     :integer
+#  gradeA      :integer
+#  gradeAminus :integer
+#  gradeB      :integer
+#  gradeBminus :integer
+#  gradeBplus  :integer
+#  gradeC      :integer
+#  gradeCminus :integer
+#  gradeCplus  :integer
+#  gradeD      :integer
+#  gradeDplus  :integer
+#  gradeE      :integer
+#  id          :integer          not null, primary key
+#  updated_at  :datetime
+#

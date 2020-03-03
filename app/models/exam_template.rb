@@ -128,3 +128,16 @@ class ExamTemplate < ActiveRecord::Base
     end
 
 end
+
+# == Schema Information
+#
+# Table name: exam_templates
+#
+#  created_at :datetime
+#  created_by :integer
+#  data       :text
+#  deleted_at :date
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  updated_at :datetime
+#

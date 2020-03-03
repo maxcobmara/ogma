@@ -265,3 +265,89 @@ class StaffAppraisal < ActiveRecord::Base
 #     end
  
 end
+
+# == Schema Information
+#
+# Table name: staff_appraisals
+#
+#  created_at               :datetime
+#  e1_months                :integer
+#  e1_performance           :text
+#  e1_progress              :text
+#  e1_total                 :decimal(, )
+#  e1_years                 :integer
+#  e1g1_percent             :decimal(, )
+#  e1g1_total               :decimal(, )
+#  e1g1q1                   :decimal(, )
+#  e1g1q2                   :decimal(, )
+#  e1g1q3                   :decimal(, )
+#  e1g1q4                   :decimal(, )
+#  e1g1q5                   :decimal(, )
+#  e1g2_percent             :decimal(, )
+#  e1g2_total               :decimal(, )
+#  e1g2q1                   :decimal(, )
+#  e1g2q2                   :decimal(, )
+#  e1g2q3                   :decimal(, )
+#  e1g2q4                   :decimal(, )
+#  e1g3_percent             :decimal(, )
+#  e1g3_total               :decimal(, )
+#  e1g3q1                   :decimal(, )
+#  e1g3q2                   :decimal(, )
+#  e1g3q3                   :decimal(, )
+#  e1g3q4                   :decimal(, )
+#  e1g3q5                   :decimal(, )
+#  e1g4                     :decimal(, )
+#  e1g4_percent             :decimal(, )
+#  e2_months                :integer
+#  e2_performance           :text
+#  e2_total                 :decimal(, )
+#  e2_years                 :integer
+#  e2g1_percent             :decimal(, )
+#  e2g1_total               :decimal(, )
+#  e2g1q1                   :decimal(, )
+#  e2g1q2                   :decimal(, )
+#  e2g1q3                   :decimal(, )
+#  e2g1q4                   :decimal(, )
+#  e2g1q5                   :decimal(, )
+#  e2g2_percent             :decimal(, )
+#  e2g2_total               :decimal(, )
+#  e2g2q1                   :decimal(, )
+#  e2g2q2                   :decimal(, )
+#  e2g2q3                   :decimal(, )
+#  e2g2q4                   :decimal(, )
+#  e2g3_percent             :decimal(, )
+#  e2g3_total               :decimal(, )
+#  e2g3q1                   :decimal(, )
+#  e2g3q2                   :decimal(, )
+#  e2g3q3                   :decimal(, )
+#  e2g3q4                   :decimal(, )
+#  e2g3q5                   :decimal(, )
+#  e2g4                     :decimal(, )
+#  e2g4_percent             :decimal(, )
+#  eval1_by                 :integer
+#  eval2_by                 :integer
+#  evaluation_total         :decimal(, )
+#  evaluation_year          :date
+#  g1_questions             :integer
+#  g2_questions             :integer
+#  g3_questions             :integer
+#  id                       :integer          not null, primary key
+#  is_complete              :boolean
+#  is_completed_on          :date
+#  is_skt_endorsed          :boolean
+#  is_skt_ppp_report_done   :boolean
+#  is_skt_pyd_report_done   :boolean
+#  is_skt_submit            :boolean
+#  is_submit_e2             :boolean
+#  is_submit_for_evaluation :boolean
+#  skt_endorsed_on          :date
+#  skt_ppp_report           :text
+#  skt_ppp_report_on        :date
+#  skt_pyd_report           :text
+#  skt_pyd_report_on        :date
+#  skt_submit_on            :date
+#  staff_id                 :integer
+#  submit_e2_on             :date
+#  submit_for_evaluation_on :date
+#  updated_at               :datetime
+#

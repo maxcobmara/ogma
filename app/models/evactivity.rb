@@ -7,4 +7,17 @@ class Evactivity < ActiveRecord::Base
  end
   
 end
- 
+
+# == Schema Information
+#
+# Table name: evactivities
+#
+#  actdt        :date
+#  actlevel     :string(255)
+#  appraisal_id :integer
+#  created_at   :datetime
+#  evactivity   :string(255)
+#  evaldt       :date
+#  id           :integer          not null, primary key
+#  updated_at   :datetime
+#

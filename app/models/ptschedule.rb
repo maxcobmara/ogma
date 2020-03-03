@@ -36,7 +36,9 @@ end
 #  location         :string(255)
 #  max_participants :integer
 #  min_participants :integer
+#  payment          :integer
 #  ptcourse_id      :integer
+#  remark           :text
 #  start            :date
 #  updated_at       :datetime
 #

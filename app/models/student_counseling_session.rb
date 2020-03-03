@@ -107,3 +107,31 @@ class StudentCounselingSession < ActiveRecord::Base
   end
   
 end
+
+# == Schema Information
+#
+# Table name: student_counseling_sessions
+#
+#  alt_dates         :text
+#  c_scope           :string(255)
+#  c_type            :string(255)
+#  case_id           :integer
+#  confirmed_at      :datetime
+#  confirmed_by      :integer
+#  confirmed_by_type :string(255)
+#  created_at        :datetime
+#  created_by        :integer
+#  created_by_type   :string(255)
+#  duration          :integer
+#  file_id           :integer
+#  id                :integer          not null, primary key
+#  is_confirmed      :boolean
+#  issue_desc        :text
+#  notes             :text
+#  remark            :text
+#  requested_at      :datetime
+#  staff_id          :integer
+#  student_id        :integer
+#  suggestions       :text
+#  updated_at        :datetime
+#

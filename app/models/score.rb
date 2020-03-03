@@ -14,3 +14,20 @@ class Score < ActiveRecord::Base
   end
 
 end
+
+# == Schema Information
+#
+# Table name: scores
+#
+#  completion  :decimal(, )
+#  created_at  :datetime
+#  description :string(255)
+#  formative   :boolean
+#  grade_id    :integer
+#  id          :integer          not null, primary key
+#  marks       :decimal(, )
+#  score       :decimal(, )
+#  type_id     :integer
+#  updated_at  :datetime
+#  weightage   :decimal(, )
+#

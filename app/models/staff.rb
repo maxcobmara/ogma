@@ -231,6 +231,7 @@ end
 # Table name: staffs
 #
 #  addr                    :string(255)
+#  allowance               :decimal(, )
 #  appointby               :string(255)
 #  appointdt               :date
 #  appointstatus           :string(255)
@@ -249,6 +250,7 @@ end
 #  country_cd              :integer
 #  country_id              :integer
 #  created_at              :datetime
+#  current_salary          :decimal(, )
 #  employscheme            :string(255)
 #  employstatus            :integer
 #  fileno                  :string(255)
@@ -274,6 +276,7 @@ end
 #  race                    :integer
 #  reconfirmation_date     :date
 #  religion                :integer
+#  salary_no               :string(255)
 #  schemedt                :date
 #  staff_shift_id          :integer
 #  staffgrade_id           :integer

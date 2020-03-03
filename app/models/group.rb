@@ -51,3 +51,15 @@ class Group < ActiveRecord::Base
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: groups
+#
+#  created_at  :datetime
+#  description :string(255)
+#  id          :integer          not null, primary key
+#  members     :text
+#  name        :string(255)
+#  updated_at  :datetime
+#

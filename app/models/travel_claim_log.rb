@@ -24,3 +24,21 @@ class TravelClaimLog < ActiveRecord::Base
       end
  
 end
+
+# == Schema Information
+#
+# Table name: travel_claim_logs
+#
+#  checker           :boolean
+#  checker_notes     :string(255)
+#  created_at        :datetime
+#  destination       :string(255)
+#  finish_at         :time
+#  id                :integer          not null, primary key
+#  km_money          :decimal(, )
+#  mileage           :decimal(, )
+#  start_at          :time
+#  travel_on         :date
+#  travel_request_id :integer
+#  updated_at        :datetime
+#
