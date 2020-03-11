@@ -1,3 +1,5 @@
+#Should have examquestion
+
 Answerchoice.create!([
   {id: 1, examquestion_id: 19, item: "I", description: "", created_at: "2013-05-27 02:20:25", updated_at: "2013-05-27 02:24:49"},
   {id: 2, examquestion_id: 19, item: "II", description: "", created_at: "2013-05-27 02:20:25", updated_at: "2013-05-27 02:24:49"},
