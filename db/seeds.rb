@@ -58,7 +58,7 @@ Assetcategory.create!([
 
 
 puts "Creating Assets"
-500.times do
+1000.times do
   status_hvf = heavy_false_data.max_by { |_, weight| rand ** (1.0 / weight) }
   pd = Faker::Date.birthday(0, 12)
   Asset.create!({
@@ -219,3 +219,67 @@ puts "create Asset Loan"
     received_officer: is_returned == true ? rand(1..200) : nil
   })
 end
+
+puts "Creating Lost Assets "
+rand(5..20).times do
+  init_date = Faker::Date.birthday(0, 12)
+  submitted = [true, false].sample
+  AssetLoss.create!({
+    form_type: nil,
+    loss_type: "asset",
+    asset_id: Asset.all.sample.id,
+    cash_type: "",
+    est_value: nil,
+    is_used: nil,
+    ownership: nil,
+    value_state: nil,
+    value_federal: nil,
+    location_id: nil,
+    lost_at: init_date,
+    how_desc: Faker::Company.catch_phrase,
+    report_code: Faker::Number.hexadecimal(6),
+    last_handled_by: 20,
+    is_prima_facie: [true, false].sample,
+    is_staff_action: false,
+    is_police_report_made: false,
+    police_report_code: "",
+    why_no_report: "",
+    police_action_status: "",
+    is_rule_broken: nil,
+    rules_broken_desc: nil,
+    preventive_action_dept: nil,
+    prev_action_enforced_by: nil,
+    preventive_measures: Faker::Hacker.adjective,
+    new_measures: Faker::Hacker.noun ,
+    recommendations: nil,
+    surcharge_notes: nil,
+    notes: Faker::Hacker.say_something_smart,
+    investigated_by: nil,
+    investigation_code: nil,
+    investigation_completed_on: nil,
+    security_officer_notes: nil,
+    security_officer_id: nil,
+    security_code: nil,
+    is_submit_to_hod: submitted,
+    endorsed_hod_by: (58 if submitted),
+    endorsed_on: (init_date + rand(7..60).days if submitted),
+    is_writeoff: nil,
+    document_id: nil,
+  })
+end
+
+
+puts "Moving Assets to Location"
+Asset.all.sample(rand(10..100)).each do | asset |
+  q = (asset.assettype == 2 ? rand(1..99) : nil)
+  AssetPlacement.create!({
+    asset_id: asset.id,
+    location_id: 22,
+    staff_id: 70,
+    reg_on: Faker::Date.birthday(0, 12),
+    quantity:  q
+  })
+end
+
+puts "Not creating Attachments"
+puts ""
