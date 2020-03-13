@@ -13,9 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20161219084454) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "academic_sessions", force: true do |t|
     t.string   "semester"
     t.integer  "total_week"
@@ -36,19 +33,26 @@ ActiveRecord::Schema.define(version: 20161219084454) do
     t.integer  "status"
   end
 
-  add_index "accessions", ["accession_no"], name: "index_accessions_on_accession_no", using: :btree
-  add_index "accessions", ["id"], name: "index_accessions_on_id", using: :btree
+  add_index "accessions", ["accession_no"], name: "index_accessions_on_accession_no"
+  add_index "accessions", ["id"], name: "index_accessions_on_id"
 
-  create_table "address_books", force: true do |t|
-    t.string   "name",       limit: nil
-    t.string   "phone",      limit: nil
-    t.string   "address",    limit: nil
-    t.string   "mail",       limit: nil
-    t.string   "web",        limit: nil
-    t.string   "fax",        limit: nil
+  create_table "address_book_items", force: true do |t|
+    t.integer  "address_book_id"
+    t.string   "item"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "shortname",  limit: nil
+  end
+
+  create_table "address_books", force: true do |t|
+    t.string   "name"
+    t.string   "phone"
+    t.string   "address"
+    t.string   "mail"
+    t.string   "web"
+    t.string   "fax"
+    t.string   "shortname"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "answerchoices", force: true do |t|
@@ -528,8 +532,8 @@ ActiveRecord::Schema.define(version: 20161219084454) do
     t.string   "finance_source"
   end
 
-  add_index "books", ["id"], name: "index_books_on_id", using: :btree
-  add_index "books", ["isbn"], name: "index_books_on_isbn", using: :btree
+  add_index "books", ["id"], name: "index_books_on_id"
+  add_index "books", ["isbn"], name: "index_books_on_isbn"
 
   create_table "booksearches", force: true do |t|
     t.string   "title"
@@ -1265,13 +1269,12 @@ ActiveRecord::Schema.define(version: 20161219084454) do
     t.datetime "updated_at"
     t.string   "combo_code"
     t.integer  "ancestry_depth", default: 0
-    t.boolean  "damaged"
     t.string   "status"
   end
 
-  add_index "locations", ["ancestry"], name: "index_locations_on_ancestry", using: :btree
-  add_index "locations", ["combo_code"], name: "index_locations_on_combo_code", using: :btree
-  add_index "locations", ["id"], name: "index_locations_on_id", using: :btree
+  add_index "locations", ["ancestry"], name: "index_locations_on_ancestry"
+  add_index "locations", ["combo_code"], name: "index_locations_on_combo_code"
+  add_index "locations", ["id"], name: "index_locations_on_id"
 
   create_table "logins", force: true do |t|
     t.string   "login",                     limit: 40
@@ -1289,8 +1292,8 @@ ActiveRecord::Schema.define(version: 20161219084454) do
     t.datetime "updated_at"
   end
 
-  add_index "logins", ["id"], name: "index_logins_on_id", using: :btree
-  add_index "logins", ["login"], name: "index_logins_on_login", unique: true, using: :btree
+  add_index "logins", ["id"], name: "index_logins_on_id"
+  add_index "logins", ["login"], name: "index_logins_on_login", unique: true
 
   create_table "logins_roles", id: false, force: true do |t|
     t.integer "role_id"
@@ -1303,8 +1306,8 @@ ActiveRecord::Schema.define(version: 20161219084454) do
     t.integer "conversation_id"
   end
 
-  add_index "mailboxer_conversation_opt_outs", ["conversation_id"], name: "index_mailboxer_conversation_opt_outs_on_conversation_id", using: :btree
-  add_index "mailboxer_conversation_opt_outs", ["unsubscriber_id", "unsubscriber_type"], name: "index_mailboxer_conversation_opt_outs_on_unsubscriber_id_type", using: :btree
+  add_index "mailboxer_conversation_opt_outs", ["conversation_id"], name: "index_mailboxer_conversation_opt_outs_on_conversation_id"
+  add_index "mailboxer_conversation_opt_outs", ["unsubscriber_id", "unsubscriber_type"], name: "index_mailboxer_conversation_opt_outs_on_unsubscriber_id_type"
 
   create_table "mailboxer_conversations", force: true do |t|
     t.string   "subject",    default: ""
@@ -1330,10 +1333,10 @@ ActiveRecord::Schema.define(version: 20161219084454) do
     t.datetime "expires"
   end
 
-  add_index "mailboxer_notifications", ["conversation_id"], name: "index_mailboxer_notifications_on_conversation_id", using: :btree
-  add_index "mailboxer_notifications", ["notified_object_id", "notified_object_type"], name: "index_mailboxer_notifications_on_notified_object_id_and_type", using: :btree
-  add_index "mailboxer_notifications", ["sender_id", "sender_type"], name: "index_mailboxer_notifications_on_sender_id_and_sender_type", using: :btree
-  add_index "mailboxer_notifications", ["type"], name: "index_mailboxer_notifications_on_type", using: :btree
+  add_index "mailboxer_notifications", ["conversation_id"], name: "index_mailboxer_notifications_on_conversation_id"
+  add_index "mailboxer_notifications", ["notified_object_id", "notified_object_type"], name: "index_mailboxer_notifications_on_notified_object_id_and_type"
+  add_index "mailboxer_notifications", ["sender_id", "sender_type"], name: "index_mailboxer_notifications_on_sender_id_and_sender_type"
+  add_index "mailboxer_notifications", ["type"], name: "index_mailboxer_notifications_on_type"
 
   create_table "mailboxer_receipts", force: true do |t|
     t.integer  "receiver_id"
@@ -1347,8 +1350,8 @@ ActiveRecord::Schema.define(version: 20161219084454) do
     t.datetime "updated_at",                                 null: false
   end
 
-  add_index "mailboxer_receipts", ["notification_id"], name: "index_mailboxer_receipts_on_notification_id", using: :btree
-  add_index "mailboxer_receipts", ["receiver_id", "receiver_type"], name: "index_mailboxer_receipts_on_receiver_id_and_receiver_type", using: :btree
+  add_index "mailboxer_receipts", ["notification_id"], name: "index_mailboxer_receipts_on_notification_id"
+  add_index "mailboxer_receipts", ["receiver_id", "receiver_type"], name: "index_mailboxer_receipts_on_receiver_id_and_receiver_type"
 
   create_table "maints", force: true do |t|
     t.integer  "asset_id"
@@ -1449,7 +1452,7 @@ ActiveRecord::Schema.define(version: 20161219084454) do
     t.integer  "status"
   end
 
-  add_index "positions", ["ancestry"], name: "index_positions_on_ancestry", using: :btree
+  add_index "positions", ["ancestry"], name: "index_positions_on_ancestry"
 
   create_table "postinfos", force: true do |t|
     t.string   "details"
@@ -1580,7 +1583,7 @@ ActiveRecord::Schema.define(version: 20161219084454) do
     t.datetime "updated_at"
   end
 
-  add_index "residences", ["ancestry"], name: "index_residences_on_ancestry", using: :btree
+  add_index "residences", ["ancestry"], name: "index_residences_on_ancestry"
 
   create_table "resultlines", force: true do |t|
     t.decimal  "total"
@@ -1924,9 +1927,9 @@ ActiveRecord::Schema.define(version: 20161219084454) do
     t.string   "salary_no"
   end
 
-  add_index "staffs", ["icno"], name: "index_staffs_on_icno", using: :btree
-  add_index "staffs", ["id"], name: "index_staffs_on_id", using: :btree
-  add_index "staffs", ["name"], name: "index_staffs_on_name", using: :btree
+  add_index "staffs", ["icno"], name: "index_staffs_on_icno"
+  add_index "staffs", ["id"], name: "index_staffs_on_id"
+  add_index "staffs", ["name"], name: "index_staffs_on_name"
 
   create_table "staffsearch2s", force: true do |t|
     t.string   "keywords"
@@ -2134,10 +2137,10 @@ ActiveRecord::Schema.define(version: 20161219084454) do
     t.string   "sstatus_remark"
   end
 
-  add_index "students", ["icno"], name: "index_students_on_icno", using: :btree
-  add_index "students", ["id"], name: "index_students_on_id", using: :btree
-  add_index "students", ["matrixno"], name: "index_students_on_matrixno", using: :btree
-  add_index "students", ["name"], name: "index_students_on_name", using: :btree
+  add_index "students", ["icno"], name: "index_students_on_icno"
+  add_index "students", ["id"], name: "index_students_on_id"
+  add_index "students", ["matrixno"], name: "index_students_on_matrixno"
+  add_index "students", ["name"], name: "index_students_on_name"
 
   create_table "studentsearches", force: true do |t|
     t.string   "icno"
@@ -2180,7 +2183,7 @@ ActiveRecord::Schema.define(version: 20161219084454) do
     t.datetime "updated_at"
   end
 
-  add_index "tenants", ["id"], name: "index_tenants_on_id", using: :btree
+  add_index "tenants", ["id"], name: "index_tenants_on_id"
 
   create_table "timetable_periods", force: true do |t|
     t.integer  "timetable_id"
@@ -2458,15 +2461,14 @@ ActiveRecord::Schema.define(version: 20161219084454) do
     t.integer  "sign_in_count",          default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.inet     "current_sign_in_ip"
-    t.inet     "last_sign_in_ip"
+    t.string   "current_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-  add_index "users", ["userable_id", "userable_type"], name: "index_users_on_userable_id_and_userable_type", using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["userable_id", "userable_type"], name: "index_users_on_userable_id_and_userable_type"
 
   create_table "vehicles", force: true do |t|
     t.string  "type_model"
@@ -2527,10 +2529,4 @@ ActiveRecord::Schema.define(version: 20161219084454) do
   end
 
   Foreigner.load
-  add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", name: "mb_opt_outs_on_conversations_id", column: "conversation_id"
-
-  add_foreign_key "mailboxer_notifications", "mailboxer_conversations", name: "notifications_on_conversation_id", column: "conversation_id"
-
-  add_foreign_key "mailboxer_receipts", "mailboxer_notifications", name: "receipts_on_notification_id", column: "notification_id"
-
 end

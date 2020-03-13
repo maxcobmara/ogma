@@ -6,7 +6,6 @@ gem 'rails', '4.1.9'
 gem "thin", "~> 1.6.3"
 gem "devise", "~> 3.4.1"
 gem 'declarative_authorization', '~> 0.5.7'
-gem 'pg', '~> 0.17.1'
 gem 'paperclip', '~> 4.2.0'
 gem "ancestry", "~> 2.1.0"
 gem "ransack", "~> 1.8.0"
@@ -17,6 +16,7 @@ gem 'prawn-table', '~> 0.2.1'
 gem "chartkick", "~> 1.3.2"
 gem 'country_select', '~> 2.1.0'
 gem 'mailboxer', '~> 0.13.0'
+gem 'sqlite3', '~> 1.3'
 
 
 
@@ -62,7 +62,8 @@ end
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.1'
   gem 'guard-rspec', '~> 4.2.9'
-  gem "faker"
+  gem 'faker'
+
 end
 
 group :test do
@@ -80,6 +81,7 @@ group :doc do
 end
 
 group :production do
+  gem 'pg', '~> 1.1'
   gem 'rails_12factor', '0.0.2'
   gem 'rack-cache', '~> 1.2'
   gem 'unicorn'

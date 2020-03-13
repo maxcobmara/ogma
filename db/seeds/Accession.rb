@@ -1,3 +1,5 @@
+#requires book
+
 Accession.create!([
   {id: 5286, book_id: 5119, accession_no: "0000000001", order_no: nil, purchase_price: nil, received: nil, received_by: nil, supplied_by: nil, created_at: "2014-08-24 06:57:16", updated_at: "2014-08-24 06:57:16", status: nil},
   {id: 5287, book_id: 5120, accession_no: "0000000002", order_no: nil, purchase_price: nil, received: nil, received_by: nil, supplied_by: nil, created_at: "2014-08-24 06:57:16", updated_at: "2014-08-24 06:57:16", status: nil},
