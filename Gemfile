@@ -17,6 +17,7 @@ gem "chartkick", "~> 1.3.2"
 gem 'country_select', '~> 2.1.0'
 gem 'mailboxer', '~> 0.13.0'
 gem 'sqlite3', '~> 1.3'
+gem 'pg', '~> 0.17.1'
 
 
 
@@ -81,7 +82,7 @@ group :doc do
 end
 
 group :production do
-  gem 'pg', '~> 1.1'
+  #gem 'pg', '~> 1.1'
   gem 'rails_12factor', '0.0.2'
   gem 'rack-cache', '~> 1.2'
   gem 'unicorn'
