@@ -4,7 +4,7 @@ ruby '2.1.4'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.9'
 gem "thin", "~> 1.6.3"
-gem "devise", "~> 3.4.1"
+gem "devise", "~> 4.7.1"
 gem 'declarative_authorization', '~> 0.5.7'
 gem 'paperclip', '~> 4.2.0'
 gem "ancestry", "~> 2.1.0"
