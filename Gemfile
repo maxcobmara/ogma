@@ -62,7 +62,7 @@ end
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.1'
   gem 'guard-rspec', '~> 4.2.9'
-  gem 'faker'
+  gem 'faker', '~> 1.9.1', '>= 1.9.1'
 
 end
 
