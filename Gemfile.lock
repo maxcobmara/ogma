@@ -206,7 +206,7 @@ GEM
       cocaine (~> 0.5.3)
       mime-types
     pdf-core (0.4.0)
-    pg (1.1.4)
+    pg (0.17.1)
     prawn (1.3.0)
       pdf-core (~> 0.4.0)
       ttfunk (~> 1.4.0)
@@ -382,7 +382,7 @@ DEPENDENCIES
   mailboxer (~> 0.13.0)
   modernizr-rails (~> 2.6.2.3)
   paperclip (~> 4.2.0)
-  pg (~> 1.1)
+  pg (~> 0.17.1)
   prawn (~> 1.3.0)
   prawn-table (~> 0.2.1)
   quiet_assets (~> 1.0.2)
