@@ -12,14 +12,14 @@ module DropDown
        [ "Berpisah", 6 ],
        [ "Tiada Maklumat", 9 ]
   ]
-  
+
   POSITION_STATUS = [
         #  Displayed       stored in db
         [ "Hakiki", 1],
         [ "Kontrak", 2],
         [ "KUP",3]
   ]
-   
+
   BLOOD_TYPE = [
       #  Displayed       stored in db
       [ "O-",          "1" ],
@@ -30,7 +30,7 @@ module DropDown
       [ "B+", "6" ],
       [ "AB-", "7" ],
       [ "AB+", "8" ]
-    
+
   ]
 
   BANKTYPE = [
@@ -40,7 +40,7 @@ module DropDown
         [ "Semasa",3 ],
         [ "Simpanan Tetap",4 ],
   ]
-       
+
   STATECD = [
     #  Displayed       stored in db
     [ "Johor",         1 ],
@@ -50,16 +50,16 @@ module DropDown
     [ "Negeri Sembilan", 5 ],
     [ "Pahang", 6 ],
     [ "Pulau Pinang", 7 ],
-    [ "Perak", 8 ], 
+    [ "Perak", 8 ],
     [ "Perlis", 9 ],
-    [ "Selangor", 10 ], 
-    [ "Terengganu", 11 ], 
-    [ "Sabah", 12 ], 
+    [ "Selangor", 10 ],
+    [ "Terengganu", 11 ],
+    [ "Sabah", 12 ],
     [ "Sarawak", 13 ],
     [ "Wilayah Persekutuan Kuala Lumpur", 14 ],
     [ "Wilayah Persekutuan Labuan", 15 ],
     [ "Wilayah Persekutuan Putrajaya", 16 ],
-    [ "Luar Negara", 98 ],       
+    [ "Luar Negara", 98 ],
   ]
 
   NATIONALITY = [
@@ -92,7 +92,7 @@ module DropDown
    #  Displayed       stored in db
    [ "Kementerian Kesihatan Malaysia","kkm" ],
    [ "Suruhanjaya Perkhidmatan Awam","spa" ],
-   [ "Jabatan Perkhidmatan Awam","jpa" ]  
+   [ "Jabatan Perkhidmatan Awam","jpa" ]
   ]
 
   HOS = [
@@ -100,7 +100,7 @@ module DropDown
    [ "Suruhanjaya Perkhidmatan Awam","spa" ],
    [ "Kementerian Kesihatan Malaysia","kkm" ],
    [ "Jabatan Perkhidmatan Awam","jpa" ],
-   [ "Jabatan Perpustakaan Negara","jpn" ]    
+   [ "Jabatan Perpustakaan Negara","jpn" ]
   ]
 
   KIN_TYPE = [
@@ -118,7 +118,7 @@ module DropDown
     [ "Penjamin I", 98 ],
     [ "Penjamin II", 99 ]
   ]
- 
+
 
   PENSION = [
    #  Displayed       stored in db
@@ -149,7 +149,7 @@ module DropDown
    [ "Doktor Falsafah (Ph.D)",1 ],
    [ "Lain Lain", 99 ]
   ]
-  
+
 
   UNIFORM = [
     #  Displayed       stored in db
@@ -177,7 +177,7 @@ module DropDown
   TOS = [
        #  Displayed       stored in db
        [ "Persekutuan","p" ],
-       [ "Negeri","n" ]   
+       [ "Negeri","n" ]
   ]
 
   GENDER = [
@@ -194,7 +194,7 @@ module DropDown
            [ "Other", 4 ],
            [ "None", 99 ]
   ]
-  
+
 #   STAFF_COURSE_TYPE = [
 #        #  Displayed       stored in db
 #        [ "In-House",              5 ],
@@ -203,7 +203,7 @@ module DropDown
 #        [ "Certificate",          20 ],
 #        [ "Diploma/Others",       25 ]
 #   ]
-  
+
   PROGRAMME_CLASSIFICATION2 = [
        #  Displayed       stored in db
        ["Latihan", 1],
@@ -211,13 +211,13 @@ module DropDown
        ["Sesi Pembelajaran (Tidak Bersemuka)", 3],
        ["Pembelajaran Kendiri", 4]
   ]
-  
+
   TRAINING_LEVEL = [
        #  Displayed       stored in db
        [ I18n.t("staff.training.course.domestic"), 1],
        [ I18n.t("staff.training.course.overseas"), 2]
   ]
-   
+
   PROGRAMME_CLASSIFICATION = [
        #  Displayed       stored in db
        [ I18n.t("staff.training.course.training"), 1],
@@ -225,7 +225,7 @@ module DropDown
        [ I18n.t("staff.training.course.non_confront"), 3],
        [ I18n.t("staff.training.course.self_training"), 4]
   ]
-  
+
   STAFF_COURSE_TYPE = [
        #  Displayed       stored in db
        [ I18n.t("staff.training.course.course"), 1],
@@ -245,13 +245,13 @@ module DropDown
        [ I18n.t("staff.training.course.attachment_training"), 15],
        [ I18n.t("staff.training.course.simulation"), 16],
        [ I18n.t("staff.training.course.others"), 17],
-       [ I18n.t("staff.training.course.epsa_portal"), 18],  
-       [ I18n.t("staff.training.course.e_learning_portal"), 19],  
-       [ I18n.t("staff.training.course.hr_knowledge_repo"), 20],  
-       [ I18n.t("staff.training.course.book_reading"), 21],  
-       [ I18n.t("staff.training.course.jurnal_reading"), 22],  
+       [ I18n.t("staff.training.course.epsa_portal"), 18],
+       [ I18n.t("staff.training.course.e_learning_portal"), 19],
+       [ I18n.t("staff.training.course.hr_knowledge_repo"), 20],
+       [ I18n.t("staff.training.course.book_reading"), 21],
+       [ I18n.t("staff.training.course.jurnal_reading"), 22],
   ]
-  
+
   DURATION_TYPE = [
        #  Displayed       stored in db
        [ I18n.t("time.hours"), 0],
@@ -265,7 +265,7 @@ module DropDown
     [I18n.t('staff.training.schedule.local_order'), 1],
     [I18n.t('staff.training.schedule.cash'), 2]
   ]
-  
+
   LOCATION_CATEGORIES = [
          #  Displayed       stored in db
          [ "building" , 1 ],
@@ -296,7 +296,7 @@ module DropDown
           [ I18n.t("document.others"),  "4" ],
           [ I18n.t("document.email"),      "5" ]
    ]
- 
+
    DOCUMENT_ACTION = [
            #  Displayed       stored in db
            [ "Segera","1" ],
@@ -315,7 +315,7 @@ module DropDown
                 ["Template",        0],
                 ["Complete Exam",  1]
     ]
-       
+
     QTYPE = [
            #  Displayed       stored in db
            [ "Objektif - MCQ", "MCQ" ],
@@ -327,9 +327,9 @@ module DropDown
            [ "OSCE",           "OSCE"],  #10Apr2013-newly added - to confirm
            [ "OSPE",           "OSPE"],  #10Apr2013-newly added - to confirm
            [ "VIVA",           "VIVA"],   #10Apr2013-newly added - to confirm
-           [ "Objektif - True/False",  "TRUEFALSE"]   #10Apr2013-newly added - to confirm          
+           [ "Objektif - True/False",  "TRUEFALSE"]   #10Apr2013-newly added - to confirm
     ]
-   
+
     QCATEGORY = [
             #  Displayed       stored in db
             [ "Recall","Recall" ],
@@ -338,14 +338,14 @@ module DropDown
             [ "Analysis", "Analysis" ],
             [ "Synthesis", "Synthesis" ]
      ]
-    
+
      QLEVEL = [
               #  Displayed       stored in db
               [ "(R) Easy | Mudah","1" ],
               [ "(S) Intermediate | Pertengahan","2" ],
               [ "(T) Difficult | Sukar", "3" ]
      ]
-  
+
      QSTATUS = [
          #  Displayed       stored in db
          [ "Created","Created" ],
@@ -357,7 +357,7 @@ module DropDown
          [ "Re-Edit", "Re-Edit" ],
          [ "Rejected", "Rejected" ]
     ]
-     
+
    #Examresults
     SEMESTER = [
               #  Displayed       stored in db
@@ -377,14 +377,14 @@ module DropDown
             [ "Lulus", "3"],
             [ "Gagal", "4"]
   ]
-    
+
     #Resultline
     RESULT_STATUS_CONTRA =[
             #  Displayed       stored in db
             [ "Lulus", "3"],
             [ "Gagal", "4"]
   ]
-    
+
     #Resultline
     RESULT_REMARK =[
             #  Displayed       stored in db
@@ -394,13 +394,13 @@ module DropDown
             [ "Naik Semester", "4"],
             [ "Ulang Semester", "5"]
    ]
-     
+
     DAY_CHOICE = [
          #  Displayed       stored in db
          [ "Sun-Wed / Mon-Thurs",  1 ],
          [ "Thurs / Fri",    2 ]
     ]
-    
+
     DAY_LIST = [
             #  Displayed       stored in db
             ["Monday",     1],
@@ -408,14 +408,14 @@ module DropDown
             ["Wednesday",  3],
             ["Thursday",   4]
     ]
-    
+
     CLASS_METHOD = [
             #  Displayed       stored in db
             [I18n.t('training.programme.lecture'),     1],
             [I18n.t('training.programme.tutorial'),    2],
             [I18n.t('training.programme.practical'),  3]
     ]
-    
+
     COURSE_STATUS = [
          #  Displayed       stored in db
          [ I18n.t('training.programme.major'),     1 ],
@@ -431,14 +431,14 @@ module DropDown
          [ I18n.t('training.programme.months'),     30 ],
          [ I18n.t('training.programme.years'),      365 ]
     ]
-    
+
     COURSE_TYPES_PROG =  [
       # Displayed	stored in db
       ['Diploma','Diploma'],
       ['Pos Basik','Pos Basik'],
       ['Diploma Lanjutan','Diploma Lanjutan']
     ]
-    
+
     COURSE_TYPES_SUB = [
       # Displayed	stored in db
        [I18n.t('training.programme.semester'),'Semester'],
@@ -447,7 +447,7 @@ module DropDown
        [I18n.t('training.programme.topic'),'Topic'],
        [I18n.t('training.programme.subtopic'), 'Subtopic']
       ]
-    
+
     #COURSE_TYPES = [
     #   ['Diploma','Diploma'],
     #   ['Pos Basik','Pos Basik'],
@@ -458,7 +458,7 @@ module DropDown
     #   [I18n.t('training.programme.topic'),'Topic'],
      #  [I18n.t('training.programme.subtopic'), 'Subtopic']
      # ]
-    
+
     COURSE_TYPES = [
        ['Diploma','Diploma'],
        ['Pos Basik','Pos Basik'],
@@ -474,13 +474,13 @@ module DropDown
       [I18n.t('training.programme.hours'), 1],
       [I18n.t('training.programme.minutes'), 2]
       ]
-    
+
     LOGTYPE = [
 	# Displayed        stored in db
         [ I18n.t('staff_attendance.log_in'),        'I' ],
         [ I18n.t('staff_attendance.log_out'),      'O' ]
       ]
-    
+
     TRIGGER_STATUS = [
 	# Displayed       stored in db
         [ I18n.t('staff_attendance.outstation'), 1],
@@ -489,30 +489,30 @@ module DropDown
         [ I18n.t('staff_attendance.early_late'), 4],
         [ I18n.t('staff_attendance.others'), 5]
       ]
-    
+
     FINGERPRINT_TYPE = [
       #Displayed       stored in db
       [I18n.t('fingerprint.in'), 1],
       [I18n.t('fingerprint.out'), 2],
       [I18n.t('fingerprint.both'), 3]
     ]
-	
-    
+
+
     # library resources (book)
-    
+
   LOAN = [
-        #  Displayed       stored in db 
+        #  Displayed       stored in db
         [ I18n.t('library.book.open_shelf'), 1],
         [ I18n.t('library.book.red_spot'), 3]
   ]
-  
+
   LANGUAGE = [
         #  Displayed       stored in db
         [ "English", "EN" ],
         [ "Bahasa Malaysia", "ms_MY" ],
         [ I18n.t('library.book.others'), "lain"]
   ]
-  
+
   MEDIA = [
          #  Displayed       stored in db
          [ I18n.t('library.book.book2'),1 ],
@@ -520,33 +520,33 @@ module DropDown
          [ "DVD", 3 ],
          [ "CD", 4]
   ]
-  
+
   STATUS = [
           #  Displayed       stored in db
           [ I18n.t('library.book.available'),1 ],
           [ I18n.t('library.book.on_loan'),2 ],
           [ I18n.t('library.book.fixed'), 3 ],
           [ I18n.t('library.book.disposed'), 4 ]
-] 
+]
   CATSOURCE = [
           #  Displayed       stored in db
           [ "Perustakaan Negara",1 ],
           [ "Amazon.com",2 ],
           [ "Others",3 ]
 ]
-  
-  
-  #student discipline cases  
+
+
+  #student discipline cases
    SDCSTATUS = [
          #  Displayed       stored in db
          [ I18n.t('student.discipline.new2'),"New" ],
          [ I18n.t('student.discipline.open'),"Open" ],
          [ I18n.t('student.discipline.no_case'),"No Case" ],
          [ I18n.t('student.discipline.closed'), "Closed" ],
-         [ I18n.t('student.discipline.refer_bpl'), "Refer to BPL" ],   
+         [ I18n.t('student.discipline.refer_bpl'), "Refer to BPL" ],
          [ I18n.t('student.discipline.refer_tphep'), "Refer to TPHEP"]
     ]
-   
+
    INFRACTION = [
          #  Displayed       stored in db
          [ I18n.t('student.discipline.smooking'), 1  ],
@@ -554,7 +554,7 @@ module DropDown
          [ I18n.t('student.discipline.quarrel'), 3 ],
          [ I18n.t('student.discipline.others'), 4 ]
       ]
-    
+
     STAFFLEAVETYPE = [
              #  Displayed       stored in db
              [ "Cuti Rehat",1 ],
@@ -565,17 +565,16 @@ module DropDown
              [ "Cuti Bersalin",6 ],
              [ "Cuti Haji",7 ]
      ]
-     
+
      FILTERS = [
        {:scope => "relevant",        :label => "All"},
        {:scope => "mine",       :label => "My Leave"},
        {:scope => "forsupport", :label => "For My Support"},
        {:scope => "forapprove", :label => "For My Approval"}
        ]
-      
+
    #evactivities (staff appraisal)
    EVACT = [
-          #  Displayed       stored in db
           [ "Komuniti","1" ],
           [ "Jabatan","2" ],
           [ "Daerah", "3" ],
@@ -583,7 +582,7 @@ module DropDown
           [ "Negara", "5" ],
           [ "Antarabangsa", "9" ]
    ]
-   
+
   #staff_appraisal_skt
   INDICATORS=[
     [I18n.t('evaluation.skt.quality'), 1],
@@ -591,8 +590,8 @@ module DropDown
     [I18n.t('evaluation.skt.quantity'), 3],
     [I18n.t('evaluation.skt.cost'), 4]
     ]
-  
-   
+
+
    #staff.training.course
     COURSE_TYPE = [
        #  Displayed       stored in db
@@ -602,27 +601,27 @@ module DropDown
        [ "Certificate",          20 ],
        [ "Diploma/Others",       25 ],
    ]
-  
+
    DUR_TYPE = [
        #  Displayed       stored in db
        [ "Days",  1 ],
        [ "Months",2 ],
        [ "Years", 3 ],
    ]
-   
+
    #Assetcategory
   ASSETTYPE = [
              #  Displayed       stored in db
              ["Harta Modal",1],
              ["Inventory",2]
   ]
-   
+
   ASSETTYPES = [
              # Displayed        stored in db
              ["H",1],
              ["I",2]
    ]
-  
+
   #TravelClaimReceipt
   RECEIPTTYPE = [
         #  Displayed       stored in db
@@ -633,7 +632,7 @@ module DropDown
         [ "- Feri",       14 ],
         [ "- Kapal Terbang",15 ],
         [ "---------------",19 ],
-        
+
         [ "Miscellaneous",   40 ],
         [ "-  Tol",        41 ],
         [ "-  Tempat Letak Kereta",42 ],
@@ -642,7 +641,7 @@ module DropDown
         [ "-  Telefon/Teleks/Fax",45 ],
         [ "-  Exchanged",   99 ]
   ]
-  
+
   ALLOWANCETYPE = [
         #  Displayed       stored in db
         [ "Elaun Makan",21 ],
@@ -652,7 +651,7 @@ module DropDown
         [ "Sewa Hotel",32 ],
         [ "Cukai Kerajaan",33 ]
   ]
-  
+
   LOAN_FILTERS = [
     {:scope => "all",       :label => "All"},
     {:scope => "myloan",    :label => "My Loan"},
@@ -663,15 +662,15 @@ module DropDown
     {:scope => "rejected",  :label => "Rejected"},
     {:scope => "overdue",   :label => "Due/Overdue"}
   ]
- 
- #Student Attendance 
+
+ #Student Attendance
    ABSENT_REASON = [
           #  Displayed       stored in db
           [ "Cuti Sakit","1" ],
           [ "Kecemasan","2" ],
           [ "Biasa", "3" ]
    ]
-   
+
    ABSENT_ACTION = [
           #   Displayed     stored in db
          ["Kaunseling","1"],
@@ -681,8 +680,8 @@ module DropDown
          ["Tatatertib","5"],
          ["Hadir Kelas Gantian","6"]
      ]
-  
-   #Score  
+
+   #Score
    #E_TYPES = [
      #  Displayed       stored in db
    #   [ "Clinical Work",1 ],
@@ -701,8 +700,8 @@ module DropDown
         ["Affective Assessment", 8],
         ["CA+MSE : Continuous Assessment+Mid Sem Exam", 9],
         ["Other Assessment", 10]
-     ]  
-   
+     ]
+
    #Grade
    GRADE = [
   #  Displayed       stored in db
@@ -780,5 +779,5 @@ KTYPE = [
         [ "Cuti Pertengahan Semester", "Mid Term Break" ],
         [ "Cuti Akhir Semester", "End of Semester" ]
     ]
-   
+
 end
