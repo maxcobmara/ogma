@@ -1,0 +1,10 @@
+LocationDamage.create!([
+  {id: 19, location_id: 371, reported_on: "2015-03-18", description: "katil patah", repaired_on: "2015-03-18", document_id: 2, inspection_on: nil, user_id: nil, college_id: nil, created_at: "2015-03-18 10:51:46", updated_at: "2015-03-18 10:52:22"},
+  {id: 17, location_id: 371, reported_on: "2015-03-05", description: "Masalah Elektrikal", repaired_on: "2015-03-18", document_id: 1, inspection_on: nil, user_id: nil, college_id: nil, created_at: "2015-03-05 13:02:12", updated_at: "2015-03-18 10:53:52"},
+  {id: 20, location_id: 371, reported_on: "2015-03-18", description: "Masalah Elektrikal", repaired_on: nil, document_id: 1, inspection_on: nil, user_id: nil, college_id: nil, created_at: "2015-03-18 10:55:01", updated_at: "2015-03-18 10:55:01"},
+  {id: 22, location_id: 1591, reported_on: "2017-01-25", description: "Syiling Bilik Air Rosak", repaired_on: nil, document_id: 2, inspection_on: nil, user_id: nil, college_id: nil, created_at: "2017-01-25 02:56:07", updated_at: "2017-01-25 02:56:07"},
+  {id: 23, location_id: 1592, reported_on: "2017-01-25", description: "Syiling Bilik Air Rosak", repaired_on: nil, document_id: 2, inspection_on: nil, user_id: nil, college_id: nil, created_at: "2017-01-25 02:56:26", updated_at: "2017-01-25 02:56:26"},
+  {id: 25, location_id: 1474, reported_on: "2018-02-12", description: "trip", repaired_on: nil, document_id: 2, inspection_on: nil, user_id: nil, college_id: nil, created_at: "2018-02-12 02:10:13", updated_at: "2018-02-12 02:10:13"},
+  {id: 21, location_id: 1590, reported_on: "2017-01-25", description: "Syiling Bilik Air Bocor", repaired_on: "2017-12-13", document_id: 2, inspection_on: nil, user_id: nil, college_id: nil, created_at: "2017-01-25 02:54:13", updated_at: "2018-02-19 04:35:04"},
+  {id: 24, location_id: 1590, reported_on: "2017-01-25", description: "Syiling Bilik Air Rosak", repaired_on: "2017-12-13", document_id: 1, inspection_on: nil, user_id: nil, college_id: nil, created_at: "2017-01-25 03:00:09", updated_at: "2018-02-19 04:35:04"}
+])

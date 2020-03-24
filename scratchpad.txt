@@ -10,22 +10,54 @@ rspec --format documentation
 psql -U postgres -d icms_kskb_development
 
 
-Annotated (99): AcademicSession, Accession, AddressBook, Answerchoice, Asset, AssetDefect, AssetDisposal, AssetLoan, AssetLoss, AssetPlacement, Assetcategory, AttachmentUploader, Attendance, Bank, Bankaccount, Book, Booleananswer, Booleanchoice, Bulletin, Circulation, Cofile, Document, Employgrade, Evactivity, EvaluateCourse, Event, Exam, ExamTemplate, Examanalysis, Examanswer, Exammark, Examquestion, Examresult, Examtemplate, Fingerprint, Grade, Group, Holiday, Intake, Kin, Leaveforstaff, Leaveforstudent, LessonPlan, LessonPlanTrainingnote, LessonplanMethodology, Librarytransaction, Loan, Location, LocationDamage, Login, Maint, Mark, Mycpd, Page, Position, Postinfo, Programme, Ptbudget, Ptcourse, Ptdo, Ptschedule, Qualification, Resultline, Role, Score, ShiftHistory, Shortessay, Spmresult, Staff, StaffAppraisal, StaffAppraisalSkt, StaffAttendance, StaffGrade, StaffShift, Stationery, StationeryAdd, StationeryUse, Student, StudentAttendance, StudentCounselingSession, StudentDisciplineCase, Tenant, Timetable, TimetablePeriod, Title, Topicdetail, Trainingnote, Trainneed, TravelClaim, TravelClaimAllowance, TravelClaimLog, TravelClaimMileageRate, TravelClaimReceipt, TravelClaimsTransportGroup, TravelRequest, User, Vehicle, Weeklytimetable, WeeklytimetableDetail
+Annotated (99): AcademicSession, Accession, AddressBook, Answerchoice, Asset, AssetDefect, AssetDisposal, AssetLoan, AssetLoss, AssetPlacement, Assetcategory, AttachmentUploader, Attendance,
 
-bundle exec rake db:seed:dump MODELS=Accession FILE=db/seeds/Accession.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=AddressBook FILE=db/seeds/AddressBook.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=Answerchoice FILE=db/seeds/Answerchoice.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=Asset FILE=db/seeds/Asset.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=AssetDefect FILE=db/seeds/AssetDefect.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=AssetDisposal FILE=db/seeds/AssetDisposal.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=AssetLoan FILE=db/seeds/AssetLoan.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=AssetLoss FILE=db/seeds/AssetLoss.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=AssetPlacement FILE=db/seeds/AssetPlacement.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=Assetcategory FILE=db/seeds/Assetcategory.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=AttachmentUploader FILE=db/seeds/AttachmentUploader.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=Attendance FILE=db/seeds/Attendance.rb EXCLUDE=[]
+Bank, Bankaccount, Book, Booleananswer, Booleanchoice, Bulletin,
 
-bundle exec rake db:seed:dump MODELS=AcademicSession FILE=db/seeds/AcademicSession.rb EXCLUDE=[]
+Circulation, Cofile,
+Document,
+Employgrade, Evactivity, EvaluateCourse, Event, Exam, ExamTemplate, Examanalysis, Examanswer, Exammark, Examquestion, Examresult, Examtemplate,
+
+Fingerprint,
+Grade, Group,
+Holiday,
+Intake,
+Kin,
+
+Leaveforstaff, Leaveforstudent, LessonPlan, LessonPlanTrainingnote, LessonplanMethodology, Librarytransaction, Loan, Location, LocationDamage, Login,
+
+Maint, Mark, Mycpd, Page, Position, Postinfo, Programme, Ptbudget, Ptcourse, Ptdo, Ptschedule, Qualification, Resultline, Role, Score, ShiftHistory, Shortessay, Spmresult, Staff, StaffAppraisal, StaffAppraisalSkt, StaffAttendance, StaffGrade, StaffShift, Stationery, StationeryAdd, StationeryUse, Student, StudentAttendance, StudentCounselingSession, StudentDisciplineCase, Tenant, Timetable, TimetablePeriod, Title, Topicdetail, Trainingnote, Trainneed, TravelClaim, TravelClaimAllowance, TravelClaimLog, TravelClaimMileageRate, TravelClaimReceipt, TravelClaimsTransportGroup, TravelRequest, User, Vehicle, Weeklytimetable, WeeklytimetableDetail
+
+
+
+bundle exec rake db:seed:dump MODELS=Fingerprint FILE=db/data/Fingerprint.rb EXCLUDE=[]
+
+bundle exec rake db:seed:dump MODELS=Grade FILE=db/data/Grade.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=Group FILE=db/data/Group.rb EXCLUDE=[]
+
+bundle exec rake db:seed:dump MODELS=Holiday FILE=db/data/Holiday.rb EXCLUDE=[]
+
+bundle exec rake db:seed:dump MODELS=Intake FILE=db/data/Intake.rb EXCLUDE=[]
+
+bundle exec rake db:seed:dump MODELS=Kin FILE=db/data/Kin.rb EXCLUDE=[]
+
+bundle exec rake db:seed:dump MODELS=Leaveforstaff FILE=db/data/Leaveforstaff.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=Leaveforstudent FILE=db/data/Leaveforstudent.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=LessonPlan FILE=db/data/LessonPlan.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=LessonPlanTrainingnote FILE=db/data/LessonPlanTrainingnote.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=LessonplanMethodology FILE=db/data/LessonplanMethodology.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=Librarytransaction FILE=db/data/Librarytransaction.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=Loan FILE=db/data/Loan.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=Location FILE=db/data/Location.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=LocationDamage FILE=db/data/LocationDamage.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=Login FILE=db/data/Login.rb EXCLUDE=[]
+
+
+bundle exec rake db:seed:dump MODELS=Examtemplate FILE=db/data/Examtemplate.rb EXCLUDE=[]
+
+
+
+Circulation
 
 
 
