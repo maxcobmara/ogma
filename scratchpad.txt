@@ -26,31 +26,40 @@ Kin,
 
 Leaveforstaff, Leaveforstudent, LessonPlan, LessonPlanTrainingnote, LessonplanMethodology, Librarytransaction, Loan, Location, LocationDamage, Login,
 
-Maint, Mark, Mycpd, Page, Position, Postinfo, Programme, Ptbudget, Ptcourse, Ptdo, Ptschedule, Qualification, Resultline, Role, Score, ShiftHistory, Shortessay, Spmresult, Staff, StaffAppraisal, StaffAppraisalSkt, StaffAttendance, StaffGrade, StaffShift, Stationery, StationeryAdd, StationeryUse, Student, StudentAttendance, StudentCounselingSession, StudentDisciplineCase, Tenant, Timetable, TimetablePeriod, Title, Topicdetail, Trainingnote, Trainneed, TravelClaim, TravelClaimAllowance, TravelClaimLog, TravelClaimMileageRate, TravelClaimReceipt, TravelClaimsTransportGroup, TravelRequest, User, Vehicle, Weeklytimetable, WeeklytimetableDetail
+Maint, Mark, Mycpd,
+
+Page, Position, Postinfo, Programme, Ptbudget, Ptcourse, Ptdo, Ptschedule,
+
+Qualification,
+
+Resultline, Role,
+
+Score, ShiftHistory, Shortessay, Spmresult,
+Staff, StaffAppraisal, StaffAppraisalSkt, StaffAttendance, StaffGrade, StaffShift,
+Stationery, StationeryAdd, StationeryUse,
+Student, StudentAttendance, StudentCounselingSession, StudentDisciplineCase,
+
+Tenant, Timetable, TimetablePeriod, Title, Topicdetail, Trainingnote, Trainneed,
+TravelClaim, TravelClaimAllowance, TravelClaimLog, TravelClaimMileageRate, TravelClaimReceipt, TravelClaimsTransportGroup, TravelRequest,
+
+User,
+
+Vehicle,
+Weeklytimetable, WeeklytimetableDetail
 
 
 
-bundle exec rake db:seed:dump MODELS=Fingerprint FILE=db/data/Fingerprint.rb EXCLUDE=[]
 
-bundle exec rake db:seed:dump MODELS=Grade FILE=db/data/Grade.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=Group FILE=db/data/Group.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=Stationery FILE=db/data/Stationery.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=StationeryAdd FILE=db/data/StationeryAdd.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=StationeryUse FILE=db/data/StationeryUse.rb EXCLUDE=[]
 
-bundle exec rake db:seed:dump MODELS=Holiday FILE=db/data/Holiday.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=Student FILE=db/data/Student.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=StudentAttendance FILE=db/data/StudentAttendance.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=StudentCounselingSession FILE=db/data/StudentCounselingSession.rb EXCLUDE=[]
+bundle exec rake db:seed:dump MODELS=StudentDisciplineCase FILE=db/data/StudentDisciplineCase.rb EXCLUDE=[]
 
-bundle exec rake db:seed:dump MODELS=Intake FILE=db/data/Intake.rb EXCLUDE=[]
 
-bundle exec rake db:seed:dump MODELS=Kin FILE=db/data/Kin.rb EXCLUDE=[]
-
-bundle exec rake db:seed:dump MODELS=Leaveforstaff FILE=db/data/Leaveforstaff.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=Leaveforstudent FILE=db/data/Leaveforstudent.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=LessonPlan FILE=db/data/LessonPlan.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=LessonPlanTrainingnote FILE=db/data/LessonPlanTrainingnote.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=LessonplanMethodology FILE=db/data/LessonplanMethodology.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=Librarytransaction FILE=db/data/Librarytransaction.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=Loan FILE=db/data/Loan.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=Location FILE=db/data/Location.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=LocationDamage FILE=db/data/LocationDamage.rb EXCLUDE=[]
-bundle exec rake db:seed:dump MODELS=Login FILE=db/data/Login.rb EXCLUDE=[]
 
 
 bundle exec rake db:seed:dump MODELS=Examtemplate FILE=db/data/Examtemplate.rb EXCLUDE=[]
