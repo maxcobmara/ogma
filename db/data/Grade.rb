@@ -1,3 +1,4 @@
+#wait for student
 Grade.create!([
   {id: 141, student_id: 2598, subject_id: 217, sent_to_BPL: false, sent_date: nil, formative: "25.0", score: "25.0", eligible_for_exam: false, carry_paper: false, summative: "66.5", resit: false, finalscore: "91.5", grading_id: nil, exam1name: nil, exam1desc: nil, exam1marks: "77.0", exam2name: nil, exam2desc: nil, exam2marks: nil, examweight: "70.0", created_at: "2015-12-13 12:03:09", updated_at: "2015-12-13 12:07:39"},
   {id: 142, student_id: 2599, subject_id: 217, sent_to_BPL: false, sent_date: nil, formative: "28.0", score: "28.0", eligible_for_exam: false, carry_paper: false, summative: "57.0", resit: false, finalscore: "85.0", grading_id: nil, exam1name: nil, exam1desc: nil, exam1marks: "72.0", exam2name: nil, exam2desc: nil, exam2marks: nil, examweight: "70.0", created_at: "2015-12-13 12:03:09", updated_at: "2015-12-13 12:07:39"},

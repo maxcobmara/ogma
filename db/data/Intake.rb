@@ -1,3 +1,4 @@
+#Done waits programme
 Intake.create!([
   {id: 3, name: "March 2013", description: "23", register_on: "2013-03-01", programme_id: 11, is_active: true, monthyear_intake: "2013-03-01", created_at: "2013-05-03 13:50:59", updated_at: "2013-05-03 13:50:59", staff_id: nil},
   {id: 4, name: "March 2013", description: "23", register_on: "2013-03-01", programme_id: 12, is_active: true, monthyear_intake: "2013-03-01", created_at: "2013-05-03 13:56:09", updated_at: "2013-05-03 13:56:09", staff_id: nil},

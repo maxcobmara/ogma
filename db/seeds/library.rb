@@ -66,3 +66,33 @@ Book.all.each do | book |
       status: nil})
   end
 end
+
+1000.times do
+  staff     = [true, false].sample
+  staffid   = staff == true ? Staff.all.sample.id : nil
+  studentid = staff == true ? nil : Student.all.sample.id
+  init_date = Faker::Date.birthday(0, 12)
+  returned  = [true, false].sample
+  rd        = returned == true ? (init_date + rand(1..14).days) : ""
+  Librarytransaction.create!({
+    accession_id: Accession.all.sample,
+    ru_staff: staff,
+    staff_id: staffid,
+    student_id: studentid,
+    checkoutdate: init_date,
+    returnduedate: init_date + 14.days,
+    extended: nil,
+    returned: returned,
+    returneddate: rd,
+    fine: nil,
+    finepay: nil,
+    finepaydate: nil,
+    reportlost: nil,
+    report: nil,
+    reportlostdate: nil,
+    replaceddate: nil,
+    libcheckout_by: 163,
+    libextended_by: nil,
+    libreturned_by: 163
+  })
+end
