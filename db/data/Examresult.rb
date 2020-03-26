@@ -1,3 +1,4 @@
+Done
 Examresult.create!([
   {id: 9, programme_id: 1, total: nil, pngs17: nil, status: nil, remark: nil, semester: "4", examdts: "2016-05-01", examdte: "2016-05-31", created_at: "2015-11-30 11:18:47", updated_at: "2015-11-30 11:18:47"},
   {id: 16, programme_id: 2, total: nil, pngs17: nil, status: nil, remark: nil, semester: "3", examdts: "2015-12-01", examdte: "2015-12-13", created_at: "2015-12-13 11:38:40", updated_at: "2015-12-13 11:38:40"},

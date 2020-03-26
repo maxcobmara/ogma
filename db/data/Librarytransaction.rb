@@ -1,3 +1,4 @@
+#done waiting staff student
 Librarytransaction.create!([
   {id: 111, accession_id: 5743, ru_staff: true, staff_id: 93, student_id: 0, checkoutdate: "2014-08-24", returnduedate: "2014-09-14", extended: nil, returned: true, returneddate: "2014-08-24", fine: nil, finepay: nil, finepaydate: nil, reportlost: nil, report: nil, reportlostdate: nil, replaceddate: nil, libcheckout_by: 163, libextended_by: nil, libreturned_by: 163, created_at: "2014-08-24 07:57:38", updated_at: "2014-08-24 08:00:43"},
   {id: 109, accession_id: 5289, ru_staff: true, staff_id: 163, student_id: nil, checkoutdate: "2014-08-21", returnduedate: "2014-08-07", extended: nil, returned: true, returneddate: "2014-08-26", fine: nil, finepay: nil, finepaydate: nil, reportlost: nil, report: nil, reportlostdate: nil, replaceddate: nil, libcheckout_by: nil, libextended_by: nil, libreturned_by: 163, created_at: "2014-08-24 07:27:41", updated_at: "2014-08-26 00:43:27"},
