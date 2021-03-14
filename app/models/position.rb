@@ -1,30 +1,30 @@
 class Position < ActiveRecord::Base
-  
-  before_save :set_combo_code, :titleize_name, :set_staff_if_staff_id2_exist
+
+  before_save :titleize_name, :set_staff_if_staff_id2_exist #:set_combo_code
   has_ancestry :cache_depth => true
-  
+
   validates_uniqueness_of :combo_code
   validates_presence_of   :name
-  
+
   belongs_to :staff
   belongs_to :staffgrade, :class_name => 'Employgrade'
   belongs_to :postinfo
-  
+
   attr_accessor :staff_id2
-  
+
   def set_staff_if_staff_id2_exist
     unless staff_id2.blank?
       self.staff_id=staff_id2 if staff_id.blank? || staff_id!=staff_id2
     end
      unless staff_id.blank?
-      self.staff_id=staff_id if staff_id2.blank? 
+      self.staff_id=staff_id if staff_id2.blank?
      end
   end
-  
+
   def titleize_name
     self.name = name.titleize
   end
-  
+
   def set_combo_code
     if ancestry_depth == 0
       self.combo_code = code
@@ -32,8 +32,8 @@ class Position < ActiveRecord::Base
       self.combo_code = parent.combo_code + "-" + code
     end
   end
-  
-  #PDF & Exel section  
+
+  #PDF & Exel section
   def totalpost
     unless postinfo_id.blank?
       a=Position.where('postinfo_id=?', postinfo_id).order(combo_code: :asc)[0].id
@@ -47,7 +47,7 @@ class Position < ActiveRecord::Base
       return "-"
     end
   end
-  
+
   def totalpost2
     if totalpost==""
       return nil
@@ -55,36 +55,36 @@ class Position < ActiveRecord::Base
       return totalpost
     end
   end
-  
+
   def butiran_details
-    unless totalpost=="-" 
+    unless totalpost=="-"
       b="#{postinfo.details}" if totalpost!=""
     else
       b="-"
     end
-    b    
+    b
   end
-  
+
   def occupied_post
-    unless totalpost=="-" 
+    unless totalpost=="-"
       b="#{Position.where('postinfo_id=? AND staff_id IS NOT NULL',postinfo_id).count}" if totalpost!=""
     else
       b="-"
     end
     b
   end
-  
+
   def available_post          #@positions2.concat(positions_by_grade_wo_butiran.sort_by{|x|[x.staffgrade_id, x.staff.name]})
-    unless totalpost=="-" 
+    unless totalpost=="-"
       b="#{totalpost.to_i-occupied_post.to_i}" if totalpost!=""
     else
-      b="-" 
+      b="-"
     end
     b
   end
-  
+
   def hakiki
-    unless totalpost=="-" 
+    unless totalpost=="-"
       b="#{Position.where('postinfo_id=? AND status=? AND staff_id IS NOT NULL',postinfo_id, 1).count }" if totalpost!=""
     else          #@positions2.concat(positions_by_grade_wo_butiran.sort_by{|x|[x.staffgrade_id, x.staff.name]})
 
@@ -92,28 +92,28 @@ class Position < ActiveRecord::Base
     end
     b
   end
-  
+
   def kontrak
-    unless totalpost=="-" 
+    unless totalpost=="-"
       b="#{Position.where('postinfo_id=? AND status=? AND staff_id IS NOT NULL',postinfo_id, 2).count}" if totalpost!=""
     else
-      b="-" 
+      b="-"
     end
     b
   end
-  
+
   def kup
-    unless totalpost=="-" 
+    unless totalpost=="-"
       b="#{Position.where('postinfo_id=? AND status=? AND staff_id IS NOT NULL',postinfo_id, 3).count}" if totalpost!=""
     else
-      b="-" 
+      b="-"
     end
     b
   end
-  
+
   #Export Excel (maklumat_perjawatan_excel) start
   def self.to_csv(options = {})
-    
+
     CSV.generate(options) do |csv|
         @positions=[]
         all.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[1].to_i}.sort.reverse!.each do |staffgrade2, positions_of_grade_no|
@@ -121,12 +121,12 @@ class Position < ActiveRecord::Base
             positions_by_grade_w_butiran=[]
             positions_by_grade_wo_butiran=[]
             positions_by_grade.each do |position|
-              unless position.postinfo_id.blank? 
+              unless position.postinfo_id.blank?
                 positions_by_grade_w_butiran<< position
-              else 
-                positions_by_grade_wo_butiran<< position 
+              else
+                positions_by_grade_wo_butiran<< position
               end
-            end 
+            end
             @positions.concat(positions_by_grade_w_butiran.sort_by{|x|[x.staffgrade_id, -(x.postinfo.details[0,3].to_i), x.combo_code]})
             @positions.concat(positions_by_grade_wo_butiran.sort_by{|x|[x.staffgrade_id, x.combo_code]})
           end
@@ -141,17 +141,17 @@ class Position < ActiveRecord::Base
         csv <<  [ "BIL", "BUT.","JAWATAN", "GRED", "JUM JWT","ISI",nil, "STATUS PENGISIAN", nil,"KSG", "NAMA PENYANDANG", "NO. K/P / PASSPORT", "JANTINA (L/P)", "BIDANG KEPAKARAN/SUB-KEPAKARAN","TARIKH WARTA PAKAR", "PENEMPATAN","PINJAM KE", nil, "PINJAM DARI", nil, "CATATAN"]
         csv << [nil,nil,nil,nil,nil,nil,"HAKIKI", "KONTRAK", "KUP",nil,nil,nil,nil,nil,nil,nil, "Akt.","Penempatan", "Akt.", "Penempatan", "*" ]
         csv << [] #blank row added
-        
+
         counter =counter || 0
         @positions.each do |position|
             csv << ["#{counter += 1}", position.butiran_details, position.name, position.try(:staffgrade).try(:name), position.totalpost2, position.occupied_post,   position.hakiki, position.kontrak, position.kup, position.available_post ,position.try(:staff).try(:name), position.try(:staff).try(:icno),"#{'L' if position.try(:staff).try(:gender)==1} #{'P' if position.try(:staff).try(:gender)==2}","","","","","","","",""]
-         end    
+         end
     end
-    
+
   end
   #Export Excel - end
-  
-  #Use in STAFF ATTENDANCE report (unit / department drop down list - for all types of attendance report/listing) - START 
+
+  #Use in STAFF ATTENDANCE report (unit / department drop down list - for all types of attendance report/listing) - START
   #- rev26June2015 - to match with Index page (search part)
   def self.unit_department
     #academic part
@@ -162,10 +162,10 @@ class Position < ActiveRecord::Base
     commonsubject=Programme.where(course_type: 'Commonsubject').pluck(:name).uniq
     #temp-rescue - make sure this 2 included in Programmes table @ production svr as commonsubject type
     etc_subject=['Sains Tingkahlaku', 'Anatomi & Fisiologi']
-            
+
     #management part
     mgmt_units= Position.where('staff_id is not null and unit is not null and unit!=? and unit not in (?) and unit not in (?) and unit not in (?) and unit not in (?)', '', dip_prog, commonsubject, postbasics, etc_subject).pluck(:unit).uniq
-            
+
     #combine
     udept=[]
     mgmt_units.each do |u|
@@ -186,7 +186,7 @@ class Position < ActiveRecord::Base
     end
     udept
   end
-  
+
   def self.unit_department2
     unitname_fr_staff_attendances=StaffAttendance.get_thumb_ids_unit_names(4)
     udept=[]
@@ -196,19 +196,19 @@ class Position < ActiveRecord::Base
     udept.sort
   end
   #Use in STAFF ATTENDANCE report (unit / department drop down list - for all types of attendance report/listing) - END
-  
+
   #use in Staff Attendance (self.peeps)
-  def self.am_i_leader(userableid)   #(curr_user) - userable==staff   
+  def self.am_i_leader(userableid)   #(curr_user) - userable==staff
     curr_user=User.where(userable_id: userableid).first
     staff_roles=curr_user.roles.map(&:authname)
     if staff_roles.include?("unit_leader") || staff_roles.include?("programme_manager")
-      leader_status=true 
+      leader_status=true
     else
       leader_status=false
     end
     leader_status
   end
-  
+
   #Use in Weeklytimetable to retrieve Unit Leader
   #Use in STAFF ATTENDANCE report - #define Unit Leader /  Programme Mgr by highest staff grade / rank within unit
   def self.unit_department_leader(unit_dept)
@@ -231,8 +231,8 @@ class Position < ActiveRecord::Base
     end
     leader
   end
-  
-  #Use in STAFF ATTENDANCE report (staff drop down list [upon selection of unit / department]- for monthly attendance listing) - START 
+
+  #Use in STAFF ATTENDANCE report (staff drop down list [upon selection of unit / department]- for monthly attendance listing) - START
   #- rev26June2015 - to match with Index page (search part)
   def self.unit_department_staffs
     #academic part
@@ -242,13 +242,13 @@ class Position < ActiveRecord::Base
     commonsubject=Programme.where(course_type: 'Commonsubject').pluck(:name).uniq
     #temp-rescue - make sure this 2 included in Programmes table @ production svr
     etc_subject=['Sains Tingkahlaku', 'Anatomi & Fisiologi']
-            
+
     #management part
     mgmt_units= Position.joins(:staff).where('positions.staff_id is not null and staffs.thumb_id is not null and unit is not null and unit!=? and unit not in (?) and unit not in (?) and unit not in (?) and unit not in (?) and positions.name!=?', '', dip_prog, commonsubject, postbasics, etc_subject, "ICMS Vendor Admin").group_by(&:unit)
 
     #academic part
     diploma_depts=Position.joins(:staff).where('positions.staff_id is not null and staffs.thumb_id is not null and unit in(?)', dip_prog).group_by(&:unit)
-    
+
     @grouped_staff = []
     mgmt_units.sort.each do |unit_name, posts|
       @staffs_of_unit=[]
@@ -282,15 +282,15 @@ class Position < ActiveRecord::Base
     end
     @grouped_staff
   end
-  
+
   def self.unit_department_staffs2
      StaffAttendance.get_thumb_ids_unit_names(5).sort
   end
   #Use in STAFF ATTENDANCE report (staff drop down list [upon selection of unit / department]- for monthly attendance listing) - END
-    
+
   #use in Weeklytimetables_controller.rb (Index - retrieve Programme ID for Pos Basik/Pengkhususan/Diploma Lanjutan) - START
   def self.get_postbasic_id(main_task_first, unit_name)
-    #postbasic_name_full = main_task_first[/Diploma Lanjutan \D{1,}/] 
+    #postbasic_name_full = main_task_first[/Diploma Lanjutan \D{1,}/]
     #a=@position_exist.first.main_tasks.scan(/"#{@lecturer_programme}"(.*),/)[0][0].strip   #Diploma Lanjutan Perioperating nbafmb anbfm ban
     #postbasic_name=a.gsub!(/[^a-zA-Z]/," ").split(" ")[0]     #in case a consist of comma, etc
     if ["Diploma Lanjutan"].include?(unit_name)
@@ -301,16 +301,16 @@ class Position < ActiveRecord::Base
       a=main_task_first.scan(/Pengkhususan (.*)/)[0][0].strip
     end
     if a.include?(" ")  #space exist, others may exist too
-      a_rev=a.gsub!(/[^a-zA-Z]/," ")   #in case a consist of comma, etc 
+      a_rev=a.gsub!(/[^a-zA-Z]/," ")   #in case a consist of comma, etc
       postbasic_name=a_rev.split(" ")[0]
     else
-      postbasic_name=a 
+      postbasic_name=a
     end
     postbasic=Programme.where('name ILIKE(?) and course_type=?', "%#{postbasic_name}%", unit_name).first
     postbasic.id if postbasic
   end
   #use in Weeklytimetables_controller.rb (Index - retrieve Programme ID for Pos Basik/Pengkhususan/Diploma Lanjutan) - END
-  
+
 end
 
 # == Schema Information

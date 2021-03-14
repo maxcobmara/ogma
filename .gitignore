@@ -11,6 +11,7 @@ config/database.yml
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+/dev_docs
 
 # Ignore other unneeded files.
 doc/

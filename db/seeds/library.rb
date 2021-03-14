@@ -1,4 +1,4 @@
-
+puts "Creating Books in Library"
 1000.times do
   size = rand(10..50).to_s + "cm"
   pages = rand(10..999).to_s + "ms"
@@ -50,7 +50,7 @@
   })
 end
 
-
+puts "Sorting Library onto shelves"
 counter = 0
 Book.all.each do | book |
   rand(1..9).times do
@@ -67,6 +67,7 @@ Book.all.each do | book |
   end
 end
 
+puts "People are borrowing books"
 1000.times do
   staff     = [true, false].sample
   staffid   = staff == true ? Staff.all.sample.id : nil

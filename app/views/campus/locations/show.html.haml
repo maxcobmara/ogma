@@ -5,7 +5,7 @@
 = render 'shared/flashes'
 
 .row
-  %div{:class => set_view_class(@location)}
+  %div{:class => set_view_class_old(@location)}
     .row
       - if @location.root?
         .col-md-2.left= link_to (fa_icon "arrow-circle-o-up"), campus_locations_path, class: "iko"
@@ -23,10 +23,10 @@
       - @location.children.order(:combo_code).each do | child |
         %div{:class => set_sub_class(child)}
           #bigtext= link_to child.name, campus_location_path(child)
-    
 
 
-    
+
+
   .col-md-5.location_details
     .row
       %dl.dl-horizontal
@@ -34,32 +34,32 @@
         %dd= @location.combo_code
 
         %dt= t 'location.name', :default =>  model_class.human_attribute_name(:name) + ":"
-        %dd= @location.name 
+        %dd= @location.name
 
         %dt= t 'class', :default =>  model_class.human_attribute_name(:class) + ":"
         %dd= t "location_categories.#{location_category(@location)}"
-      
+
         - if @location.administrator
           %dt= t 'location.administrator', :default =>  model_class.human_attribute_name(:administrator) + ":"
           %dd= @location.administrator.try(:name)
-      
+
         - if @location.typename
           %dt= t 'type', :default =>  model_class.human_attribute_name(:type) + ":"
           %dd= (DropDown::LOCATION_TYPE.find_all{|disp, value| value == @location.typename}).map {|disp, value| disp}[0]
-    
+
     .row
-      %br 
+      %br
       .col-md-offset-2
         .form-actions
           .button-toolbar
             .btn-group
               - if [2,6,8].include? @location.typename
                 = link_to content_tag(:i, "", :class => "fa fa-map-marker "), room_map_student_tenants_path,
-                {class: "btn btn-default", "data-toggle" => "tooltip", title: t("student.tenant.room_map")}      
+                {class: "btn btn-default", "data-toggle" => "tooltip", title: t("student.tenant.room_map")}
               - if @location.typename==1
                 = link_to content_tag(:i, "", :class => "fa fa-map-marker "), room_map2_student_tenants_path,
-                {class: "btn btn-default", "data-toggle" => "tooltip", title: t("student.tenant.unit_map")}    
-              = link_to (fa_icon "building-o"), campus_locations_path, 
+                {class: "btn btn-default", "data-toggle" => "tooltip", title: t("student.tenant.unit_map")}
+              = link_to (fa_icon "building-o"), campus_locations_path,
                 {class: "btn btn-default", "data-toggle" => "tooltip", title: "Back"}
               - if @location.parent
                 = link_to (fa_icon "arrow-up"), campus_location_path(@location.parent),
@@ -79,7 +79,7 @@
               - permitted_to? :edit, :campus_locations do
                 = link_to content_tag(:i, "", :class => "fa fa-edit"), edit_campus_location_path(@location),
                   {class: "btn btn-primary", "data-toggle" => "tooltip", title: t("actions.edit")}
-            .btn-group  
+            .btn-group
               - permitted_to? :destroy, :campus_locations do
                 = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white"), campus_location_path(@location),                                                                                                    |
                   :method => 'delete',                                                                                                           |
@@ -111,19 +111,18 @@
                   - if @location.typename == 1
                     = t "location.damage.unit_damage"
                   - else
-                    =t "location.damage.room_damage"  
+                    =t "location.damage.room_damage"
                 - elsif damage.document_id == 2
                   =t "location.damage.asset_damage"
               %td= damage.repaired_on.try(:strftime, '%d %b %Y')
-        
-        
 
 
-    
+
+
+
 - if @location.assets.exists?
   .row
     .col-md-10
       .small= link_to (t "location.has_assets"), '#', id: "show_assets_link"
       #show_assets{style: "display:none;"}
         = render "show_assets"
-        

@@ -1,3 +1,4 @@
+#done
 Maint.create!([
   {id: 3, asset_id: 5, maintainer_id: 1, workorderno: "0012", maintcost: "0.0", details: "tonner", created_at: "2010-11-07 19:31:19", updated_at: "2010-11-07 19:31:19"},
   {id: 5, asset_id: 6, maintainer_id: 2, workorderno: "123", maintcost: nil, details: "", created_at: "2010-11-11 03:18:31", updated_at: "2010-11-24 01:17:36"},

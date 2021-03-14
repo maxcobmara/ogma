@@ -1,3 +1,4 @@
+# Done. Stationery in office
 StationeryAdd.create!([
   {id: 14, stationery_id: 8, lpono: "", document: "", unitcost: "0.4", received: "2012-11-16", created_at: "2011-11-16 01:59:01", updated_at: "2011-11-16 01:59:01", quantity: 20},
   {id: 67, stationery_id: 7, lpono: "2", document: "AB", unitcost: "3.0", received: "2015-02-26", created_at: "2015-02-26 06:49:23", updated_at: "2015-03-02 06:42:39", quantity: 3},

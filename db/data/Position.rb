@@ -1,3 +1,4 @@
+#Done Position
 Position.create!([
   {id: 329, code: "60", combo_code: "1-01-60", name: "Pengajar", unit: "Penolong Pegawai Perubatan", tasks_main: "", tasks_other: "", staffgrade_id: 19, staff_id: 103, is_acting: false, ancestry: "1/2", ancestry_depth: 2, created_at: "2014-02-10 07:46:20", updated_at: "2014-04-27 02:06:15", postinfo_id: 13, status: 1},
   {id: 13, code: "07", combo_code: "1-01-07", name: "Ketua Subjek Komunikasi & Sains Pengurusan", unit: "Komunikasi & Sains Pengurusan", tasks_main: "", tasks_other: "", staffgrade_id: nil, staff_id: 114, is_acting: false, ancestry: "1/2", ancestry_depth: 2, created_at: "2012-12-30 19:51:37", updated_at: "2014-12-02 03:36:11", postinfo_id: 7, status: 1},

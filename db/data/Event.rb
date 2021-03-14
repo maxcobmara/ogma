@@ -1,3 +1,4 @@
+#Event done
 Event.create!([
   {id: 1, eventname: "Meeting With Azwan", location: "JKR Offices", participants: "Teknik Padu: Wan/Yaacob\r\nJKR : Azwan\r\nKUBB : Rahaizah", officiated: "Azwan", start_at: "2010-12-10 09:00:00", end_at: "2010-12-20 17:30:00", createdby: 10, event_is_publik: nil, created_at: "2010-10-28 07:11:18", updated_at: "2011-02-24 15:24:17"},
   {id: 6, eventname: "Test At Kkm Putrajaya", location: "Block E7", participants: "wan \r\nyaacob\r\npn.mariam\r\nen.zulfahmi", officiated: "wan", start_at: "2011-02-24 09:04:00", end_at: "2011-02-24 12:04:00", createdby: 13, event_is_publik: nil, created_at: "2011-02-24 03:06:18", updated_at: "2011-02-24 15:59:37"},

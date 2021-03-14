@@ -1,3 +1,4 @@
+#Done Role in organisation
 Role.create!([
   {id: 1, name: "User", authname: "user", created_at: "2010-12-10 09:19:25", updated_at: "2014-11-07 15:57:59", description: "Pengguna"},
   {id: 3, name: "Student", authname: "student", created_at: "2011-01-04 06:07:34", updated_at: "2014-11-07 16:00:05", description: "Pelajar"},

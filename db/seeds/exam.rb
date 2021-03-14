@@ -1,3 +1,4 @@
+puts "Creating Exams"
 100.times do
   init_date   = Faker::Time.between(2.years.ago, Date.today, :all)
   duration    = multiple5.sample
@@ -19,7 +20,7 @@
   })
 end
 
-
+puts "Creating Exam Analysis"
 Exam.each do | exam |
   Examanalysis.create!({
     exam_id: exam.id,
@@ -37,7 +38,7 @@ Exam.each do | exam |
   )
 end
 
-
+puts "Creating Exam Questions"
 rand(100..999).times do
   cd = Faker::Date.birthday(0, 12)
   ed = cd + rand(1..21).days
@@ -82,7 +83,7 @@ rand(100..999).times do
   })
 end
 
-
+puts "Creating Exam Results"
 20.times do
   dts = Faker::Date.birthday(0, 12)
   Examresult.create!({
@@ -97,7 +98,7 @@ end
   })
 end
 
-
+puts "Creating Exam Template"
 25.times do
   Examtemplate.create!({
     quantity: 40,
@@ -106,10 +107,6 @@ end
     questiontype: "MCQ"
   })
 end
-
-
-
-
 
 def multiple5
   (15..180).select do |i|

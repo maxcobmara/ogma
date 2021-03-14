@@ -1,3 +1,4 @@
+#Holiday done seeds.rb
 Holiday.create!([
   {id: 1, hname: "Thaipusaam", hdate: "2011-01-20"},
   {id: 2, hname: "Tahun Baru Cina", hdate: "2011-02-03"},

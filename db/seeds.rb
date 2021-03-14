@@ -6,7 +6,19 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+puts "Seeding Roles"
+RoleList = [
+  "User", "Administration", "Student", "Administration Staff", "Librarian", "Staff", "Warden", "Training Administration",
+  "Training Manager", "Asset Administrator", "Student Counsellor", "Facilities Administrator", "Lecturer", "Student Administrator",
+  "Staff Administrator", "E-Filing", "Guest", "Programme Manager", "Disciplinary Officer", "Finance Unit", "Coordinator"
+]
 
+puts "Creating Roles"
+RoleList.each do | r |
+  Role.create!({name: r})
+end
+
+puts "Creating Banks"
 Bank.create!([
   {id: 63, short_name: "Biro Angkasa", long_name: "Biro Angkasa", active: true},
   {id: 1, short_name: "Abrar Discounts Berhad", long_name: "Abrar Discounts Berhad", active: true},
@@ -105,3 +117,112 @@ Bank.create!([
   {id: 102, short_name: "OCBC Islamic Bank(Malaysia) Berhad", long_name: "OCBC Islamic Bank(Malaysia) Berhad", active: true},
   {id: 110, short_name: "Public Islamic Bank Berhad", long_name: "Public Islamic Bank Berhad",  active: true}
 ])
+
+puts "Creating Employee Grades"
+Employgrade.create!([
+  {id: 1, name: "N41",    group_id: 1},
+  {id: 2, name: "N44",    group_id: 1},
+  {id: 3, name: "N48",    group_id: 1},
+  {id: 4, name: "N52",    group_id: 1},
+  {id: 5, name: "N54",    group_id: 1},
+  {id: 6, name: "N27",    group_id: 2},
+  {id: 7, name: "N32",    group_id: 2},
+  {id: 8, name: "N36",    group_id: 2},
+  {id: 9, name: "N19",    group_id: 2},
+  {id: 10, name: "N22",   group_id: 2},
+  {id: 11, name: "N26",   group_id: 2},
+  {id: 12, name: "N17",   group_id: 2},
+  {id: 13, name: "N20",   group_id: 2},
+  {id: 14, name: "N11",   group_id: 2},
+  {id: 15, name: "N14",   group_id: 2},
+  {id: 16, name: "N 3",   group_id: 2},
+  {id: 17, name: "N 4",   group_id: 2},
+  {id: 18, name: "N 1",   group_id: 2},
+  {id: 19, name: "U41",   group_id: 1},
+  {id: 20, name: "U43/44", group_id: 1},
+  {id: 21, name: "U47/48", group_id: 1},
+  {id: 22, name: "U51/52", group_id: 1},
+  {id: 23, name: "U53/54", group_id: 1},
+  {id: 24, name: "U44",   group_id: 1},
+  {id: 25, name: "U48",   group_id: 1},
+  {id: 26, name: "U52",   group_id: 1},
+  {id: 27, name: "U54",   group_id: 1},
+  {id: 28, name: "U29",   group_id: 4},
+  {id: 29, name: "U32",   group_id: 4},
+  {id: 30, name: "U36",   group_id: 4},
+  {id: 31, name: "U41/42", group_id: 4},
+  {id: 32, name: "U44",   group_id: 4},
+  {id: 33, name: "U48",   group_id: 4},
+  {id: 34, name: "U29",   group_id: 2},
+  {id: 35, name: "U32",   group_id: 2},
+  {id: 36, name: "U36",   group_id: 2},
+  {id: 37, name: "U38",   group_id: 2},
+  {id: 38, name: "U40",   group_id: 2},
+  {id: 39, name: "U19",   group_id: 2},
+  {id: 40, name: "U24",   group_id: 2},
+  {id: 41, name: "U26",   group_id: 2},
+  {id: 42, name: "U17",   group_id: 2},
+  {id: 43, name: "U22",   group_id: 2},
+  {id: 44, name: "U11",   group_id: 2},
+  {id: 45, name: "U14",   group_id: 2},
+  {id: 46, name: "U 3",   group_id: 2},
+  {id: 47, name: "U12",   group_id: 2},
+  {id: 48, name: "W41",   group_id: 1},
+  {id: 49, name: "W44",   group_id: 1},
+  {id: 50, name: "W48",   group_id: 1},
+  {id: 51, name: "W52",   group_id: 1},
+  {id: 52, name: "W54",   group_id: 1},
+  {id: 53, name: "W27",   group_id: 2},
+  {id: 54, name: "W32",   group_id: 2},
+  {id: 55, name: "W36",   group_id: 2},
+  {id: 56, name: "W17",   group_id: 2},
+  {id: 57, name: "W22",   group_id: 2},
+  {id: 58, name: "W26",   group_id: 2},
+  {id: 59, name: "F41",   group_id: 1},
+  {id: 60, name: "F44",   group_id: 1},
+  {id: 61, name: "F48",   group_id: 1},
+  {id: 62, name: "F52",   group_id: 1},
+  {id: 63, name: "F54",   group_id: 1},
+  {id: 64, name: "F29",   group_id: 2},
+  {id: 65, name: "F32",   group_id: 2},
+  {id: 66, name: "F38",   group_id: 2},
+  {id: 67, name: "FT17",  group_id: 2},
+  {id: 68, name: "FT22",  group_id: 2},
+  {id: 69, name: "FT26",  group_id: 2},
+  {id: 70, name: "F11",   group_id: 2},
+  {id: 71, name: "F14",   group_id: 2},
+  {id: 72, name: "R1",    group_id: 2},
+  {id: 73, name: "R3",    group_id: 2},
+  {id: 74, name: "R6",    group_id: 2},
+  {id: 75, name: "M48",   group_id: 1},
+  {id: 76, name: "S41",   group_id: 1},
+  {id: 77, name: "S27",   group_id: 2},
+  {id: 78, name: "J29",   group_id: 2},
+  {id: 79, name: "S17",   group_id: 2},
+  {id: 80, name: "J17",   group_id: 2},
+  {id: 81, name: "KP17",  group_id: 2},
+  {id: 82, name: "M52/U52", group_id: 4},
+  {id: 83, name: "R17",   group_id: 2}
+])
+
+
+puts "Creating Holiday Calander"
+((Date.today.year-8).. Date.today.year).each do | y |
+  Holiday.create!([
+    {hname: "Thn Baru Cina #{y}", hdate: "#{y}-01-23"},
+    {hname: "Thn Baru Cina #{y}", hdate: "#{y}-01-24"},
+    {hname: "Maulidul Rasul #{y}", hdate: "#{y}-02-06"},
+    {hname: "Thaipusam #{y}",     hdate: "#{y}-02-07"},
+    {hname: "Hari Pekerja #{y}",  hdate: "#{y}-05-01"},
+    {hname: "Wesak #{y}",         hdate: "#{y}-05-05"},
+    {hname: "Awal Ramadhan #{y}", hdate: "#{y}-07-21"},
+    {hname: "Raya Puasa #{y}",    hdate: "#{y}-08-19"},
+    {hname: "Hari Malaysia #{y}", hdate: "#{y}-09-16"},
+    {hname: "Hari Raya Haji #{y}",hdate: "#{y}-10-26"},
+    {hname: "Deepavali #{y}",     hdate: "#{y}-11-13"},
+    {hname: "Awal Muharam #{y}",  hdate: "#{y}-11-15"},
+    {hname: "Besday S.Johor #{y}", hdate: "#{y}-11-22"},
+    {hname: "Hari Hol #{y}",      hdate: "#{y}-12-20"},
+    {hname: "Hari Krismas #{y}",  hdate: "#{y}-12-25"}
+  ])
+end

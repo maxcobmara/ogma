@@ -248,9 +248,21 @@ Asset.all.sample(rand(10..100)).each do | asset |
   q = (asset.assettype == 2 ? rand(1..99) : nil)
   AssetPlacement.create!({
     asset_id: asset.id,
-    location_id: 22,
-    staff_id: 70,
+    location_id: Location.all.sample.id,
+    staff_id: Staff.all.sample.id,
     reg_on: Faker::Date.birthday(0, 12),
     quantity:  q
+  })
+end
+
+puts "Creating Maintenance for Assets"
+Asset.all.sample(rand(10..100)).each do | asset |
+  Maint.create!({
+    id: 29,
+    asset_id: asset.id,
+    maintainer_id: Staff.all.sample.id,
+    workorderno: Faker::Invoice.creditor_reference,
+    maintcost: Faker::Commerce.price(range = 0..249.99),
+    details: Faker::ElectricalComponents.electromechanical
   })
 end

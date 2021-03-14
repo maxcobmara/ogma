@@ -1,3 +1,4 @@
+#Cofile done
 Cofile.create!([
   {id: 62, cofileno: "100-2/1", name: "PUBLISITI(KEMPEN & PAMERAN)", location: "BILIK FAIL", owner_id: 237, onloan: false, staffloan_id: nil, onloandt: nil, onloanxdt: nil, created_at: "2017-07-19 07:10:22", updated_at: "2017-07-19 07:10:22"},
   {id: 63, cofileno: "100-2/2", name: "LAWATAN(JABATAN LUAR)", location: "BILIK FAIL", owner_id: 237, onloan: false, staffloan_id: nil, onloandt: nil, onloanxdt: nil, created_at: "2017-07-19 07:11:20", updated_at: "2017-07-19 07:11:20"},

@@ -1,3 +1,4 @@
+#Evactivity Done
 Evactivity.create!([
   {id: 17, appraisal_id: 28, evaldt: nil, evactivity: "Perserta Larian Jogathon Hari Kebangsaan", actlevel: "4", actdt: "2012-10-12", created_at: "2012-11-01 07:04:47", updated_at: "2012-11-01 07:04:47"},
   {id: 18, appraisal_id: 28, evaldt: nil, evactivity: "Ahli Jawatankuasa Surau AsSyifa KSKBJB", actlevel: "2", actdt: "2012-01-09", created_at: "2012-11-01 07:04:47", updated_at: "2012-11-01 07:04:47"},

@@ -1,4 +1,51 @@
 
+puts "Creating Students"
+rand(1000.2000).times do
+  gender = DropDown::GENDER.sample[1]
+  fname  =  gender[0] == "Female"? Faker::Name.female_first_name : Faker::Name.male_first_name
+  dob    = Faker::Date.birthday(17, 35)
+  intake = Intake.all.sample
+  Student.create!({
+      icno: dob.strftime("%Y%m%d") + Faker::Number.leading_zero_number(6),
+      name: fname + Faker::Name.last_name,
+      matrixno: "PB 2/2012-0515",
+      sstatus: Student::STATUS.sample[1],
+      stelno: Faker::PhoneNumber.cell_phone,
+      ssponsor: Student::SPONSOR.sample[1],
+      gender: gender[1],
+      sbirthdt: dob,
+      mrtlstatuscd: Student::MARITAL_STATUS.sample[1],
+      semail: fname + Faker::Number.leading_zero_number(3) + "domain.com",
+      regdate: Faker::Date.birthday(0, 12),
+      course_id: Programme.all.sample,
+      specilisation: nil,
+      group_id: 2,
+      physical: "",
+      allergy: "nil",
+      disease: "nil",
+      bloodtype: DropDown::BLOOD_TYPE.sample[1],
+      medication: "",
+      remarks: "",
+      offer_letter_serial: "",
+      race: DropDown::RACE.sample[0],
+      photo_file_name: nil,
+      photo_content_type: nil,
+      photo_file_size: nil,
+      photo_updated_at: nil,
+      address: "#{Faker::Address.secondary_address}, #{Faker::Address.street_address},\r\n#{Faker::Address.postcode} #{Faker::Address.community},\r\n#{Faker::Address.city},\r\n#{Faker::Address.country}.",
+      address_posbasik: "Hospital #{Faker::Address.community},\r\n#{Faker::Address.postcode}#{Faker::Address.city},\r\n#{Faker::Address.country}.",
+      end_training: Intake.register_on + 18.months,
+      intake: Intake.register_on,
+      specialisation: nil,
+      intake_id: intake.id,
+      course_remarks: nil,
+      race2: DropDown::RACE.sample[0],
+      sstatus_remark: nil
+  })
+end
+
+
+puts "Creating Student Course Evaluations"
 EvaluateCourse.create!({
   course_id: 5,
   subject_id: 74,
@@ -22,7 +69,7 @@ EvaluateCourse.create!({
    invite_lec_topic: nil
   })
 
-
+puts "Creating Student Intakes"
 (Time.now.year - 12 .. Time.now.year).each do | y |
   ["01", "03", "07", "09"].each do | m |
     d = format('%02d',  rand(1..7))
@@ -40,6 +87,7 @@ EvaluateCourse.create!({
   end
 end
 
+puts "Creating Student Leave Applications"
 Student.all.sample(rand(5..999))
   init_date = Faker::Date.birthday(0, 12)
   hol_date  = init_date + rand(7..21).days

@@ -1,3 +1,4 @@
+# Stationery in office
 Stationery.create!([
   {id: 1, code: "12.12", category: "pen", unittype: "each", created_at: "2012-08-02 07:32:04", updated_at: "2012-08-02 07:32:04", maxquantity: 1000, minquantity: 150},
   {id: 7, code: "01.01 ", category: "WHITE BOARD MARKER HITAM - 500", unittype: "BATANG", created_at: "2011-11-16 01:57:28", updated_at: "2011-11-16 01:58:18", maxquantity: 500, minquantity: nil},

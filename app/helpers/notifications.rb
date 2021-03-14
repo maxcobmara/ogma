@@ -49,6 +49,7 @@ module Notifications
   else
     0
   end
+  0 #TODO
  end
 
  def travel_request_needs_approval
@@ -70,7 +71,7 @@ module Notifications
  def student_notification_of_leave
    Leaveforstudent.where(student_id: current_user.userable_id, approved: true, approved2: true).where('leave_startdate >=?', Date.tomorrow).order(leave_startdate: :asc).pluck(:leave_startdate) unless is_staff?
  end
- 
+
  def staff_notifications_of_student_leave
    if is_staff?
      if current_user.roles.pluck(:id).include?(2) #administration
@@ -81,21 +82,21 @@ module Notifications
        if current_user.roles.pluck(:id).include?(7) #warden
          if current_staff.positions.first.tasks_main.include?('Penyelaras Kumpulan')
            pending_applications = Leaveforstudent.pending_coordinator.map(&:id)
-           leaveforstudents = Leaveforstudent.where('student_id IN(?) and id IN(?) and leave_startdate >=?', current_user.under_my_supervision, pending_applications, Date.tomorrow)  
+           leaveforstudents = Leaveforstudent.where('student_id IN(?) and id IN(?) and leave_startdate >=?', current_user.under_my_supervision, pending_applications, Date.tomorrow)
          else #warden, but not a coordinator
            pending_applications = Leaveforstudent.pending_warden.map(&:id)
-           leaveforstudents = Leaveforstudent.where('id IN(?) and leave_startdate >=?', pending_applications, Date.tomorrow)  
+           leaveforstudents = Leaveforstudent.where('id IN(?) and leave_startdate >=?', pending_applications, Date.tomorrow)
          end
-       else 
+       else
          if current_user.roles.pluck(:id).include?(14) #lecturer
            pending_applications = Leaveforstudent.pending_coordinator.map(&:id)
-           leaveforstudents = Leaveforstudent.where('student_id IN(?) and id IN(?) and leave_startdate >=?', current_user.under_my_supervision, pending_applications, Date.tomorrow)  
+           leaveforstudents = Leaveforstudent.where('student_id IN(?) and id IN(?) and leave_startdate >=?', current_user.under_my_supervision, pending_applications, Date.tomorrow)
          end
        end
      end
    end
    leaveforstudents.count if leaveforstudents
- end 
+ end
 
 end
 

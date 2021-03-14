@@ -1,3 +1,4 @@
+#Employgrade done - in seeds.rb
 Employgrade.create!([
   {id: 1, name: "N41", group_id: 1, created_at: "2011-05-13 12:10:14", updated_at: "2011-05-13 12:10:14"},
   {id: 2, name: "N44", group_id: 1, created_at: "2011-05-13 12:10:24", updated_at: "2011-05-13 12:10:24"},

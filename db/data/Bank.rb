@@ -1,3 +1,4 @@
+#Bank done.
 Bank.create!([
   {id: 63, short_name: "Biro Angkasa", long_name: "Biro Angkasa", created_at: "2011-12-06 06:36:07", updated_at: "2011-12-06 06:36:07", active: true},
   {id: 1, short_name: "Abrar Discounts Berhad", long_name: "Abrar Discounts Berhad", created_at: "2011-12-01 02:04:04", updated_at: "2011-12-06 03:59:16", active: true},

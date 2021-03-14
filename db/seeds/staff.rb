@@ -1,6 +1,72 @@
-staff
+rand(100..200).times do
+  gender    = DropDown::GENDER.sample[1]
+  dob       = Faker::Date.birthday(22, 65)
+  init_date = Faker::Date.birthday(0, 12)
+  fname  =  gender[0] == "Female"? Faker::Name.female_first_name : Faker::Name.male_first_name
+  Staff.create!({
+    icno: dob.strftime("%Y%m%d") + Faker::Number.leading_zero_number(6),
+    name: fname + Faker::Name.last_name,
+    titlecd_id: 2,
+    code: "1",
+    fileno: "1",
+    position_old: nil,
+    coemail: fname + Faker::Number.leading_zero_number(3) + "organisation.com",
+    cobirthdt: dob,
+    bloodtype: DropDown::BLOOD_TYPE.sample[1],
+    cooftelno: Faker::PhoneNumber.phone_number,
+    cooftelext: Faker::PhoneNumber.extension,
+    addr: "#{Faker::Address.secondary_address}, #{Faker::Address.street_address}, #{Faker::Address.community},\r\n #{Faker::Address.city}",
+    poskod_id: Faker::Address.postcode,
+    mrtlstatuscd: DropDown::MARITAL_STATUS.sample[1],
+    statecd: DropDown::STATECD.sample[1],
+    country_cd:  DropDown::NATIONALITY.sample[1],
+    employscheme: nil,
+    employstatus: DropDown::STAFF_STATUS.sample[1],
+    appointstatus: DropDown::APPOINTMENT.sample[1],
+    appointdt: init_date,
+    schemedt: init_date + 6.months,
+    confirmdt: init_date + 2.years,
+    posconfirmdate: nil,
+    appointby: DropDown::HOS.sample[1],
+    svchead: DropDown::HOS.sample[1],
+    svctype: DropDown::TOS.sample[1],
+    pensionstat: DropDown::PENSION.sample[1],
+    pensiondt:  init_date + 21.years,
+    uniformstat: DropDown::UNIFORM.sample[1],
+    kwspcode: Faker::Code.imei,
+    taxcode: Faker::Code.asin,
+    bank: Bank.all.sample.id,
+    bankaccno: Faker::Code.rut,
+    bankacctype: DropDown::BANKTYPE.sample[1],
+    race: DropDown::RACE.sample[1],
+    religion: DropDown::RELIGION.sample[1],
+    phonecell: Faker::PhoneNumber.cell_phone,
+    photo_file_name: nil,
+    photo_content_type: nil,
+    photo_file_size: nil,
+    photo_updated_at: nil,
+    staffgrade_id: 12,
+    gender: gender,
+    pension_confirm_date: nil,
+    wealth_decleration_date: nil,
+    promotion_date: nil,
+    reconfirmation_date: nil,
+    to_current_grade_date: nil,
+    starting_salary: nil,
+    transportclass_id: "B",
+    country_id: nil,
+    birthcertno: "",
+    thumb_id: 749,
+    time_group_id: nil,
+    staff_shift_id: nil,
+    att_colour: nil,
+    phonehome: nil,
+    current_salary: ((14999 - 5.0) * rand()).round(2),
+    allowance: nil,
+    salary_no: nil
+    })
 
-
+end
 
 Loan.create!({
   id: 27,
@@ -27,4 +93,5 @@ Loan.create!({
      firstdate: "2012-09-01",
      enddate: "2039-03-01",
      enddeduction: nil,
-      created_at: "2014-12-11 02:03:39", updated_at: "2014-12-11 02:31:38"},
+      created_at: "2014-12-11 02:03:39", updated_at: "2014-12-11 02:31:38"}
+)
