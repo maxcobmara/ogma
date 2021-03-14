@@ -31,7 +31,7 @@ gem 'jquery-rails', '~> 3.1.0'  # Use jquery as the JavaScript library
 gem 'turbolinks', '~> 1.1.1'  # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 #gem 'jbuilder', '~> 1.2'  # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem "haml", "~> 5.0.0"
-gem "kaminari", "~> 0.16.1"
+gem "kaminari", "~> 1.2.1"
 gem "bootstrap-kaminari-views", "~> 0.0.3"
 gem 'font-awesome-rails', '~> 4.3.0.0'
 gem "bootstrap-datepicker-rails", "~> 1.3.0.1"
