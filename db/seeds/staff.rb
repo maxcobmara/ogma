@@ -81,7 +81,8 @@ Loan.create!({
   enddate: nil,
   enddeduction: nil,
   created_at: "2011-11-16 00:22:43",
-  updated_at: "2011-11-16 00:48:34"},
+  updated_at: "2011-11-16 00:48:34"}
+)
 
 
   {id: 63,

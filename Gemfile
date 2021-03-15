@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.4'
+ruby '2.1.10'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.9'
@@ -35,7 +35,8 @@ gem "kaminari", "~> 1.2.1"
 gem "bootstrap-kaminari-views", "~> 0.0.3"
 gem 'font-awesome-rails', '~> 4.3.0.0'
 gem "bootstrap-datepicker-rails", "~> 1.3.0.1"
-gem "bootstrap-switch-rails", "~> 2.0.2"
+gem "bootstrap-switch-rails", "~> 3.3.3"
+gem 'slim', '~> 3.0.7'
 gem "modernizr-rails", "~> 2.6.2.3"
 #gem "jquery-ui-bootstrap-rails", "~> 0.0.2"
 gem "whenever", "~> 0.9.2", require: false
@@ -62,7 +63,7 @@ end
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.1'
-  gem 'guard-rspec', '~> 4.2.9'
+  gem 'guard-rspec', '~> 4.3.1'
   gem 'faker', '~> 1.9.1', '>= 1.9.1'
 
 end
