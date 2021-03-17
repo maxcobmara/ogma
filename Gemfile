@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
-ruby '2.1.10'
+ruby '2.2.10'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.9'
+gem 'rails', '4.1.16'
 gem "thin", "~> 1.6.3"
 gem "devise", "~> 4.7.1"
 gem 'declarative_authorization', '~> 0.5.7'
@@ -16,7 +16,7 @@ gem 'prawn-table', '~> 0.2.1'
 gem "chartkick", "~> 1.3.2"
 gem 'country_select', '~> 2.1.0'
 gem 'mailboxer', '~> 0.13.0'
-gem 'sqlite3', '~> 1.3'
+gem 'sqlite3', '~> 1.3.12'
 gem 'pg', '~> 0.17.1'
 
 
