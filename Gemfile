@@ -2,12 +2,12 @@ source 'https://rubygems.org'
 ruby '2.2.10'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.16'
-gem "thin", "~> 1.6.3"
+gem 'rails', '4.1.16'  #12 July 2016
+gem "thin", "~> 1.7.0"
 gem "devise", "~> 4.7.1"
 gem 'declarative_authorization', '~> 0.5.7'
 gem 'paperclip', '~> 4.2.0'
-gem "ancestry", "~> 2.1.0"
+gem "ancestry", "~> 2.2.0"
 gem "ransack", "~> 1.8.0"
 #gem 'ransack', github: 'activerecord-hackery/ransack'#, branch: 'rails-4.1'
 #gem 'ransack', :path=>'vendor/ransack', branch: 'rails-4.1'
@@ -27,7 +27,7 @@ gem 'sass-rails', '~> 5.0', '>= 5.0.4'
 gem 'uglifier', '~> 2.1.1'  # Use Uglifier as compressor for JavaScript assets
 gem 'coffee-rails', '~> 4.0.0'  # Use CoffeeScript for .js.coffee assets and views
 gem "jquery-ui-rails", "~> 4.1.1"
-gem 'jquery-rails', '~> 3.1.0'  # Use jquery as the JavaScript library
+gem 'jquery-rails', '~> 3.1.5'  # Use jquery as the JavaScript library
 gem 'turbolinks', '~> 1.1.1'  # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 #gem 'jbuilder', '~> 1.2'  # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem "haml", "~> 5.0.0"
@@ -59,6 +59,8 @@ group :development do
   gem "quiet_assets", "~> 1.0.2"
   gem "seed_dump", "~> 3.1.0"
   gem "annotate", "~> 2.6.1"
+  gem 'bullet', '~> 5.2.1'
+  gem 'slack-notifier', '~> 2.1', '>= 2.1.0'
 end
 
 group :development, :test do

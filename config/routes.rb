@@ -343,7 +343,7 @@ Ogma::Application.routes.draw do
         get   :manager
         post  :manager
         get :iis
-	get :analysis
+	      get :analysis
         get :analysis_book
         get :general_analysis
         get :general_analysis_ext
@@ -448,13 +448,13 @@ Ogma::Application.routes.draw do
   resources :logins
   resources :roles
   resources :banks
-  
-  
+
+
   # mailbox folder routes
   get "mailbox/inbox" => "mailbox#inbox", as: :mailbox_inbox
   get "mailbox/sent" => "mailbox#sent", as: :mailbox_sent
   get "mailbox/trash" => "mailbox#trash", as: :mailbox_trash
-  
+
   resources :conversations do
     member do
       post :reply
@@ -471,7 +471,7 @@ Ogma::Application.routes.draw do
   end
 
   resources :groups
-  
+
 
   root  'static_pages#home'
   match '/help',    to: 'static_pages#help',    via: 'get'

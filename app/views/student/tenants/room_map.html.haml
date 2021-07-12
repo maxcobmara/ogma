@@ -14,9 +14,9 @@
     .legend_title=t 'student.tenant.male_empty'
     .bed_damage.legend_object
     .legend_title=(t 'student.tenant.damaged').downcase
-  
-  
-  
+
+
+
 .row
   - @residentials.each do |building|
     .tenancy_building{style: "width:#{@div_width}%;"}
@@ -26,11 +26,7 @@
           - @bed = floor.descendants.where(typename: [2,8]).order(combo_code: :asc)
           - @room_nos = @bed.pluck(:combo_code).group_by{|x|x[0, x.size-2]}.count.to_s
           .floor_name= floor.name+" ("+@room_nos+" "+(t 'student.tenant.rooms').upcase+")"
-          
+
           - @bed.each do |bed|
             = link_to (get_status_link(bed)) do
-              .tenant{class: "#{bed.status}", title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
-                /for test
-                /- bedc=bed.combo_code
-                /%font{size: "-2px; color: black;"}=(bedc[bedc.size-4,2]).to_i.to_s+(bedc[bedc.size-1, 1])
-                
+              .tenant{class: "#{bed.status}", title: "#{(render 'tooltip', bed: bed)}", 'data-toggle' => 'tooltip', 'data-html' => "true"}

@@ -13,3 +13,5 @@ roots.each do | b |
     Location.create!({parent_id: b.id, code: "#{'%02i' % i}", name: "Floor #{'%02i' % i}", lclass: 2, parent_code: b.code})
   end
 end
+
+floors = Location.at_depth(1)
