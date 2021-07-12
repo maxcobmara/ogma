@@ -5,7 +5,7 @@
     .input-group
       .input-group-addon= @location.parent.combo_code unless @location.parent.nil?
       = f.text_field :code, class: 'form-control mandatory'
-    
+
 .form-group
   %label.col-sm-2.control-label{:for => "code"}= t 'location.name'
   .col-md-6
@@ -16,15 +16,21 @@
 .form-group
   %label.col-sm-2.control-label{:for => "parent"}= t 'location.parent'
   .col-md-6
-    = f.text_field :parent_code, class: 'form-control', data: {autocomplete_source: Location.where("combo_code IS NOT ?", nil).order(:combo_code).map(&:combo_code)} 
-    
+    = f.text_field :parent_code, class: 'form-control', data: {autocomplete_source: Location.where("combo_code IS NOT ?", nil).order(:combo_code).map(&:combo_code)}
+
 .form-group
   %label.col-sm-2.control-label{:for => "code"}= t 'location.administrator'
   .col-md-6
     = f.text_field :staff_name, class: 'form-control', data: {autocomplete_source: Staff.order(:name).map(&:name)}
 
 //- if parent != nil
-- if @location.parent == nil; @location.lclass = 1; elsif @location.parent.lclass == 1; @location.lclass = 2; elsif @location.parent.lclass == 2; @location.lclass = 3; end
+- if @location.parent == nil
+  - @location.lclass = 1
+- elsif @location.parent.lclass == 1
+  - @location.lclass = 2
+- elsif @location.parent.lclass == 2
+  - @location.lclass = 3
+  
 .form-group
   %label.col-sm-2.control-label{:for => "code"}= t 'class'
   .col-md-6
@@ -36,13 +42,13 @@
   .col-md-6
     = f.select :typename, DropDown::LOCATION_TYPE, {include_blank: true}, {class: 'selectpicker', 'data-live-search' => 'true'}
 
-/- if [1,2,6,8].include?(@location.typename) -> 6 for room only first, 1-floor, 2 & 8 - bed 
-- if [1,6].include?(@location.typename) 
+/- if [1,2,6,8].include?(@location.typename) -> 6 for room only first, 1-floor, 2 & 8 - bed
+- if [1,6].include?(@location.typename)
   .form-group
     %label.col-sm-2.control-label{:for => "occupied"}
       = t 'location.damage.damage_status'
     .col-md-6
-      %span.switch-left 
+      %span.switch-left
         Rosak
         = f.check_box :occupied, {type: "checkbox", id: "my_checkbox", "data-off-color"=>"danger"}, "true", "false"
   - if @location.damages.pluck(:repaired_on).include?(nil)
@@ -55,43 +61,40 @@
     %label.col-sm-2.control-label{:for => "occupied"}
       = t 'location.damage.describe_damage'
     .col-md-6
-      %span.switch-left 
+      %span.switch-left
         = f.fields_for :damages do |builder|
           - if (builder.object.id!=nil && builder.object.document_id==1 && builder.object.repaired_on==nil) || builder.object.id==nil
             = render 'damage_fields', f: builder
         /= link_to_add_fields (t 'fuel_issueds.add_details'), f, :damages
         = link_to_add_fields t('add_details'), f, :damages, "",  ""
 
-    
+
 :javascript
 
-  function add_fields(link, association, content) {  
-    var new_id = new Date().getTime();  
-    var regexp = new RegExp("new_" + association, "g");  
-    $(link).parent().before(content.replace(regexp, new_id));  
+  function add_fields(link, association, content) {
+    var new_id = new Date().getTime();
+    var regexp = new RegExp("new_" + association, "g");
+    $(link).parent().before(content.replace(regexp, new_id));
   }
-  
+
   $(document).ready(function(){
-    $("input[id='my_checkbox']").change(function() {  
-      if($('#my_checkbox').is(':checked')) { 
-        $("#span_damages").show(); 
+    $("input[id='my_checkbox']").change(function() {
+      if($('#my_checkbox').is(':checked')) {
+        $("#span_damages").show();
         $("#span_repairdate").hide();
       }else{
-        $("#span_damages").hide(); 
+        $("#span_damages").hide();
         $("#span_repairdate").show();
       }
     });
 
-    $("input[id='my_checkbox']").each(function() {  
-      if($('#my_checkbox').is(':checked')) { 
-        $("#span_damages").show(); 
+    $("input[id='my_checkbox']").each(function() {
+      if($('#my_checkbox').is(':checked')) {
+        $("#span_damages").show();
         $("#span_repairdate").hide();
       }else{
-        $("#span_damages").hide(); 
+        $("#span_damages").hide();
         $("#span_repairdate").show();
-      }	
+      }
     });
   });
-
-      
-      

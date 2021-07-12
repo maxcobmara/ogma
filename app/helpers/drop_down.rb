@@ -269,23 +269,35 @@ module DropDown
   LOCATION_CATEGORIES = [
          #  Displayed       stored in db
          [ "building" , 1 ],
-         [ "student residence" , 4 ],
          [ "floor"    , 2 ],
-         [ "room"     , 3 ]
+         [ "room"     , 3 ],
+         [ "student residence" , 4 ]
   ]
 
 
   LOCATION_TYPE = [
-          #  Displayed       stored in db
-          [ "Staff Unit",   1 ],
-          [ "Student Unit",      6 ],
-          [ "Bed (Student-Female)",   2 ],
-          [ "Bed (Student-Male)",     8 ],
-          [ "Facility",          3 ],
-          [ "Staff Area",        4 ],
-          [ "Public Area",       5 ],
-          [ "Utilities",         7 ],
-          [ "Other",             9 ]
+          # Displayed       stored in db
+          # This is the original setting, more organised created below.
+          # begin
+          # [ "Staff Unit",   1 ],
+          # [ "Student Unit",      6 ],
+          # [ "Bed (Student-Female)",   2 ],
+          # [ "Bed (Student-Male)",     8 ],
+          # [ "Facility",          3 ],
+          # [ "Staff Area",        4 ],
+          # [ "Public Area",       5 ],
+          # [ "Utilities",         7 ],
+          # [ "Other",             9 ]
+          # =end
+          [ "Staff Unit",       1 ],
+          [ "Student Unit",     2 ],
+          [ "Bed (Student-Female)",   20 ],
+          [ "Bed (Student-Male)"  ,   21 ],
+          [ "Facility",         3 ],
+          [ "Staff Area",       4 ],
+          [ "Public Area",      5 ],
+          [ "Utilities",        6 ],
+          [ "Other",            9 ]
   ]
 
   DOCUMENT_CATEGORY = [

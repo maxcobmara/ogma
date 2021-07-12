@@ -23,7 +23,7 @@
       %h5= building.name
       - building.children.order(combo_code: :desc).each do |floor|
         .row.tenancy_floor
-          - @bed = floor.descendants.where(typename: [2,8]).order(combo_code: :asc)
+          - @bed = floor.descendants.where(typename: [20,21]).order(combo_code: :asc)
           - @room_nos = @bed.pluck(:combo_code).group_by{|x|x[0, x.size-2]}.count.to_s
           .floor_name= floor.name+" ("+@room_nos+" "+(t 'student.tenant.rooms').upcase+")"
 

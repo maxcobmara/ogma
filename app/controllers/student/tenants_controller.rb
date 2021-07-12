@@ -2,7 +2,7 @@ class Student::TenantsController < ApplicationController
   filter_access_to :index,:index_staff, :reports, :statistics, :tenant_report, :tenant_report_staff, :return_key, :return_key2, :room_map, :room_map2, :new, :create,  :laporan_penginapan, :laporan_penginapan2, :census, :census_level, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_tenant, only: [:show, :edit, :update, :destroy]
-  
+
   def index
     #@search = Tenant.where("student_id IS NOT NULL").search(params[:q])
     @search = Tenant.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
@@ -13,15 +13,15 @@ class Student::TenantsController < ApplicationController
     @search.force_vacate_true = false unless params[:q]
     @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
     @tenants_all = @search.result.where('student_id is not null')
-    @tenants = @tenants_all.page(params[:page]||1)  
+    @tenants = @tenants_all.page(params[:page]||1)
     respond_to do |format|
       format.html
       #format.xls - temp hide until resolve - 'general i/o error'
       format.csv { send_data @tenants_all.to_csv }
-      format.xls { send_data @tenants_all.to_csv(col_sep: "\t") } 
+      format.xls { send_data @tenants_all.to_csv(col_sep: "\t") }
     end
   end
-  
+
   def index_staff
     @search = Tenant.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
     if params[:q]
@@ -47,10 +47,10 @@ class Student::TenantsController < ApplicationController
     student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     @occupied_locations = @current_tenants.pluck(:location_id)
-    
+
     #Excel - Statistic by level (of selected block) - moved to LOCATION module - statistic_level
   end
-  
+
   #Census by level
   #fr menu - 'Statistik Penginapan & Bancian Penghuni Mengikut Aras' / pautan Bancian (X penghuni)
   def census_level
@@ -69,19 +69,19 @@ class Student::TenantsController < ApplicationController
     #Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).where('id iN(?)', @current_tenants.pluck(:location_id)).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
     #must not be sorted
     #building.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
-    
+
     #Excel - Census by level - moved to LOCATION module - census_level2
   end
 
   def room_map
     @residentials = Location.where(lclass: 4).order(combo_code: :asc)
     #sets div size to fit no of buildings
-    @div_width = 90/@residentials.count
-    student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
+    @div_width = 90/ (@residentials.count.nonzero? || 1 )
+    student_bed_ids = Location.where(typename: [20,21]).pluck(:id)
     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     @occupied_locations = @current_tenants.pluck(:location_id)
   end
-  
+
   #For Staff Quarters - start
   def room_map2
     @places = Location.where(typename: 1)
@@ -106,7 +106,7 @@ class Student::TenantsController < ApplicationController
     student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     @occupied_locations = @current_tenants.pluck(:location_id)
-    
+
     #All Rooms
      @af_bedcode = @female_student_beds.pluck(:combo_code)
      @am_bedcode = @male_student_beds.pluck(:combo_code)
@@ -139,7 +139,7 @@ class Student::TenantsController < ApplicationController
     #@current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true) - duplicate
     @occupied_locations = @current_tenants.pluck(:location_id)
   end
-  
+
   def return_key
     if params[:search] && params[:search][:student_icno_location].present?
       params[:id]=nil
@@ -160,7 +160,7 @@ class Student::TenantsController < ApplicationController
     end
     @tenant = @my_room
   end
-  
+
   def return_key2
     if params[:search] && params[:search][:staff_icno_location].present?
       params[:id]=nil
@@ -170,7 +170,7 @@ class Student::TenantsController < ApplicationController
       @combo_code = splitter[(splitter.size-1)]
       @location =  Location.where('combo_code ILIKE(?)', "%#{@combo_code}%").first
       if @location
-        @my_room = Tenant.where(staff_id: Staff.where("icno = ?", "#{@ic_only}").first, location_id: @location.id).first 
+        @my_room = Tenant.where(staff_id: Staff.where("icno = ?", "#{@ic_only}").first, location_id: @location.id).first
       else
         @my_room = Tenant.where(staff_id: Staff.where("icno = ?", "#{@ic_only}").first).first
       end
@@ -218,9 +218,9 @@ class Student::TenantsController < ApplicationController
     respond_to do |format|
       if @tenant.update(tenant_params)
          if [2,8].include?@tenant.location.typename
-          flash[:notice] = (t 'student.tenant.title')+(t 'actions.updated') 
+          flash[:notice] = (t 'student.tenant.title')+(t 'actions.updated')
         elsif @tenant.location.typename==1
-          flash[:notice] = (t 'student.tenant.title2')+(t 'actions.updated') 
+          flash[:notice] = (t 'student.tenant.title2')+(t 'actions.updated')
         end
         format.html { redirect_to student_tenant_path(@tenant) }
         format.json { head :no_content }
@@ -233,7 +233,7 @@ class Student::TenantsController < ApplicationController
 
   def show
   end
-  
+
   #PDF for census_level
   def census
      @floor=Location.find(params[:id]) #103, 1181
@@ -250,7 +250,7 @@ class Student::TenantsController < ApplicationController
      @all_tenants_wstudent = @current_tenants.joins(:location).where('location_id IN(?) and student_id IN(?)', @tenantbed_per_level.pluck(:id), Student.all.pluck(:id))
      @students_prog = Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id)).group_by{|j|j.course_id}
      @all_tenants_wostudent = @current_tenants.joins(:location).where('location_id IN(?) and (student_id is null OR student_id NOT IN(?))', @tenantbed_per_level.pluck(:id), Student.all.pluck(:id))
-    
+
     respond_to do |format|
       format.pdf do
 	pdf = CensusStudentTenantsPdf.new(@all_beds_single,@all_rooms.count, @damaged_rooms.count,@occupied_rooms.count, @students_prog, @all_tenants_wstudent.count, @all_tenants_wostudent.count, @tenantbed_per_level.count, view_context)
@@ -277,10 +277,10 @@ class Student::TenantsController < ApplicationController
        end
      end
   end
-  
+
   #PDF for Index - staff residence
   def tenant_report_staff
-    @search = Tenant.search(params[:q]) 
+    @search = Tenant.search(params[:q])
     @search.keyreturned_present != nil unless params[:q]
     @search.force_vacate_true = false unless params[:q]
     @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
@@ -294,7 +294,7 @@ class Student::TenantsController < ApplicationController
        end
      end
   end
-  
+
   #PDF for Reports (Statistik Penginapan-level listing)
   def laporan_penginapan
     buildingname = params[:buildingname]
@@ -312,7 +312,7 @@ class Student::TenantsController < ApplicationController
      end
   end
 
-  #PDF for Statistic (general) - room status(part of laporan/statistik penginapan) & tenant programme 
+  #PDF for Statistic (general) - room status(part of laporan/statistik penginapan) & tenant programme
   #-- fr menu, Statistik Umum / Blok / Program - 'Statistik Penempatan Pelatih'
   def laporan_penginapan2
     blockid= params[:blockid]
@@ -338,7 +338,7 @@ class Student::TenantsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_tenant
