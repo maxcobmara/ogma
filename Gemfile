@@ -24,7 +24,7 @@ gem 'pg', '~> 0.17.1'
 #stuff for layout
 #gem "bootstrap-sass", "~> 3.0.3.0"
 gem 'sass-rails', '~> 5.0', '>= 5.0.4'
-gem 'uglifier', '~> 2.1.1'  # Use Uglifier as compressor for JavaScript assets
+gem 'uglifier', '~> 2.7.2'  # Use Uglifier as compressor for JavaScript assets
 gem 'coffee-rails', '~> 4.0.0'  # Use CoffeeScript for .js.coffee assets and views
 gem "jquery-ui-rails", "~> 4.1.1"
 gem 'jquery-rails', '~> 3.1.5'  # Use jquery as the JavaScript library
