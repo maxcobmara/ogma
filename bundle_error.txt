@@ -1,0 +1,1666 @@
+Fetching gem metadata from https://rubygems.org/..........
+Fetching gem metadata from https://rubygems.org/.
+Resolving dependencies....
+Using rake 10.5.0
+Using concurrent-ruby 1.1.10
+Using i18n 0.9.5
+Using json 1.8.6
+Using minitest 5.2.3
+Using thread_safe 0.3.6
+Using tzinfo 1.2.11
+Using activesupport 4.2.0
+Using builder 3.2.4
+Using erubis 2.7.0
+Using mini_portile2 2.1.0
+Using nokogiri 1.6.8.1
+Using rails-deprecated_sanitizer 1.0.4
+Using rails-dom-testing 1.0.9
+Using crass 1.0.6
+Using loofah 2.19.1
+Using rails-html-sanitizer 1.5.0
+Using actionview 4.2.0
+Using rack 1.6.13
+Using rack-test 0.6.3
+Using actionpack 4.2.0
+Using globalid 0.4.2
+Using activejob 4.2.0
+Using mime-types-data 3.2024.0206
+Using mime-types 3.5.2
+Using mail 2.6.6
+Using actionmailer 4.2.0
+Using activemodel 4.2.0
+Using arel 6.0.4
+Using activerecord 4.2.0
+Using addressable 2.4.0
+Using ancestry 2.2.2
+Using annotate 2.6.10
+Using bcrypt 3.1.20
+Using thor 0.18.1
+Using railties 4.2.0
+Using bootstrap-datepicker-rails 1.3.0.2
+Using kaminari-core 1.2.2
+Using kaminari-actionview 1.2.2
+Using kaminari-activerecord 1.2.2
+Using kaminari 1.2.2
+Using bundler 1.17.3
+Using hike 1.2.3
+Using multi_json 1.15.0
+Using tilt 1.4.1
+Using sprockets 2.12.5
+Using sprockets-rails 2.3.3
+Using rails 4.2.0
+Using bootstrap-kaminari-views 0.0.5
+Using bootstrap-switch-rails 3.3.5
+Using uniform_notifier 1.10.0
+Using bullet 5.2.1
+Using mutex_m 0.1.2
+Using net-ssh 2.9.4
+Using net-scp 4.0.0
+Using net-sftp 2.1.2
+Using sshkit 1.22.0
+Using capistrano 3.2.1
+Using capistrano-bundler 1.1.4
+Using capistrano-rails 1.6.3
+Using xpath 2.1.0
+Using capybara 2.3.0
+Using ssrf_filter 1.0.8
+Using carrierwave 1.3.4
+Using chartkick 1.3.2
+Using ffi 1.9.25
+Using childprocess 0.5.9
+Using coffee-script-source 1.12.2
+Using execjs 2.2.2
+Using coffee-script 2.4.1
+Using coffee-rails 4.0.1
+Using sass 3.2.19
+Using sass-rails 4.0.5
+Using chosen-rails 1.8.7
+Using chronic 0.10.2
+Using climate_control 0.2.0
+Using cocaine 0.5.8
+Using coderay 1.1.3
+Using currencies 0.4.2
+Using countries 0.9.3
+Using country_select 2.1.1
+Using daemons 1.4.1
+Using database_cleaner 1.3.0
+Using declarative_authorization 0.5.7
+Using orm_adapter 0.5.0
+Using responders 2.4.1
+Using warden 1.2.7
+Using devise 4.3.0
+Using diff-lcs 1.5.1
+Using eventmachine 1.2.7
+Using factory_girl 4.4.0
+Using factory_girl_rails 4.4.1
+Using faker 1.4.3
+Using font-awesome-rails 4.3.0.0
+Using foreigner 1.7.4
+Using formatador 1.1.0
+Using rb-fsevent 0.11.2
+Using rb-inotify 0.10.1
+Using listen 3.5.0
+Using lumberjack 1.0.13
+Using nenv 0.3.0
+Using shellany 0.0.1
+Using notiffany 0.1.3
+Using method_source 1.0.0
+Using pry 0.14.2
+Using guard 2.18.1
+Using rspec-support 3.0.4
+Using rspec-core 3.0.4
+Using rspec-expectations 3.0.4
+Using rspec-mocks 3.0.4
+Using rspec 3.0.0
+Using guard-rspec 4.3.1
+Using temple 0.8.2
+Using haml 5.0.4
+Using jquery-rails 3.1.5
+Using jquery-ui-rails 4.1.2
+Using kgio 2.11.4
+Using launchy 2.4.3
+Using mailboxer 0.13.0
+Using modernizr-rails 2.6.2.3
+Using paperclip 4.2.4
+Using pdf-core 0.4.0
+Fetching pg 0.17.1
+Installing pg 0.17.1 with native extensions
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+    current directory: /Users/mcmxcm/.asdf/installs/ruby/2.4.10/lib/ruby/gems/2.4.0/gems/pg-0.17.1/ext
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/bin/ruby -r ./siteconf20240306-65162-iachyy.rb extconf.rb
+--with-pg-config=/Applications/Postgres.app/Contents/Versions/latest/bin/pg_config
+Using config values from /Applications/Postgres.app/Contents/Versions/latest/bin/pg_config
+checking for libpq-fe.h... yes
+checking for libpq/libpq-fs.h... yes
+checking for pg_config_manual.h... yes
+checking for PQconnectdb() in -lpq... yes
+checking for PQconnectionUsedPassword()... yes
+checking for PQisthreadsafe()... yes
+checking for PQprepare()... yes
+checking for PQexecParams()... yes
+checking for PQescapeString()... yes
+checking for PQescapeStringConn()... yes
+checking for PQescapeLiteral()... yes
+checking for PQescapeIdentifier()... yes
+checking for PQgetCancel()... yes
+checking for lo_create()... yes
+checking for pg_encoding_to_char()... yes
+checking for pg_char_to_encoding()... yes
+checking for PQsetClientEncoding()... yes
+checking for PQlibVersion()... yes
+checking for PQping()... yes
+checking for PQsetSingleRowMode()... yes
+checking for rb_encdb_alias()... yes
+checking for rb_enc_alias()... no
+checking for rb_thread_call_without_gvl()... yes
+checking for rb_thread_call_with_gvl()... yes
+checking for rb_thread_fd_select()... yes
+checking for rb_w32_wrap_io_handle()... no
+checking for PGRES_COPY_BOTH in libpq-fe.h... yes
+checking for PGRES_SINGLE_TUPLE in libpq-fe.h... yes
+checking for PG_DIAG_TABLE_NAME in libpq-fe.h... yes
+checking for struct pgNotify.extra in libpq-fe.h... yes
+checking for unistd.h... yes
+checking for ruby/st.h... yes
+creating extconf.h
+creating Makefile
+
+current directory: /Users/mcmxcm/.asdf/installs/ruby/2.4.10/lib/ruby/gems/2.4.0/gems/pg-0.17.1/ext
+make "DESTDIR=" clean
+
+current directory: /Users/mcmxcm/.asdf/installs/ruby/2.4.10/lib/ruby/gems/2.4.0/gems/pg-0.17.1/ext
+make "DESTDIR="
+compiling gvl_wrappers.c
+compiling pg.c
+pg.c:537:15: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        s_id_index = rb_intern("@encoding");
+                     ^~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+pg.c:537:15: note: '{' token is here
+        s_id_index = rb_intern("@encoding");
+                     ^~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+pg.c:537:15: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        s_id_index = rb_intern("@encoding");
+                     ^~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+pg.c:537:15: note: ')' token is here
+        s_id_index = rb_intern("@encoding");
+                     ^~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+2 warnings generated.
+compiling pg_connection.c
+pg_connection.c:64:26: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                rb_funcall( socket_io, rb_intern("close"), 0 );
+                                       ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+pg_connection.c:64:26: note: '{' token is here
+                rb_funcall( socket_io, rb_intern("close"), 0 );
+                                       ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+pg_connection.c:64:26: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                rb_funcall( socket_io, rb_intern("close"), 0 );
+                                       ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+pg_connection.c:64:26: note: ')' token is here
+                rb_funcall( socket_io, rb_intern("close"), 0 );
+                                       ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+pg_connection.c:188:38: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        conninfo = rb_funcall2( rb_cPGconn, rb_intern("parse_connect_args"), argc, argv );
+                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+pg_connection.c:188:38: note: '{' token is here
+        conninfo = rb_funcall2( rb_cPGconn, rb_intern("parse_connect_args"), argc, argv );
+                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+pg_connection.c:188:38: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        conninfo = rb_funcall2( rb_cPGconn, rb_intern("parse_connect_args"), argc, argv );
+                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+pg_connection.c:188:38: note: ')' token is here
+        conninfo = rb_funcall2( rb_cPGconn, rb_intern("parse_connect_args"), argc, argv );
+                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+pg_connection.c:242:33: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        conninfo = rb_funcall2( klass, rb_intern("parse_connect_args"), argc, argv );
+                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+pg_connection.c:242:33: note: '{' token is here
+        conninfo = rb_funcall2( klass, rb_intern("parse_connect_args"), argc, argv );
+                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+pg_connection.c:242:33: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        conninfo = rb_funcall2( klass, rb_intern("parse_connect_args"), argc, argv );
+                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+pg_connection.c:242:33: note: ')' token is here
+        conninfo = rb_funcall2( klass, rb_intern("parse_connect_args"), argc, argv );
+                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+pg_connection.c:288:33: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        conninfo = rb_funcall2( klass, rb_intern("parse_connect_args"), argc, argv );
+                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+pg_connection.c:288:33: note: '{' token is here
+        conninfo = rb_funcall2( klass, rb_intern("parse_connect_args"), argc, argv );
+                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+pg_connection.c:288:33: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        conninfo = rb_funcall2( klass, rb_intern("parse_connect_args"), argc, argv );
+                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+pg_connection.c:288:33: note: ')' token is here
+        conninfo = rb_funcall2( klass, rb_intern("parse_connect_args"), argc, argv );
+                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+pg_connection.c:331:30: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                        rb_hash_aset(hash, ID2SYM(rb_intern("keyword")), rb_str_new2(options[i].keyword));
+                                                  ^~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:331:30: note: '{' token is here
+                        rb_hash_aset(hash, ID2SYM(rb_intern("keyword")), rb_str_new2(options[i].keyword));
+                                                  ^~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:331:30: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                        rb_hash_aset(hash, ID2SYM(rb_intern("keyword")), rb_str_new2(options[i].keyword));
+                                                  ^~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:331:30: note: ')' token is here
+                        rb_hash_aset(hash, ID2SYM(rb_intern("keyword")), rb_str_new2(options[i].keyword));
+                                                  ^~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:333:30: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                        rb_hash_aset(hash, ID2SYM(rb_intern("envvar")), rb_str_new2(options[i].envvar));
+                                                  ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:333:30: note: '{' token is here
+                        rb_hash_aset(hash, ID2SYM(rb_intern("envvar")), rb_str_new2(options[i].envvar));
+                                                  ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:333:30: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                        rb_hash_aset(hash, ID2SYM(rb_intern("envvar")), rb_str_new2(options[i].envvar));
+                                                  ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:333:30: note: ')' token is here
+                        rb_hash_aset(hash, ID2SYM(rb_intern("envvar")), rb_str_new2(options[i].envvar));
+                                                  ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:335:30: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                        rb_hash_aset(hash, ID2SYM(rb_intern("compiled")), rb_str_new2(options[i].compiled));
+                                                  ^~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:335:30: note: '{' token is here
+                        rb_hash_aset(hash, ID2SYM(rb_intern("compiled")), rb_str_new2(options[i].compiled));
+                                                  ^~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:335:30: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                        rb_hash_aset(hash, ID2SYM(rb_intern("compiled")), rb_str_new2(options[i].compiled));
+                                                  ^~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:335:30: note: ')' token is here
+                        rb_hash_aset(hash, ID2SYM(rb_intern("compiled")), rb_str_new2(options[i].compiled));
+                                                  ^~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:337:30: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                        rb_hash_aset(hash, ID2SYM(rb_intern("val")), rb_str_new2(options[i].val));
+                                                  ^~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:337:30: note: '{' token is here
+                        rb_hash_aset(hash, ID2SYM(rb_intern("val")), rb_str_new2(options[i].val));
+                                                  ^~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:337:30: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                        rb_hash_aset(hash, ID2SYM(rb_intern("val")), rb_str_new2(options[i].val));
+                                                  ^~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:337:30: note: ')' token is here
+                        rb_hash_aset(hash, ID2SYM(rb_intern("val")), rb_str_new2(options[i].val));
+                                                  ^~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:339:30: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                        rb_hash_aset(hash, ID2SYM(rb_intern("label")), rb_str_new2(options[i].label));
+                                                  ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:339:30: note: '{' token is here
+                        rb_hash_aset(hash, ID2SYM(rb_intern("label")), rb_str_new2(options[i].label));
+                                                  ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:339:30: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                        rb_hash_aset(hash, ID2SYM(rb_intern("label")), rb_str_new2(options[i].label));
+                                                  ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:339:30: note: ')' token is here
+                        rb_hash_aset(hash, ID2SYM(rb_intern("label")), rb_str_new2(options[i].label));
+                                                  ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:341:30: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                        rb_hash_aset(hash, ID2SYM(rb_intern("dispchar")), rb_str_new2(options[i].dispchar));
+                                                  ^~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:341:30: note: '{' token is here
+                        rb_hash_aset(hash, ID2SYM(rb_intern("dispchar")), rb_str_new2(options[i].dispchar));
+                                                  ^~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:341:30: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                        rb_hash_aset(hash, ID2SYM(rb_intern("dispchar")), rb_str_new2(options[i].dispchar));
+                                                  ^~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:341:30: note: ')' token is here
+                        rb_hash_aset(hash, ID2SYM(rb_intern("dispchar")), rb_str_new2(options[i].dispchar));
+                                                  ^~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:342:29: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                rb_hash_aset(hash, ID2SYM(rb_intern("dispsize")), INT2NUM(options[i].dispsize));
+                                          ^~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:342:29: note: '{' token is here
+                rb_hash_aset(hash, ID2SYM(rb_intern("dispsize")), INT2NUM(options[i].dispsize));
+                                          ^~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:342:29: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                rb_hash_aset(hash, ID2SYM(rb_intern("dispsize")), INT2NUM(options[i].dispsize));
+                                          ^~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:342:29: note: ')' token is here
+                rb_hash_aset(hash, ID2SYM(rb_intern("dispsize")), INT2NUM(options[i].dispsize));
+                                          ^~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:755:20: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        ID id_autoclose = rb_intern("autoclose=");
+                          ^~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+pg_connection.c:755:20: note: '{' token is here
+        ID id_autoclose = rb_intern("autoclose=");
+                          ^~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+pg_connection.c:755:20: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        ID id_autoclose = rb_intern("autoclose=");
+                          ^~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+pg_connection.c:755:20: note: ')' token is here
+        ID id_autoclose = rb_intern("autoclose=");
+                          ^~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+pg_connection.c:768:35: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                socket_io = rb_funcall( rb_cIO, rb_intern("for_fd"), 1, INT2NUM(ruby_sd) );
+                                                ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+pg_connection.c:768:35: note: '{' token is here
+                socket_io = rb_funcall( rb_cIO, rb_intern("for_fd"), 1, INT2NUM(ruby_sd) );
+                                                ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+pg_connection.c:768:35: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                socket_io = rb_funcall( rb_cIO, rb_intern("for_fd"), 1, INT2NUM(ruby_sd) );
+                                                ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+pg_connection.c:768:35: note: ')' token is here
+                socket_io = rb_funcall( rb_cIO, rb_intern("for_fd"), 1, INT2NUM(ruby_sd) );
+                                                ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+pg_connection.c:959:20: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_type = ID2SYM(rb_intern("type"));
+                          ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:959:20: note: '{' token is here
+        sym_type = ID2SYM(rb_intern("type"));
+                          ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:959:20: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_type = ID2SYM(rb_intern("type"));
+                          ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:959:20: note: ')' token is here
+        sym_type = ID2SYM(rb_intern("type"));
+                          ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:960:21: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:960:21: note: '{' token is here
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:960:21: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:960:21: note: ')' token is here
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:961:22: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:961:22: note: '{' token is here
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:961:22: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:961:22: note: ')' token is here
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1158:21: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1158:21: note: '{' token is here
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1158:21: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1158:21: note: ')' token is here
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1159:22: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1159:22: note: '{' token is here
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1159:22: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1159:22: note: ')' token is here
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1646:20: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_type = ID2SYM(rb_intern("type"));
+                          ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1646:20: note: '{' token is here
+        sym_type = ID2SYM(rb_intern("type"));
+                          ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1646:20: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_type = ID2SYM(rb_intern("type"));
+                          ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1646:20: note: ')' token is here
+        sym_type = ID2SYM(rb_intern("type"));
+                          ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1647:21: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1647:21: note: '{' token is here
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1647:21: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1647:21: note: ')' token is here
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1648:22: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1648:22: note: '{' token is here
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1648:22: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1648:22: note: ')' token is here
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1840:21: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1840:21: note: '{' token is here
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1840:21: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1840:21: note: ')' token is here
+        sym_value = ID2SYM(rb_intern("value"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1841:22: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1841:22: note: '{' token is here
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1841:22: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:1841:22: note: ')' token is here
+        sym_format = ID2SYM(rb_intern("format"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:2147:23: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_relname = ID2SYM(rb_intern("relname"));
+                             ^~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:2147:23: note: '{' token is here
+        sym_relname = ID2SYM(rb_intern("relname"));
+                             ^~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:2147:23: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_relname = ID2SYM(rb_intern("relname"));
+                             ^~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:2147:23: note: ')' token is here
+        sym_relname = ID2SYM(rb_intern("relname"));
+                             ^~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:2148:22: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_be_pid = ID2SYM(rb_intern("be_pid"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:2148:22: note: '{' token is here
+        sym_be_pid = ID2SYM(rb_intern("be_pid"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:2148:22: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_be_pid = ID2SYM(rb_intern("be_pid"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:2148:22: note: ')' token is here
+        sym_be_pid = ID2SYM(rb_intern("be_pid"));
+                            ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:2149:21: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_extra = ID2SYM(rb_intern("extra"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:2149:21: note: '{' token is here
+        sym_extra = ID2SYM(rb_intern("extra"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:2149:21: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        sym_extra = ID2SYM(rb_intern("extra"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:2149:21: note: ')' token is here
+        sym_extra = ID2SYM(rb_intern("extra"));
+                           ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:383:29: note: expanded from macro 'ID2SYM'
+#define ID2SYM(x) RB_ID2SYM(x)
+                            ^
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:378:33: note: expanded from macro 'RB_ID2SYM'
+#define RB_ID2SYM(x) (rb_id2sym(x))
+                                ^
+pg_connection.c:2323:3: error: implicit declaration of function 'gettimeofday' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+                gettimeofday(&currtime, NULL);
+                ^
+pg_connection.c:2340:4: error: implicit declaration of function 'gettimeofday' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+                        gettimeofday(&currtime, NULL);
+                        ^
+pg_connection.c:2601:26: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        if(rb_respond_to(stream,rb_intern("fileno")) == Qfalse)
+                                ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+pg_connection.c:2601:26: note: '{' token is here
+        if(rb_respond_to(stream,rb_intern("fileno")) == Qfalse)
+                                ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+pg_connection.c:2601:26: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        if(rb_respond_to(stream,rb_intern("fileno")) == Qfalse)
+                                ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+pg_connection.c:2601:26: note: ')' token is here
+        if(rb_respond_to(stream,rb_intern("fileno")) == Qfalse)
+                                ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+pg_connection.c:2604:30: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        fileno = rb_funcall(stream, rb_intern("fileno"), 0);
+                                    ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+pg_connection.c:2604:30: note: '{' token is here
+        fileno = rb_funcall(stream, rb_intern("fileno"), 0);
+                                    ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+pg_connection.c:2604:30: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        fileno = rb_funcall(stream, rb_intern("fileno"), 0);
+                                    ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+pg_connection.c:2604:30: note: ')' token is here
+        fileno = rb_funcall(stream, rb_intern("fileno"), 0);
+                                    ^~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+pg_connection.c:2621:32: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        new_file = rb_funcall(rb_cIO, rb_intern("new"), 1, INT2NUM(new_fd));
+                                      ^~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+pg_connection.c:2621:32: note: '{' token is here
+        new_file = rb_funcall(rb_cIO, rb_intern("new"), 1, INT2NUM(new_fd));
+                                      ^~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+pg_connection.c:2621:32: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        new_file = rb_funcall(rb_cIO, rb_intern("new"), 1, INT2NUM(new_fd));
+                                      ^~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+pg_connection.c:2621:32: note: ')' token is here
+        new_file = rb_funcall(rb_cIO, rb_intern("new"), 1, INT2NUM(new_fd));
+                                      ^~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+pg_connection.c:2640:27: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        rb_funcall(trace_stream, rb_intern("close"), 0);
+                                 ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+pg_connection.c:2640:27: note: '{' token is here
+        rb_funcall(trace_stream, rb_intern("close"), 0);
+                                 ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+pg_connection.c:2640:27: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        rb_funcall(trace_stream, rb_intern("close"), 0);
+                                 ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+pg_connection.c:2640:27: note: ')' token is here
+        rb_funcall(trace_stream, rb_intern("close"), 0);
+                                 ^~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+pg_connection.c:2663:20: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                rb_funcall(proc, rb_intern("call"), 1, val);
+                                 ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+pg_connection.c:2663:20: note: '{' token is here
+                rb_funcall(proc, rb_intern("call"), 1, val);
+                                 ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+pg_connection.c:2663:20: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                rb_funcall(proc, rb_intern("call"), 1, val);
+                                 ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+pg_connection.c:2663:20: note: ')' token is here
+                rb_funcall(proc, rb_intern("call"), 1, val);
+                                 ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+pg_connection.c:2743:20: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                rb_funcall(proc, rb_intern("call"), 1, message_str);
+                                 ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:23: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                      ^
+pg_connection.c:2743:20: note: '{' token is here
+                rb_funcall(proc, rb_intern("call"), 1, message_str);
+                                 ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1738:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    {                                                   \
+    ^
+pg_connection.c:2743:20: warning: '}' and ')' tokens terminating statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+                rb_funcall(proc, rb_intern("call"), 1, message_str);
+                                 ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:24: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1743:5: note: expanded from macro 'RUBY_CONST_ID_CACHE'
+    }
+    ^
+pg_connection.c:2743:20: note: ')' token is here
+                rb_funcall(proc, rb_intern("call"), 1, message_str);
+                                 ^~~~~~~~~~~~~~~~~
+/Users/mcmxcm/.asdf/installs/ruby/2.4.10/include/ruby-2.4.0/ruby/ruby.h:1753:56: note: expanded from macro 'rb_intern'
+        __extension__ (RUBY_CONST_ID_CACHE((ID), (str))) : \
+                                                       ^
+64 warnings and 2 errors generated.
+make: *** [pg_connection.o] Error 1
+
+make failed, exit code 2
+
+Gem files will remain installed in /Users/mcmxcm/.asdf/installs/ruby/2.4.10/lib/ruby/gems/2.4.0/gems/pg-0.17.1 for inspection.
+Results logged to /Users/mcmxcm/.asdf/installs/ruby/2.4.10/lib/ruby/gems/2.4.0/extensions/x86_64-darwin-20/2.4.0/pg-0.17.1/gem_make.out
+
+An error occurred while installing pg (0.17.1), and Bundler cannot continue.
+Make sure that `gem install pg -v '0.17.1' --source 'https://rubygems.org/'` succeeds before bundling.
+
+In Gemfile:
+  pg

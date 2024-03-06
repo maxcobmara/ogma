@@ -1,10 +1,11 @@
 source 'https://rubygems.org'
 #ruby '2.2.10'
-ruby '2.3.8'
+ruby '2.4.10'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.0'  #12 July 2016
-gem "thin", "~> 1.7.0"
+#gem 'rails', '4.2.0'  #12 July 2016
+gem 'rails', '4.2.8'  #21 Feb 2017
+gem "thin", "1.8.0"
 gem "devise", "~> 4.3.0"
 gem 'declarative_authorization', '~> 0.5.7'
 gem 'paperclip', '~> 4.2.0'
@@ -18,7 +19,9 @@ gem "chartkick", "~> 1.3.2"
 gem 'country_select', '~> 2.1.0'
 gem 'mailboxer', '~> 0.13.0'
 gem 'sqlite3', '~> 1.3.12'
-gem 'pg', '~> 0.17.1'
+gem 'pg', '~> 0.20.0'
+#pg bundling with Postgras.app needs pg 0.20 or higher
+#bundle config build.pg -- --with-pg-config=/Applications/Postgres.app/Contents/Versions/latest/bin/pg_config
 
 
 
